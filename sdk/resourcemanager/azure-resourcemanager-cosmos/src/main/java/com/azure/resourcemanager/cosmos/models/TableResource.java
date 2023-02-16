@@ -17,6 +17,10 @@ public class TableResource {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of TableResource class. */
+    public TableResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB table.
      *

@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of StreamingPolicies. */
 public interface StreamingPolicies {
     /**
-     * Lists the Streaming Policies in the account.
+     * List Streaming Policies
+     *
+     * <p>Lists the Streaming Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -23,7 +25,9 @@ public interface StreamingPolicies {
     PagedIterable<StreamingPolicy> list(String resourceGroupName, String accountName);
 
     /**
-     * Lists the Streaming Policies in the account.
+     * List Streaming Policies
+     *
+     * <p>Lists the Streaming Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -41,20 +45,9 @@ public interface StreamingPolicies {
         String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
 
     /**
-     * Get the details of a Streaming Policy in the Media Services account.
+     * Get a Streaming Policy
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param streamingPolicyName The Streaming Policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
-     */
-    StreamingPolicy get(String resourceGroupName, String accountName, String streamingPolicyName);
-
-    /**
-     * Get the details of a Streaming Policy in the Media Services account.
+     * <p>Get the details of a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -69,7 +62,9 @@ public interface StreamingPolicies {
         String resourceGroupName, String accountName, String streamingPolicyName, Context context);
 
     /**
-     * Deletes a Streaming Policy in the Media Services account.
+     * Get a Streaming Policy
+     *
+     * <p>Get the details of a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -77,11 +72,14 @@ public interface StreamingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of a Streaming Policy in the Media Services account.
      */
-    void delete(String resourceGroupName, String accountName, String streamingPolicyName);
+    StreamingPolicy get(String resourceGroupName, String accountName, String streamingPolicyName);
 
     /**
-     * Deletes a Streaming Policy in the Media Services account.
+     * Delete a Streaming Policy
+     *
+     * <p>Deletes a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -96,7 +94,23 @@ public interface StreamingPolicies {
         String resourceGroupName, String accountName, String streamingPolicyName, Context context);
 
     /**
-     * Get the details of a Streaming Policy in the Media Services account.
+     * Delete a Streaming Policy
+     *
+     * <p>Deletes a Streaming Policy in the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingPolicyName The Streaming Policy name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accountName, String streamingPolicyName);
+
+    /**
+     * Get a Streaming Policy
+     *
+     * <p>Get the details of a Streaming Policy in the Media Services account.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,7 +121,9 @@ public interface StreamingPolicies {
     StreamingPolicy getById(String id);
 
     /**
-     * Get the details of a Streaming Policy in the Media Services account.
+     * Get a Streaming Policy
+     *
+     * <p>Get the details of a Streaming Policy in the Media Services account.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -119,7 +135,9 @@ public interface StreamingPolicies {
     Response<StreamingPolicy> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a Streaming Policy in the Media Services account.
+     * Delete a Streaming Policy
+     *
+     * <p>Deletes a Streaming Policy in the Media Services account.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +147,9 @@ public interface StreamingPolicies {
     void deleteById(String id);
 
     /**
-     * Deletes a Streaming Policy in the Media Services account.
+     * Delete a Streaming Policy
+     *
+     * <p>Deletes a Streaming Policy in the Media Services account.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

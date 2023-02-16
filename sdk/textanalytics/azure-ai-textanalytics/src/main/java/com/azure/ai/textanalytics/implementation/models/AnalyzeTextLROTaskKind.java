@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AnalyzeTextLROTaskKind. */
+/** Enumeration of supported long-running Text Analysis tasks. */
 public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTextLROTaskKind> {
     /** Static value SentimentAnalysis for AnalyzeTextLROTaskKind. */
     public static final AnalyzeTextLROTaskKind SENTIMENT_ANALYSIS = fromString("SentimentAnalysis");
@@ -42,6 +42,9 @@ public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTe
     public static final AnalyzeTextLROTaskKind CUSTOM_MULTI_LABEL_CLASSIFICATION =
             fromString("CustomMultiLabelClassification");
 
+    /** Static value AbstractiveSummarization for AnalyzeTextLROTaskKind. */
+    public static final AnalyzeTextLROTaskKind ABSTRACTIVE_SUMMARIZATION = fromString("AbstractiveSummarization");
+
     /**
      * Creates or finds a AnalyzeTextLROTaskKind from its string representation.
      *
@@ -53,7 +56,11 @@ public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTe
         return fromString(name, AnalyzeTextLROTaskKind.class);
     }
 
-    /** @return known AnalyzeTextLROTaskKind values. */
+    /**
+     * Gets known AnalyzeTextLROTaskKind values.
+     *
+     * @return known AnalyzeTextLROTaskKind values.
+     */
     public static Collection<AnalyzeTextLROTaskKind> values() {
         return values(AnalyzeTextLROTaskKind.class);
     }

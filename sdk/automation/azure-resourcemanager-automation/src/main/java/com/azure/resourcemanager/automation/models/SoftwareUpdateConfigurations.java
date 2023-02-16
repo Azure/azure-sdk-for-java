@@ -34,7 +34,7 @@ public interface SoftwareUpdateConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return a single software update configuration by name along with {@link Response}.
      */
     Response<SoftwareUpdateConfiguration> getByNameWithResponse(
         String resourceGroupName,
@@ -66,7 +66,7 @@ public interface SoftwareUpdateConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName,
@@ -98,7 +98,7 @@ public interface SoftwareUpdateConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account.
+     * @return all software update configurations for the account along with {@link Response}.
      */
     Response<SoftwareUpdateConfigurationListResult> listWithResponse(
         String resourceGroupName, String automationAccountName, String clientRequestId, String filter, Context context);
@@ -110,7 +110,7 @@ public interface SoftwareUpdateConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return a single software update configuration by name along with {@link Response}.
      */
     SoftwareUpdateConfiguration getById(String id);
 
@@ -123,7 +123,7 @@ public interface SoftwareUpdateConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return a single software update configuration by name along with {@link Response}.
      */
     Response<SoftwareUpdateConfiguration> getByIdWithResponse(String id, String clientRequestId, Context context);
 
@@ -146,7 +146,7 @@ public interface SoftwareUpdateConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, String clientRequestId, Context context);
 

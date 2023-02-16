@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CopyActivityLogSettings {
     /*
-     * Gets or sets the log level, support: Info, Warning. Type: string (or
-     * Expression with resultType string).
+     * Gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "logLevel")
     private Object logLevel;
 
     /*
-     * Specifies whether to enable reliable logging. Type: boolean (or
-     * Expression with resultType boolean).
+     * Specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableReliableLogging")
     private Object enableReliableLogging;
+
+    /** Creates an instance of CopyActivityLogSettings class. */
+    public CopyActivityLogSettings() {
+    }
 
     /**
      * Get the logLevel property: Gets or sets the log level, support: Info, Warning. Type: string (or Expression with

@@ -1,22 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+// Includes work from:
 /*
- * ApplicationInsights-Java
- * Copyright (c) Microsoft Corporation
- * All rights reserved.
- *
- * MIT License
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the ""Software""), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify, merge,
- * publish, distribute, sublicense, and/or sell copies of the Software, and to permit
- * persons to whom the Software is furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
- * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
- * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright The OpenTelemetry Authors
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
@@ -25,101 +13,179 @@ import reactor.util.annotation.Nullable;
 
 public class UrlParser {
 
-    /**
-     * Returns the "target" (host:port) portion of the url.
-     *
-     * <p>Returns {@code null} if the target cannot be extracted from url for any reason.
-     */
     @Nullable
-    public static String getTargetFromUrl(String url) {
+    public static String getTarget(String url) {
 
-        int schemeEndIndex = url.indexOf(':');
-        if (schemeEndIndex == -1) {
-            // not a valid url
+        int schemeEndIndexExclusive = getSchemeEndIndexExclusive(url);
+        if (schemeEndIndexExclusive == -1) {
+            // invalid url
             return null;
         }
 
-        int len = url.length();
-        if (schemeEndIndex + 2 < len
-            && url.charAt(schemeEndIndex + 1) == '/'
-            && url.charAt(schemeEndIndex + 2) == '/') {
-            // has authority component
-            // look for
-            //   '/' - start of path
-            //   '?' or end of string - empty path
-            int index;
-            for (index = schemeEndIndex + 3; index < len; index++) {
-                char c = url.charAt(index);
-                if (c == '/' || c == '?' || c == '#') {
-                    break;
-                }
-            }
-            String target = url.substring(schemeEndIndex + 3, index);
-            return target.isEmpty() ? null : target;
-        } else {
-            // has no authority
+        int hostEndIndexExclusive = getHostEndIndexExclusive(url, schemeEndIndexExclusive);
+        if (hostEndIndexExclusive == schemeEndIndexExclusive) {
+            // no host (or port)
             return null;
         }
+
+        if (hostEndIndexExclusive < url.length() && url.charAt(hostEndIndexExclusive) != ':') {
+            // no port
+            return url.substring(schemeEndIndexExclusive, hostEndIndexExclusive);
+        }
+
+        int portStartIndex = hostEndIndexExclusive + 1;
+
+        int portEndIndexExclusive = getPortEndIndexExclusive(url, portStartIndex);
+        if (portEndIndexExclusive == portStartIndex) {
+            // no port
+            return url.substring(schemeEndIndexExclusive, hostEndIndexExclusive);
+        }
+
+        String port = url.substring(portStartIndex, portEndIndexExclusive);
+
+        if ((port.equals("80") && url.startsWith("http://"))
+            || (port.equals("443") && url.startsWith("https://"))) {
+            return url.substring(schemeEndIndexExclusive, hostEndIndexExclusive);
+        }
+
+        return url.substring(schemeEndIndexExclusive, portEndIndexExclusive);
     }
 
-    /**
-     * Returns the path portion of the url.
-     *
-     * <p>Returns {@code null} if the path cannot be extracted from url for any reason.
-     */
     @Nullable
-    public static String getPathFromUrl(String url) {
+    public static String getPath(String url) {
 
-        int schemeEndIndex = url.indexOf(':');
-        if (schemeEndIndex == -1) {
-            // not a valid url
+        int schemeEndIndexExclusive = getSchemeEndIndexExclusive(url);
+        if (schemeEndIndexExclusive == -1) {
+            // invalid url
             return null;
         }
 
+        int hostEndIndexExclusive = getHostEndIndexExclusive(url, schemeEndIndexExclusive);
+        int portEndIndexExclusive = getPortEndIndexExclusive(url, hostEndIndexExclusive);
+        int pathEndIndexExclusive = getPathEndIndexExclusive(url, portEndIndexExclusive);
+
+        return url.substring(portEndIndexExclusive, pathEndIndexExclusive);
+    }
+
+    @Nullable
+    public static String getHost(String url) {
+
+        int hostStartIndex = getSchemeEndIndexExclusive(url);
+        if (hostStartIndex == -1) {
+            // invalid url
+            return null;
+        }
+
+        int hostEndIndexExclusive = getHostEndIndexExclusive(url, hostStartIndex);
+        if (hostEndIndexExclusive == hostStartIndex) {
+            // no host
+            return null;
+        }
+
+        return url.substring(hostStartIndex, hostEndIndexExclusive);
+    }
+
+    @Nullable
+    public static Integer getPort(String url) {
+
+        int schemeEndIndexExclusive = getSchemeEndIndexExclusive(url);
+        if (schemeEndIndexExclusive == -1) {
+            // invalid url
+            return null;
+        }
+
+        int hostEndIndexExclusive = getHostEndIndexExclusive(url, schemeEndIndexExclusive);
+        if (hostEndIndexExclusive == schemeEndIndexExclusive) {
+            // no host (or port)
+            return null;
+        }
+
+        if (hostEndIndexExclusive < url.length() && url.charAt(hostEndIndexExclusive) != ':') {
+            // no port
+            return null;
+        }
+
+        int portStartIndex = hostEndIndexExclusive + 1;
+
+        int portEndIndexExclusive = getPortEndIndexExclusive(url, portStartIndex);
+        if (portEndIndexExclusive == portStartIndex) {
+            // no port
+            return null;
+        }
+
+        return safeParse(url.substring(portStartIndex, portEndIndexExclusive));
+    }
+
+    public static int getSchemeEndIndexExclusive(String url) {
+
+        int schemeEndIndex = url.indexOf(':');
+        if (schemeEndIndex == -1) {
+            // invalid url
+            return -1;
+        }
+
         int len = url.length();
-        if (schemeEndIndex + 2 < len
-            && url.charAt(schemeEndIndex + 1) == '/'
-            && url.charAt(schemeEndIndex + 2) == '/') {
-            // has authority component
-            // look for
-            //   '/' - start of path
-            //   '?' or end of string - empty path
-            int pathStartIndex = -1;
-            for (int i = schemeEndIndex + 3; i < len; i++) {
-                char c = url.charAt(i);
-                if (c == '/') {
-                    pathStartIndex = i;
-                    break;
-                } else if (c == '?' || c == '#') {
-                    // empty path
-                    return "";
-                }
+        if (len <= schemeEndIndex + 2
+            || url.charAt(schemeEndIndex + 1) != '/'
+            || url.charAt(schemeEndIndex + 2) != '/') {
+            // has no authority component
+            return -1;
+        }
+
+        return schemeEndIndex + 3;
+    }
+
+    public static int getHostEndIndexExclusive(String url, int startIndex) {
+        // look for the end of the host:
+        //   ':' ==> start of port, or
+        //   '/', '?', '#' ==> start of path
+        int index;
+        int len = url.length();
+        for (index = startIndex; index < len; index++) {
+            char c = url.charAt(index);
+            if (c == ':' || c == '/' || c == '?' || c == '#') {
+                break;
             }
-            if (pathStartIndex == -1) {
-                // end of the url was reached while scanning for the beginning of the path
-                // which means the path is empty
-                return "";
+        }
+        return index;
+    }
+
+    public static int getPortEndIndexExclusive(String url, int startIndex) {
+        // look for the end of the port:
+        //   '/', '?', '#' ==> start of path
+        int index;
+        int len = url.length();
+        for (index = startIndex; index < len; index++) {
+            char c = url.charAt(index);
+            if (c == '/' || c == '?' || c == '#') {
+                break;
             }
-            int pathEndIndex = getPathEndIndex(url, pathStartIndex + 1);
-            return url.substring(pathStartIndex, pathEndIndex);
-        } else {
-            // has no authority, path starts right away
-            int pathStartIndex = schemeEndIndex + 1;
-            int pathEndIndex = getPathEndIndex(url, pathStartIndex);
-            return url.substring(pathStartIndex, pathEndIndex);
+        }
+        return index;
+    }
+
+    @Nullable
+    private static Integer safeParse(String port) {
+        try {
+            return Integer.valueOf(port);
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
 
     // returns the ending index of the path component (exclusive)
-    private static int getPathEndIndex(String url, int startIndex) {
+    private static int getPathEndIndexExclusive(String url, int startIndex) {
+        // look for the end of the port:
+        //   '/', '?', '#' ==> start of path
+        int index;
         int len = url.length();
-        for (int i = startIndex; i < len; i++) {
-            char c = url.charAt(i);
+        for (index = startIndex; index < len; index++) {
+            char c = url.charAt(index);
             if (c == '?' || c == '#') {
-                return i;
+                break;
             }
         }
-        return len;
+        return index;
     }
 
     private UrlParser() {

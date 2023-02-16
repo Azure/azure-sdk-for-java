@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,9 +12,6 @@ import java.util.Map;
 /** Properties required to update a CdnWebApplicationFirewallPolicy. */
 @Fluent
 public final class CdnWebApplicationFirewallPolicyPatchParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CdnWebApplicationFirewallPolicyPatchParameters.class);
-
     /*
      * CdnWebApplicationFirewallPolicy tags
      */

@@ -27,17 +27,6 @@ public final class BmsPrepareDataMoveOperationResultsImpl implements BmsPrepareD
         this.serviceManager = serviceManager;
     }
 
-    public VaultStorageConfigOperationResultResponse get(
-        String vaultName, String resourceGroupName, String operationId) {
-        VaultStorageConfigOperationResultResponseInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, operationId);
-        if (inner != null) {
-            return new VaultStorageConfigOperationResultResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VaultStorageConfigOperationResultResponse> getWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         Response<VaultStorageConfigOperationResultResponseInner> inner =
@@ -48,6 +37,17 @@ public final class BmsPrepareDataMoveOperationResultsImpl implements BmsPrepareD
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VaultStorageConfigOperationResultResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VaultStorageConfigOperationResultResponse get(
+        String vaultName, String resourceGroupName, String operationId) {
+        VaultStorageConfigOperationResultResponseInner inner =
+            this.serviceClient().get(vaultName, resourceGroupName, operationId);
+        if (inner != null) {
+            return new VaultStorageConfigOperationResultResponseImpl(inner, this.manager());
         } else {
             return null;
         }

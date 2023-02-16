@@ -20,11 +20,15 @@ public final class VirtualMachineScaleSetListSkusResult {
     private List<VirtualMachineScaleSetSkuInner> value;
 
     /*
-     * The uri to fetch the next page of Virtual Machine Scale Set Skus. Call
-     * ListNext() with this to fetch the next page of VMSS Skus.
+     * The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext() with this to fetch the next
+     * page of VMSS Skus.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of VirtualMachineScaleSetListSkusResult class. */
+    public VirtualMachineScaleSetListSkusResult() {
+    }
 
     /**
      * Get the value property: The list of skus available for the virtual machine scale set.

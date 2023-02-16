@@ -110,6 +110,10 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOnPremisesExtensionAttributes class. */
+    public MicrosoftGraphOnPremisesExtensionAttributes() {
+    }
+
     /**
      * Get the extensionAttribute1 property: First customizable extension attribute.
      *

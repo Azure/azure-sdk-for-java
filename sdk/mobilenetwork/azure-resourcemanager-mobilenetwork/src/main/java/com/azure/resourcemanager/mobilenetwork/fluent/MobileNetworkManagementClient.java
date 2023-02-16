@@ -66,20 +66,6 @@ public interface MobileNetworkManagementClient {
     MobileNetworksClient getMobileNetworks();
 
     /**
-     * Gets the SitesClient object to access its operations.
-     *
-     * @return the SitesClient object.
-     */
-    SitesClient getSites();
-
-    /**
-     * Gets the SimsClient object to access its operations.
-     *
-     * @return the SimsClient object.
-     */
-    SimsClient getSims();
-
-    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -92,6 +78,13 @@ public interface MobileNetworkManagementClient {
      * @return the PacketCoreControlPlanesClient object.
      */
     PacketCoreControlPlanesClient getPacketCoreControlPlanes();
+
+    /**
+     * Gets the PacketCoreControlPlaneVersionsClient object to access its operations.
+     *
+     * @return the PacketCoreControlPlaneVersionsClient object.
+     */
+    PacketCoreControlPlaneVersionsClient getPacketCoreControlPlaneVersions();
 
     /**
      * Gets the PacketCoreDataPlanesClient object to access its operations.
@@ -108,11 +101,32 @@ public interface MobileNetworkManagementClient {
     ServicesClient getServices();
 
     /**
+     * Gets the SimsClient object to access its operations.
+     *
+     * @return the SimsClient object.
+     */
+    SimsClient getSims();
+
+    /**
+     * Gets the SimGroupsClient object to access its operations.
+     *
+     * @return the SimGroupsClient object.
+     */
+    SimGroupsClient getSimGroups();
+
+    /**
      * Gets the SimPoliciesClient object to access its operations.
      *
      * @return the SimPoliciesClient object.
      */
     SimPoliciesClient getSimPolicies();
+
+    /**
+     * Gets the SitesClient object to access its operations.
+     *
+     * @return the SitesClient object.
+     */
+    SitesClient getSites();
 
     /**
      * Gets the SlicesClient object to access its operations.

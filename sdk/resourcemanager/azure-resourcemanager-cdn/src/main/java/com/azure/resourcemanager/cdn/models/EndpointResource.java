@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the ARM Resource ID for the linked endpoints. */
 @Fluent
 public final class EndpointResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointResource.class);
-
     /*
      * ARM Resource ID string.
      */

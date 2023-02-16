@@ -32,6 +32,10 @@ public final class MicrosoftGraphInternetMessageHeader {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphInternetMessageHeader class. */
+    public MicrosoftGraphInternetMessageHeader() {
+    }
+
     /**
      * Get the name property: Represents the key in a key-value pair.
      *

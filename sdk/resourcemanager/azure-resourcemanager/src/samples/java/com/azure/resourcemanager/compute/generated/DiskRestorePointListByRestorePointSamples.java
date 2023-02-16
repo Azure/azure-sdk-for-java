@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskRestorePoint ListByRestorePoint. */
 public final class DiskRestorePointListByRestorePointSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskRestorePointExamples/DiskRestorePoint_ListByVmRestorePoint.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskRestorePointExamples/DiskRestorePoint_ListByVmRestorePoint.json
      */
     /**
      * Sample code: Get an incremental disk restorePoint resource.
@@ -22,6 +20,6 @@ public final class DiskRestorePointListByRestorePointSamples {
             .manager()
             .serviceClient()
             .getDiskRestorePoints()
-            .listByRestorePoint("myResourceGroup", "rpc", "vmrp", Context.NONE);
+            .listByRestorePoint("myResourceGroup", "rpc", "vmrp", com.azure.core.util.Context.NONE);
     }
 }

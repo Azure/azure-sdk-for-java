@@ -64,7 +64,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineScaleSetRollingUpgradesService {
+    public interface VirtualMachineScaleSetRollingUpgradesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
@@ -157,7 +157,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -207,7 +207,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -273,7 +273,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String vmScaleSetName) {
-        return beginCancelAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
+        return this.beginCancelAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
     }
 
     /**
@@ -290,7 +290,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(
         String resourceGroupName, String vmScaleSetName, Context context) {
-        return beginCancelAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
+        return this.beginCancelAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
     }
 
     /**
@@ -390,7 +390,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -441,7 +441,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -512,7 +512,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(String resourceGroupName, String vmScaleSetName) {
-        return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
+        return this.beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
     }
 
     /**
@@ -530,7 +530,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(
         String resourceGroupName, String vmScaleSetName, Context context) {
-        return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
+        return this.beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
     }
 
     /**
@@ -634,7 +634,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -685,7 +685,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -758,7 +758,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(
         String resourceGroupName, String vmScaleSetName) {
-        return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
+        return this.beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
     }
 
     /**
@@ -776,7 +776,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(
         String resourceGroupName, String vmScaleSetName, Context context) {
-        return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
+        return this.beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
     }
 
     /**
@@ -880,7 +880,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -931,7 +931,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -959,29 +959,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RollingUpgradeStatusInfoInner> getLatestAsync(String resourceGroupName, String vmScaleSetName) {
         return getLatestWithResponseAsync(resourceGroupName, vmScaleSetName)
-            .flatMap(
-                (Response<RollingUpgradeStatusInfoInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the status of the latest virtual machine scale set rolling upgrade.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the latest virtual machine scale set rolling upgrade.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RollingUpgradeStatusInfoInner getLatest(String resourceGroupName, String vmScaleSetName) {
-        return getLatestAsync(resourceGroupName, vmScaleSetName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -999,5 +977,20 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     public Response<RollingUpgradeStatusInfoInner> getLatestWithResponse(
         String resourceGroupName, String vmScaleSetName, Context context) {
         return getLatestWithResponseAsync(resourceGroupName, vmScaleSetName, context).block();
+    }
+
+    /**
+     * Gets the status of the latest virtual machine scale set rolling upgrade.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the latest virtual machine scale set rolling upgrade.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RollingUpgradeStatusInfoInner getLatest(String resourceGroupName, String vmScaleSetName) {
+        return getLatestWithResponse(resourceGroupName, vmScaleSetName, Context.NONE).getValue();
     }
 }

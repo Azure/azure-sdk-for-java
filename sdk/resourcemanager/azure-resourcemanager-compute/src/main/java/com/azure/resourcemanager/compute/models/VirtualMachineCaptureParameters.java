@@ -24,11 +24,14 @@ public final class VirtualMachineCaptureParameters {
     private String destinationContainerName;
 
     /*
-     * Specifies whether to overwrite the destination virtual hard disk, in
-     * case of conflict.
+     * Specifies whether to overwrite the destination virtual hard disk, in case of conflict.
      */
     @JsonProperty(value = "overwriteVhds", required = true)
     private boolean overwriteVhds;
+
+    /** Creates an instance of VirtualMachineCaptureParameters class. */
+    public VirtualMachineCaptureParameters() {
+    }
 
     /**
      * Get the vhdPrefix property: The captured virtual hard disk's name prefix.

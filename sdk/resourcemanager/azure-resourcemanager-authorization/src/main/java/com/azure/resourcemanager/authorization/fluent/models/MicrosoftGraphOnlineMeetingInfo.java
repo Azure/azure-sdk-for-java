@@ -23,9 +23,8 @@ public final class MicrosoftGraphOnlineMeetingInfo {
     private String conferenceId;
 
     /*
-     * The external link that launches the online meeting. This is a URL that
-     * clients will launch into a browser and will redirect the user to join
-     * the meeting.
+     * The external link that launches the online meeting. This is a URL that clients will launch into a browser and
+     * will redirect the user to join the meeting.
      */
     @JsonProperty(value = "joinUrl")
     private String joinUrl;
@@ -58,6 +57,10 @@ public final class MicrosoftGraphOnlineMeetingInfo {
      * onlineMeetingInfo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnlineMeetingInfo class. */
+    public MicrosoftGraphOnlineMeetingInfo() {
+    }
 
     /**
      * Get the conferenceId property: The ID of the conference.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineRunCommands ListByVirtualMachine. */
 public final class VirtualMachineRunCommandsListByVirtualMachineSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineRunCommand_List.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineRunCommand_List.json
      */
     /**
      * Sample code: List run commands in a Virtual Machine.
@@ -22,6 +20,6 @@ public final class VirtualMachineRunCommandsListByVirtualMachineSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineRunCommands()
-            .listByVirtualMachine("myResourceGroup", "myVM", null, Context.NONE);
+            .listByVirtualMachine("myResourceGroup", "myVM", null, com.azure.core.util.Context.NONE);
     }
 }

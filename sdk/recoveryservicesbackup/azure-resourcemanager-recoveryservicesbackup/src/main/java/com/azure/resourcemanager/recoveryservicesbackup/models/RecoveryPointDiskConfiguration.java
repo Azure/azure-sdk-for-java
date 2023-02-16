@@ -35,6 +35,10 @@ public final class RecoveryPointDiskConfiguration {
     @JsonProperty(value = "excludedDiskList")
     private List<DiskInformation> excludedDiskList;
 
+    /** Creates an instance of RecoveryPointDiskConfiguration class. */
+    public RecoveryPointDiskConfiguration() {
+    }
+
     /**
      * Get the numberOfDisksIncludedInBackup property: Number of disks included in backup.
      *

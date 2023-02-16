@@ -56,7 +56,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface SharedGalleriesService {
+    public interface SharedGalleriesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries")
         @ExpectedResponses({200})
@@ -124,7 +124,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -180,7 +180,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -316,7 +316,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -367,7 +367,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -393,30 +393,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedGalleryInner> getAsync(String location, String galleryUniqueName) {
-        return getWithResponseAsync(location, galleryUniqueName)
-            .flatMap(
-                (Response<SharedGalleryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a shared gallery by subscription id or tenant id.
-     *
-     * @param location Resource location.
-     * @param galleryUniqueName The unique name of the Shared Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery by subscription id or tenant id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedGalleryInner get(String location, String galleryUniqueName) {
-        return getAsync(location, galleryUniqueName).block();
+        return getWithResponseAsync(location, galleryUniqueName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -436,9 +413,25 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     }
 
     /**
+     * Get a shared gallery by subscription id or tenant id.
+     *
+     * @param location Resource location.
+     * @param galleryUniqueName The unique name of the Shared Gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a shared gallery by subscription id or tenant id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SharedGalleryInner get(String location, String galleryUniqueName) {
+        return getWithResponse(location, galleryUniqueName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -474,7 +467,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

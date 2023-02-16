@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RouteFilterRuleType. */
+/** The rule type of the rule. */
 public final class RouteFilterRuleType extends ExpandableStringEnum<RouteFilterRuleType> {
     /** Static value Community for RouteFilterRuleType. */
     public static final RouteFilterRuleType COMMUNITY = fromString("Community");

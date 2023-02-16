@@ -34,6 +34,10 @@ public final class OperationValueDisplay {
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
+    /** Creates an instance of OperationValueDisplay class. */
+    public OperationValueDisplay() {
+    }
+
     /**
      * Get the operation property: The display name of the operation.
      *

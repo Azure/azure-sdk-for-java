@@ -3,19 +3,36 @@ trigger: none
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      SupportedClouds: 'Public,UsGov,China'
+      SupportedClouds: "Public,UsGov,China"
+      Clouds: "Public"
+      CloudConfig:
+        Public:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        UsGov:
+          SubscriptionConfiguration: $(sub-config-gov-test-resources)
+        China:
+          SubscriptionConfiguration: $(sub-config-cn-test-resources)
+          Location: "chinanorth3"
       TestResourceDirectories:
-        - spring/spring-cloud-azure-test-eventhubs-binder
-        - spring/spring-cloud-azure-test-servicebus-binder
+        - spring/spring-cloud-azure-integration-test-appconfiguration-config
+        - spring/spring-cloud-azure-integration-tests/test-resources/common
+        - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
+        - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
+        - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
+        - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
+        - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
+        - spring/spring-cloud-azure-integration-tests/test-resources/storage
+        - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
+        - spring/spring-cloud-azure-integration-tests/test-resources/dummy
       Artifacts:
-        - name: spring-cloud-azure-test-eventhubs-binder
+        - name: spring-cloud-azure-integration-tests
           groupId: com.azure.spring
-          safeName: springcloudazuretesteventhubsbinder
-        - name: spring-cloud-azure-test-servicebus-binder
+          safeName: springcloudazureintegrationtests
+        - name: spring-cloud-azure-integration-test-appconfiguration-config
           groupId: com.azure.spring
-          safeName: springcloudazuretestservicebusbinder
+          safeName: springcloudazureintegrationtestappconfigurationconfig
       TimeoutInMinutes: 240
       ServiceDirectory: spring
-      TestName: IntegrationTestInAzureGlobal
-      TestGoals: 'verify'
-      TestOptions: '-DskipSpringITs=false'
+      TestName: SpringIntegrationTests
+      TestGoals: "verify"
+      TestOptions: "-DskipSpringITs=false"

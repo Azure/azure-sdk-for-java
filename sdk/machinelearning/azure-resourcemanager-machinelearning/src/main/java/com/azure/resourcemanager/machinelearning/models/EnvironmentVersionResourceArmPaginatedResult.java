@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentVersionDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentVersionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class EnvironmentVersionResourceArmPaginatedResult {
     /*
-     * The link to the next page of EnvironmentVersion objects. If null, there
-     * are no additional pages.
+     * The link to the next page of EnvironmentVersion objects. If null, there are no additional pages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -23,7 +22,11 @@ public final class EnvironmentVersionResourceArmPaginatedResult {
      * An array of objects of type EnvironmentVersion.
      */
     @JsonProperty(value = "value")
-    private List<EnvironmentVersionDataInner> value;
+    private List<EnvironmentVersionInner> value;
+
+    /** Creates an instance of EnvironmentVersionResourceArmPaginatedResult class. */
+    public EnvironmentVersionResourceArmPaginatedResult() {
+    }
 
     /**
      * Get the nextLink property: The link to the next page of EnvironmentVersion objects. If null, there are no
@@ -52,7 +55,7 @@ public final class EnvironmentVersionResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<EnvironmentVersionDataInner> value() {
+    public List<EnvironmentVersionInner> value() {
         return this.value;
     }
 
@@ -62,7 +65,7 @@ public final class EnvironmentVersionResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the EnvironmentVersionResourceArmPaginatedResult object itself.
      */
-    public EnvironmentVersionResourceArmPaginatedResult withValue(List<EnvironmentVersionDataInner> value) {
+    public EnvironmentVersionResourceArmPaginatedResult withValue(List<EnvironmentVersionInner> value) {
         this.value = value;
         return this;
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HttpConfigurationMethod. */
+/** The HTTP method to use. */
 public final class HttpConfigurationMethod extends ExpandableStringEnum<HttpConfigurationMethod> {
     /** Static value Get for HttpConfigurationMethod. */
     public static final HttpConfigurationMethod GET = fromString("Get");

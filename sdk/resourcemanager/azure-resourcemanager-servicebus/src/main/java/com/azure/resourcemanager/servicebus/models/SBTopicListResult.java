@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.fluent.models.SBTopicInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to the List Topics operation. */
 @Fluent
 public final class SBTopicListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SBTopicListResult.class);
-
     /*
      * Result of the List Topics operation.
      */
@@ -23,8 +19,7 @@ public final class SBTopicListResult {
     private List<SBTopicInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of topics.
+     * Link to the next set of results. Not empty if Value contains incomplete list of topics.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

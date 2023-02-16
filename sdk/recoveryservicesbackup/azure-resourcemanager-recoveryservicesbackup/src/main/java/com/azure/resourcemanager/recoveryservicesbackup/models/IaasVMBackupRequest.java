@@ -21,6 +21,10 @@ public final class IaasVMBackupRequest extends BackupRequest {
     @JsonProperty(value = "recoveryPointExpiryTimeInUTC")
     private OffsetDateTime recoveryPointExpiryTimeInUtc;
 
+    /** Creates an instance of IaasVMBackupRequest class. */
+    public IaasVMBackupRequest() {
+    }
+
     /**
      * Get the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).
      *

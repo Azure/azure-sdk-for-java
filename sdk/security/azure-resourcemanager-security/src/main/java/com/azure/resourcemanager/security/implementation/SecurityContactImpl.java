@@ -6,14 +6,20 @@ package com.azure.resourcemanager.security.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.SecurityContactInner;
-import com.azure.resourcemanager.security.models.AlertNotifications;
-import com.azure.resourcemanager.security.models.AlertsToAdmins;
 import com.azure.resourcemanager.security.models.SecurityContact;
+import com.azure.resourcemanager.security.models.SecurityContactPropertiesAlertNotifications;
+import com.azure.resourcemanager.security.models.SecurityContactPropertiesNotificationsByRole;
 
-public final class SecurityContactImpl implements SecurityContact, SecurityContact.Definition, SecurityContact.Update {
+public final class SecurityContactImpl implements SecurityContact, SecurityContact.Definition {
     private SecurityContactInner innerObject;
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
+
+    SecurityContactImpl(
+        SecurityContactInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+    }
 
     public String id() {
         return this.innerModel().id();
@@ -27,20 +33,20 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
         return this.innerModel().type();
     }
 
-    public String email() {
-        return this.innerModel().email();
+    public String emails() {
+        return this.innerModel().emails();
     }
 
     public String phone() {
         return this.innerModel().phone();
     }
 
-    public AlertNotifications alertNotifications() {
+    public SecurityContactPropertiesAlertNotifications alertNotifications() {
         return this.innerModel().alertNotifications();
     }
 
-    public AlertsToAdmins alertsToAdmins() {
-        return this.innerModel().alertsToAdmins();
+    public SecurityContactPropertiesNotificationsByRole notificationsByRole() {
+        return this.innerModel().notificationsByRole();
     }
 
     public SecurityContactInner innerModel() {
@@ -79,37 +85,6 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
         this.securityContactName = name;
     }
 
-    public SecurityContactImpl update() {
-        return this;
-    }
-
-    public SecurityContact apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecurityContacts()
-                .updateWithResponse(securityContactName, this.innerModel(), Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public SecurityContact apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecurityContacts()
-                .updateWithResponse(securityContactName, this.innerModel(), context)
-                .getValue();
-        return this;
-    }
-
-    SecurityContactImpl(
-        SecurityContactInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.securityContactName = Utils.getValueFromIdByName(innerObject.id(), "securityContacts");
-    }
-
     public SecurityContact refresh() {
         this.innerObject =
             serviceManager
@@ -130,8 +105,8 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
         return this;
     }
 
-    public SecurityContactImpl withEmail(String email) {
-        this.innerModel().withEmail(email);
+    public SecurityContactImpl withEmails(String emails) {
+        this.innerModel().withEmails(emails);
         return this;
     }
 
@@ -140,13 +115,14 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
         return this;
     }
 
-    public SecurityContactImpl withAlertNotifications(AlertNotifications alertNotifications) {
+    public SecurityContactImpl withAlertNotifications(SecurityContactPropertiesAlertNotifications alertNotifications) {
         this.innerModel().withAlertNotifications(alertNotifications);
         return this;
     }
 
-    public SecurityContactImpl withAlertsToAdmins(AlertsToAdmins alertsToAdmins) {
-        this.innerModel().withAlertsToAdmins(alertsToAdmins);
+    public SecurityContactImpl withNotificationsByRole(
+        SecurityContactPropertiesNotificationsByRole notificationsByRole) {
+        this.innerModel().withNotificationsByRole(notificationsByRole);
         return this;
     }
 }

@@ -46,6 +46,7 @@ import com.azure.resourcemanager.machinelearning.implementation.OperationsImpl;
 import com.azure.resourcemanager.machinelearning.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.machinelearning.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.machinelearning.implementation.QuotasImpl;
+import com.azure.resourcemanager.machinelearning.implementation.SchedulesImpl;
 import com.azure.resourcemanager.machinelearning.implementation.UsagesImpl;
 import com.azure.resourcemanager.machinelearning.implementation.VirtualMachineSizesImpl;
 import com.azure.resourcemanager.machinelearning.implementation.WorkspaceConnectionsImpl;
@@ -72,6 +73,7 @@ import com.azure.resourcemanager.machinelearning.models.Operations;
 import com.azure.resourcemanager.machinelearning.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.machinelearning.models.PrivateLinkResources;
 import com.azure.resourcemanager.machinelearning.models.Quotas;
+import com.azure.resourcemanager.machinelearning.models.Schedules;
 import com.azure.resourcemanager.machinelearning.models.Usages;
 import com.azure.resourcemanager.machinelearning.models.VirtualMachineSizes;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnections;
@@ -138,6 +140,8 @@ public final class MachineLearningManager {
     private OnlineEndpoints onlineEndpoints;
 
     private OnlineDeployments onlineDeployments;
+
+    private Schedules schedules;
 
     private WorkspaceFeatures workspaceFeatures;
 
@@ -306,7 +310,7 @@ public final class MachineLearningManager {
                 .append("-")
                 .append("com.azure.resourcemanager.machinelearning")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -461,7 +465,8 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of WorkspaceConnections. It manages WorkspaceConnection.
+     * Gets the resource collection API of WorkspaceConnections. It manages
+     * WorkspaceConnectionPropertiesV2BasicResource.
      *
      * @return Resource collection API of WorkspaceConnections.
      */
@@ -473,7 +478,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of BatchEndpoints. It manages BatchEndpointData.
+     * Gets the resource collection API of BatchEndpoints. It manages BatchEndpoint.
      *
      * @return Resource collection API of BatchEndpoints.
      */
@@ -485,7 +490,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of BatchDeployments. It manages BatchDeploymentData.
+     * Gets the resource collection API of BatchDeployments. It manages BatchDeployment.
      *
      * @return Resource collection API of BatchDeployments.
      */
@@ -497,7 +502,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of CodeContainers. It manages CodeContainerData.
+     * Gets the resource collection API of CodeContainers. It manages CodeContainer.
      *
      * @return Resource collection API of CodeContainers.
      */
@@ -509,7 +514,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of CodeVersions. It manages CodeVersionData.
+     * Gets the resource collection API of CodeVersions. It manages CodeVersion.
      *
      * @return Resource collection API of CodeVersions.
      */
@@ -521,7 +526,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of ComponentContainers. It manages ComponentContainerData.
+     * Gets the resource collection API of ComponentContainers. It manages ComponentContainer.
      *
      * @return Resource collection API of ComponentContainers.
      */
@@ -533,7 +538,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of ComponentVersions. It manages ComponentVersionData.
+     * Gets the resource collection API of ComponentVersions. It manages ComponentVersion.
      *
      * @return Resource collection API of ComponentVersions.
      */
@@ -545,7 +550,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of DataContainers. It manages DataContainerData.
+     * Gets the resource collection API of DataContainers. It manages DataContainer.
      *
      * @return Resource collection API of DataContainers.
      */
@@ -557,7 +562,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of DataVersions. It manages DataVersionBaseData.
+     * Gets the resource collection API of DataVersions. It manages DataVersionBase.
      *
      * @return Resource collection API of DataVersions.
      */
@@ -569,7 +574,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of Datastores. It manages DatastoreData.
+     * Gets the resource collection API of Datastores. It manages Datastore.
      *
      * @return Resource collection API of Datastores.
      */
@@ -581,7 +586,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of EnvironmentContainers. It manages EnvironmentContainerData.
+     * Gets the resource collection API of EnvironmentContainers. It manages EnvironmentContainer.
      *
      * @return Resource collection API of EnvironmentContainers.
      */
@@ -593,7 +598,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of EnvironmentVersions. It manages EnvironmentVersionData.
+     * Gets the resource collection API of EnvironmentVersions. It manages EnvironmentVersion.
      *
      * @return Resource collection API of EnvironmentVersions.
      */
@@ -605,7 +610,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of Jobs. It manages JobBaseData.
+     * Gets the resource collection API of Jobs. It manages JobBase.
      *
      * @return Resource collection API of Jobs.
      */
@@ -617,7 +622,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of ModelContainers. It manages ModelContainerData.
+     * Gets the resource collection API of ModelContainers. It manages ModelContainer.
      *
      * @return Resource collection API of ModelContainers.
      */
@@ -629,7 +634,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of ModelVersions. It manages ModelVersionData.
+     * Gets the resource collection API of ModelVersions. It manages ModelVersion.
      *
      * @return Resource collection API of ModelVersions.
      */
@@ -641,7 +646,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of OnlineEndpoints. It manages OnlineEndpointData.
+     * Gets the resource collection API of OnlineEndpoints. It manages OnlineEndpoint.
      *
      * @return Resource collection API of OnlineEndpoints.
      */
@@ -653,7 +658,7 @@ public final class MachineLearningManager {
     }
 
     /**
-     * Gets the resource collection API of OnlineDeployments. It manages OnlineDeploymentData.
+     * Gets the resource collection API of OnlineDeployments. It manages OnlineDeployment.
      *
      * @return Resource collection API of OnlineDeployments.
      */
@@ -662,6 +667,18 @@ public final class MachineLearningManager {
             this.onlineDeployments = new OnlineDeploymentsImpl(clientObject.getOnlineDeployments(), this);
         }
         return onlineDeployments;
+    }
+
+    /**
+     * Gets the resource collection API of Schedules. It manages Schedule.
+     *
+     * @return Resource collection API of Schedules.
+     */
+    public Schedules schedules() {
+        if (this.schedules == null) {
+            this.schedules = new SchedulesImpl(clientObject.getSchedules(), this);
+        }
+        return schedules;
     }
 
     /**

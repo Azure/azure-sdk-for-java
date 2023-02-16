@@ -17,11 +17,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class ContentKeyPolicyX509CertificateTokenKey extends ContentKeyPolicyRestrictionTokenKey {
     /*
-     * The raw data field of a certificate in PKCS 12 format (X509Certificate2
-     * in .NET)
+     * The raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET)
      */
     @JsonProperty(value = "rawBody", required = true)
     private byte[] rawBody;
+
+    /** Creates an instance of ContentKeyPolicyX509CertificateTokenKey class. */
+    public ContentKeyPolicyX509CertificateTokenKey() {
+    }
 
     /**
      * Get the rawBody property: The raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET).

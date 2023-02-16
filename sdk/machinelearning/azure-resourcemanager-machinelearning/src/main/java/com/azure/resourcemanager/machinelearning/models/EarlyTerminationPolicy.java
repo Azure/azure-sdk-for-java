@@ -36,6 +36,10 @@ public class EarlyTerminationPolicy {
     @JsonProperty(value = "evaluationInterval")
     private Integer evaluationInterval;
 
+    /** Creates an instance of EarlyTerminationPolicy class. */
+    public EarlyTerminationPolicy() {
+    }
+
     /**
      * Get the delayEvaluation property: Number of intervals by which to delay the first evaluation.
      *

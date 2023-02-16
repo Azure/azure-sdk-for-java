@@ -7,20 +7,21 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.MetricNamespaceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents collection of metric namespaces. */
 @Fluent
 public final class MetricNamespaceCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricNamespaceCollection.class);
-
     /*
      * The values for the metric namespaces.
      */
     @JsonProperty(value = "value", required = true)
     private List<MetricNamespaceInner> value;
+
+    /** Creates an instance of MetricNamespaceCollection class. */
+    public MetricNamespaceCollection() {
+    }
 
     /**
      * Get the value property: The values for the metric namespaces.
@@ -49,11 +50,13 @@ public final class MetricNamespaceCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model MetricNamespaceCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MetricNamespaceCollection.class);
 }

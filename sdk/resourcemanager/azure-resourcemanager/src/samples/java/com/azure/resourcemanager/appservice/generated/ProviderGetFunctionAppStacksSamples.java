@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Provider GetFunctionAppStacks. */
 public final class ProviderGetFunctionAppStacksSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetFunctionAppStacks.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetFunctionAppStacks.json
      */
     /**
      * Sample code: Get Function App Stacks.

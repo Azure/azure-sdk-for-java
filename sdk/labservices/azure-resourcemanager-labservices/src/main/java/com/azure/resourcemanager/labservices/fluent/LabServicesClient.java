@@ -87,6 +87,20 @@ public interface LabServicesClient {
     SchedulesClient getSchedules();
 
     /**
+     * Gets the SkusClient object to access its operations.
+     *
+     * @return the SkusClient object.
+     */
+    SkusClient getSkus();
+
+    /**
+     * Gets the UsagesClient object to access its operations.
+     *
+     * @return the UsagesClient object.
+     */
+    UsagesClient getUsages();
+
+    /**
      * Gets the UsersClient object to access its operations.
      *
      * @return the UsersClient object.
@@ -99,18 +113,4 @@ public interface LabServicesClient {
      * @return the VirtualMachinesClient object.
      */
     VirtualMachinesClient getVirtualMachines();
-
-    /**
-     * Gets the UsagesClient object to access its operations.
-     *
-     * @return the UsagesClient object.
-     */
-    UsagesClient getUsages();
-
-    /**
-     * Gets the SkusClient object to access its operations.
-     *
-     * @return the SkusClient object.
-     */
-    SkusClient getSkus();
 }

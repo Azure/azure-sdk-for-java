@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FeatureLags. */
+/** Flag for generating lags for the numeric features. */
 public final class FeatureLags extends ExpandableStringEnum<FeatureLags> {
     /** Static value None for FeatureLags. */
     public static final FeatureLags NONE = fromString("None");
 
     /** Static value Auto for FeatureLags. */
     public static final FeatureLags AUTO = fromString("Auto");
+
+    /**
+     * Creates a new instance of FeatureLags value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FeatureLags() {
+    }
 
     /**
      * Creates or finds a FeatureLags from its string representation.

@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RunQueryOrderByField. */
+/**
+ * Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are PipelineName,
+ * RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status; for
+ * trigger runs are TriggerName, TriggerRunTimestamp and Status.
+ */
 public final class RunQueryOrderByField extends ExpandableStringEnum<RunQueryOrderByField> {
     /** Static value RunStart for RunQueryOrderByField. */
     public static final RunQueryOrderByField RUN_START = fromString("RunStart");
@@ -48,7 +52,11 @@ public final class RunQueryOrderByField extends ExpandableStringEnum<RunQueryOrd
         return fromString(name, RunQueryOrderByField.class);
     }
 
-    /** @return known RunQueryOrderByField values. */
+    /**
+     * Gets known RunQueryOrderByField values.
+     *
+     * @return known RunQueryOrderByField values.
+     */
     public static Collection<RunQueryOrderByField> values() {
         return values(RunQueryOrderByField.class);
     }

@@ -11,11 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FirewallPolicySql {
     /*
-     * A flag to indicate if SQL Redirect traffic filtering is enabled. Turning
-     * on the flag requires no rule using port 11000-11999.
+     * A flag to indicate if SQL Redirect traffic filtering is enabled. Turning on the flag requires no rule using port
+     * 11000-11999.
      */
     @JsonProperty(value = "allowSqlRedirect")
     private Boolean allowSqlRedirect;
+
+    /** Creates an instance of FirewallPolicySql class. */
+    public FirewallPolicySql() {
+    }
 
     /**
      * Get the allowSqlRedirect property: A flag to indicate if SQL Redirect traffic filtering is enabled. Turning on

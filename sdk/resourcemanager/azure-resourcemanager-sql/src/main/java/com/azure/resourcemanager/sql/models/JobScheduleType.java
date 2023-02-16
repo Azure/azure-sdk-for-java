@@ -7,7 +7,7 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for JobScheduleType. */
+/** Schedule interval type. */
 public enum JobScheduleType {
     /** Enum value Once. */
     ONCE("Once"),
@@ -30,6 +30,9 @@ public enum JobScheduleType {
      */
     @JsonCreator
     public static JobScheduleType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         JobScheduleType[] items = JobScheduleType.values();
         for (JobScheduleType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum JobScheduleType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

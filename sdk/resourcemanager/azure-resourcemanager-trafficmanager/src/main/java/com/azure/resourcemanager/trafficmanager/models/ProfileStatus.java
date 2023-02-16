@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProfileStatus. */
+/** The status of the Traffic Manager profile. */
 public final class ProfileStatus extends ExpandableStringEnum<ProfileStatus> {
     /** Static value Enabled for ProfileStatus. */
     public static final ProfileStatus ENABLED = fromString("Enabled");
@@ -27,7 +27,11 @@ public final class ProfileStatus extends ExpandableStringEnum<ProfileStatus> {
         return fromString(name, ProfileStatus.class);
     }
 
-    /** @return known ProfileStatus values. */
+    /**
+     * Gets known ProfileStatus values.
+     *
+     * @return known ProfileStatus values.
+     */
     public static Collection<ProfileStatus> values() {
         return values(ProfileStatus.class);
     }

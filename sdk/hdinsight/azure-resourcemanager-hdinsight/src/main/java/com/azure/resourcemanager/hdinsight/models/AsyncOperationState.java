@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AsyncOperationState. */
+/** The async operation state. */
 public final class AsyncOperationState extends ExpandableStringEnum<AsyncOperationState> {
     /** Static value InProgress for AsyncOperationState. */
     public static final AsyncOperationState IN_PROGRESS = fromString("InProgress");
@@ -30,7 +30,11 @@ public final class AsyncOperationState extends ExpandableStringEnum<AsyncOperati
         return fromString(name, AsyncOperationState.class);
     }
 
-    /** @return known AsyncOperationState values. */
+    /**
+     * Gets known AsyncOperationState values.
+     *
+     * @return known AsyncOperationState values.
+     */
     public static Collection<AsyncOperationState> values() {
         return values(AsyncOperationState.class);
     }

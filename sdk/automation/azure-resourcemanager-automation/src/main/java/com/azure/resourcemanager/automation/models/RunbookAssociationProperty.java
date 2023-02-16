@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The runbook property associated with the entity. */
 @Fluent
 public final class RunbookAssociationProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunbookAssociationProperty.class);
-
     /*
      * Gets or sets the name of the runbook.
      */

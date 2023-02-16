@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Code. */
+/** Tells whether the cluster is Running or Stopped. */
 public final class Code extends ExpandableStringEnum<Code> {
     /** Static value Running for Code. */
     public static final Code RUNNING = fromString("Running");
 
     /** Static value Stopped for Code. */
     public static final Code STOPPED = fromString("Stopped");
+
+    /**
+     * Creates a new instance of Code value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Code() {
+    }
 
     /**
      * Creates or finds a Code from its string representation.

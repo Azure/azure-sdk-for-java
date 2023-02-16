@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources DeleteSqlRoleDefinition. */
 public final class SqlResourcesDeleteSqlRoleDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlRoleDefinitionDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlRoleDefinitionDelete.json
      */
     /**
      * Sample code: CosmosDBSqlRoleDefinitionDelete.
@@ -22,6 +20,7 @@ public final class SqlResourcesDeleteSqlRoleDefinitionSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .deleteSqlRoleDefinition("myRoleDefinitionId", "myResourceGroupName", "myAccountName", Context.NONE);
+            .deleteSqlRoleDefinition(
+                "myRoleDefinitionId", "myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ODataAuthenticationType. */
+/** Type of authentication used to connect to the OData service. */
 public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAuthenticationType> {
     /** Static value Basic for ODataAuthenticationType. */
     public static final ODataAuthenticationType BASIC = fromString("Basic");
@@ -24,6 +24,15 @@ public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAut
 
     /** Static value ManagedServiceIdentity for ODataAuthenticationType. */
     public static final ODataAuthenticationType MANAGED_SERVICE_IDENTITY = fromString("ManagedServiceIdentity");
+
+    /**
+     * Creates a new instance of ODataAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ODataAuthenticationType() {
+    }
 
     /**
      * Creates or finds a ODataAuthenticationType from its string representation.

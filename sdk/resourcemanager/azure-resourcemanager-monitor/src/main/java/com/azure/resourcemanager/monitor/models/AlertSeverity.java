@@ -8,22 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertSeverity. */
+/**
+ * Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for
+ * rules of the kind LogAlert.
+ */
 public final class AlertSeverity extends ExpandableStringEnum<AlertSeverity> {
     /** Static value 0 for AlertSeverity. */
-    public static final AlertSeverity ZERO = fromString("0");
+    public static final AlertSeverity ZERO = fromLong(0L);
 
     /** Static value 1 for AlertSeverity. */
-    public static final AlertSeverity ONE = fromString("1");
+    public static final AlertSeverity ONE = fromLong(1L);
 
     /** Static value 2 for AlertSeverity. */
-    public static final AlertSeverity TWO = fromString("2");
+    public static final AlertSeverity TWO = fromLong(2L);
 
     /** Static value 3 for AlertSeverity. */
-    public static final AlertSeverity THREE = fromString("3");
+    public static final AlertSeverity THREE = fromLong(3L);
 
     /** Static value 4 for AlertSeverity. */
-    public static final AlertSeverity FOUR = fromString("4");
+    public static final AlertSeverity FOUR = fromLong(4L);
 
     /**
      * Creates or finds a AlertSeverity from its string representation.
@@ -32,11 +35,15 @@ public final class AlertSeverity extends ExpandableStringEnum<AlertSeverity> {
      * @return the corresponding AlertSeverity.
      */
     @JsonCreator
-    public static AlertSeverity fromString(String name) {
-        return fromString(name, AlertSeverity.class);
+    public static AlertSeverity fromLong(long name) {
+        return fromString(String.valueOf(name), AlertSeverity.class);
     }
 
-    /** @return known AlertSeverity values. */
+    /**
+     * Gets known AlertSeverity values.
+     *
+     * @return known AlertSeverity values.
+     */
     public static Collection<AlertSeverity> values() {
         return values(AlertSeverity.class);
     }

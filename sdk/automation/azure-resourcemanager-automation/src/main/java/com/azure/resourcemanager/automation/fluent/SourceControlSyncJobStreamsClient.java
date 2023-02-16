@@ -25,7 +25,8 @@ public interface SourceControlSyncJobStreamsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source control sync job streams operation.
+     * @return the response model for the list source control sync job streams operation as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SourceControlSyncJobStreamInner> listBySyncJob(
@@ -43,7 +44,8 @@ public interface SourceControlSyncJobStreamsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source control sync job streams operation.
+     * @return the response model for the list source control sync job streams operation as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SourceControlSyncJobStreamInner> listBySyncJob(
@@ -87,7 +89,7 @@ public interface SourceControlSyncJobStreamsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job stream by id.
+     * @return definition of the source control sync job stream by id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SourceControlSyncJobStreamByIdInner> getWithResponse(

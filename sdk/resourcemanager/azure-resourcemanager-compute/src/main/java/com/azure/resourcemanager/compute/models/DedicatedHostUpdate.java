@@ -20,6 +20,10 @@ public final class DedicatedHostUpdate extends UpdateResource {
     @JsonProperty(value = "properties")
     private DedicatedHostProperties innerProperties;
 
+    /** Creates an instance of DedicatedHostUpdate class. */
+    public DedicatedHostUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the dedicated host.
      *
@@ -161,7 +165,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Get the timeCreated property: Specifies the time at which the Dedicated Host resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */

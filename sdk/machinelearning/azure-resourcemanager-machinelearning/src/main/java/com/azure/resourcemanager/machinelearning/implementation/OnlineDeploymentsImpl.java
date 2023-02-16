@@ -11,11 +11,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.OnlineDeploymentsClient;
 import com.azure.resourcemanager.machinelearning.fluent.models.DeploymentLogsInner;
-import com.azure.resourcemanager.machinelearning.fluent.models.OnlineDeploymentDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.OnlineDeploymentInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.SkuResourceInner;
 import com.azure.resourcemanager.machinelearning.models.DeploymentLogs;
 import com.azure.resourcemanager.machinelearning.models.DeploymentLogsRequest;
-import com.azure.resourcemanager.machinelearning.models.OnlineDeploymentData;
+import com.azure.resourcemanager.machinelearning.models.OnlineDeployment;
 import com.azure.resourcemanager.machinelearning.models.OnlineDeployments;
 import com.azure.resourcemanager.machinelearning.models.SkuResource;
 
@@ -33,14 +33,13 @@ public final class OnlineDeploymentsImpl implements OnlineDeployments {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<OnlineDeploymentData> list(
-        String resourceGroupName, String workspaceName, String endpointName) {
-        PagedIterable<OnlineDeploymentDataInner> inner =
+    public PagedIterable<OnlineDeployment> list(String resourceGroupName, String workspaceName, String endpointName) {
+        PagedIterable<OnlineDeploymentInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, endpointName);
-        return Utils.mapPage(inner, inner1 -> new OnlineDeploymentDataImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new OnlineDeploymentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OnlineDeploymentData> list(
+    public PagedIterable<OnlineDeployment> list(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -48,9 +47,9 @@ public final class OnlineDeploymentsImpl implements OnlineDeployments {
         Integer top,
         String skip,
         Context context) {
-        PagedIterable<OnlineDeploymentDataInner> inner =
+        PagedIterable<OnlineDeploymentInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new OnlineDeploymentDataImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new OnlineDeploymentImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
@@ -62,20 +61,9 @@ public final class OnlineDeploymentsImpl implements OnlineDeployments {
         this.serviceClient().delete(resourceGroupName, workspaceName, endpointName, deploymentName, context);
     }
 
-    public OnlineDeploymentData get(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        OnlineDeploymentDataInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, endpointName, deploymentName);
-        if (inner != null) {
-            return new OnlineDeploymentDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OnlineDeploymentData> getWithResponse(
+    public Response<OnlineDeployment> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
-        Response<OnlineDeploymentDataInner> inner =
+        Response<OnlineDeploymentInner> inner =
             this
                 .serviceClient()
                 .getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, context);
@@ -84,22 +72,18 @@ public final class OnlineDeploymentsImpl implements OnlineDeployments {
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new OnlineDeploymentDataImpl(inner.getValue(), this.manager()));
+                new OnlineDeploymentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DeploymentLogs getLogs(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        DeploymentLogsRequest body) {
-        DeploymentLogsInner inner =
-            this.serviceClient().getLogs(resourceGroupName, workspaceName, endpointName, deploymentName, body);
+    public OnlineDeployment get(
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+        OnlineDeploymentInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, endpointName, deploymentName);
         if (inner != null) {
-            return new DeploymentLogsImpl(inner, this.manager());
+            return new OnlineDeploymentImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -127,6 +111,21 @@ public final class OnlineDeploymentsImpl implements OnlineDeployments {
         }
     }
 
+    public DeploymentLogs getLogs(
+        String resourceGroupName,
+        String workspaceName,
+        String endpointName,
+        String deploymentName,
+        DeploymentLogsRequest body) {
+        DeploymentLogsInner inner =
+            this.serviceClient().getLogs(resourceGroupName, workspaceName, endpointName, deploymentName, body);
+        if (inner != null) {
+            return new DeploymentLogsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<SkuResource> listSkus(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
         PagedIterable<SkuResourceInner> inner =
@@ -149,7 +148,7 @@ public final class OnlineDeploymentsImpl implements OnlineDeployments {
         return Utils.mapPage(inner, inner1 -> new SkuResourceImpl(inner1, this.manager()));
     }
 
-    public OnlineDeploymentData getById(String id) {
+    public OnlineDeployment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -185,7 +184,7 @@ public final class OnlineDeploymentsImpl implements OnlineDeployments {
             .getValue();
     }
 
-    public Response<OnlineDeploymentData> getByIdWithResponse(String id, Context context) {
+    public Response<OnlineDeployment> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -295,7 +294,7 @@ public final class OnlineDeploymentsImpl implements OnlineDeployments {
         return this.serviceManager;
     }
 
-    public OnlineDeploymentDataImpl define(String name) {
-        return new OnlineDeploymentDataImpl(name, this.manager());
+    public OnlineDeploymentImpl define(String name) {
+        return new OnlineDeploymentImpl(name, this.manager());
     }
 }

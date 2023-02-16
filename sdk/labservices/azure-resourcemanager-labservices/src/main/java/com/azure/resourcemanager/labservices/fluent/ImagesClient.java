@@ -15,7 +15,9 @@ import com.azure.resourcemanager.labservices.models.ImageUpdate;
 /** An instance of this class provides access to all the operations defined in ImagesClient. */
 public interface ImagesClient {
     /**
-     * Gets all images from galleries attached to a lab plan.
+     * Gets all images.
+     *
+     * <p>Gets all images from galleries attached to a lab plan.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -23,13 +25,15 @@ public interface ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all images from galleries attached to a lab plan.
+     * @return all images from galleries attached to a lab plan as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ImageInner> listByLabPlan(String resourceGroupName, String labPlanName);
 
     /**
-     * Gets all images from galleries attached to a lab plan.
+     * Gets all images.
+     *
+     * <p>Gets all images from galleries attached to a lab plan.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -39,14 +43,16 @@ public interface ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all images from galleries attached to a lab plan.
+     * @return all images from galleries attached to a lab plan as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ImageInner> listByLabPlan(
         String resourceGroupName, String labPlanName, String filter, Context context);
 
     /**
-     * Gets an image resource.
+     * Gets an image.
+     *
+     * <p>Gets an image resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -61,7 +67,9 @@ public interface ImagesClient {
     ImageInner get(String resourceGroupName, String labPlanName, String imageName);
 
     /**
-     * Gets an image resource.
+     * Gets an image.
+     *
+     * <p>Gets an image resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -78,7 +86,9 @@ public interface ImagesClient {
         String resourceGroupName, String labPlanName, String imageName, Context context);
 
     /**
-     * Updates an image resource via PUT. Creating new resources via PUT will not function.
+     * Updates an image via PUT.
+     *
+     * <p>Updates an image resource via PUT. Creating new resources via PUT will not function.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -94,7 +104,9 @@ public interface ImagesClient {
     ImageInner createOrUpdate(String resourceGroupName, String labPlanName, String imageName, ImageInner body);
 
     /**
-     * Updates an image resource via PUT. Creating new resources via PUT will not function.
+     * Updates an image via PUT.
+     *
+     * <p>Updates an image resource via PUT. Creating new resources via PUT will not function.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -112,7 +124,9 @@ public interface ImagesClient {
         String resourceGroupName, String labPlanName, String imageName, ImageInner body, Context context);
 
     /**
-     * Updates an image resource.
+     * Updates an image.
+     *
+     * <p>Updates an image resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -128,7 +142,9 @@ public interface ImagesClient {
     ImageInner update(String resourceGroupName, String labPlanName, String imageName, ImageUpdate body);
 
     /**
-     * Updates an image resource.
+     * Updates an image.
+     *
+     * <p>Updates an image resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in

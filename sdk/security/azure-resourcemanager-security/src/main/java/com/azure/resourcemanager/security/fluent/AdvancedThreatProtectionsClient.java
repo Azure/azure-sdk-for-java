@@ -16,6 +16,19 @@ public interface AdvancedThreatProtectionsClient {
      * Gets the Advanced Threat Protection settings for the specified resource.
      *
      * @param resourceId The identifier of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Advanced Threat Protection settings for the specified resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AdvancedThreatProtectionSettingInner> getWithResponse(String resourceId, Context context);
+
+    /**
+     * Gets the Advanced Threat Protection settings for the specified resource.
+     *
+     * @param resourceId The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -25,17 +38,19 @@ public interface AdvancedThreatProtectionsClient {
     AdvancedThreatProtectionSettingInner get(String resourceId);
 
     /**
-     * Gets the Advanced Threat Protection settings for the specified resource.
+     * Creates or updates the Advanced Threat Protection settings on a specified resource.
      *
      * @param resourceId The identifier of the resource.
+     * @param advancedThreatProtectionSetting Advanced Threat Protection Settings.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection settings for the specified resource.
+     * @return the Advanced Threat Protection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AdvancedThreatProtectionSettingInner> getWithResponse(String resourceId, Context context);
+    Response<AdvancedThreatProtectionSettingInner> createWithResponse(
+        String resourceId, AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting, Context context);
 
     /**
      * Creates or updates the Advanced Threat Protection settings on a specified resource.
@@ -50,19 +65,4 @@ public interface AdvancedThreatProtectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     AdvancedThreatProtectionSettingInner create(
         String resourceId, AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting);
-
-    /**
-     * Creates or updates the Advanced Threat Protection settings on a specified resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param advancedThreatProtectionSetting Advanced Threat Protection Settings.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AdvancedThreatProtectionSettingInner> createWithResponse(
-        String resourceId, AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting, Context context);
 }

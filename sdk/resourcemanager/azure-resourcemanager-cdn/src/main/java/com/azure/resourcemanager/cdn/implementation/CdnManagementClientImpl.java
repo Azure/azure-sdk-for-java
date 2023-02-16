@@ -25,7 +25,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.cdn.fluent.AfdCustomDomainsClient;
 import com.azure.resourcemanager.cdn.fluent.AfdEndpointsClient;
@@ -63,8 +62,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the CdnManagementClientImpl type. */
 @ServiceClient(builder = CdnManagementClientBuilder.class)
 public final class CdnManagementClientImpl extends AzureServiceClient implements CdnManagementClient {
-    private final ClientLogger logger = new ClientLogger(CdnManagementClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CdnManagementClientService service;
 
@@ -631,14 +628,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     public Mono<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityAsync(
         String resourceGroupName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
         return checkEndpointNameAvailabilityWithResponseAsync(resourceGroupName, checkEndpointNameAvailabilityInput)
-            .flatMap(
-                (Response<CheckEndpointNameAvailabilityOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -764,14 +754,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     public Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(
         CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityInput)
-            .flatMap(
-                (Response<CheckNameAvailabilityOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -911,14 +894,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     public Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithSubscriptionAsync(
         CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithSubscriptionWithResponseAsync(checkNameAvailabilityInput)
-            .flatMap(
-                (Response<CheckNameAvailabilityOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1053,15 +1029,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ValidateProbeOutputInner> validateProbeAsync(ValidateProbeInput validateProbeInput) {
-        return validateProbeWithResponseAsync(validateProbeInput)
-            .flatMap(
-                (Response<ValidateProbeOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return validateProbeWithResponseAsync(validateProbeInput).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

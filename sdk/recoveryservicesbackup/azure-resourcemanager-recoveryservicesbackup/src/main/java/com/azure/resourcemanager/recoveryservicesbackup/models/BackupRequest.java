@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class BackupRequest {
+    /** Creates an instance of BackupRequest class. */
+    public BackupRequest() {
+    }
+
     /**
      * Validates the instance.
      *

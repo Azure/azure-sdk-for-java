@@ -5,6 +5,7 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -41,6 +42,22 @@ public final class TablesCreateHeaders {
      */
     @JsonProperty(value = "Preference-Applied")
     private String preferenceApplied;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of TablesCreateHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public TablesCreateHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        this.preferenceApplied = rawHeaders.getValue("Preference-Applied");
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.

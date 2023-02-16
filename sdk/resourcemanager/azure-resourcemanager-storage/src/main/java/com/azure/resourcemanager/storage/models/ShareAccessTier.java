@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ShareAccessTier. */
+/**
+ * Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool.
+ * FileStorage account can choose Premium.
+ */
 public final class ShareAccessTier extends ExpandableStringEnum<ShareAccessTier> {
     /** Static value TransactionOptimized for ShareAccessTier. */
     public static final ShareAccessTier TRANSACTION_OPTIMIZED = fromString("TransactionOptimized");

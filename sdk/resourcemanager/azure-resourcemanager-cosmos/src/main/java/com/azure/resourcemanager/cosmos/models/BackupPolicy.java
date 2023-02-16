@@ -24,11 +24,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class BackupPolicy {
     /*
-     * The object representing the state of the migration between the backup
-     * policies.
+     * The object representing the state of the migration between the backup policies.
      */
     @JsonProperty(value = "migrationState")
     private BackupPolicyMigrationState migrationState;
+
+    /** Creates an instance of BackupPolicy class. */
+    public BackupPolicy() {
+    }
 
     /**
      * Get the migrationState property: The object representing the state of the migration between the backup policies.

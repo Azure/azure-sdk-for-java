@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources ListByDatabaseAccount. */
 public final class PrivateLinkResourcesListByDatabaseAccountSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBPrivateLinkResourceListGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBPrivateLinkResourceListGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
@@ -22,6 +20,6 @@ public final class PrivateLinkResourcesListByDatabaseAccountSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkResources()
-            .listByDatabaseAccount("rg1", "ddb1", Context.NONE);
+            .listByDatabaseAccount("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

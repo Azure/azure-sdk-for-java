@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RegenerateKeyParameters {
     /*
-     * The keyType to regenerate. Must be either 'primary' or
-     * 'secondary'(case-insensitive).
+     * The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive).
      */
     @JsonProperty(value = "keyType")
     private KeyType keyType;

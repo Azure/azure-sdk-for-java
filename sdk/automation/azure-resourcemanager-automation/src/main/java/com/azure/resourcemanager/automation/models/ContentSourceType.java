@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentSourceType. */
+/** Gets or sets the content source type. */
 public final class ContentSourceType extends ExpandableStringEnum<ContentSourceType> {
     /** Static value embeddedContent for ContentSourceType. */
     public static final ContentSourceType EMBEDDED_CONTENT = fromString("embeddedContent");
@@ -27,7 +27,11 @@ public final class ContentSourceType extends ExpandableStringEnum<ContentSourceT
         return fromString(name, ContentSourceType.class);
     }
 
-    /** @return known ContentSourceType values. */
+    /**
+     * Gets known ContentSourceType values.
+     *
+     * @return known ContentSourceType values.
+     */
     public static Collection<ContentSourceType> values() {
         return values(ContentSourceType.class);
     }

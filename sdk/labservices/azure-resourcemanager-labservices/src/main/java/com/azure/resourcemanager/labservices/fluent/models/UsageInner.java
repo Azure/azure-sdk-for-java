@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.UsageName;
 import com.azure.resourcemanager.labservices.models.UsageUnit;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The core usage details. */
 @Fluent
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
-
     /*
      * The current usage.
      */

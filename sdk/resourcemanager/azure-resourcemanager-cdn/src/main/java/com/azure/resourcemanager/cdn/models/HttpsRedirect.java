@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HttpsRedirect. */
+/**
+ * Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this is a easy way to set up this rule and
+ * it will be the first rule that gets executed.
+ */
 public final class HttpsRedirect extends ExpandableStringEnum<HttpsRedirect> {
     /** Static value Enabled for HttpsRedirect. */
     public static final HttpsRedirect ENABLED = fromString("Enabled");
@@ -27,7 +30,11 @@ public final class HttpsRedirect extends ExpandableStringEnum<HttpsRedirect> {
         return fromString(name, HttpsRedirect.class);
     }
 
-    /** @return known HttpsRedirect values. */
+    /**
+     * Gets known HttpsRedirect values.
+     *
+     * @return known HttpsRedirect values.
+     */
     public static Collection<HttpsRedirect> values() {
         return values(HttpsRedirect.class);
     }

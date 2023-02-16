@@ -27,6 +27,10 @@ public final class SecurityRuleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SecurityRuleListResult class. */
+    public SecurityRuleListResult() {
+    }
+
     /**
      * Get the value property: The security rules in a network security group.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Sites ListByMobileNetwork. */
 public final class SitesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SiteListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SiteListByMobileNetwork.json
      */
     /**
      * Sample code: List mobile network sites in a mobile network.
@@ -18,6 +16,6 @@ public final class SitesListByMobileNetworkSamples {
      */
     public static void listMobileNetworkSitesInAMobileNetwork(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.sites().listByMobileNetwork("rg1", "testMobileNetwork", Context.NONE);
+        manager.sites().listByMobileNetwork("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }

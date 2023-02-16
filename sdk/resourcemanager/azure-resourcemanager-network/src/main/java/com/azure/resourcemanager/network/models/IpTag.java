@@ -22,6 +22,10 @@ public final class IpTag {
     @JsonProperty(value = "tag")
     private String tag;
 
+    /** Creates an instance of IpTag class. */
+    public IpTag() {
+    }
+
     /**
      * Get the ipTagType property: The IP tag type. Example: FirstPartyUsage.
      *

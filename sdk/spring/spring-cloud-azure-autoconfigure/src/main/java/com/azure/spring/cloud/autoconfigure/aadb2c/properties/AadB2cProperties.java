@@ -13,7 +13,6 @@ import java.net.MalformedURLException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 
@@ -60,17 +59,17 @@ public class AadB2cProperties implements InitializingBean {
     private String appIdUri;
 
     /**
-     * Connection Timeout for the JWKSet Remote URL call.
+     * Connection Timeout for the JWKSet Remote URL call.  Deprecated. If you want to configure this, please provide a RestOperations bean.
      */
     private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
-     * Read Timeout for the JWKSet Remote URL call.
+     * Read Timeout for the JWKSet Remote URL call.  Deprecated. If you want to configure this, please provide a RestOperations bean.
      */
     private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
-     * Size limit in Bytes of the JWKSet Remote URL call.
+     * Size limit in Bytes of the JWKSet Remote URL call.  Deprecated. If you want to configure this, please provide a RestOperations bean.
      */
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
@@ -140,12 +139,11 @@ public class AadB2cProperties implements InitializingBean {
      * Validate common scenario properties configuration.
      */
     private void validateCommonProperties() {
-        long credentialCount = authorizationClients.values()
-                                                   .stream()
-                                                   .map(AuthorizationClientProperties::getAuthorizationGrantType)
-                                                   .filter(client -> CLIENT_CREDENTIALS.equals(client))
-                                                   .count();
-        if (credentialCount > 0 && !StringUtils.hasText(profile.getTenantId())) {
+        boolean usingClientCredentialFlow = authorizationClients.values()
+                                                                .stream()
+                                                                .map(AuthorizationClientProperties::getAuthorizationGrantType)
+                                                                .anyMatch(CLIENT_CREDENTIALS::equals);
+        if (usingClientCredentialFlow && !StringUtils.hasText(profile.getTenantId())) {
             throw new AadB2cConfigurationException("'tenant-id' must be configured "
                 + "when using client credential flow.");
         }
@@ -187,11 +185,11 @@ public class AadB2cProperties implements InitializingBean {
      * @return the password reset
      */
     public String getPasswordReset() {
-        Optional<String> keyOptional = userFlows.keySet()
-                                                .stream()
-                                                .filter(key -> key.equalsIgnoreCase(DEFAULT_KEY_PASSWORD_RESET))
-                                                .findAny();
-        return keyOptional.map(s -> userFlows.get(s)).orElse(null);
+        return userFlows.entrySet().stream()
+            .filter(entry -> entry.getKey().equalsIgnoreCase(DEFAULT_KEY_PASSWORD_RESET))
+            .findFirst()
+            .map(Map.Entry::getValue)
+            .orElse(null);
     }
 
     /**

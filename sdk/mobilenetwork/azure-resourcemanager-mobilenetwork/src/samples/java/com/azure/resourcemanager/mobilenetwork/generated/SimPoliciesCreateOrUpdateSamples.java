@@ -18,14 +18,14 @@ import java.util.Arrays;
 /** Samples for SimPolicies CreateOrUpdate. */
 public final class SimPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimPolicyCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyCreate.json
      */
     /**
-     * Sample code: Create sim policy.
+     * Sample code: Create SIM policy.
      *
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void createSimPolicy(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void createSIMPolicy(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager
             .simPolicies()
             .define("testPolicy")
@@ -68,7 +68,8 @@ public final class SimPoliciesCreateOrUpdateSamples {
                                                     .asList(
                                                         new ServiceResourceId()
                                                             .withId(
-                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService")))))))
+                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService")))
+                                            .withMaximumNumberOfBufferedPackets(200)))))
             .withRegistrationTimer(3240)
             .create();
     }

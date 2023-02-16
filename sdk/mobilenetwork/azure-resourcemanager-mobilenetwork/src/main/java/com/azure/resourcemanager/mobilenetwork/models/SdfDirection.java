@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SdfDirection. */
+/** Service data flow direction. */
 public final class SdfDirection extends ExpandableStringEnum<SdfDirection> {
     /** Static value Uplink for SdfDirection. */
     public static final SdfDirection UPLINK = fromString("Uplink");
@@ -18,6 +18,15 @@ public final class SdfDirection extends ExpandableStringEnum<SdfDirection> {
 
     /** Static value Bidirectional for SdfDirection. */
     public static final SdfDirection BIDIRECTIONAL = fromString("Bidirectional");
+
+    /**
+     * Creates a new instance of SdfDirection value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SdfDirection() {
+    }
 
     /**
      * Creates or finds a SdfDirection from its string representation.
@@ -30,7 +39,11 @@ public final class SdfDirection extends ExpandableStringEnum<SdfDirection> {
         return fromString(name, SdfDirection.class);
     }
 
-    /** @return known SdfDirection values. */
+    /**
+     * Gets known SdfDirection values.
+     *
+     * @return known SdfDirection values.
+     */
     public static Collection<SdfDirection> values() {
         return values(SdfDirection.class);
     }

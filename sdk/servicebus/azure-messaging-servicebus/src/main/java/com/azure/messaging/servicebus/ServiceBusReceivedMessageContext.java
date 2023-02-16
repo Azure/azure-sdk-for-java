@@ -16,12 +16,16 @@ import java.util.Objects;
 public final class ServiceBusReceivedMessageContext {
     private final ServiceBusMessageContext receivedMessageContext;
     private final ServiceBusReceiverAsyncClient receiverClient;
+    private final String fullyQualifiedNamespace;
+    private final String entityPath;
 
     ServiceBusReceivedMessageContext(ServiceBusReceiverAsyncClient receiverClient,
                                      ServiceBusMessageContext receivedMessageContext) {
         this.receivedMessageContext = Objects.requireNonNull(receivedMessageContext,
             "'receivedMessageContext' cannot be null");
         this.receiverClient = Objects.requireNonNull(receiverClient, "'receiverClient' cannot be null");
+        entityPath = receiverClient.getEntityPath();
+        fullyQualifiedNamespace = receiverClient.getFullyQualifiedNamespace();
     }
 
     /**
@@ -31,6 +35,27 @@ public final class ServiceBusReceivedMessageContext {
      */
     public ServiceBusReceivedMessage getMessage() {
         return receivedMessageContext.getMessage();
+    }
+
+
+    /**
+     *  Gets the Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
+     *
+     * @return The Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
+     */
+    public String getEntityPath() {
+        return this.entityPath;
+    }
+
+    /**
+     * Gets the fully qualified Service Bus namespace that this instance of {@link ServiceBusProcessorClient}
+     * is associated with. This is likely similar to {@code {yournamespace}.servicebus.windows.net}.
+     *
+     * @return The fully qualified Service Bus namespace that this instance of {@link ServiceBusProcessorClient}
+     * is associated with.
+     */
+    public String getFullyQualifiedNamespace() {
+        return this.fullyQualifiedNamespace;
     }
 
     /**

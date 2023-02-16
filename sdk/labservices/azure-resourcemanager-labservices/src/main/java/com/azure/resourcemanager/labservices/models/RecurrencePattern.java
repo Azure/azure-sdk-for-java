@@ -6,16 +6,13 @@ package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Recurrence pattern of a lab schedule. */
 @Fluent
 public final class RecurrencePattern {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecurrencePattern.class);
-
     /*
      * The frequency of the recurrence.
      */
@@ -23,16 +20,14 @@ public final class RecurrencePattern {
     private RecurrenceFrequency frequency;
 
     /*
-     * The week days the schedule runs. Used for when the Frequency is set to
-     * Weekly.
+     * The week days the schedule runs. Used for when the Frequency is set to Weekly.
      */
     @JsonProperty(value = "weekDays")
     private List<WeekDay> weekDays;
 
     /*
-     * The interval to invoke the schedule on. For example, interval = 2 and
-     * RecurrenceFrequency.Daily will run every 2 days. When no interval is
-     * supplied, an interval of 1 is used.
+     * The interval to invoke the schedule on. For example, interval = 2 and RecurrenceFrequency.Daily will run every 2
+     * days. When no interval is supplied, an interval of 1 is used.
      */
     @JsonProperty(value = "interval")
     private Integer interval;
@@ -41,7 +36,7 @@ public final class RecurrencePattern {
      * When the recurrence will expire. This date is inclusive.
      */
     @JsonProperty(value = "expirationDate", required = true)
-    private LocalDate expirationDate;
+    private OffsetDateTime expirationDate;
 
     /**
      * Get the frequency property: The frequency of the recurrence.
@@ -110,7 +105,7 @@ public final class RecurrencePattern {
      *
      * @return the expirationDate value.
      */
-    public LocalDate expirationDate() {
+    public OffsetDateTime expirationDate() {
         return this.expirationDate;
     }
 
@@ -120,7 +115,7 @@ public final class RecurrencePattern {
      * @param expirationDate the expirationDate value to set.
      * @return the RecurrencePattern object itself.
      */
-    public RecurrencePattern withExpirationDate(LocalDate expirationDate) {
+    public RecurrencePattern withExpirationDate(OffsetDateTime expirationDate) {
         this.expirationDate = expirationDate;
         return this;
     }
@@ -132,15 +127,17 @@ public final class RecurrencePattern {
      */
     public void validate() {
         if (frequency() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property frequency in model RecurrencePattern"));
         }
         if (expirationDate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property expirationDate in model RecurrencePattern"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RecurrencePattern.class);
 }

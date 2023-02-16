@@ -6,21 +6,21 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.CloudLinkStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A cloud link resource. */
 @Fluent
 public final class CloudLinkInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudLinkInner.class);
-
     /*
      * The properties of a cloud link.
      */
     @JsonProperty(value = "properties")
     private CloudLinkProperties innerProperties;
+
+    /** Creates an instance of CloudLinkInner class. */
+    public CloudLinkInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a cloud link.

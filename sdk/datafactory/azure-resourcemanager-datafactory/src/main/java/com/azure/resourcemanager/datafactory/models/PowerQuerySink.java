@@ -16,6 +16,10 @@ public final class PowerQuerySink extends DataFlowSink {
     @JsonProperty(value = "script")
     private String script;
 
+    /** Creates an instance of PowerQuerySink class. */
+    public PowerQuerySink() {
+    }
+
     /**
      * Get the script property: sink script.
      *

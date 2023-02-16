@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
+import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
-import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
@@ -18,6 +18,8 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ContextConsumer;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -43,7 +45,9 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
             .withConfiguration(AutoConfigurations.of(
                 AzureGlobalPropertiesAutoConfiguration.class,
                 WebResourceServerApp.class,
-                AadB2cResourceServerAutoConfiguration.class))
+                AadB2cResourceServerAutoConfiguration.class,
+                HttpMessageConvertersAutoConfiguration.class,
+                RestTemplateAutoConfiguration.class))
             .withPropertyValues(getB2CResourceServerProperties());
     }
 
@@ -53,7 +57,9 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
             .withConfiguration(AutoConfigurations.of(
                 WebOAuth2ClientApp.class,
                 AzureGlobalPropertiesAutoConfiguration.class,
-                AadB2cResourceServerAutoConfiguration.class))
+                AadB2cResourceServerAutoConfiguration.class,
+                HttpMessageConvertersAutoConfiguration.class,
+                RestTemplateAutoConfiguration.class))
             .withPropertyValues(getB2CResourceServerProperties());
     }
 

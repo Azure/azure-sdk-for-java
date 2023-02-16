@@ -35,6 +35,7 @@ import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
@@ -1811,7 +1812,7 @@ class ContainerAPITest extends APISpec {
 
         then:
         blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName)
-        blobItem.isPrefix() == (delimiter ? true : null)
+        blobItem.isPrefix() == delimiter
 
         where:
         delimiter | _
@@ -1828,6 +1829,53 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def setupContainerForListing(BlobContainerClient containerClient) {
+        def blobNames = ["foo", "bar", "baz", "foo/foo", "foo/bar", "baz/foo", "baz/foo/bar", "baz/bar/foo"] as Set
+        def data = getRandomByteArray(Constants.KB)
+        def blobs = [] as Set
+
+        for (def blob : blobNames) {
+            def blockBlobClient = containerClient.getBlobClient(blob).getBlockBlobClient()
+            blobs.add(blockBlobClient)
+            blockBlobClient.upload(new ByteArrayInputStream(data), Constants.KB)
+        }
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "List blobs hier segment with version prefix and delimiter"() {
+        setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(getContainerName())
+        versionedCC.createIfNotExists()
+        def options = new ListBlobsOptions()
+            .setDetails(new BlobListDetails().setRetrieveVersions(true))
+            .setPrefix("baz")
+
+        setupContainerForListing(versionedCC)
+
+        def foundBlobs = [] as Set
+        def foundPrefixes = [] as Set
+
+        when:
+        versionedCC.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList())
+            .forEach { blobItem ->
+                if (blobItem.isPrefix()) {
+                    foundPrefixes << blobItem
+                } else {
+                    foundBlobs << blobItem
+                }
+            }
+
+        then:
+        foundBlobs.size() == 1
+        foundPrefixes.size() == 1
+        foundBlobs[0].getName() == "baz"
+        foundBlobs[0].getVersionId() != null
+        foundPrefixes[0].getName() == "baz/"
+
+        cleanup:
+        versionedCC.delete()
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
@@ -1903,10 +1951,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect:
-        for (ContinuablePage page :
-            cc.findBlobsByTags(
-                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
-                .iterableByPage()) {
+        for (ContinuablePage page : cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE).iterableByPage()) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
     }
@@ -1924,10 +1969,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect:
-        for (ContinuablePage page :
-            cc.findBlobsByTags(
-                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE)
-                .iterableByPage(PAGE_RESULTS)) {
+        for (ContinuablePage page : cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE).iterableByPage(PAGE_RESULTS)) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
     }
@@ -2214,6 +2256,8 @@ class ContainerAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
+// TODO: Reintroduce these tests once service starts supporting it.
+
 //    def "Rename"() {
 //        setup:
 //        def newName = generateContainerName()
@@ -2227,11 +2271,25 @@ class ContainerAPITest extends APISpec {
 //        cleanup:
 //        renamedContainer.delete()
 //    }
-//
+
 //    def "Rename sas"() {
 //        setup:
 //        def newName = generateContainerName()
-//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def service = new AccountSasService()
+//            .setBlobAccess(true)
+//        def resourceType = new AccountSasResourceType()
+//            .setContainer(true)
+//            .setService(true)
+//            .setObject(true)
+//        def expiryTime = namer.getUtcNow().plusDays(1)
+//        def permissions = new AccountSasPermission()
+//            .setReadPermission(true)
+//            .setWritePermission(true)
+//            .setCreatePermission(true)
+//            .setDeletePermission(true)
+//
+//        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+//        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
 //        def sasClient = getContainerClient(sas, cc.getBlobContainerUrl())
 //
 //        when:
@@ -2243,7 +2301,7 @@ class ContainerAPITest extends APISpec {
 //        cleanup:
 //        renamedContainer.delete()
 //    }
-//
+
 //    @Unroll
 //    def "Rename AC"() {
 //        setup:
@@ -2260,7 +2318,7 @@ class ContainerAPITest extends APISpec {
 //        null            || _
 //        receivedLeaseID || _
 //    }
-//
+
 //    @Unroll
 //    def "Rename AC fail"() {
 //        setup:
@@ -2278,7 +2336,7 @@ class ContainerAPITest extends APISpec {
 //        leaseID         || _
 //        garbageLeaseID  || _
 //    }
-//
+
 //    @Unroll
 //    def "Rename AC illegal"() {
 //        setup:
@@ -2299,7 +2357,7 @@ class ContainerAPITest extends APISpec {
 //        null     | null       | null         | garbageEtag  | null
 //        null     | null       | null         | null         | "tags"
 //    }
-//
+
 //    def "Rename error"() {
 //        setup:
 //        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())

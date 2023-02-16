@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Categories are used to group other metadata entities. */
+/**
+ * A metadata category.
+ *
+ * <p>Categories are used to group other metadata entities.
+ */
 @Fluent
 public final class MetadataCategory {
     /*

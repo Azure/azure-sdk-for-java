@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskStorageAccountTypes. */
+/** The sku name. */
 public final class DiskStorageAccountTypes extends ExpandableStringEnum<DiskStorageAccountTypes> {
     /** Static value Standard_LRS for DiskStorageAccountTypes. */
     public static final DiskStorageAccountTypes STANDARD_LRS = fromString("Standard_LRS");
@@ -30,6 +30,15 @@ public final class DiskStorageAccountTypes extends ExpandableStringEnum<DiskStor
 
     /** Static value PremiumV2_LRS for DiskStorageAccountTypes. */
     public static final DiskStorageAccountTypes PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
+
+    /**
+     * Creates a new instance of DiskStorageAccountTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskStorageAccountTypes() {
+    }
 
     /**
      * Creates or finds a DiskStorageAccountTypes from its string representation.

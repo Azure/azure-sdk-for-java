@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentKeyPolicyPlayReadyLicenseType. */
+/** The license type. */
 public final class ContentKeyPolicyPlayReadyLicenseType
     extends ExpandableStringEnum<ContentKeyPolicyPlayReadyLicenseType> {
     /** Static value Unknown for ContentKeyPolicyPlayReadyLicenseType. */
@@ -19,6 +19,15 @@ public final class ContentKeyPolicyPlayReadyLicenseType
 
     /** Static value Persistent for ContentKeyPolicyPlayReadyLicenseType. */
     public static final ContentKeyPolicyPlayReadyLicenseType PERSISTENT = fromString("Persistent");
+
+    /**
+     * Creates a new instance of ContentKeyPolicyPlayReadyLicenseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentKeyPolicyPlayReadyLicenseType() {
+    }
 
     /**
      * Creates or finds a ContentKeyPolicyPlayReadyLicenseType from its string representation.

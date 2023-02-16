@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TableResources DeleteTable. */
 public final class TableResourcesDeleteTableSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBTableDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBTableDelete.json
      */
     /**
      * Sample code: CosmosDBTableDelete.
@@ -22,6 +20,6 @@ public final class TableResourcesDeleteTableSamples {
             .manager()
             .serviceClient()
             .getTableResources()
-            .deleteTable("rg1", "ddb1", "tableName", Context.NONE);
+            .deleteTable("rg1", "ddb1", "tableName", com.azure.core.util.Context.NONE);
     }
 }

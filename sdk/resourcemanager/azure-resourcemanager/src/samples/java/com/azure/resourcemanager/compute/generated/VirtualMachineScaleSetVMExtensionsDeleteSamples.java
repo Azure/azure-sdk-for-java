@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMExtensions Delete. */
 public final class VirtualMachineScaleSetVMExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtensions_Delete.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtensions_Delete.json
      */
     /**
      * Sample code: Delete VirtualMachineScaleSet VM extension.
@@ -22,6 +20,6 @@ public final class VirtualMachineScaleSetVMExtensionsDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMExtensions()
-            .delete("myResourceGroup", "myvmScaleSet", "0", "myVMExtension", Context.NONE);
+            .delete("myResourceGroup", "myvmScaleSet", "0", "myVMExtension", com.azure.core.util.Context.NONE);
     }
 }

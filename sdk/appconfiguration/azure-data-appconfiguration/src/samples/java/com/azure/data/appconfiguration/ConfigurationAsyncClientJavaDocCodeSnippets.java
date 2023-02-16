@@ -244,12 +244,12 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
      */
     public void listSettingCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listsettings
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettings
         client.listConfigurationSettings(new SettingSelector().setKeyFilter("prodDBConnection"))
             .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(setting ->
                 System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
-        // END: com.azure.data.appconfiguration.configurationasyncclient.listsettings
+        // END: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettings
     }
 
     /**

@@ -19,11 +19,14 @@ public final class ApplicationGatewayFirewallDisabledRuleGroup {
     private String ruleGroupName;
 
     /*
-     * The list of rules that will be disabled. If null, all rules of the rule
-     * group will be disabled.
+     * The list of rules that will be disabled. If null, all rules of the rule group will be disabled.
      */
     @JsonProperty(value = "rules")
     private List<Integer> rules;
+
+    /** Creates an instance of ApplicationGatewayFirewallDisabledRuleGroup class. */
+    public ApplicationGatewayFirewallDisabledRuleGroup() {
+    }
 
     /**
      * Get the ruleGroupName property: The name of the rule group that will be disabled.

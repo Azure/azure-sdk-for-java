@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DestinationPortBehavior. */
+/** Destination port behavior. */
 public final class DestinationPortBehavior extends ExpandableStringEnum<DestinationPortBehavior> {
     /** Static value None for DestinationPortBehavior. */
     public static final DestinationPortBehavior NONE = fromString("None");

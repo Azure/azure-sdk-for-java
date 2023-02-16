@@ -23,6 +23,10 @@ public final class SqlServerTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private SqlServerTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of SqlServerTableDataset class. */
+    public SqlServerTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: On-premises SQL Server dataset properties.
      *

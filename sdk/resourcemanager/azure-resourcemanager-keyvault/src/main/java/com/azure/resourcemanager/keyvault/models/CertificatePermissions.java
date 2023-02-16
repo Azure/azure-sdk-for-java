@@ -72,7 +72,11 @@ public final class CertificatePermissions extends ExpandableStringEnum<Certifica
         return fromString(name, CertificatePermissions.class);
     }
 
-    /** @return known CertificatePermissions values. */
+    /**
+     * Gets known CertificatePermissions values.
+     *
+     * @return known CertificatePermissions values.
+     */
     public static Collection<CertificatePermissions> values() {
         return values(CertificatePermissions.class);
     }

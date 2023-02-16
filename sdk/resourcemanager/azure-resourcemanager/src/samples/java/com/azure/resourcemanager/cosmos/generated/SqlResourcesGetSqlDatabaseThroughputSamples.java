@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources GetSqlDatabaseThroughput. */
 public final class SqlResourcesGetSqlDatabaseThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlDatabaseThroughputGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlDatabaseThroughputGet.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseThroughputGet.
@@ -22,6 +20,6 @@ public final class SqlResourcesGetSqlDatabaseThroughputSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .getSqlDatabaseThroughputWithResponse("rg1", "ddb1", "databaseName", Context.NONE);
+            .getSqlDatabaseThroughputWithResponse("rg1", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }
 }

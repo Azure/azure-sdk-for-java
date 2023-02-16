@@ -28,6 +28,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class OperationStatusExtendedInfo {
+    /** Creates an instance of OperationStatusExtendedInfo class. */
+    public OperationStatusExtendedInfo() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -18,6 +18,10 @@ public final class ResourceGuardProxyBaseResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<ResourceGuardProxyBaseResourceInner> value;
 
+    /** Creates an instance of ResourceGuardProxyBaseResourceList class. */
+    public ResourceGuardProxyBaseResourceList() {
+    }
+
     /**
      * Get the value property: List of resources.
      *

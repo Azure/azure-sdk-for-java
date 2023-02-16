@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class MongoDbAtlasCollectionDataset extends Dataset {
     /*
-     * The collection name of the MongoDB Atlas database. Type: string (or
-     * Expression with resultType string).
+     * The collection name of the MongoDB Atlas database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.collection", required = true)
     private Object collection;
+
+    /** Creates an instance of MongoDbAtlasCollectionDataset class. */
+    public MongoDbAtlasCollectionDataset() {}
 
     /**
      * Get the collection property: The collection name of the MongoDB Atlas database. Type: string (or Expression with

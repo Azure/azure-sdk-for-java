@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.search.fluent.QueryKeysClient;
 import com.azure.resourcemanager.search.fluent.models.QueryKeyInner;
 import com.azure.resourcemanager.search.models.ListQueryKeysResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QueryKeysClient. */
 public final class QueryKeysClientImpl implements QueryKeysClient {
-    private final ClientLogger logger = new ClientLogger(QueryKeysClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final QueryKeysService service;
 
@@ -138,7 +135,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an API key for a given Azure Cognitive Search service that has permissions for query operations
-     *     only.
+     *     only along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryKeyInner>> createWithResponseAsync(
@@ -181,7 +178,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -199,7 +196,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an API key for a given Azure Cognitive Search service that has permissions for query operations
-     *     only.
+     *     only along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryKeyInner>> createWithResponseAsync(
@@ -256,20 +253,13 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an API key for a given Azure Cognitive Search service that has permissions for query operations
-     *     only.
+     *     only on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryKeyInner> createAsync(
         String resourceGroupName, String searchServiceName, String name, UUID clientRequestId) {
         return createWithResponseAsync(resourceGroupName, searchServiceName, name, clientRequestId)
-            .flatMap(
-                (Response<QueryKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -284,20 +274,13 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an API key for a given Azure Cognitive Search service that has permissions for query operations
-     *     only.
+     *     only on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryKeyInner> createAsync(String resourceGroupName, String searchServiceName, String name) {
         final UUID clientRequestId = null;
         return createWithResponseAsync(resourceGroupName, searchServiceName, name, clientRequestId)
-            .flatMap(
-                (Response<QueryKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -335,7 +318,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an API key for a given Azure Cognitive Search service that has permissions for query operations
-     *     only.
+     *     only along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryKeyInner> createWithResponse(
@@ -355,7 +338,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     * @return response containing the query API keys for a given Azure Cognitive Search service along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryKeyInner>> listBySearchServiceSinglePageAsync(
@@ -403,7 +387,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -419,7 +403,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     * @return response containing the query API keys for a given Azure Cognitive Search service along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryKeyInner>> listBySearchServiceSinglePageAsync(
@@ -479,7 +464,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     * @return response containing the query API keys for a given Azure Cognitive Search service as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueryKeyInner> listBySearchServiceAsync(
@@ -499,7 +485,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     * @return response containing the query API keys for a given Azure Cognitive Search service as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueryKeyInner> listBySearchServiceAsync(String resourceGroupName, String searchServiceName) {
@@ -522,7 +509,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     * @return response containing the query API keys for a given Azure Cognitive Search service as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QueryKeyInner> listBySearchServiceAsync(
@@ -542,7 +530,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     * @return response containing the query API keys for a given Azure Cognitive Search service as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueryKeyInner> listBySearchService(String resourceGroupName, String searchServiceName) {
@@ -563,7 +552,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     * @return response containing the query API keys for a given Azure Cognitive Search service as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueryKeyInner> listBySearchService(
@@ -586,7 +576,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -629,7 +619,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -647,7 +637,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -704,13 +694,13 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String searchServiceName, String key, UUID clientRequestId) {
         return deleteWithResponseAsync(resourceGroupName, searchServiceName, key, clientRequestId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -725,13 +715,13 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String searchServiceName, String key) {
         final UUID clientRequestId = null;
         return deleteWithResponseAsync(resourceGroupName, searchServiceName, key, clientRequestId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -768,7 +758,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -785,7 +775,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     * @return response containing the query API keys for a given Azure Cognitive Search service along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryKeyInner>> listBySearchServiceNextSinglePageAsync(
@@ -814,7 +805,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -827,7 +818,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     * @return response containing the query API keys for a given Azure Cognitive Search service along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryKeyInner>> listBySearchServiceNextSinglePageAsync(

@@ -1,43 +1,43 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-04-01-preview",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1a318383-2137-41d6-8c77-55ff6b060227",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3f7d02c8-6f9c-41a6-9561-f7c926a0a11f",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "5",
+      "x-envoy-upstream-service-time" : "27",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "391906dd-d0c5-4e1c-b8f5-f756e7846cc1",
+      "apim-request-id" : "fe680436-d687-4374-b162-59e55eff0e0f",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid parameter in request\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task parameter value 0 is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max).\"}}}",
-      "Date" : "Fri, 06 May 2022 17:51:18 GMT",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"details\":[{\"code\":\"InvalidRequest\",\"message\":\"Invalid Request.\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task parameter value '0' is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max).\"}}],\"message\":\"Invalid Request.\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task: 'ExtractiveSummarization' failed with validation errors: ['Invalid parameter in request']\"}}}",
+      "Date" : "Fri, 14 Oct 2022 23:25:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-04-01-preview",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "11f787ca-e504-4e36-9137-8316ec28e130",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8bec4f8d-69c2-4e90-9163-e18069d00f47",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "5",
+      "x-envoy-upstream-service-time" : "8",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e5bc541e-5ac6-41ab-ad01-2899ae8c9961",
+      "apim-request-id" : "62cf6e1e-6bc9-4510-a8a5-912c586105cd",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid parameter in request\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task parameter value 21 is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max).\"}}}",
-      "Date" : "Fri, 06 May 2022 17:51:18 GMT",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"details\":[{\"code\":\"InvalidRequest\",\"message\":\"Invalid Request.\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task parameter value '21' is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max).\"}}],\"message\":\"Invalid Request.\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task: 'ExtractiveSummarization' failed with validation errors: ['Invalid parameter in request']\"}}}",
+      "Date" : "Fri, 14 Oct 2022 23:25:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -401,23 +401,33 @@ public final class BlobUrlParts {
      */
     private static void parseIpUrl(URL url, BlobUrlParts parts) {
         parts.setHost(url.getAuthority());
+        parts.isIpUrl = true;
 
         String path = url.getPath();
+        int previousIndex = 0;
         if (!path.isEmpty() && path.charAt(0) == '/') {
-            path = path.substring(1);
+            previousIndex = 1;
         }
 
-        String[] pathPieces = ModelHelper.FORWARD_SLASH.split(path, 3);
-        parts.setAccountName(pathPieces[0]);
-
-        if (pathPieces.length >= 3) {
-            parts.setContainerName(pathPieces[1]);
-            parts.setBlobName(pathPieces[2]);
-        } else if (pathPieces.length == 2) {
-            parts.setContainerName(pathPieces[1]);
+        int index = path.indexOf('/', previousIndex);
+        if (index == -1) {
+            // The entire path is the account name.
+            parts.setAccountName(path.substring(previousIndex));
+            return;
         }
 
-        parts.isIpUrl = true;
+        parts.setAccountName(path.substring(previousIndex, index));
+        previousIndex = index + 1;
+
+        index = path.indexOf('/', previousIndex);
+        if (index == -1) {
+            // Container name was the last part of the path, substring the rest of the path and return.
+            parts.setContainerName(path.substring(previousIndex));
+            return;
+        }
+
+        parts.setContainerName(path.substring(previousIndex, index));
+        parts.setBlobName(path.substring(index + 1));
     }
 
     /*

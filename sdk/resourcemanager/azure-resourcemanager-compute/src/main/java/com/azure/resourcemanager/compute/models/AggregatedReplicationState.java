@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AggregatedReplicationState. */
+/** This is the aggregated replication status based on all the regional replication status flags. */
 public final class AggregatedReplicationState extends ExpandableStringEnum<AggregatedReplicationState> {
     /** Static value Unknown for AggregatedReplicationState. */
     public static final AggregatedReplicationState UNKNOWN = fromString("Unknown");
@@ -21,6 +21,15 @@ public final class AggregatedReplicationState extends ExpandableStringEnum<Aggre
 
     /** Static value Failed for AggregatedReplicationState. */
     public static final AggregatedReplicationState FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of AggregatedReplicationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AggregatedReplicationState() {
+    }
 
     /**
      * Creates or finds a AggregatedReplicationState from its string representation.

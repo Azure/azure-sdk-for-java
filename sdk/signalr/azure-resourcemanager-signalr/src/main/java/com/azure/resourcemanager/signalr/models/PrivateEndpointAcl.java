@@ -18,6 +18,10 @@ public final class PrivateEndpointAcl extends NetworkAcl {
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of PrivateEndpointAcl class. */
+    public PrivateEndpointAcl() {
+    }
+
     /**
      * Get the name property: Name of the private endpoint connection.
      *

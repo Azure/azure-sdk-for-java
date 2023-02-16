@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ConnectionMonitorSuccessThreshold {
     /*
-     * The maximum percentage of failed checks permitted for a test to evaluate
-     * as successful.
+     * The maximum percentage of failed checks permitted for a test to evaluate as successful.
      */
     @JsonProperty(value = "checksFailedPercent")
     private Integer checksFailedPercent;
 
     /*
-     * The maximum round-trip time in milliseconds permitted for a test to
-     * evaluate as successful.
+     * The maximum round-trip time in milliseconds permitted for a test to evaluate as successful.
      */
     @JsonProperty(value = "roundTripTimeMs")
     private Float roundTripTimeMs;
+
+    /** Creates an instance of ConnectionMonitorSuccessThreshold class. */
+    public ConnectionMonitorSuccessThreshold() {
+    }
 
     /**
      * Get the checksFailedPercent property: The maximum percentage of failed checks permitted for a test to evaluate as

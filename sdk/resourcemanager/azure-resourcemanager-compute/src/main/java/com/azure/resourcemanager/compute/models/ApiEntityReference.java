@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ApiEntityReference {
     /*
-     * The ARM resource id in the form of
-     * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
+     * The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ApiEntityReference class. */
+    public ApiEntityReference() {
+    }
 
     /**
      * Get the id property: The ARM resource id in the form of

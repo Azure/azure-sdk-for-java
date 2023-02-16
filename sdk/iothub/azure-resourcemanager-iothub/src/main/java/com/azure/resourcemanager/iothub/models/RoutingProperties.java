@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,40 +14,33 @@ import java.util.List;
  */
 @Fluent
 public final class RoutingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingProperties.class);
-
     /*
-     * The properties related to the custom endpoints to which your IoT hub
-     * routes messages based on the routing rules. A maximum of 10 custom
-     * endpoints are allowed across all endpoint types for paid hubs and only 1
-     * custom endpoint is allowed across all endpoint types for free hubs.
+     * The properties related to the custom endpoints to which your IoT hub routes messages based on the routing rules.
+     * A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs and only 1 custom endpoint
+     * is allowed across all endpoint types for free hubs.
      */
     @JsonProperty(value = "endpoints")
     private RoutingEndpoints endpoints;
 
     /*
-     * The list of user-provided routing rules that the IoT hub uses to route
-     * messages to built-in and custom endpoints. A maximum of 100 routing
-     * rules are allowed for paid hubs and a maximum of 5 routing rules are
-     * allowed for free hubs.
+     * The list of user-provided routing rules that the IoT hub uses to route messages to built-in and custom
+     * endpoints. A maximum of 100 routing rules are allowed for paid hubs and a maximum of 5 routing rules are allowed
+     * for free hubs.
      */
     @JsonProperty(value = "routes")
     private List<RouteProperties> routes;
 
     /*
-     * The properties of the route that is used as a fall-back route when none
-     * of the conditions specified in the 'routes' section are met. This is an
-     * optional parameter. When this property is not set, the messages which do
-     * not meet any of the conditions specified in the 'routes' section get
-     * routed to the built-in eventhub endpoint.
+     * The properties of the route that is used as a fall-back route when none of the conditions specified in the
+     * 'routes' section are met. This is an optional parameter. When this property is not set, the messages which do
+     * not meet any of the conditions specified in the 'routes' section get routed to the built-in eventhub endpoint.
      */
     @JsonProperty(value = "fallbackRoute")
     private FallbackRouteProperties fallbackRoute;
 
     /*
-     * The list of user-provided enrichments that the IoT hub applies to
-     * messages to be delivered to built-in and custom endpoints. See:
-     * https://aka.ms/telemetryoneventgrid
+     * The list of user-provided enrichments that the IoT hub applies to messages to be delivered to built-in and
+     * custom endpoints. See: https://aka.ms/telemetryoneventgrid
      */
     @JsonProperty(value = "enrichments")
     private List<EnrichmentProperties> enrichments;

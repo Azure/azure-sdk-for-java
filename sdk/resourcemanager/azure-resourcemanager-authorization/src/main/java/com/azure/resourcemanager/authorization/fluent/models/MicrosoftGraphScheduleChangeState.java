@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphScheduleChangeState. */
+/** scheduleChangeState. */
 public final class MicrosoftGraphScheduleChangeState extends ExpandableStringEnum<MicrosoftGraphScheduleChangeState> {
     /** Static value pending for MicrosoftGraphScheduleChangeState. */
     public static final MicrosoftGraphScheduleChangeState PENDING = fromString("pending");
@@ -33,7 +33,11 @@ public final class MicrosoftGraphScheduleChangeState extends ExpandableStringEnu
         return fromString(name, MicrosoftGraphScheduleChangeState.class);
     }
 
-    /** @return known MicrosoftGraphScheduleChangeState values. */
+    /**
+     * Gets known MicrosoftGraphScheduleChangeState values.
+     *
+     * @return known MicrosoftGraphScheduleChangeState values.
+     */
     public static Collection<MicrosoftGraphScheduleChangeState> values() {
         return values(MicrosoftGraphScheduleChangeState.class);
     }

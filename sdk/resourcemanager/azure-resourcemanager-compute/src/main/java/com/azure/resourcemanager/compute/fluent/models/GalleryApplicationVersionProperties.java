@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPublishingProfile;
+import com.azure.resourcemanager.compute.models.GalleryApplicationVersionSafetyProfile;
 import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,8 +22,15 @@ public final class GalleryApplicationVersionProperties {
     private GalleryApplicationVersionPublishingProfile publishingProfile;
 
     /*
-     * The current state of the gallery or gallery artifact. The provisioning
-     * state, which only appears in the response.
+     * The safety profile of the Gallery Application Version.
+     */
+    @JsonProperty(value = "safetyProfile")
+    private GalleryApplicationVersionSafetyProfile safetyProfile;
+
+    /*
+     * The current state of the gallery or gallery artifact.
+     *
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryProvisioningState provisioningState;
@@ -32,6 +40,10 @@ public final class GalleryApplicationVersionProperties {
      */
     @JsonProperty(value = "replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationStatus replicationStatus;
+
+    /** Creates an instance of GalleryApplicationVersionProperties class. */
+    public GalleryApplicationVersionProperties() {
+    }
 
     /**
      * Get the publishingProfile property: The publishing profile of a gallery image version.
@@ -55,8 +67,29 @@ public final class GalleryApplicationVersionProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
-     * which only appears in the response.
+     * Get the safetyProfile property: The safety profile of the Gallery Application Version.
+     *
+     * @return the safetyProfile value.
+     */
+    public GalleryApplicationVersionSafetyProfile safetyProfile() {
+        return this.safetyProfile;
+    }
+
+    /**
+     * Set the safetyProfile property: The safety profile of the Gallery Application Version.
+     *
+     * @param safetyProfile the safetyProfile value to set.
+     * @return the GalleryApplicationVersionProperties object itself.
+     */
+    public GalleryApplicationVersionProperties withSafetyProfile(GalleryApplicationVersionSafetyProfile safetyProfile) {
+        this.safetyProfile = safetyProfile;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The current state of the gallery or gallery artifact.
+     *
+     * <p>The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
      */
@@ -86,6 +119,9 @@ public final class GalleryApplicationVersionProperties {
                         "Missing required property publishingProfile in model GalleryApplicationVersionProperties"));
         } else {
             publishingProfile().validate();
+        }
+        if (safetyProfile() != null) {
+            safetyProfile().validate();
         }
         if (replicationStatus() != null) {
             replicationStatus().validate();

@@ -12,18 +12,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SqlServerStoredProcedureActivityTypeProperties {
     /*
-     * Stored procedure name. Type: string (or Expression with resultType
-     * string).
+     * Stored procedure name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "storedProcedureName", required = true)
     private Object storedProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}".
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "storedProcedureParameters")
     private Object storedProcedureParameters;
+
+    /** Creates an instance of SqlServerStoredProcedureActivityTypeProperties class. */
+    public SqlServerStoredProcedureActivityTypeProperties() {
+    }
 
     /**
      * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).

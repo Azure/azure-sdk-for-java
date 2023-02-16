@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.RegulatoryComplianceControlsCli
 import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceControlInner;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceControl;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceControls;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RegulatoryComplianceControlsImpl implements RegulatoryComplianceControls {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegulatoryComplianceControlsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RegulatoryComplianceControlsImpl.class);
 
     private final RegulatoryComplianceControlsClient innerClient;
 
@@ -42,17 +41,6 @@ public final class RegulatoryComplianceControlsImpl implements RegulatoryComplia
         return Utils.mapPage(inner, inner1 -> new RegulatoryComplianceControlImpl(inner1, this.manager()));
     }
 
-    public RegulatoryComplianceControl get(
-        String regulatoryComplianceStandardName, String regulatoryComplianceControlName) {
-        RegulatoryComplianceControlInner inner =
-            this.serviceClient().get(regulatoryComplianceStandardName, regulatoryComplianceControlName);
-        if (inner != null) {
-            return new RegulatoryComplianceControlImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RegulatoryComplianceControl> getWithResponse(
         String regulatoryComplianceStandardName, String regulatoryComplianceControlName, Context context) {
         Response<RegulatoryComplianceControlInner> inner =
@@ -65,6 +53,17 @@ public final class RegulatoryComplianceControlsImpl implements RegulatoryComplia
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RegulatoryComplianceControlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RegulatoryComplianceControl get(
+        String regulatoryComplianceStandardName, String regulatoryComplianceControlName) {
+        RegulatoryComplianceControlInner inner =
+            this.serviceClient().get(regulatoryComplianceStandardName, regulatoryComplianceControlName);
+        if (inner != null) {
+            return new RegulatoryComplianceControlImpl(inner, this.manager());
         } else {
             return null;
         }

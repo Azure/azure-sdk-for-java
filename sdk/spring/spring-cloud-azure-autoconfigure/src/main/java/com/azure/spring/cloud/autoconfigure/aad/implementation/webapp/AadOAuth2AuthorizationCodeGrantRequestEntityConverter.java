@@ -35,7 +35,6 @@ public class AadOAuth2AuthorizationCodeGrantRequestEntityConverter
         this.azureClientAccessTokenScopes = azureClientAccessTokenScopes;
     }
 
-
     /**
      * Get application id.
      *

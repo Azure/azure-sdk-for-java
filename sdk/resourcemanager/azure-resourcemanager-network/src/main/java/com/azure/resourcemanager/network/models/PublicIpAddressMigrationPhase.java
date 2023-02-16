@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicIpAddressMigrationPhase. */
+/** Migration phase of Public IP Address. */
 public final class PublicIpAddressMigrationPhase extends ExpandableStringEnum<PublicIpAddressMigrationPhase> {
     /** Static value None for PublicIpAddressMigrationPhase. */
     public static final PublicIpAddressMigrationPhase NONE = fromString("None");

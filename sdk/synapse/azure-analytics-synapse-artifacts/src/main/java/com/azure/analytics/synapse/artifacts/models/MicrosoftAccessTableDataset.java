@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class MicrosoftAccessTableDataset extends Dataset {
     /*
-     * The Microsoft Access table name. Type: string (or Expression with
-     * resultType string).
+     * The Microsoft Access table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
+
+    /** Creates an instance of MicrosoftAccessTableDataset class. */
+    public MicrosoftAccessTableDataset() {}
 
     /**
      * Get the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType string).

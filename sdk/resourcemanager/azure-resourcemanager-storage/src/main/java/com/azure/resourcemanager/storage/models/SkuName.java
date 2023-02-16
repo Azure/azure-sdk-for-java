@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuName. */
+/**
+ * The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called
+ * accountType.
+ */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
     /** Static value Standard_LRS for SkuName. */
     public static final SkuName STANDARD_LRS = fromString("Standard_LRS");

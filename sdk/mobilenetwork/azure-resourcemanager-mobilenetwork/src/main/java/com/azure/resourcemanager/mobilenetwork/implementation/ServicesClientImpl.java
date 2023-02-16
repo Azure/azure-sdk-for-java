@@ -64,7 +64,7 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface ServicesService {
+    public interface ServicesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
@@ -327,7 +327,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String serviceName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName).getSyncPoller();
     }
 
     /**
@@ -346,7 +346,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String serviceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName, context).getSyncPoller();
     }
 
     /**
@@ -547,31 +547,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceInner> getAsync(String resourceGroupName, String mobileNetworkName, String serviceName) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName)
-            .flatMap(
-                (Response<ServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets information about the specified service.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceInner get(String resourceGroupName, String mobileNetworkName, String serviceName) {
-        return getAsync(resourceGroupName, mobileNetworkName, serviceName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -594,7 +570,24 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Gets information about the specified service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
+     *     `requested` or `service`.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceInner get(String resourceGroupName, String mobileNetworkName, String serviceName) {
+        return getWithResponse(resourceGroupName, mobileNetworkName, serviceName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a service. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -656,7 +649,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -720,7 +713,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -744,7 +737,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -774,7 +767,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -789,11 +782,13 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters)
+            .getSyncPoller();
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -813,12 +808,13 @@ public final class ServicesClientImpl implements ServicesClient {
         String serviceName,
         ServiceInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -839,7 +835,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -865,7 +861,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -884,7 +880,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -908,7 +904,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -970,7 +966,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1034,7 +1030,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1050,37 +1046,11 @@ public final class ServicesClientImpl implements ServicesClient {
     private Mono<ServiceInner> updateTagsAsync(
         String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, parameters)
-            .flatMap(
-                (Response<ServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Update service tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
-     * @param parameters Parameters supplied to update service tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, mobileNetworkName, serviceName, parameters).block();
-    }
-
-    /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1102,6 +1072,26 @@ public final class ServicesClientImpl implements ServicesClient {
         Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context)
             .block();
+    }
+
+    /**
+     * Updates service tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
+     *     `requested` or `service`.
+     * @param parameters Parameters supplied to update service tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceInner updateTags(
+        String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, mobileNetworkName, serviceName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1291,11 +1281,12 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Services API service call along with {@link PagedResponse} on successful completion of
+     * @return response for services API service call along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1328,12 +1319,13 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Services API service call along with {@link PagedResponse} on successful completion of
+     * @return response for services API service call along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

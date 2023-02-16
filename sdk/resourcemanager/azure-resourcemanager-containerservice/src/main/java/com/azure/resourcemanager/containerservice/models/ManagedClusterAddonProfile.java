@@ -31,6 +31,10 @@ public final class ManagedClusterAddonProfile {
     @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedClusterAddonProfileIdentity identity;
 
+    /** Creates an instance of ManagedClusterAddonProfile class. */
+    public ManagedClusterAddonProfile() {
+    }
+
     /**
      * Get the enabled property: Whether the add-on is enabled or not.
      *

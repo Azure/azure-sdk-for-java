@@ -7,6 +7,7 @@ jobs:
   - job: UpdateDocsMsBuildConfig
     pool:
       vmImage: ubuntu-20.04
+    timeoutInMinutes: 180
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs
       DailyDocRepoLocation: $(Pipeline.Workspace)/daily
@@ -17,7 +18,7 @@ jobs:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          SkipDefaultCheckout: true
+          SkipCheckoutNone: true
           Paths:
             - package.json
             - metadata/
@@ -38,8 +39,21 @@ jobs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
           arguments: -DocRepoLocation $(DocRepoLocation) -ImageId '$(DocValidationImageId)'
-        displayName: Update Docs Onboarding
+        displayName: Update Docs Onboarding for main branch
         condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
+          arguments: >-
+            -DocRepoLocation $(DocRepoLocation)
+            -TenantId '$(opensource-aad-tenant-id)'
+            -ClientId '$(opensource-aad-app-id)'
+            -ClientSecret '$(opensource-aad-secret)'
+        displayName: Generate Service Level Readme for main branch
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
       - task: Powershell@2
         inputs:
           pwsh: true
@@ -69,7 +83,7 @@ jobs:
           DailyBranchVariableName: DailyDocsBranchName
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          SkipDefaultCheckout: true
+          SkipCheckoutNone: true
           Paths:
             - package.json
             - metadata/
@@ -78,7 +92,7 @@ jobs:
           Repositories:
             - Name: azure-sdk/$(DocRepoName)
               WorkingDirectory: $(DailyDocRepoLocation)
-        
+
       # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
       # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
       - powershell: |
@@ -98,17 +112,17 @@ jobs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
           arguments: -DocRepoLocation $(DailyDocRepoLocation)
-        displayName: Update Docs Onboarding for Daily branch
+        displayName: Update Docs Onboarding for Daily docs
       - task: Powershell@2
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
           arguments: >-
             -DocRepoLocation $(DailyDocRepoLocation)
-            -TenantId '$(opensource-aad-tenant-id)' 
-            -ClientId '$(opensource-aad-app-id)' 
+            -TenantId '$(opensource-aad-tenant-id)'
+            -ClientId '$(opensource-aad-app-id)'
             -ClientSecret '$(opensource-aad-secret)'
-        displayName: Generate Service Level Readme
+        displayName: Generate Service Level Readme for Daily docs
       - task: Powershell@2
         inputs:
           pwsh: true
@@ -116,7 +130,7 @@ jobs:
           arguments: >-
             -DocRepoLocation $(DailyDocRepoLocation)
             -OutputLocation $(DailyDocRepoLocation)/docs-ref-mapping/reference-unified.yml
-        displayName: Generate ToC for Daily branch
+        displayName: Generate ToC for Daily docs
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:
           BaseRepoBranch: $(DailyDocsBranchName)
@@ -126,6 +140,7 @@ jobs:
           TargetRepoOwner: azure-sdk
           WorkingDirectory: $(DailyDocRepoLocation)
           ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
+          PushArgs: -f
 
       - task: PowerShell@2
         displayName: Queue Docs CI build

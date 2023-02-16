@@ -35,15 +35,6 @@ public final class SitesImpl implements Sites {
         this.serviceClient().delete(resourceGroupName, mobileNetworkName, siteName, context);
     }
 
-    public Site get(String resourceGroupName, String mobileNetworkName, String siteName) {
-        SiteInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, siteName);
-        if (inner != null) {
-            return new SiteImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Site> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String siteName, Context context) {
         Response<SiteInner> inner =
@@ -54,6 +45,15 @@ public final class SitesImpl implements Sites {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SiteImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Site get(String resourceGroupName, String mobileNetworkName, String siteName) {
+        SiteInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, siteName);
+        if (inner != null) {
+            return new SiteImpl(inner, this.manager());
         } else {
             return null;
         }

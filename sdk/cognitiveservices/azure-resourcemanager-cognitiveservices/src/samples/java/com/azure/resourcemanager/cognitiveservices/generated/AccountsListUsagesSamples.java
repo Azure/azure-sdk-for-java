@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts ListUsages. */
 public final class AccountsListUsagesSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetUsages.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/GetUsages.json
      */
     /**
      * Sample code: Get Usages.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageSchemaType;
 import com.azure.resourcemanager.cosmos.models.BackupStorageRedundancy;
@@ -15,6 +14,7 @@ import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentityUserAssignedIdentities;
+import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PeriodicModeBackupPolicy;
 import com.azure.resourcemanager.cosmos.models.PeriodicModeProperties;
@@ -27,7 +27,7 @@ import java.util.Map;
 /** Samples for DatabaseAccounts Update. */
 public final class DatabaseAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountPatch.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountPatch.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountPatch.
@@ -88,8 +88,10 @@ public final class DatabaseAccountsUpdateSamples {
                         Arrays
                             .asList(
                                 "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
-                    .withCapacity(new Capacity().withTotalThroughputLimit(2000)),
-                Context.NONE);
+                    .withCapacity(new Capacity().withTotalThroughputLimit(2000))
+                    .withEnablePartitionMerge(true)
+                    .withMinimalTlsVersion(MinimalTlsVersion.TLS),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

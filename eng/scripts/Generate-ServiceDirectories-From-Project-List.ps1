@@ -88,7 +88,7 @@ foreach ($project in $ProjectList) {
     }
 }
 
-# This is lame. Because resourcemanager and resourcemanagerhybrid contain the some of the same
+# This is sad. Because resourcemanager and resourcemanagerhybrid contain the some of the same
 # artifacts and we don't know which one is actually needed, if resourcemanager is in the list
 # then add resourcemanagerhybrid.
 Write-Host "sparseCheckoutDirectories=$sparseCheckoutDirectories"

@@ -141,19 +141,20 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param entityPath The remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
      * @param transferEntityPath Path if the message should be transferred this destination by message broker.
+     * @param clientIdentifier The identifier of the client.
      *
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
     public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
-         String transferEntityPath) {
+        String transferEntityPath, String clientIdentifier) {
 
         return createSession(linkName).cast(ServiceBusSession.class).flatMap(session -> {
             LOGGER.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).log("Get or create sender link.");
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
             return session.createProducer(linkName + entityPath, entityPath, retryOptions.getTryTimeout(),
-                retryPolicy, transferEntityPath).cast(AmqpSendLink.class);
+                retryPolicy, transferEntityPath, clientIdentifier).cast(AmqpSendLink.class);
         });
     }
 
@@ -167,19 +168,20 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param transferEntityPath Path if the events should be transferred to another link after being received
      *     from this link.
      * @param entityType {@link MessagingEntityType} to use when creating the link.
+     * @param clientIdentifier The identifier of the client.
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
     public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath,
-        ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType) {
+        ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType, String clientIdentifier) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 LOGGER.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
-                    retryPolicy, receiveMode);
+                    retryPolicy, receiveMode, clientIdentifier);
             });
     }
 
@@ -197,21 +199,21 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param receiveMode Consumer options to use when creating the link.
      * @param transferEntityPath to use when creating the link.
      * @param entityType {@link MessagingEntityType} to use when creating the link.
+     * @param clientIdentifier The identifier of the client.
      * @param sessionId to use when creating the link.
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath,
-        ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType,
-        String sessionId) {
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ServiceBusReceiveMode receiveMode,
+        String transferEntityPath, MessagingEntityType entityType, String clientIdentifier, String sessionId) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 LOGGER.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
-                    retryPolicy, receiveMode, sessionId);
+                    retryPolicy, receiveMode, clientIdentifier, sessionId);
             });
     }
 

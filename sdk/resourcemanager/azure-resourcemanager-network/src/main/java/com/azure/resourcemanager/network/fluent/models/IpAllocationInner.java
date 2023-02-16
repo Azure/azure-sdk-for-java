@@ -33,6 +33,10 @@ public final class IpAllocationInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of IpAllocationInner class. */
+    public IpAllocationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the IpAllocation.
      *

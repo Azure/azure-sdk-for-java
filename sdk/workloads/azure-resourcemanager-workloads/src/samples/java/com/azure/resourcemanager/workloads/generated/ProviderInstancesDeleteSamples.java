@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProviderInstances Delete. */
 public final class ProviderInstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/ProviderInstances_Delete.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/ProviderInstances_Delete.json
      */
     /**
      * Sample code: Deletes a SAP monitor provider.
@@ -17,6 +15,8 @@ public final class ProviderInstancesDeleteSamples {
      * @param manager Entry point to WorkloadsManager.
      */
     public static void deletesASAPMonitorProvider(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.providerInstances().delete("myResourceGroup", "mySapMonitor", "myProviderInstance", Context.NONE);
+        manager
+            .providerInstances()
+            .delete("myResourceGroup", "mySapMonitor", "myProviderInstance", com.azure.core.util.Context.NONE);
     }
 }

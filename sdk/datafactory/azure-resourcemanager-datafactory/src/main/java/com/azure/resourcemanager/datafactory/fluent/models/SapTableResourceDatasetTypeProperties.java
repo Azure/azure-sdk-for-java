@@ -12,11 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapTableResourceDatasetTypeProperties {
     /*
-     * The name of the SAP Table. Type: string (or Expression with resultType
-     * string).
+     * The name of the SAP Table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName", required = true)
     private Object tableName;
+
+    /** Creates an instance of SapTableResourceDatasetTypeProperties class. */
+    public SapTableResourceDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).

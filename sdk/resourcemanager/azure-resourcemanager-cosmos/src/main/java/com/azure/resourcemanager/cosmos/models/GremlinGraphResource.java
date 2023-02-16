@@ -18,15 +18,14 @@ public class GremlinGraphResource {
     private String id;
 
     /*
-     * The configuration of the indexing policy. By default, the indexing is
-     * automatic for all document paths within the graph
+     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within
+     * the graph
      */
     @JsonProperty(value = "indexingPolicy")
     private IndexingPolicy indexingPolicy;
 
     /*
-     * The configuration of the partition key to be used for partitioning data
-     * into multiple partitions
+     * The configuration of the partition key to be used for partitioning data into multiple partitions
      */
     @JsonProperty(value = "partitionKey")
     private ContainerPartitionKey partitionKey;
@@ -38,9 +37,8 @@ public class GremlinGraphResource {
     private Integer defaultTtl;
 
     /*
-     * The unique key policy configuration for specifying uniqueness
-     * constraints on documents in the collection in the Azure Cosmos DB
-     * service.
+     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the
+     * Azure Cosmos DB service.
      */
     @JsonProperty(value = "uniqueKeyPolicy")
     private UniqueKeyPolicy uniqueKeyPolicy;
@@ -56,6 +54,10 @@ public class GremlinGraphResource {
      */
     @JsonProperty(value = "analyticalStorageTtl")
     private Long analyticalStorageTtl;
+
+    /** Creates an instance of GremlinGraphResource class. */
+    public GremlinGraphResource() {
+    }
 
     /**
      * Get the id property: Name of the Cosmos DB Gremlin graph.

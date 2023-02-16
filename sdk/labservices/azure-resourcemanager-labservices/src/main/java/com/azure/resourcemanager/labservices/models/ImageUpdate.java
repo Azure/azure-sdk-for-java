@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.models.ImageUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Lab services virtual machine image for updates. */
 @Fluent
 public final class ImageUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageUpdate.class);
-
     /*
      * Image resource properties
      */

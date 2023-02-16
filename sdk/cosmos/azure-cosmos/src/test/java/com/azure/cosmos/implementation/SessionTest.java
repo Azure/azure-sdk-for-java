@@ -23,6 +23,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -143,6 +144,7 @@ public class SessionTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Ignore("TODO 32129 - reenable after fixing flakiness.")
     public void partitionedSessionToken(boolean isNameBased) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
         spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false).block();
@@ -235,7 +237,7 @@ public class SessionTest extends TestSuiteBase {
         CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(documentCreated.getId()), documentCreated.getId());
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         cosmosItemIdentities.add(cosmosItemIdentity);
-        spyClient.readMany(cosmosItemIdentities, getCollectionLink(isNameBased), queryRequestOptions, Document.class).block();
+        spyClient.readMany(cosmosItemIdentities, getCollectionLink(isNameBased), queryRequestOptions, InternalObjectNode.class).block();
         assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token

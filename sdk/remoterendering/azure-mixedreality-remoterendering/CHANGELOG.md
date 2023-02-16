@@ -10,6 +10,43 @@
 
 ### Other Changes
 
+## 1.1.15 (2023-03-07)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.36.0`.
+- Updated `azure-mixedreality-authentication` to `1.2.10`.
+
+## 1.1.14 (2023-02-07)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.35.0`.
+- Updated `azure-mixedreality-authentication` to `1.2.9`.
+
+## 1.1.13 (2022-11-09)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.34.0`.
+- Updated `azure-mixedreality-authentication` to `1.2.8`.
+
+## 1.1.12 (2022-10-24)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.33.0`.
+- Updated `azure-mixedreality-authentication` to `1.2.7`.
+
+## 1.1.11 (2022-09-12)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.32.0`.
+- Updated `azure-mixedreality-authentication` to `1.2.6`.
+
+## 1.1.10 (2022-08-16)
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-mixedreality-authentication` to `1.2.5`.
+
 ## 1.1.9 (2022-07-12)
 - Updated `azure-core` to `1.30.0`.
 - Updated `azure-mixedreality-authentication` to `1.2.4`.

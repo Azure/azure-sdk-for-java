@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,26 +15,27 @@ import java.util.Map;
  * Specifies the action to post to service when the rule condition is evaluated. The discriminator is always
  * RuleWebhookAction in this case.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleWebhookAction")
-@JsonFlatten
 @Fluent
-public class RuleWebhookAction extends RuleAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleWebhookAction.class);
-
+public final class RuleWebhookAction extends RuleAction {
     /*
-     * the service uri to Post the notification when the alert activates or
-     * resolves.
+     * the service uri to Post the notification when the alert activates or resolves.
      */
     @JsonProperty(value = "serviceUri")
     private String serviceUri;
 
     /*
-     * the dictionary of custom properties to include with the post operation.
-     * These data are appended to the webhook payload.
+     * the dictionary of custom properties to include with the post operation. These data are appended to the webhook
+     * payload.
      */
     @JsonProperty(value = "properties")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
+
+    /** Creates an instance of RuleWebhookAction class. */
+    public RuleWebhookAction() {
+    }
 
     /**
      * Get the serviceUri property: the service uri to Post the notification when the alert activates or resolves.

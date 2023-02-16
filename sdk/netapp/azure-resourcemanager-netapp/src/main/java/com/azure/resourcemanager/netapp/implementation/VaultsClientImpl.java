@@ -72,7 +72,9 @@ public final class VaultsClientImpl implements VaultsClient {
     }
 
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -123,7 +125,9 @@ public final class VaultsClientImpl implements VaultsClient {
     }
 
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -173,7 +177,9 @@ public final class VaultsClientImpl implements VaultsClient {
     }
 
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -188,7 +194,9 @@ public final class VaultsClientImpl implements VaultsClient {
     }
 
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -204,7 +212,9 @@ public final class VaultsClientImpl implements VaultsClient {
     }
 
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -219,7 +229,9 @@ public final class VaultsClientImpl implements VaultsClient {
     }
 
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RecordSets List. */
 public final class RecordSetsListSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetALLList.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetALLList.json
      */
     /**
      * Sample code: GET Private DNS Zone ALL Record Sets.

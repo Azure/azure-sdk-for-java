@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeinterlaceParity. */
+/** The field parity for de-interlacing, defaults to Auto. */
 public final class DeinterlaceParity extends ExpandableStringEnum<DeinterlaceParity> {
     /** Static value Auto for DeinterlaceParity. */
     public static final DeinterlaceParity AUTO = fromString("Auto");
@@ -18,6 +18,15 @@ public final class DeinterlaceParity extends ExpandableStringEnum<DeinterlacePar
 
     /** Static value BottomFieldFirst for DeinterlaceParity. */
     public static final DeinterlaceParity BOTTOM_FIELD_FIRST = fromString("BottomFieldFirst");
+
+    /**
+     * Creates a new instance of DeinterlaceParity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeinterlaceParity() {
+    }
 
     /**
      * Creates or finds a DeinterlaceParity from its string representation.

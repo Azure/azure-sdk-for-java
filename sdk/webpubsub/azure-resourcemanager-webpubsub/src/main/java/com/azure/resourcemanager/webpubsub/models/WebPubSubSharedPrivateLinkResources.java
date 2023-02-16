@@ -19,7 +19,7 @@ public interface WebPubSubSharedPrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of shared private link resources.
+     * @return a list of shared private link resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SharedPrivateLinkResource> list(String resourceGroupName, String resourceName);
 
@@ -33,9 +33,25 @@ public interface WebPubSubSharedPrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of shared private link resources.
+     * @return a list of shared private link resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SharedPrivateLinkResource> list(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Get the specified shared private link resource.
+     *
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified shared private link resource along with {@link Response}.
+     */
+    Response<SharedPrivateLinkResource> getWithResponse(
+        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
 
     /**
      * Get the specified shared private link resource.
@@ -50,22 +66,6 @@ public interface WebPubSubSharedPrivateLinkResources {
      * @return the specified shared private link resource.
      */
     SharedPrivateLinkResource get(String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName);
-
-    /**
-     * Get the specified shared private link resource.
-     *
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource.
-     */
-    Response<SharedPrivateLinkResource> getWithResponse(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
 
     /**
      * Delete the specified shared private link resource.
@@ -101,7 +101,7 @@ public interface WebPubSubSharedPrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource.
+     * @return the specified shared private link resource along with {@link Response}.
      */
     SharedPrivateLinkResource getById(String id);
 
@@ -113,7 +113,7 @@ public interface WebPubSubSharedPrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource.
+     * @return the specified shared private link resource along with {@link Response}.
      */
     Response<SharedPrivateLinkResource> getByIdWithResponse(String id, Context context);
 

@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.DatastoreProvisioningState;
 import com.azure.resourcemanager.avs.models.DatastoreStatus;
 import com.azure.resourcemanager.avs.models.DiskPoolVolume;
 import com.azure.resourcemanager.avs.models.NetAppVolume;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a datastore. */
 @Fluent
 public final class DatastoreProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatastoreProperties.class);
-
     /*
      * The state of the datastore provisioning
      */
@@ -41,6 +37,10 @@ public final class DatastoreProperties {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private DatastoreStatus status;
+
+    /** Creates an instance of DatastoreProperties class. */
+    public DatastoreProperties() {
+    }
 
     /**
      * Get the provisioningState property: The state of the datastore provisioning.

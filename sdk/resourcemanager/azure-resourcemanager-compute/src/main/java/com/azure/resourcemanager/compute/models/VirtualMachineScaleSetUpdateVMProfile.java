@@ -53,8 +53,7 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     private String licenseType;
 
     /*
-     * Specifies the billing related details of a Azure Spot VMSS.
-     * <br><br>Minimum api-version: 2019-03-01.
+     * Specifies the billing related details of a Azure Spot VMSS. <br><br>Minimum api-version: 2019-03-01.
      */
     @JsonProperty(value = "billingProfile")
     private BillingProfile billingProfile;
@@ -66,11 +65,21 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     private ScheduledEventsProfile scheduledEventsProfile;
 
     /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not
-     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
+     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here.
+     * <br><br>Minimum api-version: 2021-03-01
      */
     @JsonProperty(value = "userData")
     private String userData;
+
+    /*
+     * Specifies the hardware profile related details of a scale set. <br><br>Minimum api-version: 2021-11-01.
+     */
+    @JsonProperty(value = "hardwareProfile")
+    private VirtualMachineScaleSetHardwareProfile hardwareProfile;
+
+    /** Creates an instance of VirtualMachineScaleSetUpdateVMProfile class. */
+    public VirtualMachineScaleSetUpdateVMProfile() {
+    }
 
     /**
      * Get the osProfile property: The virtual machine scale set OS profile.
@@ -281,6 +290,29 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
+     * Get the hardwareProfile property: Specifies the hardware profile related details of a scale set.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     *
+     * @return the hardwareProfile value.
+     */
+    public VirtualMachineScaleSetHardwareProfile hardwareProfile() {
+        return this.hardwareProfile;
+    }
+
+    /**
+     * Set the hardwareProfile property: Specifies the hardware profile related details of a scale set.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     *
+     * @param hardwareProfile the hardwareProfile value to set.
+     * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
+     */
+    public VirtualMachineScaleSetUpdateVMProfile withHardwareProfile(
+        VirtualMachineScaleSetHardwareProfile hardwareProfile) {
+        this.hardwareProfile = hardwareProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -309,6 +341,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
         }
         if (scheduledEventsProfile() != null) {
             scheduledEventsProfile().validate();
+        }
+        if (hardwareProfile() != null) {
+            hardwareProfile().validate();
         }
     }
 }

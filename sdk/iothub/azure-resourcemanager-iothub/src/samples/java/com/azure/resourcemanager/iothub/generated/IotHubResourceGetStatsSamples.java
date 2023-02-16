@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IotHubResource GetStats. */
 public final class IotHubResourceGetStatsSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_stats.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_stats.json
      */
     /**
      * Sample code: IotHubResource_GetStats.

@@ -7,21 +7,17 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleCondition;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.MatchProcessingBehavior;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Friendly Rules name mapping to the any Rules or secret related information. */
 @Fluent
 public final class RuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleInner.class);
-
     /*
      * The JSON object that contains the properties of the Rules to create.
      */

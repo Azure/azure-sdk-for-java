@@ -72,7 +72,7 @@ public final class RouteTablesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface RouteTablesService {
+    public interface RouteTablesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables"
@@ -213,7 +213,7 @@ public final class RouteTablesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -263,7 +263,7 @@ public final class RouteTablesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -446,7 +446,7 @@ public final class RouteTablesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -498,7 +498,7 @@ public final class RouteTablesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -511,24 +511,6 @@ public final class RouteTablesClientImpl
                 expand,
                 accept,
                 context);
-    }
-
-    /**
-     * Gets the specified route table.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified route table on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteTableInner> getByResourceGroupAsync(
-        String resourceGroupName, String routeTableName, String expand) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, routeTableName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -553,22 +535,6 @@ public final class RouteTablesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified route table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteTableInner getByResourceGroup(String resourceGroupName, String routeTableName) {
-        final String expand = null;
-        return getByResourceGroupAsync(resourceGroupName, routeTableName, expand).block();
-    }
-
-    /**
-     * Gets the specified route table.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -580,6 +546,22 @@ public final class RouteTablesClientImpl
     public Response<RouteTableInner> getByResourceGroupWithResponse(
         String resourceGroupName, String routeTableName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, routeTableName, expand, context).block();
+    }
+
+    /**
+     * Gets the specified route table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified route table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouteTableInner getByResourceGroup(String resourceGroupName, String routeTableName) {
+        final String expand = null;
+        return getByResourceGroupWithResponse(resourceGroupName, routeTableName, expand, Context.NONE).getValue();
     }
 
     /**
@@ -620,7 +602,7 @@ public final class RouteTablesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -677,7 +659,7 @@ public final class RouteTablesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -888,7 +870,7 @@ public final class RouteTablesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -945,7 +927,7 @@ public final class RouteTablesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -984,22 +966,6 @@ public final class RouteTablesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route table resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteTableInner updateTags(String resourceGroupName, String routeTableName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, routeTableName, parameters).block();
-    }
-
-    /**
-     * Updates a route table tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to update route table tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1010,6 +976,22 @@ public final class RouteTablesClientImpl
     public Response<RouteTableInner> updateTagsWithResponse(
         String resourceGroupName, String routeTableName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, routeTableName, parameters, context).block();
+    }
+
+    /**
+     * Updates a route table tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to update route table tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route table resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouteTableInner updateTags(String resourceGroupName, String routeTableName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, routeTableName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1040,7 +1022,7 @@ public final class RouteTablesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1095,7 +1077,7 @@ public final class RouteTablesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1200,7 +1182,7 @@ public final class RouteTablesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1243,7 +1225,7 @@ public final class RouteTablesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1315,7 +1297,8 @@ public final class RouteTablesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1351,7 +1334,8 @@ public final class RouteTablesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1388,7 +1372,8 @@ public final class RouteTablesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1424,7 +1409,8 @@ public final class RouteTablesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

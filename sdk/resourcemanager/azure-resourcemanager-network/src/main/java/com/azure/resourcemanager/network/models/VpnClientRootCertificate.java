@@ -20,8 +20,7 @@ public final class VpnClientRootCertificate extends SubResource {
     private VpnClientRootCertificatePropertiesFormat innerProperties = new VpnClientRootCertificatePropertiesFormat();
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -31,6 +30,10 @@ public final class VpnClientRootCertificate extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of VpnClientRootCertificate class. */
+    public VpnClientRootCertificate() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the vpn client root certificate.

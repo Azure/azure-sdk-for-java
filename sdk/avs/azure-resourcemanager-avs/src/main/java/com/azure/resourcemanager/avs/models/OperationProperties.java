@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Extra Operation properties. */
 @Fluent
 public final class OperationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationProperties.class);
-
     /*
      * Service specifications of the operation
      */
     @JsonProperty(value = "serviceSpecification")
     private ServiceSpecification serviceSpecification;
+
+    /** Creates an instance of OperationProperties class. */
+    public OperationProperties() {
+    }
 
     /**
      * Get the serviceSpecification property: Service specifications of the operation.

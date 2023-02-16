@@ -30,6 +30,7 @@ public final class CloudErrorException extends HttpResponseException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public CloudError getValue() {
         return (CloudError) super.getValue();

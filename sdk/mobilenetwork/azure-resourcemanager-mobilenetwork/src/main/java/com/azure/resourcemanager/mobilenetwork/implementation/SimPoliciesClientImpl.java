@@ -65,7 +65,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface SimPoliciesService {
+    public interface SimPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
@@ -159,7 +159,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -213,7 +213,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -265,7 +265,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -287,7 +287,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -310,7 +310,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -323,11 +323,11 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String simPolicyName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, simPolicyName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, simPolicyName).getSyncPoller();
     }
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -341,11 +341,11 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, simPolicyName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, simPolicyName, context).getSyncPoller();
     }
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -363,7 +363,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -383,7 +383,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -398,7 +398,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Deletes the specified sim policy.
+     * Deletes the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -414,7 +414,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Gets information about the specified sim policy.
+     * Gets information about the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -422,7 +422,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy along with {@link Response} on successful completion of {@link
+     * @return information about the specified SIM policy along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -469,7 +469,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Gets information about the specified sim policy.
+     * Gets information about the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -478,7 +478,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy along with {@link Response} on successful completion of {@link
+     * @return information about the specified SIM policy along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -522,7 +522,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Gets information about the specified sim policy.
+     * Gets information about the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -530,39 +530,16 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy on successful completion of {@link Mono}.
+     * @return information about the specified SIM policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SimPolicyInner> getAsync(String resourceGroupName, String mobileNetworkName, String simPolicyName) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, simPolicyName)
-            .flatMap(
-                (Response<SimPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets information about the specified sim policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param simPolicyName The name of the SIM policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimPolicyInner get(String resourceGroupName, String mobileNetworkName, String simPolicyName) {
-        return getAsync(resourceGroupName, mobileNetworkName, simPolicyName).block();
-    }
-
-    /**
-     * Gets information about the specified sim policy.
+     * Gets information about the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -571,7 +548,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim policy along with {@link Response}.
+     * @return information about the specified SIM policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SimPolicyInner> getWithResponse(
@@ -580,16 +557,32 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Creates or updates a SimPolicy.
+     * Gets information about the specified SIM policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about the specified SIM policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SimPolicyInner get(String resourceGroupName, String mobileNetworkName, String simPolicyName) {
+        return getWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param simPolicyName The name of the SIM policy.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sIM policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -641,17 +634,17 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return sIM policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -704,16 +697,16 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of sim policy resource.
+     * @return the {@link PollerFlux} for polling of sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdateAsync(
@@ -731,17 +724,17 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of sim policy resource.
+     * @return the {@link PollerFlux} for polling of sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdateAsync(
@@ -760,36 +753,37 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sim policy resource.
+     * @return the {@link SyncPoller} for polling of sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, SimPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sim policy resource.
+     * @return the {@link SyncPoller} for polling of sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdate(
@@ -798,21 +792,22 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
         String simPolicyName,
         SimPolicyInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource on successful completion of {@link Mono}.
+     * @return sIM policy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SimPolicyInner> createOrUpdateAsync(
@@ -823,17 +818,17 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource on successful completion of {@link Mono}.
+     * @return sIM policy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SimPolicyInner> createOrUpdateAsync(
@@ -848,16 +843,16 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource.
+     * @return sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SimPolicyInner createOrUpdate(
@@ -866,17 +861,17 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Creates or updates a SimPolicy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to the create or update sim policy operation.
+     * @param parameters Parameters supplied to the create or update SIM policy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource.
+     * @return sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SimPolicyInner createOrUpdate(
@@ -889,16 +884,16 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Update sim policy tags.
+     * Updates SIM policy tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to update Sim Policy tags.
+     * @param parameters Parameters supplied to update SIM policy tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return sIM policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SimPolicyInner>> updateTagsWithResponseAsync(
@@ -950,17 +945,17 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Update sim policy tags.
+     * Updates SIM policy tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to update Sim Policy tags.
+     * @param parameters Parameters supplied to update SIM policy tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return sIM policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SimPolicyInner>> updateTagsWithResponseAsync(
@@ -1013,61 +1008,36 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Update sim policy tags.
+     * Updates SIM policy tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to update Sim Policy tags.
+     * @param parameters Parameters supplied to update SIM policy tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource on successful completion of {@link Mono}.
+     * @return sIM policy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SimPolicyInner> updateTagsAsync(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters)
-            .flatMap(
-                (Response<SimPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Update sim policy tags.
+     * Updates SIM policy tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to update Sim Policy tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimPolicyInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String simPolicyName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters).block();
-    }
-
-    /**
-     * Update sim policy tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to update Sim Policy tags.
+     * @param parameters Parameters supplied to update SIM policy tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim policy resource along with {@link Response}.
+     * @return sIM policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SimPolicyInner> updateTagsWithResponse(
@@ -1081,14 +1051,33 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Gets all the simPolicies in a mobile network.
+     * Updates SIM policy tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param simPolicyName The name of the SIM policy.
+     * @param parameters Parameters supplied to update SIM policy tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sIM policy resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SimPolicyInner updateTags(
+        String resourceGroupName, String mobileNetworkName, String simPolicyName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Gets all the SIM policies in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the simPolicies in a mobile network along with {@link PagedResponse} on successful completion of
+     * @return all the SIM policies in a mobile network along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1140,7 +1129,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Gets all the simPolicies in a mobile network.
+     * Gets all the SIM policies in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1148,7 +1137,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the simPolicies in a mobile network along with {@link PagedResponse} on successful completion of
+     * @return all the SIM policies in a mobile network along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1197,14 +1186,14 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Gets all the simPolicies in a mobile network.
+     * Gets all the SIM policies in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the simPolicies in a mobile network as paginated response with {@link PagedFlux}.
+     * @return all the SIM policies in a mobile network as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SimPolicyInner> listByMobileNetworkAsync(String resourceGroupName, String mobileNetworkName) {
@@ -1214,7 +1203,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Gets all the simPolicies in a mobile network.
+     * Gets all the SIM policies in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1222,7 +1211,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the simPolicies in a mobile network as paginated response with {@link PagedFlux}.
+     * @return all the SIM policies in a mobile network as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SimPolicyInner> listByMobileNetworkAsync(
@@ -1233,14 +1222,14 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Gets all the simPolicies in a mobile network.
+     * Gets all the SIM policies in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the simPolicies in a mobile network as paginated response with {@link PagedIterable}.
+     * @return all the SIM policies in a mobile network as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SimPolicyInner> listByMobileNetwork(String resourceGroupName, String mobileNetworkName) {
@@ -1248,7 +1237,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     }
 
     /**
-     * Gets all the simPolicies in a mobile network.
+     * Gets all the SIM policies in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1256,7 +1245,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the simPolicies in a mobile network as paginated response with {@link PagedIterable}.
+     * @return all the SIM policies in a mobile network as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SimPolicyInner> listByMobileNetwork(
@@ -1267,11 +1256,12 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for SimPolicies API service call along with {@link PagedResponse} on successful completion of
+     * @return response for SIM policies API service call along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1304,12 +1294,13 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for SimPolicies API service call along with {@link PagedResponse} on successful completion of
+     * @return response for SIM policies API service call along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

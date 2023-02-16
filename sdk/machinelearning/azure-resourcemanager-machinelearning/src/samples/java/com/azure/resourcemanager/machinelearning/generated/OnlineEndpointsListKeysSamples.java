@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OnlineEndpoints ListKeys. */
 public final class OnlineEndpointsListKeysSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/listKeys.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineEndpoint/listKeys.json
      */
     /**
      * Sample code: ListKeys Online Endpoint.
@@ -18,6 +16,8 @@ public final class OnlineEndpointsListKeysSamples {
      */
     public static void listKeysOnlineEndpoint(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.onlineEndpoints().listKeysWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
+        manager
+            .onlineEndpoints()
+            .listKeysWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE);
     }
 }

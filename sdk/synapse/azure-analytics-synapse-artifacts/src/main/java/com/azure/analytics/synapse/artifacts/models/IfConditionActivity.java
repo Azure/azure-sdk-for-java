@@ -21,28 +21,28 @@ import java.util.List;
 @Fluent
 public class IfConditionActivity extends ControlActivity {
     /*
-     * An expression that would evaluate to Boolean. This is used to determine
-     * the block of activities (ifTrueActivities or ifFalseActivities) that
-     * will be executed.
+     * An expression that would evaluate to Boolean. This is used to determine the block of activities
+     * (ifTrueActivities or ifFalseActivities) that will be executed.
      */
     @JsonProperty(value = "typeProperties.expression", required = true)
     private Expression expression;
 
     /*
-     * List of activities to execute if expression is evaluated to true. This
-     * is an optional property and if not provided, the activity will exit
-     * without any action.
+     * List of activities to execute if expression is evaluated to true. This is an optional property and if not
+     * provided, the activity will exit without any action.
      */
     @JsonProperty(value = "typeProperties.ifTrueActivities")
     private List<Activity> ifTrueActivities;
 
     /*
-     * List of activities to execute if expression is evaluated to false. This
-     * is an optional property and if not provided, the activity will exit
-     * without any action.
+     * List of activities to execute if expression is evaluated to false. This is an optional property and if not
+     * provided, the activity will exit without any action.
      */
     @JsonProperty(value = "typeProperties.ifFalseActivities")
     private List<Activity> ifFalseActivities;
+
+    /** Creates an instance of IfConditionActivity class. */
+    public IfConditionActivity() {}
 
     /**
      * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block of

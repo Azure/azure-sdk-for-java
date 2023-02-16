@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies the storage settings for the virtual machine disks. */
 @Fluent
 public final class StorageProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageProfile.class);
-
     /*
      * The image reference properties.
      */
@@ -22,18 +18,20 @@ public final class StorageProfile {
     private ImageReference imageReference;
 
     /*
-     * Specifies information about the operating system disk used by the
-     * virtual machine.
+     * Specifies information about the operating system disk used by the virtual machine.
      */
     @JsonProperty(value = "osDisk")
     private OsDisk osDisk;
 
     /*
-     * Specifies the parameters that are used to add a data disk to a virtual
-     * machine.
+     * Specifies the parameters that are used to add a data disk to a virtual machine.
      */
     @JsonProperty(value = "dataDisks")
     private List<DataDisk> dataDisks;
+
+    /** Creates an instance of StorageProfile class. */
+    public StorageProfile() {
+    }
 
     /**
      * Get the imageReference property: The image reference properties.

@@ -110,4 +110,20 @@ public interface SupportsOneDeploy {
      * if {@link DeployOptions#withTrackDeployment(Boolean)} set to True.
      */
     Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, DeployOptions deployOptions);
+
+    /**
+     * Gets deployment status for Azure Site.
+     *
+     * @param deploymentId GUID of the deployment operation
+     * @return the production deployment status for Azure Site
+     */
+    CsmDeploymentStatus getDeploymentStatus(String deploymentId);
+
+    /**
+     * Gets deployment status for Azure Site.
+     *
+     * @param deploymentId GUID of the deployment operation
+     * @return the production deployment status for Azure Site
+     */
+    Mono<CsmDeploymentStatus> getDeploymentStatusAsync(String deploymentId);
 }

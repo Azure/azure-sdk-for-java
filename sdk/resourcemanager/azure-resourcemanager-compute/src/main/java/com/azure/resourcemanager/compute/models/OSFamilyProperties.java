@@ -29,6 +29,10 @@ public final class OSFamilyProperties {
     @JsonProperty(value = "versions", access = JsonProperty.Access.WRITE_ONLY)
     private List<OSVersionPropertiesBase> versions;
 
+    /** Creates an instance of OSFamilyProperties class. */
+    public OSFamilyProperties() {
+    }
+
     /**
      * Get the name property: The OS family name.
      *

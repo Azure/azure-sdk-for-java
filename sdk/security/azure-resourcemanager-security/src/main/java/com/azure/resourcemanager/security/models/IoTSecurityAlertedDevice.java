@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Statistical information about the number of alerts per device during last set number of days. */
 @Immutable
 public final class IoTSecurityAlertedDevice {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTSecurityAlertedDevice.class);
-
     /*
      * Device identifier.
      */
@@ -25,6 +21,10 @@ public final class IoTSecurityAlertedDevice {
      */
     @JsonProperty(value = "alertsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long alertsCount;
+
+    /** Creates an instance of IoTSecurityAlertedDevice class. */
+    public IoTSecurityAlertedDevice() {
+    }
 
     /**
      * Get the deviceId property: Device identifier.

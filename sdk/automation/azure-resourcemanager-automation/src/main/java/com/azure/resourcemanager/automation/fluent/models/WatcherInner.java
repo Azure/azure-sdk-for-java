@@ -5,19 +5,20 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Definition of the watcher type. */
-@JsonFlatten
 @Fluent
-public class WatcherInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WatcherInner.class);
+public final class WatcherInner extends ProxyResource {
+    /*
+     * Gets or sets the watcher properties.
+     */
+    @JsonProperty(value = "properties")
+    private WatcherProperties innerProperties;
 
     /*
      * Gets or sets the etag of the resource.
@@ -29,6 +30,7 @@ public class WatcherInner extends ProxyResource {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -37,61 +39,14 @@ public class WatcherInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /*
-     * Gets or sets the frequency at which the watcher is invoked.
+    /**
+     * Get the innerProperties property: Gets or sets the watcher properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.executionFrequencyInSeconds")
-    private Long executionFrequencyInSeconds;
-
-    /*
-     * Gets or sets the name of the script the watcher is attached to, i.e. the
-     * name of an existing runbook.
-     */
-    @JsonProperty(value = "properties.scriptName")
-    private String scriptName;
-
-    /*
-     * Gets or sets the parameters of the script.
-     */
-    @JsonProperty(value = "properties.scriptParameters")
-    private Map<String, String> scriptParameters;
-
-    /*
-     * Gets or sets the name of the hybrid worker group the watcher will run
-     * on.
-     */
-    @JsonProperty(value = "properties.scriptRunOn")
-    private String scriptRunOn;
-
-    /*
-     * Gets the current status of the watcher.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
-
-    /*
-     * Gets or sets the creation time.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets or sets the last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Details of the user who last modified the watcher.
-     */
-    @JsonProperty(value = "properties.lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastModifiedBy;
-
-    /*
-     * Gets or sets the description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private WatcherProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: Gets or sets the etag of the resource.
@@ -159,7 +114,7 @@ public class WatcherInner extends ProxyResource {
      * @return the executionFrequencyInSeconds value.
      */
     public Long executionFrequencyInSeconds() {
-        return this.executionFrequencyInSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().executionFrequencyInSeconds();
     }
 
     /**
@@ -169,7 +124,10 @@ public class WatcherInner extends ProxyResource {
      * @return the WatcherInner object itself.
      */
     public WatcherInner withExecutionFrequencyInSeconds(Long executionFrequencyInSeconds) {
-        this.executionFrequencyInSeconds = executionFrequencyInSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WatcherProperties();
+        }
+        this.innerProperties().withExecutionFrequencyInSeconds(executionFrequencyInSeconds);
         return this;
     }
 
@@ -180,7 +138,7 @@ public class WatcherInner extends ProxyResource {
      * @return the scriptName value.
      */
     public String scriptName() {
-        return this.scriptName;
+        return this.innerProperties() == null ? null : this.innerProperties().scriptName();
     }
 
     /**
@@ -191,7 +149,10 @@ public class WatcherInner extends ProxyResource {
      * @return the WatcherInner object itself.
      */
     public WatcherInner withScriptName(String scriptName) {
-        this.scriptName = scriptName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WatcherProperties();
+        }
+        this.innerProperties().withScriptName(scriptName);
         return this;
     }
 
@@ -201,7 +162,7 @@ public class WatcherInner extends ProxyResource {
      * @return the scriptParameters value.
      */
     public Map<String, String> scriptParameters() {
-        return this.scriptParameters;
+        return this.innerProperties() == null ? null : this.innerProperties().scriptParameters();
     }
 
     /**
@@ -211,7 +172,10 @@ public class WatcherInner extends ProxyResource {
      * @return the WatcherInner object itself.
      */
     public WatcherInner withScriptParameters(Map<String, String> scriptParameters) {
-        this.scriptParameters = scriptParameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WatcherProperties();
+        }
+        this.innerProperties().withScriptParameters(scriptParameters);
         return this;
     }
 
@@ -221,7 +185,7 @@ public class WatcherInner extends ProxyResource {
      * @return the scriptRunOn value.
      */
     public String scriptRunOn() {
-        return this.scriptRunOn;
+        return this.innerProperties() == null ? null : this.innerProperties().scriptRunOn();
     }
 
     /**
@@ -231,7 +195,10 @@ public class WatcherInner extends ProxyResource {
      * @return the WatcherInner object itself.
      */
     public WatcherInner withScriptRunOn(String scriptRunOn) {
-        this.scriptRunOn = scriptRunOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WatcherProperties();
+        }
+        this.innerProperties().withScriptRunOn(scriptRunOn);
         return this;
     }
 
@@ -241,7 +208,7 @@ public class WatcherInner extends ProxyResource {
      * @return the status value.
      */
     public String status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -250,7 +217,7 @@ public class WatcherInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -259,7 +226,7 @@ public class WatcherInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -268,7 +235,7 @@ public class WatcherInner extends ProxyResource {
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
-        return this.lastModifiedBy;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedBy();
     }
 
     /**
@@ -277,7 +244,7 @@ public class WatcherInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -287,7 +254,10 @@ public class WatcherInner extends ProxyResource {
      * @return the WatcherInner object itself.
      */
     public WatcherInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WatcherProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -297,5 +267,8 @@ public class WatcherInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

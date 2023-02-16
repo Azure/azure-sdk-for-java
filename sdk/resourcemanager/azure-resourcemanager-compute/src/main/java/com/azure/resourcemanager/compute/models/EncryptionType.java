@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionType. */
+/** The type of key used to encrypt the data of the disk. */
 public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
     /** Static value EncryptionAtRestWithPlatformKey for EncryptionType. */
     public static final EncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_KEY =
@@ -21,6 +21,15 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
     /** Static value EncryptionAtRestWithPlatformAndCustomerKeys for EncryptionType. */
     public static final EncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS =
         fromString("EncryptionAtRestWithPlatformAndCustomerKeys");
+
+    /**
+     * Creates a new instance of EncryptionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionType() {
+    }
 
     /**
      * Creates or finds a EncryptionType from its string representation.

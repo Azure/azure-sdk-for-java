@@ -3,8 +3,10 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.Constants;
+import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
@@ -88,8 +90,10 @@ class ContentDownloader {
 
                 Response<Flux<ByteBuffer>> initialResponse = setupTuple2.getT2();
                 ProgressListener progressListener = parallelDownloadOptions.getProgressListener();
-                ProgressReporter progressReporter = progressListener == null ? null
-                    : ProgressReporter.withProgressListener(progressListener);
+                ProgressReporter progressReporter =
+                    progressListener == null
+                        ? null
+                        : ProgressReporter.withProgressListener(progressListener);
                 return Flux.range(0, numChunks)
                     .flatMap(chunkNum -> downloadChunk(chunkNum, initialResponse,
                         parallelDownloadOptions, newCount, downloadFunc,
@@ -141,10 +145,11 @@ class ContentDownloader {
                 return response.getBody();
             case 416:   // Retriable with new HttpRange, potentially bytes=0-
                 return FluxUtil.fluxError(logger,
-                    new CallingServerErrorException(formatExceptionMessage(response), response));
+                    ErrorConstructorProxy.create(new HttpResponseException(formatExceptionMessage(response), response))
+                );
             default:
                 throw logger.logExceptionAsError(
-                    new CallingServerErrorException(formatExceptionMessage(response), response)
+                    ErrorConstructorProxy.create(new HttpResponseException(formatExceptionMessage(response), response))
                 );
         }
     }
@@ -267,16 +272,16 @@ class ContentDownloader {
     private static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data, ProgressReporter progressReporter) {
         return Mono.just(progressReporter).flatMapMany(reporter -> {
             /*
-                Each time there is a new subscription, we will rewind the progress. This is desirable specifically
-                for retries, which resubscribe on each try. The first time this Flux is subscribed to, the
-                rewind will be a noop as there will have been no progress made. Subsequent rewinds will work as
-                expected.
+               Each time there is a new subscription, we will rewind the progress. This is desirable specifically
+               for retries, which resubscribe on each try. The first time this Flux is subscribed to, the
+               rewind will be a noop as there will have been no progress made. Subsequent rewinds will work as
+               expected.
              */
             reporter.reset();
 
             /*
                 Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
-            */
+             */
             return data.doOnNext(buffer -> progressReporter.reportProgress(buffer.remaining()));
         });
     }

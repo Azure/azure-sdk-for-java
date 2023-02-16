@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AAD")
 @Fluent
 public final class AadExternalSecuritySolution extends ExternalSecuritySolutionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AadExternalSecuritySolution.class);
-
     /*
      * The external security solution properties for AAD solutions
      */
     @JsonProperty(value = "properties")
     private AadSolutionProperties properties;
+
+    /** Creates an instance of AadExternalSecuritySolution class. */
+    public AadExternalSecuritySolution() {
+    }
 
     /**
      * Get the properties property: The external security solution properties for AAD solutions.

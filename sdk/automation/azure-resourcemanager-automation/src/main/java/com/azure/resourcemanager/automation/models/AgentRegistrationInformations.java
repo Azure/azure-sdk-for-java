@@ -30,7 +30,7 @@ public interface AgentRegistrationInformations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
+     * @return definition of the agent registration information type along with {@link Response}.
      */
     Response<AgentRegistration> getWithResponse(
         String resourceGroupName, String automationAccountName, Context context);
@@ -59,7 +59,7 @@ public interface AgentRegistrationInformations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
+     * @return definition of the agent registration information type along with {@link Response}.
      */
     Response<AgentRegistration> regenerateKeyWithResponse(
         String resourceGroupName,

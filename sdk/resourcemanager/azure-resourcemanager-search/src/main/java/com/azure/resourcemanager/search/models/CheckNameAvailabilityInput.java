@@ -6,14 +6,11 @@ package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input of check name availability API. */
 @Fluent
 public final class CheckNameAvailabilityInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityInput.class);
-
     /*
      * The search service name to validate. Search service names must only
      * contain lowercase letters, digits or dashes, cannot use dash as the
@@ -28,7 +25,7 @@ public final class CheckNameAvailabilityInput {
      * always be 'searchServices'.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "searchServices";
 
     /** Creates an instance of CheckNameAvailabilityInput class. */
     public CheckNameAvailabilityInput() {
@@ -88,9 +85,11 @@ public final class CheckNameAvailabilityInput {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model CheckNameAvailabilityInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilityInput.class);
 }

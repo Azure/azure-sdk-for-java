@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualMachineEvictionPolicyTypes. */
+/** Specifies the eviction policy for the Azure Spot VM/VMSS. */
 public final class VirtualMachineEvictionPolicyTypes extends ExpandableStringEnum<VirtualMachineEvictionPolicyTypes> {
     /** Static value Deallocate for VirtualMachineEvictionPolicyTypes. */
     public static final VirtualMachineEvictionPolicyTypes DEALLOCATE = fromString("Deallocate");
 
     /** Static value Delete for VirtualMachineEvictionPolicyTypes. */
     public static final VirtualMachineEvictionPolicyTypes DELETE = fromString("Delete");
+
+    /**
+     * Creates a new instance of VirtualMachineEvictionPolicyTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualMachineEvictionPolicyTypes() {
+    }
 
     /**
      * Creates or finds a VirtualMachineEvictionPolicyTypes from its string representation.

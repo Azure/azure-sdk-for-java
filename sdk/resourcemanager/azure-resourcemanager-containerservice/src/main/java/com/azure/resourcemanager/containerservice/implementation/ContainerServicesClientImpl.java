@@ -50,7 +50,7 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface ContainerServicesService {
+    public interface ContainerServicesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/orchestrators")
         @ExpectedResponses({200})
@@ -66,7 +66,9 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
     }
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * Gets a list of supported orchestrators in the specified subscription.
+     *
+     * <p>Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
      *
      * @param location The name of a supported Azure region.
@@ -113,7 +115,9 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
     }
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * Gets a list of supported orchestrators in the specified subscription.
+     *
+     * <p>Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
      *
      * @param location The name of a supported Azure region.
@@ -158,25 +162,9 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
     }
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
-     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     * Gets a list of supported orchestrators in the specified subscription.
      *
-     * @param location The name of a supported Azure region.
-     * @param resourceType resource type for which the list of orchestrators needs to be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported orchestrators in the specified subscription on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(
-        String location, String resourceType) {
-        return listOrchestratorsWithResponseAsync(location, resourceType)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * <p>Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
      *
      * @param location The name of a supported Azure region.
@@ -193,23 +181,9 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
     }
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
-     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     * Gets a list of supported orchestrators in the specified subscription.
      *
-     * @param location The name of a supported Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported orchestrators in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OrchestratorVersionProfileListResultInner listOrchestrators(String location) {
-        final String resourceType = null;
-        return listOrchestratorsAsync(location, resourceType).block();
-    }
-
-    /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * <p>Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
      *
      * @param location The name of a supported Azure region.
@@ -224,5 +198,23 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
     public Response<OrchestratorVersionProfileListResultInner> listOrchestratorsWithResponse(
         String location, String resourceType, Context context) {
         return listOrchestratorsWithResponseAsync(location, resourceType, context).block();
+    }
+
+    /**
+     * Gets a list of supported orchestrators in the specified subscription.
+     *
+     * <p>Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
+     * @param location The name of a supported Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of supported orchestrators in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OrchestratorVersionProfileListResultInner listOrchestrators(String location) {
+        final String resourceType = null;
+        return listOrchestratorsWithResponse(location, resourceType, Context.NONE).getValue();
     }
 }

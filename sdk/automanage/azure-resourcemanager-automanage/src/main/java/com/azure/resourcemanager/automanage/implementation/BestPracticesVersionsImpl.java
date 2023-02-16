@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automanage.fluent.BestPracticesVersionsClient;
 import com.azure.resourcemanager.automanage.fluent.models.BestPracticeInner;
 import com.azure.resourcemanager.automanage.models.BestPractice;
 import com.azure.resourcemanager.automanage.models.BestPracticesVersions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BestPracticesVersionsImpl implements BestPracticesVersions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BestPracticesVersionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BestPracticesVersionsImpl.class);
 
     private final BestPracticesVersionsClient innerClient;
 

@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.implementation.intellij.IntelliJKdbxDatabase;
+import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,6 +65,62 @@ public class IntelliJCacheAccessor {
     private List<String> getAzureToolsForIntelliJPluginConfigPaths() {
         return Arrays.asList(Paths.get(System.getProperty("user.home"), "AzureToolsForIntelliJ").toString(),
             Paths.get(System.getProperty("user.home"), ".AzureToolsForIntelliJ").toString());
+    }
+
+    public String getIntelliJCredentialsFromIdentityMsalCache() {
+        if (Platform.isMac()) {
+            try {
+                KeyChainAccessor accessor = new KeyChainAccessor(null, "Microsoft.Developer.IdentityService", "azure-toolkit.cache");
+                String jsonCred = new String(accessor.read(), StandardCharsets.UTF_8);
+                return parseRefreshTokenFromJson(jsonCred);
+            } catch (Exception | Error e) {
+                LOGGER.verbose("IntelliJCredential => Refresh Token Cache Unavailable: " + e.getMessage());
+            }
+
+        } else if (Platform.isLinux()) {
+            try {
+                LinuxKeyRingAccessor accessor = new LinuxKeyRingAccessor(
+                    "com.intellij.credentialStore.Credential",
+                    "service", "Microsoft.Developer.IdentityService",
+                    "account", "azure-toolkit.cache");
+
+                String jsonCred = new String(accessor.read(), StandardCharsets.UTF_8);
+
+                return parseRefreshTokenFromJson(jsonCred);
+            } catch (Exception | Error e) {
+                LOGGER.verbose("IntelliJCredential => Refresh Token Cache Unavailable: " + e.getMessage());
+            }
+
+        } else if (Platform.isWindows()) {
+
+            try {
+                String jsonCred = new WindowsCredentialAccessor("Microsoft.Developer.IdentityService", "azure-toolkit.cache").read();
+                return parseRefreshTokenFromJson(jsonCred);
+            } catch (Exception | Error e) {
+                LOGGER.verbose("IntelliJCredential => Refresh Token Cache Unavailable: " + e.getMessage());
+            }
+
+        } else {
+            LOGGER.verbose(String.format("OS %s Platform not supported.", Platform.getOSType()));
+        }
+        return null;
+    }
+
+    private String parseRefreshTokenFromJson(String jsonString) {
+        try {
+            JsonNode jsonNode =  DEFAULT_MAPPER.readTree(jsonString);
+            TreeNode refreshTokenNode =  jsonNode.get("RefreshToken");
+            TreeNode baseNode = refreshTokenNode.get(refreshTokenNode.fieldNames().next());
+            TreeNode refreshToken = baseNode.get("secret");
+            String tokenString = refreshToken.toString();
+            if (tokenString.startsWith("\"")) {
+                return tokenString.substring(1, tokenString.length() - 1);
+            }
+            return tokenString;
+        } catch (Exception e) {
+            LOGGER.verbose("IntelliJCredential => Refresh Token not found: " + e.getMessage());
+            return null;
+        }
     }
 
     /**

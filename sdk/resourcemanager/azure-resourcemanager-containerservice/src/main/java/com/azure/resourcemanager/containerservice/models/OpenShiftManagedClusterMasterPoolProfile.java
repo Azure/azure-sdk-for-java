@@ -12,15 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class OpenShiftManagedClusterMasterPoolProfile {
     /*
-     * Unique name of the master pool profile in the context of the
-     * subscription and resource group.
+     * Unique name of the master pool profile in the context of the subscription and resource group.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Number of masters (VMs) to host docker containers. The default value is
-     * 3.
+     * Number of masters (VMs) to host docker containers. The default value is 3.
      */
     @JsonProperty(value = "count", required = true)
     private int count;
@@ -38,11 +36,14 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     private String subnetCidr;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows.
-     * Default to Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     @JsonProperty(value = "osType")
     private OSType osType;
+
+    /** Creates an instance of OpenShiftManagedClusterMasterPoolProfile class. */
+    public OpenShiftManagedClusterMasterPoolProfile() {
+    }
 
     /**
      * Get the name property: Unique name of the master pool profile in the context of the subscription and resource

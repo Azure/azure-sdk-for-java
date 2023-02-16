@@ -17,10 +17,9 @@ import com.azure.resourcemanager.security.models.ConnectionStrings;
 import com.azure.resourcemanager.security.models.IngestionSetting;
 import com.azure.resourcemanager.security.models.IngestionSettingToken;
 import com.azure.resourcemanager.security.models.IngestionSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IngestionSettingsImpl implements IngestionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IngestionSettingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IngestionSettingsImpl.class);
 
     private final IngestionSettingsClient innerClient;
 
@@ -42,15 +41,6 @@ public final class IngestionSettingsImpl implements IngestionSettings {
         return Utils.mapPage(inner, inner1 -> new IngestionSettingImpl(inner1, this.manager()));
     }
 
-    public IngestionSetting get(String ingestionSettingName) {
-        IngestionSettingInner inner = this.serviceClient().get(ingestionSettingName);
-        if (inner != null) {
-            return new IngestionSettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IngestionSetting> getWithResponse(String ingestionSettingName, Context context) {
         Response<IngestionSettingInner> inner = this.serviceClient().getWithResponse(ingestionSettingName, context);
         if (inner != null) {
@@ -64,21 +54,21 @@ public final class IngestionSettingsImpl implements IngestionSettings {
         }
     }
 
-    public void delete(String ingestionSettingName) {
-        this.serviceClient().delete(ingestionSettingName);
+    public IngestionSetting get(String ingestionSettingName) {
+        IngestionSettingInner inner = this.serviceClient().get(ingestionSettingName);
+        if (inner != null) {
+            return new IngestionSettingImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String ingestionSettingName, Context context) {
         return this.serviceClient().deleteWithResponse(ingestionSettingName, context);
     }
 
-    public IngestionSettingToken listTokens(String ingestionSettingName) {
-        IngestionSettingTokenInner inner = this.serviceClient().listTokens(ingestionSettingName);
-        if (inner != null) {
-            return new IngestionSettingTokenImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String ingestionSettingName) {
+        this.serviceClient().delete(ingestionSettingName);
     }
 
     public Response<IngestionSettingToken> listTokensWithResponse(String ingestionSettingName, Context context) {
@@ -95,10 +85,10 @@ public final class IngestionSettingsImpl implements IngestionSettings {
         }
     }
 
-    public ConnectionStrings listConnectionStrings(String ingestionSettingName) {
-        ConnectionStringsInner inner = this.serviceClient().listConnectionStrings(ingestionSettingName);
+    public IngestionSettingToken listTokens(String ingestionSettingName) {
+        IngestionSettingTokenInner inner = this.serviceClient().listTokens(ingestionSettingName);
         if (inner != null) {
-            return new ConnectionStringsImpl(inner, this.manager());
+            return new IngestionSettingTokenImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -118,10 +108,19 @@ public final class IngestionSettingsImpl implements IngestionSettings {
         }
     }
 
+    public ConnectionStrings listConnectionStrings(String ingestionSettingName) {
+        ConnectionStringsInner inner = this.serviceClient().listConnectionStrings(ingestionSettingName);
+        if (inner != null) {
+            return new ConnectionStringsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public IngestionSetting getById(String id) {
         String ingestionSettingName = Utils.getValueFromIdByName(id, "ingestionSettings");
         if (ingestionSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +133,7 @@ public final class IngestionSettingsImpl implements IngestionSettings {
     public Response<IngestionSetting> getByIdWithResponse(String id, Context context) {
         String ingestionSettingName = Utils.getValueFromIdByName(id, "ingestionSettings");
         if (ingestionSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,20 +146,20 @@ public final class IngestionSettingsImpl implements IngestionSettings {
     public void deleteById(String id) {
         String ingestionSettingName = Utils.getValueFromIdByName(id, "ingestionSettings");
         if (ingestionSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'ingestionSettings'.", id)));
         }
-        this.deleteWithResponse(ingestionSettingName, Context.NONE).getValue();
+        this.deleteWithResponse(ingestionSettingName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String ingestionSettingName = Utils.getValueFromIdByName(id, "ingestionSettings");
         if (ingestionSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

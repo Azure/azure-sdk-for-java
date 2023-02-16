@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.NodeReportsClient;
 import com.azure.resourcemanager.automation.fluent.models.DscNodeReportInner;
 import com.azure.resourcemanager.automation.models.DscNodeReport;
 import com.azure.resourcemanager.automation.models.NodeReports;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NodeReportsImpl implements NodeReports {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodeReportsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NodeReportsImpl.class);
 
     private final NodeReportsClient innerClient;
 

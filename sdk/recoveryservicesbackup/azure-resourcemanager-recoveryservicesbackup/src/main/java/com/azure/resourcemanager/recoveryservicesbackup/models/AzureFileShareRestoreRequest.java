@@ -40,8 +40,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
     private RestoreRequestType restoreRequestType;
 
     /*
-     * List of Source Files/Folders(which need to recover) and TargetFolderPath
-     * details
+     * List of Source Files/Folders(which need to recover) and TargetFolderPath details
      */
     @JsonProperty(value = "restoreFileSpecs")
     private List<RestoreFileSpecs> restoreFileSpecs;
@@ -51,6 +50,10 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
      */
     @JsonProperty(value = "targetDetails")
     private TargetAfsRestoreInfo targetDetails;
+
+    /** Creates an instance of AzureFileShareRestoreRequest class. */
+    public AzureFileShareRestoreRequest() {
+    }
 
     /**
      * Get the recoveryType property: Type of this recovery.

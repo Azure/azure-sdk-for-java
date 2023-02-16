@@ -24,13 +24,13 @@ public final class BackupOperationResultsImpl implements BackupOperationResults 
         this.serviceManager = serviceManager;
     }
 
-    public void get(String vaultName, String resourceGroupName, String operationId) {
-        this.serviceClient().get(vaultName, resourceGroupName, operationId);
-    }
-
     public Response<Void> getWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         return this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
+    }
+
+    public void get(String vaultName, String resourceGroupName, String operationId) {
+        this.serviceClient().get(vaultName, resourceGroupName, operationId);
     }
 
     private BackupOperationResultsClient serviceClient() {

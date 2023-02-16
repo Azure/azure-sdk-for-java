@@ -12,29 +12,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ConsistencyPolicy {
     /*
-     * The default consistency level and configuration settings of the Cosmos
-     * DB account.
+     * The default consistency level and configuration settings of the Cosmos DB account.
      */
     @JsonProperty(value = "defaultConsistencyLevel", required = true)
     private DefaultConsistencyLevel defaultConsistencyLevel;
 
     /*
-     * When used with the Bounded Staleness consistency level, this value
-     * represents the number of stale requests tolerated. Accepted range for
-     * this value is 1 – 2,147,483,647. Required when defaultConsistencyPolicy
-     * is set to 'BoundedStaleness'.
+     * When used with the Bounded Staleness consistency level, this value represents the number of stale requests
+     * tolerated. Accepted range for this value is 1 – 2,147,483,647. Required when defaultConsistencyPolicy is set to
+     * 'BoundedStaleness'.
      */
     @JsonProperty(value = "maxStalenessPrefix")
     private Long maxStalenessPrefix;
 
     /*
-     * When used with the Bounded Staleness consistency level, this value
-     * represents the time amount of staleness (in seconds) tolerated. Accepted
-     * range for this value is 5 - 86400. Required when
-     * defaultConsistencyPolicy is set to 'BoundedStaleness'.
+     * When used with the Bounded Staleness consistency level, this value represents the time amount of staleness (in
+     * seconds) tolerated. Accepted range for this value is 5 - 86400. Required when defaultConsistencyPolicy is set to
+     * 'BoundedStaleness'.
      */
     @JsonProperty(value = "maxIntervalInSeconds")
     private Integer maxIntervalInSeconds;
+
+    /** Creates an instance of ConsistencyPolicy class. */
+    public ConsistencyPolicy() {
+    }
 
     /**
      * Get the defaultConsistencyLevel property: The default consistency level and configuration settings of the Cosmos

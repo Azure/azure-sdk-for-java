@@ -7,7 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for NicType. */
+/** NIC type. */
 public enum NicType {
     /** Enum value E1000. */
     E1000("E1000"),
@@ -42,6 +42,9 @@ public enum NicType {
      */
     @JsonCreator
     public static NicType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         NicType[] items = NicType.values();
         for (NicType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum NicType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EndpointProvisioningState. */
+/** State of endpoint provisioning. */
 public final class EndpointProvisioningState extends ExpandableStringEnum<EndpointProvisioningState> {
     /** Static value Creating for EndpointProvisioningState. */
     public static final EndpointProvisioningState CREATING = fromString("Creating");
@@ -27,6 +27,15 @@ public final class EndpointProvisioningState extends ExpandableStringEnum<Endpoi
 
     /** Static value Canceled for EndpointProvisioningState. */
     public static final EndpointProvisioningState CANCELED = fromString("Canceled");
+
+    /**
+     * Creates a new instance of EndpointProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointProvisioningState() {
+    }
 
     /**
      * Creates or finds a EndpointProvisioningState from its string representation.

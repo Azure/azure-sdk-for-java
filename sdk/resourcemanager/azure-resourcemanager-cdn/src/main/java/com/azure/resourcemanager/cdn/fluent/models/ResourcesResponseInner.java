@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.ResourcesResponseCustomDomainsItem;
 import com.azure.resourcemanager.cdn.models.ResourcesResponseEndpointsItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Resources Response. */
 @Fluent
 public final class ResourcesResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcesResponseInner.class);
-
     /*
      * The endpoints property.
      */

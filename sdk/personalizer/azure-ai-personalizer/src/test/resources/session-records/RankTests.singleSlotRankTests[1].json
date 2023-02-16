@@ -1,0 +1,82 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/rank",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "eb54fdbb-07a7-4777-bfa9-7895f0eaedb9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "166",
+      "x-envoy-upstream-service-time" : "44",
+      "apim-request-id" : "e332acd1-82b7-4c8a-91fd-9f026501b4e6",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.Personalizer.Transaction=1",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"ranking\": [\n    {\n      \"id\": \"Person\",\n      \"probability\": 1.0\n    }\n  ],\n  \"eventId\": \"f46e88c6bf734da6a01097947e73ec36-aylOl\",\n  \"rewardActionId\": \"Person\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/rank",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "48a64667-bca8-4b30-b5b8-ae5818588a6c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "200",
+      "x-envoy-upstream-service-time" : "36",
+      "apim-request-id" : "80e4807d-c9ca-4186-b4cf-c273d7776fa7",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.Personalizer.Transaction=1",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"ranking\": [\n    {\n      \"id\": \"Person1\",\n      \"probability\": 0.0\n    },\n    {\n      \"id\": \"Person2\",\n      \"probability\": 1.0\n    }\n  ],\n  \"eventId\": \"123456789\",\n  \"rewardActionId\": \"Person2\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/rank",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "087ff161-3cf1-4428-a610-fde9065fa985",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "229",
+      "x-envoy-upstream-service-time" : "32",
+      "apim-request-id" : "fb92dd52-002f-4e9c-9744-7afdc963986c",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.Personalizer.Transaction=1",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"ranking\": [\n    {\n      \"id\": \"Person1\",\n      \"probability\": 0.5\n    },\n    {\n      \"id\": \"Person2\",\n      \"probability\": 0.5\n    }\n  ],\n  \"eventId\": \"8359102f72ce4ec6b0a561e276fdbde7-aylOl\",\n  \"rewardActionId\": \"Person1\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

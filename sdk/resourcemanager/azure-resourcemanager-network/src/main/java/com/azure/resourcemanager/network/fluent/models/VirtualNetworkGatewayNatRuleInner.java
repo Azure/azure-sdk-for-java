@@ -23,8 +23,7 @@ public final class VirtualNetworkGatewayNatRuleInner extends SubResource {
     private VirtualNetworkGatewayNatRuleProperties innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,6 +39,10 @@ public final class VirtualNetworkGatewayNatRuleInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of VirtualNetworkGatewayNatRuleInner class. */
+    public VirtualNetworkGatewayNatRuleInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the Virtual Network Gateway NAT rule.

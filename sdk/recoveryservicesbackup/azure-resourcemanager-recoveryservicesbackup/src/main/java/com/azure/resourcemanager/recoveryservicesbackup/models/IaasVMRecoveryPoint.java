@@ -49,8 +49,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     private Boolean isSourceVMEncrypted;
 
     /*
-     * Required details for recovering an encrypted VM. Applicable only when
-     * IsSourceVMEncrypted is true.
+     * Required details for recovering an encrypted VM. Applicable only when IsSourceVMEncrypted is true.
      */
     @JsonProperty(value = "keyAndSecret")
     private KeyAndSecretDetails keyAndSecret;
@@ -98,8 +97,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     private RecoveryPointDiskConfiguration recoveryPointDiskConfiguration;
 
     /*
-     * Identifies the zone of the VM at the time of backup. Applicable only for
-     * zone-pinned Vms
+     * Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned Vms
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -110,6 +108,16 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     @JsonProperty(value = "recoveryPointMoveReadinessInfo")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo;
+
+    /*
+     * Properties of Recovery Point
+     */
+    @JsonProperty(value = "recoveryPointProperties")
+    private RecoveryPointProperties recoveryPointProperties;
+
+    /** Creates an instance of IaasVMRecoveryPoint class. */
+    public IaasVMRecoveryPoint() {
+    }
 
     /**
      * Get the recoveryPointType property: Type of the backup copy.
@@ -417,6 +425,26 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     }
 
     /**
+     * Get the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @return the recoveryPointProperties value.
+     */
+    public RecoveryPointProperties recoveryPointProperties() {
+        return this.recoveryPointProperties;
+    }
+
+    /**
+     * Set the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @param recoveryPointProperties the recoveryPointProperties value to set.
+     * @return the IaasVMRecoveryPoint object itself.
+     */
+    public IaasVMRecoveryPoint withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
+        this.recoveryPointProperties = recoveryPointProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -442,6 +470,9 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
                             e.validate();
                         }
                     });
+        }
+        if (recoveryPointProperties() != null) {
+            recoveryPointProperties().validate();
         }
     }
 }

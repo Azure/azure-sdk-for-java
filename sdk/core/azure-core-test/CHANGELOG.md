@@ -1,6 +1,6 @@
 # Release History
 
-## 1.11.0-beta.1 (Unreleased)
+## 1.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,81 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.14.1 (2023-02-01)
+
+### Bugs Fixed
+
+- Fixed a `NullPointerException` when `AssertingClient` is used with a null `skipRequestBiFunction`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+
+## 1.14.0 (2023-01-05)
+
+### Features Added
+
+- Added `TestUtils` containing utility methods for testing.
+- Changed how the `session-records` folder would be searched for, enhancing the exception message when not found.
+
+### Other Changes
+
+- `MockHttpResponse` now returns the internal instance of `HttpHeaders` instead of a copy to align with how
+  `HttpResponse` works.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
+
+## 1.13.0 (2022-11-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to `1.34.0`.
+
+## 1.12.1 (2022-10-07)
+
+### Bugs Fixed
+
+- Fixed a bug where `session-records` folder didn't exist a `NullPointerException` would be thrown. Now the folder is
+  created when it doesn't exist.
+- Fixed a bug where `URL.getPath` of a file would contain special characters and result in the file not being found. Now
+  `URL.toURI` is used which converts URL encoded characters to their filesystem representation (`"%20"` -> `" "`).
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+
+## 1.12.0 (2022-09-01)
+
+### Features Added
+
+- Added metrics-based testing utilities.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+
+## 1.11.0 (2022-08-05)
+
+### Features Added
+
+- Added `AssertingClient` which asserts whether asynchronous or synchronous APIs are called.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
 
 ## 1.10.0 (2022-06-30)
 

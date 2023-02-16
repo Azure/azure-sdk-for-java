@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a managed rule definition. */
 @Immutable
 public final class ManagedRuleDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleDefinition.class);
-
     /*
      * Identifier for the managed rule.
      */

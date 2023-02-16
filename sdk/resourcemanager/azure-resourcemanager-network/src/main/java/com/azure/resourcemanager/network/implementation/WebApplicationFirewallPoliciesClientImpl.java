@@ -74,7 +74,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface WebApplicationFirewallPoliciesService {
+    public interface WebApplicationFirewallPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -198,7 +198,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -253,7 +253,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -364,7 +364,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -407,7 +407,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -509,7 +509,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -560,7 +560,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -596,21 +596,6 @@ public final class WebApplicationFirewallPoliciesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebApplicationFirewallPolicyInner getByResourceGroup(String resourceGroupName, String policyName) {
-        return getByResourceGroupAsync(resourceGroupName, policyName).block();
-    }
-
-    /**
-     * Retrieve protection policy with specified name within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param policyName The name of the policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -621,6 +606,21 @@ public final class WebApplicationFirewallPoliciesClientImpl
     public Response<WebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(
         String resourceGroupName, String policyName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, policyName, context).block();
+    }
+
+    /**
+     * Retrieve protection policy with specified name within a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param policyName The name of the policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines web application firewall policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WebApplicationFirewallPolicyInner getByResourceGroup(String resourceGroupName, String policyName) {
+        return getByResourceGroupWithResponse(resourceGroupName, policyName, Context.NONE).getValue();
     }
 
     /**
@@ -662,7 +662,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -720,7 +720,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -759,23 +759,6 @@ public final class WebApplicationFirewallPoliciesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param parameters Policy to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebApplicationFirewallPolicyInner createOrUpdate(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, policyName, parameters).block();
-    }
-
-    /**
-     * Creates or update policy with specified rule set name within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param policyName The name of the policy.
-     * @param parameters Policy to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -786,6 +769,23 @@ public final class WebApplicationFirewallPoliciesClientImpl
     public Response<WebApplicationFirewallPolicyInner> createOrUpdateWithResponse(
         String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, policyName, parameters, context).block();
+    }
+
+    /**
+     * Creates or update policy with specified rule set name within a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param policyName The name of the policy.
+     * @param parameters Policy to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines web application firewall policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WebApplicationFirewallPolicyInner createOrUpdate(
+        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, policyName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -819,7 +819,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -869,7 +869,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1020,7 +1020,8 @@ public final class WebApplicationFirewallPoliciesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1056,7 +1057,8 @@ public final class WebApplicationFirewallPoliciesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1094,7 +1096,8 @@ public final class WebApplicationFirewallPoliciesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1130,7 +1133,8 @@ public final class WebApplicationFirewallPoliciesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

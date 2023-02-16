@@ -18,6 +18,10 @@ public final class CredentialResultsInner {
     @JsonProperty(value = "kubeconfigs", access = JsonProperty.Access.WRITE_ONLY)
     private List<CredentialResult> kubeconfigs;
 
+    /** Creates an instance of CredentialResultsInner class. */
+    public CredentialResultsInner() {
+    }
+
     /**
      * Get the kubeconfigs property: Base64-encoded Kubernetes configuration file.
      *

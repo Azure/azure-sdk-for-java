@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseForTest;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IndexUtilizationInfo;
@@ -24,12 +25,17 @@ import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -39,6 +45,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -288,45 +295,125 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 testDirectClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             InternalObjectNode internalObjectNode = getInternalObjectNode();
             CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
-            String diagnostics = createResponse.getDiagnostics().toString();
-            assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
-            assertThat(diagnostics).contains("supplementalResponseStatisticsList");
-            assertThat(diagnostics).contains("\"gatewayStatistics\":null");
-            assertThat(diagnostics).contains("addressResolutionStatistics");
-            assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
-            assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
-            assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
-            assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
-            assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
-            assertThat(diagnostics).containsAnyOf(
-                "\"machineId\":\"" + tempMachineId + "\"", // logged machineId should be static uuid or
-                "\"machineId\":\"" + ClientTelemetry.getMachineId(null) + "\"" // the vmId from Azure
-            );
-            assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
-            assertThat(diagnostics).contains("\"backendLatencyInMs\"");
-            // TODO: Add this check back when enable the channelAcquisitionContext again
-            // assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
-            assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotEmpty();
-            assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
-            validateTransportRequestTimelineDirect(diagnostics);
-            validateRegionContacted(createResponse.getDiagnostics(), testDirectClient.asyncClient());
-            isValidJSON(diagnostics);
+            validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), testDirectClient);
 
             // validate that on failed operation request timeline is populated
             try {
                 cosmosContainer.createItem(internalObjectNode);
                 fail("expected 409");
             } catch (CosmosException e) {
-                diagnostics = e.getDiagnostics().toString();
-                assertThat(diagnostics).contains("\"backendLatencyInMs\"");
-                assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
-                assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
-                assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
-                validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
+               validateDirectModeDiagnosticsOnException(e.getDiagnostics());
             }
         } finally {
             if (testDirectClient != null) {
                 testDirectClient.close();
+            }
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void requestSessionTokenDiagnostics() {
+        CosmosClient testSessionTokenClient = null;
+        try {
+            testSessionTokenClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer cosmosContainer =
+                testSessionTokenClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            String diagnostics = createResponse.getDiagnostics().toString();
+
+            // assert that request session token was not sent to backend (null)
+            assertThat(diagnostics).contains("\"requestSessionToken\":null");
+
+            // read item to validate response and request session tokens are equal
+            String sessionToken = createResponse.getSessionToken();
+            CosmosItemResponse<InternalObjectNode> readResponse =
+                cosmosContainer.readItem(BridgeInternal.getProperties(createResponse).getId(),
+                    new PartitionKey(BridgeInternal.getProperties(createResponse).getId()),
+                    InternalObjectNode.class);
+            diagnostics = readResponse.getDiagnostics().toString();
+            assertThat(diagnostics).contains(String.format("\"requestSessionToken\":\"%s\"", sessionToken));
+
+            // use batch operation to check that user-set session token is being passed in
+            // need to use batch since we only pass session token on multiple region write or batch operation
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(
+                BridgeInternal.getProperties(createResponse).getId()));
+            internalObjectNode = getInternalObjectNode();
+            batch.createItemOperation(internalObjectNode);
+            CosmosBatchResponse batchResponse = cosmosContainer.executeCosmosBatch(batch,
+                new CosmosBatchRequestOptions().setSessionToken(readResponse.getSessionToken()));
+            diagnostics = batchResponse.getDiagnostics().toString();
+            assertThat(diagnostics).contains(String.format("\"requestSessionToken\":\"%s\"",
+                readResponse.getSessionToken()));
+
+        } finally {
+            if (testSessionTokenClient != null) {
+                testSessionTokenClient.close();
+            }
+        }
+    }
+
+    @Test(groups = {"simple"})
+    public void databaseAccountToClients() {
+        CosmosClient testClient = null;
+        try {
+            testClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer cosmosContainer =
+                testClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            String diagnostics = createResponse.getDiagnostics().toString();
+
+            // assert diagnostics shows the correct format for tracking client instances
+            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
+                    ":{\"%s\"", TestConfigurations.HOST));
+            // track number of clients currently mapped to account
+            int clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
+            // we do end at +120 to ensure we grab the bracket even if the account is very long or if
+            // we have hundreds of clients (triple digit ints) running at once in the pipelines
+            String[] substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
+                .split("}")[0].split(":");
+            String intString = substrings[substrings.length-1];
+            int intValue = Integer.parseInt(intString);
+
+
+            CosmosClient testClient2 = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+
+            internalObjectNode = getInternalObjectNode();
+            createResponse = cosmosContainer.createItem(internalObjectNode);
+            diagnostics = createResponse.getDiagnostics().toString();
+            // assert diagnostics shows the correct format for tracking client instances
+            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
+                ":{\"%s\"", TestConfigurations.HOST));
+            // grab new value and assert one additional client is mapped to the same account used previously
+            clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
+            substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
+                .split("}")[0].split(":");
+            intString = substrings[substrings.length-1];
+            assertThat(Integer.parseInt(intString)).isEqualTo(intValue+1);
+
+            //close second client
+            testClient2.close();
+
+        } finally {
+            if (testClient != null) {
+                testClient.close();
             }
         }
     }
@@ -384,6 +471,27 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 feedResponseCounter++;
             }
         }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void readManyDiagnostics() {
+        String pkValue = UUID.randomUUID().toString();
+        PartitionKey partitionKey = new PartitionKey(pkValue);
+        CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+        List<CosmosItemIdentity> itemIdList = new ArrayList<>();
+        for(int i = 0; i< 100; i++) {
+            InternalObjectNode internalObjectNode = getInternalObjectNode(pkValue);
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            if(i%20 == 0) {
+                itemIdList.add(new CosmosItemIdentity(partitionKey, internalObjectNode.getId()));
+            }
+        }
+
+        FeedResponse<InternalObjectNode> response = cosmosContainer.readMany(itemIdList, InternalObjectNode.class);
+        FeedResponseDiagnostics diagnostics = response.getCosmosDiagnostics().getFeedResponseDiagnostics();
+
+        assertThat(diagnostics.getClientSideRequestStatisticsList().size()).isEqualTo(itemIdList.size());
+        assertThat(diagnostics.getQueryMetricsMap().values().iterator().next().getRetrievedDocumentCount()).isEqualTo(itemIdList.size());
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -497,6 +605,50 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(pkRids).isEqualTo(partitionKeyRangeIds);
 
         deleteCollection(testcontainer);
+    }
+
+    private void validateDirectModeDiagnosticsOnSuccess(
+        CosmosDiagnostics cosmosDiagnostics,
+        CosmosClient testDirectClient) throws Exception {
+
+        String diagnostics = cosmosDiagnostics.toString();
+        assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
+        assertThat(diagnostics).contains("supplementalResponseStatisticsList");
+        assertThat(diagnostics).contains("\"gatewayStatistics\":null");
+        assertThat(diagnostics).contains("addressResolutionStatistics");
+        assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
+        assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
+        assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
+        assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
+        assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+        assertThat(diagnostics).containsAnyOf(
+            "\"machineId\":\"" + tempMachineId + "\"", // logged machineId should be static uuid or
+            "\"machineId\":\"" + ClientTelemetry.getMachineId(null) + "\"" // the vmId from Azure
+        );
+        assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
+        assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+        assertThat(diagnostics).contains("\"retryAfterInMs\"");
+        assertThat(diagnostics).contains("\"channelStatistics\"");
+
+        // TODO: Add this check back when enable the channelAcquisitionContext again
+        // assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
+        assertThat(cosmosDiagnostics.getContactedRegionNames()).isNotEmpty();
+        assertThat(cosmosDiagnostics.getDuration()).isNotNull();
+        validateTransportRequestTimelineDirect(diagnostics);
+        validateRegionContacted(cosmosDiagnostics, testDirectClient.asyncClient());
+        validateChannelStatistics(cosmosDiagnostics);
+        isValidJSON(diagnostics);
+    }
+
+    private void validateDirectModeDiagnosticsOnException(CosmosDiagnostics cosmosDiagnostics) {
+        String diagnosticsString = cosmosDiagnostics.toString();
+        assertThat(diagnosticsString).contains("\"backendLatencyInMs\"");
+        assertThat(diagnosticsString).contains("\"retryAfterInMs\"");
+        assertThat(diagnosticsString).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
+        assertThat(diagnosticsString).contains("\"exceptionResponseHeaders\"");
+        assertThat(diagnosticsString).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
+        validateTransportRequestTimelineDirect(diagnosticsString);
+        validateChannelStatistics(cosmosDiagnostics);
     }
 
     private void validateDirectModeQueryDiagnostics(String diagnostics) {
@@ -675,6 +827,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(exception.getDiagnostics().getContactedRegionNames()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+            assertThat(diagnostics).contains("\"retryAfterInMs\"");
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource Not Found.");
             assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
@@ -682,6 +835,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             isValidJSON(diagnostics);
             validateTransportRequestTimelineDirect(diagnostics);
             validateRegionContacted(createResponse.getDiagnostics(), client.asyncClient());
+
+            // TODO: add better store result diagnostic validation on exception
+            ObjectNode diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(diagnostics);
+            JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
+            assertThat(responseStatisticsList.isArray()).isTrue();
+            assertThat(responseStatisticsList.size()).isGreaterThan(0);
+            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+            assertThat(storeResult).isNotNull();
+            JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+            assertThat(replicaStatusList.isArray()).isTrue();
+            assertThat(replicaStatusList.size()).isGreaterThan(0);
         } finally {
             if (client != null) {
                 client.close();
@@ -766,7 +930,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(Instant.now().toEpochMilli() - instant.toEpochMilli()).isLessThan(5000);
             assertThat(node.get("requestResponseTimeUTC")).isNotNull();
             assertThat(node.get("requestOperationType")).isNotNull();
-            assertThat(node.get("requestOperationType")).isNotNull();
+            assertThat(node.get("requestSessionToken")).isNotNull();
         }
     }
 
@@ -929,9 +1093,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
         assertThat(storeResult).isNotNull();
 
-        assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThanOrEqualTo(0);
-        assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
+        JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+        assertThat(replicaStatusList.isArray()).isTrue();
+        assertThat(replicaStatusList.size()).isGreaterThan(0);
 
+        // validate serviceEndpointStatistics
         JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
         assertThat(serviceEndpointStatistics).isNotNull();
 
@@ -942,6 +1108,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(serviceEndpointStatistics.get("inflightRequests").asInt(-1)).isEqualTo(1);
 
         assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
+
+        // validate connectionStats
+        JsonNode channelStatistics = storeResult.get("channelStatistics");
+        assertThat(channelStatistics).isNotNull();
+        assertThat(channelStatistics.get("channelId").asText()).isNotEmpty();
+        assertThat(channelStatistics.get("channelTaskQueueSize").asInt(-1)).isGreaterThanOrEqualTo(0);
+        assertThat(channelStatistics.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
+        assertThat(channelStatistics.get("lastReadTime").asText()).isNotEmpty();
+        assertThat(channelStatistics.get("waitForConnectionInit").asText()).isNotEmpty();
 
         JsonNode connectionStateListenerMetrics = serviceEndpointStatistics.get("cerMetrics");
         if (connectionStateListenerEnabled) {
@@ -1129,7 +1304,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     public void isValidJSON(final String json) {
         try {
-            final JsonParser parser = new ObjectMapper().createParser(json);
+            final JsonParser parser = new JsonFactory().createParser(json);
             while (parser.nextToken() != null) {
             }
         } catch (IOException ex) {
@@ -1181,6 +1356,48 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         String regionName = map.keySet().iterator().next();
         assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
         assertThat(cosmosDiagnostics.getContactedRegionNames().iterator().next()).isEqualTo(regionName.toLowerCase());
+    }
+
+    private void validateChannelStatistics(CosmosDiagnostics cosmosDiagnostics) {
+        for (ClientSideRequestStatistics clientSideRequestStatistics : cosmosDiagnostics.getClientSideRequestStatistics()) {
+            for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : clientSideRequestStatistics.getResponseStatisticsList()) {
+                assertThat(storeResponseStatistics).isNotNull();
+                RntbdChannelStatistics rntbdChannelStatistics =
+                    storeResponseStatistics
+                        .getStoreResult()
+                        .getStoreResponseDiagnostics()
+                        .getRntbdChannelStatistics();
+                assertThat(rntbdChannelStatistics).isNotNull();
+
+                try {
+                    String rntbdChannelStatisticsString =
+                        Utils.getSimpleObjectMapper().writeValueAsString(rntbdChannelStatistics);
+                    assertThat(rntbdChannelStatisticsString).contains("\"channelId\":\"" + rntbdChannelStatistics.getChannelId() + "\"");
+                    assertThat(rntbdChannelStatisticsString)
+                        .contains("\"channelTaskQueueSize\":" + rntbdChannelStatistics.getChannelTaskQueueSize());
+                    assertThat(rntbdChannelStatisticsString)
+                        .contains("\"pendingRequestsCount\":" + rntbdChannelStatistics.getPendingRequestsCount());
+                    assertThat(rntbdChannelStatisticsString)
+                        .contains("\"lastReadTime\":\"" + rntbdChannelStatistics.getLastReadTime() + "\"");
+
+                    if (rntbdChannelStatistics.getTransitTimeoutCount() > 0) {
+                        assertThat(rntbdChannelStatisticsString)
+                            .contains("\"transitTimeoutCount\":" + rntbdChannelStatistics.getTransitTimeoutCount());
+                        assertThat(rntbdChannelStatisticsString)
+                            .contains("\"transitTimeoutStartingTime\":\"" + rntbdChannelStatistics.getTransitTimeoutStartingTime() + "\"");
+                    } else {
+                        assertThat(rntbdChannelStatisticsString)
+                            .doesNotContain("\"transitTimeoutCount\":" + rntbdChannelStatistics.getTransitTimeoutCount());
+                        assertThat(rntbdChannelStatisticsString)
+                            .doesNotContain("\"transitTimeoutStartingTime\":\"" + rntbdChannelStatistics.getTransitTimeoutStartingTime() + "\"");
+                    }
+
+                    assertThat(rntbdChannelStatisticsString).contains("\"waitForConnectionInit\":" + rntbdChannelStatistics.isWaitForConnectionInit());
+                } catch (JsonProcessingException e) {
+                    fail("Failed to parse RntbdChannelStatistics");
+                }
+            }
+        }
     }
 
     public static class TestItem {

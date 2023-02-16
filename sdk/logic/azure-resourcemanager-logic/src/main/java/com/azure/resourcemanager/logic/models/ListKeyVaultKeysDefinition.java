@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The list key vault keys definition. */
 @Fluent
 public final class ListKeyVaultKeysDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListKeyVaultKeysDefinition.class);
-
     /*
      * The key vault reference.
      */
@@ -25,6 +22,10 @@ public final class ListKeyVaultKeysDefinition {
      */
     @JsonProperty(value = "skipToken")
     private String skipToken;
+
+    /** Creates an instance of ListKeyVaultKeysDefinition class. */
+    public ListKeyVaultKeysDefinition() {
+    }
 
     /**
      * Get the keyVault property: The key vault reference.
@@ -73,7 +74,7 @@ public final class ListKeyVaultKeysDefinition {
      */
     public void validate() {
         if (keyVault() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyVault in model ListKeyVaultKeysDefinition"));
@@ -81,4 +82,6 @@ public final class ListKeyVaultKeysDefinition {
             keyVault().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ListKeyVaultKeysDefinition.class);
 }

@@ -17,7 +17,7 @@ public interface DeviceSecurityGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DeviceSecurityGroup> list(String resourceId);
 
@@ -29,9 +29,23 @@ public interface DeviceSecurityGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DeviceSecurityGroup> list(String resourceId, Context context);
+
+    /**
+     * Use this method to get the device security group for the specified IoT Hub resource.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
+     *     group is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the device security group resource along with {@link Response}.
+     */
+    Response<DeviceSecurityGroup> getWithResponse(String resourceId, String deviceSecurityGroupName, Context context);
 
     /**
      * Use this method to get the device security group for the specified IoT Hub resource.
@@ -47,7 +61,7 @@ public interface DeviceSecurityGroups {
     DeviceSecurityGroup get(String resourceId, String deviceSecurityGroupName);
 
     /**
-     * Use this method to get the device security group for the specified IoT Hub resource.
+     * User this method to deletes the device security group.
      *
      * @param resourceId The identifier of the resource.
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
@@ -56,9 +70,10 @@ public interface DeviceSecurityGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the {@link Response}.
      */
-    Response<DeviceSecurityGroup> getWithResponse(String resourceId, String deviceSecurityGroupName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(
+        String resourceId, String deviceSecurityGroupName, Context context);
 
     /**
      * User this method to deletes the device security group.
@@ -73,27 +88,13 @@ public interface DeviceSecurityGroups {
     void deleteByResourceGroup(String resourceId, String deviceSecurityGroupName);
 
     /**
-     * User this method to deletes the device security group.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
-     *     group is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(String resourceId, String deviceSecurityGroupName, Context context);
-
-    /**
      * Use this method to get the device security group for the specified IoT Hub resource.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the device security group resource along with {@link Response}.
      */
     DeviceSecurityGroup getById(String id);
 
@@ -105,7 +106,7 @@ public interface DeviceSecurityGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the device security group resource along with {@link Response}.
      */
     Response<DeviceSecurityGroup> getByIdWithResponse(String id, Context context);
 
@@ -127,7 +128,7 @@ public interface DeviceSecurityGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

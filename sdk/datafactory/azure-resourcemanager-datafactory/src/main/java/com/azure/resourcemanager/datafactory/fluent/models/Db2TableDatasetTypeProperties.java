@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Db2TableDatasetTypeProperties {
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
-     * The Db2 schema name. Type: string (or Expression with resultType
-     * string).
+     * The Db2 schema name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;
@@ -29,6 +27,10 @@ public final class Db2TableDatasetTypeProperties {
      */
     @JsonProperty(value = "table")
     private Object table;
+
+    /** Creates an instance of Db2TableDatasetTypeProperties class. */
+    public Db2TableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties

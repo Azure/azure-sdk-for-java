@@ -87,7 +87,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,7 +135,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @param context The context to associate with this operation.
@@ -177,7 +181,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +197,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @param context The context to associate with this operation.
@@ -206,7 +214,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -220,7 +230,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @param context The context to associate with this operation.
@@ -235,7 +247,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
@@ -282,7 +296,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
@@ -328,7 +344,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
@@ -343,7 +361,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
@@ -358,7 +378,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.

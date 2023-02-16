@@ -22,7 +22,6 @@ import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +29,6 @@ import java.util.Map;
 /** Class representing a Kusto cluster. */
 @Fluent
 public final class ClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
-
     /*
      * The SKU of the cluster.
      */
@@ -638,7 +635,7 @@ public final class ClusterInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model ClusterInner"));
         } else {
@@ -651,4 +648,6 @@ public final class ClusterInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterInner.class);
 }

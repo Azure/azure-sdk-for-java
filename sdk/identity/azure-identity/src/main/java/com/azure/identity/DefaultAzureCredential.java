@@ -14,10 +14,11 @@ import java.util.List;
  *
  * <ol>
  * <li>{@link EnvironmentCredential}</li>
+ * <li>{@link WorkloadIdentityCredential}</li>
  * <li>{@link ManagedIdentityCredential}</li>
+ * <li>{@link AzureDeveloperCliCredential}</li>
  * <li>{@link SharedTokenCacheCredential}</li>
  * <li>{@link IntelliJCredential}</li>
- * <li>{@link VisualStudioCodeCredential}</li>
  * <li>{@link AzureCliCredential}</li>
  * <li>{@link AzurePowerShellCredential}</li>
  * <li>Fails if none of the credentials above could be created.</li>

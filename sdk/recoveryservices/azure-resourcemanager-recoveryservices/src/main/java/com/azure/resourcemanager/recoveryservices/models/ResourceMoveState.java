@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceMoveState. */
+/** The State of the Resource after the move operation. */
 public final class ResourceMoveState extends ExpandableStringEnum<ResourceMoveState> {
     /** Static value Unknown for ResourceMoveState. */
     public static final ResourceMoveState UNKNOWN = fromString("Unknown");
@@ -39,6 +39,15 @@ public final class ResourceMoveState extends ExpandableStringEnum<ResourceMoveSt
 
     /** Static value PartialSuccess for ResourceMoveState. */
     public static final ResourceMoveState PARTIAL_SUCCESS = fromString("PartialSuccess");
+
+    /**
+     * Creates a new instance of ResourceMoveState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceMoveState() {
+    }
 
     /**
      * Creates or finds a ResourceMoveState from its string representation.

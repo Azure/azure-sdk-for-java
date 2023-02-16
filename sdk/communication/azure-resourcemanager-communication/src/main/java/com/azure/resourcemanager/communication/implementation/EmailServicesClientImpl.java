@@ -188,7 +188,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Get the EmailService and its properties.
+     * Get
+     *
+     * <p>Get the EmailService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -237,7 +239,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Get the EmailService and its properties.
+     * Get
+     *
+     * <p>Get the EmailService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -284,7 +288,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Get the EmailService and its properties.
+     * Get
+     *
+     * <p>Get the EmailService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -300,7 +306,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Get the EmailService and its properties.
+     * Get
+     *
+     * <p>Get the EmailService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -315,7 +323,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Get the EmailService and its properties.
+     * Get
+     *
+     * <p>Get the EmailService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -332,7 +342,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -389,7 +401,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -444,7 +458,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -470,7 +486,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -498,7 +516,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -515,7 +535,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -533,7 +555,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -552,7 +576,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -572,7 +598,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -589,7 +617,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -607,7 +637,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -656,7 +688,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -703,7 +737,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -722,7 +758,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -743,7 +781,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -758,7 +798,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -775,7 +817,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -792,7 +836,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -810,7 +856,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -824,7 +872,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -839,7 +889,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -896,7 +948,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -951,7 +1005,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -977,7 +1033,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1005,7 +1063,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1022,7 +1082,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1040,7 +1102,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1059,7 +1123,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1079,7 +1145,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1096,7 +1164,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1114,7 +1184,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1159,7 +1231,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1203,7 +1277,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1217,7 +1293,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1233,7 +1311,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1246,7 +1326,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1261,7 +1343,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1314,7 +1398,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -1365,7 +1451,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1382,7 +1470,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -1400,7 +1490,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1415,7 +1507,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -1431,7 +1525,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Get a list of domains that are fully verified in Exchange Online.
+     * List Verified Domains From Exchange Online
+     *
+     * <p>Get a list of domains that are fully verified in Exchange Online.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1467,7 +1563,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Get a list of domains that are fully verified in Exchange Online.
+     * List Verified Domains From Exchange Online
+     *
+     * <p>Get a list of domains that are fully verified in Exchange Online.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1502,7 +1600,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Get a list of domains that are fully verified in Exchange Online.
+     * List Verified Domains From Exchange Online
+     *
+     * <p>Get a list of domains that are fully verified in Exchange Online.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1514,7 +1614,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Get a list of domains that are fully verified in Exchange Online.
+     * List Verified Domains From Exchange Online
+     *
+     * <p>Get a list of domains that are fully verified in Exchange Online.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1526,7 +1628,9 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     }
 
     /**
-     * Get a list of domains that are fully verified in Exchange Online.
+     * List Verified Domains From Exchange Online
+     *
+     * <p>Get a list of domains that are fully verified in Exchange Online.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1542,7 +1646,8 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1579,7 +1684,8 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1617,7 +1723,8 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1654,7 +1761,8 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

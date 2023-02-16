@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of VolumeGroups. */
 public interface VolumeGroups {
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -23,7 +25,9 @@ public interface VolumeGroups {
     PagedIterable<VolumeGroup> listByNetAppAccount(String resourceGroupName, String accountName);
 
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -36,7 +40,9 @@ public interface VolumeGroups {
     PagedIterable<VolumeGroup> listByNetAppAccount(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -49,7 +55,9 @@ public interface VolumeGroups {
     VolumeGroupDetails get(String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -64,7 +72,9 @@ public interface VolumeGroups {
         String resourceGroupName, String accountName, String volumeGroupName, Context context);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -76,7 +86,9 @@ public interface VolumeGroups {
     void delete(String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -89,7 +101,9 @@ public interface VolumeGroups {
     void delete(String resourceGroupName, String accountName, String volumeGroupName, Context context);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,7 +114,9 @@ public interface VolumeGroups {
     VolumeGroupDetails getById(String id);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -112,7 +128,9 @@ public interface VolumeGroups {
     Response<VolumeGroupDetails> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +140,9 @@ public interface VolumeGroups {
     void deleteById(String id);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

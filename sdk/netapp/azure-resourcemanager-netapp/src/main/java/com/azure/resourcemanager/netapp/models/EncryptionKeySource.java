@@ -8,10 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionKeySource. */
+/**
+ * Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource =
+ * 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp, Microsoft.KeyVault'.
+ */
 public final class EncryptionKeySource extends ExpandableStringEnum<EncryptionKeySource> {
     /** Static value Microsoft.NetApp for EncryptionKeySource. */
     public static final EncryptionKeySource MICROSOFT_NET_APP = fromString("Microsoft.NetApp");
+
+    /** Static value Microsoft.KeyVault for EncryptionKeySource. */
+    public static final EncryptionKeySource MICROSOFT_KEY_VAULT = fromString("Microsoft.KeyVault");
 
     /**
      * Creates or finds a EncryptionKeySource from its string representation.

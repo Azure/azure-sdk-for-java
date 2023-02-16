@@ -1,0 +1,27 @@
+{
+    "summary": {
+        "numResults": 1,
+        "queryTime": 96
+    },
+    "addresses": [
+        {
+            "address": {
+                "streetName": "East Santa Clara Street & North 2nd Street",
+                "crossStreet": "East Santa Clara Street",
+                "municipalitySubdivision": "Downtown San Jose",
+                "municipality": "San Jose",
+                "countrySecondarySubdivision": "Santa Clara",
+                "countrySubdivision": "CA",
+                "countrySubdivisionName": "California",
+                "postalCode": "95113",
+                "countryCode": "US",
+                "country": "United States",
+                "countryCodeISO3": "USA",
+                "freeformAddress": "East Santa Clara Street & North 2nd Street, San Jose, CA 95113",
+                "localName": "San Jose",
+                "street": "North 2nd Street"
+            },
+            "position": "37.33666,-121.88951"
+        }
+    ]
+}

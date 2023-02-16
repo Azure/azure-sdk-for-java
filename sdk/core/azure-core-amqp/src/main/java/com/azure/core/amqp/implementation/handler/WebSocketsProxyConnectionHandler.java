@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpErrorCode;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.util.CoreUtils;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
@@ -38,10 +39,23 @@ import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandler {
     private static final String HTTPS_URI_FORMAT = "https://%s:%s";
 
-    private final InetSocketAddress connectionHostname;
+    private final InetSocketAddress proxyHostAddress;
     private final ProxyOptions proxyOptions;
     private final String fullyQualifiedNamespace;
-    private final String amqpBrokerHostname;
+    /**
+     * The value of 'hostname:port' field for the 'HTTP CONNECT hostname:port HTTP/1.1'
+     * request to the Proxy.
+     * e.g.
+     *   CONNECT &lt;eventubs-namespace&gt;.servicebus.windows.net:443 HTTP/1.1 <br/>
+     *   CONNECT order-events.contoso.com:443 HTTP/1.1 <br/>
+     *   CONNECT shipping-events.contoso.com:200 HTTP/1.1 <br/>
+     *
+     * The 'hostname' addresses the target host to which the HTTP Proxy server should forward
+     * the connection. It is usually the FQDN of the Event Hubs or Service Bus, or the host
+     * part of CustomEndpointAddress when a custom endpoint frontends the Event Hubs
+     * or Service Bus.
+     */
+    private final String connectHostnameAndPort;
 
     /**
      * Creates a handler that handles proton-j's connection through a proxy using web sockets.
@@ -55,14 +69,15 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * @throws IllegalStateException if a proxy address is unavailable for the given {@code proxyOptions}.
      */
     public WebSocketsProxyConnectionHandler(String connectionId, ConnectionOptions connectionOptions,
-        ProxyOptions proxyOptions, SslPeerDetails peerDetails) {
-        super(connectionId, connectionOptions, peerDetails);
+        ProxyOptions proxyOptions, SslPeerDetails peerDetails, AmqpMetricsProvider metricsProvider) {
+        super(connectionId, connectionOptions, peerDetails, metricsProvider);
 
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
-        this.amqpBrokerHostname = connectionOptions.getFullyQualifiedNamespace() + ":" + connectionOptions.getPort();
+        this.connectHostnameAndPort = connectionOptions.getHostname() + ":" + connectionOptions.getPort();
+
         if (proxyOptions.isProxyAddressConfigured()) {
-            this.connectionHostname = (InetSocketAddress) proxyOptions.getProxyAddress().address();
+            this.proxyHostAddress = (InetSocketAddress) proxyOptions.getProxyAddress().address();
         } else {
             final URI serviceUri = createURI(connectionOptions.getHostname(), connectionOptions.getPort());
             final ProxySelector proxySelector = ProxySelector.getDefault();
@@ -79,7 +94,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             }
 
             final Proxy proxy = proxies.get(0);
-            this.connectionHostname = (InetSocketAddress) proxy.address();
+            this.proxyHostAddress = (InetSocketAddress) proxy.address();
         }
     }
 
@@ -111,7 +126,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      */
     @Override
     public String getHostname() {
-        return connectionHostname.getHostString();
+        return proxyHostAddress.getHostString();
     }
 
     /**
@@ -121,7 +136,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      */
     @Override
     public int getProtocolPort() {
-        return connectionHostname.getPort();
+        return proxyHostAddress.getPort();
     }
 
     @Override
@@ -191,15 +206,13 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             ? new ProxyImpl(getProtonConfiguration())
             : new ProxyImpl();
 
-        // host name used to create proxy connect request must contain a port number.
-        // after creating the socket to proxy
         final ProxyHandler proxyHandler = new ProxyHandlerImpl();
-        proxy.configure(amqpBrokerHostname, null, proxyHandler, transport);
+        proxy.configure(connectHostnameAndPort, null, proxyHandler, transport);
 
         transport.addTransportLayer(proxy);
 
         logger.atInfo()
-            .addKeyValue(HOSTNAME_KEY, amqpBrokerHostname)
+            .addKeyValue(HOSTNAME_KEY, connectHostnameAndPort)
             .log("addProxyHandshake");
     }
 

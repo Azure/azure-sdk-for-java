@@ -11,11 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class AnalyzeTextJobStatistics {
     /*
-     * if showStats=true was specified in the request this field will contain
-     * information about the request payload.
+     * if showStats=true was specified in the request this field will contain information about the request payload.
      */
     @JsonProperty(value = "statistics")
     private RequestStatistics statistics;
+
+    /** Creates an instance of AnalyzeTextJobStatistics class. */
+    public AnalyzeTextJobStatistics() {}
 
     /**
      * Get the statistics property: if showStats=true was specified in the request this field will contain information

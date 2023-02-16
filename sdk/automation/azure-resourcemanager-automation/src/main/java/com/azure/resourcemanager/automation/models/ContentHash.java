@@ -6,14 +6,11 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the runbook property type. */
 @Fluent
 public final class ContentHash {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentHash.class);
-
     /*
      * Gets or sets the content hash algorithm used to hash the content.
      */
@@ -73,14 +70,16 @@ public final class ContentHash {
      */
     public void validate() {
         if (algorithm() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property algorithm in model ContentHash"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ContentHash"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContentHash.class);
 }

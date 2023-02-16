@@ -9,7 +9,7 @@ import spock.lang.Specification
 
 abstract class ServiceVersionSpec extends Specification {
 
-    protected abstract Class getServiceVersionClass();
+    protected abstract Class<?> getServiceVersionClass();
 
     @IgnoreIf({ DevopsPipeline.getInstance().map { !it.releasesToMavenCentral() }.orElse(true) })
     def "getLatest points to latest"() {

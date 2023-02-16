@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebPubSubHubs Delete. */
 public final class WebPubSubHubsDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubHubs_Delete.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubHubs_Delete.json
      */
     /**
      * Sample code: WebPubSubHubs_Delete.

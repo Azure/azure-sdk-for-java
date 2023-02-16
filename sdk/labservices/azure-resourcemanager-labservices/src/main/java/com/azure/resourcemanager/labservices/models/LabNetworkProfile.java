@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Profile for how to handle networking for Labs. */
 @Fluent
 public final class LabNetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabNetworkProfile.class);
-
     /*
      * The external subnet resource id
      */

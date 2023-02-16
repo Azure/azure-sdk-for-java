@@ -81,6 +81,10 @@ public final class IotHubDescriptionImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IotHubDescriptionInner innerModel() {
         return this.innerObject;
     }

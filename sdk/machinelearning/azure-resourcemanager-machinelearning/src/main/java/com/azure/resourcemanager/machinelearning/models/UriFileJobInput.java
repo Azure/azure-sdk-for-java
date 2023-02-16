@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The UriFileJobInput model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobInputType")
-@JsonTypeName("UriFile")
+@JsonTypeName("uri_file")
 @Fluent
 public final class UriFileJobInput extends JobInput {
     /*
@@ -26,6 +26,10 @@ public final class UriFileJobInput extends JobInput {
      */
     @JsonProperty(value = "uri", required = true)
     private String uri;
+
+    /** Creates an instance of UriFileJobInput class. */
+    public UriFileJobInput() {
+    }
 
     /**
      * Get the mode property: Input Asset Delivery Mode.

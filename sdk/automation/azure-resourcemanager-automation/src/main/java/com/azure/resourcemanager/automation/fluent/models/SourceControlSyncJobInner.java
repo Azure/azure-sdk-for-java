@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.ProvisioningState;
 import com.azure.resourcemanager.automation.models.SyncType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Definition of the source control sync job. */
-@JsonFlatten
 @Fluent
-public class SourceControlSyncJobInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlSyncJobInner.class);
-
+public final class SourceControlSyncJobInner {
     /*
      * Resource name.
      */
@@ -38,40 +32,10 @@ public class SourceControlSyncJobInner {
     private String id;
 
     /*
-     * The source control sync job id.
+     * The properties of the source control sync job.
      */
-    @JsonProperty(value = "properties.sourceControlSyncJobId")
-    private String sourceControlSyncJobId;
-
-    /*
-     * The creation time of the job.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * The provisioning state of the job.
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private ProvisioningState provisioningState;
-
-    /*
-     * The start time of the job.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * The end time of the job.
-     */
-    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * The sync type.
-     */
-    @JsonProperty(value = "properties.syncType")
-    private SyncType syncType;
+    @JsonProperty(value = "properties")
+    private SourceControlSyncJobProperties innerProperties;
 
     /**
      * Get the name property: Resource name.
@@ -101,12 +65,21 @@ public class SourceControlSyncJobInner {
     }
 
     /**
+     * Get the innerProperties property: The properties of the source control sync job.
+     *
+     * @return the innerProperties value.
+     */
+    private SourceControlSyncJobProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the sourceControlSyncJobId property: The source control sync job id.
      *
      * @return the sourceControlSyncJobId value.
      */
     public String sourceControlSyncJobId() {
-        return this.sourceControlSyncJobId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceControlSyncJobId();
     }
 
     /**
@@ -116,7 +89,10 @@ public class SourceControlSyncJobInner {
      * @return the SourceControlSyncJobInner object itself.
      */
     public SourceControlSyncJobInner withSourceControlSyncJobId(String sourceControlSyncJobId) {
-        this.sourceControlSyncJobId = sourceControlSyncJobId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobProperties();
+        }
+        this.innerProperties().withSourceControlSyncJobId(sourceControlSyncJobId);
         return this;
     }
 
@@ -126,7 +102,7 @@ public class SourceControlSyncJobInner {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -135,7 +111,7 @@ public class SourceControlSyncJobInner {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -145,7 +121,10 @@ public class SourceControlSyncJobInner {
      * @return the SourceControlSyncJobInner object itself.
      */
     public SourceControlSyncJobInner withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -155,7 +134,7 @@ public class SourceControlSyncJobInner {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -164,7 +143,7 @@ public class SourceControlSyncJobInner {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -173,7 +152,7 @@ public class SourceControlSyncJobInner {
      * @return the syncType value.
      */
     public SyncType syncType() {
-        return this.syncType;
+        return this.innerProperties() == null ? null : this.innerProperties().syncType();
     }
 
     /**
@@ -183,7 +162,10 @@ public class SourceControlSyncJobInner {
      * @return the SourceControlSyncJobInner object itself.
      */
     public SourceControlSyncJobInner withSyncType(SyncType syncType) {
-        this.syncType = syncType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobProperties();
+        }
+        this.innerProperties().withSyncType(syncType);
         return this;
     }
 
@@ -193,5 +175,8 @@ public class SourceControlSyncJobInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

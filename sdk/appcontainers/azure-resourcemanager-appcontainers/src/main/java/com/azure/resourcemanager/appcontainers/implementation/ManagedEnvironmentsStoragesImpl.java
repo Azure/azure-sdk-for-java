@@ -29,15 +29,6 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
         this.serviceManager = serviceManager;
     }
 
-    public ManagedEnvironmentStoragesCollection list(String resourceGroupName, String environmentName) {
-        ManagedEnvironmentStoragesCollectionInner inner = this.serviceClient().list(resourceGroupName, environmentName);
-        if (inner != null) {
-            return new ManagedEnvironmentStoragesCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ManagedEnvironmentStoragesCollection> listWithResponse(
         String resourceGroupName, String environmentName, Context context) {
         Response<ManagedEnvironmentStoragesCollectionInner> inner =
@@ -53,11 +44,10 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
         }
     }
 
-    public ManagedEnvironmentStorage get(String resourceGroupName, String environmentName, String storageName) {
-        ManagedEnvironmentStorageInner inner =
-            this.serviceClient().get(resourceGroupName, environmentName, storageName);
+    public ManagedEnvironmentStoragesCollection list(String resourceGroupName, String environmentName) {
+        ManagedEnvironmentStoragesCollectionInner inner = this.serviceClient().list(resourceGroupName, environmentName);
         if (inner != null) {
-            return new ManagedEnvironmentStorageImpl(inner, this.manager());
+            return new ManagedEnvironmentStoragesCollectionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -78,13 +68,23 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
         }
     }
 
-    public void delete(String resourceGroupName, String environmentName, String storageName) {
-        this.serviceClient().delete(resourceGroupName, environmentName, storageName);
+    public ManagedEnvironmentStorage get(String resourceGroupName, String environmentName, String storageName) {
+        ManagedEnvironmentStorageInner inner =
+            this.serviceClient().get(resourceGroupName, environmentName, storageName);
+        if (inner != null) {
+            return new ManagedEnvironmentStorageImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String environmentName, String storageName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, storageName, context);
+    }
+
+    public void delete(String resourceGroupName, String environmentName, String storageName) {
+        this.serviceClient().delete(resourceGroupName, environmentName, storageName);
     }
 
     public ManagedEnvironmentStorage getById(String id) {

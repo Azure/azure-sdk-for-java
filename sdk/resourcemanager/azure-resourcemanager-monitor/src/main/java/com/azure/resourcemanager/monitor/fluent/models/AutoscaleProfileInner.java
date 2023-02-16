@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.Recurrence;
 import com.azure.resourcemanager.monitor.models.ScaleCapacity;
 import com.azure.resourcemanager.monitor.models.TimeWindow;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Autoscale profile. */
 @Fluent
 public final class AutoscaleProfileInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleProfileInner.class);
-
     /*
      * the name of the profile.
      */
@@ -31,25 +28,27 @@ public final class AutoscaleProfileInner {
     private ScaleCapacity capacity;
 
     /*
-     * the collection of rules that provide the triggers and parameters for the
-     * scaling action. A maximum of 10 rules can be specified.
+     * the collection of rules that provide the triggers and parameters for the scaling action. A maximum of 10 rules
+     * can be specified.
      */
     @JsonProperty(value = "rules", required = true)
     private List<ScaleRuleInner> rules;
 
     /*
-     * the specific date-time for the profile. This element is not used if the
-     * Recurrence element is used.
+     * the specific date-time for the profile. This element is not used if the Recurrence element is used.
      */
     @JsonProperty(value = "fixedDate")
     private TimeWindow fixedDate;
 
     /*
-     * the repeating times at which this profile begins. This element is not
-     * used if the FixedDate element is used.
+     * the repeating times at which this profile begins. This element is not used if the FixedDate element is used.
      */
     @JsonProperty(value = "recurrence")
     private Recurrence recurrence;
+
+    /** Creates an instance of AutoscaleProfileInner class. */
+    public AutoscaleProfileInner() {
+    }
 
     /**
      * Get the name property: the name of the profile.
@@ -164,19 +163,19 @@ public final class AutoscaleProfileInner {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model AutoscaleProfileInner"));
         }
         if (capacity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property capacity in model AutoscaleProfileInner"));
         } else {
             capacity().validate();
         }
         if (rules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property rules in model AutoscaleProfileInner"));
         } else {
@@ -189,4 +188,6 @@ public final class AutoscaleProfileInner {
             recurrence().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutoscaleProfileInner.class);
 }

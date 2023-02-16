@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.models.VaultAccessPolicyProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters for updating the access policy in a vault. */
 @Fluent
 public final class VaultAccessPolicyParametersInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultAccessPolicyParametersInner.class);
-
     /*
      * The resource type of the access policy.
      */
@@ -64,7 +61,7 @@ public final class VaultAccessPolicyParametersInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model VaultAccessPolicyParametersInner"));
@@ -72,4 +69,6 @@ public final class VaultAccessPolicyParametersInner extends ProxyResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VaultAccessPolicyParametersInner.class);
 }

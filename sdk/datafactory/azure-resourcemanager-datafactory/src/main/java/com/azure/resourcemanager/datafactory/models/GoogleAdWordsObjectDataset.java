@@ -23,6 +23,10 @@ public final class GoogleAdWordsObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of GoogleAdWordsObjectDataset class. */
+    public GoogleAdWordsObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

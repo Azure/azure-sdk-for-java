@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleCondition;
 import com.azure.resourcemanager.cdn.models.MatchProcessingBehavior;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON object that contains the properties of the rule to update. */
 @Fluent
 public class RuleUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleUpdatePropertiesParameters.class);
-
     /*
      * The name of the rule set containing the rule.
      */
@@ -25,11 +21,9 @@ public class RuleUpdatePropertiesParameters {
     private String ruleSetName;
 
     /*
-     * The order in which the rules are applied for the endpoint. Possible
-     * values {0,1,2,3,………}. A rule with a lesser order will be applied before
-     * a rule with a greater order. Rule with order 0 is a special rule. It
-     * does not require any condition and actions listed in it will always be
-     * applied.
+     * The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser
+     * order will be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not
+     * require any condition and actions listed in it will always be applied.
      */
     @JsonProperty(value = "order")
     private Integer order;
@@ -41,15 +35,14 @@ public class RuleUpdatePropertiesParameters {
     private List<DeliveryRuleCondition> conditions;
 
     /*
-     * A list of actions that are executed when all the conditions of a rule
-     * are satisfied.
+     * A list of actions that are executed when all the conditions of a rule are satisfied.
      */
     @JsonProperty(value = "actions")
     private List<DeliveryRuleAction> actions;
 
     /*
-     * If this rule is a match should the rules engine continue running the
-     * remaining rules or stop. If not present, defaults to Continue.
+     * If this rule is a match should the rules engine continue running the remaining rules or stop. If not present,
+     * defaults to Continue.
      */
     @JsonProperty(value = "matchProcessingBehavior")
     private MatchProcessingBehavior matchProcessingBehavior;

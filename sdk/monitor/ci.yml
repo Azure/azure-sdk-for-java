@@ -15,8 +15,10 @@ trigger:
     exclude:
       - sdk/monitor/pom.xml
       - sdk/monitor/azure-monitor-ingestion/pom.xml
+      - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
       - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
+      - sdk/monitor/azure-monitor-query-perf/pom.xml
 
 pr:
   branches:
@@ -37,6 +39,10 @@ pr:
       - sdk/monitor/azure-monitor-query/pom.xml
 
 parameters:
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
 - name: release_azuremonitoringestion
   displayName: 'azure-monitor-ingestion'
   type: boolean
@@ -70,6 +76,8 @@ extends:
         releaseInBatch: ${{ parameters.release_azuremonitorquery }}
     AdditionalModules:
       - name: azure-monitor-query-perf
+        groupId: com.azure
+      - name: azure-monitor-ingestion-perf
         groupId: com.azure
         # required by the above perf library
       - name: perf-test-core

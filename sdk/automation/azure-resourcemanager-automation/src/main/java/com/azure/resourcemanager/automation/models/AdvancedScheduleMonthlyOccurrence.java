@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the create advanced schedule monthly occurrence. */
 @Fluent
 public final class AdvancedScheduleMonthlyOccurrence {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvancedScheduleMonthlyOccurrence.class);
-
     /*
      * Occurrence of the week within the month. Must be between 1 and 5
      */
@@ -21,8 +17,7 @@ public final class AdvancedScheduleMonthlyOccurrence {
     private Integer occurrence;
 
     /*
-     * Day of the occurrence. Must be one of monday, tuesday, wednesday,
-     * thursday, friday, saturday, sunday.
+     * Day of the occurrence. Must be one of monday, tuesday, wednesday, thursday, friday, saturday, sunday.
      */
     @JsonProperty(value = "day")
     private ScheduleDay day;

@@ -23,7 +23,9 @@ import com.azure.resourcemanager.communication.models.RegenerateKeyParameters;
 /** An instance of this class provides access to all the operations defined in CommunicationServicesClient. */
 public interface CommunicationServicesClient {
     /**
-     * Checks that the CommunicationService name is valid and is not already in use.
+     * Check Name Availability
+     *
+     * <p>Checks that the CommunicationService name is valid and is not already in use.
      *
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,9 @@ public interface CommunicationServicesClient {
     CheckNameAvailabilityResponseInner checkNameAvailability(NameAvailabilityParameters nameAvailabilityParameters);
 
     /**
-     * Checks that the CommunicationService name is valid and is not already in use.
+     * Check Name Availability
+     *
+     * <p>Checks that the CommunicationService name is valid and is not already in use.
      *
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -49,7 +53,9 @@ public interface CommunicationServicesClient {
         NameAvailabilityParameters nameAvailabilityParameters, Context context);
 
     /**
-     * Links an Azure Notification Hub to this communication service.
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -62,7 +68,9 @@ public interface CommunicationServicesClient {
     LinkedNotificationHubInner linkNotificationHub(String resourceGroupName, String communicationServiceName);
 
     /**
-     * Links an Azure Notification Hub to this communication service.
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -81,7 +89,9 @@ public interface CommunicationServicesClient {
         Context context);
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -92,7 +102,9 @@ public interface CommunicationServicesClient {
     PagedIterable<CommunicationServiceResourceInner> list();
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,7 +117,9 @@ public interface CommunicationServicesClient {
     PagedIterable<CommunicationServiceResourceInner> list(Context context);
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +132,9 @@ public interface CommunicationServicesClient {
     PagedIterable<CommunicationServiceResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -132,7 +148,9 @@ public interface CommunicationServicesClient {
     PagedIterable<CommunicationServiceResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -147,7 +165,9 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters);
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -166,7 +186,9 @@ public interface CommunicationServicesClient {
         Context context);
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -181,7 +203,9 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters);
 
     /**
-     * Operation to update an existing CommunicationService.
+     * Update
+     *
+     * <p>Operation to update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -200,7 +224,9 @@ public interface CommunicationServicesClient {
         Context context);
 
     /**
-     * Get the CommunicationService and its properties.
+     * Get
+     *
+     * <p>Get the CommunicationService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -213,7 +239,9 @@ public interface CommunicationServicesClient {
     CommunicationServiceResourceInner getByResourceGroup(String resourceGroupName, String communicationServiceName);
 
     /**
-     * Get the CommunicationService and its properties.
+     * Get
+     *
+     * <p>Get the CommunicationService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -228,7 +256,9 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, Context context);
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -243,7 +273,9 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters);
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -262,7 +294,9 @@ public interface CommunicationServicesClient {
         Context context);
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -277,7 +311,9 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters);
 
     /**
-     * Create a new CommunicationService or update an existing CommunicationService.
+     * Create Or Update
+     *
+     * <p>Create a new CommunicationService or update an existing CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -296,7 +332,9 @@ public interface CommunicationServicesClient {
         Context context);
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -309,7 +347,9 @@ public interface CommunicationServicesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationServiceName);
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -324,7 +364,9 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, Context context);
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -336,7 +378,9 @@ public interface CommunicationServicesClient {
     void delete(String resourceGroupName, String communicationServiceName);
 
     /**
-     * Operation to delete a CommunicationService.
+     * Delete
+     *
+     * <p>Operation to delete a CommunicationService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -349,7 +393,9 @@ public interface CommunicationServicesClient {
     void delete(String resourceGroupName, String communicationServiceName, Context context);
 
     /**
-     * Get the access keys of the CommunicationService resource.
+     * List Keys
+     *
+     * <p>Get the access keys of the CommunicationService resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -362,7 +408,9 @@ public interface CommunicationServicesClient {
     CommunicationServiceKeysInner listKeys(String resourceGroupName, String communicationServiceName);
 
     /**
-     * Get the access keys of the CommunicationService resource.
+     * List Keys
+     *
+     * <p>Get the access keys of the CommunicationService resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -377,7 +425,10 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, Context context);
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -392,7 +443,10 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters);
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -408,7 +462,10 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters, Context context);
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
@@ -423,7 +480,10 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters);
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.

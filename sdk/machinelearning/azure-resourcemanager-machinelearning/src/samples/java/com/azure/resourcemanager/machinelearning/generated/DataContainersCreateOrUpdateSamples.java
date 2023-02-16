@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.resourcemanager.machinelearning.models.DataContainerDetails;
+import com.azure.resourcemanager.machinelearning.models.DataContainerProperties;
 import com.azure.resourcemanager.machinelearning.models.DataType;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DataContainers CreateOrUpdate. */
 public final class DataContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/DataContainer/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/DataContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Data Container.
@@ -26,11 +26,11 @@ public final class DataContainersCreateOrUpdateSamples {
             .define("datacontainer123")
             .withExistingWorkspace("testrg123", "workspace123")
             .withProperties(
-                new DataContainerDetails()
+                new DataContainerProperties()
                     .withDescription("string")
                     .withProperties(mapOf("properties1", "value1", "properties2", "value2"))
                     .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-                    .withDataType(DataType.URI_FILE))
+                    .withDataType(DataType.fromString("UriFile")))
             .create();
     }
 

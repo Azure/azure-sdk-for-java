@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HiveAuthenticationType. */
+/** The authentication method used to access the Hive server. */
 public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthenticationType> {
     /** Static value Anonymous for HiveAuthenticationType. */
     public static final HiveAuthenticationType ANONYMOUS = fromString("Anonymous");
@@ -22,6 +22,15 @@ public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthe
     /** Static value WindowsAzureHDInsightService for HiveAuthenticationType. */
     public static final HiveAuthenticationType WINDOWS_AZURE_HDINSIGHT_SERVICE =
         fromString("WindowsAzureHDInsightService");
+
+    /**
+     * Creates a new instance of HiveAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HiveAuthenticationType() {
+    }
 
     /**
      * Creates or finds a HiveAuthenticationType from its string representation.

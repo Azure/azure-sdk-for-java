@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseAccounts ListConnectionStrings. */
 public final class DatabaseAccountsListConnectionStringsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountListConnectionStrings.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountListConnectionStrings.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListConnectionStrings.
@@ -23,11 +21,11 @@ public final class DatabaseAccountsListConnectionStringsSamples {
             .manager()
             .serviceClient()
             .getDatabaseAccounts()
-            .listConnectionStringsWithResponse("rg1", "ddb1", Context.NONE);
+            .listConnectionStringsWithResponse("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListConnectionStringsMongo.
@@ -41,6 +39,6 @@ public final class DatabaseAccountsListConnectionStringsSamples {
             .manager()
             .serviceClient()
             .getDatabaseAccounts()
-            .listConnectionStringsWithResponse("rg1", "mongo-ddb1", Context.NONE);
+            .listConnectionStringsWithResponse("rg1", "mongo-ddb1", com.azure.core.util.Context.NONE);
     }
 }

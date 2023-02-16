@@ -31,6 +31,10 @@ public final class FailoverGroupUpdateProperties {
     @JsonProperty(value = "databases")
     private List<String> databases;
 
+    /** Creates an instance of FailoverGroupUpdateProperties class. */
+    public FailoverGroupUpdateProperties() {
+    }
+
     /**
      * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
      *

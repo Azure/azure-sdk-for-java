@@ -12,18 +12,20 @@ import java.util.List;
 @Immutable
 public final class ResourceSkuZoneDetails {
     /*
-     * The set of zones that the SKU is available in with the specified
-     * capabilities.
+     * The set of zones that the SKU is available in with the specified capabilities.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> name;
 
     /*
-     * A list of capabilities that are available for the SKU in the specified
-     * list of zones.
+     * A list of capabilities that are available for the SKU in the specified list of zones.
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuCapabilities> capabilities;
+
+    /** Creates an instance of ResourceSkuZoneDetails class. */
+    public ResourceSkuZoneDetails() {
+    }
 
     /**
      * Get the name property: The set of zones that the SKU is available in with the specified capabilities.

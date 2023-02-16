@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-perf-test-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-perf-test-parent;current} -->
+    <relativePath>../../parents/azure-perf-test-parent</relativePath>
+  </parent>
+
+  <groupId>com.azure</groupId>
+  <artifactId>azure-monitor-ingestion-perf</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-ingestion-perf;current} -->
+  <packaging>jar</packaging>
+
+  <name>Microsoft Azure client library for Azure Monitor logs ingestion performance tests</name>
+
+  <properties>
+    <perf.test.mainClass>com.azure.monitor.ingestion.perf.App</perf.test.mainClass>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>perf-test-core</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-ingestion</artifactId>
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-ingestion;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.36.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+    </dependency>
+  </dependencies>
+</project>

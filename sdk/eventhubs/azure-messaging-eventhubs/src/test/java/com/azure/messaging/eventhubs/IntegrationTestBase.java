@@ -73,7 +73,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
-    private static final Object LOCK = new Object();
     private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     private static Scheduler scheduler;
@@ -341,6 +340,6 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     private void skipIfNotRecordMode() {
-        Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK);
+        Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK, "Is not in RECORD/LIVE mode.");
     }
 }

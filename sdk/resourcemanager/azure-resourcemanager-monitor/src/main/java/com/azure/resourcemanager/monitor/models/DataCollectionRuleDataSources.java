@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 /**
@@ -15,7 +13,9 @@ import java.util.List;
  */
 @Fluent
 public final class DataCollectionRuleDataSources extends DataSourcesSpec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCollectionRuleDataSources.class);
+    /** Creates an instance of DataCollectionRuleDataSources class. */
+    public DataCollectionRuleDataSources() {
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -42,6 +42,20 @@ public final class DataCollectionRuleDataSources extends DataSourcesSpec {
     @Override
     public DataCollectionRuleDataSources withExtensions(List<ExtensionDataSource> extensions) {
         super.withExtensions(extensions);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataCollectionRuleDataSources withLogFiles(List<LogFilesDataSource> logFiles) {
+        super.withLogFiles(logFiles);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataCollectionRuleDataSources withIisLogs(List<IisLogsDataSource> iisLogs) {
+        super.withIisLogs(iisLogs);
         return this;
     }
 

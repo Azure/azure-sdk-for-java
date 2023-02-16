@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The disk billing meters. */
 @Fluent
 public final class DiskBillingMeters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskBillingMeters.class);
-
     /*
      * The managed disk meter guid.
      */
@@ -31,6 +27,10 @@ public final class DiskBillingMeters {
      */
     @JsonProperty(value = "tier")
     private Tier tier;
+
+    /** Creates an instance of DiskBillingMeters class. */
+    public DiskBillingMeters() {
+    }
 
     /**
      * Get the diskRpMeter property: The managed disk meter guid.

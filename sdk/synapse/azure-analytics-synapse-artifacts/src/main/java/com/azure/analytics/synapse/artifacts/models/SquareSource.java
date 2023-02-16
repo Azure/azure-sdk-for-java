@@ -15,11 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SquareSource extends TabularSource {
     /*
-     * A query to retrieve data from source. Type: string (or Expression with
-     * resultType string).
+     * A query to retrieve data from source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
+
+    /** Creates an instance of SquareSource class. */
+    public SquareSource() {}
 
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType

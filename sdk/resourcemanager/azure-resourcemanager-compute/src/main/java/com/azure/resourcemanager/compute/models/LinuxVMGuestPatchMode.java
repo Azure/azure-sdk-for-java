@@ -8,13 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LinuxVMGuestPatchMode. */
+/**
+ * Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual machine
+ * scale set with OrchestrationMode as Flexible.&lt;br /&gt;&lt;br /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt;
+ * **ImageDefault** - The virtual machine's default patching configuration is used. &lt;br /&gt;&lt;br /&gt;
+ * **AutomaticByPlatform** - The virtual machine will be automatically updated by the platform. The property
+ * provisionVMAgent must be true.
+ */
 public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGuestPatchMode> {
     /** Static value ImageDefault for LinuxVMGuestPatchMode. */
     public static final LinuxVMGuestPatchMode IMAGE_DEFAULT = fromString("ImageDefault");
 
     /** Static value AutomaticByPlatform for LinuxVMGuestPatchMode. */
     public static final LinuxVMGuestPatchMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
+
+    /**
+     * Creates a new instance of LinuxVMGuestPatchMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LinuxVMGuestPatchMode() {
+    }
 
     /**
      * Creates or finds a LinuxVMGuestPatchMode from its string representation.

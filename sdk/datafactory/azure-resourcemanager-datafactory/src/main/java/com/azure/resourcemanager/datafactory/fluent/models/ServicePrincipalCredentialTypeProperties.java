@@ -29,6 +29,10 @@ public final class ServicePrincipalCredentialTypeProperties {
     @JsonProperty(value = "tenant")
     private Object tenant;
 
+    /** Creates an instance of ServicePrincipalCredentialTypeProperties class. */
+    public ServicePrincipalCredentialTypeProperties() {
+    }
+
     /**
      * Get the servicePrincipalId property: The app ID of the service principal used to authenticate.
      *

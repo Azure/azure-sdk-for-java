@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageTypeState. */
+/** Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked. */
 public final class StorageTypeState extends ExpandableStringEnum<StorageTypeState> {
     /** Static value Invalid for StorageTypeState. */
     public static final StorageTypeState INVALID = fromString("Invalid");
@@ -18,6 +18,15 @@ public final class StorageTypeState extends ExpandableStringEnum<StorageTypeStat
 
     /** Static value Unlocked for StorageTypeState. */
     public static final StorageTypeState UNLOCKED = fromString("Unlocked");
+
+    /**
+     * Creates a new instance of StorageTypeState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageTypeState() {
+    }
 
     /**
      * Creates or finds a StorageTypeState from its string representation.

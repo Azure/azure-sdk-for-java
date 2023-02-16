@@ -237,7 +237,7 @@ public class ShareFileClientBuilder implements
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
         return new ShareDirectoryAsyncClient(constructImpl(serviceVersion), shareName, resourcePath,
-            shareSnapshot, accountName, serviceVersion);
+            shareSnapshot, accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
     /**
@@ -279,7 +279,7 @@ public class ShareFileClientBuilder implements
     public ShareFileAsyncClient buildFileAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
         return new ShareFileAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
-            accountName, serviceVersion);
+            accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
     /**

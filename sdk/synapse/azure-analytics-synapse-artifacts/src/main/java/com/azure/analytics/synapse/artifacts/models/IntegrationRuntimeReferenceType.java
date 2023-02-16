@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeReferenceType. */
+/** Type of integration runtime. */
 public final class IntegrationRuntimeReferenceType extends ExpandableStringEnum<IntegrationRuntimeReferenceType> {
     /** Static value IntegrationRuntimeReference for IntegrationRuntimeReferenceType. */
     public static final IntegrationRuntimeReferenceType INTEGRATION_RUNTIME_REFERENCE =
@@ -25,7 +25,11 @@ public final class IntegrationRuntimeReferenceType extends ExpandableStringEnum<
         return fromString(name, IntegrationRuntimeReferenceType.class);
     }
 
-    /** @return known IntegrationRuntimeReferenceType values. */
+    /**
+     * Gets known IntegrationRuntimeReferenceType values.
+     *
+     * @return known IntegrationRuntimeReferenceType values.
+     */
     public static Collection<IntegrationRuntimeReferenceType> values() {
         return values(IntegrationRuntimeReferenceType.class);
     }

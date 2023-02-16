@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.SingleMetricBaselineInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of metric baselines. */
 @Fluent
 public final class MetricBaselinesResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricBaselinesResponse.class);
-
     /*
      * The list of metric baselines.
      */
     @JsonProperty(value = "value")
     private List<SingleMetricBaselineInner> value;
+
+    /** Creates an instance of MetricBaselinesResponse class. */
+    public MetricBaselinesResponse() {
+    }
 
     /**
      * Get the value property: The list of metric baselines.

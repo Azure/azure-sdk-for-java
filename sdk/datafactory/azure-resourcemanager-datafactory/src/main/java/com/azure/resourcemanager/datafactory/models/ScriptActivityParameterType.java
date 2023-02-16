@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptActivityParameterType. */
+/** The type of the parameter. */
 public final class ScriptActivityParameterType extends ExpandableStringEnum<ScriptActivityParameterType> {
     /** Static value Boolean for ScriptActivityParameterType. */
     public static final ScriptActivityParameterType BOOLEAN = fromString("Boolean");
@@ -45,6 +45,15 @@ public final class ScriptActivityParameterType extends ExpandableStringEnum<Scri
 
     /** Static value Timespan for ScriptActivityParameterType. */
     public static final ScriptActivityParameterType TIMESPAN = fromString("Timespan");
+
+    /**
+     * Creates a new instance of ScriptActivityParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptActivityParameterType() {
+    }
 
     /**
      * Creates or finds a ScriptActivityParameterType from its string representation.

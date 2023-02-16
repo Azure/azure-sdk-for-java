@@ -1,0 +1,5 @@
+spring:
+  cloud:
+    azure:
+      appconfiguration:
+        endpoint: ${AZURE_APPCONFIGURATION_ENDPOINT}

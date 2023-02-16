@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkPolicy. */
+/** Network policy used for building the Kubernetes network. */
 public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
     /** Static value calico for NetworkPolicy. */
     public static final NetworkPolicy CALICO = fromString("calico");
 
     /** Static value azure for NetworkPolicy. */
     public static final NetworkPolicy AZURE = fromString("azure");
+
+    /**
+     * Creates a new instance of NetworkPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkPolicy() {
+    }
 
     /**
      * Creates or finds a NetworkPolicy from its string representation.

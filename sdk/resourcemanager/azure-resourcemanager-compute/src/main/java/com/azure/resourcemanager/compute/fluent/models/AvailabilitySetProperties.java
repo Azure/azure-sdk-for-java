@@ -32,9 +32,8 @@ public final class AvailabilitySetProperties {
     private List<SubResource> virtualMachines;
 
     /*
-     * Specifies information about the proximity placement group that the
-     * availability set should be assigned to. <br><br>Minimum api-version:
-     * 2018-04-01.
+     * Specifies information about the proximity placement group that the availability set should be assigned to.
+     * <br><br>Minimum api-version: 2018-04-01.
      */
     @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
@@ -44,6 +43,10 @@ public final class AvailabilitySetProperties {
      */
     @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstanceViewStatus> statuses;
+
+    /** Creates an instance of AvailabilitySetProperties class. */
+    public AvailabilitySetProperties() {
+    }
 
     /**
      * Get the platformUpdateDomainCount property: Update Domain count.

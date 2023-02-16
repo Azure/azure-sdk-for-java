@@ -56,6 +56,10 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
         return this.innerModel().description();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConnectionInner innerModel() {
         return this.innerObject;
     }

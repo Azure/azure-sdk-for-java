@@ -25,6 +25,10 @@ public final class LinkedServiceListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of LinkedServiceListResponse class. */
+    public LinkedServiceListResponse() {
+    }
+
     /**
      * Get the value property: List of linked services.
      *

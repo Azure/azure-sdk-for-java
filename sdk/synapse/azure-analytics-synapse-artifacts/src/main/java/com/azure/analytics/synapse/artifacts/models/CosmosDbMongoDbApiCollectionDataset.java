@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class CosmosDbMongoDbApiCollectionDataset extends Dataset {
     /*
-     * The collection name of the CosmosDB (MongoDB API) database. Type: string
-     * (or Expression with resultType string).
+     * The collection name of the CosmosDB (MongoDB API) database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.collection", required = true)
     private Object collection;
+
+    /** Creates an instance of CosmosDbMongoDbApiCollectionDataset class. */
+    public CosmosDbMongoDbApiCollectionDataset() {}
 
     /**
      * Get the collection property: The collection name of the CosmosDB (MongoDB API) database. Type: string (or

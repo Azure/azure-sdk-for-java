@@ -16,6 +16,10 @@ public final class AzureWebCategoryPropertiesFormat {
     @JsonProperty(value = "group", access = JsonProperty.Access.WRITE_ONLY)
     private String group;
 
+    /** Creates an instance of AzureWebCategoryPropertiesFormat class. */
+    public AzureWebCategoryPropertiesFormat() {
+    }
+
     /**
      * Get the group property: The name of the group that the category belongs to.
      *

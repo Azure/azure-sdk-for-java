@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMInfoInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,13 +15,13 @@ public final class VMHostsListResponse {
     /*
      * The items on this page
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value")
     private List<VMInfoInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", required = true)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -71,19 +70,8 @@ public final class VMHostsListResponse {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model VMHostsListResponse"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
-        if (nextLink() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nextLink in model VMHostsListResponse"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VMHostsListResponse.class);
 }

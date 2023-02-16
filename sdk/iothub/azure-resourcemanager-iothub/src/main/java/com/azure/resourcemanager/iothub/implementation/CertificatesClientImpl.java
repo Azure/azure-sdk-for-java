@@ -24,7 +24,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.CertificatesClient;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateDescriptionInner;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateListDescriptionInner;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CertificatesClient. */
 public final class CertificatesClientImpl implements CertificatesClient {
-    private final ClientLogger logger = new ClientLogger(CertificatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CertificatesService service;
 
@@ -164,7 +161,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Returns the list of certificates.
+     * Get the certificate list.
+     *
+     * <p>Returns the list of certificates.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -213,7 +212,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Returns the list of certificates.
+     * Get the certificate list.
+     *
+     * <p>Returns the list of certificates.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -260,7 +261,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Returns the list of certificates.
+     * Get the certificate list.
+     *
+     * <p>Returns the list of certificates.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -272,18 +275,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CertificateListDescriptionInner> listByIotHubAsync(String resourceGroupName, String resourceName) {
         return listByIotHubWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<CertificateListDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Returns the list of certificates.
+     * Get the certificate list.
+     *
+     * <p>Returns the list of certificates.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -298,7 +296,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Returns the list of certificates.
+     * Get the certificate list.
+     *
+     * <p>Returns the list of certificates.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -315,7 +315,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Returns the certificate.
+     * Get the certificate.
+     *
+     * <p>Returns the certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -369,7 +371,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Returns the certificate.
+     * Get the certificate.
+     *
+     * <p>Returns the certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -421,7 +425,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Returns the certificate.
+     * Get the certificate.
+     *
+     * <p>Returns the certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -435,18 +441,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
     private Mono<CertificateDescriptionInner> getAsync(
         String resourceGroupName, String resourceName, String certificateName) {
         return getWithResponseAsync(resourceGroupName, resourceName, certificateName)
-            .flatMap(
-                (Response<CertificateDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Returns the certificate.
+     * Get the certificate.
+     *
+     * <p>Returns the certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -462,7 +463,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Returns the certificate.
+     * Get the certificate.
+     *
+     * <p>Returns the certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -480,7 +483,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Adds new or replaces existing certificate.
+     * Upload the certificate to the IoT hub.
+     *
+     * <p>Adds new or replaces existing certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -550,7 +555,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Adds new or replaces existing certificate.
+     * Upload the certificate to the IoT hub.
+     *
+     * <p>Adds new or replaces existing certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -619,7 +626,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Adds new or replaces existing certificate.
+     * Upload the certificate to the IoT hub.
+     *
+     * <p>Adds new or replaces existing certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -641,18 +650,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
         String ifMatch) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
-            .flatMap(
-                (Response<CertificateDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Adds new or replaces existing certificate.
+     * Upload the certificate to the IoT hub.
+     *
+     * <p>Adds new or replaces existing certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -672,18 +676,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
-            .flatMap(
-                (Response<CertificateDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Adds new or replaces existing certificate.
+     * Upload the certificate to the IoT hub.
+     *
+     * <p>Adds new or replaces existing certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -706,7 +705,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Adds new or replaces existing certificate.
+     * Upload the certificate to the IoT hub.
+     *
+     * <p>Adds new or replaces existing certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -734,7 +735,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Deletes an existing X509 certificate or does nothing if it does not exist.
+     * Delete an X509 certificate.
+     *
+     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -793,7 +796,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Deletes an existing X509 certificate or does nothing if it does not exist.
+     * Delete an X509 certificate.
+     *
+     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -850,7 +855,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Deletes an existing X509 certificate or does nothing if it does not exist.
+     * Delete an X509 certificate.
+     *
+     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -865,11 +872,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
     private Mono<Void> deleteAsync(
         String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, certificateName, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Deletes an existing X509 certificate or does nothing if it does not exist.
+     * Delete an X509 certificate.
+     *
+     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -885,7 +894,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Deletes an existing X509 certificate or does nothing if it does not exist.
+     * Delete an X509 certificate.
+     *
+     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -904,8 +915,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
-     * certificate.
+     * Generate verification code for proof of possession flow.
+     *
+     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
+     * leaf certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -964,8 +977,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
-     * certificate.
+     * Generate verification code for proof of possession flow.
+     *
+     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
+     * leaf certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1022,8 +1037,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
-     * certificate.
+     * Generate verification code for proof of possession flow.
+     *
+     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
+     * leaf certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1038,19 +1055,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
     private Mono<CertificateWithNonceDescriptionInner> generateVerificationCodeAsync(
         String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
         return generateVerificationCodeWithResponseAsync(resourceGroupName, resourceName, certificateName, ifMatch)
-            .flatMap(
-                (Response<CertificateWithNonceDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
-     * certificate.
+     * Generate verification code for proof of possession flow.
+     *
+     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
+     * leaf certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1068,8 +1080,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
-     * certificate.
+     * Generate verification code for proof of possession flow.
+     *
+     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
+     * leaf certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1090,8 +1104,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
-     * certificate.
+     * Verify certificate's private key possession.
+     *
+     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
+     * uploaded certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1164,8 +1180,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
-     * certificate.
+     * Verify certificate's private key possession.
+     *
+     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
+     * uploaded certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1237,8 +1255,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
-     * certificate.
+     * Verify certificate's private key possession.
+     *
+     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
+     * uploaded certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1259,19 +1279,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
         CertificateVerificationDescription certificateVerificationBody) {
         return verifyWithResponseAsync(
                 resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody)
-            .flatMap(
-                (Response<CertificateDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
-     * certificate.
+     * Verify certificate's private key possession.
+     *
+     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
+     * uploaded certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1295,8 +1310,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
-     * certificate.
+     * Verify certificate's private key possession.
+     *
+     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
+     * uploaded certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.

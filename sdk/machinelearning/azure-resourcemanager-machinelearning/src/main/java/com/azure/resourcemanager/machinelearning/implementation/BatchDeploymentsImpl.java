@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.BatchDeploymentsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.BatchDeploymentDataInner;
-import com.azure.resourcemanager.machinelearning.models.BatchDeploymentData;
+import com.azure.resourcemanager.machinelearning.fluent.models.BatchDeploymentInner;
+import com.azure.resourcemanager.machinelearning.models.BatchDeployment;
 import com.azure.resourcemanager.machinelearning.models.BatchDeployments;
 
 public final class BatchDeploymentsImpl implements BatchDeployments {
@@ -28,14 +28,13 @@ public final class BatchDeploymentsImpl implements BatchDeployments {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<BatchDeploymentData> list(
-        String resourceGroupName, String workspaceName, String endpointName) {
-        PagedIterable<BatchDeploymentDataInner> inner =
+    public PagedIterable<BatchDeployment> list(String resourceGroupName, String workspaceName, String endpointName) {
+        PagedIterable<BatchDeploymentInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, endpointName);
-        return Utils.mapPage(inner, inner1 -> new BatchDeploymentDataImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new BatchDeploymentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BatchDeploymentData> list(
+    public PagedIterable<BatchDeployment> list(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -43,9 +42,9 @@ public final class BatchDeploymentsImpl implements BatchDeployments {
         Integer top,
         String skip,
         Context context) {
-        PagedIterable<BatchDeploymentDataInner> inner =
+        PagedIterable<BatchDeploymentInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new BatchDeploymentDataImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new BatchDeploymentImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
@@ -57,20 +56,9 @@ public final class BatchDeploymentsImpl implements BatchDeployments {
         this.serviceClient().delete(resourceGroupName, workspaceName, endpointName, deploymentName, context);
     }
 
-    public BatchDeploymentData get(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        BatchDeploymentDataInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, endpointName, deploymentName);
-        if (inner != null) {
-            return new BatchDeploymentDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<BatchDeploymentData> getWithResponse(
+    public Response<BatchDeployment> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
-        Response<BatchDeploymentDataInner> inner =
+        Response<BatchDeploymentInner> inner =
             this
                 .serviceClient()
                 .getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, context);
@@ -79,13 +67,24 @@ public final class BatchDeploymentsImpl implements BatchDeployments {
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new BatchDeploymentDataImpl(inner.getValue(), this.manager()));
+                new BatchDeploymentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public BatchDeploymentData getById(String id) {
+    public BatchDeployment get(
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+        BatchDeploymentInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, endpointName, deploymentName);
+        if (inner != null) {
+            return new BatchDeploymentImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BatchDeployment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -121,7 +120,7 @@ public final class BatchDeploymentsImpl implements BatchDeployments {
             .getValue();
     }
 
-    public Response<BatchDeploymentData> getByIdWithResponse(String id, Context context) {
+    public Response<BatchDeployment> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -231,7 +230,7 @@ public final class BatchDeploymentsImpl implements BatchDeployments {
         return this.serviceManager;
     }
 
-    public BatchDeploymentDataImpl define(String name) {
-        return new BatchDeploymentDataImpl(name, this.manager());
+    public BatchDeploymentImpl define(String name) {
+        return new BatchDeploymentImpl(name, this.manager());
     }
 }

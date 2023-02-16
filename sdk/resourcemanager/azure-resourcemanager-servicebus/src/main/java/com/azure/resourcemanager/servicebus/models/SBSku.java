@@ -6,14 +6,11 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU of the namespace. */
 @Fluent
 public final class SBSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SBSku.class);
-
     /*
      * Name of this SKU.
      */
@@ -27,8 +24,7 @@ public final class SBSku {
     private SkuTier tier;
 
     /*
-     * The specified messaging units for the tier. For Premium tier, capacity
-     * are 1,2 and 4.
+     * The specified messaging units for the tier. For Premium tier, capacity are 1,2 and 4.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
@@ -100,8 +96,10 @@ public final class SBSku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model SBSku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SBSku.class);
 }

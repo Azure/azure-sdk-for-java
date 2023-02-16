@@ -27,7 +27,7 @@ public class KeyVaultAccessControlAsyncClientJavaDocCodeSnippets {
     public KeyVaultAccessControlAsyncClient createAsyncClient() {
         // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.instantiation
         KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl("https://myaccount.managedhsm.azure.net/")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.instantiation

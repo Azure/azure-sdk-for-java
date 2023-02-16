@@ -40,6 +40,23 @@ public final class PolicySettings {
     @JsonProperty(value = "fileUploadLimitInMb")
     private Integer fileUploadLimitInMb;
 
+    /*
+     * If the action type is block, customer can override the response status code.
+     */
+    @JsonProperty(value = "customBlockResponseStatusCode")
+    private Integer customBlockResponseStatusCode;
+
+    /*
+     * If the action type is block, customer can override the response body. The body must be specified in base64
+     * encoding.
+     */
+    @JsonProperty(value = "customBlockResponseBody")
+    private String customBlockResponseBody;
+
+    /** Creates an instance of PolicySettings class. */
+    public PolicySettings() {
+    }
+
     /**
      * Get the state property: The state of the policy.
      *
@@ -137,6 +154,50 @@ public final class PolicySettings {
      */
     public PolicySettings withFileUploadLimitInMb(Integer fileUploadLimitInMb) {
         this.fileUploadLimitInMb = fileUploadLimitInMb;
+        return this;
+    }
+
+    /**
+     * Get the customBlockResponseStatusCode property: If the action type is block, customer can override the response
+     * status code.
+     *
+     * @return the customBlockResponseStatusCode value.
+     */
+    public Integer customBlockResponseStatusCode() {
+        return this.customBlockResponseStatusCode;
+    }
+
+    /**
+     * Set the customBlockResponseStatusCode property: If the action type is block, customer can override the response
+     * status code.
+     *
+     * @param customBlockResponseStatusCode the customBlockResponseStatusCode value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withCustomBlockResponseStatusCode(Integer customBlockResponseStatusCode) {
+        this.customBlockResponseStatusCode = customBlockResponseStatusCode;
+        return this;
+    }
+
+    /**
+     * Get the customBlockResponseBody property: If the action type is block, customer can override the response body.
+     * The body must be specified in base64 encoding.
+     *
+     * @return the customBlockResponseBody value.
+     */
+    public String customBlockResponseBody() {
+        return this.customBlockResponseBody;
+    }
+
+    /**
+     * Set the customBlockResponseBody property: If the action type is block, customer can override the response body.
+     * The body must be specified in base64 encoding.
+     *
+     * @param customBlockResponseBody the customBlockResponseBody value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withCustomBlockResponseBody(String customBlockResponseBody) {
+        this.customBlockResponseBody = customBlockResponseBody;
         return this;
     }
 

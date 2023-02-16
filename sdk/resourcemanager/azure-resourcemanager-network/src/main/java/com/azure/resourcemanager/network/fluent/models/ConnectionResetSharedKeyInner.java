@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ConnectionResetSharedKeyInner {
     /*
-     * The virtual network connection reset shared key length, should between 1
-     * and 128.
+     * The virtual network connection reset shared key length, should between 1 and 128.
      */
     @JsonProperty(value = "keyLength", required = true)
     private int keyLength;
+
+    /** Creates an instance of ConnectionResetSharedKeyInner class. */
+    public ConnectionResetSharedKeyInner() {
+    }
 
     /**
      * Get the keyLength property: The virtual network connection reset shared key length, should between 1 and 128.

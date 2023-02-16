@@ -66,6 +66,8 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     Tag tag();
 
+    Tag clientMetricTag();
+
     long usedDirectMemory();
 
     long usedHeapMemory();
@@ -239,6 +241,46 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         @JsonProperty
         public boolean preferTcpNative() { return this.options.preferTcpNative(); }
+
+        @JsonProperty
+        public long sslHandshakeTimeoutInMillis() {
+            return this.options.sslHandshakeTimeoutInMillis();
+        }
+
+        @JsonProperty
+        public boolean timeoutDetectionEnabled() {
+            return this.options.timeoutDetectionEnabled();
+        }
+
+        @JsonProperty
+        public double timeoutDetectionDisableCPUThreshold() {
+            return this.options.timeoutDetectionDisableCPUThreshold();
+        }
+
+        @JsonProperty
+        public long timeoutDetectionTimeLimitInNanos() {
+            return this.options.timeoutDetectionTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int timeoutDetectionHighFrequencyThreshold() {
+            return this.options.timeoutDetectionHighFrequencyThreshold();
+        }
+
+        @JsonProperty
+        public long timeoutDetectionHighFrequencyTimeLimitInNanos() {
+            return this.options.timeoutDetectionHighFrequencyTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int timeoutDetectionOnWriteThreshold() {
+            return this.options.timeoutDetectionOnWriteThreshold();
+        }
+
+        @JsonProperty
+        public long timeoutDetectionOnWriteTimeLimitInNanos() {
+            return this.options.timeoutDetectionOnWriteTimeLimit().toNanos();
+        }
 
         @Override
         public String toString() {

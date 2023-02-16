@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConfigurationProfiles List. */
 public final class ConfigurationProfilesListSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listConfigurationProfilesBySubscription.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfilesBySubscription.json
      */
     /**
      * Sample code: List configuration profiles by subscription.

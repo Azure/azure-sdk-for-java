@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation display properties. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * Provider name.
      */
@@ -37,6 +33,10 @@ public final class OperationDisplay {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
 
     /**
      * Get the provider property: Provider name.

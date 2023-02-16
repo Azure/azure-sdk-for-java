@@ -4,10 +4,32 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /** Supported parameters for a Custom Single Classification task. */
-@Immutable
+@Fluent
 public final class CustomSingleLabelClassificationTaskParameters extends CustomTaskParameters {
+    /** Creates an instance of CustomSingleLabelClassificationTaskParameters class. */
+    public CustomSingleLabelClassificationTaskParameters() {}
 
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationTaskParameters setProjectName(String projectName) {
+        super.setProjectName(projectName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationTaskParameters setDeploymentName(String deploymentName) {
+        super.setDeploymentName(deploymentName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
+        return this;
+    }
 }

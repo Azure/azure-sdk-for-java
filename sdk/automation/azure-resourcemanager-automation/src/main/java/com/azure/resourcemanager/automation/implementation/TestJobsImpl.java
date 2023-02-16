@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.models.TestJobInner;
 import com.azure.resourcemanager.automation.models.TestJob;
 import com.azure.resourcemanager.automation.models.TestJobCreateParameters;
 import com.azure.resourcemanager.automation.models.TestJobs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TestJobsImpl implements TestJobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TestJobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TestJobsImpl.class);
 
     private final TestJobsClient innerClient;
 

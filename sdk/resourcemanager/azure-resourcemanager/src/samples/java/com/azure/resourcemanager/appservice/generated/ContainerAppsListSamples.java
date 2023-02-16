@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContainerApps List. */
 public final class ContainerAppsListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListContainerAppsBySubscription.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListContainerAppsBySubscription.json
      */
     /**
      * Sample code: List Container Apps by resource group.

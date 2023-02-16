@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.InteractionsClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in InteractionsClient. */
 public final class InteractionsClientImpl implements InteractionsClient {
-    private final ClientLogger logger = new ClientLogger(InteractionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final InteractionsService service;
 
@@ -67,7 +64,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface InteractionsService {
+    public interface InteractionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
@@ -155,7 +152,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the interaction resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -217,7 +214,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the interaction resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -279,9 +276,9 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the {@link PollerFlux} for polling of the interaction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InteractionResourceFormatInner>, InteractionResourceFormatInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -297,7 +294,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
                 this.client.getHttpPipeline(),
                 InteractionResourceFormatInner.class,
                 InteractionResourceFormatInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -311,9 +308,9 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the {@link PollerFlux} for polling of the interaction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InteractionResourceFormatInner>, InteractionResourceFormatInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -344,12 +341,12 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the {@link SyncPoller} for polling of the interaction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InteractionResourceFormatInner>, InteractionResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName, String hubName, String interactionName, InteractionResourceFormatInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters).getSyncPoller();
     }
 
     /**
@@ -363,16 +360,17 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the {@link SyncPoller} for polling of the interaction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InteractionResourceFormatInner>, InteractionResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hubName,
         String interactionName,
         InteractionResourceFormatInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -386,7 +384,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the interaction resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InteractionResourceFormatInner> createOrUpdateAsync(
@@ -407,7 +405,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the interaction resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InteractionResourceFormatInner> createOrUpdateAsync(
@@ -472,7 +470,8 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
+     * @return information about the specified interaction along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InteractionResourceFormatInner>> getWithResponseAsync(
@@ -529,7 +528,8 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
+     * @return information about the specified interaction along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InteractionResourceFormatInner>> getWithResponseAsync(
@@ -578,24 +578,17 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
-     * @param localeCode Locale of interaction to retrieve, default is en-us.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
+     * @return information about the specified interaction on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InteractionResourceFormatInner> getAsync(
-        String resourceGroupName, String hubName, String interactionName, String localeCode) {
+        String resourceGroupName, String hubName, String interactionName) {
+        final String localeCode = null;
         return getWithResponseAsync(resourceGroupName, hubName, interactionName, localeCode)
-            .flatMap(
-                (Response<InteractionResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -604,24 +597,17 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
+     * @param localeCode Locale of interaction to retrieve, default is en-us.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
+     * @return information about the specified interaction along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InteractionResourceFormatInner> getAsync(
-        String resourceGroupName, String hubName, String interactionName) {
-        final String localeCode = null;
-        return getWithResponseAsync(resourceGroupName, hubName, interactionName, localeCode)
-            .flatMap(
-                (Response<InteractionResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<InteractionResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String interactionName, String localeCode, Context context) {
+        return getWithResponseAsync(resourceGroupName, hubName, interactionName, localeCode, context).block();
     }
 
     /**
@@ -638,26 +624,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InteractionResourceFormatInner get(String resourceGroupName, String hubName, String interactionName) {
         final String localeCode = null;
-        return getAsync(resourceGroupName, hubName, interactionName, localeCode).block();
-    }
-
-    /**
-     * Gets information about the specified interaction.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param interactionName The name of the interaction.
-     * @param localeCode Locale of interaction to retrieve, default is en-us.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InteractionResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String interactionName, String localeCode, Context context) {
-        return getWithResponseAsync(resourceGroupName, hubName, interactionName, localeCode, context).block();
+        return getWithResponse(resourceGroupName, hubName, interactionName, localeCode, Context.NONE).getValue();
     }
 
     /**
@@ -669,7 +636,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubSinglePageAsync(
@@ -729,7 +696,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubSinglePageAsync(
@@ -785,7 +752,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InteractionResourceFormatInner> listByHubAsync(
@@ -803,7 +770,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InteractionResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
@@ -823,7 +790,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InteractionResourceFormatInner> listByHubAsync(
@@ -841,7 +808,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InteractionResourceFormatInner> listByHub(String resourceGroupName, String hubName) {
@@ -859,7 +826,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InteractionResourceFormatInner> listByHub(
@@ -876,7 +843,8 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
+     * @return the response of suggest relationship links operation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SuggestRelationshipLinksResponseInner>> suggestRelationshipLinksWithResponseAsync(
@@ -931,7 +899,8 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
+     * @return the response of suggest relationship links operation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SuggestRelationshipLinksResponseInner>> suggestRelationshipLinksWithResponseAsync(
@@ -982,20 +951,31 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
+     * @return the response of suggest relationship links operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SuggestRelationshipLinksResponseInner> suggestRelationshipLinksAsync(
         String resourceGroupName, String hubName, String interactionName) {
         return suggestRelationshipLinksWithResponseAsync(resourceGroupName, hubName, interactionName)
-            .flatMap(
-                (Response<SuggestRelationshipLinksResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Suggests relationships to create relationship links.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param interactionName The name of the interaction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of suggest relationship links operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SuggestRelationshipLinksResponseInner> suggestRelationshipLinksWithResponse(
+        String resourceGroupName, String hubName, String interactionName, Context context) {
+        return suggestRelationshipLinksWithResponseAsync(resourceGroupName, hubName, interactionName, context).block();
     }
 
     /**
@@ -1012,35 +992,20 @@ public final class InteractionsClientImpl implements InteractionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SuggestRelationshipLinksResponseInner suggestRelationshipLinks(
         String resourceGroupName, String hubName, String interactionName) {
-        return suggestRelationshipLinksAsync(resourceGroupName, hubName, interactionName).block();
-    }
-
-    /**
-     * Suggests relationships to create relationship links.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param interactionName The name of the interaction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SuggestRelationshipLinksResponseInner> suggestRelationshipLinksWithResponse(
-        String resourceGroupName, String hubName, String interactionName, Context context) {
-        return suggestRelationshipLinksWithResponseAsync(resourceGroupName, hubName, interactionName, context).block();
+        return suggestRelationshipLinksWithResponse(resourceGroupName, hubName, interactionName, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list interaction operation.
+     * @return the response of list interaction operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -1071,12 +1036,14 @@ public final class InteractionsClientImpl implements InteractionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list interaction operation.
+     * @return the response of list interaction operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubNextSinglePageAsync(

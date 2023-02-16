@@ -28,6 +28,10 @@ public final class VirtualApplianceSkuProperties {
     @JsonProperty(value = "marketPlaceVersion")
     private String marketPlaceVersion;
 
+    /** Creates an instance of VirtualApplianceSkuProperties class. */
+    public VirtualApplianceSkuProperties() {
+    }
+
     /**
      * Get the vendor property: Virtual Appliance Vendor.
      *

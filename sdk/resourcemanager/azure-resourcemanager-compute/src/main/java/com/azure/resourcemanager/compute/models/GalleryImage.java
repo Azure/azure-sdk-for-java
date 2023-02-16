@@ -80,6 +80,12 @@ public interface GalleryImage
     /** @return the uri to the image release note. */
     String releaseNoteUri();
 
+    /** @return the hypervisor generation. */
+    HyperVGeneration hyperVGeneration();
+
+    /** @return the security type, whether trusted launch or confidential VM. */
+    SecurityTypes securityType();
+
     /** @return the tags associated with the image. */
     Map<String, String> tags();
 
@@ -402,6 +408,29 @@ public interface GalleryImage
             WithCreate withReleaseNoteUri(String releaseNoteUri);
         }
 
+        /** The stage of the gallery image definition allowing to specify hypervisor generation. */
+        interface WithHyperVGeneration {
+            /**
+             * Specifies the hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+             * @param hyperVGeneration the hypervisor generation
+             * @return the next definition stage
+             */
+            WithCreate withHyperVGeneration(HyperVGeneration hyperVGeneration);
+        }
+
+        /** The stage of the gallery image definition allowing to specify security type.  */
+        interface WithSecurityTypes {
+            /**
+             * Enables trusted launch.
+             * <p>
+             * Trusted launch only supports hypervisor generation V2.
+             * </p>
+             *
+             * @return the next definition stage
+             */
+            WithCreate withTrustedLaunch();
+        }
+
         /** The stage of the gallery image definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -427,6 +456,8 @@ public interface GalleryImage
                 DefinitionStages.WithPurchasePlan,
                 DefinitionStages.WithRecommendedVMConfiguration,
                 DefinitionStages.WithReleaseNoteUri,
+                DefinitionStages.WithHyperVGeneration,
+                DefinitionStages.WithSecurityTypes,
                 DefinitionStages.WithTags {
         }
     }

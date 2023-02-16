@@ -6,14 +6,11 @@ package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to check the availability of the vault name. */
 @Fluent
 public final class VaultCheckNameAvailabilityParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultCheckNameAvailabilityParameters.class);
-
     /*
      * The vault name.
      */
@@ -78,10 +75,12 @@ public final class VaultCheckNameAvailabilityParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model VaultCheckNameAvailabilityParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VaultCheckNameAvailabilityParameters.class);
 }

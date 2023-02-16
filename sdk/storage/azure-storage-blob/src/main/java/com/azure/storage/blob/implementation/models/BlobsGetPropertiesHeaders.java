@@ -7,6 +7,7 @@ package com.azure.storage.blob.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -277,7 +278,7 @@ public final class BlobsGetPropertiesHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-expiry-time property.
@@ -321,6 +322,86 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-archive-status")
     private String xMsArchiveStatus;
 
+    private static final HttpHeaderName X_MS_IS_CURRENT_VERSION = HttpHeaderName.fromString("x-ms-is-current-version");
+
+    private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
+
+    private static final HttpHeaderName X_MS_COPY_DESTINATION_SNAPSHOT =
+            HttpHeaderName.fromString("x-ms-copy-destination-snapshot");
+
+    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
+
+    private static final HttpHeaderName X_MS_BLOB_SEALED = HttpHeaderName.fromString("x-ms-blob-sealed");
+
+    private static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
+            HttpHeaderName.fromString("x-ms-encryption-key-sha256");
+
+    private static final HttpHeaderName X_MS_ACCESS_TIER_CHANGE_TIME =
+            HttpHeaderName.fromString("x-ms-access-tier-change-time");
+
+    private static final HttpHeaderName X_MS_BLOB_TYPE = HttpHeaderName.fromString("x-ms-blob-type");
+
+    private static final HttpHeaderName X_MS_CREATION_TIME = HttpHeaderName.fromString("x-ms-creation-time");
+
+    private static final HttpHeaderName X_MS_INCREMENTAL_COPY = HttpHeaderName.fromString("x-ms-incremental-copy");
+
+    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
+
+    private static final HttpHeaderName X_MS_IMMUTABILITY_POLICY_UNTIL_DATE =
+            HttpHeaderName.fromString("x-ms-immutability-policy-until-date");
+
+    private static final HttpHeaderName X_MS_BLOB_SEQUENCE_NUMBER =
+            HttpHeaderName.fromString("x-ms-blob-sequence-number");
+
+    private static final HttpHeaderName X_MS_BLOB_COMMITTED_BLOCK_COUNT =
+            HttpHeaderName.fromString("x-ms-blob-committed-block-count");
+
+    private static final HttpHeaderName X_MS_LEGAL_HOLD = HttpHeaderName.fromString("x-ms-legal-hold");
+
+    private static final HttpHeaderName X_MS_OR_POLICY_ID = HttpHeaderName.fromString("x-ms-or-policy-id");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
+
+    private static final HttpHeaderName X_MS_TAG_COUNT = HttpHeaderName.fromString("x-ms-tag-count");
+
+    private static final HttpHeaderName X_MS_ACCESS_TIER_INFERRED =
+            HttpHeaderName.fromString("x-ms-access-tier-inferred");
+
+    private static final HttpHeaderName X_MS_IMMUTABILITY_POLICY_MODE =
+            HttpHeaderName.fromString("x-ms-immutability-policy-mode");
+
+    private static final HttpHeaderName X_MS_ACCESS_TIER = HttpHeaderName.fromString("x-ms-access-tier");
+
+    private static final HttpHeaderName X_MS_COPY_STATUS_DESCRIPTION =
+            HttpHeaderName.fromString("x-ms-copy-status-description");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_LAST_ACCESS_TIME = HttpHeaderName.fromString("x-ms-last-access-time");
+
+    private static final HttpHeaderName X_MS_COPY_SOURCE = HttpHeaderName.fromString("x-ms-copy-source");
+
+    private static final HttpHeaderName X_MS_COPY_PROGRESS = HttpHeaderName.fromString("x-ms-copy-progress");
+
+    private static final HttpHeaderName X_MS_EXPIRY_TIME = HttpHeaderName.fromString("x-ms-expiry-time");
+
+    private static final HttpHeaderName X_MS_COPY_COMPLETION_TIME =
+            HttpHeaderName.fromString("x-ms-copy-completion-time");
+
+    private static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
+
+    private static final HttpHeaderName X_MS_REHYDRATE_PRIORITY = HttpHeaderName.fromString("x-ms-rehydrate-priority");
+
+    private static final HttpHeaderName X_MS_COPY_STATUS = HttpHeaderName.fromString("x-ms-copy-status");
+
+    private static final HttpHeaderName X_MS_ARCHIVE_STATUS = HttpHeaderName.fromString("x-ms-archive-status");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of BlobsGetPropertiesHeaders class.
@@ -328,123 +409,144 @@ public final class BlobsGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        if (rawHeaders.getValue("x-ms-is-current-version") != null) {
-            this.xMsIsCurrentVersion = Boolean.parseBoolean(rawHeaders.getValue("x-ms-is-current-version"));
+        String xMsIsCurrentVersion = rawHeaders.getValue(X_MS_IS_CURRENT_VERSION);
+        if (xMsIsCurrentVersion != null) {
+            this.xMsIsCurrentVersion = Boolean.parseBoolean(xMsIsCurrentVersion);
         }
-        if (rawHeaders.getValue("x-ms-lease-status") != null) {
-            this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+        String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        if (xMsLeaseStatus != null) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
         }
-        this.xMsCopyDestinationSnapshot = rawHeaders.getValue("x-ms-copy-destination-snapshot");
-        if (rawHeaders.getValue("x-ms-lease-state") != null) {
-            this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+        this.xMsCopyDestinationSnapshot = rawHeaders.getValue(X_MS_COPY_DESTINATION_SNAPSHOT);
+        String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
+        if (xMsLeaseState != null) {
+            this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
         }
-        if (rawHeaders.getValue("x-ms-blob-sealed") != null) {
-            this.xMsBlobSealed = Boolean.parseBoolean(rawHeaders.getValue("x-ms-blob-sealed"));
+        String xMsBlobSealed = rawHeaders.getValue(X_MS_BLOB_SEALED);
+        if (xMsBlobSealed != null) {
+            this.xMsBlobSealed = Boolean.parseBoolean(xMsBlobSealed);
         }
-        this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
-        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
-        if (rawHeaders.getValue("x-ms-access-tier-change-time") != null) {
-            this.xMsAccessTierChangeTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-access-tier-change-time"));
+        this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
+        String xMsAccessTierChangeTime = rawHeaders.getValue(X_MS_ACCESS_TIER_CHANGE_TIME);
+        if (xMsAccessTierChangeTime != null) {
+            this.xMsAccessTierChangeTime = new DateTimeRfc1123(xMsAccessTierChangeTime);
         }
-        if (rawHeaders.getValue("x-ms-blob-type") != null) {
-            this.xMsBlobType = BlobType.fromString(rawHeaders.getValue("x-ms-blob-type"));
+        String xMsBlobType = rawHeaders.getValue(X_MS_BLOB_TYPE);
+        if (xMsBlobType != null) {
+            this.xMsBlobType = BlobType.fromString(xMsBlobType);
         }
-        this.contentEncoding = rawHeaders.getValue("Content-Encoding");
-        if (rawHeaders.getValue("x-ms-creation-time") != null) {
-            this.xMsCreationTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-creation-time"));
+        this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
+        String xMsCreationTime = rawHeaders.getValue(X_MS_CREATION_TIME);
+        if (xMsCreationTime != null) {
+            this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
         }
-        if (rawHeaders.getValue("x-ms-incremental-copy") != null) {
-            this.xMsIncrementalCopy = Boolean.parseBoolean(rawHeaders.getValue("x-ms-incremental-copy"));
+        String xMsIncrementalCopy = rawHeaders.getValue(X_MS_INCREMENTAL_COPY);
+        if (xMsIncrementalCopy != null) {
+            this.xMsIncrementalCopy = Boolean.parseBoolean(xMsIncrementalCopy);
         }
-        if (rawHeaders.getValue("x-ms-lease-duration") != null) {
-            this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
+        String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
+        if (xMsLeaseDuration != null) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
         }
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsCopyId = rawHeaders.getValue("x-ms-copy-id");
-        if (rawHeaders.getValue("x-ms-immutability-policy-until-date") != null) {
-            this.xMsImmutabilityPolicyUntilDate =
-                    new DateTimeRfc1123(rawHeaders.getValue("x-ms-immutability-policy-until-date"));
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
+        String xMsImmutabilityPolicyUntilDate = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_UNTIL_DATE);
+        if (xMsImmutabilityPolicyUntilDate != null) {
+            this.xMsImmutabilityPolicyUntilDate = new DateTimeRfc1123(xMsImmutabilityPolicyUntilDate);
         }
-        if (rawHeaders.getValue("x-ms-blob-sequence-number") != null) {
-            this.xMsBlobSequenceNumber = Long.parseLong(rawHeaders.getValue("x-ms-blob-sequence-number"));
+        String xMsBlobSequenceNumber = rawHeaders.getValue(X_MS_BLOB_SEQUENCE_NUMBER);
+        if (xMsBlobSequenceNumber != null) {
+            this.xMsBlobSequenceNumber = Long.parseLong(xMsBlobSequenceNumber);
         }
-        if (rawHeaders.getValue("x-ms-blob-committed-block-count") != null) {
-            this.xMsBlobCommittedBlockCount = Integer.parseInt(rawHeaders.getValue("x-ms-blob-committed-block-count"));
+        String xMsBlobCommittedBlockCount = rawHeaders.getValue(X_MS_BLOB_COMMITTED_BLOCK_COUNT);
+        if (xMsBlobCommittedBlockCount != null) {
+            this.xMsBlobCommittedBlockCount = Integer.parseInt(xMsBlobCommittedBlockCount);
         }
-        if (rawHeaders.getValue("x-ms-legal-hold") != null) {
-            this.xMsLegalHold = Boolean.parseBoolean(rawHeaders.getValue("x-ms-legal-hold"));
+        String xMsLegalHold = rawHeaders.getValue(X_MS_LEGAL_HOLD);
+        if (xMsLegalHold != null) {
+            this.xMsLegalHold = Boolean.parseBoolean(xMsLegalHold);
         }
-        if (rawHeaders.getValue("Content-MD5") != null) {
-            this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+        String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
+        if (contentMD5 != null) {
+            this.contentMD5 = Base64.getDecoder().decode(contentMD5);
         }
-        this.xMsOrPolicyId = rawHeaders.getValue("x-ms-or-policy-id");
-        this.cacheControl = rawHeaders.getValue("Cache-Control");
-        this.eTag = rawHeaders.getValue("ETag");
-        this.contentDisposition = rawHeaders.getValue("Content-Disposition");
-        this.contentLanguage = rawHeaders.getValue("Content-Language");
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        this.xMsOrPolicyId = rawHeaders.getValue(X_MS_OR_POLICY_ID);
+        this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
+        this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
+        String xMsTagCount = rawHeaders.getValue(X_MS_TAG_COUNT);
+        if (xMsTagCount != null) {
+            this.xMsTagCount = Long.parseLong(xMsTagCount);
+        }
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        String xMsAccessTierInferred = rawHeaders.getValue(X_MS_ACCESS_TIER_INFERRED);
+        if (xMsAccessTierInferred != null) {
+            this.xMsAccessTierInferred = Boolean.parseBoolean(xMsAccessTierInferred);
+        }
+        String xMsImmutabilityPolicyMode = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_MODE);
+        if (xMsImmutabilityPolicyMode != null) {
+            this.xMsImmutabilityPolicyMode = BlobImmutabilityPolicyMode.fromString(xMsImmutabilityPolicyMode);
+        }
+        this.xMsAccessTier = rawHeaders.getValue(X_MS_ACCESS_TIER);
+        this.xMsCopyStatusDescription = rawHeaders.getValue(X_MS_COPY_STATUS_DESCRIPTION);
+        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (contentLength != null) {
+            this.contentLength = Long.parseLong(contentLength);
+        }
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+        String xMsLastAccessTime = rawHeaders.getValue(X_MS_LAST_ACCESS_TIME);
+        if (xMsLastAccessTime != null) {
+            this.xMsLastAccessTime = new DateTimeRfc1123(xMsLastAccessTime);
+        }
+        this.xMsCopySource = rawHeaders.getValue(X_MS_COPY_SOURCE);
+        this.xMsCopyProgress = rawHeaders.getValue(X_MS_COPY_PROGRESS);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        }
+        String xMsExpiryTime = rawHeaders.getValue(X_MS_EXPIRY_TIME);
+        if (xMsExpiryTime != null) {
+            this.xMsExpiryTime = new DateTimeRfc1123(xMsExpiryTime);
+        }
+        String xMsCopyCompletionTime = rawHeaders.getValue(X_MS_COPY_COMPLETION_TIME);
+        if (xMsCopyCompletionTime != null) {
+            this.xMsCopyCompletionTime = new DateTimeRfc1123(xMsCopyCompletionTime);
+        }
+        this.acceptRanges = rawHeaders.getValue(HttpHeaderName.ACCEPT_RANGES);
+        String xMsServerEncrypted = rawHeaders.getValue(X_MS_SERVER_ENCRYPTED);
+        if (xMsServerEncrypted != null) {
+            this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
+        }
+        this.xMsRehydratePriority = rawHeaders.getValue(X_MS_REHYDRATE_PRIORITY);
+        String xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
+        if (xMsCopyStatus != null) {
+            this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
+        }
+        this.xMsArchiveStatus = rawHeaders.getValue(X_MS_ARCHIVE_STATUS);
         Map<String, String> xMsOrHeaderCollection = new HashMap<>();
-
-        for (HttpHeader header : rawHeaders) {
-            if (!header.getName().startsWith("x-ms-or-")) {
-                continue;
-            }
-            xMsOrHeaderCollection.put(header.getName().substring(8), header.getValue());
-        }
-        this.xMsOr = xMsOrHeaderCollection;
-        this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
-        if (rawHeaders.getValue("x-ms-tag-count") != null) {
-            this.xMsTagCount = Long.parseLong(rawHeaders.getValue("x-ms-tag-count"));
-        }
-        if (rawHeaders.getValue("Last-Modified") != null) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
-        }
-        if (rawHeaders.getValue("x-ms-access-tier-inferred") != null) {
-            this.xMsAccessTierInferred = Boolean.parseBoolean(rawHeaders.getValue("x-ms-access-tier-inferred"));
-        }
-        if (rawHeaders.getValue("x-ms-immutability-policy-mode") != null) {
-            this.xMsImmutabilityPolicyMode =
-                    BlobImmutabilityPolicyMode.fromString(rawHeaders.getValue("x-ms-immutability-policy-mode"));
-        }
-        this.xMsAccessTier = rawHeaders.getValue("x-ms-access-tier");
-        this.xMsCopyStatusDescription = rawHeaders.getValue("x-ms-copy-status-description");
-        if (rawHeaders.getValue("Content-Length") != null) {
-            this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
-        }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.contentType = rawHeaders.getValue("Content-Type");
-        if (rawHeaders.getValue("x-ms-last-access-time") != null) {
-            this.xMsLastAccessTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-last-access-time"));
-        }
-        this.xMsCopySource = rawHeaders.getValue("x-ms-copy-source");
-        this.xMsCopyProgress = rawHeaders.getValue("x-ms-copy-progress");
         Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
-            if (!header.getName().startsWith("x-ms-meta-")) {
+            String headerName = header.getName();
+            if (headerName.startsWith("x-ms-or-")) {
+                xMsOrHeaderCollection.put(headerName.substring(8), header.getValue());
                 continue;
             }
-            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
+            if (headerName.startsWith("x-ms-meta-")) {
+                xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
+            }
         }
+
+        this.xMsOr = xMsOrHeaderCollection;
         this.xMsMeta = xMsMetaHeaderCollection;
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
-        }
-        if (rawHeaders.getValue("x-ms-expiry-time") != null) {
-            this.xMsExpiryTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-expiry-time"));
-        }
-        if (rawHeaders.getValue("x-ms-copy-completion-time") != null) {
-            this.xMsCopyCompletionTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-copy-completion-time"));
-        }
-        this.acceptRanges = rawHeaders.getValue("Accept-Ranges");
-        if (rawHeaders.getValue("x-ms-server-encrypted") != null) {
-            this.xMsServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-server-encrypted"));
-        }
-        this.xMsRehydratePriority = rawHeaders.getValue("x-ms-rehydrate-priority");
-        if (rawHeaders.getValue("x-ms-copy-status") != null) {
-            this.xMsCopyStatus = CopyStatusType.fromString(rawHeaders.getValue("x-ms-copy-status"));
-        }
-        this.xMsArchiveStatus = rawHeaders.getValue("x-ms-archive-status");
     }
 
     /**
@@ -1304,28 +1406,28 @@ public final class BlobsGetPropertiesHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    public BlobsGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public BlobsGetPropertiesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

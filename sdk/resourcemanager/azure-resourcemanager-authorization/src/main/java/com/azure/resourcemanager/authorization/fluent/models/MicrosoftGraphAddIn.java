@@ -40,6 +40,10 @@ public final class MicrosoftGraphAddIn {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphAddIn class. */
+    public MicrosoftGraphAddIn() {
+    }
+
     /**
      * Get the id property: The id property.
      *

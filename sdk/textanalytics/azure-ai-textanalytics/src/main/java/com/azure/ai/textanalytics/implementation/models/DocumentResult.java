@@ -24,11 +24,13 @@ public class DocumentResult {
     private List<DocumentWarning> warnings;
 
     /*
-     * if showStats=true was specified in the request this field will contain
-     * information about the document payload.
+     * if showStats=true was specified in the request this field will contain information about the document payload.
      */
     @JsonProperty(value = "statistics")
     private DocumentStatistics statistics;
+
+    /** Creates an instance of DocumentResult class. */
+    public DocumentResult() {}
 
     /**
      * Get the id property: Unique, non-empty document identifier.

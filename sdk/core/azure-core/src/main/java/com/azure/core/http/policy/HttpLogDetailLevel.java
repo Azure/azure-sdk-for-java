@@ -67,21 +67,27 @@ public enum HttpLogDetailLevel {
     }
 
     /**
-     * @return a value indicating whether a request's URL should be logged.
+     * Whether a URL should be logged.
+     *
+     * @return Whether a URL should be logged.
      */
     public boolean shouldLogUrl() {
         return this != NONE;
     }
 
     /**
-     * @return a value indicating whether HTTP message headers should be logged.
+     * Whether headers should be logged.
+     *
+     * @return Whether headers should be logged.
      */
     public boolean shouldLogHeaders() {
         return this == HEADERS || this == BODY_AND_HEADERS;
     }
 
     /**
-     * @return a value indicating whether HTTP message bodies should be logged.
+     * Whether a body should be logged.
+     *
+     * @return Whether a body should be logged.
      */
     public boolean shouldLogBody() {
         return this == BODY || this == BODY_AND_HEADERS;

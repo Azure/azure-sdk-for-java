@@ -25,6 +25,10 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
     private HDInsightMapReduceActivityTypeProperties innerTypeProperties =
         new HDInsightMapReduceActivityTypeProperties();
 
+    /** Creates an instance of HDInsightMapReduceActivity class. */
+    public HDInsightMapReduceActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight MapReduce activity properties.
      *

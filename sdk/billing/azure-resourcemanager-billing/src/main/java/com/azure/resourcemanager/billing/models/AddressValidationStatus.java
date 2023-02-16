@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AddressValidationStatus. */
+/** Status of the address validation. */
 public final class AddressValidationStatus extends ExpandableStringEnum<AddressValidationStatus> {
     /** Static value Valid for AddressValidationStatus. */
     public static final AddressValidationStatus VALID = fromString("Valid");
 
     /** Static value Invalid for AddressValidationStatus. */
     public static final AddressValidationStatus INVALID = fromString("Invalid");
+
+    /**
+     * Creates a new instance of AddressValidationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AddressValidationStatus() {
+    }
 
     /**
      * Creates or finds a AddressValidationStatus from its string representation.
@@ -27,7 +36,11 @@ public final class AddressValidationStatus extends ExpandableStringEnum<AddressV
         return fromString(name, AddressValidationStatus.class);
     }
 
-    /** @return known AddressValidationStatus values. */
+    /**
+     * Gets known AddressValidationStatus values.
+     *
+     * @return known AddressValidationStatus values.
+     */
     public static Collection<AddressValidationStatus> values() {
         return values(AddressValidationStatus.class);
     }

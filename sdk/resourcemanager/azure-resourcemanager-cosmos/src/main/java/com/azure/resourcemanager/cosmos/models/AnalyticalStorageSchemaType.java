@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AnalyticalStorageSchemaType. */
+/** Describes the types of schema for analytical storage. */
 public final class AnalyticalStorageSchemaType extends ExpandableStringEnum<AnalyticalStorageSchemaType> {
     /** Static value WellDefined for AnalyticalStorageSchemaType. */
     public static final AnalyticalStorageSchemaType WELL_DEFINED = fromString("WellDefined");
 
     /** Static value FullFidelity for AnalyticalStorageSchemaType. */
     public static final AnalyticalStorageSchemaType FULL_FIDELITY = fromString("FullFidelity");
+
+    /**
+     * Creates a new instance of AnalyticalStorageSchemaType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnalyticalStorageSchemaType() {
+    }
 
     /**
      * Creates or finds a AnalyticalStorageSchemaType from its string representation.

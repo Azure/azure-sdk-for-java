@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Schedule. */
+/** This is a required field. This field is used to schedule an inventory formation. */
 public final class Schedule extends ExpandableStringEnum<Schedule> {
     /** Static value Daily for Schedule. */
     public static final Schedule DAILY = fromString("Daily");

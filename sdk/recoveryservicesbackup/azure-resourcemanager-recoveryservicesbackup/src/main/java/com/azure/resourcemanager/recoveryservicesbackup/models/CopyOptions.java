@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CopyOptions. */
+/** Options to resolve copy conflicts. */
 public final class CopyOptions extends ExpandableStringEnum<CopyOptions> {
     /** Static value Invalid for CopyOptions. */
     public static final CopyOptions INVALID = fromString("Invalid");
@@ -24,6 +24,15 @@ public final class CopyOptions extends ExpandableStringEnum<CopyOptions> {
 
     /** Static value FailOnConflict for CopyOptions. */
     public static final CopyOptions FAIL_ON_CONFLICT = fromString("FailOnConflict");
+
+    /**
+     * Creates a new instance of CopyOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CopyOptions() {
+    }
 
     /**
      * Creates or finds a CopyOptions from its string representation.

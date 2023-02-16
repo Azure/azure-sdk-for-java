@@ -28,6 +28,9 @@ public final class RoleAssignmentPropertiesWithScope {
     @JsonProperty(value = "principalId")
     private String principalId;
 
+    /** Creates an instance of RoleAssignmentPropertiesWithScope class. */
+    public RoleAssignmentPropertiesWithScope() {}
+
     /**
      * Get the scope property: The role scope.
      *

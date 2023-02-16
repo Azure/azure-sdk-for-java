@@ -23,6 +23,9 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
     @JsonProperty(value = "entities", required = true)
     private List<Entity> entities;
 
+    /** Creates an instance of PiiEntitiesDocumentResult class. */
+    public PiiEntitiesDocumentResult() {}
+
     /**
      * Get the redactedText property: Returns redacted text.
      *
@@ -60,6 +63,27 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
      */
     public PiiEntitiesDocumentResult setEntities(List<Entity> entities) {
         this.entities = entities;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiEntitiesDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
         return this;
     }
 }

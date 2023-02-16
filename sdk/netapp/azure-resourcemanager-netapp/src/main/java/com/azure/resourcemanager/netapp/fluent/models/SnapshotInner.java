@@ -55,7 +55,9 @@ public final class SnapshotInner extends ProxyResource {
     }
 
     /**
-     * Get the snapshotId property: snapshotId UUID v4 used to identify the Snapshot.
+     * Get the snapshotId property: snapshotId
+     *
+     * <p>UUID v4 used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
@@ -64,7 +66,9 @@ public final class SnapshotInner extends ProxyResource {
     }
 
     /**
-     * Get the created property: name The creation date of the snapshot.
+     * Get the created property: name
+     *
+     * <p>The creation date of the snapshot.
      *
      * @return the created value.
      */

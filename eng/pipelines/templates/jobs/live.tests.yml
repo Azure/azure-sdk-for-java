@@ -20,8 +20,8 @@ parameters:
   BuildParallelization: '2C'
   TestGoals: $(TestGoals)
   TestOptions: $(TestOptions)
-  AdditionalBuildOptions: $(AdditionalBuildOptions)
   TestParallelization: '1'
+  TestVersionSupport: $(TestVersionSupport)
 
 jobs:
   - job:
@@ -89,15 +89,15 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'false'
-          SkipAggregateReports: 'true'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
-          AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
+          TestVersionSupport: ${{ parameters.TestVersionSupport }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
+            AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 

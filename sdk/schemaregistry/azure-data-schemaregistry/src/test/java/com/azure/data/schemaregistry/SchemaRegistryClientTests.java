@@ -21,13 +21,11 @@ import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.PLAYBACK_TEST_GROUP;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.RESOURCE_LENGTH;
+import static com.azure.data.schemaregistry.Constants.PLAYBACK_TEST_GROUP;
+import static com.azure.data.schemaregistry.Constants.RESOURCE_LENGTH;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_CONTENT;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_REGISTRY_ENDPOINT;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_REGISTRY_GROUP;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.assertSchemaProperties;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.assertSchemaRegistrySchema;
+import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTestsBase.assertSchemaProperties;
+import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTestsBase.assertSchemaRegistrySchema;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -63,8 +61,8 @@ public class SchemaRegistryClientTests extends TestBase {
             endpoint = "https://foo.servicebus.windows.net";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
-            schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
+            endpoint = System.getenv(Constants.SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
+            schemaGroup = System.getenv(Constants.SCHEMA_REGISTRY_GROUP);
 
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
@@ -112,7 +110,7 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaRegistrySchema schema1 = client2.getSchema(schemaIdToGet);
 
         // Assert
-        assertSchemaRegistrySchema(schema1, schemaIdToGet, SchemaFormat.AVRO, SCHEMA_CONTENT);
+        assertSchemaRegistrySchema(schema1, schemaIdToGet, schemaFormat, SCHEMA_CONTENT);
     }
 
     /**
@@ -129,14 +127,13 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaFormat schemaFormat = SchemaFormat.AVRO;
 
         // Act & Assert
-        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SchemaFormat.AVRO);
+        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, schemaFormat);
         assertSchemaProperties(response, null, schemaFormat, schemaGroup, schemaName);
 
         // Expected that the second time we call this method, it will return a different schema because the contents
         // are different.
         final SchemaProperties response2 = client1.registerSchema(schemaGroup, schemaName, schemaContentModified,
-            SchemaFormat.AVRO);
+            schemaFormat);
         assertSchemaProperties(response2, null, schemaFormat, schemaGroup, schemaName);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
@@ -196,9 +193,10 @@ public class SchemaRegistryClientTests extends TestBase {
     }
 
     /**
-     * Verifies that a 415 is returned if we use an invalid schema format.
+     * Verifies that a 4xx is returned if we use an invalid schema format.
      */
-    @Test
+
+    @Test()
     public void registerSchemaInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
@@ -211,7 +209,7 @@ public class SchemaRegistryClientTests extends TestBase {
                 assertTrue(error instanceof HttpResponseException);
 
                 final HttpResponseException responseException = ((HttpResponseException) error);
-                assertEquals(415, responseException.getResponse().getStatusCode());
+                assertEquals(403, responseException.getResponse().getStatusCode());
             })
             .verify();
     }
@@ -245,5 +243,32 @@ public class SchemaRegistryClientTests extends TestBase {
             () -> client1.getSchemaProperties(schemaGroup, "bar", SCHEMA_CONTENT, SchemaFormat.AVRO));
 
         assertEquals(404, error.getResponse().getStatusCode());
+    }
+
+    @Test
+    public void getSchemaByGroupNameVersion() {
+        // Arrange
+        final SchemaRegistryClient client1 = builder.buildClient();
+        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
+
+        // Register a schema first.
+        final SchemaProperties registeredSchema = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
+            SchemaFormat.AVRO);
+
+        assertNotNull(registeredSchema);
+
+        // Act
+        final SchemaRegistrySchema actual = client1.getSchema(schemaGroup, schemaName, registeredSchema.getVersion());
+
+        // Assert
+        assertNotNull(schemaName);
+
+        final SchemaProperties properties = actual.getProperties();
+        assertNotNull(properties);
+
+        assertEquals(registeredSchema.getVersion(), properties.getVersion());
+        assertEquals(schemaGroup, registeredSchema.getGroupName());
+        assertEquals(schemaName, registeredSchema.getName());
+        assertEquals(registeredSchema.getId(), registeredSchema.getId());
     }
 }

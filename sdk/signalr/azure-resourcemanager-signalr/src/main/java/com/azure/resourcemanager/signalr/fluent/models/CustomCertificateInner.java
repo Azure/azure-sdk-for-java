@@ -26,6 +26,10 @@ public final class CustomCertificateInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private CustomCertificateProperties innerProperties = new CustomCertificateProperties();
 
+    /** Creates an instance of CustomCertificateInner class. */
+    public CustomCertificateInner() {
+    }
+
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *

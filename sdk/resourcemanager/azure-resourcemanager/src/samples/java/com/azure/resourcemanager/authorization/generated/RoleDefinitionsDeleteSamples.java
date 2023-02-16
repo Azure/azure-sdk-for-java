@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RoleDefinitions Delete. */
 public final class RoleDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/DeleteRoleDefinition.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/DeleteRoleDefinition.json
      */
     /**
      * Sample code: Delete role definition.

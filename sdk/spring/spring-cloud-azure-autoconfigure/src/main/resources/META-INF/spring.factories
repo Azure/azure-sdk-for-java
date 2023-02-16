@@ -21,6 +21,7 @@ com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaBinderOAuth2AutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
@@ -37,7 +38,9 @@ com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoCon
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.compatibility.AzureCompatibilityVerifierAutoConfiguration
+com.azure.spring.cloud.autoconfigure.compatibility.AzureCompatibilityVerifierAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.jdbc.AzureJdbcAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.redis.AzureJedisPasswordlessAutoConfiguration
 
 org.springframework.boot.diagnostics.FailureAnalyzer=\
 com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityNotMetFailureAnalyzer

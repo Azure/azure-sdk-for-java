@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.resourcemanager.mediaservices.models.CbcsDrmConfiguration;
 import com.azure.resourcemanager.mediaservices.models.CencDrmConfiguration;
+import com.azure.resourcemanager.mediaservices.models.ClearKeyEncryptionConfiguration;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCbcs;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCenc;
 import com.azure.resourcemanager.mediaservices.models.DefaultKey;
@@ -25,7 +26,7 @@ import java.util.Arrays;
 /** Samples for StreamingPolicies Create. */
 public final class StreamingPoliciesCreateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-policies-create-secure-streaming.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-policies-create-secure-streaming.json
      */
     /**
      * Sample code: Creates a Streaming Policy with secure streaming.
@@ -49,8 +50,7 @@ public final class StreamingPoliciesCreateSamples {
                             .withSmoothStreaming(true))
                     .withContentKeys(
                         new StreamingPolicyContentKeys().withDefaultKey(new DefaultKey().withLabel("aesDefaultKey")))
-                    .withCustomKeyAcquisitionUrlTemplate(
-                        "https://contoso.com/{AssetAlternativeId}/envelope/{ContentKeyId}"))
+                    .withCustomKeyAcquisitionUrlTemplate("fakeTokenPlaceholder"))
             .withCommonEncryptionCenc(
                 new CommonEncryptionCenc()
                     .withEnabledProtocols(
@@ -104,7 +104,49 @@ public final class StreamingPoliciesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-policies-create-commonEncryptionCenc-only.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-policies-create-commonEncryptionCenc-clearKeyEncryption.json
+     */
+    /**
+     * Sample code: Creates a Streaming Policy with ClearKey encryption in commonEncryptionCenc.
+     *
+     * @param manager Entry point to MediaServicesManager.
+     */
+    public static void createsAStreamingPolicyWithClearKeyEncryptionInCommonEncryptionCenc(
+        com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
+        manager
+            .streamingPolicies()
+            .define("UserCreatedSecureStreamingPolicyWithCommonEncryptionCencOnly")
+            .withExistingMediaService("contoso", "contosomedia")
+            .withDefaultContentKeyPolicyName("PolicyWithPlayReadyOptionAndOpenRestriction")
+            .withCommonEncryptionCenc(
+                new CommonEncryptionCenc()
+                    .withEnabledProtocols(
+                        new EnabledProtocols()
+                            .withDownload(false)
+                            .withDash(true)
+                            .withHls(false)
+                            .withSmoothStreaming(true))
+                    .withClearTracks(
+                        Arrays
+                            .asList(
+                                new TrackSelection()
+                                    .withTrackSelections(
+                                        Arrays
+                                            .asList(
+                                                new TrackPropertyCondition()
+                                                    .withProperty(TrackPropertyType.FOUR_CC)
+                                                    .withOperation(TrackPropertyCompareOperation.EQUAL)
+                                                    .withValue("hev1")))))
+                    .withContentKeys(
+                        new StreamingPolicyContentKeys().withDefaultKey(new DefaultKey().withLabel("cencDefaultKey")))
+                    .withClearKeyEncryptionConfiguration(
+                        new ClearKeyEncryptionConfiguration()
+                            .withCustomKeysAcquisitionUrlTemplate("fakeTokenPlaceholder")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-policies-create-commonEncryptionCenc-only.json
      */
     /**
      * Sample code: Creates a Streaming Policy with commonEncryptionCenc only.
@@ -154,7 +196,7 @@ public final class StreamingPoliciesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-policies-create-commonEncryptionCbcs-only.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-policies-create-commonEncryptionCbcs-only.json
      */
     /**
      * Sample code: Creates a Streaming Policy with commonEncryptionCbcs only.
@@ -189,7 +231,38 @@ public final class StreamingPoliciesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-policies-create-clear.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-policies-create-commonEncryptionCbcs-clearKeyEncryption.json
+     */
+    /**
+     * Sample code: Creates a Streaming Policy with ClearKey encryption in commonEncryptionCbcs.
+     *
+     * @param manager Entry point to MediaServicesManager.
+     */
+    public static void createsAStreamingPolicyWithClearKeyEncryptionInCommonEncryptionCbcs(
+        com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
+        manager
+            .streamingPolicies()
+            .define("UserCreatedSecureStreamingPolicyWithCommonEncryptionCbcsOnly")
+            .withExistingMediaService("contoso", "contosomedia")
+            .withDefaultContentKeyPolicyName("PolicyWithMultipleOptions")
+            .withCommonEncryptionCbcs(
+                new CommonEncryptionCbcs()
+                    .withEnabledProtocols(
+                        new EnabledProtocols()
+                            .withDownload(false)
+                            .withDash(false)
+                            .withHls(true)
+                            .withSmoothStreaming(false))
+                    .withContentKeys(
+                        new StreamingPolicyContentKeys().withDefaultKey(new DefaultKey().withLabel("cbcsDefaultKey")))
+                    .withClearKeyEncryptionConfiguration(
+                        new ClearKeyEncryptionConfiguration()
+                            .withCustomKeysAcquisitionUrlTemplate("fakeTokenPlaceholder")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-policies-create-clear.json
      */
     /**
      * Sample code: Creates a Streaming Policy with clear streaming.
@@ -214,7 +287,7 @@ public final class StreamingPoliciesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-policies-create-envelopeEncryption-only.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-policies-create-envelopeEncryption-only.json
      */
     /**
      * Sample code: Creates a Streaming Policy with envelopeEncryption only.
@@ -238,8 +311,7 @@ public final class StreamingPoliciesCreateSamples {
                             .withSmoothStreaming(true))
                     .withContentKeys(
                         new StreamingPolicyContentKeys().withDefaultKey(new DefaultKey().withLabel("aesDefaultKey")))
-                    .withCustomKeyAcquisitionUrlTemplate(
-                        "https://contoso.com/{AssetAlternativeId}/envelope/{ContentKeyId}"))
+                    .withCustomKeyAcquisitionUrlTemplate("fakeTokenPlaceholder"))
             .create();
     }
 }

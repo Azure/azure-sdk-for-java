@@ -4,11 +4,11 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import java.time.OffsetDateTime;
 
 /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ImagePushed event. */
-@Immutable
+@Fluent
 public final class ContainerRegistryImagePushedEventData extends ContainerRegistryEventData {
     /** {@inheritDoc} */
     @Override

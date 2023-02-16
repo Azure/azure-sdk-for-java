@@ -6,17 +6,13 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An email receiver. */
 @Fluent
 public final class EmailReceiver {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EmailReceiver.class);
-
     /*
-     * The name of the email receiver. Names must be unique across all
-     * receivers within an action group.
+     * The name of the email receiver. Names must be unique across all receivers within an action group.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -38,6 +34,10 @@ public final class EmailReceiver {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ReceiverStatus status;
+
+    /** Creates an instance of EmailReceiver class. */
+    public EmailReceiver() {
+    }
 
     /**
      * Get the name property: The name of the email receiver. Names must be unique across all receivers within an action
@@ -117,14 +117,16 @@ public final class EmailReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model EmailReceiver"));
         }
         if (emailAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property emailAddress in model EmailReceiver"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EmailReceiver.class);
 }

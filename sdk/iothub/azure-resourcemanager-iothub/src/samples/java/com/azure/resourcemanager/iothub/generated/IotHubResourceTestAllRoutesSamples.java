@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for IotHubResource TestAllRoutes. */
 public final class IotHubResourceTestAllRoutesSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_testallroutes.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_testallroutes.json
      */
     /**
      * Sample code: IotHubResource_TestAllRoutes.

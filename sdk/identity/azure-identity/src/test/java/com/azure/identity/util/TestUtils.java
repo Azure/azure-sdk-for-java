@@ -28,7 +28,11 @@ public final class TestUtils {
      * @return a completable future of the result
      */
     public static CompletableFuture<IAuthenticationResult> getMockAuthenticationResult(String accessToken, OffsetDateTime expiresOn) {
-        return CompletableFuture.completedFuture(new IAuthenticationResult() {
+        return CompletableFuture.completedFuture(getMockIAuthenticationResult(accessToken, expiresOn));
+    }
+
+    private static IAuthenticationResult getMockIAuthenticationResult(String accessToken, OffsetDateTime expiresOn) {
+        return new IAuthenticationResult() {
             @Override
             public String accessToken() {
                 return accessToken;
@@ -64,7 +68,7 @@ public final class TestUtils {
                 // Access token dials back 2 minutes
                 return Date.from(expiresOn.plusMinutes(2).toInstant());
             }
-        });
+        };
     }
 
     /**
@@ -76,6 +80,17 @@ public final class TestUtils {
     public static Mono<MsalToken> getMockMsalToken(String accessToken, OffsetDateTime expiresOn) {
         return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn))
             .map(MsalToken::new);
+    }
+
+    /**
+     * Creates a mock {@link MsalToken} instance.
+     * @param accessToken the access token to return
+     * @param expiresOn the expiration time
+     * @return a Mono publisher of the result
+     */
+    public static MsalToken getMockMsalTokenSync(String accessToken, OffsetDateTime expiresOn) {
+        return new MsalToken(getMockIAuthenticationResult(accessToken, expiresOn));
+
     }
 
     /**
@@ -97,6 +112,16 @@ public final class TestUtils {
      */
     public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
         return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2)));
+    }
+
+    /**
+     * Creates a mock {@link AccessToken} instance.
+     * @param accessToken the access token to return
+     * @param expiresOn the expiration time
+     * @return a Mono publisher of the result
+     */
+    public static AccessToken getMockAccessTokenSync(String accessToken, OffsetDateTime expiresOn) {
+        return new AccessToken(accessToken, expiresOn.plusMinutes(2));
     }
 
     /**

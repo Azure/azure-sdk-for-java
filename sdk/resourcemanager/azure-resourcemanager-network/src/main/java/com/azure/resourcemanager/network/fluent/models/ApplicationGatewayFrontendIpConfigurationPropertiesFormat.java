@@ -49,6 +49,10 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayFrontendIpConfigurationPropertiesFormat class. */
+    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat() {
+    }
+
     /**
      * Get the privateIpAddress property: PrivateIPAddress of the network interface IP Configuration.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertType. */
+/** type of alert. */
 public final class AlertType extends ExpandableStringEnum<AlertType> {
     /** Static value Budget for AlertType. */
     public static final AlertType BUDGET = fromString("Budget");
@@ -32,6 +32,15 @@ public final class AlertType extends ExpandableStringEnum<AlertType> {
     public static final AlertType BUDGET_FORECAST = fromString("BudgetForecast");
 
     /**
+     * Creates a new instance of AlertType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertType() {
+    }
+
+    /**
      * Creates or finds a AlertType from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class AlertType extends ExpandableStringEnum<AlertType> {
         return fromString(name, AlertType.class);
     }
 
-    /** @return known AlertType values. */
+    /**
+     * Gets known AlertType values.
+     *
+     * @return known AlertType values.
+     */
     public static Collection<AlertType> values() {
         return values(AlertType.class);
     }

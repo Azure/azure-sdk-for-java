@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automanage.fluent.ConfigurationProfilesClient;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileInner;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfile;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfiles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationProfilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationProfilesImpl.class);
 
     private final ConfigurationProfilesClient innerClient;
 
@@ -87,7 +86,7 @@ public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
     public ConfigurationProfile getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -95,7 +94,7 @@ public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
         }
         String configurationProfileName = Utils.getValueFromIdByName(id, "configurationProfiles");
         if (configurationProfileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +110,7 @@ public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
     public Response<ConfigurationProfile> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +118,7 @@ public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
         }
         String configurationProfileName = Utils.getValueFromIdByName(id, "configurationProfiles");
         if (configurationProfileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -133,7 +132,7 @@ public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +140,7 @@ public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
         }
         String configurationProfileName = Utils.getValueFromIdByName(id, "configurationProfiles");
         if (configurationProfileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,7 +154,7 @@ public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,7 +162,7 @@ public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
         }
         String configurationProfileName = Utils.getValueFromIdByName(id, "configurationProfiles");
         if (configurationProfileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

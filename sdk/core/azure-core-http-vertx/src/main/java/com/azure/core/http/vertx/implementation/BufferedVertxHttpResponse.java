@@ -13,38 +13,28 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
-public final class BufferedVertxHttpResponse extends VertxHttpAsyncResponse {
+public final class BufferedVertxHttpResponse extends VertxHttpResponseBase {
 
-    private final Buffer body;
+    private final byte[] body;
 
     public BufferedVertxHttpResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse, Buffer body) {
         super(azureHttpRequest, vertxHttpResponse);
-        this.body = body;
+        this.body = body.getBytes();
     }
 
     @Override
     public BinaryData getBodyAsBinaryData() {
-        return BinaryData.fromBytes(body.getBytes());
+        return BinaryData.fromBytes(body);
     }
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return Flux.defer(() -> {
-            if (this.body.length() == 0) {
-                return Flux.empty();
-            }
-            return Flux.just(ByteBuffer.wrap(this.body.getBytes()));
-        });
+        return (body.length == 0) ? Flux.empty() : Flux.just(ByteBuffer.wrap(body));
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return Mono.defer(() -> {
-            if (this.body.length() == 0) {
-                return Mono.empty();
-            }
-            return Mono.just(this.body.getBytes());
-        });
+        return (body.length == 0) ? Mono.empty() : Mono.just(body);
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IsDeviceOperator. */
+/** Describes operator to be matched. */
 public final class IsDeviceOperator extends ExpandableStringEnum<IsDeviceOperator> {
     /** Static value Equal for IsDeviceOperator. */
     public static final IsDeviceOperator EQUAL = fromString("Equal");
@@ -24,7 +24,11 @@ public final class IsDeviceOperator extends ExpandableStringEnum<IsDeviceOperato
         return fromString(name, IsDeviceOperator.class);
     }
 
-    /** @return known IsDeviceOperator values. */
+    /**
+     * Gets known IsDeviceOperator values.
+     *
+     * @return known IsDeviceOperator values.
+     */
     public static Collection<IsDeviceOperator> values() {
         return values(IsDeviceOperator.class);
     }

@@ -28,15 +28,6 @@ public final class FeatureSupportsImpl implements FeatureSupports {
         this.serviceManager = serviceManager;
     }
 
-    public AzureVMResourceFeatureSupportResponse validate(String azureRegion, FeatureSupportRequest parameters) {
-        AzureVMResourceFeatureSupportResponseInner inner = this.serviceClient().validate(azureRegion, parameters);
-        if (inner != null) {
-            return new AzureVMResourceFeatureSupportResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AzureVMResourceFeatureSupportResponse> validateWithResponse(
         String azureRegion, FeatureSupportRequest parameters, Context context) {
         Response<AzureVMResourceFeatureSupportResponseInner> inner =
@@ -47,6 +38,15 @@ public final class FeatureSupportsImpl implements FeatureSupports {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AzureVMResourceFeatureSupportResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AzureVMResourceFeatureSupportResponse validate(String azureRegion, FeatureSupportRequest parameters) {
+        AzureVMResourceFeatureSupportResponseInner inner = this.serviceClient().validate(azureRegion, parameters);
+        if (inner != null) {
+            return new AzureVMResourceFeatureSupportResponseImpl(inner, this.manager());
         } else {
             return null;
         }

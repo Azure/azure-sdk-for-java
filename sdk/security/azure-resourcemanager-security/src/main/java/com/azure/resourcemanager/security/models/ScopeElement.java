@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** A more specific scope used to identify the alerts to suppress. */
 @Fluent
 public final class ScopeElement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScopeElement.class);
-
     /*
      * The alert entity type to suppress by.
      */
@@ -28,6 +25,10 @@ public final class ScopeElement {
      * A more specific scope used to identify the alerts to suppress.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of ScopeElement class. */
+    public ScopeElement() {
+    }
 
     /**
      * Get the field property: The alert entity type to suppress by.

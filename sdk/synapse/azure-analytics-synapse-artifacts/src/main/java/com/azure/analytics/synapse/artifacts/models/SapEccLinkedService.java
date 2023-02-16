@@ -19,16 +19,14 @@ import java.util.Map;
 @Fluent
 public class SapEccLinkedService extends LinkedService {
     /*
-     * The URL of SAP ECC OData API. For example,
-     * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string
-     * (or Expression with resultType string).
+     * The URL of SAP ECC OData API. For example, '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private String url;
 
     /*
-     * The username for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * The username for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private String username;
@@ -40,13 +38,15 @@ public class SapEccLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either
-     * encryptedCredential or username/password must be provided. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Either encryptedCredential or username/password must be provided. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
+
+    /** Creates an instance of SapEccLinkedService class. */
+    public SapEccLinkedService() {}
 
     /**
      * Get the url property: The URL of SAP ECC OData API. For example,

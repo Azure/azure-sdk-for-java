@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.DscConfigurationsClient;
 import com.azure.resourcemanager.automation.fluent.models.DscConfigurationInner;
 import com.azure.resourcemanager.automation.models.DscConfiguration;
 import com.azure.resourcemanager.automation.models.DscConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DscConfigurationsImpl implements DscConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DscConfigurationsImpl.class);
 
     private final DscConfigurationsClient innerClient;
 
@@ -99,16 +98,6 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
     }
 
-    public DscConfiguration update(String resourceGroupName, String automationAccountName, String configurationName) {
-        DscConfigurationInner inner =
-            this.serviceClient().update(resourceGroupName, automationAccountName, configurationName);
-        if (inner != null) {
-            return new DscConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DscConfiguration> updateWithResponse(
         String resourceGroupName,
         String automationAccountName,
@@ -167,7 +156,7 @@ public final class DscConfigurationsImpl implements DscConfigurations {
     public DscConfiguration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -175,7 +164,7 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -184,7 +173,7 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
         String configurationName = Utils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -198,7 +187,7 @@ public final class DscConfigurationsImpl implements DscConfigurations {
     public Response<DscConfiguration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -206,7 +195,7 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -215,7 +204,7 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
         String configurationName = Utils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -227,7 +216,7 @@ public final class DscConfigurationsImpl implements DscConfigurations {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -235,7 +224,7 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -244,19 +233,19 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
         String configurationName = Utils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, configurationName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, configurationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -264,7 +253,7 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -273,7 +262,7 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
         String configurationName = Utils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

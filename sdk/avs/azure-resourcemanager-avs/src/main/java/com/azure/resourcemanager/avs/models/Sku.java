@@ -6,19 +6,20 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource model definition representing SKU. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
      * The name of the SKU.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the name property: The name of the SKU.
@@ -47,8 +48,10 @@ public final class Sku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
 }

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MongoDbAuthenticationType. */
+/** The authentication type to be used to connect to the MongoDB database. */
 public final class MongoDbAuthenticationType extends ExpandableStringEnum<MongoDbAuthenticationType> {
     /** Static value Basic for MongoDbAuthenticationType. */
     public static final MongoDbAuthenticationType BASIC = fromString("Basic");
 
     /** Static value Anonymous for MongoDbAuthenticationType. */
     public static final MongoDbAuthenticationType ANONYMOUS = fromString("Anonymous");
+
+    /**
+     * Creates a new instance of MongoDbAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MongoDbAuthenticationType() {
+    }
 
     /**
      * Creates or finds a MongoDbAuthenticationType from its string representation.

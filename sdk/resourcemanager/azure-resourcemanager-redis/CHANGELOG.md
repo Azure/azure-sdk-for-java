@@ -1,6 +1,6 @@
 # Release History
 
-## 2.17.0-beta.1 (Unreleased)
+## 2.24.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,60 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-06-01`.
+
+## 2.22.0 (2022-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.21.0 (2022-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.20.0 (2022-10-26)
+
+### Breaking Changes
+
+- Redis cache will be created with version V6 instead of V4, if version is not specified.
+
+## 2.19.0 (2022-09-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.18.0 (2022-08-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.17.0 (2022-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.16.0 (2022-06-24)
 

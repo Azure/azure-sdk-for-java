@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.AgentRegistrationInformationsClient;
 import com.azure.resourcemanager.automation.fluent.models.AgentRegistrationInner;
 import com.azure.resourcemanager.automation.models.AgentRegistrationRegenerateKeyParameter;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AgentRegistrationInformationsClient. */
 public final class AgentRegistrationInformationsClientImpl implements AgentRegistrationInformationsClient {
-    private final ClientLogger logger = new ClientLogger(AgentRegistrationInformationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AgentRegistrationInformationsService service;
 
@@ -101,7 +98,8 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
+     * @return definition of the agent registration information type along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentRegistrationInner>> getWithResponseAsync(
@@ -126,7 +124,7 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
             return Mono
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -152,7 +150,8 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
+     * @return definition of the agent registration information type along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentRegistrationInner>> getWithResponseAsync(
@@ -177,7 +176,7 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
             return Mono
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -199,19 +198,12 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
+     * @return definition of the agent registration information type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgentRegistrationInner> getAsync(String resourceGroupName, String automationAccountName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName)
-            .flatMap(
-                (Response<AgentRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -238,7 +230,7 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
+     * @return definition of the agent registration information type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentRegistrationInner> getWithResponse(
@@ -255,7 +247,8 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
+     * @return definition of the agent registration information type along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentRegistrationInner>> regenerateKeyWithResponseAsync(
@@ -285,7 +278,7 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -313,7 +306,8 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
+     * @return definition of the agent registration information type along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentRegistrationInner>> regenerateKeyWithResponseAsync(
@@ -346,7 +340,7 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -370,20 +364,13 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
+     * @return definition of the agent registration information type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgentRegistrationInner> regenerateKeyAsync(
         String resourceGroupName, String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters) {
         return regenerateKeyWithResponseAsync(resourceGroupName, automationAccountName, parameters)
-            .flatMap(
-                (Response<AgentRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -413,7 +400,7 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
+     * @return definition of the agent registration information type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentRegistrationInner> regenerateKeyWithResponse(

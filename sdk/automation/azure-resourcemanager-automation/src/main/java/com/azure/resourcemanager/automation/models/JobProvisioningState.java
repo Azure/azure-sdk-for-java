@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobProvisioningState. */
+/** The provisioning state of the resource. */
 public final class JobProvisioningState extends ExpandableStringEnum<JobProvisioningState> {
     /** Static value Failed for JobProvisioningState. */
     public static final JobProvisioningState FAILED = fromString("Failed");
@@ -33,7 +33,11 @@ public final class JobProvisioningState extends ExpandableStringEnum<JobProvisio
         return fromString(name, JobProvisioningState.class);
     }
 
-    /** @return known JobProvisioningState values. */
+    /**
+     * Gets known JobProvisioningState values.
+     *
+     * @return known JobProvisioningState values.
+     */
     public static Collection<JobProvisioningState> values() {
         return values(JobProvisioningState.class);
     }

@@ -18,14 +18,18 @@ public final class TimeInWeek {
     private WeekDay day;
 
     /*
-     * A list of hours in the day used to identify a time range. Each integer
-     * hour represents a time range beginning at 0m after the hour ending at
-     * the next hour (non-inclusive). 0 corresponds to 00:00 UTC, 23
-     * corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 - 02:00 UTC
-     * time range.
+     * A list of hours in the day used to identify a time range.
+     *
+     * Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
+     * (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 -
+     * 02:00 UTC time range.
      */
     @JsonProperty(value = "hourSlots")
     private List<Integer> hourSlots;
+
+    /** Creates an instance of TimeInWeek class. */
+    public TimeInWeek() {
+    }
 
     /**
      * Get the day property: The day of the week.
@@ -48,9 +52,11 @@ public final class TimeInWeek {
     }
 
     /**
-     * Get the hourSlots property: A list of hours in the day used to identify a time range. Each integer hour
-     * represents a time range beginning at 0m after the hour ending at the next hour (non-inclusive). 0 corresponds to
-     * 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 - 02:00 UTC time range.
+     * Get the hourSlots property: A list of hours in the day used to identify a time range.
+     *
+     * <p>Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
+     * (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 -
+     * 02:00 UTC time range.
      *
      * @return the hourSlots value.
      */
@@ -59,9 +65,11 @@ public final class TimeInWeek {
     }
 
     /**
-     * Set the hourSlots property: A list of hours in the day used to identify a time range. Each integer hour
-     * represents a time range beginning at 0m after the hour ending at the next hour (non-inclusive). 0 corresponds to
-     * 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 - 02:00 UTC time range.
+     * Set the hourSlots property: A list of hours in the day used to identify a time range.
+     *
+     * <p>Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
+     * (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 -
+     * 02:00 UTC time range.
      *
      * @param hourSlots the hourSlots value to set.
      * @return the TimeInWeek object itself.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Clusters Stop. */
 public final class ClustersStopSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersStop.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoClustersStop.json
      */
     /**
      * Sample code: KustoClustersStop.

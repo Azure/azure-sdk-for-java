@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceNames;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateAction;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
 /** Samples for VirtualMachineScaleSets SetOrchestrationServiceState. */
 public final class VirtualMachineScaleSetsSetOrchestrationServiceStateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_SetOrchestrationServiceState_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_SetOrchestrationServiceState_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_SetOrchestrationServiceState_MinimumSet_Gen.
@@ -32,11 +31,11 @@ public final class VirtualMachineScaleSetsSetOrchestrationServiceStateSamples {
                 new OrchestrationServiceStateInput()
                     .withServiceName(OrchestrationServiceNames.AUTOMATIC_REPAIRS)
                     .withAction(OrchestrationServiceStateAction.RESUME),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_SetOrchestrationServiceState_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_SetOrchestrationServiceState_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_SetOrchestrationServiceState_MaximumSet_Gen.
@@ -56,6 +55,6 @@ public final class VirtualMachineScaleSetsSetOrchestrationServiceStateSamples {
                 new OrchestrationServiceStateInput()
                     .withServiceName(OrchestrationServiceNames.AUTOMATIC_REPAIRS)
                     .withAction(OrchestrationServiceStateAction.RESUME),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

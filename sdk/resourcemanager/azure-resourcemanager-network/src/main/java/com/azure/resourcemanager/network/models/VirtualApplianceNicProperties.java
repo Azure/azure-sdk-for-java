@@ -28,6 +28,10 @@ public final class VirtualApplianceNicProperties {
     @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
+    /** Creates an instance of VirtualApplianceNicProperties class. */
+    public VirtualApplianceNicProperties() {
+    }
+
     /**
      * Get the name property: NIC name.
      *

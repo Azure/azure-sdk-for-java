@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.CloudLinkStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a cloud link. */
 @Fluent
 public final class CloudLinkProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudLinkProperties.class);
-
     /*
      * The state of the cloud link.
      */
@@ -26,6 +22,10 @@ public final class CloudLinkProperties {
      */
     @JsonProperty(value = "linkedCloud")
     private String linkedCloud;
+
+    /** Creates an instance of CloudLinkProperties class. */
+    public CloudLinkProperties() {
+    }
 
     /**
      * Get the status property: The state of the cloud link.

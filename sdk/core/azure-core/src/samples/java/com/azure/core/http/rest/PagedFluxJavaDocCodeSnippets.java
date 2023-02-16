@@ -286,7 +286,7 @@ public final class PagedFluxJavaDocCodeSnippets {
         boolean lastPage = Math.random() > 0.5;
 
         // If it is the last page there should be no additional continuation tokens returned.
-        String nextContinuationToken = lastPage ? null : UUID.randomUUID().toString();
+        String nextContinuationToken = lastPage ? null : continuationToken;
 
         // Arbitrarily begin the next page of integers.
         int elementCount = (pageSize == null) ? (int) Math.ceil(Math.random() * 15) : pageSize;

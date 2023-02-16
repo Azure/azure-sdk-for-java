@@ -20,6 +20,9 @@ public final class CustomMultiLabelClassificationLROTask extends AnalyzeTextLROT
     @JsonProperty(value = "parameters")
     private CustomMultiLabelClassificationTaskParameters parameters;
 
+    /** Creates an instance of CustomMultiLabelClassificationLROTask class. */
+    public CustomMultiLabelClassificationLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for a Custom Multi Classification task.
      *
@@ -38,6 +41,13 @@ public final class CustomMultiLabelClassificationLROTask extends AnalyzeTextLROT
     public CustomMultiLabelClassificationLROTask setParameters(
             CustomMultiLabelClassificationTaskParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomMultiLabelClassificationLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
         return this;
     }
 }

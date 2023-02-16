@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CommunityGalleryImages Get. */
 public final class CommunityGalleryImagesGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/communityGalleryExamples/CommunityGalleryImage_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGalleryImage_Get.json
      */
     /**
      * Sample code: Get a community gallery image.
@@ -22,6 +20,6 @@ public final class CommunityGalleryImagesGetSamples {
             .manager()
             .serviceClient()
             .getCommunityGalleryImages()
-            .getWithResponse("myLocation", "publicGalleryName", "myGalleryImageName", Context.NONE);
+            .getWithResponse("myLocation", "publicGalleryName", "myGalleryImageName", com.azure.core.util.Context.NONE);
     }
 }

@@ -71,6 +71,10 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SiteInner innerModel() {
         return this.innerObject;
     }
@@ -188,11 +192,6 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
             this.updateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public SiteImpl withNetworkFunctions(List<SubResource> networkFunctions) {
-        this.innerModel().withNetworkFunctions(networkFunctions);
-        return this;
     }
 
     private boolean isInCreateMode() {

@@ -26,6 +26,10 @@ public final class AuthorizationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AuthorizationListResult class. */
+    public AuthorizationListResult() {
+    }
+
     /**
      * Get the value property: The authorizations in an ExpressRoute Circuit.
      *

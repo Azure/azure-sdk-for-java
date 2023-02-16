@@ -20,11 +20,15 @@ public final class MongoDBDatabaseCreateUpdateProperties {
     private MongoDBDatabaseResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This
-     * corresponds to the headers sent with the request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
+     * request.
      */
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
+
+    /** Creates an instance of MongoDBDatabaseCreateUpdateProperties class. */
+    public MongoDBDatabaseCreateUpdateProperties() {
+    }
 
     /**
      * Get the resource property: The standard JSON format of a MongoDB database.

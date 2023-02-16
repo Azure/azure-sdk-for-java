@@ -30,15 +30,6 @@ public final class ProtectionIntentsImpl implements ProtectionIntents {
         this.serviceManager = serviceManager;
     }
 
-    public PreValidateEnableBackupResponse validate(String azureRegion, PreValidateEnableBackupRequest parameters) {
-        PreValidateEnableBackupResponseInner inner = this.serviceClient().validate(azureRegion, parameters);
-        if (inner != null) {
-            return new PreValidateEnableBackupResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PreValidateEnableBackupResponse> validateWithResponse(
         String azureRegion, PreValidateEnableBackupRequest parameters, Context context) {
         Response<PreValidateEnableBackupResponseInner> inner =
@@ -54,12 +45,10 @@ public final class ProtectionIntentsImpl implements ProtectionIntents {
         }
     }
 
-    public ProtectionIntentResource get(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
-        ProtectionIntentResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, fabricName, intentObjectName);
+    public PreValidateEnableBackupResponse validate(String azureRegion, PreValidateEnableBackupRequest parameters) {
+        PreValidateEnableBackupResponseInner inner = this.serviceClient().validate(azureRegion, parameters);
         if (inner != null) {
-            return new ProtectionIntentResourceImpl(inner, this.manager());
+            return new PreValidateEnableBackupResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -80,8 +69,15 @@ public final class ProtectionIntentsImpl implements ProtectionIntents {
         }
     }
 
-    public void delete(String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
-        this.serviceClient().delete(vaultName, resourceGroupName, fabricName, intentObjectName);
+    public ProtectionIntentResource get(
+        String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
+        ProtectionIntentResourceInner inner =
+            this.serviceClient().get(vaultName, resourceGroupName, fabricName, intentObjectName);
+        if (inner != null) {
+            return new ProtectionIntentResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -89,6 +85,10 @@ public final class ProtectionIntentsImpl implements ProtectionIntents {
         return this
             .serviceClient()
             .deleteWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, context);
+    }
+
+    public void delete(String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
+        this.serviceClient().delete(vaultName, resourceGroupName, fabricName, intentObjectName);
     }
 
     public ProtectionIntentResource getById(String id) {

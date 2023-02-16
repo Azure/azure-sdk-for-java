@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlImageSku. */
+/** SQL Server edition type. */
 public final class SqlImageSku extends ExpandableStringEnum<SqlImageSku> {
     /** Static value Developer for SqlImageSku. */
     public static final SqlImageSku DEVELOPER = fromString("Developer");
@@ -36,7 +36,11 @@ public final class SqlImageSku extends ExpandableStringEnum<SqlImageSku> {
         return fromString(name, SqlImageSku.class);
     }
 
-    /** @return known SqlImageSku values. */
+    /**
+     * Gets known SqlImageSku values.
+     *
+     * @return known SqlImageSku values.
+     */
     public static Collection<SqlImageSku> values() {
         return values(SqlImageSku.class);
     }

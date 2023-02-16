@@ -51,20 +51,6 @@ public interface ServicePrincipalsClient {
      *
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keyCredential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphKeyCredentialInner addKey(String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body);
-
-    /**
-     * Invoke action addKey.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @param body Action parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
@@ -75,6 +61,20 @@ public interface ServicePrincipalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphKeyCredentialInner> addKeyWithResponse(
         String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body, Context context);
+
+    /**
+     * Invoke action addKey.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keyCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphKeyCredentialInner addKey(String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body);
 
     /**
      * Invoke action addPassword.
@@ -111,21 +111,6 @@ public interface ServicePrincipalsClient {
      *
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return passwordCredential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphPasswordCredentialInner addPassword(
-        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body);
-
-    /**
-     * Invoke action addPassword.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @param body Action parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
@@ -136,4 +121,19 @@ public interface ServicePrincipalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphPasswordCredentialInner> addPasswordWithResponse(
         String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body, Context context);
+
+    /**
+     * Invoke action addPassword.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return passwordCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphPasswordCredentialInner addPassword(
+        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body);
 }

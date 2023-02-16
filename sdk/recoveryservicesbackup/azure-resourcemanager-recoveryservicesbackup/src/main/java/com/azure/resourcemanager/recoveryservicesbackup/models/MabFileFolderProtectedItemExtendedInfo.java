@@ -29,6 +29,10 @@ public final class MabFileFolderProtectedItemExtendedInfo {
     @JsonProperty(value = "recoveryPointCount")
     private Integer recoveryPointCount;
 
+    /** Creates an instance of MabFileFolderProtectedItemExtendedInfo class. */
+    public MabFileFolderProtectedItemExtendedInfo() {
+    }
+
     /**
      * Get the lastRefreshedAt property: Last time when the agent data synced to service.
      *

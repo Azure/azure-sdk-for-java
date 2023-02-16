@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Storage Analytics metrics for file service. */
-@Fluent
 @JacksonXmlRootElement(localName = "Metrics")
+@Fluent
 public final class ShareMetrics {
 
     /*
@@ -25,8 +25,7 @@ public final class ShareMetrics {
     private boolean enabled;
 
     /*
-     * Indicates whether metrics should generate summary statistics for called
-     * API operations.
+     * Indicates whether metrics should generate summary statistics for called API operations.
      */
     @JsonProperty(value = "IncludeAPIs")
     private Boolean includeApis;
@@ -36,6 +35,9 @@ public final class ShareMetrics {
      */
     @JsonProperty(value = "RetentionPolicy")
     private ShareRetentionPolicy retentionPolicy;
+
+    /** Creates an instance of ShareMetrics class. */
+    public ShareMetrics() {}
 
     /**
      * Get the version property: The version of Storage Analytics to configure.

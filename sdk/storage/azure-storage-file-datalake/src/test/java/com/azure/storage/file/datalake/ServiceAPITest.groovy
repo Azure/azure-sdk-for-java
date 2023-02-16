@@ -12,6 +12,10 @@ import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging
@@ -25,6 +29,7 @@ import com.azure.storage.file.datalake.models.FileSystemItem
 import com.azure.storage.file.datalake.models.FileSystemListDetails
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import com.azure.storage.file.datalake.models.UserDelegationKey
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -221,6 +226,28 @@ class ServiceAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+
+    def "Create file system encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        def serviceClient = getServiceClientBuilder(environment.dataLakeAccount.credential,
+            primaryDataLakeServiceClient.getAccountUrl())
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+        def fsClient = serviceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        fsClient.create()
+        def properties = fsClient.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+        properties.isEncryptionScopeOverridePrevented()
+    }
+
     def "List file systems"() {
         when:
         def response =
@@ -372,6 +399,39 @@ class ServiceAPITest extends APISpec {
 
         then:
         fileSystems.any {item -> return item.getName() == BlobContainerClient.LOG_CONTAINER_NAME }
+    }
+
+
+    def "List file systems encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        def serviceClient = getServiceClientBuilder(environment.dataLakeAccount.credential,
+            primaryDataLakeServiceClient.getAccountUrl())
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+        def fsClient = serviceClient.getFileSystemClient(generateFileSystemName())
+
+        fsClient.create()
+
+        when:
+        def response = serviceClient.listFileSystems()
+
+        // grab the FileSystemItem that matches the name of the file system with the encryption scope
+        def list = new ArrayList<FileSystemItem>()
+        for (FileSystemItem c : response) {
+            if (c.getName() == fsClient.getFileSystemName())
+            list.add(c)
+        }
+
+        // grab the first FileSystemItemProperties from the populated list above
+        def properties = list.get(0).getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+        properties.isEncryptionScopeOverridePrevented()
     }
 
     def "Get UserDelegationKey"() {
@@ -626,6 +686,50 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(DataLakeStorageException.class)
+    }
+
+    def "Set connection string on service client builder"() {
+        setup:
+        def connectionString = environment.primaryAccount.connectionString
+        def serviceClientBuilder = getServiceClientBuilder(environment.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl())
+
+        serviceClientBuilder.connectionString(connectionString)
+
+        when:
+        serviceClientBuilder.buildClient()
+
+        then:
+        notThrown(IllegalArgumentException)
+    }
+
+    def "Set connection string with sas on service client builder"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
+
+        def connectionString = String.format("BlobEndpoint=%s;SharedAccessSignature=%s;",
+            environment.primaryAccount.blobEndpoint,
+            "?" + sas)
+
+        def serviceClientBuilder = getServiceClientBuilder(environment.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl())
+
+        serviceClientBuilder.connectionString(connectionString)
+
+        when:
+        serviceClientBuilder.buildClient()
+
+        then:
+        notThrown(IllegalArgumentException)
     }
 
 //    def "Rename file system"() {

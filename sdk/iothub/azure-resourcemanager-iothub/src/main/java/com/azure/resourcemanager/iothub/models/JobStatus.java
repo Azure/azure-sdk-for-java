@@ -7,7 +7,7 @@ package com.azure.resourcemanager.iothub.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for JobStatus. */
+/** The status of the job. */
 public enum JobStatus {
     /** Enum value unknown. */
     UNKNOWN("unknown"),
@@ -42,6 +42,9 @@ public enum JobStatus {
      */
     @JsonCreator
     public static JobStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         JobStatus[] items = JobStatus.values();
         for (JobStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum JobStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

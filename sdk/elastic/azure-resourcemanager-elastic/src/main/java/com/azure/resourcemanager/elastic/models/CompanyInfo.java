@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Company information of the user to be passed to partners. */
 @Fluent
 public final class CompanyInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CompanyInfo.class);
-
     /*
      * Domain of the company
      */
@@ -43,6 +39,10 @@ public final class CompanyInfo {
      */
     @JsonProperty(value = "country")
     private String country;
+
+    /** Creates an instance of CompanyInfo class. */
+    public CompanyInfo() {
+    }
 
     /**
      * Get the domain property: Domain of the company.

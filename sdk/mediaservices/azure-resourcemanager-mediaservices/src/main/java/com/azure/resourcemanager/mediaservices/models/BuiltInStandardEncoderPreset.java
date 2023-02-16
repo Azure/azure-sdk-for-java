@@ -16,9 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class BuiltInStandardEncoderPreset extends Preset {
     /*
-     * Optional configuration settings for encoder. Configurations is only
-     * supported for ContentAwareEncoding and H265ContentAwareEncoding
-     * BuiltInStandardEncoderPreset.
+     * Optional configuration settings for encoder. Configurations is only supported for ContentAwareEncoding and
+     * H265ContentAwareEncoding BuiltInStandardEncoderPreset.
      */
     @JsonProperty(value = "configurations")
     private PresetConfigurations configurations;
@@ -28,6 +27,10 @@ public final class BuiltInStandardEncoderPreset extends Preset {
      */
     @JsonProperty(value = "presetName", required = true)
     private EncoderNamedPreset presetName;
+
+    /** Creates an instance of BuiltInStandardEncoderPreset class. */
+    public BuiltInStandardEncoderPreset() {
+    }
 
     /**
      * Get the configurations property: Optional configuration settings for encoder. Configurations is only supported

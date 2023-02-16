@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataFlowDebugCommandType. */
+/** The command type. */
 public final class DataFlowDebugCommandType extends ExpandableStringEnum<DataFlowDebugCommandType> {
     /** Static value executePreviewQuery for DataFlowDebugCommandType. */
     public static final DataFlowDebugCommandType EXECUTE_PREVIEW_QUERY = fromString("executePreviewQuery");
@@ -18,6 +18,15 @@ public final class DataFlowDebugCommandType extends ExpandableStringEnum<DataFlo
 
     /** Static value executeExpressionQuery for DataFlowDebugCommandType. */
     public static final DataFlowDebugCommandType EXECUTE_EXPRESSION_QUERY = fromString("executeExpressionQuery");
+
+    /**
+     * Creates a new instance of DataFlowDebugCommandType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataFlowDebugCommandType() {
+    }
 
     /**
      * Creates or finds a DataFlowDebugCommandType from its string representation.

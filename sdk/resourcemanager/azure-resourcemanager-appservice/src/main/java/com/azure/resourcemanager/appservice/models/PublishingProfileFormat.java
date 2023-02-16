@@ -30,7 +30,11 @@ public final class PublishingProfileFormat extends ExpandableStringEnum<Publishi
         return fromString(name, PublishingProfileFormat.class);
     }
 
-    /** @return known PublishingProfileFormat values. */
+    /**
+     * Gets known PublishingProfileFormat values.
+     *
+     * @return known PublishingProfileFormat values.
+     */
     public static Collection<PublishingProfileFormat> values() {
         return values(PublishingProfileFormat.class);
     }

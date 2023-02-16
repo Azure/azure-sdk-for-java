@@ -5,16 +5,17 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.WatcherUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The WatcherUpdateParameters model. */
-@JsonFlatten
 @Fluent
-public class WatcherUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WatcherUpdateParameters.class);
+public final class WatcherUpdateParameters {
+    /*
+     * Gets or sets the watcher update properties.
+     */
+    @JsonProperty(value = "properties")
+    private WatcherUpdateProperties innerProperties;
 
     /*
      * Gets or sets the name of the resource.
@@ -22,11 +23,14 @@ public class WatcherUpdateParameters {
     @JsonProperty(value = "name")
     private String name;
 
-    /*
-     * Gets or sets the frequency at which the watcher is invoked.
+    /**
+     * Get the innerProperties property: Gets or sets the watcher update properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.executionFrequencyInSeconds")
-    private Long executionFrequencyInSeconds;
+    private WatcherUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Gets or sets the name of the resource.
@@ -54,7 +58,7 @@ public class WatcherUpdateParameters {
      * @return the executionFrequencyInSeconds value.
      */
     public Long executionFrequencyInSeconds() {
-        return this.executionFrequencyInSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().executionFrequencyInSeconds();
     }
 
     /**
@@ -64,7 +68,10 @@ public class WatcherUpdateParameters {
      * @return the WatcherUpdateParameters object itself.
      */
     public WatcherUpdateParameters withExecutionFrequencyInSeconds(Long executionFrequencyInSeconds) {
-        this.executionFrequencyInSeconds = executionFrequencyInSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WatcherUpdateProperties();
+        }
+        this.innerProperties().withExecutionFrequencyInSeconds(executionFrequencyInSeconds);
         return this;
     }
 
@@ -74,5 +81,8 @@ public class WatcherUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

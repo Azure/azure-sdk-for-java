@@ -22,16 +22,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.RestorableTimeRangesClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupFindRestorableTimeRangesResponseResourceInner;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupFindRestorableTimeRangesRequest;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestorableTimeRangesClient. */
 public final class RestorableTimeRangesClientImpl implements RestorableTimeRangesClient {
-    private final ClientLogger logger = new ClientLogger(RestorableTimeRangesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RestorableTimeRangesService service;
 
@@ -56,7 +54,7 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
-    private interface RestorableTimeRangesService {
+    public interface RestorableTimeRangesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection"
@@ -66,9 +64,9 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
         Mono<Response<AzureBackupFindRestorableTimeRangesResponseResourceInner>> find(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
             @BodyParam("application/json") AzureBackupFindRestorableTimeRangesRequest parameters,
             @HeaderParam("Accept") String accept,
@@ -76,19 +74,21 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
     }
 
     /**
+     * The find operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Restore Ranges Response.
+     * @return list Restore Ranges Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureBackupFindRestorableTimeRangesResponseResourceInner>> findWithResponseAsync(
-        String vaultName,
         String resourceGroupName,
+        String vaultName,
         String backupInstanceName,
         AzureBackupFindRestorableTimeRangesRequest parameters) {
         if (this.client.getEndpoint() == null) {
@@ -97,18 +97,18 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupInstanceName == null) {
             return Mono
@@ -127,9 +127,9 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
                         .find(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            vaultName,
                             backupInstanceName,
                             parameters,
                             accept,
@@ -138,20 +138,22 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
     }
 
     /**
+     * The find operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Restore Ranges Response.
+     * @return list Restore Ranges Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureBackupFindRestorableTimeRangesResponseResourceInner>> findWithResponseAsync(
-        String vaultName,
         String resourceGroupName,
+        String vaultName,
         String backupInstanceName,
         AzureBackupFindRestorableTimeRangesRequest parameters,
         Context context) {
@@ -161,18 +163,18 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupInstanceName == null) {
             return Mono
@@ -189,9 +191,9 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
             .find(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
+                vaultName,
                 backupInstanceName,
                 parameters,
                 accept,
@@ -199,35 +201,55 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
     }
 
     /**
+     * The find operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Restore Ranges Response.
+     * @return list Restore Ranges Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureBackupFindRestorableTimeRangesResponseResourceInner> findAsync(
-        String vaultName,
         String resourceGroupName,
+        String vaultName,
         String backupInstanceName,
         AzureBackupFindRestorableTimeRangesRequest parameters) {
-        return findWithResponseAsync(vaultName, resourceGroupName, backupInstanceName, parameters)
-            .flatMap(
-                (Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return findWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * The find operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Restore Ranges Response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> findWithResponse(
+        String resourceGroupName,
+        String vaultName,
+        String backupInstanceName,
+        AzureBackupFindRestorableTimeRangesRequest parameters,
+        Context context) {
+        return findWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).block();
+    }
+
+    /**
+     * The find operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,31 +259,10 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureBackupFindRestorableTimeRangesResponseResourceInner find(
-        String vaultName,
         String resourceGroupName,
+        String vaultName,
         String backupInstanceName,
         AzureBackupFindRestorableTimeRangesRequest parameters) {
-        return findAsync(vaultName, resourceGroupName, backupInstanceName, parameters).block();
-    }
-
-    /**
-     * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param backupInstanceName The name of the backup instance.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Restore Ranges Response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> findWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters,
-        Context context) {
-        return findWithResponseAsync(vaultName, resourceGroupName, backupInstanceName, parameters, context).block();
+        return findWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE).getValue();
     }
 }

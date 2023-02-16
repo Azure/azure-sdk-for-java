@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GalleryImageVersions Delete. */
 public final class GalleryImageVersionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Delete.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryImageVersion_Delete.json
      */
     /**
      * Sample code: Delete a gallery image version.
@@ -22,6 +20,7 @@ public final class GalleryImageVersionsDeleteSamples {
             .manager()
             .serviceClient()
             .getGalleryImageVersions()
-            .delete("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", Context.NONE);
+            .delete(
+                "myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", com.azure.core.util.Context.NONE);
     }
 }

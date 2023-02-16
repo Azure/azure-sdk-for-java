@@ -18,11 +18,14 @@ public final class VirtualNetworkRule {
     private String id;
 
     /*
-     * Create firewall rule before the virtual network has vnet service
-     * endpoint enabled.
+     * Create firewall rule before the virtual network has vnet service endpoint enabled.
      */
     @JsonProperty(value = "ignoreMissingVNetServiceEndpoint")
     private Boolean ignoreMissingVNetServiceEndpoint;
+
+    /** Creates an instance of VirtualNetworkRule class. */
+    public VirtualNetworkRule() {
+    }
 
     /**
      * Get the id property: Resource ID of a subnet, for example:

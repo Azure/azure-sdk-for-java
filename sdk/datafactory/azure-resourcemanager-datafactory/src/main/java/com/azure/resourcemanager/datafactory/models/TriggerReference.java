@@ -23,6 +23,10 @@ public final class TriggerReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
+    /** Creates an instance of TriggerReference class. */
+    public TriggerReference() {
+    }
+
     /**
      * Get the type property: Trigger reference type.
      *

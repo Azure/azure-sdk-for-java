@@ -29,6 +29,10 @@ public final class RadiusServer {
     @JsonProperty(value = "radiusServerSecret")
     private String radiusServerSecret;
 
+    /** Creates an instance of RadiusServer class. */
+    public RadiusServer() {
+    }
+
     /**
      * Get the radiusServerAddress property: The address of this radius server.
      *

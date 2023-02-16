@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ErrorCode. */
+/** Human-readable error code. */
 public final class ErrorCode extends ExpandableStringEnum<ErrorCode> {
     /** Static value InvalidRequest for ErrorCode. */
     public static final ErrorCode INVALID_REQUEST = fromString("InvalidRequest");
@@ -54,6 +54,18 @@ public final class ErrorCode extends ExpandableStringEnum<ErrorCode> {
     /** Static value ServiceUnavailable for ErrorCode. */
     public static final ErrorCode SERVICE_UNAVAILABLE = fromString("ServiceUnavailable");
 
+    /** Static value Timeout for ErrorCode. */
+    public static final ErrorCode TIMEOUT = fromString("Timeout");
+
+    /** Static value QuotaExceeded for ErrorCode. */
+    public static final ErrorCode QUOTA_EXCEEDED = fromString("QuotaExceeded");
+
+    /** Static value Conflict for ErrorCode. */
+    public static final ErrorCode CONFLICT = fromString("Conflict");
+
+    /** Static value Warning for ErrorCode. */
+    public static final ErrorCode WARNING = fromString("Warning");
+
     /**
      * Creates or finds a ErrorCode from its string representation.
      *
@@ -65,7 +77,11 @@ public final class ErrorCode extends ExpandableStringEnum<ErrorCode> {
         return fromString(name, ErrorCode.class);
     }
 
-    /** @return known ErrorCode values. */
+    /**
+     * Gets known ErrorCode values.
+     *
+     * @return known ErrorCode values.
+     */
     public static Collection<ErrorCode> values() {
         return values(ErrorCode.class);
     }

@@ -189,6 +189,8 @@ public final class EncryptedBlobClientBuilder implements
      *     .key&#40;key, keyWrapAlgorithm&#41;
      *     .keyResolver&#40;keyResolver&#41;
      *     .connectionString&#40;connectionString&#41;
+     *     .containerName&#40;&quot;&lt;YOUR CONTAINER NAME&gt;&quot;&#41;
+     *     .blobName&#40;&quot;&lt;YOUR BLOB NAME&gt;&quot;&#41;
      *     .buildEncryptedBlobAsyncClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient -->
@@ -214,6 +216,8 @@ public final class EncryptedBlobClientBuilder implements
      *     .key&#40;key, keyWrapAlgorithm&#41;
      *     .keyResolver&#40;keyResolver&#41;
      *     .connectionString&#40;connectionString&#41;
+     *     .containerName&#40;&quot;&lt;YOUR CONTAINER NAME&gt;&quot;&#41;
+     *     .blobName&#40;&quot;&lt;YOUR BLOB NAME&gt;&quot;&#41;
      *     .buildEncryptedBlobClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient -->

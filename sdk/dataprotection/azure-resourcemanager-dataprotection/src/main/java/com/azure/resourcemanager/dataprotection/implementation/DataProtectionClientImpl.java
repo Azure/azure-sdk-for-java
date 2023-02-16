@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -28,11 +29,14 @@ import com.azure.resourcemanager.dataprotection.fluent.BackupVaultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionClient;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionOperationsClient;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionsClient;
+import com.azure.resourcemanager.dataprotection.fluent.DeletedBackupInstancesClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.JobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.OperationResultsClient;
+import com.azure.resourcemanager.dataprotection.fluent.OperationStatusBackupVaultContextsClient;
 import com.azure.resourcemanager.dataprotection.fluent.OperationStatusClient;
+import com.azure.resourcemanager.dataprotection.fluent.OperationStatusResourceGroupContextsClient;
 import com.azure.resourcemanager.dataprotection.fluent.RecoveryPointsClient;
 import com.azure.resourcemanager.dataprotection.fluent.ResourceGuardsClient;
 import com.azure.resourcemanager.dataprotection.fluent.RestorableTimeRangesClient;
@@ -42,24 +46,22 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
+import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the DataProtectionClientImpl type. */
 @ServiceClient(builder = DataProtectionClientBuilder.class)
 public final class DataProtectionClientImpl implements DataProtectionClient {
-    private final ClientLogger logger = new ClientLogger(DataProtectionClientImpl.class);
-
-    /** The subscription Id. */
-    private final String subscriptionId;
+    /** The ID of the target subscription. The value must be an UUID. */
+    private final UUID subscriptionId;
 
     /**
-     * Gets The subscription Id.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
-    public String getSubscriptionId() {
+    public UUID getSubscriptionId() {
         return this.subscriptionId;
     }
 
@@ -157,6 +159,30 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
      */
     public OperationStatusClient getOperationStatus() {
         return this.operationStatus;
+    }
+
+    /** The OperationStatusBackupVaultContextsClient object to access its operations. */
+    private final OperationStatusBackupVaultContextsClient operationStatusBackupVaultContexts;
+
+    /**
+     * Gets the OperationStatusBackupVaultContextsClient object to access its operations.
+     *
+     * @return the OperationStatusBackupVaultContextsClient object.
+     */
+    public OperationStatusBackupVaultContextsClient getOperationStatusBackupVaultContexts() {
+        return this.operationStatusBackupVaultContexts;
+    }
+
+    /** The OperationStatusResourceGroupContextsClient object to access its operations. */
+    private final OperationStatusResourceGroupContextsClient operationStatusResourceGroupContexts;
+
+    /**
+     * Gets the OperationStatusResourceGroupContextsClient object to access its operations.
+     *
+     * @return the OperationStatusResourceGroupContextsClient object.
+     */
+    public OperationStatusResourceGroupContextsClient getOperationStatusResourceGroupContexts() {
+        return this.operationStatusResourceGroupContexts;
     }
 
     /** The BackupVaultOperationResultsClient object to access its operations. */
@@ -279,6 +305,18 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         return this.exportJobsOperationResults;
     }
 
+    /** The DeletedBackupInstancesClient object to access its operations. */
+    private final DeletedBackupInstancesClient deletedBackupInstances;
+
+    /**
+     * Gets the DeletedBackupInstancesClient object to access its operations.
+     *
+     * @return the DeletedBackupInstancesClient object.
+     */
+    public DeletedBackupInstancesClient getDeletedBackupInstances() {
+        return this.deletedBackupInstances;
+    }
+
     /** The ResourceGuardsClient object to access its operations. */
     private final ResourceGuardsClient resourceGuards;
 
@@ -298,7 +336,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The subscription Id.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     DataProtectionClientImpl(
@@ -306,17 +344,19 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
         AzureEnvironment environment,
-        String subscriptionId,
+        UUID subscriptionId,
         String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-07-01";
+        this.apiVersion = "2023-01-01";
         this.backupVaults = new BackupVaultsClientImpl(this);
         this.operationResults = new OperationResultsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
+        this.operationStatusBackupVaultContexts = new OperationStatusBackupVaultContextsClientImpl(this);
+        this.operationStatusResourceGroupContexts = new OperationStatusResourceGroupContextsClientImpl(this);
         this.backupVaultOperationResults = new BackupVaultOperationResultsClientImpl(this);
         this.dataProtections = new DataProtectionsClientImpl(this);
         this.dataProtectionOperations = new DataProtectionOperationsClientImpl(this);
@@ -327,6 +367,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         this.restorableTimeRanges = new RestorableTimeRangesClientImpl(this);
         this.exportJobs = new ExportJobsClientImpl(this);
         this.exportJobsOperationResults = new ExportJobsOperationResultsClientImpl(this);
+        this.deletedBackupInstances = new DeletedBackupInstancesClientImpl(this);
         this.resourceGuards = new ResourceGuardsClientImpl(this);
     }
 
@@ -346,10 +387,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -413,7 +451,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -472,4 +510,6 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataProtectionClientImpl.class);
 }

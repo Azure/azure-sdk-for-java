@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An alert incident indicates the activation status of an alert rule. */
 @Immutable
 public final class IncidentInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentInner.class);
-
     /*
      * Incident name.
      */
@@ -40,11 +36,14 @@ public final class IncidentInner {
     private OffsetDateTime activatedTime;
 
     /*
-     * The time at which the incident was resolved in ISO8601 format. If null,
-     * it means the incident is still active.
+     * The time at which the incident was resolved in ISO8601 format. If null, it means the incident is still active.
      */
     @JsonProperty(value = "resolvedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime resolvedTime;
+
+    /** Creates an instance of IncidentInner class. */
+    public IncidentInner() {
+    }
 
     /**
      * Get the name property: Incident name.

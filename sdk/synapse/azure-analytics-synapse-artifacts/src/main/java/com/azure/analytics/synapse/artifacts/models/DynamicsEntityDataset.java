@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class DynamicsEntityDataset extends Dataset {
     /*
-     * The logical name of the entity. Type: string (or Expression with
-     * resultType string).
+     * The logical name of the entity. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.entityName")
     private Object entityName;
+
+    /** Creates an instance of DynamicsEntityDataset class. */
+    public DynamicsEntityDataset() {}
 
     /**
      * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).

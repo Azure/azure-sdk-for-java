@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RelationalTableDatasetTypeProperties {
     /*
-     * The relational table name. Type: string (or Expression with resultType
-     * string).
+     * The relational table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
+
+    /** Creates an instance of RelationalTableDatasetTypeProperties class. */
+    public RelationalTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: The relational table name. Type: string (or Expression with resultType string).

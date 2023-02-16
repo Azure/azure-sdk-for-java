@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cdn.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for MinimumTlsVersion. */
+/** TLS protocol version that will be used for Https. */
 public enum MinimumTlsVersion {
     /** Enum value None. */
     NONE("None"),
@@ -33,6 +33,9 @@ public enum MinimumTlsVersion {
      */
     @JsonCreator
     public static MinimumTlsVersion fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MinimumTlsVersion[] items = MinimumTlsVersion.values();
         for (MinimumTlsVersion item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum MinimumTlsVersion {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

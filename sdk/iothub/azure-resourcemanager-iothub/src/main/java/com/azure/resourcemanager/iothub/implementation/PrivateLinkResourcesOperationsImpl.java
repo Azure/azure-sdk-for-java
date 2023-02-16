@@ -14,10 +14,9 @@ import com.azure.resourcemanager.iothub.fluent.models.PrivateLinkResourcesInner;
 import com.azure.resourcemanager.iothub.models.GroupIdInformation;
 import com.azure.resourcemanager.iothub.models.PrivateLinkResources;
 import com.azure.resourcemanager.iothub.models.PrivateLinkResourcesOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkResourcesOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesOperationsImpl.class);
 
     private final PrivateLinkResourcesOperationsClient innerClient;
 

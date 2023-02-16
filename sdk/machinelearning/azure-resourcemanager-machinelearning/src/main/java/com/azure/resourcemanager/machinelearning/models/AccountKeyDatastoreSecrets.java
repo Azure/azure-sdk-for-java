@@ -21,6 +21,10 @@ public final class AccountKeyDatastoreSecrets extends DatastoreSecretsInner {
     @JsonProperty(value = "key")
     private String key;
 
+    /** Creates an instance of AccountKeyDatastoreSecrets class. */
+    public AccountKeyDatastoreSecrets() {
+    }
+
     /**
      * Get the key property: Storage account key.
      *

@@ -15,14 +15,17 @@ public class EntitiesDocumentResult extends DocumentResult {
      * Recognized entities in the document.
      */
     @JsonProperty(value = "entities", required = true)
-    private List<Entity> entities;
+    private List<EntityWithResolution> entities;
+
+    /** Creates an instance of EntitiesDocumentResult class. */
+    public EntitiesDocumentResult() {}
 
     /**
      * Get the entities property: Recognized entities in the document.
      *
      * @return the entities value.
      */
-    public List<Entity> getEntities() {
+    public List<EntityWithResolution> getEntities() {
         return this.entities;
     }
 
@@ -32,8 +35,29 @@ public class EntitiesDocumentResult extends DocumentResult {
      * @param entities the entities value to set.
      * @return the EntitiesDocumentResult object itself.
      */
-    public EntitiesDocumentResult setEntities(List<Entity> entities) {
+    public EntitiesDocumentResult setEntities(List<EntityWithResolution> entities) {
         this.entities = entities;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntitiesDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
         return this;
     }
 }

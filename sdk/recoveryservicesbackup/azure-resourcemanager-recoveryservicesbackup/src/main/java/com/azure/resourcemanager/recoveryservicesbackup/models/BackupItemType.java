@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupItemType. */
+/** Type of backup items associated with this container. */
 public final class BackupItemType extends ExpandableStringEnum<BackupItemType> {
     /** Static value Invalid for BackupItemType. */
     public static final BackupItemType INVALID = fromString("Invalid");
@@ -54,6 +54,18 @@ public final class BackupItemType extends ExpandableStringEnum<BackupItemType> {
 
     /** Static value SAPAseDatabase for BackupItemType. */
     public static final BackupItemType SAPASE_DATABASE = fromString("SAPAseDatabase");
+
+    /** Static value SAPHanaDBInstance for BackupItemType. */
+    public static final BackupItemType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
+
+    /**
+     * Creates a new instance of BackupItemType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupItemType() {
+    }
 
     /**
      * Creates or finds a BackupItemType from its string representation.

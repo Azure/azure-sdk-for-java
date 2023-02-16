@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicIpAllocationMethod. */
+/** Specify the public IP allocation type. */
 public final class PublicIpAllocationMethod extends ExpandableStringEnum<PublicIpAllocationMethod> {
     /** Static value Dynamic for PublicIpAllocationMethod. */
     public static final PublicIpAllocationMethod DYNAMIC = fromString("Dynamic");
 
     /** Static value Static for PublicIpAllocationMethod. */
     public static final PublicIpAllocationMethod STATIC = fromString("Static");
+
+    /**
+     * Creates a new instance of PublicIpAllocationMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicIpAllocationMethod() {
+    }
 
     /**
      * Creates or finds a PublicIpAllocationMethod from its string representation.

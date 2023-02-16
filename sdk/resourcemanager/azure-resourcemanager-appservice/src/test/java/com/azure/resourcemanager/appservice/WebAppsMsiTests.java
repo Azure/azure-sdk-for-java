@@ -83,7 +83,7 @@ public class WebAppsMsiTests extends AppServiceTest {
 
             ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
-            Response<String> response = curl("http://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
+            Response<String> response = curl("https://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);
@@ -173,9 +173,9 @@ public class WebAppsMsiTests extends AppServiceTest {
                 "appservicemsi.war",
                 WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
-            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
-            Response<String> response = curl("http://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
+            Response<String> response = curl("https://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);

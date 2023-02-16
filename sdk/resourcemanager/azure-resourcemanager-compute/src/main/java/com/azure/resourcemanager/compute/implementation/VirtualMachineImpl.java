@@ -56,10 +56,13 @@ import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
+import com.azure.resourcemanager.compute.models.SecurityProfile;
+import com.azure.resourcemanager.compute.models.SecurityTypes;
 import com.azure.resourcemanager.compute.models.SshConfiguration;
 import com.azure.resourcemanager.compute.models.SshPublicKey;
 import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.StorageProfile;
+import com.azure.resourcemanager.compute.models.UefiSettings;
 import com.azure.resourcemanager.compute.models.VirtualHardDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
@@ -83,6 +86,7 @@ import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
@@ -445,10 +449,11 @@ class VirtualMachineImpl
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), InstanceViewTypes.INSTANCE_VIEW)
+            .getByResourceGroupWithResponseAsync(
+                this.resourceGroupName(), this.name(), InstanceViewTypes.INSTANCE_VIEW)
             .map(
                 inner -> {
-                    virtualMachineInstanceView = new VirtualMachineInstanceViewImpl(inner.instanceView());
+                    virtualMachineInstanceView = new VirtualMachineInstanceViewImpl(inner.getValue().instanceView());
                     return virtualMachineInstanceView;
                 })
             .switchIfEmpty(
@@ -1967,6 +1972,27 @@ class VirtualMachineImpl
     }
 
     @Override
+    public SecurityTypes securityType() {
+        SecurityProfile securityProfile = this.innerModel().securityProfile();
+        if (securityProfile == null) {
+            return null;
+        }
+        return securityProfile.securityType();
+    }
+
+    @Override
+    public boolean isSecureBootEnabled() {
+        return securityType() != null && this.innerModel().securityProfile().uefiSettings() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().securityProfile().uefiSettings().secureBootEnabled());
+    }
+
+    @Override
+    public boolean isVTpmEnabled() {
+        return securityType() != null && this.innerModel().securityProfile().uefiSettings() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().securityProfile().uefiSettings().vTpmEnabled());
+    }
+
+    @Override
     public VirtualMachinePriorityTypes priority() {
         return this.innerModel().priority();
     }
@@ -2166,7 +2192,10 @@ class VirtualMachineImpl
             this.innerModel().zones().add(zoneId.toString());
             // zone aware VM can be attached to only zone aware public IP.
             if (this.implicitPipCreatable != null) {
-                this.implicitPipCreatable.withAvailabilityZone(zoneId);
+                this.implicitPipCreatable
+                    .withAvailabilityZone(zoneId)
+                    .withSku(PublicIPSkuType.STANDARD) // standard sku is required for zone resiliency
+                    .withStaticIP(); // static allocation is required for standard sku
             }
         }
         return this;
@@ -2722,6 +2751,66 @@ class VirtualMachineImpl
             return this;
         }
         return withOSDisk(disk.id());
+    }
+
+    @Override
+    public VirtualMachineImpl withTrustedLaunch() {
+        ensureSecurityProfile().withSecurityType(SecurityTypes.TRUSTED_LAUNCH);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withSecureBoot() {
+        if (securityType() == null) {
+            return this;
+        }
+        ensureUefiSettings().withSecureBootEnabled(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withoutSecureBoot() {
+        if (securityType() == null) {
+            return this;
+        }
+        ensureUefiSettings().withSecureBootEnabled(false);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withVTpm() {
+        if (securityType() == null) {
+            return this;
+        }
+        ensureUefiSettings().withVTpmEnabled(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withoutVTpm() {
+        if (securityType() == null) {
+            return this;
+        }
+        ensureUefiSettings().withVTpmEnabled(false);
+        return this;
+    }
+
+    private SecurityProfile ensureSecurityProfile() {
+        SecurityProfile securityProfile = this.innerModel().securityProfile();
+        if (securityProfile == null) {
+            securityProfile = new SecurityProfile();
+            this.innerModel().withSecurityProfile(securityProfile);
+        }
+        return securityProfile;
+    }
+
+    private UefiSettings ensureUefiSettings() {
+        UefiSettings uefiSettings = ensureSecurityProfile().uefiSettings();
+        if (uefiSettings == null) {
+            uefiSettings = new UefiSettings();
+            ensureSecurityProfile().withUefiSettings(uefiSettings);
+        }
+        return uefiSettings;
     }
 
     /** Class to manage Data disk collection. */

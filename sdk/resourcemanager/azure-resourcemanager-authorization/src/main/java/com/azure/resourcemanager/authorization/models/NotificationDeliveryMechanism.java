@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NotificationDeliveryMechanism. */
+/** The type of notification. */
 public final class NotificationDeliveryMechanism extends ExpandableStringEnum<NotificationDeliveryMechanism> {
     /** Static value Email for NotificationDeliveryMechanism. */
     public static final NotificationDeliveryMechanism EMAIL = fromString("Email");
@@ -24,7 +24,11 @@ public final class NotificationDeliveryMechanism extends ExpandableStringEnum<No
         return fromString(name, NotificationDeliveryMechanism.class);
     }
 
-    /** @return known NotificationDeliveryMechanism values. */
+    /**
+     * Gets known NotificationDeliveryMechanism values.
+     *
+     * @return known NotificationDeliveryMechanism values.
+     */
     public static Collection<NotificationDeliveryMechanism> values() {
         return values(NotificationDeliveryMechanism.class);
     }

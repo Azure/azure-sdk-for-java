@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
 /** The CustomEntityRecognitionLROResult model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -19,6 +20,9 @@ public final class CustomEntityRecognitionLROResult extends AnalyzeTextLROResult
      */
     @JsonProperty(value = "results", required = true)
     private CustomEntitiesResult results;
+
+    /** Creates an instance of CustomEntityRecognitionLROResult class. */
+    public CustomEntityRecognitionLROResult() {}
 
     /**
      * Get the results property: The results property.
@@ -37,6 +41,27 @@ public final class CustomEntityRecognitionLROResult extends AnalyzeTextLROResult
      */
     public CustomEntityRecognitionLROResult setResults(CustomEntitiesResult results) {
         this.results = results;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntityRecognitionLROResult setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntityRecognitionLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
+        super.setLastUpdateDateTime(lastUpdateDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntityRecognitionLROResult setStatus(State status) {
+        super.setStatus(status);
         return this;
     }
 }

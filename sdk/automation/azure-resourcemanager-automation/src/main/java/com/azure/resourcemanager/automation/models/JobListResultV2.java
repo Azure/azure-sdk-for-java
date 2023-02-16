@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.models.JobCollectionItemInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response model for the list job operation. */
 @Fluent
 public final class JobListResultV2 {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobListResultV2.class);
-
     /*
      * List of jobs.
      */

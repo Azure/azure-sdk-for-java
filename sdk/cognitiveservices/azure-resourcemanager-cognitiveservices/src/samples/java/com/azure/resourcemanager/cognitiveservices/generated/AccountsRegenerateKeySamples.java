@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameter
 /** Samples for Accounts RegenerateKey. */
 public final class AccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/RegenerateKey.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/RegenerateKey.json
      */
     /**
      * Sample code: Regenerate Keys.

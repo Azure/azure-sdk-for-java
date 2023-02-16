@@ -3,12 +3,41 @@
 
 package com.azure.spring.cloud.core.properties.profile;
 
+import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 /**
  * The AzureEnvironment defines all properties to Azure services, such as endpoints, resource ids, etc.
  */
 public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
+
+    /**
+     * Provides the environment instance for the public Azure.
+     */
+    public static final AzureEnvironmentProperties AZURE = new AzureEnvironmentProperties(AzureEnvironment.AZURE) {{
+            setServiceBusDomainName("servicebus.windows.net");
+        }};
+
+    /**
+     * Provides the environment instance for Azure China.
+     */
+    public static final AzureEnvironmentProperties AZURE_CHINA = new AzureEnvironmentProperties(AzureEnvironment.AZURE_CHINA) {{
+            setServiceBusDomainName("servicebus.chinacloudapi.cn");
+        }};
+
+    /**
+     * Provides the environment instance for Azure Germany.
+     */
+    public static final AzureEnvironmentProperties AZURE_GERMANY = new AzureEnvironmentProperties(AzureEnvironment.AZURE_GERMANY) {{
+            setServiceBusDomainName("servicebus.cloudapi.de");
+        }};
+
+    /**
+     * Provides the environment instance for Azure US Government.
+     */
+    public static final AzureEnvironmentProperties AZURE_US_GOVERNMENT = new AzureEnvironmentProperties(AzureEnvironment.AZURE_US_GOVERNMENT) {{
+            setServiceBusDomainName("servicebus.usgovcloudapi.net");
+        }};
 
     /**
      * The management portal URL.
@@ -88,39 +117,44 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
     private String azureApplicationInsightsEndpoint;
 
     /**
+     * The domain name for Service Bus.
+     */
+    private String serviceBusDomainName;
+
+    /**
      * Create an {@link AzureEnvironmentProperties} instance with default value.
      */
     public AzureEnvironmentProperties() {
-
+        this(null);
     }
 
     /**
      * Create an {@link AzureEnvironmentProperties} instance with environment value from {@link com.azure.core.management.AzureEnvironment}.
-     * @param azureEnvironment The {@link com.azure.core.management.AzureEnvironment} instance.
+     * @param management The {@link com.azure.core.management.AzureEnvironment} instance.
      */
-    private AzureEnvironmentProperties(com.azure.core.management.AzureEnvironment azureEnvironment) {
-        if (azureEnvironment == null) {
+    private AzureEnvironmentProperties(com.azure.core.management.AzureEnvironment management) {
+        if (management == null) {
             return;
         }
-        this.portal = azureEnvironment.getPortal();
-        this.publishingProfile = azureEnvironment.getPublishingProfile();
-        this.managementEndpoint = azureEnvironment.getManagementEndpoint();
-        this.resourceManagerEndpoint = azureEnvironment.getResourceManagerEndpoint();
-        this.sqlManagementEndpoint = azureEnvironment.getSqlManagementEndpoint();
-        this.sqlServerHostnameSuffix = azureEnvironment.getSqlServerHostnameSuffix();
-        this.galleryEndpoint = azureEnvironment.getGalleryEndpoint();
-        this.activeDirectoryEndpoint = azureEnvironment.getActiveDirectoryEndpoint();
-        this.activeDirectoryResourceId = azureEnvironment.getActiveDirectoryResourceId();
-        this.activeDirectoryGraphEndpoint = azureEnvironment.getGraphEndpoint();
-        this.activeDirectoryGraphApiVersion = azureEnvironment.getActiveDirectoryGraphApiVersion();
-        this.microsoftGraphEndpoint = azureEnvironment.getMicrosoftGraphEndpoint();
-        this.dataLakeEndpointResourceId = azureEnvironment.getDataLakeEndpointResourceId();
-        this.storageEndpointSuffix = azureEnvironment.getStorageEndpointSuffix();
-        this.keyVaultDnsSuffix = azureEnvironment.getKeyVaultDnsSuffix();
-        this.azureDataLakeStoreFileSystemEndpointSuffix = azureEnvironment.getAzureDataLakeStoreFileSystemEndpointSuffix();
-        this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = azureEnvironment.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
-        this.azureLogAnalyticsEndpoint = azureEnvironment.getLogAnalyticsEndpoint();
-        this.azureApplicationInsightsEndpoint = azureEnvironment.getApplicationInsightsEndpoint();
+        this.portal = management.getPortal();
+        this.publishingProfile = management.getPublishingProfile();
+        this.managementEndpoint = management.getManagementEndpoint();
+        this.resourceManagerEndpoint = management.getResourceManagerEndpoint();
+        this.sqlManagementEndpoint = management.getSqlManagementEndpoint();
+        this.sqlServerHostnameSuffix = management.getSqlServerHostnameSuffix();
+        this.galleryEndpoint = management.getGalleryEndpoint();
+        this.activeDirectoryEndpoint = management.getActiveDirectoryEndpoint();
+        this.activeDirectoryResourceId = management.getActiveDirectoryResourceId();
+        this.activeDirectoryGraphEndpoint = management.getGraphEndpoint();
+        this.activeDirectoryGraphApiVersion = management.getActiveDirectoryGraphApiVersion();
+        this.microsoftGraphEndpoint = management.getMicrosoftGraphEndpoint();
+        this.dataLakeEndpointResourceId = management.getDataLakeEndpointResourceId();
+        this.storageEndpointSuffix = management.getStorageEndpointSuffix();
+        this.keyVaultDnsSuffix = management.getKeyVaultDnsSuffix();
+        this.azureDataLakeStoreFileSystemEndpointSuffix = management.getAzureDataLakeStoreFileSystemEndpointSuffix();
+        this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = management.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
+        this.azureLogAnalyticsEndpoint = management.getLogAnalyticsEndpoint();
+        this.azureApplicationInsightsEndpoint = management.getApplicationInsightsEndpoint();
     }
 
     @Override
@@ -375,4 +409,16 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
         this.azureApplicationInsightsEndpoint = azureApplicationInsightsEndpoint;
     }
 
+    @Override
+    public String getServiceBusDomainName() {
+        return serviceBusDomainName;
+    }
+
+    /**
+     * Set the domain name of Service Bus.
+     * @param serviceBusDomainName the Service Bus domain name.
+     */
+    public void setServiceBusDomainName(String serviceBusDomainName) {
+        this.serviceBusDomainName = serviceBusDomainName;
+    }
 }

@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FailoverPolicy {
     /*
-     * The unique identifier of the region in which the database account
-     * replicates to. Example: &lt;accountName&gt;-&lt;locationName&gt;.
+     * The unique identifier of the region in which the database account replicates to. Example:
+     * &lt;accountName&gt;-&lt;locationName&gt;.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -24,13 +24,16 @@ public final class FailoverPolicy {
     private String locationName;
 
     /*
-     * The failover priority of the region. A failover priority of 0 indicates
-     * a write region. The maximum value for a failover priority = (total
-     * number of regions - 1). Failover priority values must be unique for each
-     * of the regions in which the database account exists.
+     * The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a
+     * failover priority = (total number of regions - 1). Failover priority values must be unique for each of the
+     * regions in which the database account exists.
      */
     @JsonProperty(value = "failoverPriority")
     private Integer failoverPriority;
+
+    /** Creates an instance of FailoverPolicy class. */
+    public FailoverPolicy() {
+    }
 
     /**
      * Get the id property: The unique identifier of the region in which the database account replicates to. Example:

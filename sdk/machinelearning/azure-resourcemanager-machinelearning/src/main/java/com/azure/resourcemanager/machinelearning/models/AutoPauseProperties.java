@@ -22,6 +22,10 @@ public final class AutoPauseProperties {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of AutoPauseProperties class. */
+    public AutoPauseProperties() {
+    }
+
     /**
      * Get the delayInMinutes property: The delayInMinutes property.
      *

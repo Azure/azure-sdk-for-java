@@ -10,7 +10,7 @@ import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** PacketCoreDataPlane properties. */
+/** Packet core data plane properties. */
 @Fluent
 public final class PacketCoreDataPlanePropertiesFormat {
     /*
@@ -20,12 +20,15 @@ public final class PacketCoreDataPlanePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * The user plane interface on the access network. In 5G networks this is
-     * called as N3 interface whereas in 4G networks this is called the S1-U
-     * interface.
+     * The user plane interface on the access network. For 5G networks, this is the N3 interface. For 4G networks, this
+     * is the S1-U interface.
      */
     @JsonProperty(value = "userPlaneAccessInterface", required = true)
     private InterfaceProperties userPlaneAccessInterface;
+
+    /** Creates an instance of PacketCoreDataPlanePropertiesFormat class. */
+    public PacketCoreDataPlanePropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the packet core data plane resource.
@@ -37,8 +40,8 @@ public final class PacketCoreDataPlanePropertiesFormat {
     }
 
     /**
-     * Get the userPlaneAccessInterface property: The user plane interface on the access network. In 5G networks this is
-     * called as N3 interface whereas in 4G networks this is called the S1-U interface.
+     * Get the userPlaneAccessInterface property: The user plane interface on the access network. For 5G networks, this
+     * is the N3 interface. For 4G networks, this is the S1-U interface.
      *
      * @return the userPlaneAccessInterface value.
      */
@@ -47,8 +50,8 @@ public final class PacketCoreDataPlanePropertiesFormat {
     }
 
     /**
-     * Set the userPlaneAccessInterface property: The user plane interface on the access network. In 5G networks this is
-     * called as N3 interface whereas in 4G networks this is called the S1-U interface.
+     * Set the userPlaneAccessInterface property: The user plane interface on the access network. For 5G networks, this
+     * is the N3 interface. For 4G networks, this is the S1-U interface.
      *
      * @param userPlaneAccessInterface the userPlaneAccessInterface value to set.
      * @return the PacketCoreDataPlanePropertiesFormat object itself.

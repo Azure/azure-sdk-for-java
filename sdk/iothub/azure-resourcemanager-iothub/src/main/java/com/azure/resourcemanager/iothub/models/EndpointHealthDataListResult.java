@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.EndpointHealthDataInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON-serialized array of EndpointHealthData objects with a next link. */
 @Fluent
 public final class EndpointHealthDataListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointHealthDataListResult.class);
-
     /*
      * JSON-serialized array of Endpoint health data
      */

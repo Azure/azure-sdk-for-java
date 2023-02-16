@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
 /** The AnalyzeTextLROResult model. */
 @JsonTypeInfo(
@@ -31,7 +32,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "ExtractiveSummarizationLROResults", value = ExtractiveSummarizationLROResult.class),
     @JsonSubTypes.Type(name = "HealthcareLROResults", value = HealthcareLROResult.class),
     @JsonSubTypes.Type(name = "SentimentAnalysisLROResults", value = SentimentLROResult.class),
-    @JsonSubTypes.Type(name = "KeyPhraseExtractionLROResults", value = KeyPhraseExtractionLROResult.class)
+    @JsonSubTypes.Type(name = "KeyPhraseExtractionLROResults", value = KeyPhraseExtractionLROResult.class),
+    @JsonSubTypes.Type(name = "AbstractiveSummarizationLROResults", value = AbstractiveSummarizationLROResult.class)
 })
 @Fluent
 public class AnalyzeTextLROResult extends TaskState {
@@ -40,6 +42,9 @@ public class AnalyzeTextLROResult extends TaskState {
      */
     @JsonProperty(value = "taskName")
     private String taskName;
+
+    /** Creates an instance of AnalyzeTextLROResult class. */
+    public AnalyzeTextLROResult() {}
 
     /**
      * Get the taskName property: The taskName property.
@@ -58,6 +63,20 @@ public class AnalyzeTextLROResult extends TaskState {
      */
     public AnalyzeTextLROResult setTaskName(String taskName) {
         this.taskName = taskName;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AnalyzeTextLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
+        super.setLastUpdateDateTime(lastUpdateDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AnalyzeTextLROResult setStatus(State status) {
+        super.setStatus(status);
         return this;
     }
 }

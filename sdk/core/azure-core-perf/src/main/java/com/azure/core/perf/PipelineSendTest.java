@@ -48,20 +48,23 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Length", contentLengthHeaderValue);
-        HttpRequest httpRequest = new HttpRequest(
-            HttpMethod.PUT, targetURL, headers, binaryDataSupplier.get().toFluxByteBuffer());
-        // Context with azure-eagerly-read-response=true makes sure
-        // that response is disposed to prevent connection leak.
-        // There's no response body in this scenario anyway.
-        return httpPipeline.send(httpRequest, context)
-            .map(httpResponse -> {
-                if (httpResponse.getStatusCode() / 100 != 2) {
-                    throw new IllegalStateException("Endpoint didn't return 2xx http status code.");
-                }
-                return httpResponse;
-            })
-            .then();
+        return Mono.fromSupplier(binaryDataSupplier)
+            .flatMap(data -> {
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Content-Length", contentLengthHeaderValue);
+                HttpRequest httpRequest = new HttpRequest(
+                    HttpMethod.PUT, targetURL, headers, data);
+                // Context with azure-eagerly-read-response=true makes sure
+                // that response is disposed to prevent connection leak.
+                // There's no response body in this scenario anyway.
+                return httpPipeline.send(httpRequest, context)
+                    .map(httpResponse -> {
+                        if (httpResponse.getStatusCode() / 100 != 2) {
+                            throw new IllegalStateException("Endpoint didn't return 2xx http status code.");
+                        }
+                        return httpResponse;
+                    })
+                    .then();
+            });
     }
 }

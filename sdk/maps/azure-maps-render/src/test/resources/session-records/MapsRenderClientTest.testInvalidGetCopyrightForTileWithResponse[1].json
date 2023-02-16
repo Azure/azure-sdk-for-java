@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/map/copyright/tile/json?api-version=2.1&zoom=0&x=-1000&y=0&text=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaRenderSDK/2.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "114",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "X-MSEdge-Ref" : "Ref A: 597E90040A7B46F9A6BA32680E59D70F Ref B: PAOEDGE0611 Ref C: 2022-08-18T20:36:16Z",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"The provided values in (x, y, zoom) do not constitute a valid tile\"}}",
+      "Date" : "Thu, 18 Aug 2022 20:36:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

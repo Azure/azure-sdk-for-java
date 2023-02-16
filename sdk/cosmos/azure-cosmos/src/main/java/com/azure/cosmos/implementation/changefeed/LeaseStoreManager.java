@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.implementation.changefeed.implementation.LeaseStoreManagerImpl;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * Defines an interface for operations with {@link Lease}.
@@ -29,11 +30,7 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
 
         LeaseStoreManagerBuilderDefinition hostName(String hostName);
 
-        Mono<LeaseStoreManager> build();
-    }
-
-    static LeaseStoreManagerBuilderDefinition builder() {
-        return new LeaseStoreManagerImpl();
+        LeaseStoreManager build();
     }
 
     /**
@@ -56,12 +53,29 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
     Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken);
 
     /**
+     * Checks whether the lease exists and creates it if it does not exist.
+     *
+     * @param feedRange the epk range for the lease.
+     * @param continuationToken the continuation token if it exists.
+     * @return the lease.
+     */
+    Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken);
+
+    /**
      * DELETE the lease.
      *
      * @param lease the lease to remove.
      * @return a representation of the deferred computation of this call.
      */
     Mono<Void> delete(Lease lease);
+
+    /**
+     * DELETE all the leases passed in.
+     *
+     * @param leases the leases to be removed.
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> deleteAll(List<Lease> leases);
 
     /**
      * Acquire ownership of the lease.

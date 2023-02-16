@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.DeviceSecurityGroupsClient;
 import com.azure.resourcemanager.security.fluent.models.DeviceSecurityGroupInner;
 import com.azure.resourcemanager.security.models.DeviceSecurityGroupList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeviceSecurityGroupsClient. */
 public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroupsClient {
-    private final ClientLogger logger = new ClientLogger(DeviceSecurityGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DeviceSecurityGroupsService service;
 
@@ -62,7 +59,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterDevice")
-    private interface DeviceSecurityGroupsService {
+    public interface DeviceSecurityGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups")
         @ExpectedResponses({200})
@@ -129,7 +126,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeviceSecurityGroupInner>> listSinglePageAsync(String resourceId) {
@@ -166,7 +163,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeviceSecurityGroupInner>> listSinglePageAsync(String resourceId, Context context) {
@@ -202,7 +199,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeviceSecurityGroupInner> listAsync(String resourceId) {
@@ -217,7 +214,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeviceSecurityGroupInner> listAsync(String resourceId, Context context) {
@@ -232,7 +229,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceSecurityGroupInner> list(String resourceId) {
@@ -247,7 +244,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeviceSecurityGroupInner> list(String resourceId, Context context) {
@@ -263,7 +260,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the device security group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeviceSecurityGroupInner>> getWithResponseAsync(
@@ -308,7 +305,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the device security group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeviceSecurityGroupInner>> getWithResponseAsync(
@@ -342,19 +339,30 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the device security group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeviceSecurityGroupInner> getAsync(String resourceId, String deviceSecurityGroupName) {
         return getWithResponseAsync(resourceId, deviceSecurityGroupName)
-            .flatMap(
-                (Response<DeviceSecurityGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use this method to get the device security group for the specified IoT Hub resource.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
+     *     group is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the device security group resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeviceSecurityGroupInner> getWithResponse(
+        String resourceId, String deviceSecurityGroupName, Context context) {
+        return getWithResponseAsync(resourceId, deviceSecurityGroupName, context).block();
     }
 
     /**
@@ -370,25 +378,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceSecurityGroupInner get(String resourceId, String deviceSecurityGroupName) {
-        return getAsync(resourceId, deviceSecurityGroupName).block();
-    }
-
-    /**
-     * Use this method to get the device security group for the specified IoT Hub resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
-     *     group is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeviceSecurityGroupInner> getWithResponse(
-        String resourceId, String deviceSecurityGroupName, Context context) {
-        return getWithResponseAsync(resourceId, deviceSecurityGroupName, context).block();
+        return getWithResponse(resourceId, deviceSecurityGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -401,7 +391,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the device security group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeviceSecurityGroupInner>> createOrUpdateWithResponseAsync(
@@ -454,7 +444,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the device security group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeviceSecurityGroupInner>> createOrUpdateWithResponseAsync(
@@ -506,20 +496,36 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the device security group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeviceSecurityGroupInner> createOrUpdateAsync(
         String resourceId, String deviceSecurityGroupName, DeviceSecurityGroupInner deviceSecurityGroup) {
         return createOrUpdateWithResponseAsync(resourceId, deviceSecurityGroupName, deviceSecurityGroup)
-            .flatMap(
-                (Response<DeviceSecurityGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use this method to creates or updates the device security group on a specified IoT Hub resource.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
+     *     group is case insensitive.
+     * @param deviceSecurityGroup Security group object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the device security group resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeviceSecurityGroupInner> createOrUpdateWithResponse(
+        String resourceId,
+        String deviceSecurityGroupName,
+        DeviceSecurityGroupInner deviceSecurityGroup,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceId, deviceSecurityGroupName, deviceSecurityGroup, context)
+            .block();
     }
 
     /**
@@ -537,30 +543,8 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeviceSecurityGroupInner createOrUpdate(
         String resourceId, String deviceSecurityGroupName, DeviceSecurityGroupInner deviceSecurityGroup) {
-        return createOrUpdateAsync(resourceId, deviceSecurityGroupName, deviceSecurityGroup).block();
-    }
-
-    /**
-     * Use this method to creates or updates the device security group on a specified IoT Hub resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
-     *     group is case insensitive.
-     * @param deviceSecurityGroup Security group object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeviceSecurityGroupInner> createOrUpdateWithResponse(
-        String resourceId,
-        String deviceSecurityGroupName,
-        DeviceSecurityGroupInner deviceSecurityGroup,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceId, deviceSecurityGroupName, deviceSecurityGroup, context)
-            .block();
+        return createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, deviceSecurityGroup, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -572,7 +556,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceId, String deviceSecurityGroupName) {
@@ -616,7 +600,7 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -651,12 +635,28 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceId, String deviceSecurityGroupName) {
-        return deleteWithResponseAsync(resourceId, deviceSecurityGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceId, deviceSecurityGroupName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * User this method to deletes the device security group.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
+     *     group is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceId, String deviceSecurityGroupName, Context context) {
+        return deleteWithResponseAsync(resourceId, deviceSecurityGroupName, context).block();
     }
 
     /**
@@ -671,34 +671,18 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceId, String deviceSecurityGroupName) {
-        deleteAsync(resourceId, deviceSecurityGroupName).block();
-    }
-
-    /**
-     * User this method to deletes the device security group.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
-     *     group is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceId, String deviceSecurityGroupName, Context context) {
-        return deleteWithResponseAsync(resourceId, deviceSecurityGroupName, context).block();
+        deleteWithResponse(resourceId, deviceSecurityGroupName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeviceSecurityGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -729,12 +713,13 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeviceSecurityGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {

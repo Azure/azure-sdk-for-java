@@ -17,6 +17,9 @@ public final class KeyPhraseResult extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<KeyPhraseResultDocumentsItem> documents;
 
+    /** Creates an instance of KeyPhraseResult class. */
+    public KeyPhraseResult() {}
+
     /**
      * Get the documents property: Response by document.
      *
@@ -34,6 +37,27 @@ public final class KeyPhraseResult extends PreBuiltResult {
      */
     public KeyPhraseResult setDocuments(List<KeyPhraseResultDocumentsItem> documents) {
         this.documents = documents;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhraseResult setErrors(List<InputError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhraseResult setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhraseResult setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
         return this;
     }
 }

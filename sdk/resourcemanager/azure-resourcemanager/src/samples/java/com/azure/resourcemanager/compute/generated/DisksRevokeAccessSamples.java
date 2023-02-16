@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Disks RevokeAccess. */
 public final class DisksRevokeAccessSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_EndGetAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskExamples/Disk_EndGetAccess.json
      */
     /**
      * Sample code: Revoke access to a managed disk.
@@ -22,6 +20,6 @@ public final class DisksRevokeAccessSamples {
             .manager()
             .serviceClient()
             .getDisks()
-            .revokeAccess("myResourceGroup", "myDisk", Context.NONE);
+            .revokeAccess("myResourceGroup", "myDisk", com.azure.core.util.Context.NONE);
     }
 }

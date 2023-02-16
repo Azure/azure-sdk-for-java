@@ -12,11 +12,14 @@ import java.util.List;
 @Fluent
 public class KeyPhrasesDocumentResult extends DocumentResult {
     /*
-     * A list of representative words or phrases. The number of key phrases
-     * returned is proportional to the number of words in the input document.
+     * A list of representative words or phrases. The number of key phrases returned is proportional to the number of
+     * words in the input document.
      */
     @JsonProperty(value = "keyPhrases", required = true)
     private List<String> keyPhrases;
+
+    /** Creates an instance of KeyPhrasesDocumentResult class. */
+    public KeyPhrasesDocumentResult() {}
 
     /**
      * Get the keyPhrases property: A list of representative words or phrases. The number of key phrases returned is
@@ -37,6 +40,27 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
      */
     public KeyPhrasesDocumentResult setKeyPhrases(List<String> keyPhrases) {
         this.keyPhrases = keyPhrases;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhrasesDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhrasesDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhrasesDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
         return this;
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutoUpdateSetting. */
+/** Update settings of OneAgent. */
 public final class AutoUpdateSetting extends ExpandableStringEnum<AutoUpdateSetting> {
     /** Static value ENABLED for AutoUpdateSetting. */
     public static final AutoUpdateSetting ENABLED = fromString("ENABLED");

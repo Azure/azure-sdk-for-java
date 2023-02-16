@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cdn.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for HealthProbeRequestType. */
+/** The type of health probe request that is made. */
 public enum HealthProbeRequestType {
     /** Enum value NotSet. */
     NOT_SET("NotSet"),
@@ -33,6 +33,9 @@ public enum HealthProbeRequestType {
      */
     @JsonCreator
     public static HealthProbeRequestType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         HealthProbeRequestType[] items = HealthProbeRequestType.values();
         for (HealthProbeRequestType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum HealthProbeRequestType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

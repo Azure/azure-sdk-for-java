@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.WebhookUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the update webhook operation. */
-@JsonFlatten
 @Fluent
-public class WebhookUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookUpdateParameters.class);
-
+public final class WebhookUpdateParameters {
     /*
      * Gets or sets the name of the webhook.
      */
@@ -24,29 +19,10 @@ public class WebhookUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the value of the enabled flag of webhook.
+     * Gets or sets the value of the webhook.
      */
-    @JsonProperty(value = "properties.isEnabled")
-    private Boolean isEnabled;
-
-    /*
-     * Gets or sets the name of the hybrid worker group the webhook job will
-     * run on.
-     */
-    @JsonProperty(value = "properties.runOn")
-    private String runOn;
-
-    /*
-     * Gets or sets the parameters of the job.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, String> parameters;
-
-    /*
-     * Gets or sets the description of the webhook.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private WebhookUpdateProperties innerProperties;
 
     /**
      * Get the name property: Gets or sets the name of the webhook.
@@ -69,12 +45,21 @@ public class WebhookUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the value of the webhook.
+     *
+     * @return the innerProperties value.
+     */
+    private WebhookUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the isEnabled property: Gets or sets the value of the enabled flag of webhook.
      *
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
-        return this.isEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
     }
 
     /**
@@ -84,7 +69,10 @@ public class WebhookUpdateParameters {
      * @return the WebhookUpdateParameters object itself.
      */
     public WebhookUpdateParameters withIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookUpdateProperties();
+        }
+        this.innerProperties().withIsEnabled(isEnabled);
         return this;
     }
 
@@ -94,7 +82,7 @@ public class WebhookUpdateParameters {
      * @return the runOn value.
      */
     public String runOn() {
-        return this.runOn;
+        return this.innerProperties() == null ? null : this.innerProperties().runOn();
     }
 
     /**
@@ -104,7 +92,10 @@ public class WebhookUpdateParameters {
      * @return the WebhookUpdateParameters object itself.
      */
     public WebhookUpdateParameters withRunOn(String runOn) {
-        this.runOn = runOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookUpdateProperties();
+        }
+        this.innerProperties().withRunOn(runOn);
         return this;
     }
 
@@ -114,7 +105,7 @@ public class WebhookUpdateParameters {
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -124,7 +115,10 @@ public class WebhookUpdateParameters {
      * @return the WebhookUpdateParameters object itself.
      */
     public WebhookUpdateParameters withParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookUpdateProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -134,7 +128,7 @@ public class WebhookUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -144,7 +138,10 @@ public class WebhookUpdateParameters {
      * @return the WebhookUpdateParameters object itself.
      */
     public WebhookUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -154,5 +151,8 @@ public class WebhookUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

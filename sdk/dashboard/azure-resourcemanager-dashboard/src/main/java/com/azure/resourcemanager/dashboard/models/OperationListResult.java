@@ -5,39 +5,39 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.dashboard.fluent.models.OperationResultInner;
+import com.azure.resourcemanager.dashboard.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A list of REST API operations supported by Microsoft.Dashboard provider. It contains an URL link to get the next set
- * of results.
+ * A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of
+ * results.
  */
 @Immutable
 public final class OperationListResult {
     /*
-     * List of operations supported by the Microsoft.Dashboard provider.
+     * List of operations supported by the resource provider
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<OperationResultInner> value;
+    private List<OperationInner> value;
 
     /*
-     * URL to get the next set of operation list results if there are any.
+     * URL to get the next set of operation list results (if there are any).
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
-     * Get the value property: List of operations supported by the Microsoft.Dashboard provider.
+     * Get the value property: List of operations supported by the resource provider.
      *
      * @return the value value.
      */
-    public List<OperationResultInner> value() {
+    public List<OperationInner> value() {
         return this.value;
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of operation list results if there are any.
+     * Get the nextLink property: URL to get the next set of operation list results (if there are any).
      *
      * @return the nextLink value.
      */

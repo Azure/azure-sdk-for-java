@@ -10,7 +10,7 @@ import com.azure.resourcemanager.securityinsights.models.EntityItemQueryKind;
 /** Samples for Entities Queries. */
 public final class EntitiesQueriesSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/entities/GetQueries.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/entities/GetQueries.json
      */
     /**
      * Sample code: Get Entity Query.

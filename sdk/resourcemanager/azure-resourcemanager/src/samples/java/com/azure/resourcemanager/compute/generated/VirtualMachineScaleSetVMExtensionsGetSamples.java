@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMExtensions Get. */
 public final class VirtualMachineScaleSetVMExtensionsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtensions_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtensions_Get.json
      */
     /**
      * Sample code: Get VirtualMachineScaleSet VM extension.
@@ -22,6 +20,7 @@ public final class VirtualMachineScaleSetVMExtensionsGetSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMExtensions()
-            .getWithResponse("myResourceGroup", "myvmScaleSet", "0", "myVMExtension", null, Context.NONE);
+            .getWithResponse(
+                "myResourceGroup", "myvmScaleSet", "0", "myVMExtension", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -28,16 +28,6 @@ public final class BackupResourceEncryptionConfigsImpl implements BackupResource
         this.serviceManager = serviceManager;
     }
 
-    public BackupResourceEncryptionConfigExtendedResource get(String vaultName, String resourceGroupName) {
-        BackupResourceEncryptionConfigExtendedResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName);
-        if (inner != null) {
-            return new BackupResourceEncryptionConfigExtendedResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BackupResourceEncryptionConfigExtendedResource> getWithResponse(
         String vaultName, String resourceGroupName, Context context) {
         Response<BackupResourceEncryptionConfigExtendedResourceInner> inner =
@@ -53,8 +43,14 @@ public final class BackupResourceEncryptionConfigsImpl implements BackupResource
         }
     }
 
-    public void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
-        this.serviceClient().update(vaultName, resourceGroupName, parameters);
+    public BackupResourceEncryptionConfigExtendedResource get(String vaultName, String resourceGroupName) {
+        BackupResourceEncryptionConfigExtendedResourceInner inner =
+            this.serviceClient().get(vaultName, resourceGroupName);
+        if (inner != null) {
+            return new BackupResourceEncryptionConfigExtendedResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> updateWithResponse(
@@ -63,6 +59,10 @@ public final class BackupResourceEncryptionConfigsImpl implements BackupResource
         BackupResourceEncryptionConfigResource parameters,
         Context context) {
         return this.serviceClient().updateWithResponse(vaultName, resourceGroupName, parameters, context);
+    }
+
+    public void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
+        this.serviceClient().update(vaultName, resourceGroupName, parameters);
     }
 
     private BackupResourceEncryptionConfigsClient serviceClient() {

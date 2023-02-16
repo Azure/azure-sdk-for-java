@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.FirewallPolicyInner;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.DnsSettings;
-import com.azure.resourcemanager.network.models.ExplicitProxySettings;
+import com.azure.resourcemanager.network.models.ExplicitProxy;
 import com.azure.resourcemanager.network.models.FirewallPolicyCertificateAuthority;
 import com.azure.resourcemanager.network.models.FirewallPolicyInsights;
 import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection;
@@ -33,7 +33,7 @@ import java.util.Map;
 /** Samples for FirewallPolicies CreateOrUpdate. */
 public final class FirewallPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/FirewallPolicyPut.json
      */
     /**
      * Sample code: Create FirewallPolicy.
@@ -89,11 +89,12 @@ public final class FirewallPoliciesCreateOrUpdateSamples {
                             .withServers(Arrays.asList("30.3.4.5"))
                             .withEnableProxy(true)
                             .withRequireProxyForNetworkRules(false))
-                    .withExplicitProxySettings(
-                        new ExplicitProxySettings()
+                    .withExplicitProxy(
+                        new ExplicitProxy()
                             .withEnableExplicitProxy(true)
                             .withHttpPort(8087)
                             .withHttpsPort(8087)
+                            .withEnablePacFile(true)
                             .withPacFilePort(8087)
                             .withPacFile(
                                 "https://tinawstorage.file.core.windows.net/?sv=2020-02-10&ss=bfqt&srt=sco&sp=rwdlacuptfx&se=2021-06-04T07:01:12Z&st=2021-06-03T23:01:12Z&sip=68.65.171.11&spr=https&sig=Plsa0RRVpGbY0IETZZOT6znOHcSro71LLTTbzquYPgs%3D"))
@@ -122,7 +123,7 @@ public final class FirewallPoliciesCreateOrUpdateSamples {
                         new FirewallPolicyTransportSecurity()
                             .withCertificateAuthority(
                                 new FirewallPolicyCertificateAuthority()
-                                    .withKeyVaultSecretId("https://kv/secret")
+                                    .withKeyVaultSecretId("fakeTokenPlaceholder")
                                     .withName("clientcert")))
                     .withSku(new FirewallPolicySku().withTier(FirewallPolicySkuTier.PREMIUM)),
                 Context.NONE);

@@ -55,7 +55,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
-    private interface PermissionsService {
+    public interface PermissionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Authorization"
@@ -79,7 +79,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
         Mono<Response<PermissionGetResult>> listForResource(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam(value = "resourceProviderNamespace", encoded = true) String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
             @PathParam(value = "resourceType", encoded = true) String resourceType,
             @PathParam("resourceName") String resourceName,
@@ -137,7 +137,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-07-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -192,7 +192,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-07-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -329,7 +329,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-07-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -413,7 +413,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-07-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -555,7 +555,8 @@ public final class PermissionsClientImpl implements PermissionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -591,7 +592,8 @@ public final class PermissionsClientImpl implements PermissionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -628,7 +630,8 @@ public final class PermissionsClientImpl implements PermissionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -663,7 +666,8 @@ public final class PermissionsClientImpl implements PermissionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineImages Get. */
 public final class VirtualMachineImagesGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineImageExamples/VirtualMachineImages_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineImageExamples/VirtualMachineImages_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImages_Get_MinimumSet_Gen.
@@ -23,11 +21,16 @@ public final class VirtualMachineImagesGetSamples {
             .serviceClient()
             .getVirtualMachineImages()
             .getWithResponse(
-                "aaaaaaaaaaaa", "aaaaaaaaaaa", "aa", "aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+                "aaaaaaaaaaaa",
+                "aaaaaaaaaaa",
+                "aa",
+                "aaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineImageExamples/VirtualMachineImages_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineImageExamples/VirtualMachineImages_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImages_Get_MaximumSet_Gen.
@@ -46,6 +49,6 @@ public final class VirtualMachineImagesGetSamples {
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 "aaaaaaaaaaaaaaaaaaa",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

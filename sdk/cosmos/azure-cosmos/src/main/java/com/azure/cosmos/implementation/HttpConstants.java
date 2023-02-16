@@ -210,6 +210,7 @@ public class HttpConstants {
         // ChangeFeed
         public static final String A_IM = "A-IM";
         public static final String ALLOW_TENTATIVE_WRITES = "x-ms-cosmos-allow-tentative-writes";
+        public static final String CHANGE_FEED_WIRE_FORMAT_VERSION = "x-ms-cosmos-changefeed-wire-format-version";
 
         // These properties were added to support RNTBD and they've been added here to
         // reduce merge conflicts
@@ -274,11 +275,28 @@ public class HttpConstants {
         // Client Encryption Headers
         public static final String IS_CLIENT_ENCRYPTED_HEADER = "x-ms-cosmos-is-client-encrypted";
         public static final String INTENDED_COLLECTION_RID_HEADER = "x-ms-cosmos-intended-collection-rid";
+
+        // SDK supported capacities headers
+        public static final String SDK_SUPPORTED_CAPABILITIES = "x-ms-cosmos-sdk-supportedcapabilities";
     }
 
     public static class A_IMHeaderValues {
         public static final String INCREMENTAL_FEED = "Incremental Feed";
-        public static final String FullFidelityFeed = "Full-Fidelity Feed";
+        public static final String FULL_FIDELITY_FEED = "Full-Fidelity Feed";
+    }
+
+    public static class SDKSupportedCapabilities {
+        private static final long NONE = 0; // 0
+        private static final long PARTITION_MERGE = 1; // 1 << 0
+
+        private static final long CHANGE_FEED_WITH_START_TIME_POST_MERGE = 2; // 1 << 1
+
+        public static final String SUPPORTED_CAPABILITIES;
+        public static final String SUPPORTED_CAPABILITIES_NONE;
+        static {
+            SUPPORTED_CAPABILITIES = String.valueOf(PARTITION_MERGE | CHANGE_FEED_WITH_START_TIME_POST_MERGE);
+            SUPPORTED_CAPABILITIES_NONE = String.valueOf(NONE);
+        }
     }
 
     public static class Versions {
@@ -323,6 +341,10 @@ public class HttpConstants {
         }
     }
 
+    public static class ChangeFeedWireFormatVersions {
+        public static final String SEPARATE_METADATA_WITH_CRTS = "2021-09-15";
+    }
+
     public static class StatusCodes {
         public static final int OK = 200;
         public static final int CREATED = 201;
@@ -360,9 +382,10 @@ public class HttpConstants {
         public static final int CROSS_PARTITION_QUERY_NOT_SERVABLE = 1004;
 
         // 410: StatusCodeType_Gone: substatus
+        // Merge or split share the same status code and subStatusCode
         public static final int NAME_CACHE_IS_STALE = 1000;
         public static final int PARTITION_KEY_RANGE_GONE = 1002;
-        public static final int COMPLETING_SPLIT = 1007;
+        public static final int COMPLETING_SPLIT_OR_MERGE = 1007;
         public static final int COMPLETING_PARTITION_MIGRATION = 1008;
 
         // 403: Forbidden substatus

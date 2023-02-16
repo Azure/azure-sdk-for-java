@@ -6,16 +6,12 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A policy that specifies the delivery rules to be used for an endpoint. */
 @Fluent
 public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EndpointPropertiesUpdateParametersDeliveryPolicy.class);
-
     /*
      * User-friendly description of the policy.
      */
@@ -75,7 +71,7 @@ public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
      */
     public void validate() {
         if (rules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rules in model EndpointPropertiesUpdateParametersDeliveryPolicy"));
@@ -83,4 +79,6 @@ public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
             rules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EndpointPropertiesUpdateParametersDeliveryPolicy.class);
 }

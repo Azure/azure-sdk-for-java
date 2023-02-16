@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Definition of the activity parameter set. */
 @Fluent
 public final class ActivityParameterSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityParameterSet.class);
-
     /*
      * Gets or sets the name of the activity parameter set.
      */

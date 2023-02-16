@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmR
 /** Samples for StaticSites ResetStaticSiteApiKey. */
 public final class StaticSitesResetStaticSiteApiKeySamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ResetStaticSiteApiKey.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ResetStaticSiteApiKey.json
      */
     /**
      * Sample code: Reset the api key for a static site.

@@ -57,7 +57,8 @@ public final class LoggingEventBuilder {
      * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
      * If level is disabled, returns no-op instance.
      */
-    static LoggingEventBuilder create(Logger logger, LogLevel level, String globalContextSerialized, boolean canLogAtLevel) {
+    static LoggingEventBuilder create(Logger logger, LogLevel level, String globalContextSerialized,
+        boolean canLogAtLevel) {
         if (canLogAtLevel) {
             return new LoggingEventBuilder(logger, level, globalContextSerialized, true);
         }
@@ -278,7 +279,8 @@ public final class LoggingEventBuilder {
             message = "";
         }
 
-        StringBuilder sb = new StringBuilder(20 + context.size() * 20 + message.length() + globalContextCached.length());
+        StringBuilder sb = new StringBuilder(20 + context.size() * 20 + message.length()
+            + globalContextCached.length());
         sb.append("{\"")
             // message must be first for log parsing tooling to work, key also works as a
             // marker for Azure SDK logs so we'll write it even if there is no message
@@ -304,9 +306,8 @@ public final class LoggingEventBuilder {
             sb.append(",").append(globalContextCached);
         }
 
-        for (int i = 0; i < context.size(); i++) {
-            context.get(i)
-                .write(sb.append(","));
+        for (ContextKeyValuePair contextKeyValuePair : context) {
+            contextKeyValuePair.write(sb.append(","));
         }
 
         sb.append("}");
@@ -372,12 +373,12 @@ public final class LoggingEventBuilder {
     /**
      * Serializes passed map to string containing valid JSON fragment:
      * e.g. "k1":"v1","k2":"v2", properly escaped and without trailing comma.
-     *
+     * <p>
      * For complex object serialization, it calls {@code toString()} guarded with null check.
      *
      * @param context to serialize.
      *
-     * @returns Serialized JSON fragment or an empty string.
+     * @return Serialized JSON fragment or an empty string.
      */
     static String writeJsonFragment(Map<String, Object> context) {
         if (CoreUtils.isNullOrEmpty(context)) {
@@ -422,16 +423,12 @@ public final class LoggingEventBuilder {
             return false;
         }
 
-        if (value instanceof Boolean
+        return value instanceof Boolean
             || value instanceof Integer
             || value instanceof Long
             || value instanceof Byte
             || value instanceof Double
-            || value instanceof Float) {
-            return true;
-        }
-
-        return false;
+            || value instanceof Float;
     }
 
     private static final class ContextKeyValuePair {

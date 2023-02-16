@@ -30,7 +30,7 @@ public final class AfdEndpointsPurgeContentSamples {
                 "endpoint1",
                 new AfdPurgeParameters()
                     .withContentPaths(Arrays.asList("/folder1"))
-                    .withDomains(Arrays.asList("endpoint1.azureedge.net")),
+                    .withDomains(Arrays.asList("endpoint1-abcdefghijklmnop.z01.azurefd.net")),
                 Context.NONE);
     }
 }

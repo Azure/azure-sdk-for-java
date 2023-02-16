@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TableResources GetTable. */
 public final class TableResourcesGetTableSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBTableGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBTableGet.json
      */
     /**
      * Sample code: CosmosDBTableGet.
@@ -22,6 +20,6 @@ public final class TableResourcesGetTableSamples {
             .manager()
             .serviceClient()
             .getTableResources()
-            .getTableWithResponse("rg1", "ddb1", "tableName", Context.NONE);
+            .getTableWithResponse("rg1", "ddb1", "tableName", com.azure.core.util.Context.NONE);
     }
 }

@@ -32,6 +32,10 @@ public final class MicrosoftGraphWorkbookChartGridlines extends MicrosoftGraphEn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartGridlines class. */
+    public MicrosoftGraphWorkbookChartGridlines() {
+    }
+
     /**
      * Get the visible property: Boolean value representing if the axis gridlines are visible or not.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LabServicesSkuTier. */
+/** The tier of the SKU. */
 public final class LabServicesSkuTier extends ExpandableStringEnum<LabServicesSkuTier> {
     /** Static value Standard for LabServicesSkuTier. */
     public static final LabServicesSkuTier STANDARD = fromString("Standard");
@@ -27,7 +27,11 @@ public final class LabServicesSkuTier extends ExpandableStringEnum<LabServicesSk
         return fromString(name, LabServicesSkuTier.class);
     }
 
-    /** @return known LabServicesSkuTier values. */
+    /**
+     * Gets known LabServicesSkuTier values.
+     *
+     * @return known LabServicesSkuTier values.
+     */
     public static Collection<LabServicesSkuTier> values() {
         return values(LabServicesSkuTier.class);
     }

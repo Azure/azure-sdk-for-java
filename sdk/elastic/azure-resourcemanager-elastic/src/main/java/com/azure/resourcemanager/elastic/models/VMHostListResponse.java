@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.fluent.models.VMResourcesInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response of a list operation. */
 @Fluent
 public final class VMHostListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMHostListResponse.class);
-
     /*
      * Results of a list operation.
      */
@@ -27,6 +23,10 @@ public final class VMHostListResponse {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of VMHostListResponse class. */
+    public VMHostListResponse() {
+    }
 
     /**
      * Get the value property: Results of a list operation.

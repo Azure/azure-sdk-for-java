@@ -21,7 +21,8 @@ stages:
         timeoutInMinutes: 180
 
         pool:
-          vmImage: 'ubuntu-20.04'
+          name: 'azsdk-pool-mms-ubuntu-2004-general'
+          vmImage: 'MMSUbuntu20.04'
 
         steps:
         - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
@@ -66,11 +67,19 @@ stages:
             publishJUnitResults: false
             goals: 'clean package'
 
+        # Generate the pom file with all the modules required for creating an aggregate code coverage report
+        - task: PythonScript@0
+          displayName: 'Generate pom for aggregate JavaDoc report'
+          inputs:
+            scriptPath: 'eng/scripts/generate_aggregate_pom.py'
+            arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark,com.azure:azure-messaging-servicebus-stress,com.azure:azure-messaging-eventhubs-stress'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'    
+
         - task: Maven@3
           displayName: 'Generate Aggregate JavaDocs'
           inputs:
-            mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Pjavadoc'
+            mavenPomFile: aggregate-pom.xml
+            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)
@@ -78,58 +87,12 @@ stages:
             publishJUnitResults: false
             goals: 'javadoc:aggregate'
 
-         # Generate the pom file with all the modules required for creating an aggregate code coverage report
-        - task: PythonScript@0
-          displayName: 'Generate pom for aggregate code coverage report'
-          inputs:
-            scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
-            # Management and Spring track 2 groups will be added after
-            # https://github.com/Azure/azure-sdk-for-java/issues/29273 is resolved
-            arguments: '--groups com.azure'
-            workingDirectory: '$(System.DefaultWorkingDirectory)'
-
-        - task: Maven@3
-          displayName: 'Generate Aggregate JaCoCo coverage report'
-          inputs:
-            mavenPomFile: aggregate-coverage-pom.xml
-            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip=true -Drevapi.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -DskipCompile=true -DskipTestCompile=true'
-            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavaBuildVersion)
-            jdkArchitectureOption: 'x64'
-            publishJUnitResults: false
-            goals: 'verify jacoco:report-aggregate'
-
-        - task: PublishTestResults@2
-          condition: succeededOrFailed()
-          inputs:
-            mergeTestResults: true
-            testRunTitle: 'Linux on Java $(JavaBuildVersion)'
-
-        # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
-        # Code coverage reporting is setup only for Track 2 modules.
-        - task: PublishCodeCoverageResults@1
-          inputs:
-            codeCoverageTool: JaCoCo
-            summaryFileLocation: target/site/test-coverage/jacoco.xml
-            reportDirectory: target/site/test-coverage/
-            failIfCoverageEmpty: false
-
-        # Publish code coverage to an artifact so it can be uploaded to the Maven site.
-        # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
-        - task: PublishPipelineArtifact@0
-          displayName: 'Publish coverage artifact'
-          inputs:
-            artifactName: coverage
-            targetPath: target/site/
-
         - pwsh: |
             $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
           displayName: Generate Interdependency Report Data
 
         - pwsh: |
             Copy-Item -Path target/site/apidocs -Destination $(Build.ArtifactStagingDirectory)/staging/apidocs -Force -Recurse
-            Copy-Item -Path target/site/test-coverage -Destination $(Build.ArtifactStagingDirectory)/staging/test-coverage -Force -Recurse
             Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
             Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
             Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
@@ -158,7 +121,8 @@ stages:
 
         pool:
           # CredScan build task is Windows only (https://aka.ms/credscan).
-          vmImage: 'windows-2019'
+          name: 'azsdk-pool-mms-win-2022-general'
+          vmImage: 'MMS2022'
         steps:
         - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
           # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
@@ -189,8 +153,8 @@ stages:
         timeoutInMinutes: 120
 
         pool:
-          name: azsdk-pool-mms-win-2019-general
-          vmImage: MMS2019
+          name: azsdk-pool-mms-win-2022-general
+          vmImage: MMS2022
 
         steps:
           - template: /eng/common/pipelines/templates/steps/policheck.yml

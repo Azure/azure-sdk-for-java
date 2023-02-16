@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automanage.fluent.ConfigurationProfilesClient;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileInner;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileList;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConfigurationProfilesClient. */
 public final class ConfigurationProfilesClientImpl implements ConfigurationProfilesClient {
-    private final ClientLogger logger = new ClientLogger(ConfigurationProfilesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ConfigurationProfilesService service;
 
@@ -162,7 +159,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
+     * @return definition of the configuration profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigurationProfileInner>> createOrUpdateWithResponseAsync(
@@ -220,7 +218,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
+     * @return definition of the configuration profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigurationProfileInner>> createOrUpdateWithResponseAsync(
@@ -277,20 +276,13 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
+     * @return definition of the configuration profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigurationProfileInner> createOrUpdateAsync(
         String configurationProfileName, String resourceGroupName, ConfigurationProfileInner parameters) {
         return createOrUpdateWithResponseAsync(configurationProfileName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<ConfigurationProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -320,7 +312,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
+     * @return definition of the configuration profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationProfileInner> createOrUpdateWithResponse(
@@ -340,7 +332,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile.
+     * @return information about a configuration profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigurationProfileInner>> getByResourceGroupWithResponseAsync(
@@ -391,7 +384,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile.
+     * @return information about a configuration profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigurationProfileInner>> getByResourceGroupWithResponseAsync(
@@ -438,20 +432,13 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile.
+     * @return information about a configuration profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigurationProfileInner> getByResourceGroupAsync(
         String resourceGroupName, String configurationProfileName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, configurationProfileName)
-            .flatMap(
-                (Response<ConfigurationProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -478,7 +465,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile.
+     * @return information about a configuration profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationProfileInner> getByResourceGroupWithResponse(
@@ -494,7 +481,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String configurationProfileName) {
@@ -544,7 +531,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -591,12 +578,11 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String configurationProfileName) {
-        return deleteWithResponseAsync(resourceGroupName, configurationProfileName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, configurationProfileName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -622,7 +608,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -639,7 +625,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
+     * @return definition of the configuration profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigurationProfileInner>> updateWithResponseAsync(
@@ -697,7 +684,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
+     * @return definition of the configuration profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigurationProfileInner>> updateWithResponseAsync(
@@ -754,20 +742,13 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
+     * @return definition of the configuration profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigurationProfileInner> updateAsync(
         String configurationProfileName, String resourceGroupName, ConfigurationProfileUpdate parameters) {
         return updateWithResponseAsync(configurationProfileName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<ConfigurationProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -797,7 +778,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
+     * @return definition of the configuration profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationProfileInner> updateWithResponse(
@@ -815,7 +796,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationProfileInner>> listByResourceGroupSinglePageAsync(
@@ -863,7 +845,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationProfileInner>> listByResourceGroupSinglePageAsync(
@@ -907,7 +890,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationProfileInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -922,7 +905,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationProfileInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -936,7 +919,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileInner> listByResourceGroup(String resourceGroupName) {
@@ -951,7 +935,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -963,7 +948,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationProfileInner>> listSinglePageAsync() {
@@ -1004,7 +990,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationProfileInner>> listSinglePageAsync(Context context) {
@@ -1040,7 +1027,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationProfileInner> listAsync() {
@@ -1054,7 +1041,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationProfileInner> listAsync(Context context) {
@@ -1066,7 +1053,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileInner> list() {
@@ -1080,7 +1068,8 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileInner> list(Context context) {

@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class NotebookWorkspaceConnectionInfoResultInner {
     /*
-     * Specifies auth token used for connecting to Notebook server (uses
-     * token-based auth).
+     * Specifies auth token used for connecting to Notebook server (uses token-based auth).
      */
     @JsonProperty(value = "authToken", access = JsonProperty.Access.WRITE_ONLY)
     private String authToken;
@@ -22,6 +21,10 @@ public final class NotebookWorkspaceConnectionInfoResultInner {
      */
     @JsonProperty(value = "notebookServerEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String notebookServerEndpoint;
+
+    /** Creates an instance of NotebookWorkspaceConnectionInfoResultInner class. */
+    public NotebookWorkspaceConnectionInfoResultInner() {
+    }
 
     /**
      * Get the authToken property: Specifies auth token used for connecting to Notebook server (uses token-based auth).

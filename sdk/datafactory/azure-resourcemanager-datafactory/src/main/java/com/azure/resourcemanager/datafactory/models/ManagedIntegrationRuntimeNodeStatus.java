@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedIntegrationRuntimeNodeStatus. */
+/** The managed integration runtime node status. */
 public final class ManagedIntegrationRuntimeNodeStatus
     extends ExpandableStringEnum<ManagedIntegrationRuntimeNodeStatus> {
     /** Static value Starting for ManagedIntegrationRuntimeNodeStatus. */
@@ -22,6 +22,15 @@ public final class ManagedIntegrationRuntimeNodeStatus
 
     /** Static value Unavailable for ManagedIntegrationRuntimeNodeStatus. */
     public static final ManagedIntegrationRuntimeNodeStatus UNAVAILABLE = fromString("Unavailable");
+
+    /**
+     * Creates a new instance of ManagedIntegrationRuntimeNodeStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedIntegrationRuntimeNodeStatus() {
+    }
 
     /**
      * Creates or finds a ManagedIntegrationRuntimeNodeStatus from its string representation.

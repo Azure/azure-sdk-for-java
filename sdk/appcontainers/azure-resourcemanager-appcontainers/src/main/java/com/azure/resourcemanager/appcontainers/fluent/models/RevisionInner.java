@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.models.RevisionHealthState;
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Container App Revision. */
-@Fluent
+@Immutable
 public final class RevisionInner extends ProxyResource {
     /*
      * Revision resource specific properties
@@ -23,11 +23,14 @@ public final class RevisionInner extends ProxyResource {
     private RevisionProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of RevisionInner class. */
+    public RevisionInner() {
+    }
 
     /**
      * Get the innerProperties property: Revision resource specific properties.
@@ -54,6 +57,16 @@ public final class RevisionInner extends ProxyResource {
      */
     public OffsetDateTime createdTime() {
         return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the lastActiveTime property: Timestamp describing when the revision was last active. Only meaningful when
+     * revision is inactive.
+     *
+     * @return the lastActiveTime value.
+     */
+    public OffsetDateTime lastActiveTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastActiveTime();
     }
 
     /**

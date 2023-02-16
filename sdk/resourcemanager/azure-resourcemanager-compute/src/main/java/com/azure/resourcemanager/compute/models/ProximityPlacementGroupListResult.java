@@ -25,6 +25,10 @@ public final class ProximityPlacementGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ProximityPlacementGroupListResult class. */
+    public ProximityPlacementGroupListResult() {
+    }
+
     /**
      * Get the value property: The list of proximity placement groups.
      *

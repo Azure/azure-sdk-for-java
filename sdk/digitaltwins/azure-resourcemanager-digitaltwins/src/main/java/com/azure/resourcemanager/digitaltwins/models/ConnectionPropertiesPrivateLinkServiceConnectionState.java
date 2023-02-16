@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The connection state. */
 @Fluent
 public final class ConnectionPropertiesPrivateLinkServiceConnectionState extends ConnectionState {
+    /** Creates an instance of ConnectionPropertiesPrivateLinkServiceConnectionState class. */
+    public ConnectionPropertiesPrivateLinkServiceConnectionState() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ConnectionPropertiesPrivateLinkServiceConnectionState withStatus(PrivateLinkServiceConnectionStatus status) {

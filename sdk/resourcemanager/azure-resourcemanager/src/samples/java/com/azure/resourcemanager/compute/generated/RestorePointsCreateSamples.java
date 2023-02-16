@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.RestorePointInner;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for RestorePoints Create. */
 public final class RestorePointsCreateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePoint_Copy_BetweenRegions.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePoint_Copy_BetweenRegions.json
      */
     /**
      * Sample code: Copy a restore point to a different region.
@@ -34,11 +33,11 @@ public final class RestorePointsCreateSamples {
                         new ApiEntityReference()
                             .withId(
                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/sourceRpcName/restorePoints/sourceRpName")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePoint_Create.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePoint_Create.json
      */
     /**
      * Sample code: Create a restore point.
@@ -62,6 +61,6 @@ public final class RestorePointsCreateSamples {
                                 new ApiEntityReference()
                                     .withId(
                                         "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/disk123"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

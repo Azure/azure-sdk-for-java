@@ -7,6 +7,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
@@ -68,11 +69,19 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
     @Override
     public Mono<Void> runAsync() {
-        return receiverAsync
-            .receiveMessages()
-            .take(options.getMessagesToReceive())
-            .map(serviceBusReceivedMessageContext -> {
-                return serviceBusReceivedMessageContext;
-            }).then();
+        return Mono.using(
+            receiverBuilder::buildAsyncClient,
+            serviceBusReceiverAsyncClient -> {
+                return serviceBusReceiverAsyncClient
+                    .receiveMessages()
+                    .take(options.getMessagesToReceive())
+                    .map(message -> {
+                        return message;
+                    })
+                    .then();
+            },
+            ServiceBusReceiverAsyncClient::close,
+            true
+        );
     }
 }

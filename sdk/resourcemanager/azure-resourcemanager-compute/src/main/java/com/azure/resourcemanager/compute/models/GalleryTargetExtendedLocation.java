@@ -23,25 +23,27 @@ public final class GalleryTargetExtendedLocation {
     private GalleryExtendedLocation extendedLocation;
 
     /*
-     * The number of replicas of the Image Version to be created per extended
-     * location. This property is updatable.
+     * The number of replicas of the Image Version to be created per extended location. This property is updatable.
      */
     @JsonProperty(value = "extendedLocationReplicaCount")
     private Integer extendedLocationReplicaCount;
 
     /*
-     * Specifies the storage account type to be used to store the image. This
-     * property is not updatable.
+     * Specifies the storage account type to be used to store the image. This property is not updatable.
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
 
     /*
-     * Optional. Allows users to provide customer managed keys for encrypting
-     * the OS and data disks in the gallery artifact.
+     * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery
+     * artifact.
      */
     @JsonProperty(value = "encryption")
     private EncryptionImages encryption;
+
+    /** Creates an instance of GalleryTargetExtendedLocation class. */
+    public GalleryTargetExtendedLocation() {
+    }
 
     /**
      * Get the name property: The name of the region.

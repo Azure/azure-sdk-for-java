@@ -6,7 +6,6 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 import com.azure.resourcemanager.billing.models.AzurePlan;
 import com.azure.resourcemanager.billing.models.BillingProfileStatus;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.billing.models.InvoiceSectionsOnExpand;
 import com.azure.resourcemanager.billing.models.SpendingLimit;
 import com.azure.resourcemanager.billing.models.StatusReasonCode;
 import com.azure.resourcemanager.billing.models.TargetCloud;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +22,15 @@ import java.util.Map;
 /** A billing profile. */
 @Fluent
 public final class BillingProfileInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingProfileInner.class);
-
     /*
      * The properties of the billing profile.
      */
     @JsonProperty(value = "properties")
     private BillingProfileProperties innerProperties;
+
+    /** Creates an instance of BillingProfileInner class. */
+    public BillingProfileInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the billing profile.

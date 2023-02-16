@@ -23,7 +23,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
             throw new IllegalArgumentException("The initialization parameter [phoneNumber] cannot be null to empty.");
         }
         this.phoneNumber = phoneNumber;
-        this.rawId = "4:" + phoneNumber.replaceAll("^[+]", "");
+        this.setRawId("4:" + phoneNumber);
     }
 
     /**
@@ -35,12 +35,14 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     /**
      * Set full id of the identifier
+     * RawId is the encoded format for identifiers to store in databases or as stable keys in general.
      *
      * @param rawId full id of the identifier
      * @return PhoneNumberIdentifier object itself
      */
+    @Override
     public PhoneNumberIdentifier setRawId(String rawId) {
-        this.rawId = rawId;
+        super.setRawId(rawId);
         return this;
     }
 

@@ -14,6 +14,7 @@ import java.util.Map;
  */
 @Immutable
 public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
+    private DetectedLanguage detectedLanguage;
     private IterableStream<TextAnalyticsWarning> warnings;
     private IterableStream<HealthcareEntity> entities;
     private IterableStream<HealthcareEntityRelation> entityRelations;
@@ -22,6 +23,12 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     static {
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setAccessor(
             new AnalyzeHealthcareEntitiesResultPropertiesHelper.AnalyzeHealthcareEntitiesResultAccessor() {
+                @Override
+                public void setDetectedLanguage(AnalyzeHealthcareEntitiesResult entitiesResult,
+                    DetectedLanguage detectedLanguage) {
+                    entitiesResult.setDetectedLanguage(detectedLanguage);
+                }
+
                 @Override
                 public void setEntities(AnalyzeHealthcareEntitiesResult entitiesResult,
                     IterableStream<HealthcareEntity> entities) {
@@ -42,7 +49,7 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
 
                 @Override
                 public void setFhirBundle(AnalyzeHealthcareEntitiesResult entitiesResult,
-                    Map<String, Object> fhirBundle) {
+                                          Map<String, Object> fhirBundle) {
                     entitiesResult.setFhirBundle(fhirBundle);
                 }
             });
@@ -98,6 +105,20 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
      */
     public Map<String, Object> getFhirBundle() {
         return this.fhirBundle;
+    }
+
+    /**
+     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
+     * contain an object of the language detected for this document.
+     *
+     * @return the detectedLanguage value.
+     */
+    public DetectedLanguage getDetectedLanguage() {
+        return this.detectedLanguage;
+    }
+
+    private void setDetectedLanguage(DetectedLanguage detectedLanguage) {
+        this.detectedLanguage = detectedLanguage;
     }
 
     private void setEntities(IterableStream<HealthcareEntity> entities) {

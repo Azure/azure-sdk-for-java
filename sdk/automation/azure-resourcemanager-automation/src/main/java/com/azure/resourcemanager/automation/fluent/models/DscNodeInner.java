@@ -5,80 +5,29 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.DscNodeExtensionHandlerAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Definition of a DscNode. */
-@JsonFlatten
 @Fluent
-public class DscNodeInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscNodeInner.class);
-
+public final class DscNodeInner extends ProxyResource {
     /*
-     * Gets or sets the last seen time of the node.
+     * The properties of a DscNode.
      */
-    @JsonProperty(value = "properties.lastSeen")
-    private OffsetDateTime lastSeen;
+    @JsonProperty(value = "properties")
+    private DscNodeProperties innerProperties;
 
-    /*
-     * Gets or sets the registration time of the node.
+    /**
+     * Get the innerProperties property: The properties of a DscNode.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.registrationTime")
-    private OffsetDateTime registrationTime;
-
-    /*
-     * Gets or sets the ip of the node.
-     */
-    @JsonProperty(value = "properties.ip")
-    private String ip;
-
-    /*
-     * Gets or sets the account id of the node.
-     */
-    @JsonProperty(value = "properties.accountId")
-    private String accountId;
-
-    /*
-     * Gets or sets the status of the node.
-     */
-    @JsonProperty(value = "properties.status")
-    private String status;
-
-    /*
-     * Gets or sets the node id.
-     */
-    @JsonProperty(value = "properties.nodeId")
-    private String nodeId;
-
-    /*
-     * Gets or sets the etag of the resource.
-     */
-    @JsonProperty(value = "properties.etag")
-    private String etag;
-
-    /*
-     * Gets the total number of records matching filter criteria.
-     */
-    @JsonProperty(value = "properties.totalCount")
-    private Integer totalCount;
-
-    /*
-     * Gets or sets the list of extensionHandler properties for a Node.
-     */
-    @JsonProperty(value = "properties.extensionHandler")
-    private List<DscNodeExtensionHandlerAssociationProperty> extensionHandler;
-
-    /*
-     * Gets or sets the name of the dsc node configuration.
-     */
-    @JsonProperty(value = "properties.nodeConfiguration.name")
-    private String namePropertiesNodeConfigurationName;
+    private DscNodeProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the lastSeen property: Gets or sets the last seen time of the node.
@@ -86,7 +35,7 @@ public class DscNodeInner extends ProxyResource {
      * @return the lastSeen value.
      */
     public OffsetDateTime lastSeen() {
-        return this.lastSeen;
+        return this.innerProperties() == null ? null : this.innerProperties().lastSeen();
     }
 
     /**
@@ -96,7 +45,10 @@ public class DscNodeInner extends ProxyResource {
      * @return the DscNodeInner object itself.
      */
     public DscNodeInner withLastSeen(OffsetDateTime lastSeen) {
-        this.lastSeen = lastSeen;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeProperties();
+        }
+        this.innerProperties().withLastSeen(lastSeen);
         return this;
     }
 
@@ -106,7 +58,7 @@ public class DscNodeInner extends ProxyResource {
      * @return the registrationTime value.
      */
     public OffsetDateTime registrationTime() {
-        return this.registrationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().registrationTime();
     }
 
     /**
@@ -116,7 +68,10 @@ public class DscNodeInner extends ProxyResource {
      * @return the DscNodeInner object itself.
      */
     public DscNodeInner withRegistrationTime(OffsetDateTime registrationTime) {
-        this.registrationTime = registrationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeProperties();
+        }
+        this.innerProperties().withRegistrationTime(registrationTime);
         return this;
     }
 
@@ -126,7 +81,7 @@ public class DscNodeInner extends ProxyResource {
      * @return the ip value.
      */
     public String ip() {
-        return this.ip;
+        return this.innerProperties() == null ? null : this.innerProperties().ip();
     }
 
     /**
@@ -136,7 +91,10 @@ public class DscNodeInner extends ProxyResource {
      * @return the DscNodeInner object itself.
      */
     public DscNodeInner withIp(String ip) {
-        this.ip = ip;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeProperties();
+        }
+        this.innerProperties().withIp(ip);
         return this;
     }
 
@@ -146,7 +104,7 @@ public class DscNodeInner extends ProxyResource {
      * @return the accountId value.
      */
     public String accountId() {
-        return this.accountId;
+        return this.innerProperties() == null ? null : this.innerProperties().accountId();
     }
 
     /**
@@ -156,7 +114,10 @@ public class DscNodeInner extends ProxyResource {
      * @return the DscNodeInner object itself.
      */
     public DscNodeInner withAccountId(String accountId) {
-        this.accountId = accountId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeProperties();
+        }
+        this.innerProperties().withAccountId(accountId);
         return this;
     }
 
@@ -166,7 +127,7 @@ public class DscNodeInner extends ProxyResource {
      * @return the status value.
      */
     public String status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -176,7 +137,10 @@ public class DscNodeInner extends ProxyResource {
      * @return the DscNodeInner object itself.
      */
     public DscNodeInner withStatus(String status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -186,7 +150,7 @@ public class DscNodeInner extends ProxyResource {
      * @return the nodeId value.
      */
     public String nodeId() {
-        return this.nodeId;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeId();
     }
 
     /**
@@ -196,7 +160,10 @@ public class DscNodeInner extends ProxyResource {
      * @return the DscNodeInner object itself.
      */
     public DscNodeInner withNodeId(String nodeId) {
-        this.nodeId = nodeId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeProperties();
+        }
+        this.innerProperties().withNodeId(nodeId);
         return this;
     }
 
@@ -206,7 +173,7 @@ public class DscNodeInner extends ProxyResource {
      * @return the etag value.
      */
     public String etag() {
-        return this.etag;
+        return this.innerProperties() == null ? null : this.innerProperties().etag();
     }
 
     /**
@@ -216,7 +183,10 @@ public class DscNodeInner extends ProxyResource {
      * @return the DscNodeInner object itself.
      */
     public DscNodeInner withEtag(String etag) {
-        this.etag = etag;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeProperties();
+        }
+        this.innerProperties().withEtag(etag);
         return this;
     }
 
@@ -226,7 +196,7 @@ public class DscNodeInner extends ProxyResource {
      * @return the totalCount value.
      */
     public Integer totalCount() {
-        return this.totalCount;
+        return this.innerProperties() == null ? null : this.innerProperties().totalCount();
     }
 
     /**
@@ -236,7 +206,10 @@ public class DscNodeInner extends ProxyResource {
      * @return the DscNodeInner object itself.
      */
     public DscNodeInner withTotalCount(Integer totalCount) {
-        this.totalCount = totalCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeProperties();
+        }
+        this.innerProperties().withTotalCount(totalCount);
         return this;
     }
 
@@ -246,7 +219,7 @@ public class DscNodeInner extends ProxyResource {
      * @return the extensionHandler value.
      */
     public List<DscNodeExtensionHandlerAssociationProperty> extensionHandler() {
-        return this.extensionHandler;
+        return this.innerProperties() == null ? null : this.innerProperties().extensionHandler();
     }
 
     /**
@@ -256,27 +229,33 @@ public class DscNodeInner extends ProxyResource {
      * @return the DscNodeInner object itself.
      */
     public DscNodeInner withExtensionHandler(List<DscNodeExtensionHandlerAssociationProperty> extensionHandler) {
-        this.extensionHandler = extensionHandler;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeProperties();
+        }
+        this.innerProperties().withExtensionHandler(extensionHandler);
         return this;
     }
 
     /**
-     * Get the namePropertiesNodeConfigurationName property: Gets or sets the name of the dsc node configuration.
+     * Get the name property: Gets or sets the name of the dsc node configuration.
      *
-     * @return the namePropertiesNodeConfigurationName value.
+     * @return the name value.
      */
-    public String namePropertiesNodeConfigurationName() {
-        return this.namePropertiesNodeConfigurationName;
+    public String namePropertiesName() {
+        return this.innerProperties() == null ? null : this.innerProperties().name();
     }
 
     /**
-     * Set the namePropertiesNodeConfigurationName property: Gets or sets the name of the dsc node configuration.
+     * Set the name property: Gets or sets the name of the dsc node configuration.
      *
-     * @param namePropertiesNodeConfigurationName the namePropertiesNodeConfigurationName value to set.
+     * @param name the name value to set.
      * @return the DscNodeInner object itself.
      */
-    public DscNodeInner withNamePropertiesNodeConfigurationName(String namePropertiesNodeConfigurationName) {
-        this.namePropertiesNodeConfigurationName = namePropertiesNodeConfigurationName;
+    public DscNodeInner withNamePropertiesName(String name) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeProperties();
+        }
+        this.innerProperties().withName(name);
         return this;
     }
 
@@ -286,8 +265,8 @@ public class DscNodeInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (extensionHandler() != null) {
-            extensionHandler().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

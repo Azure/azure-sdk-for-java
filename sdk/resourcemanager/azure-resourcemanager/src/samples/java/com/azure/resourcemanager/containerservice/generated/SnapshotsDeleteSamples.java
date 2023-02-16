@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Snapshots Delete. */
 public final class SnapshotsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/SnapshotsDelete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/SnapshotsDelete.json
      */
     /**
      * Sample code: Delete Snapshot.
@@ -22,6 +20,6 @@ public final class SnapshotsDeleteSamples {
             .manager()
             .serviceClient()
             .getSnapshots()
-            .deleteWithResponse("rg1", "snapshot1", Context.NONE);
+            .deleteWithResponse("rg1", "snapshot1", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CertificateRegistrationProvider ListOperations. */
 public final class CertificateRegistrationProviderListOperationsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2021-03-01/examples/ListOperations.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/ListOperations.json
      */
     /**
      * Sample code: List operations.

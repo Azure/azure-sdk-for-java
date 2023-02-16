@@ -13,10 +13,9 @@ import com.azure.resourcemanager.hybridnetwork.fluent.RoleInstancesClient;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.RoleInstanceInner;
 import com.azure.resourcemanager.hybridnetwork.models.RoleInstance;
 import com.azure.resourcemanager.hybridnetwork.models.RoleInstances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RoleInstancesImpl implements RoleInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleInstancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RoleInstancesImpl.class);
 
     private final RoleInstancesClient innerClient;
 
@@ -55,15 +54,6 @@ public final class RoleInstancesImpl implements RoleInstances {
         this.serviceClient().restart(locationName, vendorName, serviceKey, roleInstanceName, context);
     }
 
-    public RoleInstance get(String locationName, String vendorName, String serviceKey, String roleInstanceName) {
-        RoleInstanceInner inner = this.serviceClient().get(locationName, vendorName, serviceKey, roleInstanceName);
-        if (inner != null) {
-            return new RoleInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RoleInstance> getWithResponse(
         String locationName, String vendorName, String serviceKey, String roleInstanceName, Context context) {
         Response<RoleInstanceInner> inner =
@@ -74,6 +64,15 @@ public final class RoleInstancesImpl implements RoleInstances {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RoleInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RoleInstance get(String locationName, String vendorName, String serviceKey, String roleInstanceName) {
+        RoleInstanceInner inner = this.serviceClient().get(locationName, vendorName, serviceKey, roleInstanceName);
+        if (inner != null) {
+            return new RoleInstanceImpl(inner, this.manager());
         } else {
             return null;
         }

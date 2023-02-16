@@ -7,23 +7,26 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the confidence scores across all sentiment classes: positive, neutral, negative. */
+/** Represents the confidence scores across all sentiment classes: positive and negative. */
 @Fluent
 public final class TargetConfidenceScoreLabel {
     /*
-     * The positive property.
+     * Confidence score for positive sentiment
      */
     @JsonProperty(value = "positive", required = true)
     private double positive;
 
     /*
-     * The negative property.
+     * Confidence score for negative sentiment
      */
     @JsonProperty(value = "negative", required = true)
     private double negative;
 
+    /** Creates an instance of TargetConfidenceScoreLabel class. */
+    public TargetConfidenceScoreLabel() {}
+
     /**
-     * Get the positive property: The positive property.
+     * Get the positive property: Confidence score for positive sentiment.
      *
      * @return the positive value.
      */
@@ -32,7 +35,7 @@ public final class TargetConfidenceScoreLabel {
     }
 
     /**
-     * Set the positive property: The positive property.
+     * Set the positive property: Confidence score for positive sentiment.
      *
      * @param positive the positive value to set.
      * @return the TargetConfidenceScoreLabel object itself.
@@ -43,7 +46,7 @@ public final class TargetConfidenceScoreLabel {
     }
 
     /**
-     * Get the negative property: The negative property.
+     * Get the negative property: Confidence score for negative sentiment.
      *
      * @return the negative value.
      */
@@ -52,7 +55,7 @@ public final class TargetConfidenceScoreLabel {
     }
 
     /**
-     * Set the negative property: The negative property.
+     * Set the negative property: Confidence score for negative sentiment.
      *
      * @param negative the negative value to set.
      * @return the TargetConfidenceScoreLabel object itself.

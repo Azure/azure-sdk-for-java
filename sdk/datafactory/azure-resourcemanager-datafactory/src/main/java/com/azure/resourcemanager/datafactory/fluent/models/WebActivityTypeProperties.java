@@ -24,25 +24,22 @@ public final class WebActivityTypeProperties {
     private WebActivityMethod method;
 
     /*
-     * Web activity target endpoint and path. Type: string (or Expression with
-     * resultType string).
+     * Web activity target endpoint and path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to
-     * set the language and type on a request: "headers" : { "Accept-Language":
-     * "en-us", "Content-Type": "application/json" }. Type: string (or
-     * Expression with resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
+     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "headers")
     private Object headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for
-     * POST/PUT method, not allowed for GET method Type: string (or Expression
-     * with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
+     * method Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "body")
     private Object body;
@@ -76,6 +73,10 @@ public final class WebActivityTypeProperties {
      */
     @JsonProperty(value = "connectVia")
     private IntegrationRuntimeReference connectVia;
+
+    /** Creates an instance of WebActivityTypeProperties class. */
+    public WebActivityTypeProperties() {
+    }
 
     /**
      * Get the method property: Rest API method for target endpoint.

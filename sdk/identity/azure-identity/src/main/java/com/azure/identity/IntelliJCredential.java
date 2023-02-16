@@ -15,6 +15,7 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IntelliJAuthMethodDetails;
 import com.azure.identity.implementation.IntelliJCacheAccessor;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -68,7 +69,7 @@ public class IntelliJCredential implements TokenCredential {
         identityClient = new IdentityClientBuilder()
                              .identityClientOptions(options)
                              .tenantId(tenant)
-                             .clientId(AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID)
+                             .clientId(IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID)
                              .build();
 
         this.cachedToken = new AtomicReference<>();

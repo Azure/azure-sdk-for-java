@@ -39,11 +39,13 @@ public final class InnerErrorModel {
     private String target;
 
     /*
-     * An object containing more specific information than the current object
-     * about the error.
+     * An object containing more specific information than the current object about the error.
      */
     @JsonProperty(value = "innererror")
     private InnerErrorModel innererror;
+
+    /** Creates an instance of InnerErrorModel class. */
+    public InnerErrorModel() {}
 
     /**
      * Get the code property: One of a server-defined set of error codes.

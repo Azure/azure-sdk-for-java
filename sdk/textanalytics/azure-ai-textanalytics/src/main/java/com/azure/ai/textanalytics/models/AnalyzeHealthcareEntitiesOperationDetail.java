@@ -14,6 +14,7 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class AnalyzeHealthcareEntitiesOperationDetail {
     private String operationId;
+    private String displayName;
     private OffsetDateTime createdAt;
     private OffsetDateTime expiresAt;
     private OffsetDateTime lastModifiedAt;
@@ -26,6 +27,11 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
                 public void setOperationId(AnalyzeHealthcareEntitiesOperationDetail operationResult,
                     String operationId) {
                     operationResult.setOperationId(operationId);
+                }
+
+                @Override
+                public void setDisplayName(AnalyzeHealthcareEntitiesOperationDetail operationDetail, String name) {
+                    operationDetail.setDisplayName(name);
                 }
 
                 @Override
@@ -59,6 +65,15 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
     }
 
     /**
+     * Gets the displayName property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
+     *
+     * @return The displayName property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
+     */
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    /**
      * Gets the created time of an action.
      *
      * @return The created time of an action.
@@ -87,6 +102,10 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
 
     private void setOperationId(String operationId) {
         this.operationId = operationId;
+    }
+
+    private void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     private void setCreatedAt(OffsetDateTime createdAt) {

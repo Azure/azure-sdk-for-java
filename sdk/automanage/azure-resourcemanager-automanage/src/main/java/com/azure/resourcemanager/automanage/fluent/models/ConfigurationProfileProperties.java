@@ -5,27 +5,16 @@
 package com.azure.resourcemanager.automanage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Automanage configuration profile properties. */
 @Fluent
 public final class ConfigurationProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationProfileProperties.class);
-
     /*
      * configuration dictionary of the configuration profile.
      */
     @JsonProperty(value = "configuration")
     private Object configuration;
-
-    /*
-     * overrides of the configuration profile.
-     */
-    @JsonProperty(value = "overrides")
-    private List<Object> overrides;
 
     /**
      * Get the configuration property: configuration dictionary of the configuration profile.
@@ -44,26 +33,6 @@ public final class ConfigurationProfileProperties {
      */
     public ConfigurationProfileProperties withConfiguration(Object configuration) {
         this.configuration = configuration;
-        return this;
-    }
-
-    /**
-     * Get the overrides property: overrides of the configuration profile.
-     *
-     * @return the overrides value.
-     */
-    public List<Object> overrides() {
-        return this.overrides;
-    }
-
-    /**
-     * Set the overrides property: overrides of the configuration profile.
-     *
-     * @param overrides the overrides value to set.
-     * @return the ConfigurationProfileProperties object itself.
-     */
-    public ConfigurationProfileProperties withOverrides(List<Object> overrides) {
-        this.overrides = overrides;
         return this;
     }
 

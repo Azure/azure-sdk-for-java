@@ -28,6 +28,10 @@ public final class ConnectionStateProperties {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
+    /** Creates an instance of ConnectionStateProperties class. */
+    public ConnectionStateProperties() {
+    }
+
     /**
      * Get the actionsRequired property: The actions required on the managed private endpoint.
      *

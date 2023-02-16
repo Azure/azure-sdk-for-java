@@ -12,7 +12,9 @@ import java.util.List;
 /** Resource collection API of PrivateEndpointConnections. */
 public interface PrivateEndpointConnections {
     /**
-     * List private endpoint connection properties.
+     * List private endpoint connections
+     *
+     * <p>List private endpoint connection properties.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -25,7 +27,9 @@ public interface PrivateEndpointConnections {
     List<PrivateEndpointConnection> list(String resourceGroupName, String resourceName);
 
     /**
-     * List private endpoint connection properties.
+     * List private endpoint connections
+     *
+     * <p>List private endpoint connection properties.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -40,7 +44,9 @@ public interface PrivateEndpointConnections {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Get private endpoint connection properties.
+     * Get private endpoint connection
+     *
+     * <p>Get private endpoint connection properties.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -54,7 +60,9 @@ public interface PrivateEndpointConnections {
     PrivateEndpointConnection get(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
-     * Get private endpoint connection properties.
+     * Get private endpoint connection
+     *
+     * <p>Get private endpoint connection properties.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -70,7 +78,9 @@ public interface PrivateEndpointConnections {
         String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
 
     /**
-     * Update the status of a private endpoint connection with the specified name.
+     * Update private endpoint connection
+     *
+     * <p>Update the status of a private endpoint connection with the specified name.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -89,7 +99,9 @@ public interface PrivateEndpointConnections {
         PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
-     * Update the status of a private endpoint connection with the specified name.
+     * Update private endpoint connection
+     *
+     * <p>Update the status of a private endpoint connection with the specified name.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -110,7 +122,9 @@ public interface PrivateEndpointConnections {
         Context context);
 
     /**
-     * Delete private endpoint connection with the specified name.
+     * Delete private endpoint connection
+     *
+     * <p>Delete private endpoint connection with the specified name.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -125,7 +139,9 @@ public interface PrivateEndpointConnections {
         String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
-     * Delete private endpoint connection with the specified name.
+     * Delete private endpoint connection
+     *
+     * <p>Delete private endpoint connection with the specified name.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.

@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the current state of an existing Private Link Service connection to the Azure Private Endpoint. */
 @Fluent
 public final class PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState.class);
-
     /*
      * Status of the the private link service connection. Can be Pending,
      * Approved, Rejected, or Disconnected.

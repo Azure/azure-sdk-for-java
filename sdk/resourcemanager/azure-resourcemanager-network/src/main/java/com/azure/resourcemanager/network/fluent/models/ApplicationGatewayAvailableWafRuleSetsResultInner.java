@@ -18,6 +18,10 @@ public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
     @JsonProperty(value = "value")
     private List<ApplicationGatewayFirewallRuleSet> value;
 
+    /** Creates an instance of ApplicationGatewayAvailableWafRuleSetsResultInner class. */
+    public ApplicationGatewayAvailableWafRuleSetsResultInner() {
+    }
+
     /**
      * Get the value property: The list of application gateway rule sets.
      *

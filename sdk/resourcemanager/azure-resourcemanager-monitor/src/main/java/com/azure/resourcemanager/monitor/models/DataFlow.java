@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Definition of which streams are sent to which destinations. */
 @Fluent
 public final class DataFlow {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlow.class);
-
     /*
      * List of streams for this data flow.
      */
@@ -26,6 +22,22 @@ public final class DataFlow {
      */
     @JsonProperty(value = "destinations")
     private List<String> destinations;
+
+    /*
+     * The KQL query to transform stream data.
+     */
+    @JsonProperty(value = "transformKql")
+    private String transformKql;
+
+    /*
+     * The output stream of the transform. Only required if the transform changes data to a different stream.
+     */
+    @JsonProperty(value = "outputStream")
+    private String outputStream;
+
+    /** Creates an instance of DataFlow class. */
+    public DataFlow() {
+    }
 
     /**
      * Get the streams property: List of streams for this data flow.
@@ -64,6 +76,48 @@ public final class DataFlow {
      */
     public DataFlow withDestinations(List<String> destinations) {
         this.destinations = destinations;
+        return this;
+    }
+
+    /**
+     * Get the transformKql property: The KQL query to transform stream data.
+     *
+     * @return the transformKql value.
+     */
+    public String transformKql() {
+        return this.transformKql;
+    }
+
+    /**
+     * Set the transformKql property: The KQL query to transform stream data.
+     *
+     * @param transformKql the transformKql value to set.
+     * @return the DataFlow object itself.
+     */
+    public DataFlow withTransformKql(String transformKql) {
+        this.transformKql = transformKql;
+        return this;
+    }
+
+    /**
+     * Get the outputStream property: The output stream of the transform. Only required if the transform changes data to
+     * a different stream.
+     *
+     * @return the outputStream value.
+     */
+    public String outputStream() {
+        return this.outputStream;
+    }
+
+    /**
+     * Set the outputStream property: The output stream of the transform. Only required if the transform changes data to
+     * a different stream.
+     *
+     * @param outputStream the outputStream value to set.
+     * @return the DataFlow object itself.
+     */
+    public DataFlow withOutputStream(String outputStream) {
+        this.outputStream = outputStream;
         return this;
     }
 

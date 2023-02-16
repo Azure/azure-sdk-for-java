@@ -23,6 +23,10 @@ public final class Permission {
     @JsonProperty(value = "notDataActions")
     private List<String> notDataActions;
 
+    /** Creates an instance of Permission class. */
+    public Permission() {
+    }
+
     /**
      * Get the dataActions property: An array of data actions that are allowed.
      *

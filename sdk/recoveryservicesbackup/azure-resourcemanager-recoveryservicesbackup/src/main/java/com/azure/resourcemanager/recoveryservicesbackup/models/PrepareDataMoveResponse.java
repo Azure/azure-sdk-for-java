@@ -30,6 +30,10 @@ public final class PrepareDataMoveResponse extends VaultStorageConfigOperationRe
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> sourceVaultProperties;
 
+    /** Creates an instance of PrepareDataMoveResponse class. */
+    public PrepareDataMoveResponse() {
+    }
+
     /**
      * Get the correlationId property: Co-relationId for move operation.
      *

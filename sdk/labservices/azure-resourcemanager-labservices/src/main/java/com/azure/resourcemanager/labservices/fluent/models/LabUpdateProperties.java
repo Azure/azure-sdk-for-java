@@ -5,30 +5,26 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
 import com.azure.resourcemanager.labservices.models.RosterProfile;
 import com.azure.resourcemanager.labservices.models.SecurityProfile;
 import com.azure.resourcemanager.labservices.models.VirtualMachineProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a lab resource used for updates. */
 @Fluent
 public class LabUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabUpdateProperties.class);
-
     /*
-     * The resource auto shutdown configuration for the lab. This controls
-     * whether actions are taken on resources that are sitting idle.
+     * The resource auto shutdown configuration for the lab. This controls whether actions are taken on resources that
+     * are sitting idle.
      */
     @JsonProperty(value = "autoShutdownProfile")
     private AutoShutdownProfile autoShutdownProfile;
 
     /*
-     * The connection profile for the lab. This controls settings such as web
-     * access to lab resources or whether RDP or SSH ports are open.
+     * The connection profile for the lab. This controls settings such as web access to lab resources or whether RDP or
+     * SSH ports are open.
      */
     @JsonProperty(value = "connectionProfile")
     private ConnectionProfile connectionProfile;
@@ -52,10 +48,8 @@ public class LabUpdateProperties {
     private RosterProfile rosterProfile;
 
     /*
-     * The ID of the lab plan. Used during resource creation to provide
-     * defaults and acts as a permission container when creating a lab via
-     * labs.azure.com. Setting a labPlanId on an existing lab provides
-     * organization..
+     * The ID of the lab plan. Used during resource creation to provide defaults and acts as a permission container
+     * when creating a lab via labs.azure.com. Setting a labPlanId on an existing lab provides organization..
      */
     @JsonProperty(value = "labPlanId")
     private String labPlanId;

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageWorkloadType. */
+/** Storage workload type. */
 public final class StorageWorkloadType extends ExpandableStringEnum<StorageWorkloadType> {
     /** Static value GENERAL for StorageWorkloadType. */
     public static final StorageWorkloadType GENERAL = fromString("GENERAL");
@@ -30,7 +30,11 @@ public final class StorageWorkloadType extends ExpandableStringEnum<StorageWorkl
         return fromString(name, StorageWorkloadType.class);
     }
 
-    /** @return known StorageWorkloadType values. */
+    /**
+     * Gets known StorageWorkloadType values.
+     *
+     * @return known StorageWorkloadType values.
+     */
     public static Collection<StorageWorkloadType> values() {
         return values(StorageWorkloadType.class);
     }

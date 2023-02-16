@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.SecureScoreControlDefinitionItemInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of security controls definition. */
 @Immutable
 public final class SecureScoreControlDefinitionList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureScoreControlDefinitionList.class);
-
     /*
      * Collection of security controls definition in this page
      */
@@ -27,6 +23,10 @@ public final class SecureScoreControlDefinitionList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of SecureScoreControlDefinitionList class. */
+    public SecureScoreControlDefinitionList() {
+    }
 
     /**
      * Get the value property: Collection of security controls definition in this page.

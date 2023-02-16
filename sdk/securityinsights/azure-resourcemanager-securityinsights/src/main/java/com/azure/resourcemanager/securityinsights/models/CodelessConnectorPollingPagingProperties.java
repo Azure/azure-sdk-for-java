@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CodelessConnectorPollingPagingProperties {
     /*
-     * Describes the type. could be 'None', 'PageToken', 'PageCount',
-     * 'TimeStamp'
+     * Describes the type. could be 'None', 'PageToken', 'PageCount', 'TimeStamp'
      */
     @JsonProperty(value = "pagingType", required = true)
     private String pagingType;
@@ -49,8 +48,7 @@ public final class CodelessConnectorPollingPagingProperties {
     private String pageTimestampAttributePath;
 
     /*
-     * Determines whether to search for the latest time stamp in the events
-     * list
+     * Determines whether to search for the latest time stamp in the events list
      */
     @JsonProperty(value = "searchTheLatestTimeStampFromEventsList")
     private String searchTheLatestTimestampFromEventsList;

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationInner;
 import com.azure.resourcemanager.compute.models.Sku;
 import java.util.Arrays;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for CapacityReservations CreateOrUpdate. */
 public final class CapacityReservationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a capacity reservation .
@@ -36,7 +35,7 @@ public final class CapacityReservationsCreateOrUpdateSamples {
                     .withTags(mapOf("department", "HR"))
                     .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L))
                     .withZones(Arrays.asList("1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

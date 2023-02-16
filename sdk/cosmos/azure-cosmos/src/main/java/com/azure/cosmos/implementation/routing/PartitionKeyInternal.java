@@ -118,7 +118,8 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
             } else if (isNumeric(value)) {
                 components.add(new NumberPartitionKeyComponent(((Number) value).doubleValue()));
             } else if (value instanceof ObjectNode && ((ObjectNode) value).get(TYPE) != null) {
-                switch (((ObjectNode) value).get(TYPE).asText()) {
+                String type = ((ObjectNode) value).get(TYPE).asText();
+                switch (type) {
                     case MIN_NUMBER:
                         components.add(MinNumberPartitionKeyComponent.VALUE);
                         break;
@@ -131,6 +132,8 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
                     case MAX_STRING:
                         components.add(MaxStringPartitionKeyComponent.VALUE);
                         break;
+                    default:
+                        throw new IllegalArgumentException("Unable to construct PartitionKeyInternal from object array - unknown type " + type);
                 }
             } else {
                 if (strict) {

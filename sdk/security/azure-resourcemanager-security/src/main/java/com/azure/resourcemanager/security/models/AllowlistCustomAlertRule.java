@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -28,13 +27,15 @@ import java.util.List;
 })
 @Fluent
 public class AllowlistCustomAlertRule extends ListCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AllowlistCustomAlertRule.class);
-
     /*
      * The values to allow. The format of the values depends on the rule type.
      */
     @JsonProperty(value = "allowlistValues", required = true)
     private List<String> allowlistValues;
+
+    /** Creates an instance of AllowlistCustomAlertRule class. */
+    public AllowlistCustomAlertRule() {
+    }
 
     /**
      * Get the allowlistValues property: The values to allow. The format of the values depends on the rule type.
@@ -72,10 +73,12 @@ public class AllowlistCustomAlertRule extends ListCustomAlertRule {
     public void validate() {
         super.validate();
         if (allowlistValues() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property allowlistValues in model AllowlistCustomAlertRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AllowlistCustomAlertRule.class);
 }

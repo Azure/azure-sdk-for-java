@@ -32,6 +32,10 @@ public final class MicrosoftGraphSettingValue {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphSettingValue class. */
+    public MicrosoftGraphSettingValue() {
+    }
+
     /**
      * Get the name property: Name of the setting (as defined by the groupSettingTemplate).
      *

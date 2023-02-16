@@ -24,6 +24,10 @@ public final class SapBWLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SapBWLinkedServiceTypeProperties innerTypeProperties = new SapBWLinkedServiceTypeProperties();
 
+    /** Creates an instance of SapBWLinkedService class. */
+    public SapBWLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
      *

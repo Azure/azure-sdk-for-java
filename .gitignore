@@ -1,3 +1,6 @@
+# Default Assets restore directory
+.assets
+
 *.class
 
 #Javadoc files
@@ -78,13 +81,14 @@ package-lock.json
 .vscode/
 .factorypath
 jacoco.exec
+.vs/
 
 # Generated client pom file
 ClientAggregatePom.xml
 ClientFromSourcePom.xml
 
 # Generated aggregate coverage reports pom file
-aggregate-coverage-pom.xml
+aggregate-pom.xml
 
 # Anaconda virtual env
 venv
@@ -104,3 +108,14 @@ scalastyle-output.xml
 # Flatten-pom
 .flattened-pom.xml
 flatter.pom
+/.vs/
+
+
+# stress-tests
+Chart.lock
+generatedValues.yaml
+stress-test-resources.json
+stress-test-addons*
+
+# Temp cadl files
+TempCadlFiles/

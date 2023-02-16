@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.automation.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.JobInner;
 import com.azure.resourcemanager.automation.models.Job;
@@ -178,6 +179,36 @@ public final class JobImpl implements Job, Job.Definition {
                 .getWithResponse(resourceGroupName, automationAccountName, jobName, localClientRequestId, context)
                 .getValue();
         return this;
+    }
+
+    public void suspend() {
+        serviceManager.jobs().suspend(resourceGroupName, automationAccountName, jobName);
+    }
+
+    public Response<Void> suspendWithResponse(String clientRequestId, Context context) {
+        return serviceManager
+            .jobs()
+            .suspendWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
+    }
+
+    public void stop() {
+        serviceManager.jobs().stop(resourceGroupName, automationAccountName, jobName);
+    }
+
+    public Response<Void> stopWithResponse(String clientRequestId, Context context) {
+        return serviceManager
+            .jobs()
+            .stopWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
+    }
+
+    public void resume() {
+        serviceManager.jobs().resume(resourceGroupName, automationAccountName, jobName);
+    }
+
+    public Response<Void> resumeWithResponse(String clientRequestId, Context context) {
+        return serviceManager
+            .jobs()
+            .resumeWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
     }
 
     public JobImpl withRunbook(RunbookAssociationProperty runbook) {

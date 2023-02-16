@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureDatabricksDeltaLakeSink extends CopySink {
     /*
-     * SQL pre-copy script. Type: string (or Expression with resultType
-     * string).
+     * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
@@ -26,6 +25,10 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
      */
     @JsonProperty(value = "importSettings")
     private AzureDatabricksDeltaLakeImportCommand importSettings;
+
+    /** Creates an instance of AzureDatabricksDeltaLakeSink class. */
+    public AzureDatabricksDeltaLakeSink() {
+    }
 
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).

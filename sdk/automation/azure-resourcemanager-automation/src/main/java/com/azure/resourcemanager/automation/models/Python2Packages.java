@@ -32,7 +32,7 @@ public interface Python2Packages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String packageName, Context context);
@@ -60,7 +60,7 @@ public interface Python2Packages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
+     * @return definition of the module type along with {@link Response}.
      */
     Response<Module> getWithResponse(
         String resourceGroupName, String automationAccountName, String packageName, Context context);
@@ -73,7 +73,7 @@ public interface Python2Packages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list module operation.
+     * @return the response model for the list module operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Module> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -86,7 +86,7 @@ public interface Python2Packages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list module operation.
+     * @return the response model for the list module operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Module> listByAutomationAccount(
         String resourceGroupName, String automationAccountName, Context context);
@@ -98,7 +98,7 @@ public interface Python2Packages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
+     * @return definition of the module type along with {@link Response}.
      */
     Module getById(String id);
 
@@ -110,7 +110,7 @@ public interface Python2Packages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
+     * @return definition of the module type along with {@link Response}.
      */
     Response<Module> getByIdWithResponse(String id, Context context);
 
@@ -132,7 +132,7 @@ public interface Python2Packages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -18,13 +18,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = JobInput.class)
 @JsonTypeName("JobInput")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "MLTable", value = MLTableJobInput.class),
-    @JsonSubTypes.Type(name = "CustomModel", value = CustomModelJobInput.class),
-    @JsonSubTypes.Type(name = "Literal", value = LiteralJobInput.class),
-    @JsonSubTypes.Type(name = "MLFlowModel", value = MLFlowModelJobInput.class),
-    @JsonSubTypes.Type(name = "TritonModel", value = TritonModelJobInput.class),
-    @JsonSubTypes.Type(name = "UriFile", value = UriFileJobInput.class),
-    @JsonSubTypes.Type(name = "UriFolder", value = UriFolderJobInput.class)
+    @JsonSubTypes.Type(name = "mltable", value = MLTableJobInput.class),
+    @JsonSubTypes.Type(name = "custom_model", value = CustomModelJobInput.class),
+    @JsonSubTypes.Type(name = "mlflow_model", value = MLFlowModelJobInput.class),
+    @JsonSubTypes.Type(name = "literal", value = LiteralJobInput.class),
+    @JsonSubTypes.Type(name = "triton_model", value = TritonModelJobInput.class),
+    @JsonSubTypes.Type(name = "uri_file", value = UriFileJobInput.class),
+    @JsonSubTypes.Type(name = "uri_folder", value = UriFolderJobInput.class)
 })
 @Fluent
 public class JobInput {
@@ -33,6 +33,10 @@ public class JobInput {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of JobInput class. */
+    public JobInput() {
+    }
 
     /**
      * Get the description property: Description for the input.

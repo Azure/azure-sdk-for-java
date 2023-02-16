@@ -13,11 +13,14 @@ import java.util.List;
 @Immutable
 public final class PartitionUsagesResult {
     /*
-     * The list of partition-level usages for the database. A usage is a point
-     * in time metric
+     * The list of partition-level usages for the database. A usage is a point in time metric
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PartitionUsageInner> value;
+
+    /** Creates an instance of PartitionUsagesResult class. */
+    public PartitionUsagesResult() {
+    }
 
     /**
      * Get the value property: The list of partition-level usages for the database. A usage is a point in time metric.

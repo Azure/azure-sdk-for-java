@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskAccesses GetByResourceGroup. */
 public final class DiskAccessesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskAccessExamples/DiskAccess_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskAccessExamples/DiskAccess_Get.json
      */
     /**
      * Sample code: Get information about a disk access resource.
@@ -22,11 +20,11 @@ public final class DiskAccessesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getDiskAccesses()
-            .getByResourceGroupWithResponse("myResourceGroup", "myDiskAccess", Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskAccessExamples/DiskAccess_Get_WithPrivateEndpoints.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskAccessExamples/DiskAccess_Get_WithPrivateEndpoints.json
      */
     /**
      * Sample code: Get information about a disk access resource with private endpoints.
@@ -40,6 +38,6 @@ public final class DiskAccessesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getDiskAccesses()
-            .getByResourceGroupWithResponse("myResourceGroup", "myDiskAccess", Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,11 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ExcludedPath {
     /*
-     * The path for which the indexing behavior applies to. Index paths
-     * typically start with root and end with wildcard (/path/*)
+     * The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard
+     * (/path/*)
      */
     @JsonProperty(value = "path")
     private String path;
+
+    /** Creates an instance of ExcludedPath class. */
+    public ExcludedPath() {
+    }
 
     /**
      * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root

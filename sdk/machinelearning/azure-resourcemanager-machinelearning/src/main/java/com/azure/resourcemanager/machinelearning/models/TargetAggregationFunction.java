@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TargetAggregationFunction. */
+/** Target aggregate function. */
 public final class TargetAggregationFunction extends ExpandableStringEnum<TargetAggregationFunction> {
     /** Static value None for TargetAggregationFunction. */
     public static final TargetAggregationFunction NONE = fromString("None");
@@ -24,6 +24,15 @@ public final class TargetAggregationFunction extends ExpandableStringEnum<Target
 
     /** Static value Mean for TargetAggregationFunction. */
     public static final TargetAggregationFunction MEAN = fromString("Mean");
+
+    /**
+     * Creates a new instance of TargetAggregationFunction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TargetAggregationFunction() {
+    }
 
     /**
      * Creates or finds a TargetAggregationFunction from its string representation.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites ListStaticSiteConfiguredRoles. */
 public final class StaticSitesListStaticSiteConfiguredRolesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteConfiguredRoles.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListStaticSiteConfiguredRoles.json
      */
     /**
      * Sample code: Lists the configured roles for a static site.

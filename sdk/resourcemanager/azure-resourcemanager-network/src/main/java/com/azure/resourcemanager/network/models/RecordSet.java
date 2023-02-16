@@ -47,6 +47,10 @@ public final class RecordSet {
     @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;
 
+    /** Creates an instance of RecordSet class. */
+    public RecordSet() {
+    }
+
     /**
      * Get the recordType property: Resource record type.
      *

@@ -23,6 +23,10 @@ public final class DpmErrorInfo {
     @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
+    /** Creates an instance of DpmErrorInfo class. */
+    public DpmErrorInfo() {
+    }
+
     /**
      * Get the errorString property: Localized error string.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AgentRegistrationKeyName. */
+/** Gets or sets the agent registration key name - primary or secondary. */
 public final class AgentRegistrationKeyName extends ExpandableStringEnum<AgentRegistrationKeyName> {
     /** Static value primary for AgentRegistrationKeyName. */
     public static final AgentRegistrationKeyName PRIMARY = fromString("primary");
@@ -27,7 +27,11 @@ public final class AgentRegistrationKeyName extends ExpandableStringEnum<AgentRe
         return fromString(name, AgentRegistrationKeyName.class);
     }
 
-    /** @return known AgentRegistrationKeyName values. */
+    /**
+     * Gets known AgentRegistrationKeyName values.
+     *
+     * @return known AgentRegistrationKeyName values.
+     */
     public static Collection<AgentRegistrationKeyName> values() {
         return values(AgentRegistrationKeyName.class);
     }

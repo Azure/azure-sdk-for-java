@@ -24,6 +24,10 @@ public final class VirtualNetworkTapListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VirtualNetworkTapListResult class. */
+    public VirtualNetworkTapListResult() {
+    }
+
     /**
      * Get the value property: A list of VirtualNetworkTaps in a resource group.
      *

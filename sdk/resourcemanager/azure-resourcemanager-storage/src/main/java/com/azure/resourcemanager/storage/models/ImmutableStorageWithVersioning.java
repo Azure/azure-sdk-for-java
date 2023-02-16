@@ -12,8 +12,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ImmutableStorageWithVersioning {
     /*
-     * This is an immutable property, when set to true it enables object level
-     * immutability at the container level.
+     * This is an immutable property, when set to true it enables object level immutability at the container level.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
@@ -25,8 +24,7 @@ public final class ImmutableStorageWithVersioning {
     private OffsetDateTime timestamp;
 
     /*
-     * This property denotes the container level immutability to object level
-     * immutability migration state.
+     * This property denotes the container level immutability to object level immutability migration state.
      */
     @JsonProperty(value = "migrationState", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState migrationState;

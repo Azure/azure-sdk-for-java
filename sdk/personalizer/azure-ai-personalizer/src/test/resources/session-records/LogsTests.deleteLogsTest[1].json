@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/logs",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "aaada987-7f8c-42fc-94e2-ef476527c847"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "4",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "71d957fe-b220-4eb9-a066-c762dc807380",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "Date" : "Mon, 29 Aug 2022 18:47:22 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

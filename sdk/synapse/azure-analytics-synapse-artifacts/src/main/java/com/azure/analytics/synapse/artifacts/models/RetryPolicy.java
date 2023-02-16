@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RetryPolicy {
     /*
-     * Maximum ordinary retry attempts. Default is 0. Type: integer (or
-     * Expression with resultType integer), minimum: 0.
+     * Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum:
+     * 0.
      */
     @JsonProperty(value = "count")
     private Object count;
@@ -22,6 +22,9 @@ public final class RetryPolicy {
      */
     @JsonProperty(value = "intervalInSeconds")
     private Integer intervalInSeconds;
+
+    /** Creates an instance of RetryPolicy class. */
+    public RetryPolicy() {}
 
     /**
      * Get the count property: Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with

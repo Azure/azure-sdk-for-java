@@ -3,13 +3,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.preprod.core.windows.net/c9f1331c0c9f1331c7e006396a1bb54d117654dfd844?restype=container",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.18.0-beta.1 azsdk-java-azure-storage-file-datalake/12.11.0-beta.1 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3b404d3d-6031-4f4b-814e-b2fe7d0da63c"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA4A5D26662F2A",
       "Last-Modified" : "Thu, 09 Jun 2022 21:15:16 GMT",
       "retry-after" : "0",
@@ -23,13 +23,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/c9f1331c0c9f1331c7e006396a1bb54d117654dfd844/c9f1331c1c9f1331c7e018085f7863982f85347a5bfb?resource=file",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.11.0-beta.1 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e69cf2be-8ae9-47fd-92aa-e6b5dce05864"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA4A5D270DCCB2",
       "Last-Modified" : "Thu, 09 Jun 2022 21:15:17 GMT",
       "retry-after" : "0",
@@ -44,14 +44,14 @@
     "Method" : "HEAD",
     "Uri" : "https://REDACTED.blob.preprod.core.windows.net/c9f1331c0c9f1331c7e006396a1bb54d117654dfd844/c9f1331c1c9f1331c7e018085f7863982f85347a5bfb",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.18.0-beta.1 azsdk-java-azure-storage-file-datalake/12.11.0-beta.1 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fa2f02c9-9b43-42a5-820f-95ae1637063e"
     },
     "Response" : {
       "x-ms-group" : "$superuser",
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "x-ms-lease-status" : "locked",
       "x-ms-lease-state" : "leased",
       "Last-Modified" : "Thu, 09 Jun 2022 21:15:17 GMT",

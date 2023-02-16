@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The LanguageDetectionDocumentResult model. */
 @Fluent
@@ -15,6 +16,9 @@ public final class LanguageDetectionDocumentResult extends DocumentResult {
      */
     @JsonProperty(value = "detectedLanguage", required = true)
     private DetectedLanguage detectedLanguage;
+
+    /** Creates an instance of LanguageDetectionDocumentResult class. */
+    public LanguageDetectionDocumentResult() {}
 
     /**
      * Get the detectedLanguage property: Detected Language.
@@ -33,6 +37,27 @@ public final class LanguageDetectionDocumentResult extends DocumentResult {
      */
     public LanguageDetectionDocumentResult setDetectedLanguage(DetectedLanguage detectedLanguage) {
         this.detectedLanguage = detectedLanguage;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LanguageDetectionDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LanguageDetectionDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LanguageDetectionDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
         return this;
     }
 }

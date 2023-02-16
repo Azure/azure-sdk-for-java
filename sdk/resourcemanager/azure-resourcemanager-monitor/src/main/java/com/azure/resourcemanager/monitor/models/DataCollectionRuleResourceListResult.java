@@ -7,15 +7,12 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.DataCollectionRuleResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A pageable list of resources. */
 @Fluent
 public final class DataCollectionRuleResourceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCollectionRuleResourceListResult.class);
-
     /*
      * A list of resources.
      */
@@ -27,6 +24,10 @@ public final class DataCollectionRuleResourceListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of DataCollectionRuleResourceListResult class. */
+    public DataCollectionRuleResourceListResult() {
+    }
 
     /**
      * Get the value property: A list of resources.
@@ -75,7 +76,7 @@ public final class DataCollectionRuleResourceListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model DataCollectionRuleResourceListResult"));
@@ -83,4 +84,6 @@ public final class DataCollectionRuleResourceListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataCollectionRuleResourceListResult.class);
 }

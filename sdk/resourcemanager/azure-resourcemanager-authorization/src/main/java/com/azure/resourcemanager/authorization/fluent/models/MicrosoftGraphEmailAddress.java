@@ -32,6 +32,10 @@ public final class MicrosoftGraphEmailAddress {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphEmailAddress class. */
+    public MicrosoftGraphEmailAddress() {
+    }
+
     /**
      * Get the address property: The email address of the person or entity.
      *

@@ -33,7 +33,7 @@ public interface RecordSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     *     zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RecordSetInner>> createOrUpdateWithResponseAsync(
@@ -62,7 +62,7 @@ public interface RecordSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     *     zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RecordSetInner> createOrUpdateAsync(
@@ -87,7 +87,7 @@ public interface RecordSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     *     zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RecordSetInner> createOrUpdateAsync(
@@ -138,7 +138,7 @@ public interface RecordSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     *     zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RecordSetInner> createOrUpdateWithResponse(
@@ -165,7 +165,7 @@ public interface RecordSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     *     zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RecordSetInner>> updateWithResponseAsync(
@@ -190,7 +190,7 @@ public interface RecordSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     *     zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RecordSetInner> updateAsync(
@@ -213,7 +213,7 @@ public interface RecordSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     *     zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RecordSetInner> updateAsync(
@@ -260,7 +260,7 @@ public interface RecordSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     *     zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RecordSetInner> updateWithResponse(
@@ -285,7 +285,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(
@@ -308,7 +308,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(
@@ -329,7 +329,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(
@@ -364,7 +364,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -385,7 +385,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a record set.
+     * @return a record set along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RecordSetInner>> getWithResponseAsync(
@@ -401,7 +401,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a record set.
+     * @return a record set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RecordSetInner> getAsync(
@@ -434,7 +434,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a record set.
+     * @return a record set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RecordSetInner> getWithResponse(
@@ -457,7 +457,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a record set list operation.
+     * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RecordSetInner> listByTypeAsync(
@@ -476,7 +476,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a record set list operation.
+     * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RecordSetInner> listByTypeAsync(String resourceGroupName, String privateZoneName, RecordType recordType);
@@ -490,7 +490,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a record set list operation.
+     * @return the response to a record set list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecordSetInner> listByType(String resourceGroupName, String privateZoneName, RecordType recordType);
@@ -509,7 +509,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a record set list operation.
+     * @return the response to a record set list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecordSetInner> listByType(
@@ -532,7 +532,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a record set list operation.
+     * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RecordSetInner> listAsync(
@@ -546,7 +546,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a record set list operation.
+     * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RecordSetInner> listAsync(String resourceGroupName, String privateZoneName);
@@ -559,7 +559,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a record set list operation.
+     * @return the response to a record set list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecordSetInner> list(String resourceGroupName, String privateZoneName);
@@ -577,7 +577,7 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a record set list operation.
+     * @return the response to a record set list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecordSetInner> list(

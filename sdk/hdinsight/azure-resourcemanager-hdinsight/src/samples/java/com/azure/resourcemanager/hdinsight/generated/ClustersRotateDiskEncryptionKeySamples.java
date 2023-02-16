@@ -26,8 +26,8 @@ public final class ClustersRotateDiskEncryptionKeySamples {
                 "cluster1",
                 new ClusterDiskEncryptionParameters()
                     .withVaultUri("https://newkeyvault.vault.azure.net/")
-                    .withKeyName("newkeyname")
-                    .withKeyVersion("newkeyversion"),
+                    .withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }

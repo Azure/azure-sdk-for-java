@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class RedisAccessKeysInner {
     /*
-     * The current primary key that clients can use to authenticate with Redis
-     * cache.
+     * The current primary key that clients can use to authenticate with Redis cache.
      */
     @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /*
-     * The current secondary key that clients can use to authenticate with
-     * Redis cache.
+     * The current secondary key that clients can use to authenticate with Redis cache.
      */
     @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
+
+    /** Creates an instance of RedisAccessKeysInner class. */
+    public RedisAccessKeysInner() {
+    }
 
     /**
      * Get the primaryKey property: The current primary key that clients can use to authenticate with Redis cache.

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 
 /** Samples for ManagedClusters ResetServicePrincipalProfile. */
 public final class ManagedClustersResetServicePrincipalProfileSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/ManagedClustersResetServicePrincipalProfile.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/ManagedClustersResetServicePrincipalProfile.json
      */
     /**
      * Sample code: Reset Service Principal Profile.
@@ -26,7 +25,7 @@ public final class ManagedClustersResetServicePrincipalProfileSamples {
             .resetServicePrincipalProfile(
                 "rg1",
                 "clustername1",
-                new ManagedClusterServicePrincipalProfile().withClientId("clientid").withSecret("secret"),
-                Context.NONE);
+                new ManagedClusterServicePrincipalProfile().withClientId("clientid").withSecret("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

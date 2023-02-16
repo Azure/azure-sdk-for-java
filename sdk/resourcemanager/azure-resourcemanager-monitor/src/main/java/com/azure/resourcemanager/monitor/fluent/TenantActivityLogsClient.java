@@ -40,7 +40,10 @@ public interface TenantActivityLogsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.
+     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
+     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
+     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
+     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<EventDataInner> listAsync(String filter, String select);
@@ -53,7 +56,10 @@ public interface TenantActivityLogsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.
+     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
+     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
+     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
+     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<EventDataInner> listAsync();
@@ -66,7 +72,11 @@ public interface TenantActivityLogsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.
+     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
+     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
+     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
+     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EventDataInner> list();
@@ -99,7 +109,11 @@ public interface TenantActivityLogsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.
+     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
+     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
+     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
+     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EventDataInner> list(String filter, String select, Context context);

@@ -20,11 +20,14 @@ public final class ImageListResult {
     private List<ImageInner> value;
 
     /*
-     * The uri to fetch the next page of Images. Call ListNext() with this to
-     * fetch the next page of Images.
+     * The uri to fetch the next page of Images. Call ListNext() with this to fetch the next page of Images.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ImageListResult class. */
+    public ImageListResult() {
+    }
 
     /**
      * Get the value property: The list of Images.

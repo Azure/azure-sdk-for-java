@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
@@ -11,20 +10,12 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentCreateParameters;
-import com.azure.resourcemanager.authorization.models.RoleAssignmentProperties;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.retry.Retry;
-
-import java.time.Duration;
-import java.util.Locale;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInner, RoleAssignmentImpl>
@@ -38,6 +29,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
     private String roleDefinitionId;
     private String roleName;
     private String scope;
+    private String description;
     private final ClientLogger logger = new ClientLogger(RoleAssignmentImpl.class);
 
     RoleAssignmentImpl(String name, RoleAssignmentInner innerObject, AuthorizationManager manager) {
@@ -84,42 +76,17 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                 roleDefinitionIdObservable,
                 (objectId, roleDefinitionId) ->
                     new RoleAssignmentCreateParameters()
-                        .withProperties(new RoleAssignmentProperties()
                             .withPrincipalId(objectId)
-                            .withRoleDefinitionId(roleDefinitionId)))
+                            .withRoleDefinitionId(roleDefinitionId)
+                            .withDescription(description))
             .flatMap(
                 roleAssignmentPropertiesInner ->
                     manager()
                         .roleServiceClient()
                         .getRoleAssignments()
                         .createAsync(scope(), name(), roleAssignmentPropertiesInner)
-                        .retryWhen(Retry.withThrowable(
-                            throwableFlux ->
-                                throwableFlux
-                                    .zipWith(
-                                        Flux.range(1, 30),
-                                        (throwable, integer) -> {
-                                            if (throwable instanceof ManagementException) {
-                                                ManagementException managementException =
-                                                    (ManagementException) throwable;
-                                                String exceptionMessage =
-                                                    managementException.getMessage().toLowerCase(Locale.ROOT);
-                                                if (exceptionMessage.contains("principalnotfound")
-                                                    || exceptionMessage.contains("does not exist in the directory")) {
-                                                    /*
-                                                     * ref:
-                                                     * https://github.com/Azure/azure-cli/blob/dev/src/command_modules/azure-cli-role/azure/cli/command_modules/role/custom.py#L1048-L1065
-                                                     */
-                                                    return integer;
-                                                } else {
-                                                    throw logger.logExceptionAsError(Exceptions.propagate(throwable));
-                                                }
-                                            } else {
-                                                throw logger.logExceptionAsError(Exceptions.propagate(throwable));
-                                            }
-                                        })
-                                    .flatMap(i -> Mono.delay(ResourceManagerUtils.InternalRuntimeContext
-                                        .getDelayDuration(Duration.ofSeconds(i)))))))
+                        // if the service principal is newly created (also apply to the case that MSI is new), wait for eventual consistency from AAD
+                        .retryWhen(RetryUtils.backoffRetryFor400PrincipalNotFound()))
             .map(innerToFluentMap(this));
     }
 
@@ -130,22 +97,27 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public String scope() {
-        return this.scope == null ? this.innerModel().properties().scope() : this.scope;
+        return this.scope == null ? this.innerModel().scope() : this.scope;
     }
 
     @Override
     public String roleDefinitionId() {
-        return innerModel().properties().roleDefinitionId();
+        return innerModel().roleDefinitionId();
     }
 
     @Override
     public String principalId() {
-        return innerModel().properties().principalId();
+        return innerModel().principalId();
     }
 
     @Override
     public String condition() {
-        return innerModel().properties().condition();
+        return innerModel().condition();
+    }
+
+    @Override
+    public String description() {
+        return innerModel().description();
     }
 
     @Override
@@ -217,6 +189,11 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
         return withScope("/subscriptions/" + subscriptionId);
     }
 
+    @Override
+    public RoleAssignmentImpl withDescription(String description) {
+        this.description = description;
+        return this;
+    }
     @Override
     public String id() {
         return innerModel().id();

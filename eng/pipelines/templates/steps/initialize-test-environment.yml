@@ -15,18 +15,21 @@ parameters:
     default: client
 
 steps:
-  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-    parameters:
-      Paths:
-        - '**/*.xml'
-        - ${{ if not(parameters.CheckoutRecordings) }}:
-          - '!sdk/**/test-recordings'
-          - '!sdk/**/session-records'
+  # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+  # as we require the GitHub service connection to be loaded.
+  - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      parameters:
+        Paths:
+          - '**/*.xml'
+          - ${{ if not(parameters.CheckoutRecordings) }}:
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
 
   - task: UsePythonVersion@0
-    displayName: 'Use Python 3.6'
+    displayName: 'Use Python $(PythonVersion)'
     inputs:
-      versionSpec: '3.6'
+      versionSpec: $(PythonVersion)
 
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:
@@ -45,6 +48,13 @@ steps:
       scriptPath: 'eng/versioning/update_versions.py'
       arguments: '--update-type library --build-type client --sr'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - task: PythonScript@0
+    displayName: 'Update external dependency versions'
+    inputs:
+      scriptPath: 'eng/versioning/update_versions.py'
+      arguments: '--update-type external_dependency --build-type client --sr --vo $(VersionOverrides)'
+    condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
     parameters:
@@ -75,7 +85,10 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-    parameters:
-      SkipDefaultCheckout: true
-      Paths: $(SparseCheckoutDirectories)
+  # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+  # as we require the GitHub service connection to be loaded.
+  - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      parameters:
+        SkipCheckoutNone: true
+        Paths: $(SparseCheckoutDirectories)

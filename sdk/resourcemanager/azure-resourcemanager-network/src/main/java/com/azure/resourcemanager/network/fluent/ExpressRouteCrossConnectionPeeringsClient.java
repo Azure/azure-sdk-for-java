@@ -202,21 +202,6 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified peering for the ExpressRouteCrossConnection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionPeeringInner get(
-        String resourceGroupName, String crossConnectionName, String peeringName);
-
-    /**
-     * Gets the specified peering for the ExpressRouteCrossConnection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param peeringName The name of the peering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -226,6 +211,21 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExpressRouteCrossConnectionPeeringInner> getWithResponse(
         String resourceGroupName, String crossConnectionName, String peeringName, Context context);
+
+    /**
+     * Gets the specified peering for the ExpressRouteCrossConnection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified peering for the ExpressRouteCrossConnection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteCrossConnectionPeeringInner get(
+        String resourceGroupName, String crossConnectionName, String peeringName);
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.

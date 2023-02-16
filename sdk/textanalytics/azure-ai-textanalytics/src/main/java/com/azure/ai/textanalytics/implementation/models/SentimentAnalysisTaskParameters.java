@@ -17,12 +17,14 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
     private Boolean opinionMining;
 
     /*
-     * Specifies the method used to interpret string offsets.  Defaults to Text
-     * Elements (Graphemes) according to Unicode v8.0.0. For additional
-     * information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
+     * Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
+
+    /** Creates an instance of SentimentAnalysisTaskParameters class. */
+    public SentimentAnalysisTaskParameters() {}
 
     /**
      * Get the opinionMining property: The opinionMining property.
@@ -65,6 +67,20 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
      */
     public SentimentAnalysisTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentAnalysisTaskParameters setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentAnalysisTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
         return this;
     }
 }

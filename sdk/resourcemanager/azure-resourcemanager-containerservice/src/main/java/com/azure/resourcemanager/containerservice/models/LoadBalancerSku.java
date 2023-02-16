@@ -8,13 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoadBalancerSku. */
+/**
+ * The load balancer sku for the managed cluster.
+ *
+ * <p>The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for
+ * more information about the differences between load balancer SKUs.
+ */
 public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku> {
     /** Static value standard for LoadBalancerSku. */
     public static final LoadBalancerSku STANDARD = fromString("standard");
 
     /** Static value basic for LoadBalancerSku. */
     public static final LoadBalancerSku BASIC = fromString("basic");
+
+    /**
+     * Creates a new instance of LoadBalancerSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancerSku() {
+    }
 
     /**
      * Creates or finds a LoadBalancerSku from its string representation.

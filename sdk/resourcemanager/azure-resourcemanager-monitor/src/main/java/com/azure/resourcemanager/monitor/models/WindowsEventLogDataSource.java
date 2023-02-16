@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,12 +14,10 @@ import java.util.List;
  */
 @Fluent
 public final class WindowsEventLogDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WindowsEventLogDataSource.class);
-
     /*
      * List of streams that this data source will be sent to.
-     * A stream indicates what schema will be used for this data and usually
-     * what table in Log Analytics the data will be sent to.
+     * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
+     * be sent to.
      */
     @JsonProperty(value = "streams")
     private List<KnownWindowsEventLogDataSourceStreams> streams;
@@ -34,11 +30,14 @@ public final class WindowsEventLogDataSource {
 
     /*
      * A friendly name for the data source.
-     * This name should be unique across all data sources (regardless of type)
-     * within the data collection rule.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of WindowsEventLogDataSource class. */
+    public WindowsEventLogDataSource() {
+    }
 
     /**
      * Get the streams property: List of streams that this data source will be sent to. A stream indicates what schema

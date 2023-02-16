@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ComponentNames. */
+/** The component name. Currently, the only allowable value is Microsoft-Windows-Shell-Setup. */
 public enum ComponentNames {
     /** Enum value Microsoft-Windows-Shell-Setup. */
     MICROSOFT_WINDOWS_SHELL_SETUP("Microsoft-Windows-Shell-Setup");
@@ -27,6 +27,9 @@ public enum ComponentNames {
      */
     @JsonCreator
     public static ComponentNames fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ComponentNames[] items = ComponentNames.values();
         for (ComponentNames item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum ComponentNames {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

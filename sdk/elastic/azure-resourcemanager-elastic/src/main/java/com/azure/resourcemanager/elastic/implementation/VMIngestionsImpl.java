@@ -12,10 +12,9 @@ import com.azure.resourcemanager.elastic.fluent.VMIngestionsClient;
 import com.azure.resourcemanager.elastic.fluent.models.VMIngestionDetailsResponseInner;
 import com.azure.resourcemanager.elastic.models.VMIngestionDetailsResponse;
 import com.azure.resourcemanager.elastic.models.VMIngestions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VMIngestionsImpl implements VMIngestions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMIngestionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VMIngestionsImpl.class);
 
     private final VMIngestionsClient innerClient;
 
@@ -25,15 +24,6 @@ public final class VMIngestionsImpl implements VMIngestions {
         VMIngestionsClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public VMIngestionDetailsResponse details(String resourceGroupName, String monitorName) {
-        VMIngestionDetailsResponseInner inner = this.serviceClient().details(resourceGroupName, monitorName);
-        if (inner != null) {
-            return new VMIngestionDetailsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<VMIngestionDetailsResponse> detailsWithResponse(
@@ -46,6 +36,15 @@ public final class VMIngestionsImpl implements VMIngestions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VMIngestionDetailsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VMIngestionDetailsResponse details(String resourceGroupName, String monitorName) {
+        VMIngestionDetailsResponseInner inner = this.serviceClient().details(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new VMIngestionDetailsResponseImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -20,6 +20,9 @@ public final class PiiLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private PiiTaskParameters parameters;
 
+    /** Creates an instance of PiiLROTask class. */
+    public PiiLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for a PII Entities Recognition task.
      *
@@ -37,6 +40,13 @@ public final class PiiLROTask extends AnalyzeTextLROTask {
      */
     public PiiLROTask setParameters(PiiTaskParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
         return this;
     }
 }

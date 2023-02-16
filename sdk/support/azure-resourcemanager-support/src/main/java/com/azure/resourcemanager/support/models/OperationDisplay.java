@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that describes the operation. */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * The description of the operation.
      */
@@ -37,6 +33,10 @@ public final class OperationDisplay {
      */
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
+
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
 
     /**
      * Get the description property: The description of the operation.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphWellknownListName. */
+/** wellknownListName. */
 public final class MicrosoftGraphWellknownListName extends ExpandableStringEnum<MicrosoftGraphWellknownListName> {
     /** Static value none for MicrosoftGraphWellknownListName. */
     public static final MicrosoftGraphWellknownListName NONE = fromString("none");
@@ -33,7 +33,11 @@ public final class MicrosoftGraphWellknownListName extends ExpandableStringEnum<
         return fromString(name, MicrosoftGraphWellknownListName.class);
     }
 
-    /** @return known MicrosoftGraphWellknownListName values. */
+    /**
+     * Gets known MicrosoftGraphWellknownListName values.
+     *
+     * @return known MicrosoftGraphWellknownListName values.
+     */
     public static Collection<MicrosoftGraphWellknownListName> values() {
         return values(MicrosoftGraphWellknownListName.class);
     }

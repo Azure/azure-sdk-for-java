@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for PrivateEndpointConnectionProxies CreateOrUpdate. */
 public final class PrivateEndpointConnectionProxiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_CreateOrUpdate.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyCreateOrUpdate.

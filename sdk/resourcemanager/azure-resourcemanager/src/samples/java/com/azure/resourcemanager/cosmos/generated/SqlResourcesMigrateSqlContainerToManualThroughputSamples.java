@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources MigrateSqlContainerToManualThroughput. */
 public final class SqlResourcesMigrateSqlContainerToManualThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlContainerMigrateToManualThroughput.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlContainerMigrateToManualThroughput.json
      */
     /**
      * Sample code: CosmosDBSqlContainerMigrateToManualThroughput.
@@ -23,6 +21,7 @@ public final class SqlResourcesMigrateSqlContainerToManualThroughputSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .migrateSqlContainerToManualThroughput("rg1", "ddb1", "databaseName", "containerName", Context.NONE);
+            .migrateSqlContainerToManualThroughput(
+                "rg1", "ddb1", "databaseName", "containerName", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CassandraDataCenters Delete. */
 public final class CassandraDataCentersDeleteSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBManagedCassandraDataCenterDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraDataCenterDelete.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraDataCenterDelete.
@@ -22,6 +20,6 @@ public final class CassandraDataCentersDeleteSamples {
             .manager()
             .serviceClient()
             .getCassandraDataCenters()
-            .delete("cassandra-prod-rg", "cassandra-prod", "dc1", Context.NONE);
+            .delete("cassandra-prod-rg", "cassandra-prod", "dc1", com.azure.core.util.Context.NONE);
     }
 }

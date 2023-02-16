@@ -7,13 +7,14 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import com.azure.cosmos.implementation.Utils;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Used internally to represents a response from the store.
@@ -21,18 +22,18 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class StoreResponse {
     final static Logger LOGGER = LoggerFactory.getLogger(StoreResponse.class);
     final private int status;
-    final private Map<String, String> responseHeaders;
+    final private String[] responseHeaderNames;
+    final private String[] responseHeaderValues;
     final private byte[] content;
-
-    private int pendingRequestQueueSize;
     private int requestPayloadLength;
     private int responsePayloadLength;
     private RequestTimeline requestTimeline;
     private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
-    private int rntbdChannelTaskQueueSize;
     private RntbdEndpointStatistics rntbdEndpointStatistics;
+    private RntbdChannelStatistics channelStatistics;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
+    private final List<String> replicaStatusList;
 
     public StoreResponse(
             int status,
@@ -40,38 +41,35 @@ public class StoreResponse {
             byte[] content) {
 
         requestTimeline = RequestTimeline.empty();
-        responseHeaders = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
-        responseHeaders.putAll(headerMap);
+        responseHeaderNames = new String[headerMap.size()];
+        responseHeaderValues = new String[headerMap.size()];
+
+        int i = 0;
+        for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
+            responseHeaderNames[i] = headerEntry.getKey();
+            responseHeaderValues[i] = headerEntry.getValue();
+            i++;
+        }
 
         this.status = status;
         this.content = content;
         if (this.content != null) {
             this.responsePayloadLength = this.content.length;
         }
+
+        replicaStatusList = new ArrayList<>();
     }
 
     public int getStatus() {
         return status;
     }
 
-    public Map<String, String> getResponseHeaders() {
-        return responseHeaders;
+    public String[] getResponseHeaderNames() {
+        return responseHeaderNames;
     }
 
-    public int getRntbdChannelTaskQueueSize() {
-        return rntbdChannelTaskQueueSize;
-    }
-
-    public void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
-        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
-    }
-
-    public int getPendingRequestQueueSize() {
-        return this.pendingRequestQueueSize;
-    }
-
-    public void setRntbdPendingRequestSize(int pendingRequestQueueSize) {
-        this.pendingRequestQueueSize = pendingRequestQueueSize;
+    public String[] getResponseHeaderValues() {
+        return responseHeaderValues;
     }
 
     public void setRntbdRequestLength(int rntbdRequestLength) {
@@ -128,7 +126,17 @@ public class StoreResponse {
     }
 
     public String getHeaderValue(String attribute) {
-        return responseHeaders.get(attribute);
+        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+            return null;
+        }
+
+        for (int i = 0; i < responseHeaderNames.length; i++) {
+            if (responseHeaderNames[i].equalsIgnoreCase(attribute)) {
+                return responseHeaderValues[i];
+            }
+        }
+
+        return null;
     }
 
     public double getRequestCharge() {
@@ -167,6 +175,14 @@ public class StoreResponse {
         return this.rntbdEndpointStatistics;
     }
 
+    public void setChannelStatistics(RntbdChannelStatistics channelStatistics) {
+        this.channelStatistics = channelStatistics;
+    }
+
+    public RntbdChannelStatistics getChannelStatistics() {
+        return this.channelStatistics;
+    }
+
     int getSubStatusCode() {
         int subStatusCode = HttpConstants.SubStatusCodes.UNKNOWN;
         String subStatusCodeString = this.getHeaderValue(WFConstants.BackendHeaders.SUB_STATUS);
@@ -178,5 +194,9 @@ public class StoreResponse {
             }
         }
         return subStatusCode;
+    }
+
+    public List<String> getReplicaStatusList() {
+        return this.replicaStatusList;
     }
 }

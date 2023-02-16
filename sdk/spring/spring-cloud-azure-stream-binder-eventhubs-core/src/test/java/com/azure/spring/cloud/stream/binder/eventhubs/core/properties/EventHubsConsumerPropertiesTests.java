@@ -4,12 +4,15 @@
 package com.azure.spring.cloud.stream.binder.eventhubs.core.properties;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.service.eventhubs.properties.LoadBalancingProperties;
 import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
-import com.azure.spring.cloud.service.eventhubs.properties.LoadBalancingProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerPropertiesTests.CONNECTION_STRING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -43,7 +46,7 @@ public class EventHubsConsumerPropertiesTests {
     void loadBalancingDefaults() {
         LoadBalancingProperties loadBalancing = consumerProperties.getLoadBalancing();
         assertNotNull(loadBalancing);
-        assertEquals(LoadBalancingStrategy.BALANCED, loadBalancing.getStrategy());
+        assertNull(loadBalancing.getStrategy());
     }
 
     @Test
@@ -57,5 +60,81 @@ public class EventHubsConsumerPropertiesTests {
     void otherDefaults() {
         assertNotNull(consumerProperties.getInitialPartitionEventPosition());
         assertNotNull(consumerProperties.getBatch());
+    }
+    @Test
+    void domainNameDefaultsToNull() {
+        assertNull(consumerProperties.getDomainName());
+    }
+
+    @Test
+    void domainNameConfigureAsCloud() {
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, consumerProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(), consumerProperties.getDomainName());
+    }
+
+    @Test
+    void customDomainNameShouldSet() {
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        consumerProperties.setDomainName("new.servicebus.windows.net");
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, consumerProperties.getProfile().getCloudType());
+        assertEquals("new.servicebus.windows.net", consumerProperties.getDomainName());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceIsNullButConnectionStringIsNot() {
+        consumerProperties.setConnectionString(CONNECTION_STRING);
+        assertEquals("test.servicebus.windows.net", consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceAndDomainNameAreNotNull() {
+        consumerProperties.setNamespace("dev-namespace");
+        consumerProperties.setDomainName("servicebus.windows.net");
+        assertEquals("dev-namespace.servicebus.windows.net", consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceAndDomainAreNull() {
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceIsNullButDomainNameIsNot() {
+        consumerProperties.setDomainName("servicebus.windows.net");
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenDomainNameIsNullButNamespaceIsNot() {
+        consumerProperties.setNamespace("test");
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnReturnNullWhenNamespaceAndConnectionStringAreNull() {
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void amqpTransportTypeDefaultIsNull() {
+        assertNull(consumerProperties.getClient().getTransportType());
+    }
+
+    @Test
+    void getEventHubNameWhenNamespaceIsNull() {
+        consumerProperties.setConnectionString(CONNECTION_STRING);
+        assertEquals("testeh", consumerProperties.getEventHubName());
+    }
+
+    @Test
+    void getEventHubNameWhenNamespaceIsNotNull() {
+        consumerProperties.setEventHubName("test");
+        assertEquals("test", consumerProperties.getEventHubName());
+    }
+
+    @Test
+    void getEventHubNameReturnNullWhenNamespaceAndConnectionStringAreNull() {
+        assertNull(consumerProperties.getEventHubName());
     }
 }

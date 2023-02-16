@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SocketAddrOperator. */
+/** Describes operator to be matched. */
 public final class SocketAddrOperator extends ExpandableStringEnum<SocketAddrOperator> {
     /** Static value Any for SocketAddrOperator. */
     public static final SocketAddrOperator ANY = fromString("Any");
@@ -27,7 +27,11 @@ public final class SocketAddrOperator extends ExpandableStringEnum<SocketAddrOpe
         return fromString(name, SocketAddrOperator.class);
     }
 
-    /** @return known SocketAddrOperator values. */
+    /**
+     * Gets known SocketAddrOperator values.
+     *
+     * @return known SocketAddrOperator values.
+     */
     public static Collection<SocketAddrOperator> values() {
         return values(SocketAddrOperator.class);
     }

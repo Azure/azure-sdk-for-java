@@ -37,6 +37,10 @@ public final class DatasetResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of DatasetResourceInner class. */
+    public DatasetResourceInner() {
+    }
+
     /**
      * Get the properties property: Dataset properties.
      *

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a trigger. */
 @Fluent
 public final class TriggerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerProperties.class);
-
     /*
      * The collection of timer triggers.
      */

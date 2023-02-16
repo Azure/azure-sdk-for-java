@@ -34,7 +34,8 @@ connection string value can be obtained by:
 
 - [Send a message][SendMessageAsyncSample]
 - [Send messages using Azure Identity][SendMessageWithAzureIdentityAsyncSample]
-- [Process all messages using processor][ServiceBusProcessorSample]
+- [Process all messages using processor][ServiceBusProcessorPeekLockReceiveSample]
+- [Processor client Java doc code samples][ServiceBusProcessorClientJavaDocCodeSamples]
 - [Receive and auto-complete messages][ReceiveMessageAsyncSample]
 - [Receive and manually settle messages][ReceiveMessageAndSettleAsyncSample]
 - [Receive messages with auto-lock renewal][ReceiveMessageAutoLockRenewal]
@@ -56,6 +57,12 @@ connection string value can be obtained by:
 
 ### Generate Shared Access Signature
 - [Generate SAS and receive message][ReceiveMessageAsyncUsingSasSample]
+
+### Advanced Configuration
+- [Advanced configuration sample set][AdvancedConfigurationSample]
+
+### README samples
+- [Readme_sample][ReadmeSample]
 
 ## Troubleshooting
 See [Troubleshooting][sdk_readme_troubleshooting].
@@ -87,10 +94,13 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [SendMessageBatchSyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendMessageBatchSample.java
 [SendMessageWithAzureIdentityAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentityAsyncSample.java
 [SendScheduledMessageAndCancelAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendScheduledMessageAndCancelAsyncSample.java
-[ServiceBusProcessorSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorSample.java
+[ServiceBusProcessorClientJavaDocCodeSamples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorClientJavaDocCodeSamples.java
+[ServiceBusProcessorPeekLockReceiveSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorPeekLockReceiveSample.java
 [ServiceBusReceiverAsyncClientRetrySample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClientRetrySample.java
 [ServiceBusSessionProcessorSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusSessionProcessorSample.java
 [AdministrationClientUpdateQueueSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdministrationClientUpdateQueueSample.java
 [ReceiveMessageAsyncUsingSasSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageUsingSasSample.java
+[AdvancedConfigurationSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdvancedConfigurationSample.java
+[ReadmeSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2Fsrc%2Fsamples%2FREADME.png)

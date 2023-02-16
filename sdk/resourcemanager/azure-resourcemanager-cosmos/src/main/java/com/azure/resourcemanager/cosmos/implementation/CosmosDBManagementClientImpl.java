@@ -32,12 +32,17 @@ import com.azure.resourcemanager.cosmos.fluent.PercentilesClient;
 import com.azure.resourcemanager.cosmos.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cosmos.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableDatabaseAccountsClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableGremlinDatabasesClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableGremlinGraphsClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableGremlinResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbCollectionsClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbDatabasesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableSqlContainersClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableSqlDatabasesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableSqlResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableTableResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableTablesClient;
 import com.azure.resourcemanager.cosmos.fluent.ServicesClient;
 import com.azure.resourcemanager.cosmos.fluent.SqlResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.TableResourcesClient;
@@ -491,6 +496,66 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         return this.restorableMongodbResources;
     }
 
+    /** The RestorableGremlinDatabasesClient object to access its operations. */
+    private final RestorableGremlinDatabasesClient restorableGremlinDatabases;
+
+    /**
+     * Gets the RestorableGremlinDatabasesClient object to access its operations.
+     *
+     * @return the RestorableGremlinDatabasesClient object.
+     */
+    public RestorableGremlinDatabasesClient getRestorableGremlinDatabases() {
+        return this.restorableGremlinDatabases;
+    }
+
+    /** The RestorableGremlinGraphsClient object to access its operations. */
+    private final RestorableGremlinGraphsClient restorableGremlinGraphs;
+
+    /**
+     * Gets the RestorableGremlinGraphsClient object to access its operations.
+     *
+     * @return the RestorableGremlinGraphsClient object.
+     */
+    public RestorableGremlinGraphsClient getRestorableGremlinGraphs() {
+        return this.restorableGremlinGraphs;
+    }
+
+    /** The RestorableGremlinResourcesClient object to access its operations. */
+    private final RestorableGremlinResourcesClient restorableGremlinResources;
+
+    /**
+     * Gets the RestorableGremlinResourcesClient object to access its operations.
+     *
+     * @return the RestorableGremlinResourcesClient object.
+     */
+    public RestorableGremlinResourcesClient getRestorableGremlinResources() {
+        return this.restorableGremlinResources;
+    }
+
+    /** The RestorableTablesClient object to access its operations. */
+    private final RestorableTablesClient restorableTables;
+
+    /**
+     * Gets the RestorableTablesClient object to access its operations.
+     *
+     * @return the RestorableTablesClient object.
+     */
+    public RestorableTablesClient getRestorableTables() {
+        return this.restorableTables;
+    }
+
+    /** The RestorableTableResourcesClient object to access its operations. */
+    private final RestorableTableResourcesClient restorableTableResources;
+
+    /**
+     * Gets the RestorableTableResourcesClient object to access its operations.
+     *
+     * @return the RestorableTableResourcesClient object.
+     */
+    public RestorableTableResourcesClient getRestorableTableResources() {
+        return this.restorableTableResources;
+    }
+
     /** The ServicesClient object to access its operations. */
     private final ServicesClient services;
 
@@ -526,7 +591,7 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-05-15";
+        this.apiVersion = "2022-11-15";
         this.databaseAccounts = new DatabaseAccountsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
@@ -558,6 +623,11 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.restorableMongodbDatabases = new RestorableMongodbDatabasesClientImpl(this);
         this.restorableMongodbCollections = new RestorableMongodbCollectionsClientImpl(this);
         this.restorableMongodbResources = new RestorableMongodbResourcesClientImpl(this);
+        this.restorableGremlinDatabases = new RestorableGremlinDatabasesClientImpl(this);
+        this.restorableGremlinGraphs = new RestorableGremlinGraphsClientImpl(this);
+        this.restorableGremlinResources = new RestorableGremlinResourcesClientImpl(this);
+        this.restorableTables = new RestorableTablesClientImpl(this);
+        this.restorableTableResources = new RestorableTableResourcesClientImpl(this);
         this.services = new ServicesClientImpl(this);
     }
 }

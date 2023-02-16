@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsResolvers GetByResourceGroup. */
 public final class DnsResolversGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Get.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Get.json
      */
     /**
      * Sample code: Retrieve DNS resolver.

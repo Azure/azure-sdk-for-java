@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CapacityReservations ListByCapacityReservationGroup. */
 public final class CapacityReservationsListByCapacityReservationGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
      */
     /**
      * Sample code: List capacity reservations in reservation group.
@@ -23,6 +21,7 @@ public final class CapacityReservationsListByCapacityReservationGroupSamples {
             .manager()
             .serviceClient()
             .getCapacityReservations()
-            .listByCapacityReservationGroup("myResourceGroup", "myCapacityReservationGroup", Context.NONE);
+            .listByCapacityReservationGroup(
+                "myResourceGroup", "myCapacityReservationGroup", com.azure.core.util.Context.NONE);
     }
 }

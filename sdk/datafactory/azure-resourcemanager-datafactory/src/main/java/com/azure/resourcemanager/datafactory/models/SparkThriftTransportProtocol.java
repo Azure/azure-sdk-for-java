@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SparkThriftTransportProtocol. */
+/** The transport protocol to use in the Thrift layer. */
 public final class SparkThriftTransportProtocol extends ExpandableStringEnum<SparkThriftTransportProtocol> {
     /** Static value Binary for SparkThriftTransportProtocol. */
     public static final SparkThriftTransportProtocol BINARY = fromString("Binary");
@@ -18,6 +18,15 @@ public final class SparkThriftTransportProtocol extends ExpandableStringEnum<Spa
 
     /** Static value HTTP for SparkThriftTransportProtocol. */
     public static final SparkThriftTransportProtocol HTTP = fromString("HTTP ");
+
+    /**
+     * Creates a new instance of SparkThriftTransportProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkThriftTransportProtocol() {
+    }
 
     /**
      * Creates or finds a SparkThriftTransportProtocol from its string representation.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class that contains virtual network definition. */
 @Fluent
 public final class VirtualNetworkConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkConfiguration.class);
-
     /*
      * The subnet resource id.
      */
@@ -99,22 +96,24 @@ public final class VirtualNetworkConfiguration {
      */
     public void validate() {
         if (subnetId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subnetId in model VirtualNetworkConfiguration"));
         }
         if (enginePublicIpId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property enginePublicIpId in model VirtualNetworkConfiguration"));
         }
         if (dataManagementPublicIpId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataManagementPublicIpId in model VirtualNetworkConfiguration"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkConfiguration.class);
 }

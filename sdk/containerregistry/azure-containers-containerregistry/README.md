@@ -56,7 +56,7 @@ and then include the direct dependency in the dependencies section without the v
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.0.6</version>
+  <version>1.0.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -134,19 +134,11 @@ For more information please see [Container Registry Concepts](https://docs.micro
 
 ### Sync examples
 
-- [List repository names](#samples)
-- [List tags with anonymous access](#samples)
-- [Set artifact properties](#samples)
-- [Delete images](#samples)
-- [Delete repository with anonymous access throws](#samples)
-
-### Async examples
-
-- [List repository names asynchronously](#samples)
-- [List tags with anonymous access asynchronously](#samples)
-- [Set artifact properties asynchronously](#samples)
-- [Delete images asynchronously](#samples)
-- [Delete repository with anonymous access asynchronously throws](#samples)
+- [List repository names](#list-repository-names)
+- [List tags with anonymous access](#list-tags-with-anonymous-access)
+- [Set artifact properties](#set-artifact-properties)
+- [Delete images](#delete-images)
+- [Delete repository with anonymous access throws](#delete-a-repository-with-anonymous-access-throws)
 
 ### List repository names
 
@@ -256,7 +248,7 @@ try {
 
 ## Troubleshooting
 
-See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/0eb74418dc7a5ca2e40f954b3d7ce865321b6d86/sdk/containerregistry/azure-containers-containerregistry/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
+See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/containerregistry/azure-containers-containerregistry/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
 
 ## Next steps
 

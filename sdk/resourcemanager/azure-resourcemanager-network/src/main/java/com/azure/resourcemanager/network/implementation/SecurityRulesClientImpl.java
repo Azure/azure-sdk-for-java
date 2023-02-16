@@ -63,7 +63,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface SecurityRulesService {
+    public interface SecurityRulesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -178,7 +178,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -236,7 +236,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -440,7 +440,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -498,7 +498,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -537,22 +537,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityRuleInner get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
-        return getAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).block();
-    }
-
-    /**
-     * Get the specified network security rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param securityRuleName The name of the security rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -563,6 +547,22 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     public Response<SecurityRuleInner> getWithResponse(
         String resourceGroupName, String networkSecurityGroupName, String securityRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, context).block();
+    }
+
+    /**
+     * Get the specified network security rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network security rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityRuleInner get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
+        return getWithResponse(resourceGroupName, networkSecurityGroupName, securityRuleName, Context.NONE).getValue();
     }
 
     /**
@@ -615,7 +615,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
         } else {
             securityRuleParameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -686,7 +686,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
         } else {
             securityRuleParameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -944,7 +944,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1006,7 +1006,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1100,7 +1100,8 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1136,7 +1137,8 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

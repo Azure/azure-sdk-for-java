@@ -5,48 +5,27 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Definition of the variable. */
-@JsonFlatten
 @Fluent
-public class VariableInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VariableInner.class);
-
+public final class VariableInner extends ProxyResource {
     /*
-     * Gets or sets the value of the variable.
+     * Gets or sets the properties of the variable.
      */
-    @JsonProperty(value = "properties.value")
-    private String value;
+    @JsonProperty(value = "properties")
+    private VariableProperties innerProperties;
 
-    /*
-     * Gets or sets the encrypted flag of the variable.
+    /**
+     * Get the innerProperties property: Gets or sets the properties of the variable.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.isEncrypted")
-    private Boolean isEncrypted;
-
-    /*
-     * Gets or sets the creation time.
-     */
-    @JsonProperty(value = "properties.creationTime")
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets or sets the last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime")
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Gets or sets the description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private VariableProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the value property: Gets or sets the value of the variable.
@@ -54,7 +33,7 @@ public class VariableInner extends ProxyResource {
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -64,7 +43,10 @@ public class VariableInner extends ProxyResource {
      * @return the VariableInner object itself.
      */
     public VariableInner withValue(String value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VariableProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -74,7 +56,7 @@ public class VariableInner extends ProxyResource {
      * @return the isEncrypted value.
      */
     public Boolean isEncrypted() {
-        return this.isEncrypted;
+        return this.innerProperties() == null ? null : this.innerProperties().isEncrypted();
     }
 
     /**
@@ -84,7 +66,10 @@ public class VariableInner extends ProxyResource {
      * @return the VariableInner object itself.
      */
     public VariableInner withIsEncrypted(Boolean isEncrypted) {
-        this.isEncrypted = isEncrypted;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VariableProperties();
+        }
+        this.innerProperties().withIsEncrypted(isEncrypted);
         return this;
     }
 
@@ -94,7 +79,7 @@ public class VariableInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -104,7 +89,10 @@ public class VariableInner extends ProxyResource {
      * @return the VariableInner object itself.
      */
     public VariableInner withCreationTime(OffsetDateTime creationTime) {
-        this.creationTime = creationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VariableProperties();
+        }
+        this.innerProperties().withCreationTime(creationTime);
         return this;
     }
 
@@ -114,7 +102,7 @@ public class VariableInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -124,7 +112,10 @@ public class VariableInner extends ProxyResource {
      * @return the VariableInner object itself.
      */
     public VariableInner withLastModifiedTime(OffsetDateTime lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VariableProperties();
+        }
+        this.innerProperties().withLastModifiedTime(lastModifiedTime);
         return this;
     }
 
@@ -134,7 +125,7 @@ public class VariableInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -144,7 +135,10 @@ public class VariableInner extends ProxyResource {
      * @return the VariableInner object itself.
      */
     public VariableInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VariableProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -154,5 +148,8 @@ public class VariableInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

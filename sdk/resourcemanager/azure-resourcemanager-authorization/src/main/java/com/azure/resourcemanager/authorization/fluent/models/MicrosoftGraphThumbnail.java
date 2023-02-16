@@ -30,8 +30,8 @@ public final class MicrosoftGraphThumbnail {
     private Integer height;
 
     /*
-     * The unique identifier of the item that provided the thumbnail. This is
-     * only available when a folder thumbnail is requested.
+     * The unique identifier of the item that provided the thumbnail. This is only available when a folder thumbnail is
+     * requested.
      */
     @JsonProperty(value = "sourceItemId")
     private String sourceItemId;
@@ -52,6 +52,10 @@ public final class MicrosoftGraphThumbnail {
      * thumbnail
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphThumbnail class. */
+    public MicrosoftGraphThumbnail() {
+    }
 
     /**
      * Get the content property: The content stream for the thumbnail.

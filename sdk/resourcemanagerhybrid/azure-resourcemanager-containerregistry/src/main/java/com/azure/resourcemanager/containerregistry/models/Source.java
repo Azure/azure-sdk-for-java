@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class Source {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Source.class);
-
     /*
      * The IP or hostname and the port of the registry node that generated the
      * event. Generally, this will be resolved by os.Hostname() along with the

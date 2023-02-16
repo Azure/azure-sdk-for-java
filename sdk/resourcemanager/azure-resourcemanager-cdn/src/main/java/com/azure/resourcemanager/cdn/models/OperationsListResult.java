@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class OperationsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsListResult.class);
-
     /*
      * List of CDN operations supported by the CDN resource provider.
      */

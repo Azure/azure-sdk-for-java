@@ -50,7 +50,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CommunityGalleriesService {
+    public interface CommunityGalleriesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries"
@@ -99,7 +99,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -150,7 +150,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -176,30 +176,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunityGalleryInner> getAsync(String location, String publicGalleryName) {
-        return getWithResponseAsync(location, publicGalleryName)
-            .flatMap(
-                (Response<CommunityGalleryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a community gallery by gallery public name.
-     *
-     * @param location Resource location.
-     * @param publicGalleryName The public name of the community gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery by gallery public name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunityGalleryInner get(String location, String publicGalleryName) {
-        return getAsync(location, publicGalleryName).block();
+        return getWithResponseAsync(location, publicGalleryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -216,5 +193,20 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunityGalleryInner> getWithResponse(String location, String publicGalleryName, Context context) {
         return getWithResponseAsync(location, publicGalleryName, context).block();
+    }
+
+    /**
+     * Get a community gallery by gallery public name.
+     *
+     * @param location Resource location.
+     * @param publicGalleryName The public name of the community gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a community gallery by gallery public name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunityGalleryInner get(String location, String publicGalleryName) {
+        return getWithResponse(location, publicGalleryName, Context.NONE).getValue();
     }
 }

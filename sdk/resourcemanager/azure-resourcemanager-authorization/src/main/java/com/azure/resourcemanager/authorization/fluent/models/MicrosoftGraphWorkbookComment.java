@@ -39,6 +39,10 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookComment class. */
+    public MicrosoftGraphWorkbookComment() {
+    }
+
     /**
      * Get the content property: The content of comment.
      *

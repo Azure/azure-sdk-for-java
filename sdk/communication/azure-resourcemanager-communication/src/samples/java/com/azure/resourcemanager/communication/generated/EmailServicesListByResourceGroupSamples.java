@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EmailServices ListByResourceGroup. */
 public final class EmailServicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/emailServices/listByResourceGroup.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/listByResourceGroup.json
      */
     /**
      * Sample code: List EmailService resources by resource group.

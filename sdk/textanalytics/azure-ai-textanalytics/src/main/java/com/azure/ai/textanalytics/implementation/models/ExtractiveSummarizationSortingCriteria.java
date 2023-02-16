@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExtractiveSummarizationSortingCriteria. */
+/** The sorting criteria to use for the results of Extractive Summarization. */
 public final class ExtractiveSummarizationSortingCriteria
         extends ExpandableStringEnum<ExtractiveSummarizationSortingCriteria> {
     /** Static value Offset for ExtractiveSummarizationSortingCriteria. */
@@ -28,7 +28,11 @@ public final class ExtractiveSummarizationSortingCriteria
         return fromString(name, ExtractiveSummarizationSortingCriteria.class);
     }
 
-    /** @return known ExtractiveSummarizationSortingCriteria values. */
+    /**
+     * Gets known ExtractiveSummarizationSortingCriteria values.
+     *
+     * @return known ExtractiveSummarizationSortingCriteria values.
+     */
     public static Collection<ExtractiveSummarizationSortingCriteria> values() {
         return values(ExtractiveSummarizationSortingCriteria.class);
     }

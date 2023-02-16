@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.MetricNamespaceName;
 import com.azure.resourcemanager.monitor.models.NamespaceClassification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Metric namespace class specifies the metadata for a metric namespace. */
 @Fluent
 public final class MetricNamespaceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricNamespaceInner.class);
-
     /*
      * The ID of the metric namespace.
      */
@@ -45,6 +41,10 @@ public final class MetricNamespaceInner {
      */
     @JsonProperty(value = "properties")
     private MetricNamespaceName properties;
+
+    /** Creates an instance of MetricNamespaceInner class. */
+    public MetricNamespaceInner() {
+    }
 
     /**
      * Get the id property: The ID of the metric namespace.

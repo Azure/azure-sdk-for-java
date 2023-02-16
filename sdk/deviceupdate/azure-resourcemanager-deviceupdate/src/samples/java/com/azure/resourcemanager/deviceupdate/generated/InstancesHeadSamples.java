@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Instances Head. */
 public final class InstancesHeadSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_Head.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_Head.json
      */
     /**
      * Sample code: Checks whether instance exists.

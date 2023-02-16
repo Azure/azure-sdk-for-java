@@ -7,10 +7,9 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cdn.models.OriginProvisioningState;
 import com.azure.resourcemanager.cdn.models.OriginResourceState;
 import com.azure.resourcemanager.cdn.models.PrivateEndpointStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -19,8 +18,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class OriginInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginInner.class);
-
     /*
      * The JSON object that contains the properties of the origin.
      */
@@ -65,7 +62,7 @@ public final class OriginInner extends ProxyResource {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public OriginProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

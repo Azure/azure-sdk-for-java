@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GalleryImageVersions ListByGalleryImage. */
 public final class GalleryImageVersionsListByGalleryImageSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_ListByGalleryImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryImageVersion_ListByGalleryImage.json
      */
     /**
      * Sample code: List gallery image versions in a gallery image definition.
@@ -23,6 +21,7 @@ public final class GalleryImageVersionsListByGalleryImageSamples {
             .manager()
             .serviceClient()
             .getGalleryImageVersions()
-            .listByGalleryImage("myResourceGroup", "myGalleryName", "myGalleryImageName", Context.NONE);
+            .listByGalleryImage(
+                "myResourceGroup", "myGalleryName", "myGalleryImageName", com.azure.core.util.Context.NONE);
     }
 }

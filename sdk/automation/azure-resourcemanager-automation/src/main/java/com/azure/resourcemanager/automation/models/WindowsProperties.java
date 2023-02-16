@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Windows specific update configuration. */
 @Fluent
 public final class WindowsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WindowsProperties.class);
-
     /*
-     * Update classification included in the software update configuration. A
-     * comma separated string with required values
+     * Update classification included in the software update configuration. A comma separated string with required
+     * values
      */
     @JsonProperty(value = "includedUpdateClassifications")
     private WindowsUpdateClasses includedUpdateClassifications;

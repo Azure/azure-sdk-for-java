@@ -16,8 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * managedAppRegistration The ManagedAppEntity is the base entity type for all other entity types under app management
- * workflow.
+ * managedAppRegistration
+ *
+ * <p>The ManagedAppEntity is the base entity type for all other entity types under app management workflow.
  */
 @Fluent
 public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEntity {
@@ -47,8 +48,8 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     private String deviceName;
 
     /*
-     * App management SDK generated tag, which helps relate apps hosted on the
-     * same device. Not guaranteed to relate apps in all conditions.
+     * App management SDK generated tag, which helps relate apps hosted on the same device. Not guaranteed to relate
+     * apps in all conditions.
      */
     @JsonProperty(value = "deviceTag")
     private String deviceTag;
@@ -60,8 +61,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     private String deviceType;
 
     /*
-     * Zero or more reasons an app registration is flagged. E.g. app running on
-     * rooted device
+     * Zero or more reasons an app registration is flagged. E.g. app running on rooted device
      */
     @JsonProperty(value = "flaggedReasons")
     private List<MicrosoftGraphManagedAppFlaggedReason> flaggedReasons;
@@ -97,8 +97,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     private String version;
 
     /*
-     * Zero or more policys already applied on the registered app when it last
-     * synchronized with managment service.
+     * Zero or more policys already applied on the registered app when it last synchronized with managment service.
      */
     @JsonProperty(value = "appliedPolicies")
     private List<MicrosoftGraphManagedAppPolicy> appliedPolicies;
@@ -116,10 +115,13 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     private List<MicrosoftGraphManagedAppOperation> operations;
 
     /*
-     * The ManagedAppEntity is the base entity type for all other entity types
-     * under app management workflow.
+     * The ManagedAppEntity is the base entity type for all other entity types under app management workflow.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphManagedAppRegistration class. */
+    public MicrosoftGraphManagedAppRegistration() {
+    }
 
     /**
      * Get the appIdentifier property: The identifier for a mobile app.

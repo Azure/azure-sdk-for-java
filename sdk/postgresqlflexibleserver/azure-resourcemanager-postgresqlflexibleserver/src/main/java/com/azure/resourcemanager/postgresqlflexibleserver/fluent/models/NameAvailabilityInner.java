@@ -5,77 +5,27 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityReason;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a resource name availability. */
 @Fluent
-public final class NameAvailabilityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityInner.class);
-
-    /*
-     * Error Message.
-     */
-    @JsonProperty(value = "message")
-    private String message;
-
-    /*
-     * Indicates whether the resource name is available.
-     */
-    @JsonProperty(value = "nameAvailable")
-    private Boolean nameAvailable;
-
+public final class NameAvailabilityInner extends CheckNameAvailabilityResponse {
     /*
      * name of the PostgreSQL server.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * type of the server
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /**
-     * Get the message property: Error Message.
-     *
-     * @return the message value.
-     */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Set the message property: Error Message.
-     *
-     * @param message the message value to set.
-     * @return the NameAvailabilityInner object itself.
-     */
-    public NameAvailabilityInner withMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
-     * Get the nameAvailable property: Indicates whether the resource name is available.
-     *
-     * @return the nameAvailable value.
-     */
-    public Boolean nameAvailable() {
-        return this.nameAvailable;
-    }
-
-    /**
-     * Set the nameAvailable property: Indicates whether the resource name is available.
-     *
-     * @param nameAvailable the nameAvailable value to set.
-     * @return the NameAvailabilityInner object itself.
-     */
-    public NameAvailabilityInner withNameAvailable(Boolean nameAvailable) {
-        this.nameAvailable = nameAvailable;
-        return this;
+    /** Creates an instance of NameAvailabilityInner class. */
+    public NameAvailabilityInner() {
     }
 
     /**
@@ -88,17 +38,6 @@ public final class NameAvailabilityInner {
     }
 
     /**
-     * Set the name property: name of the PostgreSQL server.
-     *
-     * @param name the name value to set.
-     * @return the NameAvailabilityInner object itself.
-     */
-    public NameAvailabilityInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the type property: type of the server.
      *
      * @return the type value.
@@ -107,14 +46,24 @@ public final class NameAvailabilityInner {
         return this.type;
     }
 
-    /**
-     * Set the type property: type of the server.
-     *
-     * @param type the type value to set.
-     * @return the NameAvailabilityInner object itself.
-     */
-    public NameAvailabilityInner withType(String type) {
-        this.type = type;
+    /** {@inheritDoc} */
+    @Override
+    public NameAvailabilityInner withNameAvailable(Boolean nameAvailable) {
+        super.withNameAvailable(nameAvailable);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NameAvailabilityInner withReason(CheckNameAvailabilityReason reason) {
+        super.withReason(reason);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NameAvailabilityInner withMessage(String message) {
+        super.withMessage(message);
         return this;
     }
 
@@ -123,6 +72,8 @@ public final class NameAvailabilityInner {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
     }
 }

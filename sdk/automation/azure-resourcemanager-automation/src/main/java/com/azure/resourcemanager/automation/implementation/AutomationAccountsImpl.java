@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.AutomationAccountsClient;
 import com.azure.resourcemanager.automation.fluent.models.AutomationAccountInner;
 import com.azure.resourcemanager.automation.models.AutomationAccount;
 import com.azure.resourcemanager.automation.models.AutomationAccounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AutomationAccountsImpl implements AutomationAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AutomationAccountsImpl.class);
 
     private final AutomationAccountsClient innerClient;
 
@@ -85,7 +84,7 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
     public AutomationAccount getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -93,7 +92,7 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,7 +105,7 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
     public Response<AutomationAccount> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,7 +113,7 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -127,7 +126,7 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,20 +134,20 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -156,7 +155,7 @@ public final class AutomationAccountsImpl implements AutomationAccounts {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

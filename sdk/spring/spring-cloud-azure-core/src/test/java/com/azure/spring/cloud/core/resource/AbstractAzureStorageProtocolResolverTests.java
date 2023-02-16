@@ -25,8 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractAzureStorageProtocolResolverTests {
     protected static final String CONTAINER_NAME = "container";
-    protected static final String NON_EXISTING = "non-existing";
-    protected static final String EXISTING_ITEM_NAME = "blob";
+    protected static final String NON_EXISTING_CONTAINER_NAME = "non-existing";
+    protected static final String NON_EXISTING_ITEM_NAME = "non-existing";
+    protected static final String EXISTING_ITEM_NAME = "item";
     protected static final long CONTENT_LENGTH = 4096L;
     private DefaultResourceLoader resourceLoader;
 
@@ -90,14 +91,14 @@ public abstract class AbstractAzureStorageProtocolResolverTests {
 
     @Test
     void testValidObject() throws Exception {
-        Resource resource = getResource("container/blob");
+        Resource resource = getResource(CONTAINER_NAME + "/" + EXISTING_ITEM_NAME);
         assertTrue(resource.exists());
         assertEquals(CONTENT_LENGTH, resource.contentLength());
     }
 
     @Test
     void testWritable() throws Exception {
-        WritableResource writableResource = getWritableResource("container/blob");
+        WritableResource writableResource = getWritableResource(CONTAINER_NAME + "/" + EXISTING_ITEM_NAME);
         assertTrue(writableResource.isWritable());
         assertNotNull(writableResource.getOutputStream());
     }
@@ -107,29 +108,39 @@ public abstract class AbstractAzureStorageProtocolResolverTests {
      */
     @Test
     void testWritableResourceAutoCreate() {
-        assertNotNull(getWritableResource("container/non-existing"));
+        assertNotNull(getWritableResource(CONTAINER_NAME + "/" + NON_EXISTING_ITEM_NAME));
     }
 
     @Test
-    void testGetInputStreamOnNullBlob() {
-        Resource resource = getResource("container/non-existing");
+    void testGetInputStreamOnNonExistingItem() {
+        Resource resource = getResource(CONTAINER_NAME + "/" + NON_EXISTING_ITEM_NAME);
         assertThrows(FileNotFoundException.class, resource::getInputStream);
     }
 
     @Test
-    void testGetFilenameOnNonExistingBlob() {
-        assertEquals(NON_EXISTING, getResource("container/non-existing").getFilename());
+    void testGetInputStreamOnNonExistingContainer() {
+        Resource resource = getResource(NON_EXISTING_CONTAINER_NAME + "/" + NON_EXISTING_ITEM_NAME);
+        assertThrows(FileNotFoundException.class, resource::getInputStream);
     }
 
     @Test
-    void testContainerDoesNotExist() {
-        assertFalse(getResource("non-existing/blob").exists());
+    void testGetFilename() {
+        assertEquals(EXISTING_ITEM_NAME, getResource(CONTAINER_NAME + "/" + EXISTING_ITEM_NAME).getFilename());
     }
 
     @Test
-    void testContainerExistsButResourceDoesNot() {
-        Resource resource = getResource("container/non-existing");
-        assertFalse(resource.exists());
+    void testGetFilenameOnNonExistingItem() {
+        assertEquals(NON_EXISTING_ITEM_NAME, getResource(CONTAINER_NAME + "/" + NON_EXISTING_ITEM_NAME).getFilename());
+    }
+
+    @Test
+    void testResourceExistsOnNonExistingContainer() {
+        assertFalse(getResource(NON_EXISTING_CONTAINER_NAME + "/" + NON_EXISTING_ITEM_NAME).exists());
+    }
+
+    @Test
+    void testResourceExistsOnNonExistingItem() {
+        assertFalse(getResource(CONTAINER_NAME + "/" + NON_EXISTING_ITEM_NAME).exists());
     }
 
 }

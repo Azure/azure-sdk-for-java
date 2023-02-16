@@ -1,0 +1,841 @@
+{
+  "networkCallRecords": [
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/ping?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:32 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/ping?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:32 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:32 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:32 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:32 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:32 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:32 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:33 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:33 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:33 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:33 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:33 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:33 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:34 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:34 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:34 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:34 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:34 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:34 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:34 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:34 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:34 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:34 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:35 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:35 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:35 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:35 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:35 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:35 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:35 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:35 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:35 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:35 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:36 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:36 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:36 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:36 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:36 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:36 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:36 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:36 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:37 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:37 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    },
+    {
+      "Method": "POST",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=ikey123",
+      "Headers": {},
+      "Response": {
+        "content-length": "0",
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Server": "Microsoft-IIS/10.0",
+        "x-ms-qps-subscribed": "true",
+        "X-Content-Type-Options": "nosniff",
+        "retry-after": "0",
+        "StatusCode": "200",
+        "Date": "Wed, 25 Aug 2021 06:19:37 GMT",
+        "Request-Context": "appId=cid-v1:ikey123",
+        "X-Powered-By": "ASP.NET"
+      },
+      "Exception": null
+    }
+  ],
+  "variables": []
+}

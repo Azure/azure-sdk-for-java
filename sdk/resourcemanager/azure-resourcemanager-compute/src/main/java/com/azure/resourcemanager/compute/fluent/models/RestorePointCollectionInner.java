@@ -20,6 +20,10 @@ public final class RestorePointCollectionInner extends Resource {
     @JsonProperty(value = "properties")
     private RestorePointCollectionProperties innerProperties;
 
+    /** Creates an instance of RestorePointCollectionInner class. */
+    public RestorePointCollectionInner() {
+    }
+
     /**
      * Get the innerProperties property: The restore point collection properties.
      *

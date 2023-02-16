@@ -7,7 +7,7 @@ import com.azure.storage.common.test.shared.ServiceVersionSpec
 
 class DataLakeServiceVersionTest extends ServiceVersionSpec {
     @Override
-    protected Class getServiceVersionClass() {
+    protected Class<?> getServiceVersionClass() {
         return DataLakeServiceVersion.class
     }
 }

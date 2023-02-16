@@ -4,19 +4,23 @@
 
 package com.azure.resourcemanager.cosmos.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A private link resource. */
-@Fluent
+@Immutable
 public final class PrivateLinkResourceInner extends ArmProxyResource {
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties innerProperties;
+
+    /** Creates an instance of PrivateLinkResourceInner class. */
+    public PrivateLinkResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

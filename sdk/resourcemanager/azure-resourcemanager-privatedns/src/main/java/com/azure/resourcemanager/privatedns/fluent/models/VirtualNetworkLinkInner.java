@@ -7,18 +7,14 @@ package com.azure.resourcemanager.privatedns.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinkState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a link to virtual network for a Private DNS zone. */
 @Fluent
 public final class VirtualNetworkLinkInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkLinkInner.class);
-
     /*
      * The ETag of the virtual network link.
      */

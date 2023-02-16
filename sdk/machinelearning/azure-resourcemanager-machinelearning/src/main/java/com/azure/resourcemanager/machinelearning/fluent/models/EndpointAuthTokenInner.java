@@ -34,6 +34,10 @@ public final class EndpointAuthTokenInner {
     @JsonProperty(value = "tokenType")
     private String tokenType;
 
+    /** Creates an instance of EndpointAuthTokenInner class. */
+    public EndpointAuthTokenInner() {
+    }
+
     /**
      * Get the accessToken property: Access token for endpoint authentication.
      *

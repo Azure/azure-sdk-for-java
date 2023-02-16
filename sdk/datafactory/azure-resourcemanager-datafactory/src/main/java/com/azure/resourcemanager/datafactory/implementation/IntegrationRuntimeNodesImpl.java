@@ -30,17 +30,6 @@ public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNode
         this.serviceManager = serviceManager;
     }
 
-    public SelfHostedIntegrationRuntimeNode get(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
-        SelfHostedIntegrationRuntimeNodeInner inner =
-            this.serviceClient().get(resourceGroupName, factoryName, integrationRuntimeName, nodeName);
-        if (inner != null) {
-            return new SelfHostedIntegrationRuntimeNodeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SelfHostedIntegrationRuntimeNode> getWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, Context context) {
         Response<SelfHostedIntegrationRuntimeNodeInner> inner =
@@ -58,8 +47,15 @@ public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNode
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, integrationRuntimeName, nodeName);
+    public SelfHostedIntegrationRuntimeNode get(
+        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+        SelfHostedIntegrationRuntimeNodeInner inner =
+            this.serviceClient().get(resourceGroupName, factoryName, integrationRuntimeName, nodeName);
+        if (inner != null) {
+            return new SelfHostedIntegrationRuntimeNodeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -69,26 +65,8 @@ public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNode
             .deleteWithResponse(resourceGroupName, factoryName, integrationRuntimeName, nodeName, context);
     }
 
-    public SelfHostedIntegrationRuntimeNode update(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        String nodeName,
-        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest) {
-        SelfHostedIntegrationRuntimeNodeInner inner =
-            this
-                .serviceClient()
-                .update(
-                    resourceGroupName,
-                    factoryName,
-                    integrationRuntimeName,
-                    nodeName,
-                    updateIntegrationRuntimeNodeRequest);
-        if (inner != null) {
-            return new SelfHostedIntegrationRuntimeNodeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+        this.serviceClient().delete(resourceGroupName, factoryName, integrationRuntimeName, nodeName);
     }
 
     public Response<SelfHostedIntegrationRuntimeNode> updateWithResponse(
@@ -119,12 +97,23 @@ public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNode
         }
     }
 
-    public IntegrationRuntimeNodeIpAddress getIpAddress(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
-        IntegrationRuntimeNodeIpAddressInner inner =
-            this.serviceClient().getIpAddress(resourceGroupName, factoryName, integrationRuntimeName, nodeName);
+    public SelfHostedIntegrationRuntimeNode update(
+        String resourceGroupName,
+        String factoryName,
+        String integrationRuntimeName,
+        String nodeName,
+        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest) {
+        SelfHostedIntegrationRuntimeNodeInner inner =
+            this
+                .serviceClient()
+                .update(
+                    resourceGroupName,
+                    factoryName,
+                    integrationRuntimeName,
+                    nodeName,
+                    updateIntegrationRuntimeNodeRequest);
         if (inner != null) {
-            return new IntegrationRuntimeNodeIpAddressImpl(inner, this.manager());
+            return new SelfHostedIntegrationRuntimeNodeImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -142,6 +131,17 @@ public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNode
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeNodeIpAddressImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeNodeIpAddress getIpAddress(
+        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+        IntegrationRuntimeNodeIpAddressInner inner =
+            this.serviceClient().getIpAddress(resourceGroupName, factoryName, integrationRuntimeName, nodeName);
+        if (inner != null) {
+            return new IntegrationRuntimeNodeIpAddressImpl(inner, this.manager());
         } else {
             return null;
         }

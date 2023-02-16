@@ -23,6 +23,10 @@ public final class CouchbaseTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of CouchbaseTableDataset class. */
+    public CouchbaseTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

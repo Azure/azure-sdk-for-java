@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the origin. */
 @Fluent
 public class OriginUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginUpdatePropertiesParameters.class);
-
     /*
-     * The address of the origin. Domain names, IPv4 addresses, and IPv6
-     * addresses are supported.This should be unique across all origins in an
-     * endpoint.
+     * The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.This should be unique
+     * across all origins in an endpoint.
      */
     @JsonProperty(value = "hostName")
     private String hostname;
@@ -35,26 +30,22 @@ public class OriginUpdatePropertiesParameters {
     private Integer httpsPort;
 
     /*
-     * The host header value sent to the origin with each request. If you leave
-     * this blank, the request hostname determines this value. Azure CDN
-     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
-     * host header value to match the origin hostname by default. This
-     * overrides the host header defined at Endpoint
+     * The host header value sent to the origin with each request. If you leave this blank, the request hostname
+     * determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services require this host
+     * header value to match the origin hostname by default. This overrides the host header defined at Endpoint
      */
     @JsonProperty(value = "originHostHeader")
     private String originHostHeader;
 
     /*
-     * Priority of origin in given origin group for load balancing. Higher
-     * priorities will not be used for load balancing if any lower priority
-     * origin is healthy.Must be between 1 and 5
+     * Priority of origin in given origin group for load balancing. Higher priorities will not be used for load
+     * balancing if any lower priority origin is healthy.Must be between 1 and 5
      */
     @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
-     * Weight of the origin in given origin group for load balancing. Must be
-     * between 1 and 1000
+     * Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
      */
     @JsonProperty(value = "weight")
     private Integer weight;
@@ -66,29 +57,26 @@ public class OriginUpdatePropertiesParameters {
     private Boolean enabled;
 
     /*
-     * The Alias of the Private Link resource. Populating this optional field
-     * indicates that this origin is 'Private'
+     * The Alias of the Private Link resource. Populating this optional field indicates that this origin is 'Private'
      */
     @JsonProperty(value = "privateLinkAlias")
     private String privateLinkAlias;
 
     /*
-     * The Resource Id of the Private Link resource. Populating this optional
-     * field indicates that this backend is 'Private'
+     * The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is
+     * 'Private'
      */
     @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
 
     /*
-     * The location of the Private Link resource. Required only if
-     * 'privateLinkResourceId' is populated
+     * The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
      */
     @JsonProperty(value = "privateLinkLocation")
     private String privateLinkLocation;
 
     /*
-     * A custom message to be included in the approval request to connect to
-     * the Private Link.
+     * A custom message to be included in the approval request to connect to the Private Link.
      */
     @JsonProperty(value = "privateLinkApprovalMessage")
     private String privateLinkApprovalMessage;

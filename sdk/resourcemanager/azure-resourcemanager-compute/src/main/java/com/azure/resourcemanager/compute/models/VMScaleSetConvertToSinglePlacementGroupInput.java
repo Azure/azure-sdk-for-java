@@ -11,13 +11,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VMScaleSetConvertToSinglePlacementGroupInput {
     /*
-     * Id of the placement group in which you want future virtual machine
-     * instances to be placed. To query placement group Id, please use Virtual
-     * Machine Scale Set VMs - Get API. If not provided, the platform will
-     * choose one with maximum number of virtual machine instances.
+     * Id of the placement group in which you want future virtual machine instances to be placed. To query placement
+     * group Id, please use Virtual Machine Scale Set VMs - Get API. If not provided, the platform will choose one with
+     * maximum number of virtual machine instances.
      */
     @JsonProperty(value = "activePlacementGroupId")
     private String activePlacementGroupId;
+
+    /** Creates an instance of VMScaleSetConvertToSinglePlacementGroupInput class. */
+    public VMScaleSetConvertToSinglePlacementGroupInput() {
+    }
 
     /**
      * Get the activePlacementGroupId property: Id of the placement group in which you want future virtual machine

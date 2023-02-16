@@ -22,6 +22,10 @@ public final class ComputeInstanceApplication {
     @JsonProperty(value = "endpointUri")
     private String endpointUri;
 
+    /** Creates an instance of ComputeInstanceApplication class. */
+    public ComputeInstanceApplication() {
+    }
+
     /**
      * Get the displayName property: Name of the ComputeInstance application.
      *

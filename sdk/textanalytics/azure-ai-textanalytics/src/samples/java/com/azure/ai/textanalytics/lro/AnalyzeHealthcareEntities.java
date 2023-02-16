@@ -74,8 +74,8 @@ public class AnalyzeHealthcareEntities {
                 resultCollection.getModelVersion());
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
-            System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, "
-                                  + "transaction count = %s, valid document count = %s.%n",
+            System.out.printf("Documents statistics: document count = %d, erroneous document count = %d, "
+                                  + "transaction count = %d, valid document count = %d.%n",
                 batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(),
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
@@ -108,11 +108,12 @@ public class AnalyzeHealthcareEntities {
                         System.out.printf("\tEntity text: %s, category: %s, role: %s.%n",
                             entity.getText(), entity.getCategory(), role.getName());
                     }
-                }
-                // FHIR bundle in JSON format
-                final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
-                if (fhirBundle != null) {
-                    System.out.printf("FHIR bundle: %s%n", fhirBundle);
+                    System.out.printf("Relation confidence score: %f.%n", entityRelation.getConfidenceScore());
+                    // FHIR bundle in JSON format
+                    final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
+                    if (fhirBundle != null) {
+                        System.out.printf("FHIR bundle: %s%n", fhirBundle);
+                    }
                 }
             }
         }

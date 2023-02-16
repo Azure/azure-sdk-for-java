@@ -6,17 +6,13 @@ package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Metadata information used by account encryption. */
 @Fluent
 public final class KeyVaultMetaInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultMetaInfo.class);
-
     /*
-     * The resource identifier for the user managed Key Vault being used to
-     * encrypt.
+     * The resource identifier for the user managed Key Vault being used to encrypt.
      */
     @JsonProperty(value = "keyVaultResourceId", required = true)
     private String keyVaultResourceId;
@@ -32,6 +28,10 @@ public final class KeyVaultMetaInfo {
      */
     @JsonProperty(value = "encryptionKeyVersion", required = true)
     private String encryptionKeyVersion;
+
+    /** Creates an instance of KeyVaultMetaInfo class. */
+    public KeyVaultMetaInfo() {
+    }
 
     /**
      * Get the keyVaultResourceId property: The resource identifier for the user managed Key Vault being used to
@@ -102,22 +102,24 @@ public final class KeyVaultMetaInfo {
      */
     public void validate() {
         if (keyVaultResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyVaultResourceId in model KeyVaultMetaInfo"));
         }
         if (encryptionKeyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property encryptionKeyName in model KeyVaultMetaInfo"));
         }
         if (encryptionKeyVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property encryptionKeyVersion in model KeyVaultMetaInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultMetaInfo.class);
 }

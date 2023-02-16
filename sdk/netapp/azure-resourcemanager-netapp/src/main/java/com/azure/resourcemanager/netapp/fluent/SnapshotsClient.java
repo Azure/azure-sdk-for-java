@@ -17,7 +17,9 @@ import com.azure.resourcemanager.netapp.models.SnapshotRestoreFiles;
 /** An instance of this class provides access to all the operations defined in SnapshotsClient. */
 public interface SnapshotsClient {
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -32,7 +34,9 @@ public interface SnapshotsClient {
     PagedIterable<SnapshotInner> list(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -49,7 +53,9 @@ public interface SnapshotsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -66,7 +72,9 @@ public interface SnapshotsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName);
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -89,7 +97,9 @@ public interface SnapshotsClient {
         Context context);
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -112,7 +122,9 @@ public interface SnapshotsClient {
         SnapshotInner body);
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -137,7 +149,9 @@ public interface SnapshotsClient {
         Context context);
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -160,7 +174,9 @@ public interface SnapshotsClient {
         SnapshotInner body);
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -185,7 +201,9 @@ public interface SnapshotsClient {
         Context context);
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -208,7 +226,9 @@ public interface SnapshotsClient {
         Object body);
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -233,7 +253,9 @@ public interface SnapshotsClient {
         Context context);
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -256,7 +278,9 @@ public interface SnapshotsClient {
         Object body);
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -281,7 +305,9 @@ public interface SnapshotsClient {
         Context context);
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -298,7 +324,9 @@ public interface SnapshotsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName);
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -321,7 +349,9 @@ public interface SnapshotsClient {
         Context context);
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -336,7 +366,9 @@ public interface SnapshotsClient {
     void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName);
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -358,7 +390,9 @@ public interface SnapshotsClient {
         Context context);
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -381,7 +415,9 @@ public interface SnapshotsClient {
         SnapshotRestoreFiles body);
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -406,7 +442,9 @@ public interface SnapshotsClient {
         Context context);
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -428,7 +466,9 @@ public interface SnapshotsClient {
         SnapshotRestoreFiles body);
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

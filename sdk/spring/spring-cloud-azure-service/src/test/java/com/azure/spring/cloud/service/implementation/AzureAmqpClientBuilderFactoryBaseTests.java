@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.service.implementation;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
 import com.azure.spring.cloud.core.properties.proxy.AmqpProxyProperties;
@@ -70,6 +71,7 @@ public abstract class AzureAmqpClientBuilderFactoryBaseTests<B, P extends AzureA
     @Test
     void transportTypeConfigured() {
         P properties = createMinimalServiceProperties();
+        properties.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
         final F builderFactory = createClientBuilderFactoryWithMockBuilder(properties);
         final B builder = builderFactory.build();
         buildClient(builder);

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AzureTrafficCollectorsBySubscription List. */
 public final class AzureTrafficCollectorsBySubscriptionListSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/AzureTrafficCollectorsBySubscriptionList.json
+     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorsBySubscriptionList.json
      */
     /**
      * Sample code: List of Traffic Collectors by Subscription.

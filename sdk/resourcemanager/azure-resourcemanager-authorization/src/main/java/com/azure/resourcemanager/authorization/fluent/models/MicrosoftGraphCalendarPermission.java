@@ -17,10 +17,9 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity {
     /*
-     * List of allowed sharing or delegating permission levels for the
-     * calendar. Possible values are: none, freeBusyRead, limitedRead, read,
-     * write, delegateWithoutPrivateEventAccess,
-     * delegateWithPrivateEventAccess, custom.
+     * List of allowed sharing or delegating permission levels for the calendar. Possible values are: none,
+     * freeBusyRead, limitedRead, read, write, delegateWithoutPrivateEventAccess, delegateWithPrivateEventAccess,
+     * custom.
      */
     @JsonProperty(value = "allowedRoles")
     private List<MicrosoftGraphCalendarRoleType> allowedRoles;
@@ -32,18 +31,15 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
     private MicrosoftGraphEmailAddress emailAddress;
 
     /*
-     * True if the user in context (sharee or delegate) is inside the same
-     * organization as the calendar owner.
+     * True if the user in context (sharee or delegate) is inside the same organization as the calendar owner.
      */
     @JsonProperty(value = "isInsideOrganization")
     private Boolean isInsideOrganization;
 
     /*
-     * True if the user can be removed from the list of sharees or delegates
-     * for the specified calendar, false otherwise. The 'My organization' user
-     * determines the permissions other people within your organization have to
-     * the given calendar. You cannot remove 'My organization' as a sharee to a
-     * calendar.
+     * True if the user can be removed from the list of sharees or delegates for the specified calendar, false
+     * otherwise. The 'My organization' user determines the permissions other people within your organization have to
+     * the given calendar. You cannot remove 'My organization' as a sharee to a calendar.
      */
     @JsonProperty(value = "isRemovable")
     private Boolean isRemovable;
@@ -58,6 +54,10 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
      * calendarPermission
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphCalendarPermission class. */
+    public MicrosoftGraphCalendarPermission() {
+    }
 
     /**
      * Get the allowedRoles property: List of allowed sharing or delegating permission levels for the calendar. Possible

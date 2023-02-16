@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Grafana List. */
 public final class GrafanaListSamples {
     /*
-     * x-ms-original-file: specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2021-09-01-preview/examples/Grafana_List.json
+     * x-ms-original-file: specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2022-08-01/examples/Grafana_List.json
      */
     /**
      * Sample code: Grafana_List.

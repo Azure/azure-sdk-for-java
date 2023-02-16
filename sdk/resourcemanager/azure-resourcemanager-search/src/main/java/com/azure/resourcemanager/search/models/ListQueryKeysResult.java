@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.search.fluent.models.QueryKeyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response containing the query API keys for a given Azure Cognitive Search service. */
 @Immutable
 public final class ListQueryKeysResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListQueryKeysResult.class);
-
     /*
      * The query keys for the Azure Cognitive Search service.
      */

@@ -10,7 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.LiveOutputsClient;
+import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveOutputInner;
+import com.azure.resourcemanager.mediaservices.models.AsyncOperationResult;
 import com.azure.resourcemanager.mediaservices.models.LiveOutput;
 import com.azure.resourcemanager.mediaservices.models.LiveOutputs;
 
@@ -39,15 +41,6 @@ public final class LiveOutputsImpl implements LiveOutputs {
         return Utils.mapPage(inner, inner1 -> new LiveOutputImpl(inner1, this.manager()));
     }
 
-    public LiveOutput get(String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
-        LiveOutputInner inner = this.serviceClient().get(resourceGroupName, accountName, liveEventName, liveOutputName);
-        if (inner != null) {
-            return new LiveOutputImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<LiveOutput> getWithResponse(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context) {
         Response<LiveOutputInner> inner =
@@ -65,6 +58,15 @@ public final class LiveOutputsImpl implements LiveOutputs {
         }
     }
 
+    public LiveOutput get(String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
+        LiveOutputInner inner = this.serviceClient().get(resourceGroupName, accountName, liveEventName, liveOutputName);
+        if (inner != null) {
+            return new LiveOutputImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
         this.serviceClient().delete(resourceGroupName, accountName, liveEventName, liveOutputName);
     }
@@ -72,6 +74,67 @@ public final class LiveOutputsImpl implements LiveOutputs {
     public void delete(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, liveEventName, liveOutputName, context);
+    }
+
+    public Response<AsyncOperationResult> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId, Context context) {
+        Response<AsyncOperationResultInner> inner =
+            this.serviceClient().asyncOperationWithResponse(resourceGroupName, accountName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new AsyncOperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationResult asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        AsyncOperationResultInner inner =
+            this.serviceClient().asyncOperation(resourceGroupName, accountName, operationId);
+        if (inner != null) {
+            return new AsyncOperationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<LiveOutput> operationLocationWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String liveEventName,
+        String liveOutputName,
+        String operationId,
+        Context context) {
+        Response<LiveOutputInner> inner =
+            this
+                .serviceClient()
+                .operationLocationWithResponse(
+                    resourceGroupName, accountName, liveEventName, liveOutputName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new LiveOutputImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LiveOutput operationLocation(
+        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId) {
+        LiveOutputInner inner =
+            this
+                .serviceClient()
+                .operationLocation(resourceGroupName, accountName, liveEventName, liveOutputName, operationId);
+        if (inner != null) {
+            return new LiveOutputImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public LiveOutput getById(String id) {

@@ -17,11 +17,14 @@ public final class ThroughputPolicyResource {
     private Boolean isEnabled;
 
     /*
-     * Represents the percentage by which throughput can increase every time
-     * throughput policy kicks in.
+     * Represents the percentage by which throughput can increase every time throughput policy kicks in.
      */
     @JsonProperty(value = "incrementPercent")
     private Integer incrementPercent;
+
+    /** Creates an instance of ThroughputPolicyResource class. */
+    public ThroughputPolicyResource() {
+    }
 
     /**
      * Get the isEnabled property: Determines whether the ThroughputPolicy is active or not.

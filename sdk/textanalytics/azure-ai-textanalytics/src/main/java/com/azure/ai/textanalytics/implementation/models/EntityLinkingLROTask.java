@@ -20,6 +20,9 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private EntityLinkingTaskParameters parameters;
 
+    /** Creates an instance of EntityLinkingLROTask class. */
+    public EntityLinkingLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for an Entity Linking task.
      *
@@ -37,6 +40,13 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
      */
     public EntityLinkingLROTask setParameters(EntityLinkingTaskParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
         return this;
     }
 }

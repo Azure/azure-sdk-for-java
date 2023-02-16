@@ -6,7 +6,6 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
 /** The response to a metrics query. */
 @Fluent
 public final class ResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResponseInner.class);
-
     /*
      * The integer value representing the relative cost of the query.
      */
@@ -23,18 +20,15 @@ public final class ResponseInner {
     private Integer cost;
 
     /*
-     * The timespan for which the data was retrieved. Its value consists of two
-     * datetimes concatenated, separated by '/'.  This may be adjusted in the
-     * future and returned back from what was originally requested.
+     * The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
+     * '/'.  This may be adjusted in the future and returned back from what was originally requested.
      */
     @JsonProperty(value = "timespan", required = true)
     private String timespan;
 
     /*
-     * The interval (window size) for which the metric data was returned in.
-     * This may be adjusted in the future and returned back from what was
-     * originally requested.  This is not present if a metadata request was
-     * made.
+     * The interval (window size) for which the metric data was returned in.  This may be adjusted in the future and
+     * returned back from what was originally requested.  This is not present if a metadata request was made.
      */
     @JsonProperty(value = "interval")
     private Duration interval;
@@ -56,6 +50,10 @@ public final class ResponseInner {
      */
     @JsonProperty(value = "value", required = true)
     private List<MetricInner> value;
+
+    /** Creates an instance of ResponseInner class. */
+    public ResponseInner() {
+    }
 
     /**
      * Get the cost property: The integer value representing the relative cost of the query.
@@ -192,16 +190,18 @@ public final class ResponseInner {
      */
     public void validate() {
         if (timespan() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timespan in model ResponseInner"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ResponseInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResponseInner.class);
 }

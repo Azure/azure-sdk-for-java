@@ -42,7 +42,7 @@ public class ReceiveLinkHandlerTest {
     @Mock
     private Source source;
 
-    private final ReceiveLinkHandler handler = new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH);
+    private final ReceiveLinkHandler handler = new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH, null);
 
     private AutoCloseable mocksCloseable;
 
@@ -186,13 +186,13 @@ public class ReceiveLinkHandlerTest {
     public void constructor() {
         // Act
         assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(null, HOSTNAME, LINK_NAME, ENTITY_PATH));
+            () -> new ReceiveLinkHandler(null, HOSTNAME, LINK_NAME, ENTITY_PATH, null));
         assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH));
+            () -> new ReceiveLinkHandler(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH, null));
         assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH));
+            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH, null));
         assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, null));
+            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, null, null));
     }
 
     /**

@@ -20,6 +20,10 @@ public final class CustomForecastHorizon extends ForecastHorizon {
     @JsonProperty(value = "value", required = true)
     private int value;
 
+    /** Creates an instance of CustomForecastHorizon class. */
+    public CustomForecastHorizon() {
+    }
+
     /**
      * Get the value property: [Required] Forecast horizon value.
      *

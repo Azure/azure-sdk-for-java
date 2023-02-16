@@ -19,6 +19,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobHierarchyListSegment;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentHeaders;
@@ -61,7 +63,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -1342,14 +1343,17 @@ public final class BlobContainerAsyncClient {
                 }
                 return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout)
                 .map(response -> {
-                    List<BlobItem> value = response.getValue().getSegment() == null
-                        ? Collections.emptyList()
-                        : Stream.concat(
-                        response.getValue().getSegment().getBlobItems().stream().map(ModelHelper::populateBlobItem),
-                        response.getValue().getSegment().getBlobPrefixes().stream()
-                            .map(blobPrefix -> new BlobItem()
-                                .setName(ModelHelper.toBlobNameString(blobPrefix.getName())).setIsPrefix(true))
-                    ).collect(Collectors.toList());
+                    BlobHierarchyListSegment segment = response.getValue().getSegment();
+                    List<BlobItem> value;
+                    if (segment == null) {
+                        value = Collections.emptyList();
+                    } else {
+                        value = new ArrayList<>(segment.getBlobItems().size() + segment.getBlobPrefixes().size());
+                        segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                        segment.getBlobPrefixes().forEach(prefix -> value.add(new BlobItem()
+                            .setName(ModelHelper.toBlobNameString(prefix.getName()))
+                            .setIsPrefix(true)));
+                    }
 
                     return new PagedResponseBase<>(
                         response.getRequest(),
@@ -1460,7 +1464,7 @@ public final class BlobContainerAsyncClient {
         StorageImplUtils.assertNotNull("options", options);
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(containerName, null, null,
-                options.getQuery(), marker, options.getMaxResultsPerPage(),
+                options.getQuery(), marker, options.getMaxResultsPerPage(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
             .map(response -> {
                 List<TaggedBlobItem> value = response.getValue().getBlobs() == null
@@ -1537,51 +1541,26 @@ public final class BlobContainerAsyncClient {
             });
     }
 
-//    /**
-//     * Renames an existing blob container.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.rename#String -->
-//     * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.rename#String -->
-//     *
-//     * @param destinationContainerName The new name of the container.
-//     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the renamed container.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
+    // TODO: Reintroduce this API once service starts supporting it.
 //    Mono<BlobContainerAsyncClient> rename(String destinationContainerName) {
 //        return renameWithResponse(new BlobContainerRenameOptions(destinationContainerName)).flatMap(FluxUtil::toMono);
 //    }
-//
-//    /**
-//     * Renames an existing blob container.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions -->
-//     * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions -->
-//     *
-//     * @param options {@link BlobContainerRenameOptions}
-//     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-//     * {@link BlobContainerAsyncClient} used to interact with the renamed container.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
+
+    // TODO: Reintroduce this API once service starts supporting it.
 //    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options) {
 //        try {
 //            return withContext(context -> this.renameWithResponse(options, context));
 //        } catch (RuntimeException ex) {
-//            return monoError(logger, ex);
+//            return monoError(LOGGER, ex);
 //        }
 //    }
-//
+
 //    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options, Context context) {
-//        // TODO (gapra) : Change this when we have migrated to new generator. There will be a cleaner way to do this by
-//        //  calling the container constructor directly instead of needing to do URI surgery
 //        BlobContainerAsyncClient destinationContainerClient = getServiceAsyncClient()
 //            .getBlobContainerAsyncClient(options.getDestinationContainerName());
 //        return destinationContainerClient.renameWithResponseHelper(this.getBlobContainerName(), options, context);
 //    }
-//
+
 //    Mono<Response<BlobContainerAsyncClient>> renameWithResponseHelper(String sourceContainerName,
 //        BlobContainerRenameOptions options, Context context) {
 //        StorageImplUtils.assertNotNull("options", options);
@@ -1591,7 +1570,7 @@ public final class BlobContainerAsyncClient {
 //
 //        if (!validateNoETag(requestConditions) || !validateNoTime(requestConditions)
 //            || requestConditions.getTagsConditions() != null) {
-//            throw logger.logExceptionAsError(new UnsupportedOperationException(
+//            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
 //                "Lease-Id is the only HTTP access condition supported for this API"));
 //        }
 //

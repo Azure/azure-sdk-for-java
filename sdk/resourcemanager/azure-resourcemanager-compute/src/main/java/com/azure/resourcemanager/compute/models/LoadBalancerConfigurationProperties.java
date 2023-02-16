@@ -13,12 +13,15 @@ import java.util.List;
 @Fluent
 public final class LoadBalancerConfigurationProperties {
     /*
-     * Specifies the frontend IP to be used for the load balancer. Only IPv4
-     * frontend IP address is supported. Each load balancer configuration must
-     * have exactly one frontend IP configuration.
+     * Specifies the frontend IP to be used for the load balancer. Only IPv4 frontend IP address is supported. Each
+     * load balancer configuration must have exactly one frontend IP configuration.
      */
-    @JsonProperty(value = "frontendIPConfigurations", required = true)
+    @JsonProperty(value = "frontendIpConfigurations", required = true)
     private List<LoadBalancerFrontendIpConfiguration> frontendIpConfigurations;
+
+    /** Creates an instance of LoadBalancerConfigurationProperties class. */
+    public LoadBalancerConfigurationProperties() {
+    }
 
     /**
      * Get the frontendIpConfigurations property: Specifies the frontend IP to be used for the load balancer. Only IPv4

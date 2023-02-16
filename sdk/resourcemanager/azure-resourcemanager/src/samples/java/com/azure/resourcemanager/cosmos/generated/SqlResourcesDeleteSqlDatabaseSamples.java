@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources DeleteSqlDatabase. */
 public final class SqlResourcesDeleteSqlDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlDatabaseDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlDatabaseDelete.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseDelete.
@@ -22,6 +20,6 @@ public final class SqlResourcesDeleteSqlDatabaseSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .deleteSqlDatabase("rg1", "ddb1", "databaseName", Context.NONE);
+            .deleteSqlDatabase("rg1", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }
 }

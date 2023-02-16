@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.test.shared
 
+import com.azure.core.client.traits.HttpTrait
 import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpClient
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
@@ -12,6 +13,7 @@ import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.test.ThreadDumper
 import com.azure.core.util.ServiceVersion
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
@@ -64,11 +66,11 @@ class StorageSpec extends Specification {
         return TestDataFactory.getInstance();
     }
 
-    protected <T> T instrument(T builder) {
+    protected <T extends HttpTrait<T>> T instrument(T builder) {
         // Groovy style reflection. All our builders follow this pattern.
-        builder."httpClient"(getHttpClient())
+        builder.httpClient(getHttpClient())
         if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            builder."addPolicy"(interceptorManager.getRecordPolicy())
+            builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
         if (ENVIRONMENT.serviceVersion != null) {
@@ -76,12 +78,12 @@ class StorageSpec extends Specification {
                 .find { it.name == "serviceVersion" && it.parameterCount == 1}.parameterTypes[0] as Class<ServiceVersion>
             def parsedServiceVersion = Enum.valueOf(serviceVersionClass, ENVIRONMENT.serviceVersion)
             builder."serviceVersion"(parsedServiceVersion)
-            builder."addPolicy"(new ServiceVersionValidationPolicy(parsedServiceVersion.version))
+            builder.addPolicy(new ServiceVersionValidationPolicy(parsedServiceVersion.version))
         }
 
         HttpLogOptions httpLogOptions = builder."getDefaultHttpLogOptions"()
         httpLogOptions.setLogLevel(HttpLogDetailLevel.HEADERS)
-        builder."httpLogOptions"(httpLogOptions)
+        builder.httpLogOptions(httpLogOptions)
 
         return builder
     }

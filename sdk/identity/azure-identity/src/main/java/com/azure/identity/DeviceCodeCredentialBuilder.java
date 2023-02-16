@@ -5,7 +5,10 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.util.IdentityConstants;
+import com.azure.identity.implementation.util.IdentityUtil;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -70,6 +73,37 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      */
     public DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
         this.automaticAuthentication = false;
+        return this;
+    }
+
+    /**
+     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
+     * If no value is specified for TenantId this option will have no effect, and the credential will
+     * acquire tokens for any requested tenant.
+     *
+     * @param additionallyAllowedTenants the additionally allowed tenants.
+     * @return An updated instance of this builder with the additional tenants configured.
+     */
+    @Override
+    public DeviceCodeCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        return this;
+    }
+
+    /**
+     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
+     * If no value is specified for TenantId this option will have no effect, and the credential will
+     * acquire tokens for any requested tenant.
+     *
+     * @param additionallyAllowedTenants the additionally allowed tenants.
+     * @return An updated instance of this builder with the additional tenants configured.
+     */
+    @Override
+    public DeviceCodeCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
+        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 

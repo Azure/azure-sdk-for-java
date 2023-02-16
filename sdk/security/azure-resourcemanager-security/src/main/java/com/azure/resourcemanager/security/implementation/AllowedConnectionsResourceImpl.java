@@ -35,6 +35,10 @@ public final class AllowedConnectionsResourceImpl implements AllowedConnectionsR
         return this.innerModel().type();
     }
 
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public OffsetDateTime calculatedDateTime() {
         return this.innerModel().calculatedDateTime();
     }
@@ -46,10 +50,6 @@ public final class AllowedConnectionsResourceImpl implements AllowedConnectionsR
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public AllowedConnectionsResourceInner innerModel() {

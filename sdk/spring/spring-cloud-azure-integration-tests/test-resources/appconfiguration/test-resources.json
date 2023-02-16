@@ -1,0 +1,58 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "testApplicationOid": {
+      "type": "String"
+    },
+    "subscriptionId": {
+      "defaultValue": "[subscription().subscriptionId]",
+      "type": "string"
+    },
+    "baseName": {
+      "defaultValue": "[resourceGroup().name]",
+      "type": "String"
+    },
+    "azConfigEndpointSuffix": {
+      "defaultValue": ".azconfig.io",
+      "type": "string"
+    }
+  },
+  "variables": {
+    "configurationStoresName": "[concat(parameters('baseName'),'-test-appconfiguration')]",
+    "azureAppConfigurationDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b",
+    "location": "[resourceGroup().location]",
+    "endpointValue": "[concat('https://', variables('configurationStoresName'), parameters('azConfigEndpointSuffix'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.AppConfiguration/configurationStores",
+      "apiVersion": "2022-05-01",
+      "name": "[variables('configurationStoresName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "standard"
+      },
+      "properties": {
+        "encryption": {},
+        "disableLocalAuth": false,
+        "enablePurgeProtection": false
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureAppConfigurationDataOwnerRoleId'), parameters('baseName')))]",
+      "properties": {
+        "roleDefinitionId": "[variables('azureAppConfigurationDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    }
+  ],
+  "outputs": {
+    "AZURE_APPCONFIGURATION_ENDPOINT": {
+      "type": "string",
+      "value": "[variables('endpointValue')]"
+    }
+  }
+}

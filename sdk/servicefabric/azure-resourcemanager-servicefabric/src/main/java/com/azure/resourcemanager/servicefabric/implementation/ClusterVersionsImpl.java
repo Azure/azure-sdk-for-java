@@ -13,10 +13,9 @@ import com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersions
 import com.azure.resourcemanager.servicefabric.models.ClusterCodeVersionsListResult;
 import com.azure.resourcemanager.servicefabric.models.ClusterVersions;
 import com.azure.resourcemanager.servicefabric.models.ClusterVersionsEnvironment;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ClusterVersionsImpl implements ClusterVersions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterVersionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterVersionsImpl.class);
 
     private final ClusterVersionsClient innerClient;
 
@@ -27,15 +26,6 @@ public final class ClusterVersionsImpl implements ClusterVersions {
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ClusterCodeVersionsListResult get(String location, String clusterVersion) {
-        ClusterCodeVersionsListResultInner inner = this.serviceClient().get(location, clusterVersion);
-        if (inner != null) {
-            return new ClusterCodeVersionsListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ClusterCodeVersionsListResult> getWithResponse(
@@ -53,10 +43,8 @@ public final class ClusterVersionsImpl implements ClusterVersions {
         }
     }
 
-    public ClusterCodeVersionsListResult getByEnvironment(
-        String location, ClusterVersionsEnvironment environment, String clusterVersion) {
-        ClusterCodeVersionsListResultInner inner =
-            this.serviceClient().getByEnvironment(location, environment, clusterVersion);
+    public ClusterCodeVersionsListResult get(String location, String clusterVersion) {
+        ClusterCodeVersionsListResultInner inner = this.serviceClient().get(location, clusterVersion);
         if (inner != null) {
             return new ClusterCodeVersionsListResultImpl(inner, this.manager());
         } else {
@@ -79,8 +67,10 @@ public final class ClusterVersionsImpl implements ClusterVersions {
         }
     }
 
-    public ClusterCodeVersionsListResult list(String location) {
-        ClusterCodeVersionsListResultInner inner = this.serviceClient().list(location);
+    public ClusterCodeVersionsListResult getByEnvironment(
+        String location, ClusterVersionsEnvironment environment, String clusterVersion) {
+        ClusterCodeVersionsListResultInner inner =
+            this.serviceClient().getByEnvironment(location, environment, clusterVersion);
         if (inner != null) {
             return new ClusterCodeVersionsListResultImpl(inner, this.manager());
         } else {
@@ -101,8 +91,8 @@ public final class ClusterVersionsImpl implements ClusterVersions {
         }
     }
 
-    public ClusterCodeVersionsListResult listByEnvironment(String location, ClusterVersionsEnvironment environment) {
-        ClusterCodeVersionsListResultInner inner = this.serviceClient().listByEnvironment(location, environment);
+    public ClusterCodeVersionsListResult list(String location) {
+        ClusterCodeVersionsListResultInner inner = this.serviceClient().list(location);
         if (inner != null) {
             return new ClusterCodeVersionsListResultImpl(inner, this.manager());
         } else {
@@ -120,6 +110,15 @@ public final class ClusterVersionsImpl implements ClusterVersions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ClusterCodeVersionsListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ClusterCodeVersionsListResult listByEnvironment(String location, ClusterVersionsEnvironment environment) {
+        ClusterCodeVersionsListResultInner inner = this.serviceClient().listByEnvironment(location, environment);
+        if (inner != null) {
+            return new ClusterCodeVersionsListResultImpl(inner, this.manager());
         } else {
             return null;
         }

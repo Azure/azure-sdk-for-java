@@ -10,16 +10,12 @@ import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.TooManyRedirectsException;
+import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.ContentType;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -29,14 +25,13 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
+import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProxy;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -45,13 +40,10 @@ import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.function.Consumer;
-
-import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
 public abstract class RestProxyBase {
     static final String MUST_IMPLEMENT_PAGE_ERROR =
@@ -68,35 +60,28 @@ public abstract class RestProxyBase {
     final SerializerAdapter serializer;
     final SwaggerInterfaceParser interfaceParser;
     final HttpResponseDecoder decoder;
+    protected final Tracer tracer;
 
     /**
      * Create a RestProxy.
      *
-     * @param httpPipeline    the HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
-     * @param serializer      the serializer that will be used to convert response bodies to POJOs.
+     * @param httpPipeline the HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
+     * @param serializer the serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser the parser that contains information about the interface describing REST API methods that
-     *                        this RestProxy "implements".
+     * this RestProxy "implements".
      */
-    public RestProxyBase(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser) {
+    public RestProxyBase(HttpPipeline httpPipeline, SerializerAdapter serializer,
+        SwaggerInterfaceParser interfaceParser) {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
         this.decoder = new HttpResponseDecoder(this.serializer);
+        this.tracer = httpPipeline.getTracer();
     }
 
-    /**
-     * Get the SwaggerMethodParser for the provided method. The Method must exist on the Swagger interface that this
-     * RestProxy was created to "implement".
-     *
-     * @param method the method to get a SwaggerMethodParser for
-     * @return the SwaggerMethodParser for the provided method
-     */
-    public SwaggerMethodParser getMethodParser(Method method) {
-        return interfaceParser.getMethodParser(method);
-    }
-
-    public final Object invoke(Object proxy, final Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
-                         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, boolean isAsync, Object[] args) {
+    public final Object invoke(Object proxy, final Method method, RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser,
+        boolean isAsync, Object[] args) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
 
         try {
@@ -105,12 +90,21 @@ public abstract class RestProxyBase {
             Context context = methodParser.setContext(args);
             context = RestProxyUtils.mergeRequestOptionsContext(context, options);
 
-            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
-                .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
+            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName());
 
+            if (methodParser.isResponseEagerlyRead()) {
+                context = context.addData("azure-eagerly-read-response", true);
+            }
 
-            return invoke(proxy, method, options, errorOptions != null ? errorOptions : null,
-                requestCallback != null ? requestCallback : null, methodParser, request, context);
+            if (methodParser.isResponseBodyIgnored()) {
+                context = context.addData("azure-ignore-response-body", true);
+            }
+
+            if (methodParser.isHeadersEagerlyConverted()) {
+                context = context.addData("azure-eagerly-convert-headers", true);
+            }
+
+            return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
 
         } catch (IOException e) {
             if (isAsync) {
@@ -121,13 +115,16 @@ public abstract class RestProxyBase {
         }
     }
 
-    protected abstract Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser, HttpRequest request, Context context);
+    protected abstract Object invoke(Object proxy, Method method, RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
+        HttpRequest request, Context context);
 
-    public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter) throws IOException;
+    public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
+        SerializerAdapter serializerAdapter) throws IOException;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
-                                   Object bodyAsObject) {
+        Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         final HttpResponse httpResponse = response.getSourceResponse();
@@ -177,9 +174,9 @@ public abstract class RestProxyBase {
      * @param context Context information about the current service call.
      * @return The updated context containing the span context.
      */
-    Context startTracingSpan(Method method, Context context) {
+    Context startTracingSpan(SwaggerMethodParser method, Context context) {
         // First check if tracing is enabled. This is an optimized operation, so it is done first.
-        if (!TracerProxy.isTracingEnabled()) {
+        if (!tracer.isEnabled()) {
             return context;
         }
 
@@ -188,44 +185,31 @@ public abstract class RestProxyBase {
             return context;
         }
 
-        String spanName = interfaceParser.getServiceName() + "." + method.getName();
-        context = TracerProxy.setSpanName(spanName, context);
-        return TracerProxy.start(spanName, context);
+        Object tracingContextObj = context.getData("TRACING_CONTEXT").orElse(null);
+        Context tracingContext = tracingContextObj instanceof Context ? (Context) tracingContextObj : context;
+        return tracer.start(method.getSpanName(), tracingContext);
     }
 
     // This handles each onX for the response mono.
     // The signal indicates the status and contains the metadata we need to end the tracing span.
-    void endTracingSpan(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse, Throwable throwable, Context tracingContext) {
-        if (tracingContext == null) {
-            return;
-        }
-
+    void endTracingSpan(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse, Throwable throwable,
+        Context span) {
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        Object disableTracingValue = (tracingContext.getData(Tracer.DISABLE_TRACING_KEY).isPresent()
-            ? tracingContext.getData(Tracer.DISABLE_TRACING_KEY).get() : null);
-        boolean disableTracing = Boolean.TRUE.equals(disableTracingValue != null ? disableTracingValue : false);
-
-        if (disableTracing) {
+        if (span == null
+            || (boolean) span.getData(Tracer.DISABLE_TRACING_KEY).orElse(false)) {
             return;
         }
 
-        int statusCode = 0;
+        if (throwable != null) {
+            tracer.end(null, throwable, span);
+        }
 
-        // On next contains the response information.
         if (httpDecodedResponse != null) {
             //noinspection ConstantConditions
-            statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
-        } else if (throwable != null) {
-            // The last status available is on error, this contains the error thrown by the REST response.
-            // Only HttpResponseException contain a status code, this is the base REST response.
-            if (throwable instanceof HttpResponseException) {
-                HttpResponseException exception = (HttpResponseException) throwable;
-                statusCode = exception.getResponse().getStatusCode();
-            }
+            int statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
+            tracer.end(statusCode >= 400 ? "error" : null, null, span);
         }
-        TracerProxy.end(statusCode, throwable, tracingContext);
     }
-
 
     /**
      * Create a HttpRequest for the provided Swagger method using the provided arguments.
@@ -235,11 +219,12 @@ public abstract class RestProxyBase {
      * @return a HttpRequest
      * @throws IOException thrown if the body contents cannot be serialized
      */
-    HttpRequest createHttpRequest(SwaggerMethodParser methodParser, SerializerAdapter serializerAdapter, boolean isAsync, Object[] args) throws IOException {
+    HttpRequest createHttpRequest(SwaggerMethodParser methodParser, SerializerAdapter serializerAdapter,
+        boolean isAsync, Object[] args) throws IOException {
         // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
         // This definitely happens in paging scenarios. In that case, just use the full URL and
         // ignore the Host annotation.
-        final String path = methodParser.setPath(args);
+        final String path = methodParser.setPath(args, serializer);
         final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
 
         final UrlBuilder urlBuilder;
@@ -248,7 +233,7 @@ public abstract class RestProxyBase {
         } else {
             urlBuilder = new UrlBuilder();
 
-            methodParser.setSchemeAndHost(args, urlBuilder);
+            methodParser.setSchemeAndHost(args, urlBuilder, serializer);
 
             // Set the path after host, concatenating the path
             // segment in the host.
@@ -266,7 +251,7 @@ public abstract class RestProxyBase {
             }
         }
 
-        methodParser.setEncodedQueryParameters(args, urlBuilder);
+        methodParser.setEncodedQueryParameters(args, urlBuilder, serializer);
 
         final URL url = urlBuilder.toUrl();
         final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
@@ -274,17 +259,17 @@ public abstract class RestProxyBase {
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
-        methodParser.setHeaders(args, httpHeaders);
+        methodParser.setHeaders(args, httpHeaders, serializer);
 
         return request;
     }
 
     @SuppressWarnings("unchecked")
     private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
-                                      SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
-        final Object bodyContentObject = methodParser.setBody(args);
+        SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
+        final Object bodyContentObject = methodParser.setBody(args, serializer);
         if (bodyContentObject == null) {
-            request.getHeaders().set("Content-Length", "0");
+            request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
         } else {
             // We read the content type from the @BodyParam annotation
             String contentType = methodParser.getBodyContentType();
@@ -299,11 +284,11 @@ public abstract class RestProxyBase {
                 }
             }
 
-            request.getHeaders().set("Content-Type", contentType);
+            request.setHeader(HttpHeaderName.CONTENT_TYPE, contentType);
             if (bodyContentObject instanceof BinaryData) {
                 BinaryData binaryData = (BinaryData) bodyContentObject;
                 if (binaryData.getLength() != null) {
-                    request.setHeader("Content-Length", binaryData.getLength().toString());
+                    request.setHeader(HttpHeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
                 }
                 // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
                 // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
@@ -323,7 +308,8 @@ public abstract class RestProxyBase {
                     break;
                 }
             }
-            updateRequest(new RequestDataConfiguration(request, methodParser, isJson, bodyContentObject), serializerAdapter);
+            updateRequest(new RequestDataConfiguration(request, methodParser, isJson, bodyContentObject),
+                serializerAdapter);
         }
 
         return request;
@@ -332,25 +318,36 @@ public abstract class RestProxyBase {
     /**
      * Creates the Unexpected Exception using the details provided in http response and its content.
      *
-     * @param exception the excepion holding UnexpectedException's details.
+     * @param exception the exception holding UnexpectedException's details.
      * @param httpResponse the http response to parse when constructing exception
      * @param responseContent the response body to use when constructing exception
      * @param responseDecodedContent the decoded response content to use when constructing exception
      * @return the Unexpected Exception
      */
     public Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
-                                                    final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
+        final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
             .append(httpResponse.getStatusCode())
             .append(", ");
 
         final String contentType = httpResponse.getHeaderValue("Content-Type");
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            exceptionMessage.append("(").append(httpResponse.getHeaderValue("Content-Length")).append("-byte body)");
+            String contentLength = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
+            exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseContent == null || responseContent.length == 0) {
             exceptionMessage.append("(empty body)");
         } else {
             exceptionMessage.append("\"").append(new String(responseContent, StandardCharsets.UTF_8)).append("\"");
+        }
+
+        // If the decoded response content is on of these exception types there was a failure in creating the actual
+        // exception body type. In this case return an HttpResponseException to maintain the exception having a
+        // reference to the HttpResponse and information about what caused the deserialization failure.
+        if (responseDecodedContent instanceof IOException
+            || responseDecodedContent instanceof MalformedValueException
+            || responseDecodedContent instanceof IllegalStateException) {
+            return new HttpResponseException(exceptionMessage.toString(), httpResponse,
+                (Throwable) responseDecodedContent);
         }
 
         // For HttpResponseException types that exist in azure-core, call the constructor directly.
@@ -389,28 +386,45 @@ public abstract class RestProxyBase {
     }
 
     /**
-     * Create an instance of the default serializer.
+     * Whether {@code JsonSerializable} is supported and the {@code bodyContentClass} is an instance of it.
      *
-     * @return the default serializer
+     * @param bodyContentClass The body content class.
+     * @return Whether {@code bodyContentClass} can be used as {@code JsonSerializable}.
      */
-    public static SerializerAdapter createDefaultSerializer() {
-        return JacksonAdapter.createDefaultSerializerAdapter();
+    static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
+        return ReflectionSerializable.supportsJsonSerializable(bodyContentClass);
     }
 
     /**
-     * Create the default HttpPipeline.
+     * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
      *
-     * @return the default HttpPipeline
+     * @param jsonSerializable The {@code JsonSerializable} body content.
+     * @return The {@link ByteBuffer} representing the serialized {@code jsonSerializable}.
+     * @throws IOException If an error occurs during serialization.
      */
-    public static HttpPipeline createDefaultPipeline() {
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy());
-        policies.add(new RetryPolicy());
-        policies.add(new CookiePolicy());
+    static ByteBuffer serializeAsJsonSerializable(Object jsonSerializable) throws IOException {
+        return ReflectionSerializable.serializeAsJsonSerializable(jsonSerializable);
+    }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .build();
+    /**
+     * Whether {@code XmlSerializable} is supported and the {@code bodyContentClass} is an instance of it.
+     *
+     * @param bodyContentClass The body content class.
+     * @return Whether {@code bodyContentClass} can be used as {@code XmlSerializable}.
+     */
+    static boolean supportsXmlSerializable(Class<?> bodyContentClass) {
+        return ReflectionSerializable.supportsXmlSerializable(bodyContentClass);
+    }
+
+    /**
+     * Serializes the {@code bodyContent} as an instance of {@code XmlSerializable}.
+     *
+     * @param bodyContent The {@code XmlSerializable} body content.
+     * @return The {@link ByteBuffer} representing the serialized {@code bodyContent}.
+     * @throws IOException If the XmlWriter fails to close properly.
+     */
+    static ByteBuffer serializeAsXmlSerializable(Object bodyContent) throws IOException {
+        return ReflectionSerializable.serializeAsXmlSerializable(bodyContent);
     }
 }
 

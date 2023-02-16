@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Domains TransferOut. */
 public final class DomainsTransferOutSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2021-03-01/examples/TransferOutDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/TransferOutDomain.json
      */
     /**
      * Sample code: Transfer out domain.

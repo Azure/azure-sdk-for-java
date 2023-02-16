@@ -4,6 +4,8 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -28,15 +30,16 @@ import java.util.UUID;
  */
 public class RequestIdPolicy implements HttpPipelinePolicy {
 
-    private static final String REQUEST_ID_HEADER = "x-ms-client-request-id";
-    private final String requestIdHeaderName;
+    private static final HttpHeaderName REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-client-request-id");
+    private final HttpHeaderName requestIdHeaderName;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            String requestId = context.getHttpRequest().getHeaders().getValue(requestIdHeaderName);
+            HttpHeaders headers = context.getHttpRequest().getHeaders();
+            String requestId = headers.getValue(requestIdHeaderName);
             if (requestId == null) {
-                context.getHttpRequest().getHeaders().set(requestIdHeaderName, UUID.randomUUID().toString());
+                headers.set(requestIdHeaderName, UUID.randomUUID().toString());
             }
         }
     };
@@ -46,15 +49,15 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
      * @param requestIdHeaderName to be used to set in {@link HttpRequest}.
      */
     public RequestIdPolicy(String requestIdHeaderName) {
-        this.requestIdHeaderName = Objects.requireNonNull(requestIdHeaderName,
-            "requestIdHeaderName can not be null.");
+        this.requestIdHeaderName = HttpHeaderName.fromString(Objects.requireNonNull(requestIdHeaderName,
+            "requestIdHeaderName can not be null."));
     }
 
     /**
      * Creates default {@link RequestIdPolicy} with default header name 'x-ms-client-request-id'.
      */
     public RequestIdPolicy() {
-        requestIdHeaderName = REQUEST_ID_HEADER;
+        this.requestIdHeaderName = REQUEST_ID_HEADER;
     }
 
     @Override

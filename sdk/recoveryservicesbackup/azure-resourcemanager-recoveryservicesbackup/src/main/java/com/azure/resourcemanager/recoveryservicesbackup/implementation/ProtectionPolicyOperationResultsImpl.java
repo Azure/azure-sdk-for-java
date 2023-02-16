@@ -27,17 +27,6 @@ public final class ProtectionPolicyOperationResultsImpl implements ProtectionPol
         this.serviceManager = serviceManager;
     }
 
-    public ProtectionPolicyResource get(
-        String vaultName, String resourceGroupName, String policyName, String operationId) {
-        ProtectionPolicyResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, policyName, operationId);
-        if (inner != null) {
-            return new ProtectionPolicyResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ProtectionPolicyResource> getWithResponse(
         String vaultName, String resourceGroupName, String policyName, String operationId, Context context) {
         Response<ProtectionPolicyResourceInner> inner =
@@ -48,6 +37,17 @@ public final class ProtectionPolicyOperationResultsImpl implements ProtectionPol
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ProtectionPolicyResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ProtectionPolicyResource get(
+        String vaultName, String resourceGroupName, String policyName, String operationId) {
+        ProtectionPolicyResourceInner inner =
+            this.serviceClient().get(vaultName, resourceGroupName, policyName, operationId);
+        if (inner != null) {
+            return new ProtectionPolicyResourceImpl(inner, this.manager());
         } else {
             return null;
         }

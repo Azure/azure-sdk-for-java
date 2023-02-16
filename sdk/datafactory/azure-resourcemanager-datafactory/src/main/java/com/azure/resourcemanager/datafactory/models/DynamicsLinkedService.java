@@ -24,6 +24,10 @@ public final class DynamicsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private DynamicsLinkedServiceTypeProperties innerTypeProperties = new DynamicsLinkedServiceTypeProperties();
 
+    /** Creates an instance of DynamicsLinkedService class. */
+    public DynamicsLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Dynamics linked service properties.
      *

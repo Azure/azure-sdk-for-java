@@ -23,11 +23,14 @@ public final class AutoscaleSettingsResource {
     private AutoUpgradePolicyResource autoUpgradePolicy;
 
     /*
-     * Represents target maximum throughput container can scale up to once
-     * offer is no longer in pending state.
+     * Represents target maximum throughput container can scale up to once offer is no longer in pending state.
      */
     @JsonProperty(value = "targetMaxThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetMaxThroughput;
+
+    /** Creates an instance of AutoscaleSettingsResource class. */
+    public AutoscaleSettingsResource() {
+    }
 
     /**
      * Get the maxThroughput property: Represents maximum throughput container can scale up to.

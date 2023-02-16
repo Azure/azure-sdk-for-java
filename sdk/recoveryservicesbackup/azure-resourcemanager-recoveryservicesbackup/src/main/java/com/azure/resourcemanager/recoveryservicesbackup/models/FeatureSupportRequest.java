@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class FeatureSupportRequest {
+    /** Creates an instance of FeatureSupportRequest class. */
+    public FeatureSupportRequest() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -8,17 +8,21 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to a SIM Policy resource. */
+/** Reference to a SIM policy resource. */
 @Fluent
 public final class SimPolicyResourceId {
     /*
-     * SIM Policy resource ID.
+     * SIM policy resource ID.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of SimPolicyResourceId class. */
+    public SimPolicyResourceId() {
+    }
+
     /**
-     * Get the id property: SIM Policy resource ID.
+     * Get the id property: SIM policy resource ID.
      *
      * @return the id value.
      */
@@ -27,7 +31,7 @@ public final class SimPolicyResourceId {
     }
 
     /**
-     * Set the id property: SIM Policy resource ID.
+     * Set the id property: SIM policy resource ID.
      *
      * @param id the id value to set.
      * @return the SimPolicyResourceId object itself.

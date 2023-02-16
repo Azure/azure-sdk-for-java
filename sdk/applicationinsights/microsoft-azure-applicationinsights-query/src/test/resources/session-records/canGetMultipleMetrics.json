@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/apps/578f0e27-12e9-4631-bc02-50b965da2633/metrics",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:a868cd1346b534e1d19791216fab6df609d09c66b0f97bd640af4913ad89527e Java:10.0.1 (ApplicationInsightsDataClient, v1)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 09 Aug 2018 22:40:06 GMT",
+      "content-length" : "326",
+      "server" : "nginx",
+      "vary" : "Accept, Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-expose-headers" : "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
+      "via" : "1.1 draft-ai-green.a45669e9-9c0b-11e8-9972-70b3d5800001",
+      "access-control-allow-origin" : "*",
+      "x-content-type-options" : "nosniff",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "[{\"id\":\"1\",\"status\":200,\"body\":{\"value\":{\"start\":\"2018-08-09T10:40:06.767Z\",\"end\":\"2018-08-09T22:40:06.767Z\",\"availabilityResults/availabilityPercentage\":{\"avg\":100}}}},{\"id\":\"2\",\"status\":200,\"body\":{\"value\":{\"start\":\"2018-08-09T10:40:06.767Z\",\"end\":\"2018-08-09T22:40:06.767Z\",\"availabilityResults/duration\":{\"avg\":565.44}}}}]"
+    }
+  } ],
+  "variables" : [ ]
+}

@@ -59,7 +59,7 @@ public final class RoleAssignmentScheduleInstancesClientImpl implements RoleAssi
      */
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
-    private interface RoleAssignmentScheduleInstancesService {
+    public interface RoleAssignmentScheduleInstancesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleInstances")
         @ExpectedResponses({200})
@@ -383,30 +383,7 @@ public final class RoleAssignmentScheduleInstancesClientImpl implements RoleAssi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentScheduleInstanceInner> getAsync(String scope, String roleAssignmentScheduleInstanceName) {
         return getWithResponseAsync(scope, roleAssignmentScheduleInstanceName)
-            .flatMap(
-                (Response<RoleAssignmentScheduleInstanceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified role assignment schedule instance.
-     *
-     * @param scope The scope of the role assignments schedules.
-     * @param roleAssignmentScheduleInstanceName The name (hash of schedule name + time) of the role assignment schedule
-     *     to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment schedule instance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentScheduleInstanceInner get(String scope, String roleAssignmentScheduleInstanceName) {
-        return getAsync(scope, roleAssignmentScheduleInstanceName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -428,9 +405,26 @@ public final class RoleAssignmentScheduleInstancesClientImpl implements RoleAssi
     }
 
     /**
+     * Gets the specified role assignment schedule instance.
+     *
+     * @param scope The scope of the role assignments schedules.
+     * @param roleAssignmentScheduleInstanceName The name (hash of schedule name + time) of the role assignment schedule
+     *     to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role assignment schedule instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleAssignmentScheduleInstanceInner get(String scope, String roleAssignmentScheduleInstanceName) {
+        return getWithResponse(scope, roleAssignmentScheduleInstanceName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -466,7 +460,8 @@ public final class RoleAssignmentScheduleInstancesClientImpl implements RoleAssi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

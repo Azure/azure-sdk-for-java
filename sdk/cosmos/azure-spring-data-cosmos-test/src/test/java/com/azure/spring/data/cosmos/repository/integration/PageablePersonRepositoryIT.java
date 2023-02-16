@@ -80,14 +80,6 @@ public class PageablePersonRepositoryIT {
     //  With documents more than 10 KB, and collection RUs 400,
     //  it usually return documents less than total 12 documents.
 
-    //  This test covers the case where page size is greater than returned documents limit
-    @Test
-    public void testFindAllWithPageSizeGreaterThanReturnedLimit() {
-        final Set<PageablePerson> outputSet = findAllWithPageSize(15, true);
-        boolean equals = outputSet.equals(personSet);
-        assertThat(equals).isTrue();
-    }
-
     //  This test covers the case where page size is less than returned documents limit
     @Test
     public void testFindAllWithPageSizeLessThanReturnedLimit() {

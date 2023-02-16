@@ -22,6 +22,11 @@ parameters:
     default: true
   - name: UseEsrpRelease
     type: boolean
+    # A different environment will be passed in for service directories that have
+    # live tests enabled for release and ReleaseDependsOnLiveTests is false
+  - name: Environment
+    type: string
+    default: 'maven'
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -88,9 +93,9 @@ stages:
                   - '!sdk/**/session-records'
 
             - task: UsePythonVersion@0
-              displayName: 'Use Python 3.6'
+              displayName: 'Use Python $(PythonVersion)'
               inputs:
-                versionSpec: '3.6'
+                versionSpec: $(PythonVersion)
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
@@ -98,7 +103,7 @@ stages:
                 ServiceDirectory: "template"
                 TestPipeline: ${{ parameters.TestPipeline }}
 
-            # Do all the verifications for all the artifacts after the sparce-checkout
+            # Do all the verifications for all the artifacts after the sparse-checkout
             - pwsh: |
                 $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
@@ -114,7 +119,6 @@ stages:
             - pwsh: |
                 $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-                python --version
                 foreach($artifact in $ArtifactsList) {
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 }
@@ -143,13 +147,13 @@ stages:
         - deployment: TagRepository
           displayName: "Create release tag"
           condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: VerifyReleaseVersion
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2019-general
-            vmImage: windows-2019
+            name: azsdk-pool-mms-win-2022-general
+            vmImage: windows-2022
           strategy:
             runOnce:
               deploy:
@@ -173,13 +177,13 @@ stages:
           # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
           # this is here to ensure larger areas (30+) libraries don't time out.
           timeoutInMinutes: 120
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: TagRepository
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2019-general
-            vmImage: windows-2019
+            name: azsdk-pool-mms-win-2022-general
+            vmImage: windows-2022
           strategy:
             runOnce:
               deploy:
@@ -188,7 +192,7 @@ stages:
                     path: azure-sdk-build-tools
                   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     parameters:
-                      SkipDefaultCheckout: true
+                      SkipCheckoutNone: true
                       Repositories:
                         - Name: Azure/azure-sdk-for-java
                           Commitish: $(Build.SourceVersion)
@@ -197,62 +201,54 @@ stages:
                     displayName: 'Download Artifacts'
                     artifact: ${{parameters.ArtifactName}}-signed
                   - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-                  - ${{ each artifact in parameters.Artifacts }}:
-                    - ${{if ne(artifact.skipPublishPackage, 'true')}}:
-                      - ${{ if eq(parameters.UseEsrpRelease, 'true') }}:
-                        - template: /eng/pipelines/templates/steps/java-publishing.yml
-                          parameters:
-                            ArtifactID: ${{artifact.name}}
-                            GroupID: ${{artifact.groupId}}
-                            ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                            OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
-                            Target: EsrpRelease
-                            BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                            JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-                          parameters:
-                            ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-esrp-$(System.JobAttempt)
-                            ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
-                      - ${{ else }}:
-                        - template: /eng/pipelines/templates/steps/java-publishing.yml
-                          parameters:
-                            ArtifactID: ${{artifact.name}}
-                            GroupID: ${{artifact.groupId}}
-                            ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                            Target: MavenCentral
-                            BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                            JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-                          parameters:
-                            ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-mavencentral-$(System.JobAttempt)
-                            ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                      # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
-                      # this is that the azure-sdk-for-java feed will have the package available immediately
-                      # whereas Maven can take several hours for the package to become available.
-                      - template: /eng/pipelines/templates/steps/java-publishing.yml
-                        parameters:
-                          ArtifactID: ${{artifact.name}}
-                          GroupID: ${{artifact.groupId}}
-                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                          RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-                          Target: JavaDevFeed
-                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-                        parameters:
-                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
-                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                  - ${{ if eq(parameters.UseEsrpRelease, 'true') }}:
+                    - template: /eng/pipelines/templates/steps/java-publishing.yml
+                      parameters:
+                        ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                        OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
+                        Target: EsrpRelease
+                        BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                        JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                    - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                      parameters:
+                        ArtifactName: ${{parameters.ArtifactName}}-esrp-$(System.JobAttempt)
+                        ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
+                  - ${{ else }}:
+                    - template: /eng/pipelines/templates/steps/java-publishing.yml
+                      parameters:
+                        ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                        Target: MavenCentral
+                        BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                        JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                    - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                      parameters:
+                        ArtifactName: ${{parameters.ArtifactName}}-mavencentral-$(System.JobAttempt)
+                        ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                    # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
+                    # this is that the azure-sdk-for-java feed will have the package available immediately
+                    # whereas Maven can take several hours for the package to become available.
+                    - template: /eng/pipelines/templates/steps/java-publishing.yml
+                      parameters:
+                        ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                        RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+                        Target: JavaDevFeed
+                        BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                        JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                    - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                      parameters:
+                        ArtifactName: ${{parameters.ArtifactName}}-javadevfeed-$(System.JobAttempt)
+                        ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
 
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2019-general
-            vmImage: MMS2019
+            name: azsdk-pool-mms-win-2022-general
+            vmImage: MMS2022
           strategy:
             runOnce:
               deploy:
@@ -268,9 +264,9 @@ stages:
                         - '!sdk/**/session-records'
 
                   - task: UsePythonVersion@0
-                    displayName: 'Use Python 3.6'
+                    displayName: 'Use Python $(PythonVersion)'
                     inputs:
-                      versionSpec: '3.6'
+                      versionSpec: $(PythonVersion)
 
                   # Apply the version increment to each library, which only updates the version_client.txt file,
                   # and then call to update_versions will then apply all of the updates.
@@ -299,7 +295,7 @@ stages:
         - deployment: PublishDocsMs
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
 
           pool:
@@ -317,7 +313,6 @@ stages:
                 steps:
                   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     parameters:
-                      SkipDefaultCheckout: true
                       Paths:
                         - sdk
                         - common/perf-test-core
@@ -356,13 +351,13 @@ stages:
         - deployment: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2019-general
-            vmImage: MMS2019
+            name: azsdk-pool-mms-win-2022-general
+            vmImage: MMS2022
           strategy:
             runOnce:
               deploy:
@@ -400,14 +395,14 @@ stages:
             value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
 
         pool:
-          name: azsdk-pool-mms-win-2019-general
-          vmImage: windows-2019
+          name: azsdk-pool-mms-win-2022-general
+          vmImage: windows-2022
         steps:
         - checkout: azure-sdk-build-tools
           path: azure-sdk-build-tools
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
-            SkipDefaultCheckout: true
+            SkipCheckoutNone: true
             Repositories:
               - Name: Azure/azure-sdk-for-java
                 Commitish: $(Build.SourceVersion)
@@ -459,7 +454,6 @@ stages:
         steps:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
-              SkipDefaultCheckout: true
               Paths:
                 - sdk/**/*.md
                 - .github/CODEOWNERS

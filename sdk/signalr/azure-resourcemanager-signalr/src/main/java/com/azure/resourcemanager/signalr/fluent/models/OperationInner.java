@@ -31,8 +31,8 @@ public final class OperationInner {
     private OperationDisplay display;
 
     /*
-     * Optional. The intended executor of the operation; governs the display of
-     * the operation in the RBAC UX and the audit logs UX.
+     * Optional. The intended executor of the operation; governs the display of the operation in the RBAC UX and the
+     * audit logs UX.
      */
     @JsonProperty(value = "origin")
     private String origin;
@@ -42,6 +42,10 @@ public final class OperationInner {
      */
     @JsonProperty(value = "properties")
     private OperationProperties properties;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: Name of the operation with format: {provider}/{resource}/{operation}.

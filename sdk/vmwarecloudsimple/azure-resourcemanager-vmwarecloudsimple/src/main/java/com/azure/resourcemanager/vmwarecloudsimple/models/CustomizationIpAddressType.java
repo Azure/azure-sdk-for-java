@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomizationIpAddressType. */
+/** Customization Specification ip type. */
 public final class CustomizationIpAddressType extends ExpandableStringEnum<CustomizationIpAddressType> {
     /** Static value CUSTOM for CustomizationIpAddressType. */
     public static final CustomizationIpAddressType CUSTOM = fromString("CUSTOM");
@@ -23,6 +23,15 @@ public final class CustomizationIpAddressType extends ExpandableStringEnum<Custo
     public static final CustomizationIpAddressType USER_DEFINED = fromString("USER_DEFINED");
 
     /**
+     * Creates a new instance of CustomizationIpAddressType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomizationIpAddressType() {
+    }
+
+    /**
      * Creates or finds a CustomizationIpAddressType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class CustomizationIpAddressType extends ExpandableStringEnum<Custo
         return fromString(name, CustomizationIpAddressType.class);
     }
 
-    /** @return known CustomizationIpAddressType values. */
+    /**
+     * Gets known CustomizationIpAddressType values.
+     *
+     * @return known CustomizationIpAddressType values.
+     */
     public static Collection<CustomizationIpAddressType> values() {
         return values(CustomizationIpAddressType.class);
     }

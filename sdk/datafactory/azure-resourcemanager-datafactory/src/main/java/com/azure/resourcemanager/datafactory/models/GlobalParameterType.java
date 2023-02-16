@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GlobalParameterType. */
+/** Global Parameter type. */
 public final class GlobalParameterType extends ExpandableStringEnum<GlobalParameterType> {
     /** Static value Object for GlobalParameterType. */
     public static final GlobalParameterType OBJECT = fromString("Object");
@@ -27,6 +27,15 @@ public final class GlobalParameterType extends ExpandableStringEnum<GlobalParame
 
     /** Static value Array for GlobalParameterType. */
     public static final GlobalParameterType ARRAY = fromString("Array");
+
+    /**
+     * Creates a new instance of GlobalParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GlobalParameterType() {
+    }
 
     /**
      * Creates or finds a GlobalParameterType from its string representation.

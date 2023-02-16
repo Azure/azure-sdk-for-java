@@ -4,10 +4,25 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /** Supported parameters for a Key Phrase Extraction task. */
-@Immutable
+@Fluent
 public final class KeyPhraseTaskParameters extends PreBuiltTaskParameters {
+    /** Creates an instance of KeyPhraseTaskParameters class. */
+    public KeyPhraseTaskParameters() {}
 
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhraseTaskParameters setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhraseTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
+        return this;
+    }
 }

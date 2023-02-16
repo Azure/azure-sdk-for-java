@@ -4,9 +4,11 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -66,6 +68,14 @@ public class ReceiveNamedSessionSample {
 
         // A receiver is returned when a lock on the session is acquired, otherwise, it throws an exception.
         ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("greetings-id");
+
+        // Customize session state if needed.
+        byte[] newState = "new".getBytes(StandardCharsets.UTF_8);
+        receiver.setSessionState(newState);
+
+        // Get session state. The assertion is to ensure the state is correct. User should remove this.
+        byte[] state = receiver.getSessionState("greetings-id");
+        Assertions.assertArrayEquals(state, newState);
 
         try {
             while (isRunning.get()) {

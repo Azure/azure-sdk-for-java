@@ -20,6 +20,9 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private ExtractiveSummarizationTaskParameters parameters;
 
+    /** Creates an instance of ExtractiveSummarizationLROTask class. */
+    public ExtractiveSummarizationLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for an Extractive Summarization task.
      *
@@ -37,6 +40,13 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
      */
     public ExtractiveSummarizationLROTask setParameters(ExtractiveSummarizationTaskParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
         return this;
     }
 }

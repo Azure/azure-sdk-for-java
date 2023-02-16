@@ -20,11 +20,15 @@ public final class VirtualMachineScaleSetListOSUpgradeHistory {
     private List<UpgradeOperationHistoricalStatusInfoInner> value;
 
     /*
-     * The uri to fetch the next page of OS Upgrade History. Call ListNext()
-     * with this to fetch the next page of history of upgrades.
+     * The uri to fetch the next page of OS Upgrade History. Call ListNext() with this to fetch the next page of
+     * history of upgrades.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of VirtualMachineScaleSetListOSUpgradeHistory class. */
+    public VirtualMachineScaleSetListOSUpgradeHistory() {
+    }
 
     /**
      * Get the value property: The list of OS upgrades performed on the virtual machine scale set.

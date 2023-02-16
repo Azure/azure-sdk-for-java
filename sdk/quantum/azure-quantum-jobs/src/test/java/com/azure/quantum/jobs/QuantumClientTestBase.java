@@ -9,6 +9,8 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureCliCredentialBuilder;
 
+import java.nio.file.Files;
+
 public class QuantumClientTestBase extends TestBase {
     private final String endpoint = Configuration.getGlobalConfiguration().get("QUANTUM_ENDPOINT");
     private final String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
@@ -23,10 +25,14 @@ public class QuantumClientTestBase extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        return builder
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .credential(new AzureCliCredentialBuilder().build())
-            .subscriptionId(getSubscriptionId())
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            builder.httpClient(httpClient)
+                .credential(new AzureCliCredentialBuilder().build());
+        }
+
+        return builder.subscriptionId(getSubscriptionId())
             .resourceGroupName(getResourceGroup())
             .workspaceName(getWorkspaceName())
             .host(getEndpoint());

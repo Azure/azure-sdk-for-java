@@ -17,18 +17,26 @@ public final class DetectedLanguage {
     private String name;
 
     /*
-     * A two letter representation of the detected language according to the
-     * ISO 639-1 standard (e.g. en, fr).
+     * A two letter representation of the detected language according to the ISO 639-1 standard (e.g. en, fr).
      */
     @JsonProperty(value = "iso6391Name", required = true)
     private String iso6391Name;
 
     /*
-     * A confidence score between 0 and 1. Scores close to 1 indicate 100%
-     * certainty that the identified language is true.
+     * A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is
+     * true.
      */
     @JsonProperty(value = "confidenceScore", required = true)
     private double confidenceScore;
+
+    /*
+     * Identifies the script of the input document.
+     */
+    @JsonProperty(value = "script")
+    private ScriptKind script;
+
+    /** Creates an instance of DetectedLanguage class. */
+    public DetectedLanguage() {}
 
     /**
      * Get the name property: Long name of a detected language (e.g. English, French).
@@ -91,6 +99,26 @@ public final class DetectedLanguage {
      */
     public DetectedLanguage setConfidenceScore(double confidenceScore) {
         this.confidenceScore = confidenceScore;
+        return this;
+    }
+
+    /**
+     * Get the script property: Identifies the script of the input document.
+     *
+     * @return the script value.
+     */
+    public ScriptKind getScript() {
+        return this.script;
+    }
+
+    /**
+     * Set the script property: Identifies the script of the input document.
+     *
+     * @param script the script value to set.
+     * @return the DetectedLanguage object itself.
+     */
+    public DetectedLanguage setScript(ScriptKind script) {
+        this.script = script;
         return this;
     }
 }

@@ -12,25 +12,27 @@ import java.util.List;
 @Fluent
 public final class NetworkProfile {
     /*
-     * Specifies the list of resource Ids for the network interfaces associated
-     * with the virtual machine.
+     * Specifies the list of resource Ids for the network interfaces associated with the virtual machine.
      */
     @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterfaceReference> networkInterfaces;
 
     /*
-     * specifies the Microsoft.Network API version used when creating
-     * networking resources in the Network Interface Configurations
+     * specifies the Microsoft.Network API version used when creating networking resources in the Network Interface
+     * Configurations
      */
     @JsonProperty(value = "networkApiVersion")
     private NetworkApiVersion networkApiVersion;
 
     /*
-     * Specifies the networking configurations that will be used to create the
-     * virtual machine networking resources.
+     * Specifies the networking configurations that will be used to create the virtual machine networking resources.
      */
     @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations;
+
+    /** Creates an instance of NetworkProfile class. */
+    public NetworkProfile() {
+    }
 
     /**
      * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with

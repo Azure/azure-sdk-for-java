@@ -26,7 +26,7 @@ abstract class AbstractResourceCrudTests<T, K> {
     abstract void createStubManagementException();
     abstract K getKey();
 
-    ManagementException getManagementException(int statusCode, String message) {
+    ManagementException createManagementException(int statusCode, String message) {
         HttpResponse response = mock(HttpResponse.class);
         when(response.getStatusCode()).thenReturn(statusCode);
         return new ManagementException(message, response);

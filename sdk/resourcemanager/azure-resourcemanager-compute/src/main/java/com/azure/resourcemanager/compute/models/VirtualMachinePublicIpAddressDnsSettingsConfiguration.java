@@ -12,12 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualMachinePublicIpAddressDnsSettingsConfiguration {
     /*
-     * The Domain name label prefix of the PublicIPAddress resources that will
-     * be created. The generated name label is the concatenation of the domain
-     * name label and vm network profile unique ID.
+     * The Domain name label prefix of the PublicIPAddress resources that will be created. The generated name label is
+     * the concatenation of the domain name label and vm network profile unique ID.
      */
     @JsonProperty(value = "domainNameLabel", required = true)
     private String domainNameLabel;
+
+    /** Creates an instance of VirtualMachinePublicIpAddressDnsSettingsConfiguration class. */
+    public VirtualMachinePublicIpAddressDnsSettingsConfiguration() {
+    }
 
     /**
      * Get the domainNameLabel property: The Domain name label prefix of the PublicIPAddress resources that will be

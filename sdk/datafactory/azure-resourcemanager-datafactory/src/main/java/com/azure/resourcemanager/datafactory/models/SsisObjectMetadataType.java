@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SsisObjectMetadataType. */
+/** The type of SSIS object metadata. */
 public final class SsisObjectMetadataType extends ExpandableStringEnum<SsisObjectMetadataType> {
     /** Static value Folder for SsisObjectMetadataType. */
     public static final SsisObjectMetadataType FOLDER = fromString("Folder");
@@ -21,6 +21,15 @@ public final class SsisObjectMetadataType extends ExpandableStringEnum<SsisObjec
 
     /** Static value Environment for SsisObjectMetadataType. */
     public static final SsisObjectMetadataType ENVIRONMENT = fromString("Environment");
+
+    /**
+     * Creates a new instance of SsisObjectMetadataType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SsisObjectMetadataType() {
+    }
 
     /**
      * Creates or finds a SsisObjectMetadataType from its string representation.

@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class CorsRules {
     /*
-     * The List of CORS rules. You can include up to five CorsRule elements in
-     * the request.
+     * The List of CORS rules. You can include up to five CorsRule elements in the request.
      */
     @JsonProperty(value = "corsRules")
     private List<CorsRule> corsRules;

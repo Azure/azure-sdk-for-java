@@ -45,7 +45,11 @@ public final class WafRankingType extends ExpandableStringEnum<WafRankingType> {
         return fromString(name, WafRankingType.class);
     }
 
-    /** @return known WafRankingType values. */
+    /**
+     * Gets known WafRankingType values.
+     *
+     * @return known WafRankingType values.
+     */
     public static Collection<WafRankingType> values() {
         return values(WafRankingType.class);
     }

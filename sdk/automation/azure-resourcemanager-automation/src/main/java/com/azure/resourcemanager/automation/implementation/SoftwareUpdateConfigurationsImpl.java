@@ -14,10 +14,9 @@ import com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigur
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfiguration;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationListResult;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareUpdateConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SoftwareUpdateConfigurationsImpl.class);
 
     private final SoftwareUpdateConfigurationsClient innerClient;
 
@@ -117,7 +116,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
     public SoftwareUpdateConfiguration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,7 +124,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +133,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
         String softwareUpdateConfigurationName = Utils.getValueFromIdByName(id, "softwareUpdateConfigurations");
         if (softwareUpdateConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,7 +157,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         String id, String clientRequestId, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +165,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -175,7 +174,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
         String softwareUpdateConfigurationName = Utils.getValueFromIdByName(id, "softwareUpdateConfigurations");
         if (softwareUpdateConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -192,7 +191,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -200,7 +199,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -209,7 +208,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
         String softwareUpdateConfigurationName = Utils.getValueFromIdByName(id, "softwareUpdateConfigurations");
         if (softwareUpdateConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -225,14 +224,13 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
                 automationAccountName,
                 softwareUpdateConfigurationName,
                 localClientRequestId,
-                Context.NONE)
-            .getValue();
+                Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String clientRequestId, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -240,7 +238,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -249,7 +247,7 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
         String softwareUpdateConfigurationName = Utils.getValueFromIdByName(id, "softwareUpdateConfigurations");
         if (softwareUpdateConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

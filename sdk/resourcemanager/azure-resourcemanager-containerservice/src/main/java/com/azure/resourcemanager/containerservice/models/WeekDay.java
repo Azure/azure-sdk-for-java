@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WeekDay. */
+/** The weekday enum. */
 public final class WeekDay extends ExpandableStringEnum<WeekDay> {
     /** Static value Sunday for WeekDay. */
     public static final WeekDay SUNDAY = fromString("Sunday");
@@ -30,6 +30,15 @@ public final class WeekDay extends ExpandableStringEnum<WeekDay> {
 
     /** Static value Saturday for WeekDay. */
     public static final WeekDay SATURDAY = fromString("Saturday");
+
+    /**
+     * Creates a new instance of WeekDay value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WeekDay() {
+    }
 
     /**
      * Creates or finds a WeekDay from its string representation.

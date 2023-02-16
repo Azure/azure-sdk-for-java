@@ -25,6 +25,10 @@ public final class CosmosDbSqlApiCollectionDataset extends Dataset {
     private CosmosDbSqlApiCollectionDatasetTypeProperties innerTypeProperties =
         new CosmosDbSqlApiCollectionDatasetTypeProperties();
 
+    /** Creates an instance of CosmosDbSqlApiCollectionDataset class. */
+    public CosmosDbSqlApiCollectionDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: CosmosDB (SQL API) Collection dataset properties.
      *

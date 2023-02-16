@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.CredentialsClient;
 import com.azure.resourcemanager.automation.fluent.models.CredentialInner;
 import com.azure.resourcemanager.automation.models.Credential;
 import com.azure.resourcemanager.automation.models.Credentials;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CredentialsImpl implements Credentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CredentialsImpl.class);
 
     private final CredentialsClient innerClient;
 
@@ -79,7 +78,7 @@ public final class CredentialsImpl implements Credentials {
     public Credential getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -87,7 +86,7 @@ public final class CredentialsImpl implements Credentials {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -96,7 +95,7 @@ public final class CredentialsImpl implements Credentials {
         }
         String credentialName = Utils.getValueFromIdByName(id, "credentials");
         if (credentialName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'credentials'.", id)));
@@ -107,7 +106,7 @@ public final class CredentialsImpl implements Credentials {
     public Response<Credential> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class CredentialsImpl implements Credentials {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,7 +123,7 @@ public final class CredentialsImpl implements Credentials {
         }
         String credentialName = Utils.getValueFromIdByName(id, "credentials");
         if (credentialName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'credentials'.", id)));
@@ -135,7 +134,7 @@ public final class CredentialsImpl implements Credentials {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class CredentialsImpl implements Credentials {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -152,18 +151,18 @@ public final class CredentialsImpl implements Credentials {
         }
         String credentialName = Utils.getValueFromIdByName(id, "credentials");
         if (credentialName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'credentials'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, credentialName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, credentialName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,7 +170,7 @@ public final class CredentialsImpl implements Credentials {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,7 +179,7 @@ public final class CredentialsImpl implements Credentials {
         }
         String credentialName = Utils.getValueFromIdByName(id, "credentials");
         if (credentialName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'credentials'.", id)));

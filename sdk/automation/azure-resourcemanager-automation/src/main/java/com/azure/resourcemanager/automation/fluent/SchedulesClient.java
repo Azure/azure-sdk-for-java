@@ -45,7 +45,7 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
+     * @return definition of the schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScheduleInner> createOrUpdateWithResponse(
@@ -85,7 +85,7 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
+     * @return definition of the schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScheduleInner> updateWithResponse(
@@ -119,7 +119,7 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
+     * @return definition of the schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScheduleInner> getWithResponse(
@@ -148,7 +148,7 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -162,7 +162,7 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list schedule operation.
+     * @return the response model for the list schedule operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScheduleInner> listByAutomationAccount(String resourceGroupName, String automationAccountName);
@@ -176,7 +176,7 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list schedule operation.
+     * @return the response model for the list schedule operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScheduleInner> listByAutomationAccount(

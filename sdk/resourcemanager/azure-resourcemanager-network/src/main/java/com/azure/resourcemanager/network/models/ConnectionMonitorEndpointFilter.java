@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class ConnectionMonitorEndpointFilter {
     /*
-     * The behavior of the endpoint filter. Currently only 'Include' is
-     * supported.
+     * The behavior of the endpoint filter. Currently only 'Include' is supported.
      */
     @JsonProperty(value = "type")
     private ConnectionMonitorEndpointFilterType type;
@@ -23,6 +22,10 @@ public final class ConnectionMonitorEndpointFilter {
      */
     @JsonProperty(value = "items")
     private List<ConnectionMonitorEndpointFilterItem> items;
+
+    /** Creates an instance of ConnectionMonitorEndpointFilter class. */
+    public ConnectionMonitorEndpointFilter() {
+    }
 
     /**
      * Get the type property: The behavior of the endpoint filter. Currently only 'Include' is supported.

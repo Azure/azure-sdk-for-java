@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SslProtocolOperator. */
+/** Describes operator to be matched. */
 public final class SslProtocolOperator extends ExpandableStringEnum<SslProtocolOperator> {
     /** Static value Equal for SslProtocolOperator. */
     public static final SslProtocolOperator EQUAL = fromString("Equal");
@@ -24,7 +24,11 @@ public final class SslProtocolOperator extends ExpandableStringEnum<SslProtocolO
         return fromString(name, SslProtocolOperator.class);
     }
 
-    /** @return known SslProtocolOperator values. */
+    /**
+     * Gets known SslProtocolOperator values.
+     *
+     * @return known SslProtocolOperator values.
+     */
     public static Collection<SslProtocolOperator> values() {
         return values(SslProtocolOperator.class);
     }

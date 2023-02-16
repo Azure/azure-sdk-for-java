@@ -15,14 +15,17 @@ public final class PiiResult extends PreBuiltResult {
      * Response by document
      */
     @JsonProperty(value = "documents", required = true)
-    private List<PiiResultDocumentsItem> documents;
+    private List<PIIResultWithDetectedLanguage> documents;
+
+    /** Creates an instance of PiiResult class. */
+    public PiiResult() {}
 
     /**
      * Get the documents property: Response by document.
      *
      * @return the documents value.
      */
-    public List<PiiResultDocumentsItem> getDocuments() {
+    public List<PIIResultWithDetectedLanguage> getDocuments() {
         return this.documents;
     }
 
@@ -32,8 +35,29 @@ public final class PiiResult extends PreBuiltResult {
      * @param documents the documents value to set.
      * @return the PiiResult object itself.
      */
-    public PiiResult setDocuments(List<PiiResultDocumentsItem> documents) {
+    public PiiResult setDocuments(List<PIIResultWithDetectedLanguage> documents) {
         this.documents = documents;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiResult setErrors(List<InputError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiResult setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiResult setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
         return this;
     }
 }

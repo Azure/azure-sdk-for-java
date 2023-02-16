@@ -22,6 +22,10 @@ public final class CommitmentCost {
     @JsonProperty(value = "overageMeterId")
     private String overageMeterId;
 
+    /** Creates an instance of CommitmentCost class. */
+    public CommitmentCost() {
+    }
+
     /**
      * Get the commitmentMeterId property: Commitment meter Id.
      *

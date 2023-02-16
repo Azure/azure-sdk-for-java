@@ -16,6 +16,10 @@ public class DataFlowSource extends Transformation {
     @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
 
+    /** Creates an instance of DataFlowSource class. */
+    public DataFlowSource() {
+    }
+
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
      *

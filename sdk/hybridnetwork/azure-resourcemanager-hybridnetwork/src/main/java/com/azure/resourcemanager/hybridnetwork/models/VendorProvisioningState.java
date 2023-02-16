@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VendorProvisioningState. */
+/** The current vendor provisioning state. */
 public final class VendorProvisioningState extends ExpandableStringEnum<VendorProvisioningState> {
     /** Static value Unknown for VendorProvisioningState. */
     public static final VendorProvisioningState UNKNOWN = fromString("Unknown");
@@ -39,7 +39,11 @@ public final class VendorProvisioningState extends ExpandableStringEnum<VendorPr
         return fromString(name, VendorProvisioningState.class);
     }
 
-    /** @return known VendorProvisioningState values. */
+    /**
+     * Gets known VendorProvisioningState values.
+     *
+     * @return known VendorProvisioningState values.
+     */
     public static Collection<VendorProvisioningState> values() {
         return values(VendorProvisioningState.class);
     }

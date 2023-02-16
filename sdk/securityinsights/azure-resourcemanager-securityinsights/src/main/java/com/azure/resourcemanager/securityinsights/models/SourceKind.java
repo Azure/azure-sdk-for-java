@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SourceKind. */
+/** Source type of the content. */
 public final class SourceKind extends ExpandableStringEnum<SourceKind> {
     /** Static value LocalWorkspace for SourceKind. */
     public static final SourceKind LOCAL_WORKSPACE = fromString("LocalWorkspace");

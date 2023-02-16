@@ -13,8 +13,7 @@ import java.util.Map;
 @Fluent
 public class TagUpdate {
     /*
-     * List of key value pairs that describe the resource. This will overwrite
-     * the existing tags.
+     * List of key value pairs that describe the resource. This will overwrite the existing tags.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

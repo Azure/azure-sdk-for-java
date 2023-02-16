@@ -17,11 +17,13 @@ public final class SynapseNotebookReference {
     private NotebookReferenceType type;
 
     /*
-     * Reference notebook name. Type: string (or Expression with resultType
-     * string).
+     * Reference notebook name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "referenceName", required = true)
     private Object referenceName;
+
+    /** Creates an instance of SynapseNotebookReference class. */
+    public SynapseNotebookReference() {}
 
     /**
      * Get the type property: Synapse notebook reference type.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRoutePortAuthorizationUseStatus. */
+/** The authorization use status. */
 public final class ExpressRoutePortAuthorizationUseStatus
     extends ExpandableStringEnum<ExpressRoutePortAuthorizationUseStatus> {
     /** Static value Available for ExpressRoutePortAuthorizationUseStatus. */

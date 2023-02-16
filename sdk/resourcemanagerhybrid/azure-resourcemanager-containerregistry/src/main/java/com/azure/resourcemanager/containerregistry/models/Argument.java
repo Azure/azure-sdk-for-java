@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a run argument. */
 @Fluent
 public final class Argument {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Argument.class);
-
     /*
      * The name of the argument.
      */
@@ -102,12 +99,14 @@ public final class Argument {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Argument"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property value in model Argument"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Argument.class);
 }

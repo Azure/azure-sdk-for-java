@@ -20,12 +20,15 @@ public final class UpdateDomainListResult {
     private List<UpdateDomainInner> value;
 
     /*
-     * The URI to fetch the next page of resources. Use this to get the next
-     * page of resources. Do this till nextLink is null to fetch all the
-     * resources.
+     * The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink
+     * is null to fetch all the resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of UpdateDomainListResult class. */
+    public UpdateDomainListResult() {
+    }
 
     /**
      * Get the value property: The list of resources.

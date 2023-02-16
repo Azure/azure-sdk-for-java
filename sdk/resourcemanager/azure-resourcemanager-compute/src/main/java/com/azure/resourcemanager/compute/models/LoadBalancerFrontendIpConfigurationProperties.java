@@ -29,6 +29,10 @@ public final class LoadBalancerFrontendIpConfigurationProperties {
     @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
+    /** Creates an instance of LoadBalancerFrontendIpConfigurationProperties class. */
+    public LoadBalancerFrontendIpConfigurationProperties() {
+    }
+
     /**
      * Get the publicIpAddress property: The reference to the public ip address resource.
      *

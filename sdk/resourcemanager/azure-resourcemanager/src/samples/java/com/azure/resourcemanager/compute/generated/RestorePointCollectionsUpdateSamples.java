@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.RestorePointCollectionSourceProperties;
 import com.azure.resourcemanager.compute.models.RestorePointCollectionUpdate;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for RestorePointCollections Update. */
 public final class RestorePointCollectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePointCollections_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePointCollections_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: RestorePointCollections_Update_MaximumSet_Gen.
@@ -36,11 +35,11 @@ public final class RestorePointCollectionsUpdateSamples {
                         new RestorePointCollectionSourceProperties()
                             .withId(
                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePointCollections_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePointCollections_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: RestorePointCollections_Update_MinimumSet_Gen.
@@ -54,7 +53,11 @@ public final class RestorePointCollectionsUpdateSamples {
             .manager()
             .serviceClient()
             .getRestorePointCollections()
-            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaa", new RestorePointCollectionUpdate(), Context.NONE);
+            .updateWithResponse(
+                "rgcompute",
+                "aaaaaaaaaaaaaaaaaa",
+                new RestorePointCollectionUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

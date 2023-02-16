@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GalleryApplications Get. */
 public final class GalleryApplicationsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplication_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplication_Get.json
      */
     /**
      * Sample code: Get a gallery Application.
@@ -22,6 +20,7 @@ public final class GalleryApplicationsGetSamples {
             .manager()
             .serviceClient()
             .getGalleryApplications()
-            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryApplicationName", Context.NONE);
+            .getWithResponse(
+                "myResourceGroup", "myGalleryName", "myGalleryApplicationName", com.azure.core.util.Context.NONE);
     }
 }

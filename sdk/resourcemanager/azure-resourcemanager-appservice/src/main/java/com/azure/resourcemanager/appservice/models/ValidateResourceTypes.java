@@ -31,7 +31,11 @@ public final class ValidateResourceTypes extends ExpandableStringEnum<ValidateRe
         return fromString(name, ValidateResourceTypes.class);
     }
 
-    /** @return known ValidateResourceTypes values. */
+    /**
+     * Gets known ValidateResourceTypes values.
+     *
+     * @return known ValidateResourceTypes values.
+     */
     public static Collection<ValidateResourceTypes> values() {
         return values(ValidateResourceTypes.class);
     }

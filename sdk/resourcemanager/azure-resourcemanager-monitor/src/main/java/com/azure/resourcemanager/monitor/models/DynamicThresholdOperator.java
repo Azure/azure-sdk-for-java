@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DynamicThresholdOperator. */
+/** The operator used to compare the metric value against the threshold. */
 public final class DynamicThresholdOperator extends ExpandableStringEnum<DynamicThresholdOperator> {
     /** Static value GreaterThan for DynamicThresholdOperator. */
     public static final DynamicThresholdOperator GREATER_THAN = fromString("GreaterThan");
@@ -30,7 +30,11 @@ public final class DynamicThresholdOperator extends ExpandableStringEnum<Dynamic
         return fromString(name, DynamicThresholdOperator.class);
     }
 
-    /** @return known DynamicThresholdOperator values. */
+    /**
+     * Gets known DynamicThresholdOperator values.
+     *
+     * @return known DynamicThresholdOperator values.
+     */
     public static Collection<DynamicThresholdOperator> values() {
         return values(DynamicThresholdOperator.class);
     }

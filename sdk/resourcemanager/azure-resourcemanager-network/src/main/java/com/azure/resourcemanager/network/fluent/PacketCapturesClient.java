@@ -181,20 +181,6 @@ public interface PacketCapturesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a packet capture session by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PacketCaptureResultInner get(String resourceGroupName, String networkWatcherName, String packetCaptureName);
-
-    /**
-     * Gets a packet capture session by name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -204,6 +190,20 @@ public interface PacketCapturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PacketCaptureResultInner> getWithResponse(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context);
+
+    /**
+     * Gets a packet capture session by name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a packet capture session by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PacketCaptureResultInner get(String resourceGroupName, String networkWatcherName, String packetCaptureName);
 
     /**
      * Deletes the specified packet capture session.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.SharingUpdateInner;
 import com.azure.resourcemanager.compute.models.SharingProfileGroup;
 import com.azure.resourcemanager.compute.models.SharingProfileGroupTypes;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for GallerySharingProfile Update. */
 public final class GallerySharingProfileUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_EnableCommunityGallery.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_EnableCommunityGallery.json
      */
     /**
      * Sample code: share a gallery to community.
@@ -31,11 +30,11 @@ public final class GallerySharingProfileUpdateSamples {
                 "myResourceGroup",
                 "myGalleryName",
                 new SharingUpdateInner().withOperationType(SharingUpdateOperationTypes.ENABLE_COMMUNITY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_ResetSharingProfile.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_ResetSharingProfile.json
      */
     /**
      * Sample code: reset sharing profile of a gallery.
@@ -52,11 +51,11 @@ public final class GallerySharingProfileUpdateSamples {
                 "myResourceGroup",
                 "myGalleryName",
                 new SharingUpdateInner().withOperationType(SharingUpdateOperationTypes.RESET),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_AddToSharingProfile.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_AddToSharingProfile.json
      */
     /**
      * Sample code: Add sharing id to the sharing profile of a gallery.
@@ -87,6 +86,6 @@ public final class GallerySharingProfileUpdateSamples {
                                 new SharingProfileGroup()
                                     .withType(SharingProfileGroupTypes.AADTENANTS)
                                     .withIds(Arrays.asList("c24c76aa-8897-4027-9b03-8f7928b54ff6")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

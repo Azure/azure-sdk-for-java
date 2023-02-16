@@ -112,15 +112,7 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeListResponse> listAsync() {
-        return listWithResponseAsync()
-                .flatMap(
-                        (Response<IntegrationRuntimeListResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -134,27 +126,7 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeListResponse> listAsync(Context context) {
-        return listWithResponseAsync(context)
-                .flatMap(
-                        (Response<IntegrationRuntimeListResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * List Integration Runtimes.
-     *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeListResponse list() {
-        return listAsync().block();
+        return listWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -169,6 +141,18 @@ public final class IntegrationRuntimesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeListResponse> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
+    }
+
+    /**
+     * List Integration Runtimes.
+     *
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of integration runtime resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeListResponse list() {
+        return listWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -217,15 +201,7 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeResource> getAsync(String integrationRuntimeName) {
-        return getWithResponseAsync(integrationRuntimeName)
-                .flatMap(
-                        (Response<IntegrationRuntimeResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(integrationRuntimeName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -240,29 +216,7 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeResource> getAsync(String integrationRuntimeName, Context context) {
-        return getWithResponseAsync(integrationRuntimeName, context)
-                .flatMap(
-                        (Response<IntegrationRuntimeResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Get Integration Runtime.
-     *
-     * @param integrationRuntimeName The Integration Runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeResource get(String integrationRuntimeName) {
-        return getAsync(integrationRuntimeName).block();
+        return getWithResponseAsync(integrationRuntimeName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -278,5 +232,19 @@ public final class IntegrationRuntimesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeResource> getWithResponse(String integrationRuntimeName, Context context) {
         return getWithResponseAsync(integrationRuntimeName, context).block();
+    }
+
+    /**
+     * Get Integration Runtime.
+     *
+     * @param integrationRuntimeName The Integration Runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return integration Runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeResource get(String integrationRuntimeName) {
+        return getWithResponse(integrationRuntimeName, Context.NONE).getValue();
     }
 }

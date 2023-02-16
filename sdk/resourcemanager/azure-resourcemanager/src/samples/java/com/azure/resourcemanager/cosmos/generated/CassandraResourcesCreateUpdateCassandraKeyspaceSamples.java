@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceResource;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for CassandraResources CreateUpdateCassandraKeyspace. */
 public final class CassandraResourcesCreateUpdateCassandraKeyspaceSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBCassandraKeyspaceCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBCassandraKeyspaceCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceCreateUpdate.
@@ -36,7 +35,7 @@ public final class CassandraResourcesCreateUpdateCassandraKeyspaceSamples {
                     .withTags(mapOf())
                     .withResource(new CassandraKeyspaceResource().withId("keyspaceName"))
                     .withOptions(new CreateUpdateOptions()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to a Service resource. */
+/** Reference to a service resource. */
 @Fluent
 public final class ServiceResourceId {
     /*
@@ -16,6 +16,10 @@ public final class ServiceResourceId {
      */
     @JsonProperty(value = "id", required = true)
     private String id;
+
+    /** Creates an instance of ServiceResourceId class. */
+    public ServiceResourceId() {
+    }
 
     /**
      * Get the id property: Service resource ID.

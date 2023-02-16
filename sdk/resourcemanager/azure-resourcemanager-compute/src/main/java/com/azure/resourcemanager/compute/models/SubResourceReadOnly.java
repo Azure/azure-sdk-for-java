@@ -16,6 +16,10 @@ public class SubResourceReadOnly {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
+    /** Creates an instance of SubResourceReadOnly class. */
+    public SubResourceReadOnly() {
+    }
+
     /**
      * Get the id property: Resource Id.
      *

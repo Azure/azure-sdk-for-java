@@ -188,6 +188,14 @@ public interface WorkspaceProperties {
     String mlFlowTrackingUri();
 
     /**
+     * Gets the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
+     * API.
+     *
+     * @return the v1LegacyMode value.
+     */
+    Boolean v1LegacyMode();
+
+    /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.WorkspacePropertiesInner object.
      *
      * @return the inner object.

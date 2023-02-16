@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The authorization properties for accessing the source code repository. */
 @Fluent
 public final class AuthInfoUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthInfoUpdateParameters.class);
-
     /*
      * The type of Auth token.
      */

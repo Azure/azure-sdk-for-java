@@ -22,25 +22,6 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
      * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
-
-    /**
-     * Approves or rejects a private endpoint connection.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
      * @param ifMatch ETag of the private endpoint connection entity. Should only be specified for update, for which it
      *     should match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -59,19 +40,23 @@ public interface PrivateEndpointConnectionOperationsClient {
         Context context);
 
     /**
-     * Gets a private endpoint connection.
+     * Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
+     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return private Endpoint Connection ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionResourceInner get(
-        String resourceGroupName, String factoryName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionResourceInner createOrUpdate(
+        String resourceGroupName,
+        String factoryName,
+        String privateEndpointConnectionName,
+        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
      * Gets a private endpoint connection.
@@ -96,7 +81,7 @@ public interface PrivateEndpointConnectionOperationsClient {
         Context context);
 
     /**
-     * Deletes a private endpoint connection.
+     * Gets a private endpoint connection.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -104,9 +89,11 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String factoryName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionResourceInner get(
+        String resourceGroupName, String factoryName, String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection.
@@ -123,4 +110,17 @@ public interface PrivateEndpointConnectionOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String privateEndpointConnectionName, Context context);
+
+    /**
+     * Deletes a private endpoint connection.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param privateEndpointConnectionName The private endpoint connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String factoryName, String privateEndpointConnectionName);
 }

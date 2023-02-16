@@ -5,6 +5,7 @@ package com.azure.search.documents.implementation.util;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -32,6 +33,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
@@ -52,11 +54,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     // Type reference that used across many places. Have one copy here to minimize the memory.
     public static final TypeReference<Map<String, Object>> MAP_STRING_OBJECT_TYPE_REFERENCE =
@@ -78,11 +82,13 @@ public final class Utility {
 
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
+    private static final Context STATIC_ENABLE_REST_PROXY_CONTEXT;
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+        STATIC_ENABLE_REST_PROXY_CONTEXT = Context.NONE.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
 
         JacksonAdapter adapter = new JacksonAdapter();
 
@@ -109,7 +115,7 @@ public final class Utility {
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
         Configuration configuration, RetryPolicy retryPolicy, RetryOptions retryOptions,
-        AzureKeyCredential azureKeyCredential, TokenCredential tokenCredential,
+        AzureKeyCredential azureKeyCredential, TokenCredential tokenCredential, SearchAudience audience,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient,
         ClientLogger logger) {
         Configuration buildConfiguration = (configuration == null)
@@ -140,8 +146,8 @@ public final class Utility {
         } else if (azureKeyCredential != null) {
             httpPipelinePolicies.add(new AzureKeyCredentialPolicy("api-key", azureKeyCredential));
         } else if (tokenCredential != null) {
-            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                "https://search.azure.com/.default"));
+            String audienceUrl = audience == null ? SearchAudience.AZURE_PUBLIC_CLOUD.toString() : audience.toString();
+            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audienceUrl + "/.default"));
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("Builder doesn't have a credential "
                 + "configured. Supply either an AzureKeyCredential or TokenCredential."));
@@ -165,9 +171,9 @@ public final class Utility {
             .build();
     }
 
-    public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(SearchIndexClientImpl restClient,
-        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
-        Context context, ClientLogger logger) {
+    public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponseAsync(SearchIndexClientImpl restClient,
+                                                                                       List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
+                                                                                       Context context, ClientLogger logger) {
         try {
             return restClient.getDocuments().indexWithResponseAsync(new IndexBatch(actions), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
@@ -177,6 +183,19 @@ public final class Utility {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    public static Response<IndexDocumentsResult> indexDocumentsWithResponse(SearchIndexClientImpl restClient,
+                                                                                       List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
+                                                                                       Context context, ClientLogger logger) {
+        return executeRestCallWithExceptionHandling(() -> {
+            Response<com.azure.search.documents.implementation.models.IndexDocumentsResult> response =
+                restClient.getDocuments().indexWithResponse(new IndexBatch(actions), null, enableSyncRestProxy(context));
+            if (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) {
+                throw new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue()));
+            }
+            return MappingUtils.mappingIndexDocumentResultResponse(response);
+        });
     }
 
     public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion, String endpoint,
@@ -193,6 +212,26 @@ public final class Utility {
             return new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8);
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    public static  <T> T executeRestCallWithExceptionHandling(Supplier<T> supplier) {
+        try {
+            return supplier.get();
+        } catch (com.azure.search.documents.indexes.implementation.models.SearchErrorException exception) {
+            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
+        } catch (com.azure.search.documents.implementation.models.SearchErrorException exception) {
+            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
+    }
+
+    public static Context enableSyncRestProxy(Context context) {
+        if (context == null || context == Context.NONE) {
+            return STATIC_ENABLE_REST_PROXY_CONTEXT;
+        } else {
+            return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
         }
     }
 

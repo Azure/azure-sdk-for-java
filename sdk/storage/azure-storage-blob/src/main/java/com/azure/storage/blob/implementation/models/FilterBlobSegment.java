@@ -50,6 +50,9 @@ public final class FilterBlobSegment {
     @JsonProperty(value = "NextMarker")
     private String nextMarker;
 
+    /** Creates an instance of FilterBlobSegment class. */
+    public FilterBlobSegment() {}
+
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
      *

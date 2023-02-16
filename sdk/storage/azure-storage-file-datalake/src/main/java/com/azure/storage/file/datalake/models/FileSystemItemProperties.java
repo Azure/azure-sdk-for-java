@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.util.DateTimeRfc1123;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -21,6 +20,8 @@ public final class FileSystemItemProperties {
     private PublicAccessType publicAccess;
     private Boolean hasImmutabilityPolicy;
     private Boolean hasLegalHold;
+    private String encryptionScope;
+    private Boolean encryptionScopeOverridePrevented;
 
     /**
      * Get the lastModified property: The lastModified property.
@@ -196,6 +197,46 @@ public final class FileSystemItemProperties {
      */
     public FileSystemItemProperties setHasLegalHold(Boolean hasLegalHold) {
         this.hasLegalHold = hasLegalHold;
+        return this;
+    }
+
+    /**
+     * Get the encryptionScope property: The encryptionScope property.
+     *
+     * @return the encryptionScope value.
+     */
+    public String getEncryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: The encryptionScope property.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the FileSystemItemProperties object itself.
+     */
+    public FileSystemItemProperties setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
+     * Get the encryptionScopeOverridePrevented property: The DenyEncryptionScopeOverride property.
+     *
+     * @return the encryptionScopeOverridePrevented value.
+     */
+    public Boolean isEncryptionScopeOverridePrevented() {
+        return encryptionScopeOverridePrevented;
+    }
+
+    /**
+     * Set the encryptionScopeOverridePrevented property: The DenyEncryptionScopeOverride property.
+     *
+     * @param encryptionScopeOverridePrevented the encryptionScopeOverridePrevented value to set.
+     * @return the FileSystemItemProperties object itself.
+     */
+    public FileSystemItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {
+        this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
         return this;
     }
 }

@@ -13,24 +13,22 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class CommunityGalleryImageVersionProperties {
     /*
-     * The published date of the gallery image version Definition. This
-     * property can be used for decommissioning purposes. This property is
-     * updatable.
+     * The published date of the gallery image version Definition. This property can be used for decommissioning
+     * purposes. This property is updatable.
      */
     @JsonProperty(value = "publishedDate")
     private OffsetDateTime publishedDate;
 
     /*
-     * The end of life date of the gallery image version Definition. This
-     * property can be used for decommissioning purposes. This property is
-     * updatable.
+     * The end of life date of the gallery image version Definition. This property can be used for decommissioning
+     * purposes. This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * If set to true, Virtual Machines deployed from the latest version of the
-     * Image Definition won't use this Image Version.
+     * If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image
+     * Version.
      */
     @JsonProperty(value = "excludeFromLatest")
     private Boolean excludeFromLatest;
@@ -40,6 +38,10 @@ public final class CommunityGalleryImageVersionProperties {
      */
     @JsonProperty(value = "storageProfile")
     private SharedGalleryImageVersionStorageProfile storageProfile;
+
+    /** Creates an instance of CommunityGalleryImageVersionProperties class. */
+    public CommunityGalleryImageVersionProperties() {
+    }
 
     /**
      * Get the publishedDate property: The published date of the gallery image version Definition. This property can be

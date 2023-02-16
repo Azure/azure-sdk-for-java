@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.CassandraPartitionKey;
 import com.azure.resourcemanager.cosmos.models.CassandraSchema;
 import com.azure.resourcemanager.cosmos.models.CassandraTableCreateUpdateParameters;
@@ -19,7 +18,7 @@ import java.util.Map;
 /** Samples for CassandraResources CreateUpdateCassandraTable. */
 public final class CassandraResourcesCreateUpdateCassandraTableSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBCassandraTableCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBCassandraTableCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraTableCreateUpdate.
@@ -51,7 +50,7 @@ public final class CassandraResourcesCreateUpdateCassandraTableSamples {
                                     .withClusterKeys(
                                         Arrays.asList(new ClusterKey().withName("columnA").withOrderBy("Asc")))))
                     .withOptions(new CreateUpdateOptions()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

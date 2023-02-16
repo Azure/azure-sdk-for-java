@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HiveServerType. */
+/** The type of Hive server. */
 public final class HiveServerType extends ExpandableStringEnum<HiveServerType> {
     /** Static value HiveServer1 for HiveServerType. */
     public static final HiveServerType HIVE_SERVER1 = fromString("HiveServer1");
@@ -18,6 +18,15 @@ public final class HiveServerType extends ExpandableStringEnum<HiveServerType> {
 
     /** Static value HiveThriftServer for HiveServerType. */
     public static final HiveServerType HIVE_THRIFT_SERVER = fromString("HiveThriftServer");
+
+    /**
+     * Creates a new instance of HiveServerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HiveServerType() {
+    }
 
     /**
      * Creates or finds a HiveServerType from its string representation.

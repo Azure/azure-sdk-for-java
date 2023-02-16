@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/apps/578f0e27-12e9-4631-bc02-50b965da2633/events/availabilityResults/e313e0a0-9c1f-11e8-9f6d-3b25765db004",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:a868cd1346b534e1d19791216fab6df609d09c66b0f97bd640af4913ad89527e Java:10.0.1 (ApplicationInsightsDataClient, v1)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 09 Aug 2018 22:40:07 GMT",
+      "server" : "nginx",
+      "content-length" : "1256",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-expose-headers" : "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
+      "via" : "1.1 draft-ai-green.8bf9a5a5-9c0a-11e8-9972-70b3d5800001",
+      "access-control-allow-origin" : "*",
+      "x-content-type-options" : "nosniff",
+      "content-type" : "application/json; charset=utf-8; ieee754compatible=false; odata.metadata=none; odata.streaming=false",
+      "Body" : "{\"@odata.context\":\"http://localhost:1234/apps/578f0e27-12e9-4631-bc02-50b965da2633/events/availabilityResults/$metadata#availabilityResults\",\"value\":[{\"id\":\"e313e0a0-9c1f-11e8-9f6d-3b25765db004\",\"count\":1,\"type\":\"availabilityResult\",\"timestamp\":\"2018-08-09T22:01:48.838Z\",\"customDimensions\":{\"FullTestResultAvailable\":\"false\",\"WebtestArmResourceName\":\"google-ace-test\",\"SyntheticMonitorId\":\"default_google-ace-test_us-va-ash-azr\",\"WebtestLocationId\":\"us-va-ash-azr\"},\"customMeasurements\":null,\"operation\":{\"name\":\"\",\"id\":\"546358a739bc4a0bb0580a039947dd8a\",\"parentId\":\"546358a739bc4a0bb0580a039947dd8a\",\"syntheticSource\":\"\"},\"session\":{\"id\":\"\"},\"user\":{\"id\":\"\",\"accountId\":\"\",\"authenticatedId\":\"\"},\"cloud\":{\"roleName\":\"\",\"roleInstance\":\"\"},\"ai\":{\"iKey\":\"1145833f-6099-4855-9cb1-557cea26389e\",\"appName\":\"ace-test\",\"appId\":\"578f0e27-12e9-4631-bc02-50b965da2633\",\"sdkVersion\":\"\"},\"availabilityResult\":{\"name\":\"google\",\"success\":\"1\",\"duration\":494,\"performanceBucket\":\"\",\"message\":\"Passed\",\"location\":\"East US\",\"id\":\"546358a739bc4a0bb0580a039947dd8a\",\"size\":null},\"application\":{\"version\":\"\"},\"client\":{\"model\":\"\",\"os\":\"\",\"type\":\"PC\",\"browser\":\"\",\"ip\":\"0.0.0.0\",\"city\":\"Boydton\",\"stateOrProvince\":\"Virginia\",\"countryOrRegion\":\"United States\"}}]}",
+      "age" : "1778",
+      "odata-version" : "4.0;"
+    }
+  } ],
+  "variables" : [ ]
+}

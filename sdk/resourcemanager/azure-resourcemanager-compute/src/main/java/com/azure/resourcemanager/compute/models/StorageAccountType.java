@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageAccountType. */
+/** Specifies the storage account type to be used to store the image. This property is not updatable. */
 public final class StorageAccountType extends ExpandableStringEnum<StorageAccountType> {
     /** Static value Standard_LRS for StorageAccountType. */
     public static final StorageAccountType STANDARD_LRS = fromString("Standard_LRS");
@@ -18,6 +18,15 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
 
     /** Static value Premium_LRS for StorageAccountType. */
     public static final StorageAccountType PREMIUM_LRS = fromString("Premium_LRS");
+
+    /**
+     * Creates a new instance of StorageAccountType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageAccountType() {
+    }
 
     /**
      * Creates or finds a StorageAccountType from its string representation.

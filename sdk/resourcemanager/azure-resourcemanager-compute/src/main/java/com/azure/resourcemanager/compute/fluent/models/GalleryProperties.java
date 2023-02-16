@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GalleryProperties {
     /*
-     * The description of this Shared Image Gallery resource. This property is
-     * updatable.
+     * The description of this Shared Image Gallery resource. This property is updatable.
      */
     @JsonProperty(value = "description")
     private String description;
@@ -29,8 +28,9 @@ public final class GalleryProperties {
     private GalleryIdentifier identifier;
 
     /*
-     * The current state of the gallery or gallery artifact. The provisioning
-     * state, which only appears in the response.
+     * The current state of the gallery or gallery artifact.
+     *
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryProvisioningState provisioningState;
@@ -52,6 +52,10 @@ public final class GalleryProperties {
      */
     @JsonProperty(value = "sharingStatus", access = JsonProperty.Access.WRITE_ONLY)
     private SharingStatus sharingStatus;
+
+    /** Creates an instance of GalleryProperties class. */
+    public GalleryProperties() {
+    }
 
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
@@ -94,8 +98,9 @@ public final class GalleryProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
-     * which only appears in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact.
+     *
+     * <p>The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
      */

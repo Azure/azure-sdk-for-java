@@ -39,6 +39,10 @@ public final class GetMetadataActivityTypeProperties {
     @JsonProperty(value = "formatSettings")
     private FormatReadSettings formatSettings;
 
+    /** Creates an instance of GetMetadataActivityTypeProperties class. */
+    public GetMetadataActivityTypeProperties() {
+    }
+
     /**
      * Get the dataset property: GetMetadata activity dataset reference.
      *

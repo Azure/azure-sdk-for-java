@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ActiveDirectoryProperties {
     /*
-     * Specifies the primary domain that the AD DNS server is authoritative
-     * for.
+     * Specifies the primary domain that the AD DNS server is authoritative for.
      */
     @JsonProperty(value = "domainName", required = true)
     private String domainName;
@@ -21,13 +20,13 @@ public final class ActiveDirectoryProperties {
     /*
      * Specifies the NetBIOS domain name.
      */
-    @JsonProperty(value = "netBiosDomainName", required = true)
+    @JsonProperty(value = "netBiosDomainName")
     private String netBiosDomainName;
 
     /*
      * Specifies the Active Directory forest to get.
      */
-    @JsonProperty(value = "forestName", required = true)
+    @JsonProperty(value = "forestName")
     private String forestName;
 
     /*
@@ -39,13 +38,13 @@ public final class ActiveDirectoryProperties {
     /*
      * Specifies the security identifier (SID).
      */
-    @JsonProperty(value = "domainSid", required = true)
+    @JsonProperty(value = "domainSid")
     private String domainSid;
 
     /*
      * Specifies the security identifier (SID) for Azure Storage.
      */
-    @JsonProperty(value = "azureStorageSid", required = true)
+    @JsonProperty(value = "azureStorageSid")
     private String azureStorageSid;
 
     /*
@@ -232,35 +231,11 @@ public final class ActiveDirectoryProperties {
                     new IllegalArgumentException(
                         "Missing required property domainName in model ActiveDirectoryProperties"));
         }
-        if (netBiosDomainName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property netBiosDomainName in model ActiveDirectoryProperties"));
-        }
-        if (forestName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property forestName in model ActiveDirectoryProperties"));
-        }
         if (domainGuid() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property domainGuid in model ActiveDirectoryProperties"));
-        }
-        if (domainSid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainSid in model ActiveDirectoryProperties"));
-        }
-        if (azureStorageSid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureStorageSid in model ActiveDirectoryProperties"));
         }
     }
 

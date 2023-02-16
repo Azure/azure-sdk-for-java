@@ -21,12 +21,12 @@ import com.azure.resourcemanager.appservice.fluent.models.ResourceNameAvailabili
 import com.azure.resourcemanager.appservice.fluent.models.SkuInfosInner;
 import com.azure.resourcemanager.appservice.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.models.UserInner;
+import com.azure.resourcemanager.appservice.fluent.models.ValidateRequestInner;
 import com.azure.resourcemanager.appservice.fluent.models.ValidateResponseInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetValidationFailureDetailsInner;
 import com.azure.resourcemanager.appservice.models.CsmMoveResourceEnvelope;
 import com.azure.resourcemanager.appservice.models.ResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.SkuName;
-import com.azure.resourcemanager.appservice.models.ValidateRequest;
 import com.azure.resourcemanager.appservice.models.VnetParameters;
 import reactor.core.publisher.Mono;
 
@@ -390,6 +390,19 @@ public interface ResourceProvidersClient {
     /**
      * Get custom hostnames under this subscription.
      *
+     * @param hostname Specific hostname.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(String hostname);
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -412,6 +425,7 @@ public interface ResourceProvidersClient {
     /**
      * Get custom hostnames under this subscription.
      *
+     * @param hostname Specific hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -420,7 +434,7 @@ public interface ResourceProvidersClient {
      * @return custom hostnames under this subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(Context context);
+    PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(String hostname, Context context);
 
     /**
      * Description for Gets list of available geo regions plus ministamps.
@@ -792,7 +806,7 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ValidateResponseInner>> validateWithResponseAsync(
-        String resourceGroupName, ValidateRequest validateRequest);
+        String resourceGroupName, ValidateRequestInner validateRequest);
 
     /**
      * Description for Validate if a resource can be created.
@@ -806,7 +820,7 @@ public interface ResourceProvidersClient {
      * @return describes the result of resource validation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequest validateRequest);
+    Mono<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequestInner validateRequest);
 
     /**
      * Description for Validate if a resource can be created.
@@ -820,7 +834,7 @@ public interface ResourceProvidersClient {
      * @return describes the result of resource validation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateResponseInner validate(String resourceGroupName, ValidateRequest validateRequest);
+    ValidateResponseInner validate(String resourceGroupName, ValidateRequestInner validateRequest);
 
     /**
      * Description for Validate if a resource can be created.
@@ -836,7 +850,7 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ValidateResponseInner> validateWithResponse(
-        String resourceGroupName, ValidateRequest validateRequest, Context context);
+        String resourceGroupName, ValidateRequestInner validateRequest, Context context);
 
     /**
      * Description for Validate whether a resource can be moved.

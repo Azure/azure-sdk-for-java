@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkEncryptionEnforcement. */
+/** If the encrypted VNet allows VM that does not support encryption. */
 public final class VirtualNetworkEncryptionEnforcement
     extends ExpandableStringEnum<VirtualNetworkEncryptionEnforcement> {
     /** Static value DropUnencrypted for VirtualNetworkEncryptionEnforcement. */

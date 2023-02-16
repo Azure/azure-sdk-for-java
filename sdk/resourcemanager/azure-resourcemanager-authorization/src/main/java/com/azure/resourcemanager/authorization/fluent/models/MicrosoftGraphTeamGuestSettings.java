@@ -32,6 +32,10 @@ public final class MicrosoftGraphTeamGuestSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTeamGuestSettings class. */
+    public MicrosoftGraphTeamGuestSettings() {
+    }
+
     /**
      * Get the allowCreateUpdateChannels property: If set to true, guests can add and update channels.
      *

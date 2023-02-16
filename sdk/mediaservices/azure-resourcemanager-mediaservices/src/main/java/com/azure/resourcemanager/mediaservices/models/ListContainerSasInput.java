@@ -18,11 +18,14 @@ public final class ListContainerSasInput {
     private AssetContainerPermission permissions;
 
     /*
-     * The SAS URL expiration time.  This must be less than 24 hours from the
-     * current time.
+     * The SAS URL expiration time.  This must be less than 24 hours from the current time.
      */
     @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
+
+    /** Creates an instance of ListContainerSasInput class. */
+    public ListContainerSasInput() {
+    }
 
     /**
      * Get the permissions property: The permissions to set on the SAS URL.

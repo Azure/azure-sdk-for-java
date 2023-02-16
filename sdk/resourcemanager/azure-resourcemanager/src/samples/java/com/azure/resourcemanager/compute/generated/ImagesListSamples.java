@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Images List. */
 public final class ImagesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_ListBySubscription.json
      */
     /**
      * Sample code: List all virtual machine images in a subscription.
@@ -18,6 +16,6 @@ public final class ImagesListSamples {
      */
     public static void listAllVirtualMachineImagesInASubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().list(Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getImages().list(com.azure.core.util.Context.NONE);
     }
 }

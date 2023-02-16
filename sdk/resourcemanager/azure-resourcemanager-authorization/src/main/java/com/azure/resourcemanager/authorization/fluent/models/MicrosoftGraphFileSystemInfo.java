@@ -23,8 +23,7 @@ public final class MicrosoftGraphFileSystemInfo {
     private OffsetDateTime createdDateTime;
 
     /*
-     * The UTC date and time the file was last accessed. Available for the
-     * recent file list only.
+     * The UTC date and time the file was last accessed. Available for the recent file list only.
      */
     @JsonProperty(value = "lastAccessedDateTime")
     private OffsetDateTime lastAccessedDateTime;
@@ -39,6 +38,10 @@ public final class MicrosoftGraphFileSystemInfo {
      * fileSystemInfo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphFileSystemInfo class. */
+    public MicrosoftGraphFileSystemInfo() {
+    }
 
     /**
      * Get the createdDateTime property: The UTC date and time the file was created on a client.

@@ -39,7 +39,7 @@ public interface ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the activity.
+     * @return definition of the activity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ActivityInner> getWithResponse(
@@ -58,7 +58,7 @@ public interface ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list activity operation.
+     * @return the response model for the list activity operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActivityInner> listByModule(
@@ -74,7 +74,7 @@ public interface ActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list activity operation.
+     * @return the response model for the list activity operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActivityInner> listByModule(

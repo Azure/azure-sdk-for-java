@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for RecordSets Update. */
 public final class RecordSetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetTXTPatch.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetTXTPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone TXT Record Set.
@@ -37,7 +37,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetSOAPatch.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSOAPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone SOA Record Set.
@@ -61,7 +61,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetAPatch.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone A Record Set.
@@ -85,7 +85,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetCNAMEPatch.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetCNAMEPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone CNAME Record Set.
@@ -109,7 +109,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetPTRPatch.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetPTRPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone PTR Record Set.
@@ -133,7 +133,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetSRVPatch.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSRVPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone SRV Record Set.
@@ -157,7 +157,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetAAAAPatch.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAAAAPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone AAAA Record Set.
@@ -181,7 +181,7 @@ public final class RecordSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetMXPatch.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetMXPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone MX Record Set.

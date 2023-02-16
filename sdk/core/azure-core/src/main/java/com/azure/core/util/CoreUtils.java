@@ -3,33 +3,27 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
-import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -38,16 +32,6 @@ import java.util.stream.Collectors;
 public final class CoreUtils {
     // CoreUtils is a commonly used utility, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
-    private static final String COMMA = ",";
-    private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
-    private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
-    private static final byte ZERO = (byte) 0x00;
-    private static final byte BB = (byte) 0xBB;
-    private static final byte BF = (byte) 0xBF;
-    private static final byte EF = (byte) 0xEF;
-    private static final byte FE = (byte) 0xFE;
-    private static final byte FF = (byte) 0xFF;
-    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=([\\S]+)\\b", Pattern.CASE_INSENSITIVE);
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -151,7 +135,7 @@ public final class CoreUtils {
             return null;
         }
 
-        return Arrays.stream(array).map(mapper).collect(Collectors.joining(COMMA));
+        return Arrays.stream(array).map(mapper).collect(Collectors.joining(","));
     }
 
     /**
@@ -204,8 +188,7 @@ public final class CoreUtils {
      * @return an immutable {@link Map}.
      */
     public static Map<String, String> getProperties(String propertiesFileName) {
-        try (InputStream inputStream = CoreUtils.class.getClassLoader()
-            .getResourceAsStream(propertiesFileName)) {
+        try (InputStream inputStream = CoreUtils.class.getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
@@ -238,36 +221,7 @@ public final class CoreUtils {
             return null;
         }
 
-        if (bytes.length >= 3 && bytes[0] == EF && bytes[1] == BB && bytes[2] == BF) {
-            return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-        } else if (bytes.length >= 4 && bytes[0] == ZERO && bytes[1] == ZERO && bytes[2] == FE && bytes[3] == FF) {
-            return new String(bytes, 4, bytes.length - 4, UTF_32BE);
-        } else if (bytes.length >= 4 && bytes[0] == FF && bytes[1] == FE && bytes[2] == ZERO && bytes[3] == ZERO) {
-            return new String(bytes, 4, bytes.length - 4, UTF_32LE);
-        } else if (bytes.length >= 2 && bytes[0] == FE && bytes[1] == FF) {
-            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
-        } else if (bytes.length >= 2 && bytes[0] == FF && bytes[1] == FE) {
-            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16LE);
-        } else {
-            /*
-             * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
-             * present or invalid fallback to 'UTF-8' for the default charset.
-             */
-            if (!isNullOrEmpty(contentType)) {
-                try {
-                    Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
-                    if (charsetMatcher.find()) {
-                        return new String(bytes, Charset.forName(charsetMatcher.group(1)));
-                    } else {
-                        return new String(bytes, StandardCharsets.UTF_8);
-                    }
-                } catch (IllegalCharsetNameException | UnsupportedCharsetException ex) {
-                    return new String(bytes, StandardCharsets.UTF_8);
-                }
-            } else {
-                return new String(bytes, StandardCharsets.UTF_8);
-            }
-        }
+        return ImplUtils.bomAwareToString(bytes, 0, bytes.length, contentType);
     }
 
     /**
@@ -308,11 +262,18 @@ public final class CoreUtils {
             return null;
         }
 
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-        clientOptions.getHeaders().forEach(
-            header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        Iterator<Header> headerIterator = clientOptions.getHeaders().iterator();
+        if (!headerIterator.hasNext()) {
+            return null;
+        }
 
-        return httpHeaderList.isEmpty() ? null : new HttpHeaders(httpHeaderList);
+        HttpHeaders headers = new HttpHeaders();
+        do {
+            Header header = headerIterator.next();
+            headers.set(header.getName(), header.getValue());
+        } while (headerIterator.hasNext());
+
+        return headers;
     }
 
     /**
@@ -343,7 +304,7 @@ public final class CoreUtils {
             if (timeoutMillis < 0) {
                 logger.atVerbose()
                     .addKeyValue(timeoutPropertyName, timeoutMillis)
-                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout..");
+                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout.");
                 return Duration.ZERO;
             }
 
@@ -370,6 +331,17 @@ public final class CoreUtils {
         Objects.requireNonNull(into, "'into' cannot be null.");
         Objects.requireNonNull(from, "'from' cannot be null.");
 
+        // If the 'into' Context is the NONE Context just return the 'from' Context.
+        // This is safe as Context is immutable and prevents needing to create any new Contexts and temporary arrays.
+        if (into == Context.NONE) {
+            return from;
+        }
+
+        // Same goes the other way, where if the 'from' Context is the NONE Context just return the 'into' Context.
+        if (from == Context.NONE) {
+            return into;
+        }
+
         Context[] contextChain = from.getContextChain();
 
         Context returnContext = into;
@@ -380,5 +352,45 @@ public final class CoreUtils {
         }
 
         return returnContext;
+    }
+
+    /**
+     * Optimized version of {@link String#join(CharSequence, Iterable)} when the {@code values} has a small
+     * set of object.
+     *
+     * @param delimiter Delimiter between the values.
+     * @param values The values to join.
+     * @return The {@code values} joined delimited by the {@code delimiter}.
+     * @throws NullPointerException If {@code delimiter} or {@code values} is null.
+     */
+    public static String stringJoin(String delimiter, List<String> values) {
+        Objects.requireNonNull(delimiter, "'delimiter' cannot be null.");
+        Objects.requireNonNull(values, "'values' cannot be null.");
+
+        int count = values.size();
+        switch (count) {
+            case 0: return "";
+            case 1: return values.get(0);
+            case 2: return values.get(0) + delimiter + values.get(1);
+            case 3: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
+            case 4: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3);
+            case 5: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4);
+            case 6: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5);
+            case 7: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+            case 8: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                + delimiter + values.get(7);
+            case 9: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                + delimiter + values.get(7) + delimiter + values.get(8);
+            case 10: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                + delimiter + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+            default: return String.join(delimiter, values);
+        }
     }
 }

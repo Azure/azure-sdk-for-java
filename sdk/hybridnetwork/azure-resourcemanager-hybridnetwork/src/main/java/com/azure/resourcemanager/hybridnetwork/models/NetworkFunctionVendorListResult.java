@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.NetworkFunctionVendorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The network function vendor list result. */
 @Fluent
 public final class NetworkFunctionVendorListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionVendorListResult.class);
-
     /*
      * A list of available network function vendors and skus.
      */
@@ -27,6 +23,10 @@ public final class NetworkFunctionVendorListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of NetworkFunctionVendorListResult class. */
+    public NetworkFunctionVendorListResult() {
+    }
 
     /**
      * Get the value property: A list of available network function vendors and skus.

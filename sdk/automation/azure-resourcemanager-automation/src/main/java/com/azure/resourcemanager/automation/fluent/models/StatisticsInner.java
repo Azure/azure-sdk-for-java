@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Definition of the statistic. */
 @Immutable
 public final class StatisticsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StatisticsInner.class);
-
     /*
      * Gets the property value of the statistic.
      */

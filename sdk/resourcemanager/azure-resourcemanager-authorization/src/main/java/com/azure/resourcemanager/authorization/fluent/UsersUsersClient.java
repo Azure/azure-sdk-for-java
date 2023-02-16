@@ -135,19 +135,6 @@ public interface UsersUsersClient {
      * Add new entity to users.
      *
      * @param body New entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphUserInner createUser(MicrosoftGraphUserInner body);
-
-    /**
-     * Add new entity to users.
-     *
-     * @param body New entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
@@ -157,6 +144,19 @@ public interface UsersUsersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphUserInner> createUserWithResponse(MicrosoftGraphUserInner body, Context context);
+
+    /**
+     * Add new entity to users.
+     *
+     * @param body New entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphUserInner createUser(MicrosoftGraphUserInner body);
 
     /**
      * Get entity from users by key.
@@ -179,23 +179,6 @@ public interface UsersUsersClient {
      * Get entity from users by key.
      *
      * @param userId key: id of user.
-     * @param consistencyLevel Indicates the requested consistency level.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphUserInner> getUserAsync(
-        String userId, String consistencyLevel, List<Get2ItemsItem> select, List<Get3ItemsItem> expand);
-
-    /**
-     * Get entity from users by key.
-     *
-     * @param userId key: id of user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
@@ -204,19 +187,6 @@ public interface UsersUsersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphUserInner> getUserAsync(String userId);
-
-    /**
-     * Get entity from users by key.
-     *
-     * @param userId key: id of user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphUserInner getUser(String userId);
 
     /**
      * Get entity from users by key.
@@ -239,6 +209,19 @@ public interface UsersUsersClient {
         List<Get2ItemsItem> select,
         List<Get3ItemsItem> expand,
         Context context);
+
+    /**
+     * Get entity from users by key.
+     *
+     * @param userId key: id of user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return entity from users by key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphUserInner getUser(String userId);
 
     /**
      * Update entity in users.
@@ -273,19 +256,6 @@ public interface UsersUsersClient {
      *
      * @param userId key: id of user.
      * @param body New property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateUser(String userId, MicrosoftGraphUserInner body);
-
-    /**
-     * Update entity in users.
-     *
-     * @param userId key: id of user.
-     * @param body New property values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
@@ -295,6 +265,19 @@ public interface UsersUsersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updateUserWithResponse(String userId, MicrosoftGraphUserInner body, Context context);
+
+    /**
+     * Update entity in users.
+     *
+     * @param userId key: id of user.
+     * @param body New property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateUser(String userId, MicrosoftGraphUserInner body);
 
     /**
      * Delete entity from users.
@@ -314,20 +297,6 @@ public interface UsersUsersClient {
      * Delete entity from users.
      *
      * @param userId key: id of user.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteUserAsync(String userId, String ifMatch);
-
-    /**
-     * Delete entity from users.
-     *
-     * @param userId key: id of user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
@@ -336,18 +305,6 @@ public interface UsersUsersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteUserAsync(String userId);
-
-    /**
-     * Delete entity from users.
-     *
-     * @param userId key: id of user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteUser(String userId);
 
     /**
      * Delete entity from users.
@@ -363,4 +320,16 @@ public interface UsersUsersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteUserWithResponse(String userId, String ifMatch, Context context);
+
+    /**
+     * Delete entity from users.
+     *
+     * @param userId key: id of user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteUser(String userId);
 }

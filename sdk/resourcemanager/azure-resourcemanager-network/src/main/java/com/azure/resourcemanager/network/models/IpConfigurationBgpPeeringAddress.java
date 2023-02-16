@@ -18,15 +18,13 @@ public final class IpConfigurationBgpPeeringAddress {
     private String ipconfigurationId;
 
     /*
-     * The list of default BGP peering addresses which belong to IP
-     * configuration.
+     * The list of default BGP peering addresses which belong to IP configuration.
      */
     @JsonProperty(value = "defaultBgpIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> defaultBgpIpAddresses;
 
     /*
-     * The list of custom BGP peering addresses which belong to IP
-     * configuration.
+     * The list of custom BGP peering addresses which belong to IP configuration.
      */
     @JsonProperty(value = "customBgpIpAddresses")
     private List<String> customBgpIpAddresses;
@@ -36,6 +34,10 @@ public final class IpConfigurationBgpPeeringAddress {
      */
     @JsonProperty(value = "tunnelIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tunnelIpAddresses;
+
+    /** Creates an instance of IpConfigurationBgpPeeringAddress class. */
+    public IpConfigurationBgpPeeringAddress() {
+    }
 
     /**
      * Get the ipconfigurationId property: The ID of IP configuration which belongs to gateway.

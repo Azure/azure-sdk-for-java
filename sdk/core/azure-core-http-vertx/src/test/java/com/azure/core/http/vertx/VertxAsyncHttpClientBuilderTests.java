@@ -78,7 +78,7 @@ public class VertxAsyncHttpClientBuilderTests {
         HttpClient httpClient = builder.build();
 
         io.vertx.core.http.HttpClient client = ((VertxAsyncHttpClient) httpClient).client;
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) client).getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) client).options();
 
         String defaultPath = "/default";
         WireMockServer server
@@ -111,7 +111,7 @@ public class VertxAsyncHttpClientBuilderTests {
             .writeIdleTimeout(Duration.ofSeconds(40))
             .build();
 
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
         String defaultPath = "/default";
         WireMockServer server
@@ -155,7 +155,7 @@ public class VertxAsyncHttpClientBuilderTests {
             .build();
 
         HttpClientImpl vertxHttpClientImpl = (HttpClientImpl) httpClient.client;
-        io.vertx.core.http.HttpClientOptions options = vertxHttpClientImpl.getOptions();
+        io.vertx.core.http.HttpClientOptions options = vertxHttpClientImpl.options();
 
         io.vertx.core.net.ProxyOptions vertxProxyOptions = options.getProxyOptions();
         assertNotNull(vertxProxyOptions);
@@ -280,7 +280,8 @@ public class VertxAsyncHttpClientBuilderTests {
 
             CountDownLatch latch = new CountDownLatch(1);
             vertx.close(event -> latch.countDown());
-            assertTrue(latch.await(5, TimeUnit.SECONDS));
+            // Wait 60 seconds, same as production code.
+            assertTrue(latch.await(60, TimeUnit.SECONDS));
         }
     }
 

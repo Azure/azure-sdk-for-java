@@ -28,6 +28,10 @@ public final class HDInsightProperties {
     @JsonProperty(value = "administratorAccount")
     private VirtualMachineSshCredentials administratorAccount;
 
+    /** Creates an instance of HDInsightProperties class. */
+    public HDInsightProperties() {
+    }
+
     /**
      * Get the sshPort property: Port open for ssh connections on the master node of the cluster.
      *

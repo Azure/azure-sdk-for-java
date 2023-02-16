@@ -19,16 +19,15 @@ public final class ServiceSasParameters {
     private String canonicalizedResource;
 
     /*
-     * The signed services accessible with the service SAS. Possible values
-     * include: Blob (b), Container (c), File (f), Share (s).
+     * The signed services accessible with the service SAS. Possible values include: Blob (b), Container (c), File (f),
+     * Share (s).
      */
     @JsonProperty(value = "signedResource")
     private SignedResource resource;
 
     /*
-     * The signed permissions for the service SAS. Possible values include:
-     * Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update
-     * (u) and Process (p).
+     * The signed permissions for the service SAS. Possible values include: Read (r), Write (w), Delete (d), List (l),
+     * Add (a), Create (c), Update (u) and Process (p).
      */
     @JsonProperty(value = "signedPermission")
     private Permissions permissions;
@@ -58,8 +57,8 @@ public final class ServiceSasParameters {
     private OffsetDateTime sharedAccessExpiryTime;
 
     /*
-     * A unique value up to 64 characters in length that correlates to an
-     * access policy specified for the container, queue, or table.
+     * A unique value up to 64 characters in length that correlates to an access policy specified for the container,
+     * queue, or table.
      */
     @JsonProperty(value = "signedIdentifier")
     private String identifier;

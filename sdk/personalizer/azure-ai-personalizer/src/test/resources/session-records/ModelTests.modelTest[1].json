@@ -1,0 +1,102 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/model?signed=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8bbed288-7d10-4b4c-9cb5-9b8221957d79"
+    },
+    "Response" : {
+      "content-length" : "364",
+      "x-envoy-upstream-service-time" : "22",
+      "apim-request-id" : "ebc5d722-1252-4073-8d48-48e6f91cf4d8",
+      "Last-Modified" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "content-disposition" : "attachment; filename=model.vw; filename*=UTF-8''model.vw",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "BgAAADkuMS4wAAEAAAAAbQAAAAAAAAAAEgAAAAAAAAAAAAAAAAAAAKcAAAAgLS1jYl9hZGYgLS1jYl9leHBsb3JlX2FkZiAtLWNiX3R5cGUgbXRyIC0tY3NvYWFfbGRmIG11bHRpbGluZSAtLWNzb2FhX3JhbmsgLS1lcHNpbG9uIDAuMjAwMDAwMDAyOTgwMjMyIC0tbGVhcm5pbmdfcmF0ZSAwLjAwMTAwMDAwMDA0NzQ5NzQ1IC0tcG93ZXJfdCAwIC0tcXVhZHJhdGljIDo6AAQAAAB1dVWXAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwPw==",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/model?signed=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8eb0854d-613b-4e55-8ab9-2174190c2ffc"
+    },
+    "Response" : {
+      "content-length" : "1865",
+      "x-envoy-upstream-service-time" : "42",
+      "apim-request-id" : "4cfe2280-f2ed-46f6-84e2-abb26ed5a1a0",
+      "Last-Modified" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "content-disposition" : "attachment; filename=model.vw.zip; filename*=UTF-8''model.vw.zip",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "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",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/model/properties",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "9743bf56-f6f6-4d55-afa0-3ee0af32f069"
+    },
+    "Response" : {
+      "content-length" : "100",
+      "x-envoy-upstream-service-time" : "7",
+      "apim-request-id" : "d544be1d-9f06-45f4-bb8a-badeb490bd98",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"creationTime\": \"2022-08-17T21:56:50+00:00\",\n  \"lastModifiedTime\": \"2022-08-25T23:30:25+00:00\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/model",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e288a1c4-8569-460c-bf95-00f30e6e78c4"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "231",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "90585319-1c5c-4bc8-ab65-ef26e9d1cf1c",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -42,8 +42,7 @@ public final class AzureIaaSvmJobV2 extends Job {
     private List<AzureIaaSvmErrorInfo> errorDetails;
 
     /*
-     * Specifies whether the backup item is a Classic or an Azure Resource
-     * Manager VM.
+     * Specifies whether the backup item is a Classic or an Azure Resource Manager VM.
      */
     @JsonProperty(value = "virtualMachineVersion")
     private String virtualMachineVersion;
@@ -53,6 +52,10 @@ public final class AzureIaaSvmJobV2 extends Job {
      */
     @JsonProperty(value = "extendedInfo")
     private AzureIaaSvmJobExtendedInfo extendedInfo;
+
+    /** Creates an instance of AzureIaaSvmJobV2 class. */
+    public AzureIaaSvmJobV2() {
+    }
 
     /**
      * Get the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.

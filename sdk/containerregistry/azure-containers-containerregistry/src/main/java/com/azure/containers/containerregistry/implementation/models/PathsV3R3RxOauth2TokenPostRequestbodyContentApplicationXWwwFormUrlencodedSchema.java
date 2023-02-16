@@ -17,9 +17,8 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
     private String service;
 
     /*
-     * Which is expected to be a valid scope, and can be specified more than
-     * once for multiple scope requests. You obtained this from the
-     * Www-Authenticate response header from the challenge.
+     * Which is expected to be a valid scope, and can be specified more than once for multiple scope requests. You
+     * obtained this from the Www-Authenticate response header from the challenge.
      */
     @JsonProperty(value = "scope", required = true)
     private String scope;
@@ -35,6 +34,9 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      */
     @JsonProperty(value = "grant_type", required = true)
     private TokenGrantType grantType = TokenGrantType.REFRESH_TOKEN;
+
+    /** Creates an instance of PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema class. */
+    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {}
 
     /**
      * Get the service property: Indicates the name of your Azure container registry.

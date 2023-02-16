@@ -11,7 +11,7 @@ import com.azure.core.annotation.Immutable;
  * The {@link AnalyzeHealthcareEntitiesActionResult} model.
  */
 @Immutable
-public class AnalyzeHealthcareEntitiesActionResult extends TextAnalyticsActionResult {
+public final class AnalyzeHealthcareEntitiesActionResult extends TextAnalyticsActionResult {
     private AnalyzeHealthcareEntitiesResultCollection documentsResults;
 
     static {

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties related to a storage container endpoint. */
 @Fluent
 public final class RoutingStorageContainerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingStorageContainerProperties.class);
-
     /*
      * Id of the storage container endpoint
      */
@@ -45,11 +42,9 @@ public final class RoutingStorageContainerProperties {
     private ManagedIdentity identity;
 
     /*
-     * The name that identifies this endpoint. The name can only include
-     * alphanumeric characters, periods, underscores, hyphens and has a maximum
-     * length of 64 characters. The following names are reserved:  events,
-     * fileNotifications, $default. Endpoint names must be unique across
-     * endpoint types.
+     * The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
+     * hyphens and has a maximum length of 64 characters. The following names are reserved:  events, fileNotifications,
+     * $default. Endpoint names must be unique across endpoint types.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -73,31 +68,29 @@ public final class RoutingStorageContainerProperties {
     private String containerName;
 
     /*
-     * File name format for the blob. Default format is
-     * {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are
-     * mandatory but can be reordered.
+     * File name format for the blob. Default format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters
+     * are mandatory but can be reordered.
      */
     @JsonProperty(value = "fileNameFormat")
     private String fileNameFormat;
 
     /*
-     * Time interval at which blobs are written to storage. Value should be
-     * between 60 and 720 seconds. Default value is 300 seconds.
+     * Time interval at which blobs are written to storage. Value should be between 60 and 720 seconds. Default value
+     * is 300 seconds.
      */
     @JsonProperty(value = "batchFrequencyInSeconds")
     private Integer batchFrequencyInSeconds;
 
     /*
-     * Maximum number of bytes for each blob written to storage. Value should
-     * be between 10485760(10MB) and 524288000(500MB). Default value is
-     * 314572800(300MB).
+     * Maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and
+     * 524288000(500MB). Default value is 314572800(300MB).
      */
     @JsonProperty(value = "maxChunkSizeInBytes")
     private Integer maxChunkSizeInBytes;
 
     /*
-     * Encoding that is used to serialize messages to blobs. Supported values
-     * are 'avro', 'avrodeflate', and 'JSON'. Default value is 'avro'.
+     * Encoding that is used to serialize messages to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'.
+     * Default value is 'avro'.
      */
     @JsonProperty(value = "encoding")
     private RoutingStorageContainerPropertiesEncoding encoding;
@@ -384,16 +377,18 @@ public final class RoutingStorageContainerProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model RoutingStorageContainerProperties"));
         }
         if (containerName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property containerName in model RoutingStorageContainerProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoutingStorageContainerProperties.class);
 }

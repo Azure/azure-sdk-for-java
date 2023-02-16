@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class TargetLags {
+    /** Creates an instance of TargetLags class. */
+    public TargetLags() {
+    }
+
     /**
      * Validates the instance.
      *

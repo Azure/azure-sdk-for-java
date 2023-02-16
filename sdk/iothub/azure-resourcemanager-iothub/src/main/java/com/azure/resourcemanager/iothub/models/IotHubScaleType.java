@@ -7,7 +7,7 @@ package com.azure.resourcemanager.iothub.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for IotHubScaleType. */
+/** The type of the scaling enabled. */
 public enum IotHubScaleType {
     /** Enum value Automatic. */
     AUTOMATIC("Automatic"),
@@ -33,6 +33,9 @@ public enum IotHubScaleType {
      */
     @JsonCreator
     public static IotHubScaleType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IotHubScaleType[] items = IotHubScaleType.values();
         for (IotHubScaleType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum IotHubScaleType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

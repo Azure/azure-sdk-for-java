@@ -33,6 +33,10 @@ public final class CollectionOfDirectoryObject {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CollectionOfDirectoryObject class. */
+    public CollectionOfDirectoryObject() {
+    }
+
     /**
      * Get the value property: The value property.
      *

@@ -17,8 +17,7 @@ public final class ActivityEntityQueryTemplatePropertiesQueryDefinitions {
     private String query;
 
     /*
-     * The dimensions we want to summarize the timeline results on, this is
-     * comma separated list
+     * The dimensions we want to summarize the timeline results on, this is comma separated list
      */
     @JsonProperty(value = "summarizeBy")
     private String summarizeBy;

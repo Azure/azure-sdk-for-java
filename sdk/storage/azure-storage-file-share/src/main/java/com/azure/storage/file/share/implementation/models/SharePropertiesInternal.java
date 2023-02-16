@@ -110,8 +110,7 @@ public final class SharePropertiesInternal {
     private LeaseStateType leaseState;
 
     /*
-     * When a share is leased, specifies whether the lease is of infinite or
-     * fixed duration.
+     * When a share is leased, specifies whether the lease is of infinite or fixed duration.
      */
     @JsonProperty(value = "LeaseDuration")
     private LeaseDurationType leaseDuration;
@@ -133,6 +132,9 @@ public final class SharePropertiesInternal {
      */
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
+
+    /** Creates an instance of SharePropertiesInternal class. */
+    public SharePropertiesInternal() {}
 
     /**
      * Get the lastModified property: The Last-Modified property.

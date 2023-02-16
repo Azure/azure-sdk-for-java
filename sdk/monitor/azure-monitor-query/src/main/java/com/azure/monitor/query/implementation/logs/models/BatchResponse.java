@@ -12,11 +12,13 @@ import java.util.List;
 @Fluent
 public final class BatchResponse {
     /*
-     * An array of responses corresponding to each individual request in a
-     * batch.
+     * An array of responses corresponding to each individual request in a batch.
      */
     @JsonProperty(value = "responses")
     private List<BatchQueryResponse> responses;
+
+    /** Creates an instance of BatchResponse class. */
+    public BatchResponse() {}
 
     /**
      * Get the responses property: An array of responses corresponding to each individual request in a batch.

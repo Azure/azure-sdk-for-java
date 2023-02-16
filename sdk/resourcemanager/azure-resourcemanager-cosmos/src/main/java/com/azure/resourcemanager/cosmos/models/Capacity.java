@@ -11,14 +11,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Capacity {
     /*
-     * The total throughput limit imposed on the account. A
-     * totalThroughputLimit of 2000 imposes a strict limit of max throughput
-     * that can be provisioned on that account to be 2000. A
-     * totalThroughputLimit of -1 indicates no limits on provisioning of
-     * throughput.
+     * The total throughput limit imposed on the account. A totalThroughputLimit of 2000 imposes a strict limit of max
+     * throughput that can be provisioned on that account to be 2000. A totalThroughputLimit of -1 indicates no limits
+     * on provisioning of throughput.
      */
     @JsonProperty(value = "totalThroughputLimit")
     private Integer totalThroughputLimit;
+
+    /** Creates an instance of Capacity class. */
+    public Capacity() {
+    }
 
     /**
      * Get the totalThroughputLimit property: The total throughput limit imposed on the account. A totalThroughputLimit

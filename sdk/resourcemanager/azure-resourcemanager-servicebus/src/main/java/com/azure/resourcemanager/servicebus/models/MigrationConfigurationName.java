@@ -24,7 +24,11 @@ public final class MigrationConfigurationName extends ExpandableStringEnum<Migra
         return fromString(name, MigrationConfigurationName.class);
     }
 
-    /** @return known MigrationConfigurationName values. */
+    /**
+     * Gets known MigrationConfigurationName values.
+     *
+     * @return known MigrationConfigurationName values.
+     */
     public static Collection<MigrationConfigurationName> values() {
         return values(MigrationConfigurationName.class);
     }

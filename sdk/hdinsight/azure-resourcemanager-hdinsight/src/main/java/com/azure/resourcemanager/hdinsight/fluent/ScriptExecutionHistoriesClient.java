@@ -21,7 +21,7 @@ public interface ScriptExecutionHistoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RuntimeScriptActionDetailInner> listByCluster(String resourceGroupName, String clusterName);
@@ -35,11 +35,27 @@ public interface ScriptExecutionHistoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RuntimeScriptActionDetailInner> listByCluster(
         String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Promotes the specified ad-hoc script execution to a persisted script.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param scriptExecutionId The script execution Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> promoteWithResponse(
+        String resourceGroupName, String clusterName, String scriptExecutionId, Context context);
 
     /**
      * Promotes the specified ad-hoc script execution to a persisted script.
@@ -53,20 +69,4 @@ public interface ScriptExecutionHistoriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void promote(String resourceGroupName, String clusterName, String scriptExecutionId);
-
-    /**
-     * Promotes the specified ad-hoc script execution to a persisted script.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param scriptExecutionId The script execution Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> promoteWithResponse(
-        String resourceGroupName, String clusterName, String scriptExecutionId, Context context);
 }

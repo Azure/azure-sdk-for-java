@@ -27,8 +27,11 @@ public final class CassandraClusterPublicStatusDataCentersItem {
      * The nodes property.
      */
     @JsonProperty(value = "nodes")
-    private List<ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems>
-        nodes;
+    private List<CassandraClusterPublicStatusDataCentersItemNode> nodes;
+
+    /** Creates an instance of CassandraClusterPublicStatusDataCentersItem class. */
+    public CassandraClusterPublicStatusDataCentersItem() {
+    }
 
     /**
      * Get the name property: The name of this Datacenter.
@@ -75,8 +78,7 @@ public final class CassandraClusterPublicStatusDataCentersItem {
      *
      * @return the nodes value.
      */
-    public List<ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems>
-        nodes() {
+    public List<CassandraClusterPublicStatusDataCentersItemNode> nodes() {
         return this.nodes;
     }
 
@@ -87,7 +89,7 @@ public final class CassandraClusterPublicStatusDataCentersItem {
      * @return the CassandraClusterPublicStatusDataCentersItem object itself.
      */
     public CassandraClusterPublicStatusDataCentersItem withNodes(
-        List<ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems> nodes) {
+        List<CassandraClusterPublicStatusDataCentersItemNode> nodes) {
         this.nodes = nodes;
         return this;
     }

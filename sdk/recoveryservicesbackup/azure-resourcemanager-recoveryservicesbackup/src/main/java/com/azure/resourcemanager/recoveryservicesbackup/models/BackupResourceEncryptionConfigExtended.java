@@ -22,6 +22,10 @@ public final class BackupResourceEncryptionConfigExtended extends BackupResource
     @JsonProperty(value = "useSystemAssignedIdentity")
     private Boolean useSystemAssignedIdentity;
 
+    /** Creates an instance of BackupResourceEncryptionConfigExtended class. */
+    public BackupResourceEncryptionConfigExtended() {
+    }
+
     /**
      * Get the userAssignedIdentity property: User Assigned Identity Id.
      *

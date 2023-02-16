@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedClusters RotateClusterCertificates. */
 public final class ManagedClustersRotateClusterCertificatesSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/ManagedClustersRotateClusterCertificates.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/ManagedClustersRotateClusterCertificates.json
      */
     /**
      * Sample code: Rotate Cluster Certificates.
@@ -22,6 +20,6 @@ public final class ManagedClustersRotateClusterCertificatesSamples {
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .rotateClusterCertificates("rg1", "clustername1", Context.NONE);
+            .rotateClusterCertificates("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

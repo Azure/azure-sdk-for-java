@@ -28,15 +28,14 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     private UserArtifactManage manageActions;
 
     /*
-     * Additional settings for the VM app that contains the target package and
-     * config file name when it is deployed to target VM or VM scale set.
+     * Additional settings for the VM app that contains the target package and config file name when it is deployed to
+     * target VM or VM scale set.
      */
     @JsonProperty(value = "settings")
     private UserArtifactSettings settings;
 
     /*
-     * Optional. Additional settings to pass to the vm-application-manager
-     * extension. For advanced use only.
+     * Optional. Additional settings to pass to the vm-application-manager extension. For advanced use only.
      */
     @JsonProperty(value = "advancedSettings")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -47,6 +46,16 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
      */
     @JsonProperty(value = "enableHealthCheck")
     private Boolean enableHealthCheck;
+
+    /*
+     * A list of custom actions that can be performed with this Gallery Application Version.
+     */
+    @JsonProperty(value = "customActions")
+    private List<GalleryApplicationCustomAction> customActions;
+
+    /** Creates an instance of GalleryApplicationVersionPublishingProfile class. */
+    public GalleryApplicationVersionPublishingProfile() {
+    }
 
     /**
      * Get the source property: The source image from which the Image Version is going to be created.
@@ -152,6 +161,29 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
         return this;
     }
 
+    /**
+     * Get the customActions property: A list of custom actions that can be performed with this Gallery Application
+     * Version.
+     *
+     * @return the customActions value.
+     */
+    public List<GalleryApplicationCustomAction> customActions() {
+        return this.customActions;
+    }
+
+    /**
+     * Set the customActions property: A list of custom actions that can be performed with this Gallery Application
+     * Version.
+     *
+     * @param customActions the customActions value to set.
+     * @return the GalleryApplicationVersionPublishingProfile object itself.
+     */
+    public GalleryApplicationVersionPublishingProfile withCustomActions(
+        List<GalleryApplicationCustomAction> customActions) {
+        this.customActions = customActions;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public GalleryApplicationVersionPublishingProfile withTargetRegions(List<TargetRegion> targetRegions) {
@@ -223,6 +255,9 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
         }
         if (settings() != null) {
             settings().validate();
+        }
+        if (customActions() != null) {
+            customActions().forEach(e -> e.validate());
         }
     }
 

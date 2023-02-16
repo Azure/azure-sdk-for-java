@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the domain to create. */
 @Fluent
 public class AfdDomainUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdDomainUpdatePropertiesParameters.class);
-
     /*
      * The name of the profile which holds the domain.
      */
@@ -23,10 +19,8 @@ public class AfdDomainUpdatePropertiesParameters {
     private String profileName;
 
     /*
-     * The configuration specifying how to enable HTTPS for the domain - using
-     * AzureFrontDoor managed certificate or user's own certificate. If not
-     * specified, enabling ssl uses AzureFrontDoor managed certificate by
-     * default.
+     * The configuration specifying how to enable HTTPS for the domain - using AzureFrontDoor managed certificate or
+     * user's own certificate. If not specified, enabling ssl uses AzureFrontDoor managed certificate by default.
      */
     @JsonProperty(value = "tlsSettings")
     private AfdDomainHttpsParameters tlsSettings;
@@ -38,8 +32,7 @@ public class AfdDomainUpdatePropertiesParameters {
     private ResourceReference azureDnsZone;
 
     /*
-     * Resource reference to the Azure resource where custom domain ownership
-     * was prevalidated
+     * Resource reference to the Azure resource where custom domain ownership was prevalidated
      */
     @JsonProperty(value = "preValidatedCustomDomainResourceId")
     private ResourceReference preValidatedCustomDomainResourceId;

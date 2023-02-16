@@ -27,7 +27,11 @@ public final class GroupsSelect extends ExpandableStringEnum<GroupsSelect> {
         return fromString(name, GroupsSelect.class);
     }
 
-    /** @return known GroupsSelect values. */
+    /**
+     * Gets known GroupsSelect values.
+     *
+     * @return known GroupsSelect values.
+     */
     public static Collection<GroupsSelect> values() {
         return values(GroupsSelect.class);
     }

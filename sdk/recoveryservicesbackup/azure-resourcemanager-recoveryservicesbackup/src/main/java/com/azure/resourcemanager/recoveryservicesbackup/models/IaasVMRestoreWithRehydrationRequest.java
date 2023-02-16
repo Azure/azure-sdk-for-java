@@ -21,6 +21,10 @@ public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequ
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
+    /** Creates an instance of IaasVMRestoreWithRehydrationRequest class. */
+    public IaasVMRestoreWithRehydrationRequest() {
+    }
+
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
      *

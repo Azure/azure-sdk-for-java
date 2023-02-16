@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class MongoDbV2CollectionDataset extends Dataset {
     /*
-     * The collection name of the MongoDB database. Type: string (or Expression
-     * with resultType string).
+     * The collection name of the MongoDB database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.collection", required = true)
     private Object collection;
+
+    /** Creates an instance of MongoDbV2CollectionDataset class. */
+    public MongoDbV2CollectionDataset() {}
 
     /**
      * Get the collection property: The collection name of the MongoDB database. Type: string (or Expression with

@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A private link scoped resource. */
-@JsonFlatten
 @Fluent
-public class ScopedResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScopedResourceInner.class);
+public final class ScopedResourceInner extends ProxyResource {
+    /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private ScopedResourceProperties innerProperties;
 
     /*
-     * The resource id of the scoped Azure monitor resource.
+     * System data
      */
-    @JsonProperty(value = "properties.linkedResourceId")
-    private String linkedResourceId;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
-    /*
-     * State of the private endpoint connection.
+    /** Creates an instance of ScopedResourceInner class. */
+    public ScopedResourceInner() {
+    }
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ScopedResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: System data.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the linkedResourceId property: The resource id of the scoped Azure monitor resource.
@@ -35,7 +52,7 @@ public class ScopedResourceInner extends ProxyResource {
      * @return the linkedResourceId value.
      */
     public String linkedResourceId() {
-        return this.linkedResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().linkedResourceId();
     }
 
     /**
@@ -45,7 +62,10 @@ public class ScopedResourceInner extends ProxyResource {
      * @return the ScopedResourceInner object itself.
      */
     public ScopedResourceInner withLinkedResourceId(String linkedResourceId) {
-        this.linkedResourceId = linkedResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScopedResourceProperties();
+        }
+        this.innerProperties().withLinkedResourceId(linkedResourceId);
         return this;
     }
 
@@ -55,7 +75,7 @@ public class ScopedResourceInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -64,5 +84,8 @@ public class ScopedResourceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

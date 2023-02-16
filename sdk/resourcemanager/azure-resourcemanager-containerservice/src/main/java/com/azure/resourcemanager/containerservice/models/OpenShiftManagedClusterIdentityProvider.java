@@ -22,6 +22,10 @@ public final class OpenShiftManagedClusterIdentityProvider {
     @JsonProperty(value = "provider")
     private OpenShiftManagedClusterBaseIdentityProvider provider;
 
+    /** Creates an instance of OpenShiftManagedClusterIdentityProvider class. */
+    public OpenShiftManagedClusterIdentityProvider() {
+    }
+
     /**
      * Get the name property: Name of the provider.
      *

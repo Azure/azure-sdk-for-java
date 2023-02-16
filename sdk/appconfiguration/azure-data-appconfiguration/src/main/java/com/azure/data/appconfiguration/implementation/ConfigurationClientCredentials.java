@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -28,6 +27,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.data.appconfiguration.implementation.FakeCredentialConstants.SECRET_PLACEHOLDER;
+
 /**
  * Credentials that authorizes requests to Azure App Configuration. It uses content within the HTTP request to
  * generate the correct "Authorization" header value. {@link ConfigurationCredentialsPolicy} ensures that the content
@@ -39,6 +40,7 @@ import java.util.stream.Collectors;
 public class ConfigurationClientCredentials {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientCredentials.class);
 
+    private static final ByteBuffer EMPTY_BYTE_BUFFER = ByteBuffer.allocate(0);
     private static final String HOST_HEADER = "Host";
     private static final String DATE_HEADER = "Date";
     private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
@@ -74,29 +76,28 @@ public class ConfigurationClientCredentials {
 
     /**
      * Gets a list of headers to add to a request to authenticate it to the Azure APp Configuration service.
+     *
      * @param url the request url
      * @param httpMethod the request HTTP method
-     * @param contents the body content of the request
-     * @return a flux of headers to add for authorization
+     * @param binaryData the body content of the request
+     * @return a map of headers to add for authorization
      * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
-    Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuffer> contents) {
-        return contents
-            .collect(() -> {
-                try {
-                    return MessageDigest.getInstance("SHA-256");
-                } catch (NoSuchAlgorithmException e) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
-                }
-            }, (messageDigest, byteBuffer) -> {
-                    if (messageDigest != null) {
-                        messageDigest.update(byteBuffer);
-                    }
-                })
-            .flatMap(messageDigest -> Mono.just(headerProvider.getAuthenticationHeaders(
-                url,
-                httpMethod,
-                messageDigest)));
+    Map<String, String> getAuthorizationHeaders(URL url, String httpMethod, BinaryData binaryData) {
+        final ByteBuffer byteBuffer = binaryData == null ? EMPTY_BYTE_BUFFER : binaryData.toByteBuffer();
+
+        MessageDigest messageDigest;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(Exceptions.propagate(e));
+        }
+        messageDigest.update(byteBuffer);
+
+        return headerProvider.getAuthenticationHeaders(
+            url,
+            httpMethod,
+            messageDigest);
     }
 
     private static class AuthorizationHeaderProvider {
@@ -157,7 +158,7 @@ public class ConfigurationClientCredentials {
     private static class CredentialInformation {
         private static final String ENDPOINT = "endpoint=";
         private static final String ID = "id=";
-        private static final String SECRET = "secret=";
+        private static final String SECRET = SECRET_PLACEHOLDER;
 
         private final URL baseUri;
         private final String id;

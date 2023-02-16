@@ -45,7 +45,6 @@ import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit
 
 import static com.azure.storage.file.share.FileTestHelper.assertExceptionStatusCodeAndMessage
 import static com.azure.storage.file.share.FileTestHelper.assertResponseStatusCode
@@ -982,6 +981,25 @@ class FileAPITests extends APISpec {
         FileLastWrittenMode.PRESERVE | _
     }
 
+    def "Open input stream with range"() {
+        setup:
+        primaryFileClient.create(1024)
+        def shareFileRange = new ShareFileRange(5L, 10L)
+        def dataBytes = "long test string".getBytes(StandardCharsets.UTF_8)
+        def inputStreamData = new ByteArrayInputStream(dataBytes)
+
+        when:
+        primaryFileClient.upload(inputStreamData, dataBytes.size(), null)
+        def totalBytesRead = 0
+        def stream = primaryFileClient.openInputStream(shareFileRange)
+        while (stream.read() != -1) {
+            totalBytesRead++
+        }
+        stream.close()
+        then:
+        assert totalBytesRead == 6
+    }
+
     @Unroll
     def "Start copy"() {
         given:
@@ -1326,9 +1344,107 @@ class FileAPITests extends APISpec {
         false        | false         | false     | true
     }
 
-    @Ignore
     def "Abort copy"() {
-        //TODO: Need to find a way of mocking pending copy status
+        given:
+        def fileSize = Constants.MB
+        def bytes = new byte[fileSize]
+        def data = new ByteArrayInputStream(bytes)
+        def primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
+        primaryFileClient.create(fileSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data), null, null)
+
+        def sourceURL = primaryFileClient.getFileUrl()
+
+        def dest = fileBuilderHelper(shareName, filePath).buildFileClient()
+        dest.create(fileSize)
+
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(sourceURL, null, null)
+
+        def pollResponse = poller.poll()
+
+        assert pollResponse != null
+        assert pollResponse.getValue() != null
+        dest.abortCopy(pollResponse.getValue().getCopyId())
+
+        then:
+        // This exception is intentional. It is difficult to test abortCopy in a deterministic way.
+        // Exception thrown: "NoPendingCopyOperation"
+        thrown(ShareStorageException)
+    }
+
+    def "Abort copy lease"() {
+        given:
+        def fileSize = Constants.MB
+        def bytes = new byte[fileSize]
+        def data = new ByteArrayInputStream(bytes)
+        def primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
+        primaryFileClient.create(fileSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data), null, null)
+
+        def sourceURL = primaryFileClient.getFileUrl()
+
+        def dest = fileBuilderHelper(shareName, filePath).buildFileClient()
+        dest.create(fileSize)
+
+        // obtain lease
+        def leaseId = createLeaseClient(primaryFileClient).acquireLease()
+        def requestConditions = new ShareRequestConditions().setLeaseId(leaseId)
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(
+            sourceURL, new ShareFileCopyOptions().setDestinationRequestConditions(requestConditions), null)
+
+        def pollResponse = poller.poll()
+
+        assert pollResponse != null
+        assert pollResponse.getValue() != null
+        dest.abortCopyWithResponse(pollResponse.getValue().getCopyId(), requestConditions, null, null)
+
+        then:
+        // This exception is intentional. It is difficult to test abortCopy in a deterministic way.
+        // Exception thrown: "NoPendingCopyOperation"
+        thrown(ShareStorageException)
+    }
+
+    def "Abort copy invalid lease"() {
+        given:
+        def fileSize = Constants.MB
+        def bytes = new byte[fileSize]
+        def data = new ByteArrayInputStream(bytes)
+        def primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
+        primaryFileClient.create(fileSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data), null, null)
+
+        def sourceURL = primaryFileClient.getFileUrl()
+
+        def dest = fileBuilderHelper(shareName, filePath).buildFileClient()
+        dest.create(fileSize)
+
+        // create invalid lease
+        def leaseId = namer.getRandomUuid()
+        def requestConditions = new ShareRequestConditions().setLeaseId(leaseId)
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(
+            sourceURL, new ShareFileCopyOptions().setDestinationRequestConditions(requestConditions), null)
+
+        def pollResponse = poller.poll()
+
+        assert pollResponse != null
+        assert pollResponse.getValue() != null
+        dest.abortCopyWithResponse(pollResponse.getValue().getCopyId(), requestConditions, null, null)
+
+        then:
+        // exception: LeaseNotPresentWithFileOperation
+        thrown(ShareStorageException)
+    }
+
+    def "Abort copy error"() {
+        when:
+        primaryFileClient.abortCopy("randomId")
+
+        then:
+        // Exception thrown: "InvalidQueryParameterValue"
+        thrown(ShareStorageException)
     }
 
     def "Delete file"() {
@@ -1822,6 +1938,33 @@ class FileAPITests extends APISpec {
 
         then:
         thrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_02_12")
+    def "Rename sas token"() {
+        setup:
+        def permissions = new ShareFileSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
+
+        def sas = shareClient.generateSas(sasValues)
+        def client = getFileClient(sas, primaryFileClient.getFileUrl())
+        primaryFileClient.create(1024)
+
+        when:
+        def fileName = generatePathName()
+        def destClient = client.rename(fileName)
+
+        then:
+        notThrown(ShareStorageException)
+        destClient.getProperties()
+        destClient.getFilePath() == fileName
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")

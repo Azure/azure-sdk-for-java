@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Linux specific update configuration. */
 @Fluent
 public final class LinuxProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinuxProperties.class);
-
     /*
      * Update classifications included in the software update configuration.
      */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PatchInstallationState. */
+/** The state of the patch after the installation operation completed. */
 public final class PatchInstallationState extends ExpandableStringEnum<PatchInstallationState> {
     /** Static value Unknown for PatchInstallationState. */
     public static final PatchInstallationState UNKNOWN = fromString("Unknown");
@@ -27,6 +27,15 @@ public final class PatchInstallationState extends ExpandableStringEnum<PatchInst
 
     /** Static value Pending for PatchInstallationState. */
     public static final PatchInstallationState PENDING = fromString("Pending");
+
+    /**
+     * Creates a new instance of PatchInstallationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PatchInstallationState() {
+    }
 
     /**
      * Creates or finds a PatchInstallationState from its string representation.

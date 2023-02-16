@@ -78,6 +78,9 @@ public final class Path {
     @JsonProperty(value = "etag")
     private String eTag;
 
+    /** Creates an instance of Path class. */
+    public Path() {}
+
     /**
      * Get the name property: The name property.
      *

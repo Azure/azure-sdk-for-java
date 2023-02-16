@@ -48,20 +48,6 @@ public interface ServiceTagsClient {
      * @param location The location that will be used as a reference for version (not as a filter based on location, you
      *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
      *     subscription belongs to).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceTagsListResultInner list(String location);
-
-    /**
-     * Gets a list of service tag information resources.
-     *
-     * @param location The location that will be used as a reference for version (not as a filter based on location, you
-     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
-     *     subscription belongs to).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,4 +56,18 @@ public interface ServiceTagsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServiceTagsListResultInner> listWithResponse(String location, Context context);
+
+    /**
+     * Gets a list of service tag information resources.
+     *
+     * @param location The location that will be used as a reference for version (not as a filter based on location, you
+     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
+     *     subscription belongs to).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service tag information resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceTagsListResultInner list(String location);
 }

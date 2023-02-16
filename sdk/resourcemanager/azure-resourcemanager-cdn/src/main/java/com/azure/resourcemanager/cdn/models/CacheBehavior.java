@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CacheBehavior. */
+/** Caching behavior for the requests. */
 public final class CacheBehavior extends ExpandableStringEnum<CacheBehavior> {
     /** Static value BypassCache for CacheBehavior. */
     public static final CacheBehavior BYPASS_CACHE = fromString("BypassCache");
@@ -30,7 +30,11 @@ public final class CacheBehavior extends ExpandableStringEnum<CacheBehavior> {
         return fromString(name, CacheBehavior.class);
     }
 
-    /** @return known CacheBehavior values. */
+    /**
+     * Gets known CacheBehavior values.
+     *
+     * @return known CacheBehavior values.
+     */
     public static Collection<CacheBehavior> values() {
         return values(CacheBehavior.class);
     }

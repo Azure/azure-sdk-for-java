@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrchestrationServiceState. */
+/** The current state of the service. */
 public final class OrchestrationServiceState extends ExpandableStringEnum<OrchestrationServiceState> {
     /** Static value NotRunning for OrchestrationServiceState. */
     public static final OrchestrationServiceState NOT_RUNNING = fromString("NotRunning");
@@ -18,6 +18,15 @@ public final class OrchestrationServiceState extends ExpandableStringEnum<Orches
 
     /** Static value Suspended for OrchestrationServiceState. */
     public static final OrchestrationServiceState SUSPENDED = fromString("Suspended");
+
+    /**
+     * Creates a new instance of OrchestrationServiceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrchestrationServiceState() {
+    }
 
     /**
      * Creates or finds a OrchestrationServiceState from its string representation.

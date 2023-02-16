@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReplicationState. */
+/** This is the regional replication state. */
 public final class ReplicationState extends ExpandableStringEnum<ReplicationState> {
     /** Static value Unknown for ReplicationState. */
     public static final ReplicationState UNKNOWN = fromString("Unknown");
@@ -21,6 +21,15 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
 
     /** Static value Failed for ReplicationState. */
     public static final ReplicationState FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of ReplicationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReplicationState() {
+    }
 
     /**
      * Creates or finds a ReplicationState from its string representation.

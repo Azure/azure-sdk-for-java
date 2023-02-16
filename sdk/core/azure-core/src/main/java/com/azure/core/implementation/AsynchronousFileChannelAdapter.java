@@ -61,6 +61,8 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
     @Override
     public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
         beginOperation(Operation.WRITE);
+        // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
+        // Caller is responsible for that.
         fileChannel.write(src, POSITION_ATOMIC_UPDATER.get(this), attachment,
             new DelegatingCompletionHandler<>(handler, Operation.WRITE));
     }
@@ -69,6 +71,8 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
     public Future<Integer> write(ByteBuffer src) {
         beginOperation(Operation.WRITE);
         CompletableFuture<Integer> future = new CompletableFuture<>();
+        // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
+        // Caller is responsible for that.
         fileChannel.write(src, POSITION_ATOMIC_UPDATER.get(this), src,
             new DelegatingCompletionHandler<>(future, Operation.WRITE));
         return future;

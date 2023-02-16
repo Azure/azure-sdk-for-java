@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RestorePointCollections List. */
 public final class RestorePointCollectionsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePointCollection_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePointCollection_ListBySubscription.json
      */
     /**
      * Sample code: Gets the list of restore point collections in a subscription.
@@ -18,6 +16,11 @@ public final class RestorePointCollectionsListSamples {
      */
     public static void getsTheListOfRestorePointCollectionsInASubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections().list(Context.NONE);
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

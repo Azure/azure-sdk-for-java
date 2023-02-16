@@ -28,18 +28,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.search.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.search.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.search.models.PrivateEndpointConnectionListResult;
-import com.azure.resourcemanager.search.models.PrivateEndpointConnectionProperties;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
 public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpointConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateEndpointConnectionsService service;
 
@@ -155,22 +151,22 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
      *     service with the specified resource group.
+     * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Private Endpoint connection to the Azure Cognitive
-     *     Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(
         String resourceGroupName,
         String searchServiceName,
         String privateEndpointConnectionName,
-        UUID clientRequestId,
-        PrivateEndpointConnectionProperties properties) {
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -197,12 +193,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (privateEndpointConnection == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnection is required and cannot be null."));
+        } else {
+            privateEndpointConnection.validate();
         }
         final String accept = "application/json";
-        PrivateEndpointConnectionInner privateEndpointConnection = new PrivateEndpointConnectionInner();
-        privateEndpointConnection.withProperties(properties);
         return FluxUtil
             .withContext(
                 context ->
@@ -218,7 +217,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             privateEndpointConnection,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -230,23 +229,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
      *     service with the specified resource group.
+     * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Private Endpoint connection to the Azure Cognitive
-     *     Search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(
         String resourceGroupName,
         String searchServiceName,
         String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
         UUID clientRequestId,
-        PrivateEndpointConnectionProperties properties,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -274,12 +273,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (privateEndpointConnection == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnection is required and cannot be null."));
+        } else {
+            privateEndpointConnection.validate();
         }
         final String accept = "application/json";
-        PrivateEndpointConnectionInner privateEndpointConnection = new PrivateEndpointConnectionInner();
-        privateEndpointConnection.withProperties(properties);
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -304,32 +306,29 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
      *     service with the specified resource group.
+     * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Private Endpoint connection to the Azure Cognitive
-     *     Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> updateAsync(
         String resourceGroupName,
         String searchServiceName,
         String privateEndpointConnectionName,
-        UUID clientRequestId,
-        PrivateEndpointConnectionProperties properties) {
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        UUID clientRequestId) {
         return updateWithResponseAsync(
-                resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId, properties)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                resourceGroupName,
+                searchServiceName,
+                privateEndpointConnectionName,
+                privateEndpointConnection,
+                clientRequestId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -341,26 +340,27 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
      *     service with the specified resource group.
+     * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> updateAsync(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName) {
+        String resourceGroupName,
+        String searchServiceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection) {
         final UUID clientRequestId = null;
-        final PrivateEndpointConnectionProperties properties = null;
         return updateWithResponseAsync(
-                resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId, properties)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                resourceGroupName,
+                searchServiceName,
+                privateEndpointConnectionName,
+                privateEndpointConnection,
+                clientRequestId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -372,6 +372,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
      *     service with the specified resource group.
+     * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -379,11 +380,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner update(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName) {
+        String resourceGroupName,
+        String searchServiceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection) {
         final UUID clientRequestId = null;
-        final PrivateEndpointConnectionProperties properties = null;
         return updateAsync(
-                resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId, properties)
+                resourceGroupName,
+                searchServiceName,
+                privateEndpointConnectionName,
+                privateEndpointConnection,
+                clientRequestId)
             .block();
     }
 
@@ -396,30 +403,30 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
      *     service with the specified resource group.
+     * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Private Endpoint connection to the Azure Cognitive
-     *     Search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> updateWithResponse(
         String resourceGroupName,
         String searchServiceName,
         String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
         UUID clientRequestId,
-        PrivateEndpointConnectionProperties properties,
         Context context) {
         return updateWithResponseAsync(
                 resourceGroupName,
                 searchServiceName,
                 privateEndpointConnectionName,
+                privateEndpointConnection,
                 clientRequestId,
-                properties,
                 context)
             .block();
     }
@@ -438,7 +445,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
+     * @return the details of the private endpoint connection to the search service in the given resource group along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -487,7 +495,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -505,7 +513,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
+     * @return the details of the private endpoint connection to the search service in the given resource group along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -569,7 +578,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
+     * @return the details of the private endpoint connection to the search service in the given resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> getAsync(
@@ -579,14 +589,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         UUID clientRequestId) {
         return getWithResponseAsync(
                 resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -601,7 +604,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
+     * @return the details of the private endpoint connection to the search service in the given resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> getAsync(
@@ -609,14 +613,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         final UUID clientRequestId = null;
         return getWithResponseAsync(
                 resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -655,7 +652,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
+     * @return the details of the private endpoint connection to the search service in the given resource group along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(
@@ -683,7 +681,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> deleteWithResponseAsync(
@@ -732,7 +731,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -750,7 +749,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> deleteWithResponseAsync(
@@ -814,7 +814,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> deleteAsync(
@@ -824,14 +825,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         UUID clientRequestId) {
         return deleteWithResponseAsync(
                 resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -846,7 +840,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> deleteAsync(
@@ -854,14 +849,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         final UUID clientRequestId = null;
         return deleteWithResponseAsync(
                 resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -901,7 +889,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> deleteWithResponse(
@@ -927,7 +916,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceSinglePageAsync(
@@ -975,7 +965,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -991,7 +981,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceSinglePageAsync(
@@ -1051,7 +1042,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(
@@ -1071,7 +1063,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(
@@ -1095,7 +1088,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(
@@ -1115,7 +1109,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByService(
@@ -1137,7 +1132,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByService(
@@ -1154,7 +1150,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a list of Private Endpoint connections.
+     * @return response containing a list of Private Endpoint connections along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceNextSinglePageAsync(
@@ -1182,7 +1179,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1195,7 +1192,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a list of Private Endpoint connections.
+     * @return response containing a list of Private Endpoint connections along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceNextSinglePageAsync(

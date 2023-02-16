@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebActivityMethod. */
+/** The list of HTTP methods supported by a WebActivity. */
 public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMethod> {
     /** Static value GET for WebActivityMethod. */
     public static final WebActivityMethod GET = fromString("GET");
@@ -21,6 +21,15 @@ public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMet
 
     /** Static value DELETE for WebActivityMethod. */
     public static final WebActivityMethod DELETE = fromString("DELETE");
+
+    /**
+     * Creates a new instance of WebActivityMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebActivityMethod() {
+    }
 
     /**
      * Creates or finds a WebActivityMethod from its string representation.

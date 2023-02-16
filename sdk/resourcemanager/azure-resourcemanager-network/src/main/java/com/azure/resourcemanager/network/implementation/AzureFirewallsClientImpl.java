@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -34,6 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.AzureFirewallsClient;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
+import com.azure.resourcemanager.network.fluent.models.IpPrefixesListInner;
 import com.azure.resourcemanager.network.models.AzureFirewallListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -72,7 +74,7 @@ public final class AzureFirewallsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface AzureFirewallsService {
+    public interface AzureFirewallsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -161,6 +163,21 @@ public final class AzureFirewallsClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/azureFirewalls/{azureFirewallName}/learnedIPPrefixes")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> listLearnedPrefixes(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("azureFirewallName") String azureFirewallName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -214,7 +231,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -265,7 +282,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -448,7 +465,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -499,7 +516,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -534,21 +551,6 @@ public final class AzureFirewallsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Firewall.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureFirewallInner getByResourceGroup(String resourceGroupName, String azureFirewallName) {
-        return getByResourceGroupAsync(resourceGroupName, azureFirewallName).block();
-    }
-
-    /**
-     * Gets the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -559,6 +561,21 @@ public final class AzureFirewallsClientImpl
     public Response<AzureFirewallInner> getByResourceGroupWithResponse(
         String resourceGroupName, String azureFirewallName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, azureFirewallName, context).block();
+    }
+
+    /**
+     * Gets the specified Azure Firewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure Firewall.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AzureFirewallInner getByResourceGroup(String resourceGroupName, String azureFirewallName) {
+        return getByResourceGroupWithResponse(resourceGroupName, azureFirewallName, Context.NONE).getValue();
     }
 
     /**
@@ -600,7 +617,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -658,7 +675,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -871,7 +888,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -929,7 +946,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1130,7 +1147,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1185,7 +1202,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1290,7 +1307,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1333,7 +1350,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1403,9 +1420,259 @@ public final class AzureFirewallsClientImpl
     }
 
     /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> listLearnedPrefixesWithResponseAsync(
+        String resourceGroupName, String azureFirewallName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (azureFirewallName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2022-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listLearnedPrefixes(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            azureFirewallName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> listLearnedPrefixesWithResponseAsync(
+        String resourceGroupName, String azureFirewallName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (azureFirewallName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2022-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listLearnedPrefixes(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                azureFirewallName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context);
+    }
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<IpPrefixesListInner>, IpPrefixesListInner> beginListLearnedPrefixesAsync(
+        String resourceGroupName, String azureFirewallName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            listLearnedPrefixesWithResponseAsync(resourceGroupName, azureFirewallName);
+        return this
+            .client
+            .<IpPrefixesListInner, IpPrefixesListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                IpPrefixesListInner.class,
+                IpPrefixesListInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<IpPrefixesListInner>, IpPrefixesListInner> beginListLearnedPrefixesAsync(
+        String resourceGroupName, String azureFirewallName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            listLearnedPrefixesWithResponseAsync(resourceGroupName, azureFirewallName, context);
+        return this
+            .client
+            .<IpPrefixesListInner, IpPrefixesListInner>getLroResult(
+                mono, this.client.getHttpPipeline(), IpPrefixesListInner.class, IpPrefixesListInner.class, context);
+    }
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<IpPrefixesListInner>, IpPrefixesListInner> beginListLearnedPrefixes(
+        String resourceGroupName, String azureFirewallName) {
+        return beginListLearnedPrefixesAsync(resourceGroupName, azureFirewallName).getSyncPoller();
+    }
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<IpPrefixesListInner>, IpPrefixesListInner> beginListLearnedPrefixes(
+        String resourceGroupName, String azureFirewallName, Context context) {
+        return beginListLearnedPrefixesAsync(resourceGroupName, azureFirewallName, context).getSyncPoller();
+    }
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<IpPrefixesListInner> listLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName) {
+        return beginListLearnedPrefixesAsync(resourceGroupName, azureFirewallName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<IpPrefixesListInner> listLearnedPrefixesAsync(
+        String resourceGroupName, String azureFirewallName, Context context) {
+        return beginListLearnedPrefixesAsync(resourceGroupName, azureFirewallName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IpPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName) {
+        return listLearnedPrefixesAsync(resourceGroupName, azureFirewallName).block();
+    }
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IpPrefixesListInner listLearnedPrefixes(
+        String resourceGroupName, String azureFirewallName, Context context) {
+        return listLearnedPrefixesAsync(resourceGroupName, azureFirewallName, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1441,7 +1708,8 @@ public final class AzureFirewallsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1478,7 +1746,8 @@ public final class AzureFirewallsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1514,7 +1783,8 @@ public final class AzureFirewallsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

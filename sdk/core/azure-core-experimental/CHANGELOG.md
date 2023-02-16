@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.31 (Unreleased)
+## 1.0.0-beta.37 (Unreleased)
 
 ### Features Added
 
@@ -10,13 +10,61 @@
 
 ### Other Changes
 
+## 1.0.0-beta.36 (2023-02-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+
+## 1.0.0-beta.35 (2023-01-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
+
+## 1.0.0-beta.34 (2022-11-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to `1.34.0`.
+ 
+## 1.0.0-beta.33 (2022-10-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+
+## 1.0.0-beta.32 (2022-09-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+
+## 1.0.0-beta.31 (2022-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
+
 ## 1.0.0-beta.30 (2022-06-30)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
 
 ## 1.0.0-beta.29 (2022-06-03)
 

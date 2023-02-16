@@ -20,6 +20,10 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     @JsonProperty(value = "properties")
     private GalleryImageProperties innerProperties;
 
+    /** Creates an instance of GalleryImageUpdate class. */
+    public GalleryImageUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a gallery image definition.
      *
@@ -327,8 +331,9 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
-     * which only appears in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact.
+     *
+     * <p>The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
      */

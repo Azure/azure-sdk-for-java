@@ -195,6 +195,10 @@ public final class Region {
      */
     public static final Region UAE_CENTRAL = new Region("uaecentral", "UAE Central");
     /**
+     * Qatar Central (Middle East) (recommended)
+     */
+    public static final Region QATAR_CENTRAL = new Region("qatarcentral", "Qatar Central");
+    /**
      * South Africa North (Africa) (recommended)
      */
     public static final Region SOUTHAFRICA_NORTH = new Region("southafricanorth", "South Africa North");
@@ -277,6 +281,8 @@ public final class Region {
     private final String label;
 
     /**
+     * Gets the predefined Azure regions.
+     *
      * @return predefined Azure regions.
      */
     public static Collection<Region> values() {
@@ -314,6 +320,8 @@ public final class Region {
     }
 
     /**
+     * Gets the name of the region.
+     *
      * @return the name of the region.
      */
     public String name() {
@@ -321,6 +329,8 @@ public final class Region {
     }
 
     /**
+     * Gets the label of the region.
+     *
      * @return the label of the region.
      */
     public String label() {

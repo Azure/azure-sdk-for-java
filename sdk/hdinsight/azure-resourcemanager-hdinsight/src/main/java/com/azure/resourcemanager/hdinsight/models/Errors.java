@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The error message associated with the cluster creation. */
 @Fluent
 public final class Errors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Errors.class);
-
     /*
      * The error code.
      */
@@ -25,6 +21,10 @@ public final class Errors {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of Errors class. */
+    public Errors() {
+    }
 
     /**
      * Get the code property: The error code.

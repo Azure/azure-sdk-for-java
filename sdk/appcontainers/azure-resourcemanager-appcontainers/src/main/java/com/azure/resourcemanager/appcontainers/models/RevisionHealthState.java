@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RevisionHealthState. */
+/** Current health State of the revision. */
 public final class RevisionHealthState extends ExpandableStringEnum<RevisionHealthState> {
     /** Static value Healthy for RevisionHealthState. */
     public static final RevisionHealthState HEALTHY = fromString("Healthy");

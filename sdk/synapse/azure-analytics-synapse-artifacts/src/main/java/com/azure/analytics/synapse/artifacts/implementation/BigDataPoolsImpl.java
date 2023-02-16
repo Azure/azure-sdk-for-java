@@ -109,15 +109,7 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BigDataPoolResourceInfoListResult> listAsync() {
-        return listWithResponseAsync()
-                .flatMap(
-                        (Response<BigDataPoolResourceInfoListResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -131,27 +123,7 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BigDataPoolResourceInfoListResult> listAsync(Context context) {
-        return listWithResponseAsync(context)
-                .flatMap(
-                        (Response<BigDataPoolResourceInfoListResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * List Big Data Pools.
-     *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Big Data pools.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BigDataPoolResourceInfoListResult list() {
-        return listAsync().block();
+        return listWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -166,6 +138,18 @@ public final class BigDataPoolsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BigDataPoolResourceInfoListResult> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
+    }
+
+    /**
+     * List Big Data Pools.
+     *
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Big Data pools.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BigDataPoolResourceInfoListResult list() {
+        return listWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -213,15 +197,7 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BigDataPoolResourceInfo> getAsync(String bigDataPoolName) {
-        return getWithResponseAsync(bigDataPoolName)
-                .flatMap(
-                        (Response<BigDataPoolResourceInfo> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(bigDataPoolName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -236,29 +212,7 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BigDataPoolResourceInfo> getAsync(String bigDataPoolName, Context context) {
-        return getWithResponseAsync(bigDataPoolName, context)
-                .flatMap(
-                        (Response<BigDataPoolResourceInfo> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Get Big Data Pool.
-     *
-     * @param bigDataPoolName The Big Data Pool name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return big Data Pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BigDataPoolResourceInfo get(String bigDataPoolName) {
-        return getAsync(bigDataPoolName).block();
+        return getWithResponseAsync(bigDataPoolName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -274,5 +228,19 @@ public final class BigDataPoolsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BigDataPoolResourceInfo> getWithResponse(String bigDataPoolName, Context context) {
         return getWithResponseAsync(bigDataPoolName, context).block();
+    }
+
+    /**
+     * Get Big Data Pool.
+     *
+     * @param bigDataPoolName The Big Data Pool name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return big Data Pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BigDataPoolResourceInfo get(String bigDataPoolName) {
+        return getWithResponse(bigDataPoolName, Context.NONE).getValue();
     }
 }

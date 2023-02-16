@@ -14,7 +14,16 @@ public enum KnownWindowsVirtualMachineImage {
     /** Windows Server 2016 Data center. */
     WINDOWS_SERVER_2016_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2016-Datacenter"),
     /** Windows Server 2012 R2 Data center. */
-    WINDOWS_SERVER_2012_R2_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter");
+    WINDOWS_SERVER_2012_R2_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"),
+    /** Windows Server 2019 Data center gen2. */
+    WINDOWS_SERVER_2019_DATACENTER_GEN2("MicrosoftWindowsServer", "WindowsServer", "2019-datacenter-gensecond"),
+    /** Windows Server 2019 Data center with containers gen2. */
+    WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS_GEN2(
+        "MicrosoftWindowsServer", "WindowsServer", "2019-datacenter-with-containers-g2"),
+    /** Windows Server 2016 Data center gen2. */
+    WINDOWS_SERVER_2016_DATACENTER_GEN2("MicrosoftWindowsServer", "WindowsServer", "2016-datacenter-gensecond"),
+    /** Windows 10 2021 H2 Pro gen2. */
+    WINDOWS_DESKTOP_10_21H2_PRO_GEN2("MicrosoftWindowsDesktop", "Windows-10", "win10-21h2-pro-g2");
 
     private final String publisher;
     private final String offer;

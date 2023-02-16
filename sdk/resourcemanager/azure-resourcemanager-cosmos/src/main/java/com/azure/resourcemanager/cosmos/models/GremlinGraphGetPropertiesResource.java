@@ -17,18 +17,20 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
     private String rid;
 
     /*
-     * A system generated property that denotes the last updated timestamp of
-     * the resource.
+     * A system generated property that denotes the last updated timestamp of the resource.
      */
     @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
-     * A system generated property representing the resource etag required for
-     * optimistic concurrency control.
+     * A system generated property representing the resource etag required for optimistic concurrency control.
      */
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of GremlinGraphGetPropertiesResource class. */
+    public GremlinGraphGetPropertiesResource() {
+    }
 
     /**
      * Get the rid property: A system generated property. A unique identifier.

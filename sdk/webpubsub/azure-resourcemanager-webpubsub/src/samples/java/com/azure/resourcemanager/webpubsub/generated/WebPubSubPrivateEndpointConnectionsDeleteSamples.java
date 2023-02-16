@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebPubSubPrivateEndpointConnections Delete. */
 public final class WebPubSubPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubPrivateEndpointConnections_Delete.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubPrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: WebPubSubPrivateEndpointConnections_Delete.

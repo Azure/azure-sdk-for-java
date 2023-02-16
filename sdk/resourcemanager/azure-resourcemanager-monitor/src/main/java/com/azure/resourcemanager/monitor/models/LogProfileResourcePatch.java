@@ -5,62 +5,31 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.monitor.fluent.models.LogProfileProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The log profile resource for patch operations. */
-@JsonFlatten
 @Fluent
-public class LogProfileResourcePatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogProfileResourcePatch.class);
-
+public final class LogProfileResourcePatch {
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * the resource id of the storage account to which you would like to send
-     * the Activity Log.
+     * The log profile properties for an update operation.
      */
-    @JsonProperty(value = "properties.storageAccountId")
-    private String storageAccountId;
+    @JsonProperty(value = "properties")
+    private LogProfileProperties innerProperties;
 
-    /*
-     * The service bus rule ID of the service bus namespace in which you would
-     * like to have Event Hubs created for streaming the Activity Log. The rule
-     * ID is of the format: '{service bus resource ID}/authorizationrules/{key
-     * name}'.
-     */
-    @JsonProperty(value = "properties.serviceBusRuleId")
-    private String serviceBusRuleId;
-
-    /*
-     * List of regions for which Activity Log events should be stored or
-     * streamed. It is a comma separated list of valid ARM locations including
-     * the 'global' location.
-     */
-    @JsonProperty(value = "properties.locations")
-    private List<String> locations;
-
-    /*
-     * the categories of the logs. These categories are created as is
-     * convenient to the user. Some values are: 'Write', 'Delete', and/or
-     * 'Action.'
-     */
-    @JsonProperty(value = "properties.categories")
-    private List<String> categories;
-
-    /*
-     * the retention policy for the events in the log.
-     */
-    @JsonProperty(value = "properties.retentionPolicy")
-    private RetentionPolicy retentionPolicy;
+    /** Creates an instance of LogProfileResourcePatch class. */
+    public LogProfileResourcePatch() {
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -83,13 +52,22 @@ public class LogProfileResourcePatch {
     }
 
     /**
+     * Get the innerProperties property: The log profile properties for an update operation.
+     *
+     * @return the innerProperties value.
+     */
+    private LogProfileProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the storageAccountId property: the resource id of the storage account to which you would like to send the
      * Activity Log.
      *
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
-        return this.storageAccountId;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountId();
     }
 
     /**
@@ -100,7 +78,10 @@ public class LogProfileResourcePatch {
      * @return the LogProfileResourcePatch object itself.
      */
     public LogProfileResourcePatch withStorageAccountId(String storageAccountId) {
-        this.storageAccountId = storageAccountId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LogProfileProperties();
+        }
+        this.innerProperties().withStorageAccountId(storageAccountId);
         return this;
     }
 
@@ -112,7 +93,7 @@ public class LogProfileResourcePatch {
      * @return the serviceBusRuleId value.
      */
     public String serviceBusRuleId() {
-        return this.serviceBusRuleId;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusRuleId();
     }
 
     /**
@@ -124,7 +105,10 @@ public class LogProfileResourcePatch {
      * @return the LogProfileResourcePatch object itself.
      */
     public LogProfileResourcePatch withServiceBusRuleId(String serviceBusRuleId) {
-        this.serviceBusRuleId = serviceBusRuleId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LogProfileProperties();
+        }
+        this.innerProperties().withServiceBusRuleId(serviceBusRuleId);
         return this;
     }
 
@@ -135,7 +119,7 @@ public class LogProfileResourcePatch {
      * @return the locations value.
      */
     public List<String> locations() {
-        return this.locations;
+        return this.innerProperties() == null ? null : this.innerProperties().locations();
     }
 
     /**
@@ -146,7 +130,10 @@ public class LogProfileResourcePatch {
      * @return the LogProfileResourcePatch object itself.
      */
     public LogProfileResourcePatch withLocations(List<String> locations) {
-        this.locations = locations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LogProfileProperties();
+        }
+        this.innerProperties().withLocations(locations);
         return this;
     }
 
@@ -157,7 +144,7 @@ public class LogProfileResourcePatch {
      * @return the categories value.
      */
     public List<String> categories() {
-        return this.categories;
+        return this.innerProperties() == null ? null : this.innerProperties().categories();
     }
 
     /**
@@ -168,7 +155,10 @@ public class LogProfileResourcePatch {
      * @return the LogProfileResourcePatch object itself.
      */
     public LogProfileResourcePatch withCategories(List<String> categories) {
-        this.categories = categories;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LogProfileProperties();
+        }
+        this.innerProperties().withCategories(categories);
         return this;
     }
 
@@ -178,7 +168,7 @@ public class LogProfileResourcePatch {
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
-        return this.retentionPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().retentionPolicy();
     }
 
     /**
@@ -188,7 +178,10 @@ public class LogProfileResourcePatch {
      * @return the LogProfileResourcePatch object itself.
      */
     public LogProfileResourcePatch withRetentionPolicy(RetentionPolicy retentionPolicy) {
-        this.retentionPolicy = retentionPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LogProfileProperties();
+        }
+        this.innerProperties().withRetentionPolicy(retentionPolicy);
         return this;
     }
 
@@ -198,8 +191,8 @@ public class LogProfileResourcePatch {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (retentionPolicy() != null) {
-            retentionPolicy().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

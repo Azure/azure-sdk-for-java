@@ -7,7 +7,7 @@ package com.azure.resourcemanager.security.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RuleState. */
+/** Possible states of the rule. */
 public enum RuleState {
     /** Enum value Enabled. */
     ENABLED("Enabled"),
@@ -33,6 +33,9 @@ public enum RuleState {
      */
     @JsonCreator
     public static RuleState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RuleState[] items = RuleState.values();
         for (RuleState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum RuleState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

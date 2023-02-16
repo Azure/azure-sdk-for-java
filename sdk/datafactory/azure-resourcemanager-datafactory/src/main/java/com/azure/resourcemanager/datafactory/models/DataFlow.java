@@ -38,11 +38,14 @@ public class DataFlow {
     private List<Object> annotations;
 
     /*
-     * The folder that this data flow is in. If not specified, Data flow will
-     * appear at the root level.
+     * The folder that this data flow is in. If not specified, Data flow will appear at the root level.
      */
     @JsonProperty(value = "folder")
     private DataFlowFolder folder;
+
+    /** Creates an instance of DataFlow class. */
+    public DataFlow() {
+    }
 
     /**
      * Get the description property: The description of the data flow.

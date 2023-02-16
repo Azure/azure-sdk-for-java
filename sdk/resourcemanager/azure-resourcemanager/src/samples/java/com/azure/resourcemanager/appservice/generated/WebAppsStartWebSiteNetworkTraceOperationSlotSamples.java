@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApps StartWebSiteNetworkTraceOperationSlot. */
 public final class WebAppsStartWebSiteNetworkTraceOperationSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StartWebSiteNetworkTraceOperation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/StartWebSiteNetworkTraceOperation.json
      */
     /**
      * Sample code: Start a new network trace operation for a site.

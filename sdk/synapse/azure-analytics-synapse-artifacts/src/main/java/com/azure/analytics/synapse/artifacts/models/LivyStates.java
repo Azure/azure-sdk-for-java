@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LivyStates. */
+/** The batch state. */
 public final class LivyStates extends ExpandableStringEnum<LivyStates> {
     /** Static value not_started for LivyStates. */
     public static final LivyStates NOT_STARTED = fromString("not_started");
@@ -54,7 +54,11 @@ public final class LivyStates extends ExpandableStringEnum<LivyStates> {
         return fromString(name, LivyStates.class);
     }
 
-    /** @return known LivyStates values. */
+    /**
+     * Gets known LivyStates values.
+     *
+     * @return known LivyStates values.
+     */
     public static Collection<LivyStates> values() {
         return values(LivyStates.class);
     }

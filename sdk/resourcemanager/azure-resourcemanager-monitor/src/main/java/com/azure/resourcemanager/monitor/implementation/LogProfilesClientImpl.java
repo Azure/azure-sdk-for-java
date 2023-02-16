@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.LogProfilesClient;
 import com.azure.resourcemanager.monitor.fluent.models.LogProfileResourceInner;
 import com.azure.resourcemanager.monitor.models.LogProfileCollection;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LogProfilesClient. */
 public final class LogProfilesClientImpl implements LogProfilesClient {
-    private final ClientLogger logger = new ClientLogger(LogProfilesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LogProfilesService service;
 
@@ -63,7 +60,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientLogProf")
-    private interface LogProfilesService {
+    public interface LogProfilesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles/{logProfileName}")
         @ExpectedResponses({200})
@@ -132,7 +129,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String logProfileName) {
@@ -173,7 +170,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String logProfileName, Context context) {
@@ -205,11 +202,26 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String logProfileName) {
-        return deleteWithResponseAsync(logProfileName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(logProfileName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes the log profile.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String logProfileName, Context context) {
+        return deleteWithResponseAsync(logProfileName, context).block();
     }
 
     /**
@@ -222,22 +234,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String logProfileName) {
-        deleteAsync(logProfileName).block();
-    }
-
-    /**
-     * Deletes the log profile.
-     *
-     * @param logProfileName The name of the log profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String logProfileName, Context context) {
-        return deleteWithResponseAsync(logProfileName, context).block();
+        deleteWithResponse(logProfileName, Context.NONE);
     }
 
     /**
@@ -247,7 +244,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile.
+     * @return the log profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogProfileResourceInner>> getWithResponseAsync(String logProfileName) {
@@ -290,7 +287,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile.
+     * @return the log profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LogProfileResourceInner>> getWithResponseAsync(String logProfileName, Context context) {
@@ -329,19 +326,26 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile.
+     * @return the log profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogProfileResourceInner> getAsync(String logProfileName) {
-        return getWithResponseAsync(logProfileName)
-            .flatMap(
-                (Response<LogProfileResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(logProfileName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the log profile.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the log profile along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LogProfileResourceInner> getWithResponse(String logProfileName, Context context) {
+        return getWithResponseAsync(logProfileName, context).block();
     }
 
     /**
@@ -355,22 +359,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogProfileResourceInner get(String logProfileName) {
-        return getAsync(logProfileName).block();
-    }
-
-    /**
-     * Gets the log profile.
-     *
-     * @param logProfileName The name of the log profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogProfileResourceInner> getWithResponse(String logProfileName, Context context) {
-        return getWithResponseAsync(logProfileName, context).block();
+        return getWithResponse(logProfileName, Context.NONE).getValue();
     }
 
     /**
@@ -381,7 +370,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile resource.
+     * @return the log profile resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogProfileResourceInner>> createOrUpdateWithResponseAsync(
@@ -432,7 +421,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile resource.
+     * @return the log profile resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LogProfileResourceInner>> createOrUpdateWithResponseAsync(
@@ -479,20 +468,30 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile resource.
+     * @return the log profile resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogProfileResourceInner> createOrUpdateAsync(
         String logProfileName, LogProfileResourceInner parameters) {
         return createOrUpdateWithResponseAsync(logProfileName, parameters)
-            .flatMap(
-                (Response<LogProfileResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update a log profile in Azure Monitoring REST API.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param parameters Parameters supplied to the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the log profile resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LogProfileResourceInner> createOrUpdateWithResponse(
+        String logProfileName, LogProfileResourceInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(logProfileName, parameters, context).block();
     }
 
     /**
@@ -507,24 +506,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogProfileResourceInner createOrUpdate(String logProfileName, LogProfileResourceInner parameters) {
-        return createOrUpdateAsync(logProfileName, parameters).block();
-    }
-
-    /**
-     * Create or update a log profile in Azure Monitoring REST API.
-     *
-     * @param logProfileName The name of the log profile.
-     * @param parameters Parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogProfileResourceInner> createOrUpdateWithResponse(
-        String logProfileName, LogProfileResourceInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(logProfileName, parameters, context).block();
+        return createOrUpdateWithResponse(logProfileName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -535,7 +517,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile resource.
+     * @return the log profile resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogProfileResourceInner>> updateWithResponseAsync(
@@ -587,7 +569,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile resource.
+     * @return the log profile resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LogProfileResourceInner>> updateWithResponseAsync(
@@ -635,20 +617,30 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile resource.
+     * @return the log profile resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogProfileResourceInner> updateAsync(
         String logProfileName, LogProfileResourcePatch logProfilesResource) {
         return updateWithResponseAsync(logProfileName, logProfilesResource)
-            .flatMap(
-                (Response<LogProfileResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param logProfilesResource Parameters supplied to the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the log profile resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LogProfileResourceInner> updateWithResponse(
+        String logProfileName, LogProfileResourcePatch logProfilesResource, Context context) {
+        return updateWithResponseAsync(logProfileName, logProfilesResource, context).block();
     }
 
     /**
@@ -663,24 +655,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogProfileResourceInner update(String logProfileName, LogProfileResourcePatch logProfilesResource) {
-        return updateAsync(logProfileName, logProfilesResource).block();
-    }
-
-    /**
-     * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
-     *
-     * @param logProfileName The name of the log profile.
-     * @param logProfilesResource Parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the log profile resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogProfileResourceInner> updateWithResponse(
-        String logProfileName, LogProfileResourcePatch logProfilesResource, Context context) {
-        return updateWithResponseAsync(logProfileName, logProfilesResource, context).block();
+        return updateWithResponse(logProfileName, logProfilesResource, Context.NONE).getValue();
     }
 
     /**
@@ -688,7 +663,8 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of log profiles.
+     * @return represents a collection of log profiles along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogProfileResourceInner>> listSinglePageAsync() {
@@ -725,7 +701,8 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of log profiles.
+     * @return represents a collection of log profiles along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogProfileResourceInner>> listSinglePageAsync(Context context) {
@@ -757,7 +734,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of log profiles.
+     * @return represents a collection of log profiles as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LogProfileResourceInner> listAsync() {
@@ -771,7 +748,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of log profiles.
+     * @return represents a collection of log profiles as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogProfileResourceInner> listAsync(Context context) {
@@ -783,7 +760,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of log profiles.
+     * @return represents a collection of log profiles as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogProfileResourceInner> list() {
@@ -797,7 +774,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of log profiles.
+     * @return represents a collection of log profiles as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogProfileResourceInner> list(Context context) {

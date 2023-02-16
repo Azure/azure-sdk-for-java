@@ -17,8 +17,9 @@ public final class RegionalSharingStatus {
     private String region;
 
     /*
-     * The sharing state of the gallery. Gallery sharing state in current
-     * region
+     * The sharing state of the gallery.
+     *
+     * Gallery sharing state in current region
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SharingState state;
@@ -28,6 +29,10 @@ public final class RegionalSharingStatus {
      */
     @JsonProperty(value = "details")
     private String details;
+
+    /** Creates an instance of RegionalSharingStatus class. */
+    public RegionalSharingStatus() {
+    }
 
     /**
      * Get the region property: Region name.
@@ -50,7 +55,9 @@ public final class RegionalSharingStatus {
     }
 
     /**
-     * Get the state property: The sharing state of the gallery. Gallery sharing state in current region.
+     * Get the state property: The sharing state of the gallery.
+     *
+     * <p>Gallery sharing state in current region.
      *
      * @return the state value.
      */

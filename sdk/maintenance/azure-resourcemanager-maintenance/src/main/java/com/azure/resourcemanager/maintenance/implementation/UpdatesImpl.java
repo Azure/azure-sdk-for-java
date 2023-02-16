@@ -11,10 +11,9 @@ import com.azure.resourcemanager.maintenance.fluent.UpdatesClient;
 import com.azure.resourcemanager.maintenance.fluent.models.UpdateInner;
 import com.azure.resourcemanager.maintenance.models.Update;
 import com.azure.resourcemanager.maintenance.models.Updates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UpdatesImpl implements Updates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UpdatesImpl.class);
 
     private final UpdatesClient innerClient;
 

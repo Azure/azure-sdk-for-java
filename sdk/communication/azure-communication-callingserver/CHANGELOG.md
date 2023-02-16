@@ -1,16 +1,25 @@
 # Release History
 
 ## 1.0.0-beta.5 (Unreleased)
-- Added interfaces from `com.azure.core.client.traits` to `CallingServerClientBuilder`
-- Added `retryOptions` to `CallingServerClientBuilder`
+This is the first version of the restart of Azure Communication Service Calling Server. For more information, please see the [README][read_me].
+
+- Name changed to Azure Communication Service Call Automation.
+- Feature re-designed.
+- Added interfaces from `com.azure.core.client.traits` to `CallAutomationClientBuilder`
+- Added `retryOptions` to `CallAutomationClientBuilder`
 
 ### Features Added
+- Create outbound call to an Azure Communication Service user or a phone number.
+- Answer/Redirect/Reject incoming call from an Azure Communication Service user or a phone number.
+- Hangup and terminate the existing call.
+- Play audio in the call.
+- Call recording.
+- Get, add and remove participants from the call.
+- Recording download apis.
+- Optimized the logic for deserializing types derived from the `CommunicationIdentifier`.
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Incompatible with previous version of service
 
 ## 1.0.0-beta.4 (2021-10-06)
 ### Features Added
@@ -44,7 +53,7 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 - Hangup and delete the existing call.
 - Play audio in the call.
 - Out-call apis for call recording including start, pause, resume stop and get state.
-- Subscribe to and receive [DTMF][DTMF] tones via events.
+- Subscribe to and receive [DTMF][DTMF] dtmfTones via events.
 - Add and remove participants from the call.
 - Recording download apis.
 

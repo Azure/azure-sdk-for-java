@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.storage.file.datalake.implementation.util.AccessorUtility;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -20,6 +22,14 @@ public class PathItem {
     private final String permissions;
     private final OffsetDateTime creationTime;
     private final OffsetDateTime expiryTime;
+    private String encryptionScope;
+
+    static {
+        AccessorUtility.setPathItemAccessor((pathItem, encryptionScope) -> {
+            pathItem.encryptionScope = encryptionScope;
+            return pathItem;
+        });
+    }
 
     /**
      * Constructs a {@link PathItem}
@@ -152,5 +162,14 @@ public class PathItem {
      */
     public OffsetDateTime getExpiryTime() {
         return expiryTime;
+    }
+
+    /**
+     * Get the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
+     *
+     * @return the encryptionScope value.
+     */
+    public String getEncryptionScope() {
+        return this.encryptionScope;
     }
 }

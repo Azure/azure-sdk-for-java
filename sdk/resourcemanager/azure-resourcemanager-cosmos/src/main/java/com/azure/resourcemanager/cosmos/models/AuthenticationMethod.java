@@ -8,13 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationMethod. */
+/**
+ * Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication, so should
+ * not be used except in emergencies. 'Cassandra' is the default password based authentication. The default is
+ * 'Cassandra'.
+ */
 public final class AuthenticationMethod extends ExpandableStringEnum<AuthenticationMethod> {
     /** Static value None for AuthenticationMethod. */
     public static final AuthenticationMethod NONE = fromString("None");
 
     /** Static value Cassandra for AuthenticationMethod. */
     public static final AuthenticationMethod CASSANDRA = fromString("Cassandra");
+
+    /**
+     * Creates a new instance of AuthenticationMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationMethod() {
+    }
 
     /**
      * Creates or finds a AuthenticationMethod from its string representation.

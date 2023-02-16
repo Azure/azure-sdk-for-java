@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources ListSqlRoleDefinitions. */
 public final class SqlResourcesListSqlRoleDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlRoleDefinitionList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlRoleDefinitionList.json
      */
     /**
      * Sample code: CosmosDBSqlRoleDefinitionList.
@@ -22,6 +20,6 @@ public final class SqlResourcesListSqlRoleDefinitionsSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .listSqlRoleDefinitions("myResourceGroupName", "myAccountName", Context.NONE);
+            .listSqlRoleDefinitions("myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }
 }

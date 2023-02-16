@@ -46,10 +46,25 @@ final class LengthValidatingInputStream extends InputStream {
 
     @Override
     public synchronized int read(byte[] b, int off, int len) throws IOException {
-        int readSize = inner.read(b, off, len);
-        validateLength(readSize);
+        int totalRead = 0;
+        int readSize;
+        do {
+            // Attempt to read until the byte array is filled or the inner stream ends.
+            // This results in finishing validation faster and prevents scenarios such as with JDK HttpClient where
+            // a large buffer will be requested and it validates read length before we can finish validation.
+            readSize = inner.read(b, off + totalRead, len - totalRead);
+            validateLength(readSize);
 
-        return readSize;
+            if (readSize != -1) {
+                totalRead += readSize;
+            } else if (totalRead == 0) {
+                // If the inner stream was already read to completion the first read will return -1, need to set
+                // total read to -1 to prevent any infinite read loops by returning 0.
+                totalRead = -1;
+            }
+        } while (readSize != -1 && totalRead != len);
+
+        return totalRead;
     }
 
     @Override

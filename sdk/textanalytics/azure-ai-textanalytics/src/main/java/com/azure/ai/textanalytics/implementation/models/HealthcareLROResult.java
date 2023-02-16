@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
 /** The HealthcareLROResult model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -19,6 +20,9 @@ public final class HealthcareLROResult extends AnalyzeTextLROResult {
      */
     @JsonProperty(value = "results", required = true)
     private HealthcareResult results;
+
+    /** Creates an instance of HealthcareLROResult class. */
+    public HealthcareLROResult() {}
 
     /**
      * Get the results property: The results property.
@@ -37,6 +41,27 @@ public final class HealthcareLROResult extends AnalyzeTextLROResult {
      */
     public HealthcareLROResult setResults(HealthcareResult results) {
         this.results = results;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareLROResult setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
+        super.setLastUpdateDateTime(lastUpdateDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareLROResult setStatus(State status) {
+        super.setStatus(status);
         return this;
     }
 }

@@ -25,6 +25,10 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
     private GoogleAdWordsLinkedServiceTypeProperties innerTypeProperties =
         new GoogleAdWordsLinkedServiceTypeProperties();
 
+    /** Creates an instance of GoogleAdWordsLinkedService class. */
+    public GoogleAdWordsLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Google AdWords service linked service properties.
      *

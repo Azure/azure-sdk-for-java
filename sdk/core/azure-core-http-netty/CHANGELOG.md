@@ -1,6 +1,6 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,85 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.13.0 (2023-02-01)
+
+### Features Added
+
+- Added override for `HttpClient.sendSync` in `NettyAsyncHttpClient`. This is done to propagate any exceptions through
+  a synchronous stack rather than through Reactor's error stream, allowing for better handling of exceptions that
+  wouldn't be thrown until the reactive stream was blocked further up the callstack. ([#32840](https://github.com/Azure/azure-sdk-for-java/pull/32840))
+
+### Other Changes
+
+- Added a log message when `ConnectionProvider` is set to a non-default `ConnectionProvider` to allow for easier debugging
+  if `PollAcquirePendingLimitException` is seen. ([#32826](https://github.com/Azure/azure-sdk-for-java/pull/32826))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+- Upgraded Netty from `4.1.86.Final` to `4.1.87.Final`.
+- Upgraded Reactor Netty from `1.0.26` to `1.0.27`.
+
+## 1.12.8 (2023-01-05)
+
+### Bugs Fixed
+
+- Fixed a bug where an exception would be logged during the first attempt to connect to an authenticated
+  proxy without using credentials (done to prevent any potential credential leaking). ([#30274](https://github.com/Azure/azure-sdk-for-java/pull/30274))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
+- Upgraded Netty from `4.1.82.Final` to `4.1.86.Final`.
+- Upgraded Reactor Netty from `1.0.23` to `1.0.26`.
+
+## 1.12.7 (2022-11-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to `1.34.0`.
+
+## 1.12.6 (2022-10-07)
+
+### Bugs Fixed
+
+- Fixed a bug where `HttpClientOptions.connectTimeout` wasn't being passed when using `HttpClientProvider(ClientOptions)`. ([#31079](https://github.com/Azure/azure-sdk-for-java/pull/31079))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+- Upgraded Netty from `4.1.79.Final` to `4.1.82.Final`.
+- Upgraded Reactor Netty from `1.0.22` to `1.0.23`.
+
+## 1.12.5 (2022-09-01)
+
+### Bugs Fixed
+
+- Fixed a bug where `HttpResponse.writeBodyTo` could leak `ByteBuf`s. ([#30670](https://github.com/Azure/azure-sdk-for-java/pull/30670))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+- Upgraded Reactor Netty from `1.0.21` to `1.0.22`.
+
+## 1.12.4 (2022-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
+- Upgraded Netty from `4.1.78.Final` to `4.1.79.Final`.
+- Upgraded Reactor Netty from `1.0.20` to `1.0.21`.
 
 ## 1.12.3 (2022-06-30)
 
@@ -29,7 +108,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.29.1` to `1.30.0`.
-- Upgraded Netty from `4.1.76.Final` to `4.1.86.Final`.
+- Upgraded Netty from `4.1.76.Final` to `4.1.78.Final`.
 - Upgraded Reactor Netty from `1.0.18` to `1.0.20`.
 
 ## 1.12.2 (2022-06-03)

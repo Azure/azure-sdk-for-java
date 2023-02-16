@@ -8,14 +8,21 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneInner;
+import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
+import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
-import com.azure.resourcemanager.mobilenetwork.models.CustomLocationResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
-import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
+import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlane;
+import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneCollectDiagnosticsPackage;
+import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class PacketCoreControlPlaneImpl
@@ -49,6 +56,10 @@ public final class PacketCoreControlPlaneImpl
         }
     }
 
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -57,12 +68,21 @@ public final class PacketCoreControlPlaneImpl
         return this.innerModel().provisioningState();
     }
 
-    public MobileNetworkResourceId mobileNetwork() {
-        return this.innerModel().mobileNetwork();
+    public Installation installation() {
+        return this.innerModel().installation();
     }
 
-    public CustomLocationResourceId customLocation() {
-        return this.innerModel().customLocation();
+    public List<SiteResourceId> sites() {
+        List<SiteResourceId> inner = this.innerModel().sites();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PlatformConfiguration platform() {
+        return this.innerModel().platform();
     }
 
     public CoreNetworkType coreNetworkTechnology() {
@@ -73,8 +93,28 @@ public final class PacketCoreControlPlaneImpl
         return this.innerModel().version();
     }
 
+    public String rollbackVersion() {
+        return this.innerModel().rollbackVersion();
+    }
+
     public InterfaceProperties controlPlaneAccessInterface() {
         return this.innerModel().controlPlaneAccessInterface();
+    }
+
+    public BillingSku sku() {
+        return this.innerModel().sku();
+    }
+
+    public Integer ueMtu() {
+        return this.innerModel().ueMtu();
+    }
+
+    public LocalDiagnosticsAccessConfiguration localDiagnosticsAccess() {
+        return this.innerModel().localDiagnosticsAccess();
+    }
+
+    public Object interopSettings() {
+        return this.innerModel().interopSettings();
     }
 
     public Region region() {
@@ -83,6 +123,10 @@ public final class PacketCoreControlPlaneImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public PacketCoreControlPlaneInner innerModel() {
@@ -183,6 +227,39 @@ public final class PacketCoreControlPlaneImpl
         return this;
     }
 
+    public AsyncOperationStatus rollback() {
+        return serviceManager.packetCoreControlPlanes().rollback(resourceGroupName, packetCoreControlPlaneName);
+    }
+
+    public AsyncOperationStatus rollback(Context context) {
+        return serviceManager
+            .packetCoreControlPlanes()
+            .rollback(resourceGroupName, packetCoreControlPlaneName, context);
+    }
+
+    public AsyncOperationStatus reinstall() {
+        return serviceManager.packetCoreControlPlanes().reinstall(resourceGroupName, packetCoreControlPlaneName);
+    }
+
+    public AsyncOperationStatus reinstall(Context context) {
+        return serviceManager
+            .packetCoreControlPlanes()
+            .reinstall(resourceGroupName, packetCoreControlPlaneName, context);
+    }
+
+    public AsyncOperationStatus collectDiagnosticsPackage(PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
+        return serviceManager
+            .packetCoreControlPlanes()
+            .collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters);
+    }
+
+    public AsyncOperationStatus collectDiagnosticsPackage(
+        PacketCoreControlPlaneCollectDiagnosticsPackage parameters, Context context) {
+        return serviceManager
+            .packetCoreControlPlanes()
+            .collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters, context);
+    }
+
     public PacketCoreControlPlaneImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -193,13 +270,29 @@ public final class PacketCoreControlPlaneImpl
         return this;
     }
 
-    public PacketCoreControlPlaneImpl withMobileNetwork(MobileNetworkResourceId mobileNetwork) {
-        this.innerModel().withMobileNetwork(mobileNetwork);
+    public PacketCoreControlPlaneImpl withSites(List<SiteResourceId> sites) {
+        this.innerModel().withSites(sites);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withPlatform(PlatformConfiguration platform) {
+        this.innerModel().withPlatform(platform);
         return this;
     }
 
     public PacketCoreControlPlaneImpl withControlPlaneAccessInterface(InterfaceProperties controlPlaneAccessInterface) {
         this.innerModel().withControlPlaneAccessInterface(controlPlaneAccessInterface);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withSku(BillingSku sku) {
+        this.innerModel().withSku(sku);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withLocalDiagnosticsAccess(
+        LocalDiagnosticsAccessConfiguration localDiagnosticsAccess) {
+        this.innerModel().withLocalDiagnosticsAccess(localDiagnosticsAccess);
         return this;
     }
 
@@ -213,8 +306,8 @@ public final class PacketCoreControlPlaneImpl
         }
     }
 
-    public PacketCoreControlPlaneImpl withCustomLocation(CustomLocationResourceId customLocation) {
-        this.innerModel().withCustomLocation(customLocation);
+    public PacketCoreControlPlaneImpl withIdentity(ManagedServiceIdentity identity) {
+        this.innerModel().withIdentity(identity);
         return this;
     }
 
@@ -225,6 +318,16 @@ public final class PacketCoreControlPlaneImpl
 
     public PacketCoreControlPlaneImpl withVersion(String version) {
         this.innerModel().withVersion(version);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withUeMtu(Integer ueMtu) {
+        this.innerModel().withUeMtu(ueMtu);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withInteropSettings(Object interopSettings) {
+        this.innerModel().withInteropSettings(interopSettings);
         return this;
     }
 

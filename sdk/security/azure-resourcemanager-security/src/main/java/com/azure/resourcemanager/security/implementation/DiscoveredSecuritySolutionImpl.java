@@ -32,6 +32,10 @@ public final class DiscoveredSecuritySolutionImpl implements DiscoveredSecurityS
         return this.innerModel().type();
     }
 
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public SecurityFamily securityFamily() {
         return this.innerModel().securityFamily();
     }
@@ -46,10 +50,6 @@ public final class DiscoveredSecuritySolutionImpl implements DiscoveredSecurityS
 
     public String sku() {
         return this.innerModel().sku();
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public DiscoveredSecuritySolutionInner innerModel() {

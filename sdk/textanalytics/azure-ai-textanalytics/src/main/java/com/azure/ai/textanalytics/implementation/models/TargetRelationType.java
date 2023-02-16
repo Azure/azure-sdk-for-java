@@ -7,7 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TargetRelationType. */
+/** The type related to the target. */
 public enum TargetRelationType {
     /** Enum value assessment. */
     ASSESSMENT("assessment"),
@@ -30,6 +30,9 @@ public enum TargetRelationType {
      */
     @JsonCreator
     public static TargetRelationType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TargetRelationType[] items = TargetRelationType.values();
         for (TargetRelationType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum TargetRelationType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

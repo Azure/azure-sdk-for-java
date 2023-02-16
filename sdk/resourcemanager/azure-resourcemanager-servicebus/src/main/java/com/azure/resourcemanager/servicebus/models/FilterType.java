@@ -7,7 +7,7 @@ package com.azure.resourcemanager.servicebus.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for FilterType. */
+/** Rule filter types. */
 public enum FilterType {
     /** Enum value SqlFilter. */
     SQL_FILTER("SqlFilter"),
@@ -30,6 +30,9 @@ public enum FilterType {
      */
     @JsonCreator
     public static FilterType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FilterType[] items = FilterType.values();
         for (FilterType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum FilterType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

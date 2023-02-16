@@ -30,7 +30,7 @@ import java.util.Map;
 @Deprecated
 public class AadJwtBearerTokenAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
-    private final Converter<Jwt, Collection<GrantedAuthority>> converter;
+    private final Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
     private final String principalClaimName;
 
     /**
@@ -58,20 +58,42 @@ public class AadJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
      */
     public AadJwtBearerTokenAuthenticationConverter(String authoritiesClaimName,
                                                     String authorityPrefix) {
-        this(null, buildClaimToAuthorityPrefixMap(authoritiesClaimName, authorityPrefix));
+        this(AadJwtClaimNames.SUB, buildClaimToAuthorityPrefixMap(authoritiesClaimName, authorityPrefix));
     }
 
     /**
      * Using spring security provides JwtGrantedAuthoritiesConverter, it can resolve the access token of scp or roles.
      *
-     * @param principalClaimName authorities claim name
+     * @param principalClaimName the claim name for the principal
      * @param claimToAuthorityPrefixMap the authority name and prefix map
      */
     public AadJwtBearerTokenAuthenticationConverter(String principalClaimName,
                                                     Map<String, String> claimToAuthorityPrefixMap) {
         Assert.notNull(claimToAuthorityPrefixMap, "claimToAuthorityPrefixMap cannot be null");
         this.principalClaimName = principalClaimName;
-        this.converter = new AadJwtGrantedAuthoritiesConverter(claimToAuthorityPrefixMap);
+        this.jwtGrantedAuthoritiesConverter = new AadJwtGrantedAuthoritiesConverter(claimToAuthorityPrefixMap);
+    }
+
+    /**
+     * Using the custom JwtGrantedAuthoritiesConverter.
+     *
+     * @param jwtGrantedAuthoritiesConverter the custom granted authority converter
+     */
+    public AadJwtBearerTokenAuthenticationConverter(Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
+        this(AadJwtClaimNames.SUB, jwtGrantedAuthoritiesConverter);
+    }
+
+    /**
+     * Using the principal claim name and the custom JwtGrantedAuthoritiesConverter.
+     *
+     * @param principalClaimName the claim name for the principal
+     * @param jwtGrantedAuthoritiesConverter the custom granted authority converter
+     */
+    public AadJwtBearerTokenAuthenticationConverter(String principalClaimName,
+                                                    Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
+        Assert.notNull(jwtGrantedAuthoritiesConverter, "jwtGrantedAuthoritiesConverter cannot be null");
+        this.principalClaimName = principalClaimName;
+        this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthoritiesConverter;
     }
 
     /**
@@ -85,7 +107,7 @@ public class AadJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
         OAuth2AccessToken accessToken = new OAuth2AccessToken(
             OAuth2AccessToken.TokenType.BEARER, jwt.getTokenValue(), jwt.getIssuedAt(), jwt.getExpiresAt());
         Map<String, Object> claims = jwt.getClaims();
-        Collection<GrantedAuthority> authorities = converter.convert(jwt);
+        Collection<GrantedAuthority> authorities = jwtGrantedAuthoritiesConverter.convert(jwt);
         OAuth2AuthenticatedPrincipal principal = new AadOAuth2AuthenticatedPrincipal(
             jwt.getHeaders(), claims, authorities, jwt.getTokenValue(), (String) claims.get(principalClaimName));
         return new BearerTokenAuthentication(principal, accessToken, authorities);

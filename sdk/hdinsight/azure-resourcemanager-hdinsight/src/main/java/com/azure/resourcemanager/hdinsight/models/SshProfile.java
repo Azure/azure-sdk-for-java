@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of SSH public keys. */
 @Fluent
 public final class SshProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SshProfile.class);
-
     /*
      * The list of SSH public keys.
      */
     @JsonProperty(value = "publicKeys")
     private List<SshPublicKey> publicKeys;
+
+    /** Creates an instance of SshProfile class. */
+    public SshProfile() {
+    }
 
     /**
      * Get the publicKeys property: The list of SSH public keys.

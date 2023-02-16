@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A token credential provider that can provide a credential from a list of providers.
@@ -25,8 +26,8 @@ import java.util.List;
  * <pre>
  * UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
  *     .clientId&#40;clientId&#41;
- *     .username&#40;username&#41;
- *     .password&#40;password&#41;
+ *     .username&#40;fakeUsernamePlaceholder&#41;
+ *     .password&#40;fakePasswordPlaceholder&#41;
  *     .build&#40;&#41;;
  * InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
  *     .clientId&#40;clientId&#41;
@@ -96,5 +97,51 @@ public class ChainedTokenCredential implements TokenCredential {
                 }
                 return Mono.error(last);
             }));
+    }
+
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
+
+        for (TokenCredential credential : credentials) {
+            try {
+                return credential.getTokenSync(request);
+            } catch (Exception e) {
+                if (e.getClass() != CredentialUnavailableException.class) {
+                    throw new ClientAuthenticationException(
+                        unavailableError + credential.getClass().getSimpleName()
+                            + " authentication failed. Error Details: " + e.getMessage(),
+                        null, e);
+                } else {
+                    if (e instanceof CredentialUnavailableException) {
+                        exceptions.add((CredentialUnavailableException) e);
+                    }
+                }
+                LOGGER.info("Azure Identity => Attempted credential {} is unavailable.",
+                    credential.getClass().getSimpleName());
+            }
+        }
+
+        CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+        for (int z = exceptions.size() - 2; z >= 0; z--) {
+            CredentialUnavailableException current = exceptions.get(z);
+            last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage()
+                + (z == 0 ? "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"
+                : ""));
+        }
+        throw last;
+    }
+
+    WorkloadIdentityCredential getWorkloadIdentityCredentialIfPresent() {
+        List<TokenCredential> tokenCredentials = this.credentials
+            .stream().filter(tokenCredential -> tokenCredential instanceof WorkloadIdentityCredential)
+            .collect(Collectors.toList());
+        if (tokenCredentials.size() == 1) {
+            return (WorkloadIdentityCredential) tokenCredentials.get(0);
+        } else {
+            return null;
+        }
     }
 }

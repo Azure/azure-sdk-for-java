@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.ActivitiesClient;
 import com.azure.resourcemanager.automation.fluent.models.ActivityInner;
 import com.azure.resourcemanager.automation.models.Activities;
 import com.azure.resourcemanager.automation.models.Activity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ActivitiesImpl implements Activities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ActivitiesImpl.class);
 
     private final ActivitiesClient innerClient;
 

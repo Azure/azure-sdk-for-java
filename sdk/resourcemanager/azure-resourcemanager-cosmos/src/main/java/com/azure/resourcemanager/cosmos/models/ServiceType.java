@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceType. */
+/** ServiceType for the service. */
 public final class ServiceType extends ExpandableStringEnum<ServiceType> {
     /** Static value SqlDedicatedGateway for ServiceType. */
     public static final ServiceType SQL_DEDICATED_GATEWAY = fromString("SqlDedicatedGateway");
@@ -21,6 +21,15 @@ public final class ServiceType extends ExpandableStringEnum<ServiceType> {
 
     /** Static value MaterializedViewsBuilder for ServiceType. */
     public static final ServiceType MATERIALIZED_VIEWS_BUILDER = fromString("MaterializedViewsBuilder");
+
+    /**
+     * Creates a new instance of ServiceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceType() {
+    }
 
     /**
      * Creates or finds a ServiceType from its string representation.

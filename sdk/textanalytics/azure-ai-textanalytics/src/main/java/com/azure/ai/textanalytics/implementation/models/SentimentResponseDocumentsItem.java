@@ -4,10 +4,84 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The SentimentResponseDocumentsItem model. */
-@Immutable
+@Fluent
 public final class SentimentResponseDocumentsItem extends SentimentDocumentResult {
+    /*
+     * If 'language' is set to 'auto' for the document in the request this field will contain a 2 letter ISO 639-1
+     * representation of the language detected for this document.
+     */
+    @JsonProperty(value = "detectedLanguage")
+    private DetectedLanguage detectedLanguage;
 
+    /** Creates an instance of SentimentResponseDocumentsItem class. */
+    public SentimentResponseDocumentsItem() {}
+
+    /**
+     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
+     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
+     *
+     * @return the detectedLanguage value.
+     */
+    public DetectedLanguage getDetectedLanguage() {
+        return this.detectedLanguage;
+    }
+
+    /**
+     * Set the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
+     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
+     *
+     * @param detectedLanguage the detectedLanguage value to set.
+     * @return the SentimentResponseDocumentsItem object itself.
+     */
+    public SentimentResponseDocumentsItem setDetectedLanguage(DetectedLanguage detectedLanguage) {
+        this.detectedLanguage = detectedLanguage;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setSentiment(DocumentSentimentValue sentiment) {
+        super.setSentiment(sentiment);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setConfidenceScores(SentimentConfidenceScorePerLabel confidenceScores) {
+        super.setConfidenceScores(confidenceScores);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setSentences(List<SentenceSentiment> sentences) {
+        super.setSentences(sentences);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }

@@ -3,9 +3,6 @@
 
 package com.azure.communication.callingserver;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,42 +10,49 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Collections;
 
-import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class DownloadContentUnitTests {
+
+    private static final String CONTENT = "VideoContents";
+    private static final String AMS_ENDPOINT = "https://url.com";
+    private CallRecording callRecording;
+
+    @BeforeEach
+    public void setUp() {
+        CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(
+            new ArrayList<>(
+                Collections.singletonList(
+                    new SimpleEntry<>(CallAutomationUnitTestBase.generateDownloadResult(CONTENT), 200)
+                )));
+        callRecording = callAutomationClient.getCallRecording();
+    }
+
     @Test
     public void downloadTo() throws IOException {
-        CallingServerClient callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateDownloadResult("VideoContents"), 200)
-            )));
-        
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        callingServerClient.downloadTo("https://url.com", stream, new HttpRange(1));
+        callRecording.downloadTo(AMS_ENDPOINT, stream);
         Reader reader = new InputStreamReader(new ByteArrayInputStream(stream.toByteArray()));
         BufferedReader b = new BufferedReader(reader);
-        assertEquals("VideoContents", b.readLine());
+        assertEquals(CONTENT, b.readLine());
     }
-    
+
     @Test
     public void downloadToWithResponse() throws IOException {
-        CallingServerClient callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateDownloadResult("VideoContents"), 200)
-            )));
-        
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        Response<Void> response = callingServerClient.downloadToWithResponse("https://url.com", stream, new HttpRange(1), Context.NONE);
+        Response<Void> response = callRecording.downloadToWithResponse(AMS_ENDPOINT, stream, null, Context.NONE);
         assertEquals(200, response.getStatusCode());
         Reader reader = new InputStreamReader(new ByteArrayInputStream(stream.toByteArray()));
         BufferedReader b = new BufferedReader(reader);
-        assertEquals("VideoContents", b.readLine());
-    }       
+        assertEquals(CONTENT, b.readLine());
+    }
 }

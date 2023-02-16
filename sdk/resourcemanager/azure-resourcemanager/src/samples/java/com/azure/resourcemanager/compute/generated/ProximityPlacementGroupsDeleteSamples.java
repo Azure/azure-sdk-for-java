@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProximityPlacementGroups Delete. */
 public final class ProximityPlacementGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
      */
     /**
      * Sample code: Create a proximity placement group.
@@ -22,6 +20,6 @@ public final class ProximityPlacementGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getProximityPlacementGroups()
-            .deleteWithResponse("myResourceGroup", "myProximityPlacementGroup", Context.NONE);
+            .deleteWithResponse("myResourceGroup", "myProximityPlacementGroup", com.azure.core.util.Context.NONE);
     }
 }

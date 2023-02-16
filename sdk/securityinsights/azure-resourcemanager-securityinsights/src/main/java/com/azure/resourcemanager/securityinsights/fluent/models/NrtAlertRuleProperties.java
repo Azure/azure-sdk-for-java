@@ -10,6 +10,7 @@ import com.azure.resourcemanager.securityinsights.models.AlertDetailsOverride;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.EntityMapping;
+import com.azure.resourcemanager.securityinsights.models.EventGroupingSettings;
 import com.azure.resourcemanager.securityinsights.models.IncidentConfiguration;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,8 +29,8 @@ public final class NrtAlertRuleProperties {
     private String alertRuleTemplateName;
 
     /*
-     * The version of the alert rule template used to create this rule - in
-     * format <a.b.c>, where all are numbers, for example 0 <1.0.2>
+     * The version of the alert rule template used to create this rule - in format <a.b.c>, where all are numbers, for
+     * example 0 <1.0.2>
      */
     @JsonProperty(value = "templateVersion")
     private String templateVersion;
@@ -77,15 +78,13 @@ public final class NrtAlertRuleProperties {
     private OffsetDateTime lastModifiedUtc;
 
     /*
-     * The suppression (in ISO 8601 duration format) to wait since last time
-     * this alert rule been triggered.
+     * The suppression (in ISO 8601 duration format) to wait since last time this alert rule been triggered.
      */
     @JsonProperty(value = "suppressionDuration", required = true)
     private Duration suppressionDuration;
 
     /*
-     * Determines whether the suppression for this alert rule is enabled or
-     * disabled.
+     * Determines whether the suppression for this alert rule is enabled or disabled.
      */
     @JsonProperty(value = "suppressionEnabled", required = true)
     private boolean suppressionEnabled;
@@ -97,15 +96,13 @@ public final class NrtAlertRuleProperties {
     private AlertSeverity severity;
 
     /*
-     * The settings of the incidents that created from alerts triggered by this
-     * analytics rule
+     * The settings of the incidents that created from alerts triggered by this analytics rule
      */
     @JsonProperty(value = "incidentConfiguration")
     private IncidentConfiguration incidentConfiguration;
 
     /*
-     * Dictionary of string key-value pairs of columns to be attached to the
-     * alert
+     * Dictionary of string key-value pairs of columns to be attached to the alert
      */
     @JsonProperty(value = "customDetails")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -122,6 +119,12 @@ public final class NrtAlertRuleProperties {
      */
     @JsonProperty(value = "alertDetailsOverride")
     private AlertDetailsOverride alertDetailsOverride;
+
+    /*
+     * The event grouping settings.
+     */
+    @JsonProperty(value = "eventGroupingSettings")
+    private EventGroupingSettings eventGroupingSettings;
 
     /**
      * Get the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
@@ -441,6 +444,26 @@ public final class NrtAlertRuleProperties {
     }
 
     /**
+     * Get the eventGroupingSettings property: The event grouping settings.
+     *
+     * @return the eventGroupingSettings value.
+     */
+    public EventGroupingSettings eventGroupingSettings() {
+        return this.eventGroupingSettings;
+    }
+
+    /**
+     * Set the eventGroupingSettings property: The event grouping settings.
+     *
+     * @param eventGroupingSettings the eventGroupingSettings value to set.
+     * @return the NrtAlertRuleProperties object itself.
+     */
+    public NrtAlertRuleProperties withEventGroupingSettings(EventGroupingSettings eventGroupingSettings) {
+        this.eventGroupingSettings = eventGroupingSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -476,6 +499,9 @@ public final class NrtAlertRuleProperties {
         }
         if (alertDetailsOverride() != null) {
             alertDetailsOverride().validate();
+        }
+        if (eventGroupingSettings() != null) {
+            eventGroupingSettings().validate();
         }
     }
 

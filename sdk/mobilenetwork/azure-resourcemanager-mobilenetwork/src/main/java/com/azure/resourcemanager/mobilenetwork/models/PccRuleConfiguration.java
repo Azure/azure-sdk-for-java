@@ -9,47 +9,49 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** PCC rule configuration. */
+/** Data flow policy rule configuration. */
 @Fluent
 public final class PccRuleConfiguration {
     /*
-     * The name of the rule. This must be unique within the parent Service. You
-     * must not use any of the following reserved strings - `default`,
-     * `requested` or `service`.
+     * The name of the rule. This must be unique within the parent service. You must not use any of the following
+     * reserved strings - `default`, `requested` or `service`.
      */
     @JsonProperty(value = "ruleName", required = true)
     private String ruleName;
 
     /*
-     * A precedence value that is used to decide between PCC Rules when
-     * identifying the QoS values to use for a particular Sim. A lower value
-     * means a higher priority. This value should be unique among all PCC Rules
-     * configured in the Mobile Network.
+     * A precedence value that is used to decide between data flow policy rules when identifying the QoS values to use
+     * for a particular SIM. A lower value means a higher priority. This value should be unique among all data flow
+     * policy rules configured in the mobile network.
      */
     @JsonProperty(value = "rulePrecedence", required = true)
     private int rulePrecedence;
 
     /*
-     * The QoS policy to use for packets matching this rule. If this field is
-     * null then the Service will define the QoS settings.
+     * The QoS policy to use for packets matching this rule. If this field is null then the parent service will define
+     * the QoS settings.
      */
     @JsonProperty(value = "ruleQosPolicy")
     private PccRuleQosPolicy ruleQosPolicy;
 
     /*
-     * Determines whether flows that match this PCC Rule are permitted.
+     * Determines whether flows that match this data flow policy rule are permitted.
      */
     @JsonProperty(value = "trafficControl")
     private TrafficControlPermission trafficControl;
 
     /*
-     * The set of service data flow templates to use for this PCC Rule.
+     * The set of data flow templates to use for this data flow policy rule.
      */
     @JsonProperty(value = "serviceDataFlowTemplates", required = true)
     private List<ServiceDataFlowTemplate> serviceDataFlowTemplates;
 
+    /** Creates an instance of PccRuleConfiguration class. */
+    public PccRuleConfiguration() {
+    }
+
     /**
-     * Get the ruleName property: The name of the rule. This must be unique within the parent Service. You must not use
+     * Get the ruleName property: The name of the rule. This must be unique within the parent service. You must not use
      * any of the following reserved strings - `default`, `requested` or `service`.
      *
      * @return the ruleName value.
@@ -59,7 +61,7 @@ public final class PccRuleConfiguration {
     }
 
     /**
-     * Set the ruleName property: The name of the rule. This must be unique within the parent Service. You must not use
+     * Set the ruleName property: The name of the rule. This must be unique within the parent service. You must not use
      * any of the following reserved strings - `default`, `requested` or `service`.
      *
      * @param ruleName the ruleName value to set.
@@ -71,9 +73,9 @@ public final class PccRuleConfiguration {
     }
 
     /**
-     * Get the rulePrecedence property: A precedence value that is used to decide between PCC Rules when identifying the
-     * QoS values to use for a particular Sim. A lower value means a higher priority. This value should be unique among
-     * all PCC Rules configured in the Mobile Network.
+     * Get the rulePrecedence property: A precedence value that is used to decide between data flow policy rules when
+     * identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should
+     * be unique among all data flow policy rules configured in the mobile network.
      *
      * @return the rulePrecedence value.
      */
@@ -82,9 +84,9 @@ public final class PccRuleConfiguration {
     }
 
     /**
-     * Set the rulePrecedence property: A precedence value that is used to decide between PCC Rules when identifying the
-     * QoS values to use for a particular Sim. A lower value means a higher priority. This value should be unique among
-     * all PCC Rules configured in the Mobile Network.
+     * Set the rulePrecedence property: A precedence value that is used to decide between data flow policy rules when
+     * identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should
+     * be unique among all data flow policy rules configured in the mobile network.
      *
      * @param rulePrecedence the rulePrecedence value to set.
      * @return the PccRuleConfiguration object itself.
@@ -96,7 +98,7 @@ public final class PccRuleConfiguration {
 
     /**
      * Get the ruleQosPolicy property: The QoS policy to use for packets matching this rule. If this field is null then
-     * the Service will define the QoS settings.
+     * the parent service will define the QoS settings.
      *
      * @return the ruleQosPolicy value.
      */
@@ -106,7 +108,7 @@ public final class PccRuleConfiguration {
 
     /**
      * Set the ruleQosPolicy property: The QoS policy to use for packets matching this rule. If this field is null then
-     * the Service will define the QoS settings.
+     * the parent service will define the QoS settings.
      *
      * @param ruleQosPolicy the ruleQosPolicy value to set.
      * @return the PccRuleConfiguration object itself.
@@ -117,7 +119,7 @@ public final class PccRuleConfiguration {
     }
 
     /**
-     * Get the trafficControl property: Determines whether flows that match this PCC Rule are permitted.
+     * Get the trafficControl property: Determines whether flows that match this data flow policy rule are permitted.
      *
      * @return the trafficControl value.
      */
@@ -126,7 +128,7 @@ public final class PccRuleConfiguration {
     }
 
     /**
-     * Set the trafficControl property: Determines whether flows that match this PCC Rule are permitted.
+     * Set the trafficControl property: Determines whether flows that match this data flow policy rule are permitted.
      *
      * @param trafficControl the trafficControl value to set.
      * @return the PccRuleConfiguration object itself.
@@ -137,7 +139,7 @@ public final class PccRuleConfiguration {
     }
 
     /**
-     * Get the serviceDataFlowTemplates property: The set of service data flow templates to use for this PCC Rule.
+     * Get the serviceDataFlowTemplates property: The set of data flow templates to use for this data flow policy rule.
      *
      * @return the serviceDataFlowTemplates value.
      */
@@ -146,7 +148,7 @@ public final class PccRuleConfiguration {
     }
 
     /**
-     * Set the serviceDataFlowTemplates property: The set of service data flow templates to use for this PCC Rule.
+     * Set the serviceDataFlowTemplates property: The set of data flow templates to use for this data flow policy rule.
      *
      * @param serviceDataFlowTemplates the serviceDataFlowTemplates value to set.
      * @return the PccRuleConfiguration object itself.

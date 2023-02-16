@@ -4,9 +4,9 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
-import com.azure.ai.personalizer.implementation.models.PolicyReferenceContract;
-import com.azure.ai.personalizer.implementation.models.ServiceConfiguration;
+import com.azure.ai.personalizer.administration.models.PersonalizerPolicyReferenceOptions;
+import com.azure.ai.personalizer.administration.models.PersonalizerServiceProperties;
+import com.azure.ai.personalizer.models.ErrorResponseException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -50,21 +50,25 @@ public final class ServiceConfigurationsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3ServiceConfigurations to be used by the
      * proxy service to perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/v1.1-preview.3")
+    @Host("{Endpoint}/personalizer/{ApiVersion}")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface ServiceConfigurationsService {
         @Get("/configurations/service")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<ServiceConfiguration>> get(
-                @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<PersonalizerServiceProperties>> get(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/configurations/service")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ServiceConfiguration>> update(
+        Mono<Response<PersonalizerServiceProperties>> update(
                 @HostParam("Endpoint") String endpoint,
-                @BodyParam("application/json") ServiceConfiguration config,
+                @HostParam("ApiVersion") String apiVersion,
+                @BodyParam("application/json") PersonalizerServiceProperties config,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -73,185 +77,183 @@ public final class ServiceConfigurationsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> applyFromEvaluation(
                 @HostParam("Endpoint") String endpoint,
-                @BodyParam("application/json") PolicyReferenceContract body,
+                @HostParam("ApiVersion") String apiVersion,
+                @BodyParam("application/json") PersonalizerPolicyReferenceOptions body,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
 
     /**
-     * Get the Personalizer service configuration.
+     * Get Service Configuration.
+     *
+     * <p>Get the Personalizer service configuration.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Personalizer service configuration.
+     * @return the Personalizer service configuration along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceConfiguration>> getWithResponseAsync() {
+    public Mono<Response<PersonalizerServiceProperties>> getWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), accept, context));
+        return FluxUtil.withContext(
+                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
-     * Get the Personalizer service configuration.
+     * Get Service Configuration.
+     *
+     * <p>Get the Personalizer service configuration.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Personalizer service configuration.
+     * @return the Personalizer service configuration along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceConfiguration>> getWithResponseAsync(Context context) {
+    public Mono<Response<PersonalizerServiceProperties>> getWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Get the Personalizer service configuration.
+     * Get Service Configuration.
+     *
+     * <p>Get the Personalizer service configuration.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Personalizer service configuration.
+     * @return the Personalizer service configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceConfiguration> getAsync() {
-        return getWithResponseAsync()
-                .flatMap(
-                        (Response<ServiceConfiguration> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<PersonalizerServiceProperties> getAsync() {
+        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the Personalizer service configuration.
+     * Get Service Configuration.
+     *
+     * <p>Get the Personalizer service configuration.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Personalizer service configuration.
+     * @return the Personalizer service configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceConfiguration> getAsync(Context context) {
-        return getWithResponseAsync(context)
-                .flatMap(
-                        (Response<ServiceConfiguration> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<PersonalizerServiceProperties> getAsync(Context context) {
+        return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the Personalizer service configuration.
+     * Get Service Configuration.
+     *
+     * <p>Get the Personalizer service configuration.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Personalizer service configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceConfiguration get() {
+    public PersonalizerServiceProperties get() {
         return getAsync().block();
     }
 
     /**
-     * Get the Personalizer service configuration.
+     * Get Service Configuration.
+     *
+     * <p>Get the Personalizer service configuration.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Personalizer service configuration.
+     * @return the Personalizer service configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceConfiguration> getWithResponse(Context context) {
+    public Response<PersonalizerServiceProperties> getWithResponse(Context context) {
         return getWithResponseAsync(context).block();
     }
 
     /**
-     * Update the Personalizer service configuration.
+     * Update Service Configuration.
+     *
+     * <p>Update the Personalizer service configuration.
      *
      * @param config The personalizer service configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of the service.
+     * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceConfiguration>> updateWithResponseAsync(ServiceConfiguration config) {
+    public Mono<Response<PersonalizerServiceProperties>> updateWithResponseAsync(PersonalizerServiceProperties config) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), config, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.update(
+                                this.client.getEndpoint(), this.client.getApiVersion(), config, accept, context));
     }
 
     /**
-     * Update the Personalizer service configuration.
+     * Update Service Configuration.
+     *
+     * <p>Update the Personalizer service configuration.
      *
      * @param config The personalizer service configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of the service.
+     * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceConfiguration>> updateWithResponseAsync(ServiceConfiguration config, Context context) {
+    public Mono<Response<PersonalizerServiceProperties>> updateWithResponseAsync(
+            PersonalizerServiceProperties config, Context context) {
         final String accept = "application/json";
-        return service.update(this.client.getEndpoint(), config, accept, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), config, accept, context);
     }
 
     /**
-     * Update the Personalizer service configuration.
+     * Update Service Configuration.
+     *
+     * <p>Update the Personalizer service configuration.
      *
      * @param config The personalizer service configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of the service.
+     * @return the configuration of the service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceConfiguration> updateAsync(ServiceConfiguration config) {
-        return updateWithResponseAsync(config)
-                .flatMap(
-                        (Response<ServiceConfiguration> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<PersonalizerServiceProperties> updateAsync(PersonalizerServiceProperties config) {
+        return updateWithResponseAsync(config).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Update the Personalizer service configuration.
+     * Update Service Configuration.
+     *
+     * <p>Update the Personalizer service configuration.
      *
      * @param config The personalizer service configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of the service.
+     * @return the configuration of the service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceConfiguration> updateAsync(ServiceConfiguration config, Context context) {
-        return updateWithResponseAsync(config, context)
-                .flatMap(
-                        (Response<ServiceConfiguration> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<PersonalizerServiceProperties> updateAsync(PersonalizerServiceProperties config, Context context) {
+        return updateWithResponseAsync(config, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Update the Personalizer service configuration.
+     * Update Service Configuration.
+     *
+     * <p>Update the Personalizer service configuration.
      *
      * @param config The personalizer service configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,22 +262,25 @@ public final class ServiceConfigurationsImpl {
      * @return the configuration of the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceConfiguration update(ServiceConfiguration config) {
+    public PersonalizerServiceProperties update(PersonalizerServiceProperties config) {
         return updateAsync(config).block();
     }
 
     /**
-     * Update the Personalizer service configuration.
+     * Update Service Configuration.
+     *
+     * <p>Update the Personalizer service configuration.
      *
      * @param config The personalizer service configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of the service.
+     * @return the configuration of the service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceConfiguration> updateWithResponse(ServiceConfiguration config, Context context) {
+    public Response<PersonalizerServiceProperties> updateWithResponse(
+            PersonalizerServiceProperties config, Context context) {
         return updateWithResponseAsync(config, context).block();
     }
 
@@ -287,13 +292,15 @@ public final class ServiceConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(PolicyReferenceContract body) {
+    public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(PersonalizerPolicyReferenceOptions body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.applyFromEvaluation(this.client.getEndpoint(), body, accept, context));
+                context ->
+                        service.applyFromEvaluation(
+                                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
     }
 
     /**
@@ -305,12 +312,14 @@ public final class ServiceConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(PolicyReferenceContract body, Context context) {
+    public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(
+            PersonalizerPolicyReferenceOptions body, Context context) {
         final String accept = "application/json";
-        return service.applyFromEvaluation(this.client.getEndpoint(), body, accept, context);
+        return service.applyFromEvaluation(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -321,11 +330,11 @@ public final class ServiceConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> applyFromEvaluationAsync(PolicyReferenceContract body) {
-        return applyFromEvaluationWithResponseAsync(body).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> applyFromEvaluationAsync(PersonalizerPolicyReferenceOptions body) {
+        return applyFromEvaluationWithResponseAsync(body).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -337,11 +346,11 @@ public final class ServiceConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> applyFromEvaluationAsync(PolicyReferenceContract body, Context context) {
-        return applyFromEvaluationWithResponseAsync(body, context).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> applyFromEvaluationAsync(PersonalizerPolicyReferenceOptions body, Context context) {
+        return applyFromEvaluationWithResponseAsync(body, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -354,7 +363,7 @@ public final class ServiceConfigurationsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void applyFromEvaluation(PolicyReferenceContract body) {
+    public void applyFromEvaluation(PersonalizerPolicyReferenceOptions body) {
         applyFromEvaluationAsync(body).block();
     }
 
@@ -367,10 +376,10 @@ public final class ServiceConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> applyFromEvaluationWithResponse(PolicyReferenceContract body, Context context) {
+    public Response<Void> applyFromEvaluationWithResponse(PersonalizerPolicyReferenceOptions body, Context context) {
         return applyFromEvaluationWithResponseAsync(body, context).block();
     }
 }

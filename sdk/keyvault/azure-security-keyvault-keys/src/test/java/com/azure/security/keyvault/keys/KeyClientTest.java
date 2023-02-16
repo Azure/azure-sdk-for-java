@@ -7,11 +7,15 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
@@ -23,6 +27,7 @@ import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,6 +38,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -58,18 +64,29 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient, testTenantId);
-        KeyAsyncClient asyncClient = spy(new KeyClientBuilder()
-            .vaultUrl(getEndpoint())
-            .pipeline(httpPipeline)
-            .serviceVersion(serviceVersion)
-            .buildAsyncClient());
+        HttpPipeline httpPipeline = getHttpPipeline(buildSyncAssertingClient(httpClient == null
+            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
+        KeyClientImpl implClient = spy(new KeyClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {
-            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+            when(implClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
 
-        keyClient = new KeyClient(asyncClient);
+        keyClient = new KeyClient(implClient);
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        //skip paging and polling requests until their sync stack support is landed in azure-core.
+        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
+            String callerMethod = (String) context.getData("caller-method").orElse("");
+            return (callerMethod.contains("list") || callerMethod.contains("getKeys")
+                || callerMethod.contains("getKeyVersions") || callerMethod.contains("delete")
+                || callerMethod.contains("recover") || callerMethod.contains("Cryptography"));
+        };
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(skipRequestFunction)
+            .assertSync()
+            .build();
     }
 
     /**
@@ -108,6 +125,21 @@ public class KeyClientTest extends KeyClientTestBase {
         createKeyClient(httpClient, serviceVersion);
 
         createRsaKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createRsaKey(keyToCreate)));
+    }
+
+
+    /**
+     * Tests that an OKP key can be created in the key vault.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // OKP keys are currently only supported in Managed HSM.
+        Assumptions.assumeTrue(runManagedHsmTest);
+
+        createKeyClient(httpClient, serviceVersion);
+
+        createOkpKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createOkpKey(keyToCreate)));
     }
 
     /**
@@ -257,7 +289,7 @@ public class KeyClientTest extends KeyClientTestBase {
             PollResponse<DeletedKey> pollResponse = deletedKeyPoller.poll();
             DeletedKey deletedKey = pollResponse.getValue();
 
-            // Key is being deleted on server.
+            // Key is being deleted on the server.
             while (!pollResponse.getStatus().isComplete()) {
                 sleepInRecordMode(10000);
 
@@ -644,7 +676,8 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
+    @Disabled("Disable after https://github.com/Azure/azure-sdk-for-java/issues/31510 is fixed.")
+    //@DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient,
                                                                 KeyServiceVersion serviceVersion) {
         // Key Rotation is not yet enabled in Managed HSM.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LeaseStatus. */
+/** The lease status of the container. */
 public final class LeaseStatus extends ExpandableStringEnum<LeaseStatus> {
     /** Static value Locked for LeaseStatus. */
     public static final LeaseStatus LOCKED = fromString("Locked");

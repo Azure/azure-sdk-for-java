@@ -15,14 +15,11 @@ public enum OperationStatus {
     /** Enum value running. */
     RUNNING("running"),
 
-    /** Enum value failed. */
-    FAILED("failed"),
-
     /** Enum value succeeded. */
     SUCCEEDED("succeeded"),
 
-    /** Enum value canceled. */
-    CANCELED("canceled");
+    /** Enum value failed. */
+    FAILED("failed");
 
     /** The actual serialized value for a OperationStatus instance. */
     private final String value;

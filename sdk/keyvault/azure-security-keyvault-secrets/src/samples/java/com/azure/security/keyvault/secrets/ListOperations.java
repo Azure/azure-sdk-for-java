@@ -14,28 +14,33 @@ import java.time.OffsetDateTime;
  */
 public class ListOperations {
     /**
-     * Authenticates with the key vault and shows how to list secrets and list versions of a specific secret in the key vault.
+     * Authenticates with the key vault and shows how to list secrets and list versions of a specific secret in the key
+     * vault.
      *
      * @param args Unused. Arguments to the program.
+     *
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
      */
     public static void main(String[] args) throws IllegalArgumentException {
+        /* Instantiate a SecretClient that will be used to call the service. Notice that the client is using default
+        Azure credentials. For more information on this and other types of credentials, see this document:
+        https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
-        // Instantiate a client that will be used to call the service. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        To get started, you'll need a URL to an Azure Key Vault. See the README
+        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md)
+        for links and instructions. */
         SecretClient client = new SecretClientBuilder()
-                .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .buildClient();
+            .vaultUrl("<your-key-vault-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
 
-        // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
+        // Let's create secrets holding storage and bank accounts credentials valid for 1 year. If the secret
         // already exists in the key vault, then a new version of the secret is created.
-        client.setSecret(new KeyVaultSecret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
+        client.setSecret(new KeyVaultSecret("StorageAccountPassword", "fakePasswordPlaceholder")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
-        client.setSecret(new KeyVaultSecret("BankAccountPassword", "f4G34fMh8v")
+        client.setSecret(new KeyVaultSecret("BankAccountPassword", "fakePasswordPlaceholder")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
@@ -45,18 +50,20 @@ public class ListOperations {
             if (!secret.isEnabled()) {
                 continue;
             }
-            KeyVaultSecret secretWithValue  = client.getSecret(secret.getName(), secret.getVersion());
+            KeyVaultSecret secretWithValue = client.getSecret(secret.getName(), secret.getVersion());
             System.out.printf("Received secret with name %s and value %s \n", secretWithValue.getName(), secretWithValue.getValue());
         }
 
         // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
         // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
-        client.setSecret("BankAccountPassword", "sskdjfsdasdjsd");
+        client.setSecret("BankAccountPassword", "fakePasswordPlaceholder");
 
         // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
         for (SecretProperties secret : client.listPropertiesOfSecretVersions("BankAccountPassword")) {
-            KeyVaultSecret secretWithValue  = client.getSecret(secret.getName(), secret.getVersion());
-            System.out.printf("Received secret's version with name %s and value %s", secretWithValue.getName(), secretWithValue.getValue());
+            KeyVaultSecret secretWithValue = client.getSecret(secret.getName(), secret.getVersion());
+
+            System.out.printf("Received secret's version with name %s and value %s", secretWithValue.getName(),
+                secretWithValue.getValue());
         }
     }
 }

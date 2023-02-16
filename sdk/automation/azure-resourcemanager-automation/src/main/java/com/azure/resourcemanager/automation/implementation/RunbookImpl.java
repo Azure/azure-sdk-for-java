@@ -139,6 +139,10 @@ public final class RunbookImpl implements Runbook, Runbook.Definition, Runbook.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public RunbookInner innerModel() {
         return this.innerObject;
     }
@@ -244,6 +248,14 @@ public final class RunbookImpl implements Runbook, Runbook.Definition, Runbook.U
                 .getWithResponse(resourceGroupName, automationAccountName, runbookName, context)
                 .getValue();
         return this;
+    }
+
+    public void publish() {
+        serviceManager.runbooks().publish(resourceGroupName, automationAccountName, runbookName);
+    }
+
+    public void publish(Context context) {
+        serviceManager.runbooks().publish(resourceGroupName, automationAccountName, runbookName, context);
     }
 
     public RunbookImpl withRunbookType(RunbookTypeEnum runbookType) {

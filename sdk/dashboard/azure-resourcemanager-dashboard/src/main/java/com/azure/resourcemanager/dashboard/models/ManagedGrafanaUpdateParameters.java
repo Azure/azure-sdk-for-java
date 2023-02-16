@@ -16,7 +16,7 @@ public final class ManagedGrafanaUpdateParameters {
      * The managed identity of the grafana resource.
      */
     @JsonProperty(value = "identity")
-    private ManagedIdentity identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * The new tags of the grafana resource.
@@ -25,12 +25,18 @@ public final class ManagedGrafanaUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /*
+     * Properties specific to the managed grafana resource.
+     */
+    @JsonProperty(value = "properties")
+    private ManagedGrafanaPropertiesUpdateParameters properties;
+
     /**
      * Get the identity property: The managed identity of the grafana resource.
      *
      * @return the identity value.
      */
-    public ManagedIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -40,7 +46,7 @@ public final class ManagedGrafanaUpdateParameters {
      * @param identity the identity value to set.
      * @return the ManagedGrafanaUpdateParameters object itself.
      */
-    public ManagedGrafanaUpdateParameters withIdentity(ManagedIdentity identity) {
+    public ManagedGrafanaUpdateParameters withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -66,6 +72,26 @@ public final class ManagedGrafanaUpdateParameters {
     }
 
     /**
+     * Get the properties property: Properties specific to the managed grafana resource.
+     *
+     * @return the properties value.
+     */
+    public ManagedGrafanaPropertiesUpdateParameters properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties specific to the managed grafana resource.
+     *
+     * @param properties the properties value to set.
+     * @return the ManagedGrafanaUpdateParameters object itself.
+     */
+    public ManagedGrafanaUpdateParameters withProperties(ManagedGrafanaPropertiesUpdateParameters properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -73,6 +99,9 @@ public final class ManagedGrafanaUpdateParameters {
     public void validate() {
         if (identity() != null) {
             identity().validate();
+        }
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

@@ -5,23 +5,27 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.SourceControlSyncJobCreateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the create source control sync job operation. */
-@JsonFlatten
 @Fluent
-public class SourceControlSyncJobCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlSyncJobCreateParameters.class);
-
+public final class SourceControlSyncJobCreateParameters {
     /*
-     * The commit id of the source control sync job. If not syncing to a
-     * commitId, enter an empty string.
+     * The properties of the source control sync job.
      */
-    @JsonProperty(value = "properties.commitId", required = true)
-    private String commitId;
+    @JsonProperty(value = "properties", required = true)
+    private SourceControlSyncJobCreateProperties innerProperties = new SourceControlSyncJobCreateProperties();
+
+    /**
+     * Get the innerProperties property: The properties of the source control sync job.
+     *
+     * @return the innerProperties value.
+     */
+    private SourceControlSyncJobCreateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the commitId property: The commit id of the source control sync job. If not syncing to a commitId, enter an
@@ -30,7 +34,7 @@ public class SourceControlSyncJobCreateParameters {
      * @return the commitId value.
      */
     public String commitId() {
-        return this.commitId;
+        return this.innerProperties() == null ? null : this.innerProperties().commitId();
     }
 
     /**
@@ -41,7 +45,10 @@ public class SourceControlSyncJobCreateParameters {
      * @return the SourceControlSyncJobCreateParameters object itself.
      */
     public SourceControlSyncJobCreateParameters withCommitId(String commitId) {
-        this.commitId = commitId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobCreateProperties();
+        }
+        this.innerProperties().withCommitId(commitId);
         return this;
     }
 
@@ -51,11 +58,15 @@ public class SourceControlSyncJobCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (commitId() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property commitId in model SourceControlSyncJobCreateParameters"));
+                        "Missing required property innerProperties in model SourceControlSyncJobCreateParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SourceControlSyncJobCreateParameters.class);
 }

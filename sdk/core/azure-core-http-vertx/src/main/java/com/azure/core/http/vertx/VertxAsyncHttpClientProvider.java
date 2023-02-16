@@ -32,8 +32,8 @@ public class VertxAsyncHttpClientProvider implements HttpClientProvider {
     }
 
     /**
-     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
-     * 'final' modifier.
+     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for 'final'
+     * modifier.
      */
     public VertxAsyncHttpClientProvider() {
         enableHttpClientSharing = AZURE_ENABLE_HTTP_CLIENT_SHARING;

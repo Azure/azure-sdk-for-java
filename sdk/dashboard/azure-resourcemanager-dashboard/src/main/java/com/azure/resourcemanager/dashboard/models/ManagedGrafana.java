@@ -66,7 +66,7 @@ public interface ManagedGrafana {
      *
      * @return the identity value.
      */
-    ManagedIdentity identity();
+    ManagedServiceIdentity identity();
 
     /**
      * Gets the systemData property: The system meta data relating to this grafana resource.
@@ -88,6 +88,13 @@ public interface ManagedGrafana {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.dashboard.fluent.models.ManagedGrafanaInner object.
@@ -198,7 +205,7 @@ public interface ManagedGrafana {
              * @param identity The managed identity of the grafana resource.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(ManagedIdentity identity);
+            WithCreate withIdentity(ManagedServiceIdentity identity);
         }
     }
     /**
@@ -209,7 +216,7 @@ public interface ManagedGrafana {
     ManagedGrafana.Update update();
 
     /** The template for ManagedGrafana update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          *
@@ -245,7 +252,17 @@ public interface ManagedGrafana {
              * @param identity The managed identity of the grafana resource.
              * @return the next definition stage.
              */
-            Update withIdentity(ManagedIdentity identity);
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+        /** The stage of the ManagedGrafana update allowing to specify properties. */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Properties specific to the managed grafana resource..
+             *
+             * @param properties Properties specific to the managed grafana resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(ManagedGrafanaPropertiesUpdateParameters properties);
         }
     }
     /**

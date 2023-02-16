@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataType. */
+/** The datatype for which the indexing behavior is applied to. */
 public final class DataType extends ExpandableStringEnum<DataType> {
     /** Static value String for DataType. */
     public static final DataType STRING = fromString("String");
@@ -27,6 +27,15 @@ public final class DataType extends ExpandableStringEnum<DataType> {
 
     /** Static value MultiPolygon for DataType. */
     public static final DataType MULTI_POLYGON = fromString("MultiPolygon");
+
+    /**
+     * Creates a new instance of DataType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataType() {
+    }
 
     /**
      * Creates or finds a DataType from its string representation.

@@ -4,12 +4,28 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Snapshots GetByResourceGroup. */
 public final class SnapshotsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/snapshotExamples/Snapshot_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_GetIncrementalSnapshot.json
+     */
+    /**
+     * Sample code: Get information about an incremental snapshot.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getInformationAboutAnIncrementalSnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSnapshots()
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myIncrementalSnapshot", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_Get.json
      */
     /**
      * Sample code: Get information about a snapshot.
@@ -22,6 +38,6 @@ public final class SnapshotsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getSnapshots()
-            .getByResourceGroupWithResponse("myResourceGroup", "mySnapshot", Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "mySnapshot", com.azure.core.util.Context.NONE);
     }
 }

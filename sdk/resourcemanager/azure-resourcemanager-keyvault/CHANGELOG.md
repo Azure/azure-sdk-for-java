@@ -1,6 +1,6 @@
 # Release History
 
-## 2.17.0-beta.1 (Unreleased)
+## 2.24.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,70 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.22.0 (2022-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.21.0 (2022-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.20.0 (2022-10-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.19.0 (2022-09-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.18.0 (2022-08-26)
+
+### Breaking Changes
+
+- Removed class `PrivateEndpointConnectionsDeleteHeaders`.
+- Removed class `PrivateEndpointConnectionsDeleteResponse`.
+- Added parameter `HttpHeaders` to the constructor of class `PrivateEndpointConnectionsPutHeaders`.
+- Changed return type of method `actionsRequired` in `PrivateLinkServiceConnectionState` from `String` to `ActionsRequired`.
+- Changed parameter type of method `withActionsRequired` in `PrivateLinkServiceConnectionState` from `String` to `ActionsRequired`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-10-01`.
+
+## 2.17.0 (2022-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.16.0 (2022-06-24)
 

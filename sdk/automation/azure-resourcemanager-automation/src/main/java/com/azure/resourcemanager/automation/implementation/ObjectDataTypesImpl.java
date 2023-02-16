@@ -11,10 +11,9 @@ import com.azure.resourcemanager.automation.fluent.ObjectDataTypesClient;
 import com.azure.resourcemanager.automation.fluent.models.TypeFieldInner;
 import com.azure.resourcemanager.automation.models.ObjectDataTypes;
 import com.azure.resourcemanager.automation.models.TypeField;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ObjectDataTypesImpl implements ObjectDataTypes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectDataTypesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ObjectDataTypesImpl.class);
 
     private final ObjectDataTypesClient innerClient;
 

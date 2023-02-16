@@ -42,6 +42,9 @@ public enum WeekOfMonth {
      */
     @JsonCreator
     public static WeekOfMonth fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         WeekOfMonth[] items = WeekOfMonth.values();
         for (WeekOfMonth item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum WeekOfMonth {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

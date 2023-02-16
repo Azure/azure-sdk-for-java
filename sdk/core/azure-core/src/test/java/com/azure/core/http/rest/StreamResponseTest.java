@@ -4,13 +4,13 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
-import com.azure.core.util.IOUtils;
+import com.azure.core.util.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -39,8 +39,9 @@ public class StreamResponseTest {
     private static final Random RANDOM = new Random();
     private static final int RESPONSE_CODE = 206;
 
+    private final AtomicInteger closeCalls = new AtomicInteger();
     private HttpResponse response;
-    private final HttpRequest requestMock = Mockito.mock(HttpRequest.class);
+    private final HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.com");
     private byte[] responseValue;
     private final HttpHeaders headers = new HttpHeaders();
 
@@ -48,7 +49,13 @@ public class StreamResponseTest {
     public void setup() {
         responseValue = new byte[128];
         RANDOM.nextBytes(responseValue);
-        response = Mockito.spy(new MockHttpResponse(requestMock, RESPONSE_CODE, headers, responseValue));
+        response = new MockHttpResponse(request, RESPONSE_CODE, headers, responseValue) {
+            @Override
+            public void close() {
+                closeCalls.incrementAndGet();
+                super.close();
+            }
+        };
     }
 
     @Test
@@ -56,7 +63,7 @@ public class StreamResponseTest {
         createStreamResponses().forEach(streamResponse -> {
             assertEquals(RESPONSE_CODE, streamResponse.getStatusCode());
             assertSame(headers, streamResponse.getHeaders());
-            assertSame(requestMock, streamResponse.getRequest());
+            assertSame(request, streamResponse.getRequest());
         });
     }
 
@@ -66,7 +73,7 @@ public class StreamResponseTest {
 
         streamResponse.close();
 
-        Mockito.verify(response, Mockito.times(1)).close();
+        assertEquals(1, closeCalls.get());
     }
 
     @SuppressWarnings("deprecation")
@@ -74,7 +81,7 @@ public class StreamResponseTest {
     public void closeDisposesFlux() {
         AtomicBoolean wasRead = new AtomicBoolean(false);
         Flux<ByteBuffer> value = Flux.just(ByteBuffer.wrap(responseValue)).doFinally(ignore -> wasRead.set(true));
-        StreamResponse streamResponse = new StreamResponse(requestMock, RESPONSE_CODE, headers, value);
+        StreamResponse streamResponse = new StreamResponse(request, RESPONSE_CODE, headers, value);
 
         streamResponse.close();
 
@@ -86,7 +93,7 @@ public class StreamResponseTest {
     public void closeDisposesOnce() {
         AtomicInteger numberOfReads = new AtomicInteger();
         Flux<ByteBuffer> value = Flux.just(ByteBuffer.wrap(responseValue)).doFinally(ignore -> numberOfReads.incrementAndGet());
-        StreamResponse streamResponse = new StreamResponse(requestMock, RESPONSE_CODE, headers, value);
+        StreamResponse streamResponse = new StreamResponse(request, RESPONSE_CODE, headers, value);
 
         streamResponse.close();
         streamResponse.close();
@@ -99,7 +106,7 @@ public class StreamResponseTest {
     public void valueConsumptionDisposes() {
         AtomicInteger numberOfReads = new AtomicInteger();
         Flux<ByteBuffer> value = Flux.just(ByteBuffer.wrap(responseValue)).doFinally(ignore -> numberOfReads.incrementAndGet());
-        StreamResponse streamResponse = new StreamResponse(requestMock, RESPONSE_CODE, headers, value);
+        StreamResponse streamResponse = new StreamResponse(request, RESPONSE_CODE, headers, value);
 
         streamResponse.getValue().then().block(); // This marks StreamResponse as consumed and increments numberOfReads
         streamResponse.close(); // Check that close is no-op after reading value.
@@ -113,7 +120,7 @@ public class StreamResponseTest {
 
         streamResponse.getValue().then().block();
 
-        Mockito.verify(response, Mockito.times(1)).close();
+        assertEquals(1, closeCalls.get());
     }
 
     @Test
@@ -123,7 +130,7 @@ public class StreamResponseTest {
         streamResponse.close();
         streamResponse.close();
 
-        Mockito.verify(response, Mockito.times(1)).close();
+        assertEquals(1, closeCalls.get());
     }
 
     @Test
@@ -133,19 +140,18 @@ public class StreamResponseTest {
         streamResponse.getValue().then().block();
         streamResponse.close();
 
-        Mockito.verify(response, Mockito.times(1)).close();
+        assertEquals(1, closeCalls.get());
     }
 
     @Test
-    public void transferToAsyncChannel() throws IOException {
+    public void transferToAsyncChannel() {
         createStreamResponses().forEach(streamResponse -> {
             try {
                 Path tempFile = Files.createTempFile("streamresponsetest", null);
                 tempFile.toFile().deleteOnExit();
 
-                StepVerifier.create(
-                    Mono.using(
-                        () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                StepVerifier.create(Mono.using(() ->
+                        IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
                         streamResponse::writeValueToAsync,
                         channel -> {
                             try {
@@ -164,15 +170,11 @@ public class StreamResponseTest {
     }
 
     @Test
-    public void transferToWriteableChannel() throws IOException {
+    public void transferToWriteableChannel() {
         createStreamResponses().forEach(streamResponse -> {
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            try {
-                streamResponse.writeValueTo(Channels.newChannel(bos));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            streamResponse.writeValueTo(Channels.newChannel(bos));
 
             assertArrayEquals(responseValue, bos.toByteArray());
         });
@@ -181,7 +183,7 @@ public class StreamResponseTest {
     @SuppressWarnings("deprecation")
     public Stream<StreamResponse> createStreamResponses() {
         return Stream.of(
-            new StreamResponse(requestMock, RESPONSE_CODE, headers, Flux.just(ByteBuffer.wrap(responseValue))),
+            new StreamResponse(request, RESPONSE_CODE, headers, Flux.just(ByteBuffer.wrap(responseValue))),
             new StreamResponse(response));
     }
 }

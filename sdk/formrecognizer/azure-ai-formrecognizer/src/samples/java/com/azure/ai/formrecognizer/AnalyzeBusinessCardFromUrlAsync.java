@@ -3,12 +3,14 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.models.DocumentField;
-import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -40,7 +42,7 @@ public class AnalyzeBusinessCardFromUrlAsync {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
                 + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
 
-        PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeBusinessCardPoller
+        PollerFlux<OperationResult, AnalyzeResult> analyzeBusinessCardPoller
             = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard",
             businessCardUrl, new AnalyzeDocumentOptions().setPages(Arrays.asList("1")).setLocale("en-US"));
 
@@ -66,27 +68,27 @@ public class AnalyzeBusinessCardFromUrlAsync {
                 DocumentField contactNamesDocumentField = businessCardFields.get("ContactNames");
                 if (contactNamesDocumentField != null) {
                     if (DocumentFieldType.LIST == contactNamesDocumentField.getType()) {
-                        List<DocumentField> contactNamesValueDocumentFields = contactNamesDocumentField.getValueList();
+                        List<DocumentField> contactNamesValueDocumentFields = contactNamesDocumentField.getValueAsList();
                         contactNamesValueDocumentFields.stream()
                             .filter(contactNamesValueDocumentField ->
                                 DocumentFieldType.MAP == contactNamesValueDocumentField.getType())
                             .map(contactNamesValueDocumentField -> {
                                 System.out
                                     .printf("Contact name: %s%n", contactNamesValueDocumentField.getContent());
-                                return contactNamesValueDocumentField.getValueMap();
+                                return contactNamesValueDocumentField.getValueAsMap();
                             })
                             .forEach(contactNamesDocumentFieldMap -> contactNamesDocumentFieldMap
                                 .forEach((label, contactNameDocumentField) -> {
                                     if ("FirstName".equals(label)) {
                                         if (DocumentFieldType.STRING == contactNameDocumentField.getType()) {
-                                            String firstName = contactNameDocumentField.getValueString();
+                                            String firstName = contactNameDocumentField.getValueAsString();
                                             System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
                                                 firstName, contactNameDocumentField.getConfidence());
                                         }
                                     }
                                     if ("LastName".equals(label)) {
                                         if (DocumentFieldType.STRING == contactNameDocumentField.getType()) {
-                                            String lastName = contactNameDocumentField.getValueString();
+                                            String lastName = contactNameDocumentField.getValueAsString();
                                             System.out.printf("\tLast Name: %s, confidence: %.2f%n",
                                                 lastName, contactNameDocumentField.getConfidence());
                                         }
@@ -98,10 +100,10 @@ public class AnalyzeBusinessCardFromUrlAsync {
                 DocumentField jobTitles = businessCardFields.get("JobTitles");
                 if (jobTitles != null) {
                     if (DocumentFieldType.LIST == jobTitles.getType()) {
-                        List<DocumentField> jobTitlesItems = jobTitles.getValueList();
+                        List<DocumentField> jobTitlesItems = jobTitles.getValueAsList();
                         jobTitlesItems.forEach(jobTitlesItem -> {
                             if (DocumentFieldType.STRING == jobTitlesItem.getType()) {
-                                String jobTitle = jobTitlesItem.getValueString();
+                                String jobTitle = jobTitlesItem.getValueAsString();
                                 System.out.printf("Job Title: %s, confidence: %.2f%n",
                                     jobTitle, jobTitlesItem.getConfidence());
                             }
@@ -112,10 +114,10 @@ public class AnalyzeBusinessCardFromUrlAsync {
                 DocumentField departments = businessCardFields.get("Departments");
                 if (departments != null) {
                     if (DocumentFieldType.LIST == departments.getType()) {
-                        List<DocumentField> departmentsItems = departments.getValueList();
+                        List<DocumentField> departmentsItems = departments.getValueAsList();
                         departmentsItems.forEach(departmentsItem -> {
                             if (DocumentFieldType.STRING == departmentsItem.getType()) {
-                                String department = departmentsItem.getValueString();
+                                String department = departmentsItem.getValueAsString();
                                 System.out.printf("Department: %s, confidence: %.2f%n",
                                     department, departmentsItem.getConfidence());
                             }
@@ -126,10 +128,10 @@ public class AnalyzeBusinessCardFromUrlAsync {
                 DocumentField emails = businessCardFields.get("Emails");
                 if (emails != null) {
                     if (DocumentFieldType.LIST == emails.getType()) {
-                        List<DocumentField> emailsItems = emails.getValueList();
+                        List<DocumentField> emailsItems = emails.getValueAsList();
                         emailsItems.forEach(emailsItem -> {
                             if (DocumentFieldType.STRING == emailsItem.getType()) {
-                                String email = emailsItem.getValueString();
+                                String email = emailsItem.getValueAsString();
                                 System.out.printf("Email: %s, confidence: %.2f%n", email, emailsItem.getConfidence());
                             }
                         });
@@ -139,10 +141,10 @@ public class AnalyzeBusinessCardFromUrlAsync {
                 DocumentField websites = businessCardFields.get("Websites");
                 if (websites != null) {
                     if (DocumentFieldType.LIST == websites.getType()) {
-                        List<DocumentField> websitesItems = websites.getValueList();
+                        List<DocumentField> websitesItems = websites.getValueAsList();
                         websitesItems.forEach(websitesItem -> {
                             if (DocumentFieldType.STRING == websitesItem.getType()) {
-                                String website = websitesItem.getValueString();
+                                String website = websitesItem.getValueAsString();
                                 System.out.printf("Web site: %s, confidence: %.2f%n",
                                     website, websitesItem.getConfidence());
                             }
@@ -153,10 +155,10 @@ public class AnalyzeBusinessCardFromUrlAsync {
                 DocumentField mobilePhones = businessCardFields.get("MobilePhones");
                 if (mobilePhones != null) {
                     if (DocumentFieldType.LIST == mobilePhones.getType()) {
-                        List<DocumentField> mobilePhonesItems = mobilePhones.getValueList();
+                        List<DocumentField> mobilePhonesItems = mobilePhones.getValueAsList();
                         mobilePhonesItems.forEach(mobilePhonesItem -> {
                             if (DocumentFieldType.PHONE_NUMBER == mobilePhonesItem.getType()) {
-                                String mobilePhoneNumber = mobilePhonesItem.getValuePhoneNumber();
+                                String mobilePhoneNumber = mobilePhonesItem.getValueAsPhoneNumber();
                                 System.out.printf("Mobile phone number: %s, confidence: %.2f%n",
                                     mobilePhoneNumber, mobilePhonesItem.getConfidence());
                             }
@@ -167,10 +169,10 @@ public class AnalyzeBusinessCardFromUrlAsync {
                 DocumentField otherPhones = businessCardFields.get("OtherPhones");
                 if (otherPhones != null) {
                     if (DocumentFieldType.LIST == otherPhones.getType()) {
-                        List<DocumentField> otherPhonesItems = otherPhones.getValueList();
+                        List<DocumentField> otherPhonesItems = otherPhones.getValueAsList();
                         otherPhonesItems.forEach(otherPhonesItem -> {
                             if (DocumentFieldType.PHONE_NUMBER == otherPhonesItem.getType()) {
-                                String otherPhoneNumber = otherPhonesItem.getValuePhoneNumber();
+                                String otherPhoneNumber = otherPhonesItem.getValueAsPhoneNumber();
                                 System.out.printf("Other phone number: %s, confidence: %.2f%n",
                                     otherPhoneNumber, otherPhonesItem.getConfidence());
                             }
@@ -181,10 +183,10 @@ public class AnalyzeBusinessCardFromUrlAsync {
                 DocumentField faxes = businessCardFields.get("Faxes");
                 if (faxes != null) {
                     if (DocumentFieldType.LIST == faxes.getType()) {
-                        List<DocumentField> faxesItems = faxes.getValueList();
+                        List<DocumentField> faxesItems = faxes.getValueAsList();
                         faxesItems.forEach(faxesItem -> {
                             if (DocumentFieldType.PHONE_NUMBER == faxesItem.getType()) {
-                                String faxPhoneNumber = faxesItem.getValuePhoneNumber();
+                                String faxPhoneNumber = faxesItem.getValueAsPhoneNumber();
                                 System.out.printf("Fax phone number: %s, confidence: %.2f%n",
                                     faxPhoneNumber, faxesItem.getConfidence());
                             }
@@ -195,10 +197,10 @@ public class AnalyzeBusinessCardFromUrlAsync {
                 DocumentField addresses = businessCardFields.get("Addresses");
                 if (addresses != null) {
                     if (DocumentFieldType.LIST == addresses.getType()) {
-                        List<DocumentField> addressesItems = addresses.getValueList();
+                        List<DocumentField> addressesItems = addresses.getValueAsList();
                         addressesItems.forEach(addressesItem -> {
                             if (DocumentFieldType.STRING == addressesItem.getType()) {
-                                String address = addressesItem.getValueString();
+                                String address = addressesItem.getValueAsString();
                                 System.out
                                     .printf("Address: %s, confidence: %.2f%n", address, addressesItem.getConfidence());
                             }
@@ -209,10 +211,10 @@ public class AnalyzeBusinessCardFromUrlAsync {
                 DocumentField companyName = businessCardFields.get("CompanyNames");
                 if (companyName != null) {
                     if (DocumentFieldType.LIST == companyName.getType()) {
-                        List<DocumentField> companyNameItems = companyName.getValueList();
+                        List<DocumentField> companyNameItems = companyName.getValueAsList();
                         companyNameItems.forEach(companyNameItem -> {
                             if (DocumentFieldType.STRING == companyNameItem.getType()) {
-                                String companyNameValue = companyNameItem.getValueString();
+                                String companyNameValue = companyNameItem.getValueAsString();
                                 System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue,
                                     companyNameItem.getConfidence());
                             }

@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.AfdProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.UsageInner;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AfdProfilesClient. */
 public final class AfdProfilesClientImpl implements AfdProfilesClient {
-    private final ClientLogger logger = new ClientLogger(AfdProfilesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AfdProfilesService service;
 
@@ -106,7 +103,7 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -165,7 +162,7 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -222,7 +219,7 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -240,7 +237,7 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -260,7 +257,7 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -276,7 +273,7 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -293,7 +290,7 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -353,7 +350,7 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -414,7 +411,7 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -430,18 +427,11 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
         String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput) {
         return checkHostnameAvailabilityWithResponseAsync(
                 resourceGroupName, profileName, checkHostnameAvailabilityInput)
-            .flatMap(
-                (Response<CheckNameAvailabilityOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -459,7 +449,7 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -485,7 +475,8 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -521,7 +512,8 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

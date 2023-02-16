@@ -5,75 +5,73 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** An Activity Log alert condition that is met by comparing an activity log field and value. */
+/**
+ * An Activity Log Alert rule condition that is met when all its member conditions are met. Each condition can be of one
+ * of the following types: __Important__: Each type has its unique subset of properties. Properties from different types
+ * CANNOT exist in one condition. * __Leaf Condition -__ must contain 'field' and either 'equals' or 'containsAny'.
+ * _Please note, 'anyOf' should __not__ be set in a Leaf Condition._ * __AnyOf Condition -__ must contain __only__
+ * 'anyOf' (which is an array of Leaf Conditions). _Please note, 'field', 'equals' and 'containsAny' should __not__ be
+ * set in an AnyOf Condition._.
+ */
 @Fluent
-public final class ActivityLogAlertLeafCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertLeafCondition.class);
-
+public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition {
     /*
-     * The name of the field that this condition will examine. The possible
-     * values for this field are (case-insensitive): 'resourceId', 'category',
-     * 'caller', 'level', 'operationName', 'resourceGroup', 'resourceProvider',
-     * 'status', 'subStatus', 'resourceType', or anything beginning with
-     * 'properties.'.
-     */
-    @JsonProperty(value = "field", required = true)
-    private String field;
-
-    /*
-     * The field value will be compared to this value (case-insensitive) to
-     * determine if the condition is met.
-     */
-    @JsonProperty(value = "equals", required = true)
-    private String equals;
-
-    /**
-     * Get the field property: The name of the field that this condition will examine. The possible values for this
-     * field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName', 'resourceGroup',
-     * 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties.'.
+     * An Activity Log Alert rule 'anyOf' condition.
      *
-     * @return the field value.
+     * An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
      */
-    public String field() {
-        return this.field;
+    @JsonProperty(value = "anyOf")
+    private List<AlertRuleLeafCondition> anyOf;
+
+    /** Creates an instance of ActivityLogAlertLeafCondition class. */
+    public ActivityLogAlertLeafCondition() {
     }
 
     /**
-     * Set the field property: The name of the field that this condition will examine. The possible values for this
-     * field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName', 'resourceGroup',
-     * 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties.'.
+     * Get the anyOf property: An Activity Log Alert rule 'anyOf' condition.
      *
-     * @param field the field value to set.
+     * <p>An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
+     *
+     * @return the anyOf value.
+     */
+    public List<AlertRuleLeafCondition> anyOf() {
+        return this.anyOf;
+    }
+
+    /**
+     * Set the anyOf property: An Activity Log Alert rule 'anyOf' condition.
+     *
+     * <p>An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
+     *
+     * @param anyOf the anyOf value to set.
      * @return the ActivityLogAlertLeafCondition object itself.
      */
-    public ActivityLogAlertLeafCondition withField(String field) {
-        this.field = field;
+    public ActivityLogAlertLeafCondition withAnyOf(List<AlertRuleLeafCondition> anyOf) {
+        this.anyOf = anyOf;
         return this;
     }
 
-    /**
-     * Get the equals property: The field value will be compared to this value (case-insensitive) to determine if the
-     * condition is met.
-     *
-     * @return the equals value.
-     */
-    public String equals() {
-        return this.equals;
+    /** {@inheritDoc} */
+    @Override
+    public ActivityLogAlertLeafCondition withField(String field) {
+        super.withField(field);
+        return this;
     }
 
-    /**
-     * Set the equals property: The field value will be compared to this value (case-insensitive) to determine if the
-     * condition is met.
-     *
-     * @param equals the equals value to set.
-     * @return the ActivityLogAlertLeafCondition object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public ActivityLogAlertLeafCondition withEquals(String equals) {
-        this.equals = equals;
+        super.withEquals(equals);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ActivityLogAlertLeafCondition withContainsAny(List<String> containsAny) {
+        super.withContainsAny(containsAny);
         return this;
     }
 
@@ -82,18 +80,11 @@ public final class ActivityLogAlertLeafCondition {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (field() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property field in model ActivityLogAlertLeafCondition"));
-        }
-        if (equals() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property equals in model ActivityLogAlertLeafCondition"));
+        super.validate();
+        if (anyOf() != null) {
+            anyOf().forEach(e -> e.validate());
         }
     }
 }

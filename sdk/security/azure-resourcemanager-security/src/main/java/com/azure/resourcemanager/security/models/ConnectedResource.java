@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes properties of a connected resource. */
 @Immutable
 public final class ConnectedResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectedResource.class);
-
     /*
      * The Azure resource id of the connected resource
      */
@@ -31,6 +27,10 @@ public final class ConnectedResource {
      */
     @JsonProperty(value = "udpPorts", access = JsonProperty.Access.WRITE_ONLY)
     private String udpPorts;
+
+    /** Creates an instance of ConnectedResource class. */
+    public ConnectedResource() {
+    }
 
     /**
      * Get the connectedResourceId property: The Azure resource id of the connected resource.

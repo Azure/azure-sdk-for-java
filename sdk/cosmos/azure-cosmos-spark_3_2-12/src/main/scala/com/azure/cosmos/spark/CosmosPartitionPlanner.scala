@@ -4,22 +4,22 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.extractContinuationTokensFromChangeFeedStateJson
-import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.streaming.{ReadAllAvailable, ReadLimit, ReadMaxFiles, ReadMaxRows}
-import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scala.publisher.SMono.PimpJMono
+import reactor.core.scala.publisher.{SFlux, SMono}
 
 import java.time.Duration
 import java.util
-import java.util.concurrent.{ConcurrentHashMap, ConcurrentMap}
 import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.{ConcurrentHashMap, ConcurrentMap}
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
@@ -258,7 +258,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     readLimit: ReadLimit,
     maxStaleness: Duration,
     clientConfiguration: CosmosClientConfiguration,
-    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+    cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
     containerConfig: CosmosContainerConfig,
     partitioningConfig: CosmosPartitioningConfig,
     defaultParallelism: Int,
@@ -272,7 +272,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         readLimit,
         maxStaleness,
         clientConfiguration,
-        cosmosClientStateHandle,
+        cosmosClientStateHandles,
         containerConfig,
         partitioningConfig,
         defaultParallelism,
@@ -290,7 +290,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     readLimit: ReadLimit,
     maxStaleness: Duration,
     clientConfiguration: CosmosClientConfiguration,
-    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+    cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
     containerConfig: CosmosContainerConfig,
     partitioningConfig: CosmosPartitioningConfig,
     defaultParallelism: Int,
@@ -302,7 +302,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     val latestPartitionMetadata = CosmosPartitionPlanner.getFilteredPartitionMetadata(
       userConfig,
       clientConfiguration,
-      Some(cosmosClientStateHandle),
+      Some(cosmosClientStateHandles),
       containerConfig,
       partitioningConfig,
       true,
@@ -623,20 +623,38 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   (
     userConfig: Map[String, String],
     cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig
   ) = {
 
     assertNotNull(cosmosClientConfig, "cosmosClientConfig")
     assertNotNull(cosmosContainerConfig, "cosmosContainerConfig")
-    Loan(CosmosClientCache.apply(
-      cosmosClientConfig,
-      cosmosClientStateHandle,
-      "CosmosPartitionPlanner.getFeedRanges(database " +
-        s"${cosmosContainerConfig.database}, container ${cosmosContainerConfig.container})"
-    ))
-      .to(clientCacheItem => {
-        val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, clientCacheItem.client)
+
+    val cosmosClientMetadataCache =
+      cosmosClientStateHandles match {
+        case None => None
+        case _ => Some(cosmosClientStateHandles.get.value.cosmosClientMetadataCaches)
+      }
+
+    val calledFrom = s"CosmosPartitionPlanner.getFeedRanges(database ${cosmosContainerConfig.database}, container ${cosmosContainerConfig.container})"
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache.apply(
+          cosmosClientConfig,
+          cosmosClientMetadataCache,
+          calledFrom)),
+        ThroughputControlHelper.getThroughputControlClientCacheItem(
+          userConfig,
+          calledFrom,
+          cosmosClientStateHandles)
+      ))
+      .to(clientCacheItems => {
+        val container =
+          ThroughputControlHelper.getContainer(
+            userConfig,
+            cosmosContainerConfig,
+            clientCacheItems(0).get,
+            clientCacheItems(1))
         SparkUtils.safeOpenConnectionInitCaches(container, (msg, e) => logWarning(msg, e))
 
         ContainerFeedRangesCache
@@ -650,7 +668,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   def getFilteredPartitionMetadata(
                             userConfig: Map[String, String],
                             cosmosClientConfig: CosmosClientConfiguration,
-                            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+                            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
                             cosmosContainerConfig: CosmosContainerConfig,
                             partitionConfig: CosmosPartitioningConfig,
                             isChangeFeed: Boolean,
@@ -661,7 +679,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       getPartitionMetadataImpl(
         userConfig,
         cosmosClientConfig,
-        cosmosClientStateHandle,
+        cosmosClientStateHandles,
         cosmosContainerConfig,
         partitionConfig,
         isChangeFeed,
@@ -671,7 +689,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   private[this] def getPartitionMetadataImpl(
       userConfig: Map[String, String],
       cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
       cosmosContainerConfig: CosmosContainerConfig,
       partitionConfig: CosmosPartitioningConfig,
       isChangeFeed: Boolean,
@@ -683,7 +701,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       .getFeedRanges(
         userConfig,
         cosmosClientConfig,
-        cosmosClientStateHandle,
+        cosmosClientStateHandles,
         cosmosContainerConfig)
       .map(feedRangeList =>
         partitionConfig.feedRangeFiler match {
@@ -706,7 +724,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                 PartitionMetadataCache.apply(
                   userConfig,
                   cosmosClientConfig,
-                  cosmosClientStateHandle,
+                  cosmosClientStateHandles,
                   cosmosContainerConfig,
                   normalizedRange,
                   maxStaleness
@@ -715,7 +733,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                 SMono.just(new PartitionMetadata(
                   userConfig,
                   cosmosClientConfig,
-                  cosmosClientStateHandle,
+                  cosmosClientStateHandles,
                   cosmosContainerConfig,
                   normalizedRange,
                   0,

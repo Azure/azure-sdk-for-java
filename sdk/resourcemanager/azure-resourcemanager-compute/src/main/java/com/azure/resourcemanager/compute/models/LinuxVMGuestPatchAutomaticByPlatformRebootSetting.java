@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LinuxVMGuestPatchAutomaticByPlatformRebootSetting. */
+/** Specifies the reboot setting for all AutomaticByPlatform patch installation operations. */
 public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
     extends ExpandableStringEnum<LinuxVMGuestPatchAutomaticByPlatformRebootSetting> {
     /** Static value Unknown for LinuxVMGuestPatchAutomaticByPlatformRebootSetting. */
@@ -22,6 +22,15 @@ public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
 
     /** Static value Always for LinuxVMGuestPatchAutomaticByPlatformRebootSetting. */
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting ALWAYS = fromString("Always");
+
+    /**
+     * Creates a new instance of LinuxVMGuestPatchAutomaticByPlatformRebootSetting value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LinuxVMGuestPatchAutomaticByPlatformRebootSetting() {
+    }
 
     /**
      * Creates or finds a LinuxVMGuestPatchAutomaticByPlatformRebootSetting from its string representation.

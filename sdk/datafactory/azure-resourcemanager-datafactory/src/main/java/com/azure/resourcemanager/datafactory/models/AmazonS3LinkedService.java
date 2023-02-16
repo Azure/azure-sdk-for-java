@@ -24,6 +24,10 @@ public final class AmazonS3LinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AmazonS3LinkedServiceTypeProperties innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
 
+    /** Creates an instance of AmazonS3LinkedService class. */
+    public AmazonS3LinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Amazon S3 linked service properties.
      *

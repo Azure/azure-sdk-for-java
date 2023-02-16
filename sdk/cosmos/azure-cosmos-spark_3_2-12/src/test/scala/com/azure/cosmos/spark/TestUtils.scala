@@ -4,10 +4,14 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, CosmosItemOperation, PartitionKey, ThroughputProperties}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 import reactor.core.publisher.Sinks
 import reactor.core.scala.publisher.SMono.PimpJFlux
@@ -19,12 +23,13 @@ import javax.annotation.concurrent.NotThreadSafe
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters.iterableAsScalaIterableConverter
 // scalastyle:off underscore.import
+import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 // extending class will have a pre-created spark session
 @NotThreadSafe // marking this as not thread safe because we have to stop Spark Context in some unit tests
 // there can only ever be one active Spark Context so running Spark tests in parallel could cause issues
-trait Spark extends BeforeAndAfterAll {
+trait Spark extends BeforeAndAfterAll with BasicLoggingTrait {
   this: Suite =>
   //scalastyle:off
   var spark : SparkSession = _
@@ -32,6 +37,9 @@ trait Spark extends BeforeAndAfterAll {
   def getSpark: SparkSession = spark
 
   def resetSpark: SparkSession = {
+    PartitionMetadataCache.clearCache()
+    CosmosClientCache.clearCache()
+
     spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
@@ -57,6 +65,68 @@ trait Spark extends BeforeAndAfterAll {
   }
 }
 
+trait SparkWithDropwizardAndSlf4jMetrics extends Spark {
+  this: Suite =>
+  //scalastyle:off
+
+  override def resetSpark: SparkSession = {
+    PartitionMetadataCache.clearCache()
+    CosmosClientCache.clearCache()
+    spark = SparkSession.builder()
+      .appName("spark connector sample")
+      .master("local")
+      .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
+      .config("spark.cosmos.metrics.intervalInSeconds", "10")
+      .getOrCreate()
+
+    spark
+  }
+}
+
+trait SparkWithJustDropwizardAndNoSlf4jMetrics extends Spark {
+  this: Suite =>
+  //scalastyle:off
+
+  override def resetSpark: SparkSession = {
+    PartitionMetadataCache.clearCache()
+    CosmosClientCache.clearCache()
+    spark = SparkSession.builder()
+      .appName("spark connector sample")
+      .master("local")
+      .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
+      .config("spark.cosmos.metrics.slf4j.enabled", "false")
+      .getOrCreate()
+
+    spark
+  }
+}
+
+trait MetricAssertions extends BasicLoggingTrait with Matchers {
+  def assertMetrics(meterRegistry: CompositeMeterRegistry, prefix: String, expectedToFind: Boolean): Unit = {
+    meterRegistry.getRegistries.size() > 0 shouldEqual true
+    val firstRegistry: MeterRegistry = meterRegistry.getRegistries.toArray()(0).asInstanceOf[MeterRegistry]
+    firstRegistry.isClosed shouldEqual false
+    val meters = firstRegistry.getMeters.asScala
+
+    if (expectedToFind) {
+      if (meters.size <= 0) {
+        logError("No meters found")
+      }
+
+      meters.nonEmpty shouldEqual true
+    }
+
+    val firstMatchedMetersIndex = meters
+      .indexWhere(meter => meter.getId.getName.startsWith(prefix))
+
+    if (firstMatchedMetersIndex >= 0 != expectedToFind) {
+      logError(s"Matched meter with index $firstMatchedMetersIndex does not reflect expectation $expectedToFind")
+    }
+
+    firstMatchedMetersIndex >= 0 shouldEqual expectedToFind
+  }
+}
+
 // extending class will have a pre-created instance of CosmosClient
 trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
   this: Suite =>
@@ -72,12 +142,8 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
   private val databasesToCleanUp = new ListBuffer[String]()
 
   override def beforeAll(): Unit = {
-    System.out.println("Cosmos Client started!!!!!!")
     super.beforeAll()
-    cosmosClient = new CosmosClientBuilder()
-      .endpoint(TestConfigurations.HOST)
-      .key(TestConfigurations.MASTER_KEY)
-      .buildAsyncClient()
+    createClient()
   }
 
   override def afterEach(): Unit = {
@@ -104,6 +170,14 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
     }
   }
 
+  def createClient(): Unit = {
+    System.out.println("Cosmos Client started!!!!!!")
+    cosmosClient = new CosmosClientBuilder()
+      .endpoint(TestConfigurations.HOST)
+      .key(TestConfigurations.MASTER_KEY)
+      .buildAsyncClient()
+  }
+
   def databaseExists(databaseName: String): Boolean = {
     try {
       cosmosClient.getDatabase(databaseName).read().block()
@@ -121,6 +195,19 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
 
   def cleanupDatabaseLater(databaseName: String) : Unit = {
     databasesToCleanUp.append(databaseName)
+  }
+}
+
+trait CosmosGatewayClient extends CosmosClient {
+  this: Suite =>
+
+  override def createClient(): Unit = {
+    System.out.println("Cosmos Gateway Client started!!!!!!")
+    cosmosClient = new CosmosClientBuilder()
+      .endpoint(TestConfigurations.HOST)
+      .key(TestConfigurations.MASTER_KEY)
+      .gatewayMode()
+      .buildAsyncClient()
   }
 }
 
@@ -211,7 +298,7 @@ trait CosmosContainerWithRetention extends CosmosContainer {
     val properties: CosmosContainerProperties =
       new CosmosContainerProperties(cosmosContainer, partitionKeyPath)
     properties.setChangeFeedPolicy(
-      ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(10)))
+      ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
 
     val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
 

@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RestorableSqlContainerPropertiesResourceContainer extends SqlContainerResource {
     /*
-     * A system generated property that specifies the addressable path of the
-     * container resource.
+     * A system generated property that specifies the addressable path of the container resource.
      */
     @JsonProperty(value = "_self", access = JsonProperty.Access.WRITE_ONLY)
     private String self;
@@ -24,18 +23,20 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     private String rid;
 
     /*
-     * A system generated property that denotes the last updated timestamp of
-     * the resource.
+     * A system generated property that denotes the last updated timestamp of the resource.
      */
     @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
-     * A system generated property representing the resource etag required for
-     * optimistic concurrency control.
+     * A system generated property representing the resource etag required for optimistic concurrency control.
      */
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of RestorableSqlContainerPropertiesResourceContainer class. */
+    public RestorableSqlContainerPropertiesResourceContainer() {
+    }
 
     /**
      * Get the self property: A system generated property that specifies the addressable path of the container resource.
@@ -114,6 +115,14 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     public RestorableSqlContainerPropertiesResourceContainer withConflictResolutionPolicy(
         ConflictResolutionPolicy conflictResolutionPolicy) {
         super.withConflictResolutionPolicy(conflictResolutionPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestorableSqlContainerPropertiesResourceContainer withClientEncryptionPolicy(
+        ClientEncryptionPolicy clientEncryptionPolicy) {
+        super.withClientEncryptionPolicy(clientEncryptionPolicy);
         return this;
     }
 

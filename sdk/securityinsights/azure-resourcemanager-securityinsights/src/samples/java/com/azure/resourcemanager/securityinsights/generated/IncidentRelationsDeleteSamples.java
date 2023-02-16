@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IncidentRelations Delete. */
 public final class IncidentRelationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/incidents/relations/DeleteIncidentRelation.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/relations/DeleteIncidentRelation.json
      */
     /**
      * Sample code: Delete the incident relation.

@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobRestoreProgressStatus. */
+/**
+ * The status of blob restore progress. Possible values are: - InProgress: Indicates that blob restore is ongoing. -
+ * Complete: Indicates that blob restore has been completed successfully. - Failed: Indicates that blob restore is
+ * failed.
+ */
 public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRestoreProgressStatus> {
     /** Static value InProgress for BlobRestoreProgressStatus. */
     public static final BlobRestoreProgressStatus IN_PROGRESS = fromString("InProgress");

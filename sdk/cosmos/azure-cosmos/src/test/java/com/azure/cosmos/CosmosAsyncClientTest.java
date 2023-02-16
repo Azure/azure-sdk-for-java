@@ -13,6 +13,8 @@ import java.lang.reflect.Method;
 
 public abstract class CosmosAsyncClientTest implements ITest {
 
+    protected static final String ROUTING_GATEWAY_EMULATOR_PORT = ":8081";
+    protected static final String COMPUTE_GATEWAY_EMULATOR_PORT = ":8903";
     private final CosmosClientBuilder clientBuilder;
     private String testName;
 
@@ -46,7 +48,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
         if (this.clientBuilder.getConnectionPolicy() != null && this.clientBuilder.configs() != null) {
             String connectionMode = this.clientBuilder.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT
                     ? "Direct " + this.clientBuilder.configs().getProtocol()
-                    : "Gateway";
+                    : this.clientBuilder.getEndpoint().contains(COMPUTE_GATEWAY_EMULATOR_PORT) ? "ComputeGW" : "Gateway";
 
             String template = clientBuilder.isContentResponseOnWriteEnabled() ?
                 "%s[%s with %s consistency]" :

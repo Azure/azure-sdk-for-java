@@ -27,8 +27,7 @@ public final class RollingUpgradeStatusInfoProperties {
     private RollingUpgradeRunningStatus runningStatus;
 
     /*
-     * Information about the number of virtual machine instances in each
-     * upgrade state.
+     * Information about the number of virtual machine instances in each upgrade state.
      */
     @JsonProperty(value = "progress", access = JsonProperty.Access.WRITE_ONLY)
     private RollingUpgradeProgressInfo progress;
@@ -38,6 +37,10 @@ public final class RollingUpgradeStatusInfoProperties {
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError error;
+
+    /** Creates an instance of RollingUpgradeStatusInfoProperties class. */
+    public RollingUpgradeStatusInfoProperties() {
+    }
 
     /**
      * Get the policy property: The rolling upgrade policies applied for this upgrade.

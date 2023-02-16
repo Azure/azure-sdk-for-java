@@ -12,8 +12,8 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -33,9 +33,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimsClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.models.AsyncOperationStatusInner;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
+import com.azure.resourcemanager.mobilenetwork.models.EncryptedSimUploadList;
+import com.azure.resourcemanager.mobilenetwork.models.SimDeleteList;
 import com.azure.resourcemanager.mobilenetwork.models.SimListResult;
-import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
+import com.azure.resourcemanager.mobilenetwork.models.SimUploadList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -64,11 +67,11 @@ public final class SimsClientImpl implements SimsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface SimsService {
+    public interface SimsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/sims"
-                + "/{simName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
+                + "/simGroups/{simGroupName}/sims/{simName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -76,29 +79,31 @@ public final class SimsClientImpl implements SimsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("simGroupName") String simGroupName,
             @PathParam("simName") String simName,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/sims"
-                + "/{simName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
+                + "/simGroups/{simGroupName}/sims/{simName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SimInner>> getByResourceGroup(
+        Mono<Response<SimInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("simGroupName") String simGroupName,
             @PathParam("simName") String simName,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/sims"
-                + "/{simName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
+                + "/simGroups/{simGroupName}/sims/{simName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -106,58 +111,72 @@ public final class SimsClientImpl implements SimsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("simGroupName") String simGroupName,
             @PathParam("simName") String simName,
             @BodyParam("application/json") SimInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/sims"
-                + "/{simName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SimInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("simName") String simName,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.MobileNetwork/sims")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SimListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/sims")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
+                + "/simGroups/{simGroupName}/sims")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SimListResult>> listByResourceGroup(
+        Mono<Response<SimListResult>> listByGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("simGroupName") String simGroupName,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
+                + "/simGroups/{simGroupName}/uploadSims")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SimListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<Flux<ByteBuffer>>> bulkUpload(
             @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("simGroupName") String simGroupName,
+            @BodyParam("application/json") SimUploadList parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
+                + "/simGroups/{simGroupName}/deleteSims")
+        @ExpectedResponses({200, 202, 204})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> bulkDelete(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("simGroupName") String simGroupName,
+            @BodyParam("application/json") SimDeleteList parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
+                + "/simGroups/{simGroupName}/uploadEncryptedSims")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> bulkUploadEncrypted(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("simGroupName") String simGroupName,
+            @BodyParam("application/json") EncryptedSimUploadList parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -165,7 +184,7 @@ public final class SimsClientImpl implements SimsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SimListResult>> listByResourceGroupNext(
+        Mono<Response<SimListResult>> listByGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -173,9 +192,10 @@ public final class SimsClientImpl implements SimsClient {
     }
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -183,7 +203,8 @@ public final class SimsClientImpl implements SimsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String simName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String simGroupName, String simName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -199,6 +220,9 @@ public final class SimsClientImpl implements SimsClient {
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
         }
         if (simName == null) {
             return Mono.error(new IllegalArgumentException("Parameter simName is required and cannot be null."));
@@ -213,6 +237,7 @@ public final class SimsClientImpl implements SimsClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
+                            simGroupName,
                             simName,
                             accept,
                             context))
@@ -220,9 +245,10 @@ public final class SimsClientImpl implements SimsClient {
     }
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +258,7 @@ public final class SimsClientImpl implements SimsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String simName, Context context) {
+        String resourceGroupName, String simGroupName, String simName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -248,6 +274,9 @@ public final class SimsClientImpl implements SimsClient {
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
         }
         if (simName == null) {
             return Mono.error(new IllegalArgumentException("Parameter simName is required and cannot be null."));
@@ -260,15 +289,17 @@ public final class SimsClientImpl implements SimsClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
+                simGroupName,
                 simName,
                 accept,
                 context);
     }
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -276,8 +307,9 @@ public final class SimsClientImpl implements SimsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String simName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, simName);
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String simGroupName, String simName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, simGroupName, simName);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -285,9 +317,10 @@ public final class SimsClientImpl implements SimsClient {
     }
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,18 +330,20 @@ public final class SimsClientImpl implements SimsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String simName, Context context) {
+        String resourceGroupName, String simGroupName, String simName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, simName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, simGroupName, simName, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -316,14 +351,16 @@ public final class SimsClientImpl implements SimsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String simName) {
-        return beginDeleteAsync(resourceGroupName, simName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String simGroupName, String simName) {
+        return this.beginDeleteAsync(resourceGroupName, simGroupName, simName).getSyncPoller();
     }
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,14 +369,16 @@ public final class SimsClientImpl implements SimsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String simName, Context context) {
-        return beginDeleteAsync(resourceGroupName, simName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String simGroupName, String simName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, simGroupName, simName, context).getSyncPoller();
     }
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -347,46 +386,51 @@ public final class SimsClientImpl implements SimsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String simName) {
-        return beginDeleteAsync(resourceGroupName, simName).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified sim.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simName The name of the SIM.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String simName, Context context) {
-        return beginDeleteAsync(resourceGroupName, simName, context)
+    private Mono<Void> deleteAsync(String resourceGroupName, String simGroupName, String simName) {
+        return beginDeleteAsync(resourceGroupName, simGroupName, simName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param simName The name of the SIM.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String simGroupName, String simName, Context context) {
+        return beginDeleteAsync(resourceGroupName, simGroupName, simName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the specified SIM.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String simName) {
-        deleteAsync(resourceGroupName, simName).block();
+    public void delete(String resourceGroupName, String simGroupName, String simName) {
+        deleteAsync(resourceGroupName, simGroupName, simName).block();
     }
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,22 +438,24 @@ public final class SimsClientImpl implements SimsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String simName, Context context) {
-        deleteAsync(resourceGroupName, simName, context).block();
+    public void delete(String resourceGroupName, String simGroupName, String simName, Context context) {
+        deleteAsync(resourceGroupName, simGroupName, simName, context).block();
     }
 
     /**
-     * Gets information about the specified sim.
+     * Gets information about the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about the specified SIM along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SimInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String simName) {
+    private Mono<Response<SimInner>> getWithResponseAsync(
+        String resourceGroupName, String simGroupName, String simName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -425,6 +471,9 @@ public final class SimsClientImpl implements SimsClient {
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
         }
         if (simName == null) {
             return Mono.error(new IllegalArgumentException("Parameter simName is required and cannot be null."));
@@ -434,11 +483,12 @@ public final class SimsClientImpl implements SimsClient {
             .withContext(
                 context ->
                     service
-                        .getByResourceGroup(
+                        .get(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
+                            simGroupName,
                             simName,
                             accept,
                             context))
@@ -446,19 +496,20 @@ public final class SimsClientImpl implements SimsClient {
     }
 
     /**
-     * Gets information about the specified sim.
+     * Gets information about the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about the specified SIM along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SimInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String simName, Context context) {
+    private Mono<Response<SimInner>> getWithResponseAsync(
+        String resourceGroupName, String simGroupName, String simName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -474,6 +525,9 @@ public final class SimsClientImpl implements SimsClient {
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
         }
         if (simName == null) {
             return Mono.error(new IllegalArgumentException("Parameter simName is required and cannot be null."));
@@ -481,85 +535,83 @@ public final class SimsClientImpl implements SimsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .getByResourceGroup(
+            .get(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
+                simGroupName,
                 simName,
                 accept,
                 context);
     }
 
     /**
-     * Gets information about the specified sim.
+     * Gets information about the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim on successful completion of {@link Mono}.
+     * @return information about the specified SIM on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SimInner> getByResourceGroupAsync(String resourceGroupName, String simName) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, simName)
-            .flatMap(
-                (Response<SimInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<SimInner> getAsync(String resourceGroupName, String simGroupName, String simName) {
+        return getWithResponseAsync(resourceGroupName, simGroupName, simName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets information about the specified sim.
+     * Gets information about the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simName The name of the SIM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimInner getByResourceGroup(String resourceGroupName, String simName) {
-        return getByResourceGroupAsync(resourceGroupName, simName).block();
-    }
-
-    /**
-     * Gets information about the specified sim.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim along with {@link Response}.
+     * @return information about the specified SIM along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SimInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String simName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, simName, context).block();
+    public Response<SimInner> getWithResponse(
+        String resourceGroupName, String simGroupName, String simName, Context context) {
+        return getWithResponseAsync(resourceGroupName, simGroupName, simName, context).block();
     }
 
     /**
-     * Creates or updates a Sim.
+     * Gets information about the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about the specified SIM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SimInner get(String resourceGroupName, String simGroupName, String simName) {
+        return getWithResponse(resourceGroupName, simGroupName, simName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a SIM.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param simName The name of the SIM.
+     * @param parameters Parameters supplied to the create or update SIM operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sIM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String simName, SimInner parameters) {
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -575,6 +627,9 @@ public final class SimsClientImpl implements SimsClient {
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
         }
         if (simName == null) {
             return Mono.error(new IllegalArgumentException("Parameter simName is required and cannot be null."));
@@ -594,6 +649,7 @@ public final class SimsClientImpl implements SimsClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
+                            simGroupName,
                             simName,
                             parameters,
                             accept,
@@ -602,20 +658,21 @@ public final class SimsClientImpl implements SimsClient {
     }
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return sIM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String simName, SimInner parameters, Context context) {
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -631,6 +688,9 @@ public final class SimsClientImpl implements SimsClient {
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
         }
         if (simName == null) {
             return Mono.error(new IllegalArgumentException("Parameter simName is required and cannot be null."));
@@ -648,6 +708,7 @@ public final class SimsClientImpl implements SimsClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
+                simGroupName,
                 simName,
                 parameters,
                 accept,
@@ -655,20 +716,22 @@ public final class SimsClientImpl implements SimsClient {
     }
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of sim resource.
+     * @return the {@link PollerFlux} for polling of sIM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SimInner>, SimInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String simName, SimInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, simName, parameters);
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, simGroupName, simName, parameters);
         return this
             .client
             .<SimInner, SimInner>getLroResult(
@@ -676,23 +739,24 @@ public final class SimsClientImpl implements SimsClient {
     }
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of sim resource.
+     * @return the {@link PollerFlux} for polling of sIM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SimInner>, SimInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String simName, SimInner parameters, Context context) {
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, simName, parameters, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, simGroupName, simName, parameters, context);
         return this
             .client
             .<SimInner, SimInner>getLroResult(
@@ -700,130 +764,142 @@ public final class SimsClientImpl implements SimsClient {
     }
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sim resource.
+     * @return the {@link SyncPoller} for polling of sIM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SimInner>, SimInner> beginCreateOrUpdate(
-        String resourceGroupName, String simName, SimInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, simName, parameters).getSyncPoller();
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, simGroupName, simName, parameters).getSyncPoller();
     }
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sim resource.
+     * @return the {@link SyncPoller} for polling of sIM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SimInner>, SimInner> beginCreateOrUpdate(
-        String resourceGroupName, String simName, SimInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, simName, parameters, context).getSyncPoller();
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, simGroupName, simName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SimInner> createOrUpdateAsync(String resourceGroupName, String simName, SimInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, simName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a Sim.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource on successful completion of {@link Mono}.
+     * @return sIM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SimInner> createOrUpdateAsync(
-        String resourceGroupName, String simName, SimInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, simName, parameters, context)
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, simGroupName, simName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates or updates a Sim.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimInner createOrUpdate(String resourceGroupName, String simName, SimInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, simName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a Sim.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to the create or update sim operation.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource.
+     * @return sIM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimInner createOrUpdate(String resourceGroupName, String simName, SimInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, simName, parameters, context).block();
+    private Mono<SimInner> createOrUpdateAsync(
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, simGroupName, simName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Updates a sim update tags.
+     * Creates or updates a SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to update sim tags.
+     * @param parameters Parameters supplied to the create or update SIM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return sIM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SimInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String simName, TagsObject parameters) {
+    public SimInner createOrUpdate(String resourceGroupName, String simGroupName, String simName, SimInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, simGroupName, simName, parameters).block();
+    }
+
+    /**
+     * Creates or updates a SIM.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param simName The name of the SIM.
+     * @param parameters Parameters supplied to the create or update SIM operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sIM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SimInner createOrUpdate(
+        String resourceGroupName, String simGroupName, String simName, SimInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, simGroupName, simName, parameters, context).block();
+    }
+
+    /**
+     * Gets all the SIMs in a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIMs in a SIM group along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SimInner>> listByGroupSinglePageAsync(String resourceGroupName, String simGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -831,12 +907,188 @@ public final class SimsClientImpl implements SimsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByGroup(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            simGroupName,
+                            accept,
+                            context))
+            .<PagedResponse<SimInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets all the SIMs in a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIMs in a SIM group along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SimInner>> listByGroupSinglePageAsync(
+        String resourceGroupName, String simGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (simName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter simName is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByGroup(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                simGroupName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all the SIMs in a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIMs in a SIM group as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SimInner> listByGroupAsync(String resourceGroupName, String simGroupName) {
+        return new PagedFlux<>(
+            () -> listByGroupSinglePageAsync(resourceGroupName, simGroupName),
+            nextLink -> listByGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all the SIMs in a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIMs in a SIM group as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SimInner> listByGroupAsync(String resourceGroupName, String simGroupName, Context context) {
+        return new PagedFlux<>(
+            () -> listByGroupSinglePageAsync(resourceGroupName, simGroupName, context),
+            nextLink -> listByGroupNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets all the SIMs in a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIMs in a SIM group as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SimInner> listByGroup(String resourceGroupName, String simGroupName) {
+        return new PagedIterable<>(listByGroupAsync(resourceGroupName, simGroupName));
+    }
+
+    /**
+     * Gets all the SIMs in a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIMs in a SIM group as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SimInner> listByGroup(String resourceGroupName, String simGroupName, Context context) {
+        return new PagedIterable<>(listByGroupAsync(resourceGroupName, simGroupName, context));
+    }
+
+    /**
+     * Bulk upload SIMs to a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM upload operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> bulkUploadWithResponseAsync(
+        String resourceGroupName, String simGroupName, SimUploadList parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -848,12 +1100,12 @@ public final class SimsClientImpl implements SimsClient {
             .withContext(
                 context ->
                     service
-                        .updateTags(
+                        .bulkUpload(
                             this.client.getEndpoint(),
+                            resourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            simName,
+                            simGroupName,
                             parameters,
                             accept,
                             context))
@@ -861,25 +1113,30 @@ public final class SimsClientImpl implements SimsClient {
     }
 
     /**
-     * Updates a sim update tags.
+     * Bulk upload SIMs to a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to update sim tags.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM upload operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SimInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String simName, TagsObject parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> bulkUploadWithResponseAsync(
+        String resourceGroupName, String simGroupName, SimUploadList parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -887,12 +1144,8 @@ public final class SimsClientImpl implements SimsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (simName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter simName is required and cannot be null."));
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -902,227 +1155,195 @@ public final class SimsClientImpl implements SimsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .updateTags(
+            .bulkUpload(
                 this.client.getEndpoint(),
+                resourceGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
-                resourceGroupName,
-                simName,
+                simGroupName,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Updates a sim update tags.
+     * Bulk upload SIMs to a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to update sim tags.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM upload operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SimInner> updateTagsAsync(String resourceGroupName, String simName, TagsObject parameters) {
-        return updateTagsWithResponseAsync(resourceGroupName, simName, parameters)
-            .flatMap(
-                (Response<SimInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUploadAsync(
+        String resourceGroupName, String simGroupName, SimUploadList parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            bulkUploadWithResponseAsync(resourceGroupName, simGroupName, parameters);
+        return this
+            .client
+            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AsyncOperationStatusInner.class,
+                AsyncOperationStatusInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Updates a sim update tags.
+     * Bulk upload SIMs to a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to update sim tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimInner updateTags(String resourceGroupName, String simName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, simName, parameters).block();
-    }
-
-    /**
-     * Updates a sim update tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simName The name of the SIM.
-     * @param parameters Parameters supplied to update sim tags.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM upload operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sim resource along with {@link Response}.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SimInner> updateTagsWithResponse(
-        String resourceGroupName, String simName, TagsObject parameters, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, simName, parameters, context).block();
-    }
-
-    /**
-     * Gets all the sims in a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the sims in a subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<SimInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets all the sims in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the sims in a subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUploadAsync(
+        String resourceGroupName, String simGroupName, SimUploadList parameters, Context context) {
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            bulkUploadWithResponseAsync(resourceGroupName, simGroupName, parameters, context);
+        return this
+            .client
+            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AsyncOperationStatusInner.class,
+                AsyncOperationStatusInner.class,
+                context);
     }
 
     /**
-     * Gets all the sims in a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the sims in a subscription as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SimInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all the sims in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the sims in a subscription as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SimInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all the sims in a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the sims in a subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SimInner> list() {
-        return new PagedIterable<>(listAsync());
-    }
-
-    /**
-     * Gets all the sims in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the sims in a subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SimInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
-    }
-
-    /**
-     * Gets all the Sims in a subscription.
+     * Bulk upload SIMs to a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM upload operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Sims in a subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUpload(
+        String resourceGroupName, String simGroupName, SimUploadList parameters) {
+        return this.beginBulkUploadAsync(resourceGroupName, simGroupName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Bulk upload SIMs to a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM upload operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUpload(
+        String resourceGroupName, String simGroupName, SimUploadList parameters, Context context) {
+        return this.beginBulkUploadAsync(resourceGroupName, simGroupName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Bulk upload SIMs to a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM upload operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    private Mono<AsyncOperationStatusInner> bulkUploadAsync(
+        String resourceGroupName, String simGroupName, SimUploadList parameters) {
+        return beginBulkUploadAsync(resourceGroupName, simGroupName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Bulk upload SIMs to a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM upload operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AsyncOperationStatusInner> bulkUploadAsync(
+        String resourceGroupName, String simGroupName, SimUploadList parameters, Context context) {
+        return beginBulkUploadAsync(resourceGroupName, simGroupName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Bulk upload SIMs to a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM upload operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationStatusInner bulkUpload(
+        String resourceGroupName, String simGroupName, SimUploadList parameters) {
+        return bulkUploadAsync(resourceGroupName, simGroupName, parameters).block();
+    }
+
+    /**
+     * Bulk upload SIMs to a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM upload operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationStatusInner bulkUpload(
+        String resourceGroupName, String simGroupName, SimUploadList parameters, Context context) {
+        return bulkUploadAsync(resourceGroupName, simGroupName, parameters, context).block();
+    }
+
+    /**
+     * Bulk delete SIMs from a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM delete operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> bulkDeleteWithResponseAsync(
+        String resourceGroupName, String simGroupName, SimDeleteList parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1139,43 +1360,47 @@ public final class SimsClientImpl implements SimsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listByResourceGroup(
+                        .bulkDelete(
                             this.client.getEndpoint(),
                             resourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            simGroupName,
+                            parameters,
                             accept,
                             context))
-            .<PagedResponse<SimInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets all the Sims in a subscription.
+     * Bulk delete SIMs from a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM delete operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Sims in a subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> bulkDeleteWithResponseAsync(
+        String resourceGroupName, String simGroupName, SimDeleteList parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1192,101 +1417,477 @@ public final class SimsClientImpl implements SimsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
+            .bulkDelete(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                simGroupName,
+                parameters,
                 accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+                context);
     }
 
     /**
-     * Gets all the Sims in a subscription.
+     * Bulk delete SIMs from a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM delete operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Sims in a subscription as paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SimInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkDeleteAsync(
+        String resourceGroupName, String simGroupName, SimDeleteList parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            bulkDeleteWithResponseAsync(resourceGroupName, simGroupName, parameters);
+        return this
+            .client
+            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AsyncOperationStatusInner.class,
+                AsyncOperationStatusInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Gets all the Sims in a subscription.
+     * Bulk delete SIMs from a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM delete operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Sims in a subscription as paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SimInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkDeleteAsync(
+        String resourceGroupName, String simGroupName, SimDeleteList parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            bulkDeleteWithResponseAsync(resourceGroupName, simGroupName, parameters, context);
+        return this
+            .client
+            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AsyncOperationStatusInner.class,
+                AsyncOperationStatusInner.class,
+                context);
     }
 
     /**
-     * Gets all the Sims in a subscription.
+     * Bulk delete SIMs from a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM delete operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Sims in a subscription as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SimInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkDelete(
+        String resourceGroupName, String simGroupName, SimDeleteList parameters) {
+        return this.beginBulkDeleteAsync(resourceGroupName, simGroupName, parameters).getSyncPoller();
     }
 
     /**
-     * Gets all the Sims in a subscription.
+     * Bulk delete SIMs from a SIM group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM delete operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Sims in a subscription as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SimInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkDelete(
+        String resourceGroupName, String simGroupName, SimDeleteList parameters, Context context) {
+        return this.beginBulkDeleteAsync(resourceGroupName, simGroupName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Bulk delete SIMs from a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM delete operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AsyncOperationStatusInner> bulkDeleteAsync(
+        String resourceGroupName, String simGroupName, SimDeleteList parameters) {
+        return beginBulkDeleteAsync(resourceGroupName, simGroupName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Bulk delete SIMs from a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM delete operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AsyncOperationStatusInner> bulkDeleteAsync(
+        String resourceGroupName, String simGroupName, SimDeleteList parameters, Context context) {
+        return beginBulkDeleteAsync(resourceGroupName, simGroupName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Bulk delete SIMs from a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM delete operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationStatusInner bulkDelete(
+        String resourceGroupName, String simGroupName, SimDeleteList parameters) {
+        return bulkDeleteAsync(resourceGroupName, simGroupName, parameters).block();
+    }
+
+    /**
+     * Bulk delete SIMs from a SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the bulk SIM delete operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationStatusInner bulkDelete(
+        String resourceGroupName, String simGroupName, SimDeleteList parameters, Context context) {
+        return bulkDeleteAsync(resourceGroupName, simGroupName, parameters, context).block();
+    }
+
+    /**
+     * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the encrypted SIMs upload operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> bulkUploadEncryptedWithResponseAsync(
+        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .bulkUploadEncrypted(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            simGroupName,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the encrypted SIMs upload operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> bulkUploadEncryptedWithResponseAsync(
+        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (simGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter simGroupName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .bulkUploadEncrypted(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                simGroupName,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the encrypted SIMs upload operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUploadEncryptedAsync(
+        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            bulkUploadEncryptedWithResponseAsync(resourceGroupName, simGroupName, parameters);
+        return this
+            .client
+            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AsyncOperationStatusInner.class,
+                AsyncOperationStatusInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the encrypted SIMs upload operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUploadEncryptedAsync(
+        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            bulkUploadEncryptedWithResponseAsync(resourceGroupName, simGroupName, parameters, context);
+        return this
+            .client
+            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AsyncOperationStatusInner.class,
+                AsyncOperationStatusInner.class,
+                context);
+    }
+
+    /**
+     * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the encrypted SIMs upload operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUploadEncrypted(
+        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters) {
+        return this.beginBulkUploadEncryptedAsync(resourceGroupName, simGroupName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the encrypted SIMs upload operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUploadEncrypted(
+        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters, Context context) {
+        return this.beginBulkUploadEncryptedAsync(resourceGroupName, simGroupName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the encrypted SIMs upload operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AsyncOperationStatusInner> bulkUploadEncryptedAsync(
+        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters) {
+        return beginBulkUploadEncryptedAsync(resourceGroupName, simGroupName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the encrypted SIMs upload operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AsyncOperationStatusInner> bulkUploadEncryptedAsync(
+        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters, Context context) {
+        return beginBulkUploadEncryptedAsync(resourceGroupName, simGroupName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the encrypted SIMs upload operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationStatusInner bulkUploadEncrypted(
+        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters) {
+        return bulkUploadEncryptedAsync(resourceGroupName, simGroupName, parameters).block();
+    }
+
+    /**
+     * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to the encrypted SIMs upload operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationStatusInner bulkUploadEncrypted(
+        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters, Context context) {
+        return bulkUploadEncryptedAsync(resourceGroupName, simGroupName, parameters, context).block();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list Sims API service call along with {@link PagedResponse} on successful completion of
+     * @return response for list SIMs API service call along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<SimInner>> listByGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1298,8 +1899,7 @@ public final class SimsClientImpl implements SimsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SimInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1315,16 +1915,17 @@ public final class SimsClientImpl implements SimsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list Sims API service call along with {@link PagedResponse} on successful completion of
+     * @return response for list SIMs API service call along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<SimInner>> listByGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1337,81 +1938,7 @@ public final class SimsClientImpl implements SimsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list Sims API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SimInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list Sims API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listByGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

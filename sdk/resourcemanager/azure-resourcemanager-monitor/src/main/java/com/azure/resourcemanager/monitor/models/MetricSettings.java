@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular metric. */
 @Fluent
 public final class MetricSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSettings.class);
-
     /*
      * the timegrain of the metric in ISO8601 format.
      */
@@ -22,9 +18,8 @@ public final class MetricSettings {
     private Duration timeGrain;
 
     /*
-     * Name of a Diagnostic Metric category for a resource type this setting is
-     * applied to. To obtain the list of Diagnostic metric categories for a
-     * resource, first perform a GET diagnostic settings operation.
+     * Name of a Diagnostic Metric category for a resource type this setting is applied to. To obtain the list of
+     * Diagnostic metric categories for a resource, first perform a GET diagnostic settings operation.
      */
     @JsonProperty(value = "category")
     private String category;
@@ -40,6 +35,10 @@ public final class MetricSettings {
      */
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
+
+    /** Creates an instance of MetricSettings class. */
+    public MetricSettings() {
+    }
 
     /**
      * Get the timeGrain property: the timegrain of the metric in ISO8601 format.

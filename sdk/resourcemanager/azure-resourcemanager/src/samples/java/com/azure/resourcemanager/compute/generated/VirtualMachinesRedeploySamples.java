@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines Redeploy. */
 public final class VirtualMachinesRedeploySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Redeploy_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Redeploy_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_Redeploy_MinimumSet_Gen.
@@ -22,11 +20,11 @@ public final class VirtualMachinesRedeploySamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .redeploy("rgcompute", "aaaaaaaaaaaaaaa", Context.NONE);
+            .redeploy("rgcompute", "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Redeploy_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Redeploy_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_Redeploy_MaximumSet_Gen.
@@ -34,6 +32,11 @@ public final class VirtualMachinesRedeploySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachinesRedeployMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().redeploy("rgcompute", "a", Context.NONE);
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .redeploy("rgcompute", "a", com.azure.core.util.Context.NONE);
     }
 }

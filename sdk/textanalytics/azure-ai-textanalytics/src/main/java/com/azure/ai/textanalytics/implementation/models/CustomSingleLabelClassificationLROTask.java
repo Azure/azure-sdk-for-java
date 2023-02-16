@@ -20,6 +20,9 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
     @JsonProperty(value = "parameters")
     private CustomSingleLabelClassificationTaskParameters parameters;
 
+    /** Creates an instance of CustomSingleLabelClassificationLROTask class. */
+    public CustomSingleLabelClassificationLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for a Custom Single Classification task.
      *
@@ -38,6 +41,13 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
     public CustomSingleLabelClassificationLROTask setParameters(
             CustomSingleLabelClassificationTaskParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
         return this;
     }
 }

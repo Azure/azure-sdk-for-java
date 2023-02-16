@@ -39,11 +39,14 @@ public final class VpnServerConfigurationPolicyGroupProperties {
     private List<SubResource> p2SConnectionConfigurations;
 
     /*
-     * The provisioning state of the VpnServerConfigurationPolicyGroup
-     * resource.
+     * The provisioning state of the VpnServerConfigurationPolicyGroup resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of VpnServerConfigurationPolicyGroupProperties class. */
+    public VpnServerConfigurationPolicyGroupProperties() {
+    }
 
     /**
      * Get the isDefault property: Shows if this is a Default VpnServerConfigurationPolicyGroup or not.

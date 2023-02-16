@@ -63,6 +63,9 @@ public final class ListQueuesSegmentResponse {
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
+    /** Creates an instance of ListQueuesSegmentResponse class. */
+    public ListQueuesSegmentResponse() {}
+
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
      *

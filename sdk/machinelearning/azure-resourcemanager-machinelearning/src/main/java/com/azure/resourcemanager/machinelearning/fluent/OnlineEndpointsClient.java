@@ -13,10 +13,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthKeysInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthTokenInner;
-import com.azure.resourcemanager.machinelearning.fluent.models.OnlineEndpointDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.OnlineEndpointInner;
 import com.azure.resourcemanager.machinelearning.models.EndpointComputeType;
 import com.azure.resourcemanager.machinelearning.models.OrderString;
-import com.azure.resourcemanager.machinelearning.models.PartialOnlineEndpointPartialTrackedResource;
+import com.azure.resourcemanager.machinelearning.models.PartialMinimalTrackedResourceWithIdentity;
 import com.azure.resourcemanager.machinelearning.models.RegenerateEndpointKeysRequest;
 
 /** An instance of this class provides access to all the operations defined in OnlineEndpointsClient. */
@@ -32,7 +32,7 @@ public interface OnlineEndpointsClient {
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OnlineEndpointDataInner> list(String resourceGroupName, String workspaceName);
+    PagedIterable<OnlineEndpointInner> list(String resourceGroupName, String workspaceName);
 
     /**
      * List Online Endpoints.
@@ -55,7 +55,7 @@ public interface OnlineEndpointsClient {
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OnlineEndpointDataInner> list(
+    PagedIterable<OnlineEndpointInner> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -130,20 +130,6 @@ public interface OnlineEndpointsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return online Endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineEndpointDataInner get(String resourceGroupName, String workspaceName, String endpointName);
-
-    /**
-     * Get Online Endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Online Endpoint name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,10 +137,24 @@ public interface OnlineEndpointsClient {
      * @return online Endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OnlineEndpointDataInner> getWithResponse(
+    Response<OnlineEndpointInner> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context);
 
     /**
+     * Get Online Endpoint.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Online Endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return online Endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OnlineEndpointInner get(String resourceGroupName, String workspaceName, String endpointName);
+
+    /**
      * Update Online Endpoint (asynchronous).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -167,11 +167,11 @@ public interface OnlineEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginUpdate(
+    SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body);
+        PartialMinimalTrackedResourceWithIdentity body);
 
     /**
      * Update Online Endpoint (asynchronous).
@@ -187,11 +187,11 @@ public interface OnlineEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginUpdate(
+    SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context);
 
     /**
@@ -207,11 +207,11 @@ public interface OnlineEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineEndpointDataInner update(
+    OnlineEndpointInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body);
+        PartialMinimalTrackedResourceWithIdentity body);
 
     /**
      * Update Online Endpoint (asynchronous).
@@ -227,11 +227,11 @@ public interface OnlineEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineEndpointDataInner update(
+    OnlineEndpointInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialOnlineEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context);
 
     /**
@@ -247,8 +247,8 @@ public interface OnlineEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointDataInner body);
+    SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body);
 
     /**
      * Create or update Online Endpoint (asynchronous).
@@ -264,12 +264,8 @@ public interface OnlineEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineEndpointDataInner>, OnlineEndpointDataInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        OnlineEndpointDataInner body,
-        Context context);
+    SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body, Context context);
 
     /**
      * Create or update Online Endpoint (asynchronous).
@@ -284,8 +280,8 @@ public interface OnlineEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineEndpointDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointDataInner body);
+    OnlineEndpointInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body);
 
     /**
      * Create or update Online Endpoint (asynchronous).
@@ -301,26 +297,8 @@ public interface OnlineEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineEndpointDataInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        OnlineEndpointDataInner body,
-        Context context);
-
-    /**
-     * List EndpointAuthKeys for an Endpoint using Key-based authentication.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EndpointAuthKeysInner listKeys(String resourceGroupName, String workspaceName, String endpointName);
+    OnlineEndpointInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body, Context context);
 
     /**
      * List EndpointAuthKeys for an Endpoint using Key-based authentication.
@@ -339,6 +317,20 @@ public interface OnlineEndpointsClient {
         String resourceGroupName, String workspaceName, String endpointName, Context context);
 
     /**
+     * List EndpointAuthKeys for an Endpoint using Key-based authentication.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Online Endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keys for endpoint authentication.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EndpointAuthKeysInner listKeys(String resourceGroupName, String workspaceName, String endpointName);
+
+    /**
      * Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -409,20 +401,6 @@ public interface OnlineEndpointsClient {
         String endpointName,
         RegenerateEndpointKeysRequest body,
         Context context);
-
-    /**
-     * Retrieve a valid AAD token for an Endpoint using AMLToken-based authentication.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Token.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EndpointAuthTokenInner getToken(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * Retrieve a valid AAD token for an Endpoint using AMLToken-based authentication.
@@ -439,4 +417,18 @@ public interface OnlineEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EndpointAuthTokenInner> getTokenWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context);
+
+    /**
+     * Retrieve a valid AAD token for an Endpoint using AMLToken-based authentication.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Online Endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service Token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EndpointAuthTokenInner getToken(String resourceGroupName, String workspaceName, String endpointName);
 }

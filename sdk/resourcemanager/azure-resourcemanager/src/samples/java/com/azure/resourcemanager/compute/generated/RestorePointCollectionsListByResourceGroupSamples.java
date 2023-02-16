@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RestorePointCollections ListByResourceGroup. */
 public final class RestorePointCollectionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePointCollection_ListByResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePointCollection_ListByResourceGroup.json
      */
     /**
      * Sample code: Gets the list of restore point collections in a resource group.
@@ -23,6 +21,6 @@ public final class RestorePointCollectionsListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getRestorePointCollections()
-            .listByResourceGroup("myResourceGroup", Context.NONE);
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

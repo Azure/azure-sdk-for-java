@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Message Count Details. */
 @Immutable
 public final class MessageCountDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MessageCountDetails.class);
-
     /*
      * Number of active messages in the queue, topic, or subscription.
      */

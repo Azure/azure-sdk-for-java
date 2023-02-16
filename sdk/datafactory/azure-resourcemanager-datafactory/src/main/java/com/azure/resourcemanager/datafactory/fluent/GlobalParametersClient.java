@@ -47,20 +47,6 @@ public interface GlobalParametersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Global parameter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GlobalParameterResourceInner get(String resourceGroupName, String factoryName, String globalParameterName);
-
-    /**
-     * Gets a Global parameter.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,23 +58,18 @@ public interface GlobalParametersClient {
         String resourceGroupName, String factoryName, String globalParameterName, Context context);
 
     /**
-     * Creates or updates a Global parameter.
+     * Gets a Global parameter.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
-     * @param defaultParameter Global parameter resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return global parameters resource type.
+     * @return a Global parameter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GlobalParameterResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String globalParameterName,
-        GlobalParameterResourceInner defaultParameter);
+    GlobalParameterResourceInner get(String resourceGroupName, String factoryName, String globalParameterName);
 
     /**
      * Creates or updates a Global parameter.
@@ -112,17 +93,23 @@ public interface GlobalParametersClient {
         Context context);
 
     /**
-     * Deletes a Global parameter.
+     * Creates or updates a Global parameter.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
+     * @param defaultParameter Global parameter resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return global parameters resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String factoryName, String globalParameterName);
+    GlobalParameterResourceInner createOrUpdate(
+        String resourceGroupName,
+        String factoryName,
+        String globalParameterName,
+        GlobalParameterResourceInner defaultParameter);
 
     /**
      * Deletes a Global parameter.
@@ -139,4 +126,17 @@ public interface GlobalParametersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String globalParameterName, Context context);
+
+    /**
+     * Deletes a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String factoryName, String globalParameterName);
 }

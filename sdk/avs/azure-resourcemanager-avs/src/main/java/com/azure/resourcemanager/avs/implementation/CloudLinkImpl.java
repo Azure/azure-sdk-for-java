@@ -34,6 +34,10 @@ public final class CloudLinkImpl implements CloudLink, CloudLink.Definition, Clo
         return this.innerModel().linkedCloud();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CloudLinkInner innerModel() {
         return this.innerObject;
     }

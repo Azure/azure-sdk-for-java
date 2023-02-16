@@ -29,6 +29,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(PARAMETER)
 public @interface FormParam {
     /**
+     * Gets the name of the key in a key-value pair as part of the form data.
+     *
      * @return The name of the key in a key value pair as part of the form data.
      */
     String value();
@@ -36,7 +38,6 @@ public @interface FormParam {
     /**
      * Whether the form parameter is already form encoded.
      * <p>
-     *
      * A value true for this argument indicates that value of {@link FormParam#value()} is already encoded hence engine
      * should not encode it, by default value will be encoded.
      *

@@ -5,26 +5,20 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** The properties of the messaging endpoints used by this IoT hub. */
 @Fluent
 public final class MessagingEndpointProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MessagingEndpointProperties.class);
-
     /*
-     * The lock duration. See:
-     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
+     * The lock duration. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
      */
     @JsonProperty(value = "lockDurationAsIso8601")
     private Duration lockDurationAsIso8601;
 
     /*
-     * The period of time for which a message is available to consume before it
-     * is expired by the IoT hub. See:
+     * The period of time for which a message is available to consume before it is expired by the IoT hub. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
      */
     @JsonProperty(value = "ttlAsIso8601")

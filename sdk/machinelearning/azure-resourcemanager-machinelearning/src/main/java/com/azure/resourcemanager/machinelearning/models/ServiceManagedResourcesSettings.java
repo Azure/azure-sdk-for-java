@@ -16,6 +16,10 @@ public final class ServiceManagedResourcesSettings {
     @JsonProperty(value = "cosmosDb")
     private CosmosDbSettings cosmosDb;
 
+    /** Creates an instance of ServiceManagedResourcesSettings class. */
+    public ServiceManagedResourcesSettings() {
+    }
+
     /**
      * Get the cosmosDb property: The settings for the service managed cosmosdb account.
      *

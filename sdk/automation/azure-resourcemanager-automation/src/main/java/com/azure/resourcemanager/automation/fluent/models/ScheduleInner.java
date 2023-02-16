@@ -5,104 +5,29 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.AdvancedSchedule;
 import com.azure.resourcemanager.automation.models.ScheduleFrequency;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Definition of the schedule. */
-@JsonFlatten
 @Fluent
-public class ScheduleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleInner.class);
-
+public final class ScheduleInner extends ProxyResource {
     /*
-     * Gets or sets the start time of the schedule.
+     * Gets or sets the properties of the schedule.
      */
-    @JsonProperty(value = "properties.startTime")
-    private OffsetDateTime startTime;
+    @JsonProperty(value = "properties")
+    private ScheduleProperties innerProperties;
 
-    /*
-     * Gets the start time's offset in minutes.
+    /**
+     * Get the innerProperties property: Gets or sets the properties of the schedule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.startTimeOffsetMinutes", access = JsonProperty.Access.WRITE_ONLY)
-    private Double startTimeOffsetMinutes;
-
-    /*
-     * Gets or sets the end time of the schedule.
-     */
-    @JsonProperty(value = "properties.expiryTime")
-    private OffsetDateTime expiryTime;
-
-    /*
-     * Gets or sets the expiry time's offset in minutes.
-     */
-    @JsonProperty(value = "properties.expiryTimeOffsetMinutes")
-    private Double expiryTimeOffsetMinutes;
-
-    /*
-     * Gets or sets a value indicating whether this schedule is enabled.
-     */
-    @JsonProperty(value = "properties.isEnabled")
-    private Boolean isEnabled;
-
-    /*
-     * Gets or sets the next run time of the schedule.
-     */
-    @JsonProperty(value = "properties.nextRun")
-    private OffsetDateTime nextRun;
-
-    /*
-     * Gets or sets the next run time's offset in minutes.
-     */
-    @JsonProperty(value = "properties.nextRunOffsetMinutes")
-    private Double nextRunOffsetMinutes;
-
-    /*
-     * Gets or sets the interval of the schedule.
-     */
-    @JsonProperty(value = "properties.interval")
-    private Object interval;
-
-    /*
-     * Gets or sets the frequency of the schedule.
-     */
-    @JsonProperty(value = "properties.frequency")
-    private ScheduleFrequency frequency;
-
-    /*
-     * Gets or sets the time zone of the schedule.
-     */
-    @JsonProperty(value = "properties.timeZone")
-    private String timeZone;
-
-    /*
-     * Gets or sets the advanced schedule.
-     */
-    @JsonProperty(value = "properties.advancedSchedule")
-    private AdvancedSchedule advancedSchedule;
-
-    /*
-     * Gets or sets the creation time.
-     */
-    @JsonProperty(value = "properties.creationTime")
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets or sets the last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime")
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Gets or sets the description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private ScheduleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the startTime property: Gets or sets the start time of the schedule.
@@ -110,7 +35,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -120,7 +45,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -130,7 +58,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the startTimeOffsetMinutes value.
      */
     public Double startTimeOffsetMinutes() {
-        return this.startTimeOffsetMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().startTimeOffsetMinutes();
     }
 
     /**
@@ -139,7 +67,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
-        return this.expiryTime;
+        return this.innerProperties() == null ? null : this.innerProperties().expiryTime();
     }
 
     /**
@@ -149,7 +77,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withExpiryTime(OffsetDateTime expiryTime) {
-        this.expiryTime = expiryTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withExpiryTime(expiryTime);
         return this;
     }
 
@@ -159,7 +90,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the expiryTimeOffsetMinutes value.
      */
     public Double expiryTimeOffsetMinutes() {
-        return this.expiryTimeOffsetMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().expiryTimeOffsetMinutes();
     }
 
     /**
@@ -169,7 +100,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withExpiryTimeOffsetMinutes(Double expiryTimeOffsetMinutes) {
-        this.expiryTimeOffsetMinutes = expiryTimeOffsetMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withExpiryTimeOffsetMinutes(expiryTimeOffsetMinutes);
         return this;
     }
 
@@ -179,7 +113,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
-        return this.isEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
     }
 
     /**
@@ -189,7 +123,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withIsEnabled(isEnabled);
         return this;
     }
 
@@ -199,7 +136,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the nextRun value.
      */
     public OffsetDateTime nextRun() {
-        return this.nextRun;
+        return this.innerProperties() == null ? null : this.innerProperties().nextRun();
     }
 
     /**
@@ -209,7 +146,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withNextRun(OffsetDateTime nextRun) {
-        this.nextRun = nextRun;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withNextRun(nextRun);
         return this;
     }
 
@@ -219,7 +159,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the nextRunOffsetMinutes value.
      */
     public Double nextRunOffsetMinutes() {
-        return this.nextRunOffsetMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().nextRunOffsetMinutes();
     }
 
     /**
@@ -229,7 +169,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withNextRunOffsetMinutes(Double nextRunOffsetMinutes) {
-        this.nextRunOffsetMinutes = nextRunOffsetMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withNextRunOffsetMinutes(nextRunOffsetMinutes);
         return this;
     }
 
@@ -239,7 +182,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the interval value.
      */
     public Object interval() {
-        return this.interval;
+        return this.innerProperties() == null ? null : this.innerProperties().interval();
     }
 
     /**
@@ -249,7 +192,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withInterval(Object interval) {
-        this.interval = interval;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withInterval(interval);
         return this;
     }
 
@@ -259,7 +205,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
-        return this.frequency;
+        return this.innerProperties() == null ? null : this.innerProperties().frequency();
     }
 
     /**
@@ -269,7 +215,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withFrequency(ScheduleFrequency frequency) {
-        this.frequency = frequency;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withFrequency(frequency);
         return this;
     }
 
@@ -279,7 +228,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the timeZone value.
      */
     public String timeZone() {
-        return this.timeZone;
+        return this.innerProperties() == null ? null : this.innerProperties().timeZone();
     }
 
     /**
@@ -289,7 +238,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withTimeZone(String timeZone) {
-        this.timeZone = timeZone;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withTimeZone(timeZone);
         return this;
     }
 
@@ -299,7 +251,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the advancedSchedule value.
      */
     public AdvancedSchedule advancedSchedule() {
-        return this.advancedSchedule;
+        return this.innerProperties() == null ? null : this.innerProperties().advancedSchedule();
     }
 
     /**
@@ -309,7 +261,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withAdvancedSchedule(AdvancedSchedule advancedSchedule) {
-        this.advancedSchedule = advancedSchedule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withAdvancedSchedule(advancedSchedule);
         return this;
     }
 
@@ -319,7 +274,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -329,7 +284,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withCreationTime(OffsetDateTime creationTime) {
-        this.creationTime = creationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withCreationTime(creationTime);
         return this;
     }
 
@@ -339,7 +297,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -349,7 +307,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withLastModifiedTime(OffsetDateTime lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withLastModifiedTime(lastModifiedTime);
         return this;
     }
 
@@ -359,7 +320,7 @@ public class ScheduleInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -369,7 +330,10 @@ public class ScheduleInner extends ProxyResource {
      * @return the ScheduleInner object itself.
      */
     public ScheduleInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -379,8 +343,8 @@ public class ScheduleInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (advancedSchedule() != null) {
-            advancedSchedule().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

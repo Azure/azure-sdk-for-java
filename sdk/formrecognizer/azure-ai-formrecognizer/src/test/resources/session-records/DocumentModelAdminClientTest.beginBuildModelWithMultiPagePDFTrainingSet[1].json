@@ -1,0 +1,64 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2022-08-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "9a717760-7c83-4d7c-ba7a-8c8452e381e5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "2670",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/operations/31505419506_db3d2527-87d7-4ceb-8774-64779ff9af1b?api-version=2022-08-31",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "db3d2527-87d7-4ceb-8774-64779ff9af1b",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 19 Aug 2022 22:34:55 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31505419506_db3d2527-87d7-4ceb-8774-64779ff9af1b?api-version=2022-08-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "33824f88-fd23-4697-90aa-f05672006aa2"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "26",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "2e0c48b0-034e-48a7-9cb2-59b51cd74899",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"operationId\": \"31505419506_db3d2527-87d7-4ceb-8774-64779ff9af1b\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"succeeded\",\n  \"createdDateTime\": \"2022-08-19T22:34:53Z\",\n  \"lastUpdatedDateTime\": \"2022-08-19T22:34:57Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/b87eda4f-47f3-4326-a788-14d19fb232c5?api-version=2022-08-31\",\n  \"percentCompleted\": 100,\n  \"result\": {\n    \"docTypes\": {\n      \"b87eda4f-47f3-4326-a788-14d19fb232c5\": {\n        \"fieldSchema\": {\n          \"Merchant\": {\n            \"type\": \"string\"\n          },\n          \"MerchantAddress\": {\n            \"type\": \"string\"\n          },\n          \"MerchantPhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"CustomerName\": {\n            \"type\": \"string\"\n          },\n          \"CustomerAddress\": {\n            \"type\": \"string\"\n          },\n          \"CustomerPhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"FirstItem\": {\n            \"type\": \"string\"\n          },\n          \"FirstQuantity\": {\n            \"type\": \"string\"\n          },\n          \"FirstPrice\": {\n            \"type\": \"string\"\n          },\n          \"Subtotal\": {\n            \"type\": \"string\"\n          },\n          \"Tax\": {\n            \"type\": \"string\"\n          },\n          \"Tip\": {\n            \"type\": \"string\"\n          },\n          \"Total\": {\n            \"type\": \"string\"\n          },\n          \"Signature\": {\n            \"type\": \"string\"\n          },\n          \"Merchant2\": {\n            \"type\": \"string\"\n          },\n          \"Customer2\": {\n            \"type\": \"string\"\n          },\n          \"Total2\": {\n            \"type\": \"string\"\n          },\n          \"Signature2\": {\n            \"type\": \"string\"\n          }\n        },\n        \"buildMode\": \"template\",\n        \"fieldConfidence\": {\n          \"Customer2\": 0.995,\n          \"CustomerAddress\": 0.995,\n          \"CustomerName\": 0.995,\n          \"CustomerPhoneNumber\": 0.995,\n          \"FirstItem\": 0.995,\n          \"FirstPrice\": 0.995,\n          \"FirstQuantity\": 0.995,\n          \"Merchant\": 0,\n          \"Merchant2\": 0,\n          \"MerchantAddress\": 0.995,\n          \"MerchantPhoneNumber\": 0.995,\n          \"Signature\": 0.995,\n          \"Signature2\": 0.995,\n          \"Subtotal\": 0.995,\n          \"Tax\": 0.995,\n          \"Tip\": 0.995,\n          \"Total\": 0.995,\n          \"Total2\": 0.995\n        }\n      }\n    },\n    \"modelId\": \"b87eda4f-47f3-4326-a788-14d19fb232c5\",\n    \"createdDateTime\": \"2022-08-19T22:34:57Z\",\n    \"apiVersion\": \"2022-08-31\"\n  }\n}",
+      "Date" : "Fri, 19 Aug 2022 22:35:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31505419506_db3d2527-87d7-4ceb-8774-64779ff9af1b?api-version=2022-08-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e6f0ac23-63ef-4abb-840d-4140c9bf699f"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "34",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "af80f38c-3b4a-4b21-9154-02b7600dc98c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"operationId\": \"31505419506_db3d2527-87d7-4ceb-8774-64779ff9af1b\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"succeeded\",\n  \"createdDateTime\": \"2022-08-19T22:34:53Z\",\n  \"lastUpdatedDateTime\": \"2022-08-19T22:34:57Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/b87eda4f-47f3-4326-a788-14d19fb232c5?api-version=2022-08-31\",\n  \"percentCompleted\": 100,\n  \"result\": {\n    \"docTypes\": {\n      \"b87eda4f-47f3-4326-a788-14d19fb232c5\": {\n        \"fieldSchema\": {\n          \"Merchant\": {\n            \"type\": \"string\"\n          },\n          \"MerchantAddress\": {\n            \"type\": \"string\"\n          },\n          \"MerchantPhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"CustomerName\": {\n            \"type\": \"string\"\n          },\n          \"CustomerAddress\": {\n            \"type\": \"string\"\n          },\n          \"CustomerPhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"FirstItem\": {\n            \"type\": \"string\"\n          },\n          \"FirstQuantity\": {\n            \"type\": \"string\"\n          },\n          \"FirstPrice\": {\n            \"type\": \"string\"\n          },\n          \"Subtotal\": {\n            \"type\": \"string\"\n          },\n          \"Tax\": {\n            \"type\": \"string\"\n          },\n          \"Tip\": {\n            \"type\": \"string\"\n          },\n          \"Total\": {\n            \"type\": \"string\"\n          },\n          \"Signature\": {\n            \"type\": \"string\"\n          },\n          \"Merchant2\": {\n            \"type\": \"string\"\n          },\n          \"Customer2\": {\n            \"type\": \"string\"\n          },\n          \"Total2\": {\n            \"type\": \"string\"\n          },\n          \"Signature2\": {\n            \"type\": \"string\"\n          }\n        },\n        \"buildMode\": \"template\",\n        \"fieldConfidence\": {\n          \"Customer2\": 0.995,\n          \"CustomerAddress\": 0.995,\n          \"CustomerName\": 0.995,\n          \"CustomerPhoneNumber\": 0.995,\n          \"FirstItem\": 0.995,\n          \"FirstPrice\": 0.995,\n          \"FirstQuantity\": 0.995,\n          \"Merchant\": 0,\n          \"Merchant2\": 0,\n          \"MerchantAddress\": 0.995,\n          \"MerchantPhoneNumber\": 0.995,\n          \"Signature\": 0.995,\n          \"Signature2\": 0.995,\n          \"Subtotal\": 0.995,\n          \"Tax\": 0.995,\n          \"Tip\": 0.995,\n          \"Total\": 0.995,\n          \"Total2\": 0.995\n        }\n      }\n    },\n    \"modelId\": \"b87eda4f-47f3-4326-a788-14d19fb232c5\",\n    \"createdDateTime\": \"2022-08-19T22:34:57Z\",\n    \"apiVersion\": \"2022-08-31\"\n  }\n}",
+      "Date" : "Fri, 19 Aug 2022 22:35:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -18,119 +18,103 @@ public final class ClusterResourceProperties {
     private ManagedCassandraProvisioningState provisioningState;
 
     /*
-     * To create an empty cluster, omit this field or set it to null. To
-     * restore a backup into a new cluster, set this field to the resource id
-     * of the backup.
+     * To create an empty cluster, omit this field or set it to null. To restore a backup into a new cluster, set this
+     * field to the resource id of the backup.
      */
     @JsonProperty(value = "restoreFromBackupId")
     private String restoreFromBackupId;
 
     /*
-     * Resource id of a subnet that this cluster's management service should
-     * have its network interface attached to. The subnet must be routable to
-     * all subnets that will be delegated to data centers. The resource id must
-     * be of the form '/subscriptions/<subscription
-     * id>/resourceGroups/<resource
-     * group>/providers/Microsoft.Network/virtualNetworks/<virtual
-     * network>/subnets/<subnet>'
+     * Resource id of a subnet that this cluster's management service should have its network interface attached to.
+     * The subnet must be routable to all subnets that will be delegated to data centers. The resource id must be of
+     * the form '/subscriptions/<subscription id>/resourceGroups/<resource
+     * group>/providers/Microsoft.Network/virtualNetworks/<virtual network>/subnets/<subnet>'
      */
     @JsonProperty(value = "delegatedManagementSubnetId")
     private String delegatedManagementSubnetId;
 
     /*
-     * Which version of Cassandra should this cluster converge to running
-     * (e.g., 3.11). When updated, the cluster may take some time to migrate to
-     * the new version.
+     * Which version of Cassandra should this cluster converge to running (e.g., 3.11). When updated, the cluster may
+     * take some time to migrate to the new version.
      */
     @JsonProperty(value = "cassandraVersion")
     private String cassandraVersion;
 
     /*
-     * If you need to set the clusterName property in cassandra.yaml to
-     * something besides the resource name of the cluster, set the value to use
-     * on this property.
+     * If you need to set the clusterName property in cassandra.yaml to something besides the resource name of the
+     * cluster, set the value to use on this property.
      */
     @JsonProperty(value = "clusterNameOverride")
     private String clusterNameOverride;
 
     /*
-     * Which authentication method Cassandra should use to authenticate
-     * clients. 'None' turns off authentication, so should not be used except
-     * in emergencies. 'Cassandra' is the default password based
-     * authentication. The default is 'Cassandra'.
+     * Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication, so
+     * should not be used except in emergencies. 'Cassandra' is the default password based authentication. The default
+     * is 'Cassandra'.
      */
     @JsonProperty(value = "authenticationMethod")
     private AuthenticationMethod authenticationMethod;
 
     /*
-     * Initial password for clients connecting as admin to the cluster. Should
-     * be changed after cluster creation. Returns null on GET. This field only
-     * applies when the authenticationMethod field is 'Cassandra'.
+     * Initial password for clients connecting as admin to the cluster. Should be changed after cluster creation.
+     * Returns null on GET. This field only applies when the authenticationMethod field is 'Cassandra'.
      */
     @JsonProperty(value = "initialCassandraAdminPassword")
     private String initialCassandraAdminPassword;
 
     /*
-     * Hostname or IP address where the Prometheus endpoint containing data
-     * about the managed Cassandra nodes can be reached.
+     * Hostname or IP address where the Prometheus endpoint containing data about the managed Cassandra nodes can be
+     * reached.
      */
     @JsonProperty(value = "prometheusEndpoint")
     private SeedNode prometheusEndpoint;
 
     /*
-     * Should automatic repairs run on this cluster? If omitted, this is true,
-     * and should stay true unless you are running a hybrid cluster where you
-     * are already doing your own repairs.
+     * Should automatic repairs run on this cluster? If omitted, this is true, and should stay true unless you are
+     * running a hybrid cluster where you are already doing your own repairs.
      */
     @JsonProperty(value = "repairEnabled")
     private Boolean repairEnabled;
 
     /*
-     * List of TLS certificates used to authorize clients connecting to the
-     * cluster. All connections are TLS encrypted whether clientCertificates is
-     * set or not, but if clientCertificates is set, the managed Cassandra
-     * cluster will reject all connections not bearing a TLS client certificate
-     * that can be validated from one or more of the public certificates in
-     * this property.
+     * List of TLS certificates used to authorize clients connecting to the cluster. All connections are TLS encrypted
+     * whether clientCertificates is set or not, but if clientCertificates is set, the managed Cassandra cluster will
+     * reject all connections not bearing a TLS client certificate that can be validated from one or more of the public
+     * certificates in this property.
      */
     @JsonProperty(value = "clientCertificates")
     private List<Certificate> clientCertificates;
 
     /*
-     * List of TLS certificates used to authorize gossip from unmanaged data
-     * centers. The TLS certificates of all nodes in unmanaged data centers
-     * must be verifiable using one of the certificates provided in this
-     * property.
+     * List of TLS certificates used to authorize gossip from unmanaged data centers. The TLS certificates of all nodes
+     * in unmanaged data centers must be verifiable using one of the certificates provided in this property.
      */
     @JsonProperty(value = "externalGossipCertificates")
     private List<Certificate> externalGossipCertificates;
 
     /*
-     * List of TLS certificates that unmanaged nodes must trust for gossip with
-     * managed nodes. All managed nodes will present TLS client certificates
-     * that are verifiable using one of the certificates provided in this
-     * property.
+     * List of TLS certificates that unmanaged nodes must trust for gossip with managed nodes. All managed nodes will
+     * present TLS client certificates that are verifiable using one of the certificates provided in this property.
      */
     @JsonProperty(value = "gossipCertificates", access = JsonProperty.Access.WRITE_ONLY)
     private List<Certificate> gossipCertificates;
 
     /*
-     * List of IP addresses of seed nodes in unmanaged data centers. These will
-     * be added to the seed node lists of all managed nodes.
+     * List of IP addresses of seed nodes in unmanaged data centers. These will be added to the seed node lists of all
+     * managed nodes.
      */
     @JsonProperty(value = "externalSeedNodes")
     private List<SeedNode> externalSeedNodes;
 
     /*
-     * List of IP addresses of seed nodes in the managed data centers. These
-     * should be added to the seed node lists of all unmanaged nodes.
+     * List of IP addresses of seed nodes in the managed data centers. These should be added to the seed node lists of
+     * all unmanaged nodes.
      */
     @JsonProperty(value = "seedNodes", access = JsonProperty.Access.WRITE_ONLY)
     private List<SeedNode> seedNodes;
 
     /*
-     * Number of hours to wait between taking a backup of the cluster. To
-     * disable backups, set this property to 0.
+     * Number of hours to wait between taking a backup of the cluster. To disable backups, set this property to 0.
      */
     @JsonProperty(value = "hoursBetweenBackups")
     private Integer hoursBetweenBackups;
@@ -146,6 +130,10 @@ public final class ClusterResourceProperties {
      */
     @JsonProperty(value = "cassandraAuditLoggingEnabled")
     private Boolean cassandraAuditLoggingEnabled;
+
+    /** Creates an instance of ClusterResourceProperties class. */
+    public ClusterResourceProperties() {
+    }
 
     /**
      * Get the provisioningState property: The status of the resource at the time the operation was called.

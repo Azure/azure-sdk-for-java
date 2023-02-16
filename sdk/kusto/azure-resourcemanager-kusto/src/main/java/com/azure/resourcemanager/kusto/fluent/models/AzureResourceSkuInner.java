@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.AzureCapacity;
 import com.azure.resourcemanager.kusto.models.AzureSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure resource SKU definition. */
 @Fluent
 public final class AzureResourceSkuInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureResourceSkuInner.class);
-
     /*
      * Resource Namespace and Type.
      */

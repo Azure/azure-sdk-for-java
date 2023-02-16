@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MetricClass. */
+/** The class of the metric. */
 public final class MetricClass extends ExpandableStringEnum<MetricClass> {
     /** Static value Availability for MetricClass. */
     public static final MetricClass AVAILABILITY = fromString("Availability");
@@ -36,7 +36,11 @@ public final class MetricClass extends ExpandableStringEnum<MetricClass> {
         return fromString(name, MetricClass.class);
     }
 
-    /** @return known MetricClass values. */
+    /**
+     * Gets known MetricClass values.
+     *
+     * @return known MetricClass values.
+     */
     public static Collection<MetricClass> values() {
         return values(MetricClass.class);
     }

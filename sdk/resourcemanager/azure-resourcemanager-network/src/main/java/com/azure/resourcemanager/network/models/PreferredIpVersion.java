@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PreferredIpVersion. */
+/**
+ * The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version
+ * depending on other parameters.
+ */
 public final class PreferredIpVersion extends ExpandableStringEnum<PreferredIpVersion> {
     /** Static value IPv4 for PreferredIpVersion. */
     public static final PreferredIpVersion IPV4 = fromString("IPv4");

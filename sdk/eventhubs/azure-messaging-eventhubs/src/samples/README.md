@@ -38,6 +38,7 @@ string value can be obtained by:
 - [Publish events to an Event Hub with a size-limited batch][sample_publish_size_limited]
 - [Publish events using web sockets and a proxy][sample_publish_web_sockets_proxy]
 - [Publish events with custom metadata][sample_publish_custom_metadata]
+- [Publish events with EventHubBufferedProducerClient][sample_publish_buffered_producer]
 - [Publish stream of events][sample_publish_stream_events]
 - [Publish events through an intermediary endpoint][sample_intermediary_endpoint]
 - [Publish events and consume events using a shared connection][sample_share_connection]
@@ -67,6 +68,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/
 [sample_event_processor]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/EventProcessorClientSample.java
 [sample_get_event_hubs_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
 [sample_intermediary_endpoint]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsCustomEndpoint.java
+[sample_publish_buffered_producer]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsBufferedProducer.java
 [sample_publish_custom_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
 [sample_publish_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithAzureIdentity.java
 [sample_publish_partitionId]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java

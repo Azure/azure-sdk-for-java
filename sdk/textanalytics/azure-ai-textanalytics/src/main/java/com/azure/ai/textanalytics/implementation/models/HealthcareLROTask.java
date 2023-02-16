@@ -20,6 +20,9 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private HealthcareTaskParameters parameters;
 
+    /** Creates an instance of HealthcareLROTask class. */
+    public HealthcareLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for a Healthcare task.
      *
@@ -37,6 +40,13 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
      */
     public HealthcareLROTask setParameters(HealthcareTaskParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
         return this;
     }
 }

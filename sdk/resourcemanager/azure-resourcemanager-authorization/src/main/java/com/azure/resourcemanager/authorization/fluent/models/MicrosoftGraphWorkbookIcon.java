@@ -22,12 +22,10 @@ public final class MicrosoftGraphWorkbookIcon {
     private Integer index;
 
     /*
-     * Represents the set that the icon is part of. The possible values are:
-     * Invalid, ThreeArrows, ThreeArrowsGray, ThreeFlags, ThreeTrafficLights1,
-     * ThreeTrafficLights2, ThreeSigns, ThreeSymbols, ThreeSymbols2,
-     * FourArrows, FourArrowsGray, FourRedToBlack, FourRating,
-     * FourTrafficLights, FiveArrows, FiveArrowsGray, FiveRating, FiveQuarters,
-     * ThreeStars, ThreeTriangles, FiveBoxes.
+     * Represents the set that the icon is part of. The possible values are: Invalid, ThreeArrows, ThreeArrowsGray,
+     * ThreeFlags, ThreeTrafficLights1, ThreeTrafficLights2, ThreeSigns, ThreeSymbols, ThreeSymbols2, FourArrows,
+     * FourArrowsGray, FourRedToBlack, FourRating, FourTrafficLights, FiveArrows, FiveArrowsGray, FiveRating,
+     * FiveQuarters, ThreeStars, ThreeTriangles, FiveBoxes.
      */
     @JsonProperty(value = "set")
     private String set;
@@ -36,6 +34,10 @@ public final class MicrosoftGraphWorkbookIcon {
      * workbookIcon
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookIcon class. */
+    public MicrosoftGraphWorkbookIcon() {
+    }
 
     /**
      * Get the index property: Represents the index of the icon in the given set.

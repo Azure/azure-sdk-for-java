@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HttpAuthenticationType. */
+/** The authentication type to be used to connect to the HTTP server. */
 public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthenticationType> {
     /** Static value Basic for HttpAuthenticationType. */
     public static final HttpAuthenticationType BASIC = fromString("Basic");
@@ -24,6 +24,15 @@ public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthe
 
     /** Static value ClientCertificate for HttpAuthenticationType. */
     public static final HttpAuthenticationType CLIENT_CERTIFICATE = fromString("ClientCertificate");
+
+    /**
+     * Creates a new instance of HttpAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HttpAuthenticationType() {
+    }
 
     /**
      * Creates or finds a HttpAuthenticationType from its string representation.

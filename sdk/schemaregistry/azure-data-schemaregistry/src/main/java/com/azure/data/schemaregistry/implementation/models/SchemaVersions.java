@@ -9,32 +9,61 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/** Array received from the registry containing the list of versions for specific schema. */
+/** Object received from the registry containing the list of schema versions and link to next batch page. */
 @Fluent
 public final class SchemaVersions {
     /*
-     * Array of schema groups.
+     * Array of schema version integers.
      */
     @JsonProperty(value = "schemaVersions")
-    private List<Integer> schemaVersions;
+    private List<Integer> versions;
+
+    /*
+     * URl to next batch of schema versions
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
+
+    /** Creates an instance of SchemaVersions class. */
+    public SchemaVersions() {}
 
     /**
-     * Get the schemaVersions property: Array of schema groups.
+     * Get the versions property: Array of schema version integers.
      *
-     * @return the schemaVersions value.
+     * @return the versions value.
      */
-    public List<Integer> getSchemaVersions() {
-        return this.schemaVersions;
+    public List<Integer> getVersions() {
+        return this.versions;
     }
 
     /**
-     * Set the schemaVersions property: Array of schema groups.
+     * Set the versions property: Array of schema version integers.
      *
-     * @param schemaVersions the schemaVersions value to set.
+     * @param versions the versions value to set.
      * @return the SchemaVersions object itself.
      */
-    public SchemaVersions setSchemaVersions(List<Integer> schemaVersions) {
-        this.schemaVersions = schemaVersions;
+    public SchemaVersions setVersions(List<Integer> versions) {
+        this.versions = versions;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: URl to next batch of schema versions.
+     *
+     * @return the nextLink value.
+     */
+    public String getNextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: URl to next batch of schema versions.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the SchemaVersions object itself.
+     */
+    public SchemaVersions setNextLink(String nextLink) {
+        this.nextLink = nextLink;
         return this;
     }
 }

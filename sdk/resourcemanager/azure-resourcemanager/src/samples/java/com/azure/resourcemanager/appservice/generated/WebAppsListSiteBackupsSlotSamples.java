@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApps ListSiteBackupsSlot. */
 public final class WebAppsListSiteBackupsSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListSlotBackups.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListSlotBackups.json
      */
     /**
      * Sample code: List backups.

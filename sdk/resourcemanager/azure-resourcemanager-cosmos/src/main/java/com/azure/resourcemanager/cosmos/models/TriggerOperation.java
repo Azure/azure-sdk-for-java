@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TriggerOperation. */
+/** The operation the trigger is associated with. */
 public final class TriggerOperation extends ExpandableStringEnum<TriggerOperation> {
     /** Static value All for TriggerOperation. */
     public static final TriggerOperation ALL = fromString("All");
@@ -24,6 +24,15 @@ public final class TriggerOperation extends ExpandableStringEnum<TriggerOperatio
 
     /** Static value Replace for TriggerOperation. */
     public static final TriggerOperation REPLACE = fromString("Replace");
+
+    /**
+     * Creates a new instance of TriggerOperation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TriggerOperation() {
+    }
 
     /**
      * Creates or finds a TriggerOperation from its string representation.

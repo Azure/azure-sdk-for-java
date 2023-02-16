@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServiceRoles List. */
 public final class CloudServiceRolesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceRole_List.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceRole_List.json
      */
     /**
      * Sample code: List Roles in a Cloud Service.
@@ -22,6 +20,6 @@ public final class CloudServiceRolesListSamples {
             .manager()
             .serviceClient()
             .getCloudServiceRoles()
-            .list("ConstosoRG", "{cs-name}", Context.NONE);
+            .list("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

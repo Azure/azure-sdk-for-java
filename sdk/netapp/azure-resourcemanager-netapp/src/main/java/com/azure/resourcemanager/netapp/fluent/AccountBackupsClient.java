@@ -16,7 +16,9 @@ import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 /** An instance of this class provides access to all the operations defined in AccountBackupsClient. */
 public interface AccountBackupsClient {
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -29,7 +31,9 @@ public interface AccountBackupsClient {
     PagedIterable<BackupInner> list(String resourceGroupName, String accountName);
 
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -43,7 +47,9 @@ public interface AccountBackupsClient {
     PagedIterable<BackupInner> list(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -57,7 +63,9 @@ public interface AccountBackupsClient {
     BackupInner get(String resourceGroupName, String accountName, String backupName);
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -73,7 +81,9 @@ public interface AccountBackupsClient {
         String resourceGroupName, String accountName, String backupName, Context context);
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -87,7 +97,9 @@ public interface AccountBackupsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String backupName);
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -103,7 +115,9 @@ public interface AccountBackupsClient {
         String resourceGroupName, String accountName, String backupName, Context context);
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -116,7 +130,9 @@ public interface AccountBackupsClient {
     void delete(String resourceGroupName, String accountName, String backupName);
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

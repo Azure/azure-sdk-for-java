@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureKeyVault")
 @Fluent
 public final class UserManagedHttpsParameters extends CustomDomainHttpsParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserManagedHttpsParameters.class);
-
     /*
-     * Defines the certificate source parameters using user's keyvault
-     * certificate for enabling SSL.
+     * Defines the certificate source parameters using user's keyvault certificate for enabling SSL.
      */
     @JsonProperty(value = "certificateSourceParameters", required = true)
     private KeyVaultCertificateSourceParameters certificateSourceParameters;
@@ -71,7 +67,7 @@ public final class UserManagedHttpsParameters extends CustomDomainHttpsParameter
     public void validate() {
         super.validate();
         if (certificateSourceParameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property certificateSourceParameters in model UserManagedHttpsParameters"));
@@ -79,4 +75,6 @@ public final class UserManagedHttpsParameters extends CustomDomainHttpsParameter
             certificateSourceParameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserManagedHttpsParameters.class);
 }

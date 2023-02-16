@@ -48,7 +48,11 @@ public final class SecretPermissions extends ExpandableStringEnum<SecretPermissi
         return fromString(name, SecretPermissions.class);
     }
 
-    /** @return known SecretPermissions values. */
+    /**
+     * Gets known SecretPermissions values.
+     *
+     * @return known SecretPermissions values.
+     */
     public static Collection<SecretPermissions> values() {
         return values(SecretPermissions.class);
     }

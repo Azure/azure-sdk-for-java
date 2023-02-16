@@ -72,7 +72,11 @@ public final class KeyPermissions extends ExpandableStringEnum<KeyPermissions> {
         return fromString(name, KeyPermissions.class);
     }
 
-    /** @return known KeyPermissions values. */
+    /**
+     * Gets known KeyPermissions values.
+     *
+     * @return known KeyPermissions values.
+     */
     public static Collection<KeyPermissions> values() {
         return values(KeyPermissions.class);
     }

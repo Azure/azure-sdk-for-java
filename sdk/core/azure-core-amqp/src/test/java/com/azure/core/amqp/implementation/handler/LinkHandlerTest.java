@@ -7,6 +7,10 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
+import com.azure.core.amqp.implementation.ClientConstants;
+import com.azure.core.test.utils.metrics.TestMeasurement;
+import com.azure.core.test.utils.metrics.TestMeter;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -26,6 +30,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -49,7 +54,8 @@ public class LinkHandlerTest {
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(10);
     private static final String CONNECTION_ID = "connection-id";
     private static final String HOSTNAME = "test-hostname";
-    private static final String ENTITY_PATH = "test-entity-path";
+    private static final String ENTITY_NAME = "test-entity";
+    private static final String ENTITY_PATH = ENTITY_NAME + "/partition";
 
     @Mock
     private Event event;
@@ -238,6 +244,53 @@ public class LinkHandlerTest {
     }
 
     /**
+     * Verifies that an error is reported as metric if there is an error condition on close.
+     */
+    @Test
+    void onLinkRemoteCloseWithErrorReportsMetrics() {
+        // Arrange
+        final ErrorCondition errorCondition = new ErrorCondition(symbol, description);
+
+        when(link.getRemoteCondition()).thenReturn(errorCondition);
+        when(link.getSession()).thenReturn(session);
+        when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
+
+        TestMeter meter = new TestMeter();
+        LinkHandler handlerWithMetrics = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, new AmqpMetricsProvider(meter, HOSTNAME, ENTITY_PATH));
+        handlerWithMetrics.onLinkRemoteClose(event);
+
+        // Assert
+        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.client.link.errors").getMeasurements();
+        assertEquals(1, errors.size());
+        assertEquals(1, errors.get(0).getValue());
+        assertEquals("amqp:link:stolen", errors.get(0).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
+        assertEquals(HOSTNAME, errors.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
+        assertEquals(ENTITY_NAME, errors.get(0).getAttributes().get(ClientConstants.ENTITY_NAME_KEY));
+        assertEquals(ENTITY_PATH, errors.get(0).getAttributes().get(ClientConstants.ENTITY_PATH_KEY));
+    }
+
+    /**
+     * Verifies that no metric is reported if there is an no error condition on close.
+     */
+    @Test
+    void onLinkRemoteCloseNoErrorNoMetrics() {
+        // Arrange
+        final ErrorCondition errorCondition = new ErrorCondition(null, description);
+
+        when(link.getRemoteCondition()).thenReturn(errorCondition);
+        when(link.getSession()).thenReturn(session);
+        when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
+
+        TestMeter meter = new TestMeter();
+        LinkHandler handlerWithMetrics = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, new AmqpMetricsProvider(meter, HOSTNAME, ENTITY_PATH));
+        handlerWithMetrics.onLinkRemoteClose(event);
+
+        // Assert
+        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.client.link.errors").getMeasurements();
+        assertEquals(0, errors.size());
+    }
+
+    /**
      * Verifies that no error is propagated. And it is closed instead.
      */
     @Test
@@ -404,7 +457,11 @@ public class LinkHandlerTest {
 
     private static final class MockLinkHandler extends LinkHandler {
         MockLinkHandler(String connectionId, String hostname, String entityPath) {
-            super(connectionId, hostname, entityPath);
+            super(connectionId, hostname, entityPath, AmqpMetricsProvider.noop());
+        }
+
+        MockLinkHandler(String connectionId, String hostname, String entityPath, AmqpMetricsProvider metricsProvider) {
+            super(connectionId, hostname, entityPath, metricsProvider);
         }
     }
 }

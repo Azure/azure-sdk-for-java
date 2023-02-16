@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Log Analytics destination. */
 @Fluent
 public final class LogAnalyticsDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalyticsDestination.class);
-
     /*
      * The resource ID of the Log Analytics workspace.
      */
@@ -28,11 +24,14 @@ public final class LogAnalyticsDestination {
 
     /*
      * A friendly name for the destination.
-     * This name should be unique across all destinations (regardless of type)
-     * within the data collection rule.
+     * This name should be unique across all destinations (regardless of type) within the data collection rule.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of LogAnalyticsDestination class. */
+    public LogAnalyticsDestination() {
+    }
 
     /**
      * Get the workspaceResourceId property: The resource ID of the Log Analytics workspace.

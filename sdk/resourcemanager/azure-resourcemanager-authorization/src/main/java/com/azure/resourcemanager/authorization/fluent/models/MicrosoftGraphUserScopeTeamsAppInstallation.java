@@ -26,6 +26,10 @@ public final class MicrosoftGraphUserScopeTeamsAppInstallation extends Microsoft
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphUserScopeTeamsAppInstallation class. */
+    public MicrosoftGraphUserScopeTeamsAppInstallation() {
+    }
+
     /**
      * Get the chat property: chat.
      *

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Task properties of the software update configuration. */
 @Fluent
 public final class SoftwareUpdateConfigurationTasks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareUpdateConfigurationTasks.class);
-
     /*
      * Pre task properties.
      */

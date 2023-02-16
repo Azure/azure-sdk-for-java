@@ -24,6 +24,10 @@ public final class ODataLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ODataLinkedServiceTypeProperties innerTypeProperties = new ODataLinkedServiceTypeProperties();
 
+    /** Creates an instance of ODataLinkedService class. */
+    public ODataLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: OData linked service properties.
      *

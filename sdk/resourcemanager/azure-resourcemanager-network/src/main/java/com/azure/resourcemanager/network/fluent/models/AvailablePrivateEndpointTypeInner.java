@@ -40,6 +40,10 @@ public final class AvailablePrivateEndpointTypeInner {
     @JsonProperty(value = "displayName")
     private String displayName;
 
+    /** Creates an instance of AvailablePrivateEndpointTypeInner class. */
+    public AvailablePrivateEndpointTypeInner() {
+    }
+
     /**
      * Get the name property: The name of the service and resource.
      *

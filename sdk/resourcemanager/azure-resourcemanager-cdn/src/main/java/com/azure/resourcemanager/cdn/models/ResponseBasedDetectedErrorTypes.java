@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cdn.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ResponseBasedDetectedErrorTypes. */
+/** Type of response errors for real user requests for which origin will be deemed unhealthy. */
 public enum ResponseBasedDetectedErrorTypes {
     /** Enum value None. */
     NONE("None"),
@@ -33,6 +33,9 @@ public enum ResponseBasedDetectedErrorTypes {
      */
     @JsonCreator
     public static ResponseBasedDetectedErrorTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResponseBasedDetectedErrorTypes[] items = ResponseBasedDetectedErrorTypes.values();
         for (ResponseBasedDetectedErrorTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ResponseBasedDetectedErrorTypes {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

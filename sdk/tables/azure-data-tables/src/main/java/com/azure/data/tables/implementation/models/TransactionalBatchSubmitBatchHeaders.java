@@ -3,6 +3,7 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.Context;
 import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,6 +39,19 @@ public final class TransactionalBatchSubmitBatchHeaders {
      */
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of TablesQueryEntitiesHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public TransactionalBatchSubmitBatchHeaders(HttpHeaders rawHeaders) {
+        this.contentType = rawHeaders.getValue("Content-Type");
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+    }
 
     /**
      * Get the media type of the body of the response. For transactional batch requests, this is

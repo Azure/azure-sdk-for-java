@@ -11,10 +11,9 @@ import com.azure.resourcemanager.automation.fluent.UsagesClient;
 import com.azure.resourcemanager.automation.fluent.models.UsageInner;
 import com.azure.resourcemanager.automation.models.Usage;
 import com.azure.resourcemanager.automation.models.Usages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UsagesImpl implements Usages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UsagesImpl.class);
 
     private final UsagesClient innerClient;
 

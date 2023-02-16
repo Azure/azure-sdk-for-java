@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayFirewallMode. */
+/** Web application firewall mode. */
 public final class ApplicationGatewayFirewallMode extends ExpandableStringEnum<ApplicationGatewayFirewallMode> {
     /** Static value Detection for ApplicationGatewayFirewallMode. */
     public static final ApplicationGatewayFirewallMode DETECTION = fromString("Detection");

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionStateProperty;
 
 /** Samples for PrivateEndpointConnections CreateOrUpdate. */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBPrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBPrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.
@@ -34,6 +33,6 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
                         new PrivateLinkServiceConnectionStateProperty()
                             .withStatus("Approved")
                             .withDescription("Approved by johndoe@contoso.com")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

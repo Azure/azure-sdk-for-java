@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.CredentialUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the Update credential operation. */
-@JsonFlatten
 @Fluent
-public class CredentialUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialUpdateParameters.class);
-
+public final class CredentialUpdateParameters {
     /*
      * Gets or sets the name of the credential.
      */
@@ -23,22 +18,10 @@ public class CredentialUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the user name of the credential.
+     * Gets or sets the properties of the variable.
      */
-    @JsonProperty(value = "properties.userName")
-    private String username;
-
-    /*
-     * Gets or sets the password of the credential.
-     */
-    @JsonProperty(value = "properties.password")
-    private String password;
-
-    /*
-     * Gets or sets the description of the credential.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private CredentialUpdateProperties innerProperties;
 
     /**
      * Get the name property: Gets or sets the name of the credential.
@@ -61,12 +44,21 @@ public class CredentialUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the variable.
+     *
+     * @return the innerProperties value.
+     */
+    private CredentialUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the username property: Gets or sets the user name of the credential.
      *
      * @return the username value.
      */
     public String username() {
-        return this.username;
+        return this.innerProperties() == null ? null : this.innerProperties().username();
     }
 
     /**
@@ -76,7 +68,10 @@ public class CredentialUpdateParameters {
      * @return the CredentialUpdateParameters object itself.
      */
     public CredentialUpdateParameters withUsername(String username) {
-        this.username = username;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CredentialUpdateProperties();
+        }
+        this.innerProperties().withUsername(username);
         return this;
     }
 
@@ -86,7 +81,7 @@ public class CredentialUpdateParameters {
      * @return the password value.
      */
     public String password() {
-        return this.password;
+        return this.innerProperties() == null ? null : this.innerProperties().password();
     }
 
     /**
@@ -96,7 +91,10 @@ public class CredentialUpdateParameters {
      * @return the CredentialUpdateParameters object itself.
      */
     public CredentialUpdateParameters withPassword(String password) {
-        this.password = password;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CredentialUpdateProperties();
+        }
+        this.innerProperties().withPassword(password);
         return this;
     }
 
@@ -106,7 +104,7 @@ public class CredentialUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -116,7 +114,10 @@ public class CredentialUpdateParameters {
      * @return the CredentialUpdateParameters object itself.
      */
     public CredentialUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CredentialUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -126,5 +127,8 @@ public class CredentialUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

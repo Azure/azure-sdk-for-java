@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,59 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.4 (2023-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+
+## 1.0.3 (2023-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+
+## 1.0.2 (2022-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+
+## 1.0.1 (2022-10-24)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+
+## 1.0.0 (2022-09-09)
+This is the first stable release for the Device Update for IoT Hub client library.
+
+### Changes since 1.0.0-beta.3
+
+#### Features Added
+- Added filter to `listDeviceClasses` device management method.
+- Updated description for some methods to be more descriptive and less ambiguous.
+
+#### Breaking Changes
+- Removed filter from `listBestUpdatesForGroup` device management method.
+
+#### Other Changes
+
+##### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.5`.
 
 ## 1.0.0-beta.3 (2022-07-12)
 

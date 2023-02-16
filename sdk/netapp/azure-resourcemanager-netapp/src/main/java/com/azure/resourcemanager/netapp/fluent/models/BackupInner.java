@@ -56,7 +56,9 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the backupId property: backupId UUID v4 used to identify the Backup.
+     * Get the backupId property: backupId
+     *
+     * <p>UUID v4 used to identify the Backup.
      *
      * @return the backupId value.
      */
@@ -65,7 +67,9 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the creationDate property: creationDate The creation date of the backup.
+     * Get the creationDate property: creationDate
+     *
+     * <p>The creation date of the backup.
      *
      * @return the creationDate value.
      */
@@ -115,7 +119,9 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the backupType property: backupType Type of backup Manual or Scheduled.
+     * Get the backupType property: backupType
+     *
+     * <p>Type of backup Manual or Scheduled.
      *
      * @return the backupType value.
      */

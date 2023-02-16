@@ -118,7 +118,7 @@ public final class DataSourceServicePrincipal extends DataSourceCredentialEntity
      * Sets the tenant id.
      *
      * @param tenantId The tenant id
-     * @return an updated object with client teant id set
+     * @return an updated object with client tenant id set
      */
     public DataSourceServicePrincipal setTenantId(String tenantId) {
         this.tenantId = tenantId;

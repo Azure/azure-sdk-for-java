@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ConnectionMonitorIcmpConfiguration {
     /*
-     * Value indicating whether path evaluation with trace route should be
-     * disabled.
+     * Value indicating whether path evaluation with trace route should be disabled.
      */
     @JsonProperty(value = "disableTraceRoute")
     private Boolean disableTraceRoute;
+
+    /** Creates an instance of ConnectionMonitorIcmpConfiguration class. */
+    public ConnectionMonitorIcmpConfiguration() {
+    }
 
     /**
      * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.

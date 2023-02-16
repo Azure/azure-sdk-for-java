@@ -22,8 +22,8 @@ public final class VideoOverlay extends Overlay {
     private Rectangle position;
 
     /*
-     * The opacity of the overlay. This is a value in the range [0 - 1.0].
-     * Default is 1.0 which mean the overlay is opaque.
+     * The opacity of the overlay. This is a value in the range [0 - 1.0]. Default is 1.0 which mean the overlay is
+     * opaque.
      */
     @JsonProperty(value = "opacity")
     private Double opacity;
@@ -33,6 +33,10 @@ public final class VideoOverlay extends Overlay {
      */
     @JsonProperty(value = "cropRectangle")
     private Rectangle cropRectangle;
+
+    /** Creates an instance of VideoOverlay class. */
+    public VideoOverlay() {
+    }
 
     /**
      * Get the position property: The location in the input video where the overlay is applied.

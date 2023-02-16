@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OraclePartitionOption. */
+/** The partition mechanism that will be used for Oracle read in parallel. */
 public final class OraclePartitionOption extends ExpandableStringEnum<OraclePartitionOption> {
     /** Static value None for OraclePartitionOption. */
     public static final OraclePartitionOption NONE = fromString("None");
@@ -30,7 +30,11 @@ public final class OraclePartitionOption extends ExpandableStringEnum<OraclePart
         return fromString(name, OraclePartitionOption.class);
     }
 
-    /** @return known OraclePartitionOption values. */
+    /**
+     * Gets known OraclePartitionOption values.
+     *
+     * @return known OraclePartitionOption values.
+     */
     public static Collection<OraclePartitionOption> values() {
         return values(OraclePartitionOption.class);
     }

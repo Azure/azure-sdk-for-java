@@ -5,9 +5,11 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava27.Strings;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -53,6 +56,15 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientConfig));
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
+                generator.writeObjectFieldStart("clientEndpoints");
+                for (Map.Entry<String, Integer> entry: clientConfig.clientMap.entrySet()) {
+                    try {
+                        generator.writeNumberField(entry.getKey(), entry.getValue());
+                    } catch (Exception e) {
+                        logger.debug("unexpected failure", e);
+                    }
+                }
+                generator.writeEndObject();
                 generator.writeObjectFieldStart("connCfg");
                 try {
                     generator.writeStringField("rntbd", clientConfig.rntbdConfig());
@@ -63,6 +75,7 @@ public interface DiagnosticsClientContext {
                 }
                 generator.writeEndObject();
                 generator.writeStringField("consistencyCfg", clientConfig.consistencyRelatedConfig());
+                generator.writeStringField("proactiveInit", clientConfig.proactivelyInitializedContainersAsString);
             } catch (Exception e) {
                 logger.debug("unexpected failure", e);
             }
@@ -75,6 +88,7 @@ public interface DiagnosticsClientContext {
 
         private AtomicInteger activeClientsCnt;
         private int clientId;
+        private Map<String, Integer> clientMap;
 
         private ConsistencyLevel consistencyLevel;
         private boolean connectionSharingAcrossClientsEnabled;
@@ -82,23 +96,33 @@ public interface DiagnosticsClientContext {
         private String httpConfigAsString;
         private String otherCfgAsString;
         private String preferredRegionsAsString;
+        private String proactivelyInitializedContainersAsString;
         private boolean endpointDiscoveryEnabled;
         private boolean multipleWriteRegionsEnabled;
 
         private String rntbdConfigAsString;
         private ConnectionMode connectionMode;
         private String machineId;
+        private boolean replicaValidationEnabled = Configs.isReplicaAddressValidationEnabled();
 
-        public void withMachineId(String machineId) {
+        public DiagnosticsClientConfig withMachineId(String machineId) {
             this.machineId = machineId;
+            return this;
         }
 
-        public void withActiveClientCounter(AtomicInteger activeClientsCnt) {
+        public DiagnosticsClientConfig withActiveClientCounter(AtomicInteger activeClientsCnt) {
             this.activeClientsCnt = activeClientsCnt;
+            return this;
         }
 
-        public void withClientId(int clientId) {
+        public DiagnosticsClientConfig withClientId(int clientId) {
             this.clientId = clientId;
+            return this;
+        }
+
+        public DiagnosticsClientConfig withClientMap(Map<String, Integer> clientMap) {
+            this.clientMap = clientMap;
+            return this;
         }
 
         public DiagnosticsClientConfig withEndpointDiscoveryEnabled(boolean endpointDiscoveryEnabled) {
@@ -120,6 +144,18 @@ public interface DiagnosticsClientContext {
                     .map(r -> DiagnosticsClientConfigSerializer.SPACE_PATTERN.matcher(r.toLowerCase(Locale.ROOT)).replaceAll(""))
                     .collect(Collectors.joining(","));
             }
+            return this;
+        }
+
+        public DiagnosticsClientConfig withProactiveContainerInitConfig(
+            CosmosContainerProactiveInitConfig config) {
+
+            if (config == null) {
+                this.proactivelyInitializedContainersAsString = "";
+            } else {
+                this.proactivelyInitializedContainersAsString = config.toString();
+            }
+
             return this;
         }
 
@@ -170,9 +206,10 @@ public interface DiagnosticsClientContext {
 
         public String otherConnectionConfig() {
             if (this.otherCfgAsString == null) {
-                this.otherCfgAsString = Strings.lenientFormat("(ed: %s, cs: %s)",
+                this.otherCfgAsString = Strings.lenientFormat("(ed: %s, cs: %s, rv: %s)",
                     this.endpointDiscoveryEnabled,
-                    this.connectionSharingAcrossClientsEnabled);
+                    this.connectionSharingAcrossClientsEnabled,
+                    this.replicaValidationEnabled);
             }
 
             return this.otherCfgAsString;

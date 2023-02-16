@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptType. */
+/** The type of the query. Type: string. */
 public final class ScriptType extends ExpandableStringEnum<ScriptType> {
     /** Static value Query for ScriptType. */
     public static final ScriptType QUERY = fromString("Query");
 
     /** Static value NonQuery for ScriptType. */
     public static final ScriptType NON_QUERY = fromString("NonQuery");
+
+    /**
+     * Creates a new instance of ScriptType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptType() {
+    }
 
     /**
      * Creates or finds a ScriptType from its string representation.

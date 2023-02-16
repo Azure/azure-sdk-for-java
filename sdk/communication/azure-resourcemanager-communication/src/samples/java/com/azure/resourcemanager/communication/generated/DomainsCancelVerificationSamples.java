@@ -11,7 +11,7 @@ import com.azure.resourcemanager.communication.models.VerificationType;
 /** Samples for Domains CancelVerification. */
 public final class DomainsCancelVerificationSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/domains/cancelVerification.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/domains/cancelVerification.json
      */
     /**
      * Sample code: Cancel verification.

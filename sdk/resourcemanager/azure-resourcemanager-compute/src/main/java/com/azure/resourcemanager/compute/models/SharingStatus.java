@@ -12,8 +12,9 @@ import java.util.List;
 @Fluent
 public final class SharingStatus {
     /*
-     * The sharing state of the gallery. Aggregated sharing state of current
-     * gallery.
+     * The sharing state of the gallery.
+     *
+     * Aggregated sharing state of current gallery.
      */
     @JsonProperty(value = "aggregatedState", access = JsonProperty.Access.WRITE_ONLY)
     private SharingState aggregatedState;
@@ -24,8 +25,14 @@ public final class SharingStatus {
     @JsonProperty(value = "summary")
     private List<RegionalSharingStatus> summary;
 
+    /** Creates an instance of SharingStatus class. */
+    public SharingStatus() {
+    }
+
     /**
-     * Get the aggregatedState property: The sharing state of the gallery. Aggregated sharing state of current gallery.
+     * Get the aggregatedState property: The sharing state of the gallery.
+     *
+     * <p>Aggregated sharing state of current gallery.
      *
      * @return the aggregatedState value.
      */

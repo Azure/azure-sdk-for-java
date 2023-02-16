@@ -63,7 +63,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 .withoutCredential("sppass")
                 .defineCertificateCredential("spcert")
                 .withAsymmetricX509Certificate()
-                .withPublicKey(readAllBytes(ServicePrincipalsTests.class.getResourceAsStream("/myTest.cer")))
+                .withPublicKey(replaceCRLF(readAllBytes(ServicePrincipalsTests.class.getResourceAsStream("/myTest.cer"))))
                 .withDuration(Duration.ofDays(1))
                 .attach()
                 .apply();

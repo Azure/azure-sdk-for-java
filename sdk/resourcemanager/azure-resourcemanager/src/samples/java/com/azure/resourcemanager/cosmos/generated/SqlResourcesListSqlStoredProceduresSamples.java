@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources ListSqlStoredProcedures. */
 public final class SqlResourcesListSqlStoredProceduresSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlStoredProcedureList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlStoredProcedureList.json
      */
     /**
      * Sample code: CosmosDBSqlStoredProcedureList.
@@ -22,6 +20,7 @@ public final class SqlResourcesListSqlStoredProceduresSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .listSqlStoredProcedures("rgName", "ddb1", "databaseName", "containerName", Context.NONE);
+            .listSqlStoredProcedures(
+                "rgName", "ddb1", "databaseName", "containerName", com.azure.core.util.Context.NONE);
     }
 }

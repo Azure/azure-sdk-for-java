@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoadBalancerBackendAddressAdminState. */
+/**
+ * A list of administrative states which once set can override health probe so that Load Balancer will always forward
+ * new connections to backend, or deny new connections and reset existing connections.
+ */
 public final class LoadBalancerBackendAddressAdminState
     extends ExpandableStringEnum<LoadBalancerBackendAddressAdminState> {
     /** Static value None for LoadBalancerBackendAddressAdminState. */

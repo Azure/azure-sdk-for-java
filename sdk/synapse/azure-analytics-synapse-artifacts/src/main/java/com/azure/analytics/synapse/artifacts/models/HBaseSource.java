@@ -15,11 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class HBaseSource extends TabularSource {
     /*
-     * A query to retrieve data from source. Type: string (or Expression with
-     * resultType string).
+     * A query to retrieve data from source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
+
+    /** Creates an instance of HBaseSource class. */
+    public HBaseSource() {}
 
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType

@@ -93,6 +93,10 @@ public final class JobExecutionProperties {
     @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private JobExecutionTarget target;
 
+    /** Creates an instance of JobExecutionProperties class. */
+    public JobExecutionProperties() {
+    }
+
     /**
      * Get the jobVersion property: The job version number.
      *

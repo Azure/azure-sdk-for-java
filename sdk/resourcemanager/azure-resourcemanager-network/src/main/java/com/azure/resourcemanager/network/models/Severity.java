@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Severity. */
+/** The severity of the issue. */
 public final class Severity extends ExpandableStringEnum<Severity> {
     /** Static value Error for Severity. */
     public static final Severity ERROR = fromString("Error");

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources GetSqlRoleAssignment. */
 public final class SqlResourcesGetSqlRoleAssignmentSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlRoleAssignmentGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlRoleAssignmentGet.json
      */
     /**
      * Sample code: CosmosDBSqlRoleAssignmentGet.
@@ -23,6 +21,6 @@ public final class SqlResourcesGetSqlRoleAssignmentSamples {
             .serviceClient()
             .getSqlResources()
             .getSqlRoleAssignmentWithResponse(
-                "myRoleAssignmentId", "myResourceGroupName", "myAccountName", Context.NONE);
+                "myRoleAssignmentId", "myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.ScheduleCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The parameters supplied to the create or update schedule operation. */
-@JsonFlatten
 @Fluent
-public class ScheduleCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleCreateOrUpdateParameters.class);
-
+public final class ScheduleCreateOrUpdateParameters {
     /*
      * Gets or sets the name of the Schedule.
      */
@@ -24,46 +20,10 @@ public class ScheduleCreateOrUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the description of the schedule.
+     * Gets or sets the list of schedule properties.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Gets or sets the start time of the schedule.
-     */
-    @JsonProperty(value = "properties.startTime", required = true)
-    private OffsetDateTime startTime;
-
-    /*
-     * Gets or sets the end time of the schedule.
-     */
-    @JsonProperty(value = "properties.expiryTime")
-    private OffsetDateTime expiryTime;
-
-    /*
-     * Gets or sets the interval of the schedule.
-     */
-    @JsonProperty(value = "properties.interval")
-    private Object interval;
-
-    /*
-     * Gets or sets the frequency of the schedule.
-     */
-    @JsonProperty(value = "properties.frequency", required = true)
-    private ScheduleFrequency frequency;
-
-    /*
-     * Gets or sets the time zone of the schedule.
-     */
-    @JsonProperty(value = "properties.timeZone")
-    private String timeZone;
-
-    /*
-     * Gets or sets the AdvancedSchedule.
-     */
-    @JsonProperty(value = "properties.advancedSchedule")
-    private AdvancedSchedule advancedSchedule;
+    @JsonProperty(value = "properties", required = true)
+    private ScheduleCreateOrUpdateProperties innerProperties = new ScheduleCreateOrUpdateProperties();
 
     /**
      * Get the name property: Gets or sets the name of the Schedule.
@@ -86,12 +46,21 @@ public class ScheduleCreateOrUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the list of schedule properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ScheduleCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the description property: Gets or sets the description of the schedule.
      *
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -101,7 +70,10 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
     public ScheduleCreateOrUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreateOrUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -111,7 +83,7 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -121,7 +93,10 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
     public ScheduleCreateOrUpdateParameters withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreateOrUpdateProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -131,7 +106,7 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
-        return this.expiryTime;
+        return this.innerProperties() == null ? null : this.innerProperties().expiryTime();
     }
 
     /**
@@ -141,7 +116,10 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
     public ScheduleCreateOrUpdateParameters withExpiryTime(OffsetDateTime expiryTime) {
-        this.expiryTime = expiryTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreateOrUpdateProperties();
+        }
+        this.innerProperties().withExpiryTime(expiryTime);
         return this;
     }
 
@@ -151,7 +129,7 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the interval value.
      */
     public Object interval() {
-        return this.interval;
+        return this.innerProperties() == null ? null : this.innerProperties().interval();
     }
 
     /**
@@ -161,7 +139,10 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
     public ScheduleCreateOrUpdateParameters withInterval(Object interval) {
-        this.interval = interval;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreateOrUpdateProperties();
+        }
+        this.innerProperties().withInterval(interval);
         return this;
     }
 
@@ -171,7 +152,7 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
-        return this.frequency;
+        return this.innerProperties() == null ? null : this.innerProperties().frequency();
     }
 
     /**
@@ -181,7 +162,10 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
     public ScheduleCreateOrUpdateParameters withFrequency(ScheduleFrequency frequency) {
-        this.frequency = frequency;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreateOrUpdateProperties();
+        }
+        this.innerProperties().withFrequency(frequency);
         return this;
     }
 
@@ -191,7 +175,7 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the timeZone value.
      */
     public String timeZone() {
-        return this.timeZone;
+        return this.innerProperties() == null ? null : this.innerProperties().timeZone();
     }
 
     /**
@@ -201,7 +185,10 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
     public ScheduleCreateOrUpdateParameters withTimeZone(String timeZone) {
-        this.timeZone = timeZone;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreateOrUpdateProperties();
+        }
+        this.innerProperties().withTimeZone(timeZone);
         return this;
     }
 
@@ -211,7 +198,7 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the advancedSchedule value.
      */
     public AdvancedSchedule advancedSchedule() {
-        return this.advancedSchedule;
+        return this.innerProperties() == null ? null : this.innerProperties().advancedSchedule();
     }
 
     /**
@@ -221,7 +208,10 @@ public class ScheduleCreateOrUpdateParameters {
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
     public ScheduleCreateOrUpdateParameters withAdvancedSchedule(AdvancedSchedule advancedSchedule) {
-        this.advancedSchedule = advancedSchedule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreateOrUpdateProperties();
+        }
+        this.innerProperties().withAdvancedSchedule(advancedSchedule);
         return this;
     }
 
@@ -232,25 +222,20 @@ public class ScheduleCreateOrUpdateParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ScheduleCreateOrUpdateParameters"));
         }
-        if (startTime() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property startTime in model ScheduleCreateOrUpdateParameters"));
-        }
-        if (frequency() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property frequency in model ScheduleCreateOrUpdateParameters"));
-        }
-        if (advancedSchedule() != null) {
-            advancedSchedule().validate();
+                        "Missing required property innerProperties in model ScheduleCreateOrUpdateParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScheduleCreateOrUpdateParameters.class);
 }

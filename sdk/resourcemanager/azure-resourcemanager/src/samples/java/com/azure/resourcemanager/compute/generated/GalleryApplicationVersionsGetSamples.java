@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
 
 /** Samples for GalleryApplicationVersions Get. */
 public final class GalleryApplicationVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplicationVersion_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplicationVersion_Get.json
      */
     /**
      * Sample code: Get a gallery Application Version.
@@ -24,11 +23,16 @@ public final class GalleryApplicationVersionsGetSamples {
             .serviceClient()
             .getGalleryApplicationVersions()
             .getWithResponse(
-                "myResourceGroup", "myGalleryName", "myGalleryApplicationName", "1.0.0", null, Context.NONE);
+                "myResourceGroup",
+                "myGalleryName",
+                "myGalleryApplicationName",
+                "1.0.0",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
      */
     /**
      * Sample code: Get a gallery Application Version with replication status.
@@ -48,6 +52,6 @@ public final class GalleryApplicationVersionsGetSamples {
                 "myGalleryApplicationName",
                 "1.0.0",
                 ReplicationStatusTypes.REPLICATION_STATUS,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -22,6 +22,9 @@ public final class LinkConnectionSourceDatabaseTypeProperties {
     @JsonProperty(value = "principalId")
     private String principalId;
 
+    /** Creates an instance of LinkConnectionSourceDatabaseTypeProperties class. */
+    public LinkConnectionSourceDatabaseTypeProperties() {}
+
     /**
      * Get the resourceId property: Link connection source database server's resource id.
      *

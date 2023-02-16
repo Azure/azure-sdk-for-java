@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OutputType. */
+/** Connection monitor output destination type. Currently, only "Workspace" is supported. */
 public final class OutputType extends ExpandableStringEnum<OutputType> {
     /** Static value Workspace for OutputType. */
     public static final OutputType WORKSPACE = fromString("Workspace");

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,7 +18,7 @@ import java.util.Map;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "odata\\.type",
+    property = "odata.type",
     defaultImpl = MetricAlertCriteria.class)
 @JsonTypeName("MetricAlertCriteria")
 @JsonSubTypes({
@@ -34,15 +32,16 @@ import java.util.Map;
         name = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
         value = MetricAlertMultipleResourceMultipleMetricCriteria.class)
 })
-@JsonFlatten
 @Fluent
 public class MetricAlertCriteria {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertCriteria.class);
-
     /*
      * The rule criteria that defines the conditions of the alert rule.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MetricAlertCriteria class. */
+    public MetricAlertCriteria() {
+    }
 
     /**
      * Get the additionalProperties property: The rule criteria that defines the conditions of the alert rule.
@@ -70,7 +69,7 @@ public class MetricAlertCriteria {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }
-        additionalProperties.put(key.replace("\\.", "."), value);
+        additionalProperties.put(key, value);
     }
 
     /**

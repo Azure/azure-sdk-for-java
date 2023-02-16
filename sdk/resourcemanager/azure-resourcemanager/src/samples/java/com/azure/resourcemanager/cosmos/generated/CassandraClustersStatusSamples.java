@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CassandraClusters Status. */
 public final class CassandraClustersStatusSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBManagedCassandraStatus.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraStatus.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraStatus.
@@ -22,6 +20,6 @@ public final class CassandraClustersStatusSamples {
             .manager()
             .serviceClient()
             .getCassandraClusters()
-            .statusWithResponse("cassandra-prod-rg", "cassandra-prod", Context.NONE);
+            .statusWithResponse("cassandra-prod-rg", "cassandra-prod", com.azure.core.util.Context.NONE);
     }
 }

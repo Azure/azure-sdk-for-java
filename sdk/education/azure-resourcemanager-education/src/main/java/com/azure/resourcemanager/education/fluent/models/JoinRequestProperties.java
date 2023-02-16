@@ -35,6 +35,10 @@ public final class JoinRequestProperties {
     @JsonProperty(value = "status")
     private JoinRequestStatus status;
 
+    /** Creates an instance of JoinRequestProperties class. */
+    public JoinRequestProperties() {
+    }
+
     /**
      * Get the firstName property: First Name.
      *

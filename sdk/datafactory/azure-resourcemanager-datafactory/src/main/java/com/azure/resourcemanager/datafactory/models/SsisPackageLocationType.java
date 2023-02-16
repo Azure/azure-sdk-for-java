@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SsisPackageLocationType. */
+/** The type of SSIS package location. */
 public final class SsisPackageLocationType extends ExpandableStringEnum<SsisPackageLocationType> {
     /** Static value SSISDB for SsisPackageLocationType. */
     public static final SsisPackageLocationType SSISDB = fromString("SSISDB");
@@ -21,6 +21,15 @@ public final class SsisPackageLocationType extends ExpandableStringEnum<SsisPack
 
     /** Static value PackageStore for SsisPackageLocationType. */
     public static final SsisPackageLocationType PACKAGE_STORE = fromString("PackageStore");
+
+    /**
+     * Creates a new instance of SsisPackageLocationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SsisPackageLocationType() {
+    }
 
     /**
      * Creates or finds a SsisPackageLocationType from its string representation.

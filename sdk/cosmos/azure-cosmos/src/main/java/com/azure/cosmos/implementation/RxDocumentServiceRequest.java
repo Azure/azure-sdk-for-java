@@ -67,7 +67,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     // some of these fields are missing from the main java sdk service request
     // so it means most likely the corresponding features are also missing from the main sdk
     // we need to wire this up.
-    public boolean UseGatewayMode;
+    public boolean useGatewayMode;
 
     private volatile boolean isDisposed = false;
     public volatile String entityId;
@@ -1027,7 +1027,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.setPartitionKeyRangeIdentity(this.getPartitionKeyRangeIdentity());
         rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
-        rxDocumentServiceRequest.UseGatewayMode = this.UseGatewayMode;
+        rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
         rxDocumentServiceRequest.requestContext = this.requestContext;
         return rxDocumentServiceRequest;
     }

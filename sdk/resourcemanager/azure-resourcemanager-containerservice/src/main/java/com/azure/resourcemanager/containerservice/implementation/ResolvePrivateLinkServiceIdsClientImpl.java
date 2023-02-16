@@ -53,7 +53,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface ResolvePrivateLinkServiceIdsService {
+    public interface ResolvePrivateLinkServiceIdsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
@@ -110,7 +110,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -168,7 +168,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -207,23 +207,6 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link service ID for the specified managed cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceInner post(
-        String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters) {
-        return postAsync(resourceGroupName, resourceName, parameters).block();
-    }
-
-    /**
-     * Gets the private link service ID for the specified managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param parameters Parameters required in order to resolve a private link service ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -234,5 +217,22 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     public Response<PrivateLinkResourceInner> postWithResponse(
         String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters, Context context) {
         return postWithResponseAsync(resourceGroupName, resourceName, parameters, context).block();
+    }
+
+    /**
+     * Gets the private link service ID for the specified managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters Parameters required in order to resolve a private link service ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link service ID for the specified managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourceInner post(
+        String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters) {
+        return postWithResponse(resourceGroupName, resourceName, parameters, Context.NONE).getValue();
     }
 }

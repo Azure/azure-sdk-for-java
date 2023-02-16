@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AacAudioProfile. */
+/** The encoding profile to be used when encoding audio with AAC. */
 public final class AacAudioProfile extends ExpandableStringEnum<AacAudioProfile> {
     /** Static value AacLc for AacAudioProfile. */
     public static final AacAudioProfile AAC_LC = fromString("AacLc");
@@ -18,6 +18,15 @@ public final class AacAudioProfile extends ExpandableStringEnum<AacAudioProfile>
 
     /** Static value HeAacV2 for AacAudioProfile. */
     public static final AacAudioProfile HE_AAC_V2 = fromString("HeAacV2");
+
+    /**
+     * Creates a new instance of AacAudioProfile value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AacAudioProfile() {
+    }
 
     /**
      * Creates or finds a AacAudioProfile from its string representation.

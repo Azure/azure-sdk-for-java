@@ -11,30 +11,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AutomaticRepairsPolicy {
     /*
-     * Specifies whether automatic repairs should be enabled on the virtual
-     * machine scale set. The default value is false.
+     * Specifies whether automatic repairs should be enabled on the virtual machine scale set. The default value is
+     * false.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * The amount of time for which automatic repairs are suspended due to a
-     * state change on VM. The grace time starts after the state change has
-     * completed. This helps avoid premature or accidental repairs. The time
-     * duration should be specified in ISO 8601 format. The minimum allowed
-     * grace period is 10 minutes (PT10M), which is also the default value. The
-     * maximum allowed grace period is 90 minutes (PT90M).
+     * The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts
+     * after the state change has completed. This helps avoid premature or accidental repairs. The time duration should
+     * be specified in ISO 8601 format. The minimum allowed grace period is 10 minutes (PT10M), which is also the
+     * default value. The maximum allowed grace period is 90 minutes (PT90M).
      */
     @JsonProperty(value = "gracePeriod")
     private String gracePeriod;
 
     /*
-     * Type of repair action (replace, restart, reimage) that will be used for
-     * repairing unhealthy virtual machines in the scale set. Default value is
-     * replace.
+     * Type of repair action (replace, restart, reimage) that will be used for repairing unhealthy virtual machines in
+     * the scale set. Default value is replace.
      */
     @JsonProperty(value = "repairAction")
     private RepairAction repairAction;
+
+    /** Creates an instance of AutomaticRepairsPolicy class. */
+    public AutomaticRepairsPolicy() {
+    }
 
     /**
      * Get the enabled property: Specifies whether automatic repairs should be enabled on the virtual machine scale set.

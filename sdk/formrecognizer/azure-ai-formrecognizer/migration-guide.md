@@ -23,16 +23,16 @@ we have been focused on learning the patterns and practices to best support deve
 customers.
 
 To improve the development experience and address the consistent feedback across the Form Recognizer SDK, this new 
-version of the library replaces the previously existing clients `FormRecognizerClient` and `FormTrainingClient` with
+version of the library introduces two new clients
 `DocumentAnalysisClient` and the `DocumentModelAdministrationClient` that provide unified methods for 
 analyzing documents and provide support for the new features added by the service in 
-API version `2022-01-30-preview` and later.
+API version `2022-08-31` and later.
 
 The below table describes the relationship of each client and its supported API version(s):
 
 |API version|Supported clients
 |-|-
-|2022-01-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2022-08-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
 
@@ -49,6 +49,7 @@ The service has further matured to define cross-page elements by using the `Boun
 - List Models operation now returns a paged list of prebuilt in addition to custom models that are built successfully. 
 Also, when using the `getModel()` model, users can get the field schema (field names and types that the model can extract) for the model they specified, including for prebuilt models.
 - Added methods for getting/listing operations of the past 24 hours, useful to track the status of model creation/copying operations and any resulting errors.
+- `FormRecognizerClient` and `FormTrainingClient` will continue to work targeting API version 2.1 and 2.0.
 
 Please refer to the [README][README] for more information on these new clients.
 
@@ -58,7 +59,7 @@ Please refer to the [README][README] for more information on these new clients.
 
 In 3.x.x, the `FormRecognizerClient` and the `FormRecognizerAsyncClient` is instantiated via the `FormRecognizerClientBuilder`.
 
-In 4.x.x, the `FormRecognizerClient` and the `FormRecognizerAsyncClient`, has been replaced by the `DocumentAnalysisClient` and the `DocumentAnalysisAsyncClient` respectively and is instantiated via the [DocumentAnalysisClientBuilder][DocumentAnalysisClientBuilder].
+In 4.x.x, we have added the `DocumentAnalysisClient` and the `DocumentAnalysisAsyncClient`, instantiated via the [DocumentAnalysisClientBuilder][DocumentAnalysisClientBuilder].
 The sync and async operations are separated to [DocumentAnalysisClient][DocumentAnalysisClient] and [DocumentAnalysisAsyncClient][DocumentAnalysisAsyncClient].
 
 Instantiating FormRecognizerClient client with 3.x.x:
@@ -76,7 +77,7 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
     .endpoint("{endpoint}")
     .buildClient();
 ```
-Similarly, with 4.x.x, the `FormTrainingClient` and `FormTrainingAsyncClient` has been replaced by the `DocumentModelAdministrationClient` 
+Similarly, with 4.x.x, we have added the `DocumentModelAdministrationClient` 
 and `DocumentModelAdministrationAsyncClient`, instantiated via the [DocumentModelAdministrationClientBuilder][DocumentModelAdministrationClientBuilder].
 The sync and async operations are separated to [DocumentModelAdministrationClient][DocumentModelAdministrationClient] and [DocumentModelAdministrationAsyncClient][DocumentModelAdministrationAsyncClient].
 
@@ -107,7 +108,7 @@ With 4.x.x, the unified method, `beginAnalyzeDocument` and `beginAnalyzeDocument
 - provides the functionality of `beginRecognizeCustomForms`, `beginRecognizeContent`, `beginRecognizeReceipt`,
   `beginRecognizeReceipts`, `beginRecognizeInvoices` `beginRecognizeIdentityDocuments` and `beginRecognizeBusinessCards` from the previous (azure-ai-formrecognizer 3.1.X - below) package versions.
 - accepts unified `AnalyzeDocumentOptions` to specify pages and locale information for the outgoing request
-- the `includeFieldElements` parameter is not supported with the `DocumentAnalysisClient`, text details are automatically included with API version `2022-01-30-preview` and later.
+- the `includeFieldElements` parameter is not supported with the `DocumentAnalysisClient`, text details are automatically included with API version `2022-08-31` and later.
 - the `readingOrder` parameter does not exist as the service uses `natural` reading order for the returned data.
 
 #### Using a prebuilt model
@@ -181,7 +182,7 @@ Analyze receipt data using 4.x.x `beginAnalyzeDocumentFromUrl`:
 String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
     + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
 
-SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeReceiptPoller =
+SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
     documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", receiptUrl);
 
 AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
@@ -193,7 +194,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     DocumentField merchantNameField = receiptFields.get("MerchantName");
     if (merchantNameField != null) {
         if (DocumentFieldType.STRING == merchantNameField.getType()) {
-            String merchantName = merchantNameField.getValueString();
+            String merchantName = merchantNameField.getValueAsString();
             System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                 merchantName, merchantNameField.getConfidence());
         }
@@ -202,7 +203,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     DocumentField merchantPhoneNumberField = receiptFields.get("MerchantPhoneNumber");
     if (merchantPhoneNumberField != null) {
         if (DocumentFieldType.PHONE_NUMBER == merchantPhoneNumberField.getType()) {
-            String merchantAddress = merchantPhoneNumberField.getValuePhoneNumber();
+            String merchantAddress = merchantPhoneNumberField.getValueAsPhoneNumber();
             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                 merchantAddress, merchantPhoneNumberField.getConfidence());
         }
@@ -211,7 +212,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     DocumentField transactionDateField = receiptFields.get("TransactionDate");
     if (transactionDateField != null) {
         if (DocumentFieldType.DATE == transactionDateField.getType()) {
-            LocalDate transactionDate = transactionDateField.getValueDate();
+            LocalDate transactionDate = transactionDateField.getValueAsDate();
             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                 transactionDate, transactionDateField.getConfidence());
         }
@@ -221,21 +222,21 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     if (receiptItemsField != null) {
         System.out.printf("Receipt Items: %n");
         if (DocumentFieldType.LIST == receiptItemsField.getType()) {
-            List<DocumentField> receiptItems = receiptItemsField.getValueList();
+            List<DocumentField> receiptItems = receiptItemsField.getValueAsList();
             receiptItems.stream()
                 .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                .map(documentField -> documentField.getValueMap())
+                .map(documentField -> documentField.getValueAsMap())
                 .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                     if ("Name".equals(key)) {
                         if (DocumentFieldType.STRING == documentField.getType()) {
-                            String name = documentField.getValueString();
+                            String name = documentField.getValueAsString();
                             System.out.printf("Name: %s, confidence: %.2fs%n",
                                 name, documentField.getConfidence());
                         }
                     }
                     if ("Quantity".equals(key)) {
-                        if (DocumentFieldType.FLOAT == documentField.getType()) {
-                            Float quantity = documentField.getValueFloat();
+                        if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                            Double quantity = documentField.getValueAsDouble();
                             System.out.printf("Quantity: %f, confidence: %.2f%n",
                                 quantity, documentField.getConfidence());
                         }
@@ -286,8 +287,8 @@ File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
 BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
-SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
-    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData, layoutDocument.length());
+SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
+    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -307,7 +308,7 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
         System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
-            documentSelectionMark.getState().toString(),
+            documentSelectionMark.getSelectionMarkState().toString(),
             documentSelectionMark.getBoundingPolygon().toString(),
             documentSelectionMark.getConfidence()));
 });
@@ -353,7 +354,7 @@ Analyze custom document using 4.x.x `beginAnalyzeDocumentFromUrl`
 ```java readme-sample-analyzeCustomDocument
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
-SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
     documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
@@ -411,7 +412,7 @@ Analyzing general prebuilt document types with 4.x.x:
 ```java readme-sample-analyzePrebuiltDocument
 String documentUrl = "{document-url}";
 String modelId = "prebuilt-document";
-SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
     documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
@@ -520,25 +521,28 @@ customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
 Build a custom document model using 4.x.x `beginBuildModel`:
 ```java readme-sample-buildModel
 // Build custom document analysis model
-String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-SyncPoller<DocumentOperationResult, DocumentModelInfo> buildOperationPoller =
-    documentModelAdminClient.beginBuildModel(trainingFilesUrl,
-        DocumentBuildMode.TEMPLATE,
-        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
+String prefix = "{blob_name_prefix}}";
+SyncPoller<OperationResult, DocumentModelDetails> buildOperationPoller =
+    documentModelAdminClient.beginBuildDocumentModel(blobContainerUrl,
+        DocumentModelBuildMode.TEMPLATE,
+        prefix,
+        new BuildDocumentModelOptions().setModelId("my-build-model").setDescription("model desc"),
+        Context.NONE);
 
-DocumentModelInfo documentModelInfo = buildOperationPoller.getFinalResult();
+DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
 
 // Model Info
-System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
-System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
-System.out.printf("Model created on: %s%n%n", documentModelInfo.getCreatedOn());
-documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
+System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
+System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
+System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedOn());
+documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
     System.out.printf("Document type: %s%n", key);
-    docTypeInfo.getFieldSchema().forEach((name, documentFieldSchema) -> {
+    documentTypeDetails.getFieldSchema().forEach((name, documentFieldSchema) -> {
         System.out.printf("Document field: %s%n", name);
         System.out.printf("Document field type: %s%n", documentFieldSchema.getType().toString());
-        System.out.printf("Document field confidence: %.2f%n", docTypeInfo.getFieldConfidence().get(name));
+        System.out.printf("Document field confidence: %.2f%n", documentTypeDetails.getFieldConfidence().get(name));
     });
 });
 ```
@@ -559,17 +563,17 @@ and were returned in the list models response.
 For additional samples please take a look at the [Form Recognizer samples][README-Samples]
 
 <!-- Links -->
-[DocumentAnalysisClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClientBuilder.java
-[DocumentAnalysisClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClient.java
-[DocumentAnalysisAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisAsyncClient.java
-[DocumentModelAdministrationClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationClientBuilder.java
-[DocumentModelAdministrationClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationClient.java
-[DocumentModelAdministrationAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationAsyncClient.java
+[DocumentAnalysisClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/DocumentAnalysisClientBuilder.java
+[DocumentAnalysisClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/DocumentAnalysisClient.java
+[DocumentAnalysisAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/DocumentAnalysisAsyncClient.java
+[DocumentModelAdministrationClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/administration/DocumentModelAdministrationClientBuilder.java
+[DocumentModelAdministrationClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/administration/DocumentModelAdministrationClient.java
+[DocumentModelAdministrationAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/administration/DocumentModelAdministrationAsyncClient.java
 [Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
 [README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/README.md
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/README.md
-<!-- [service_supported_models]: TODO -->
+[service_supported_models]: https://aka.ms/azsdk/formrecognizer/models
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fformrecognizer%2Fazure-ai-formrecognizer%2Fmigration-guide.png)

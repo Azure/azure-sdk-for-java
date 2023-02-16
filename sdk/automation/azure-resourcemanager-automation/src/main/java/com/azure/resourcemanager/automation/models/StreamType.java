@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StreamType. */
+/** The type of the sync job stream. */
 public final class StreamType extends ExpandableStringEnum<StreamType> {
     /** Static value Error for StreamType. */
     public static final StreamType ERROR = fromString("Error");
@@ -27,7 +27,11 @@ public final class StreamType extends ExpandableStringEnum<StreamType> {
         return fromString(name, StreamType.class);
     }
 
-    /** @return known StreamType values. */
+    /**
+     * Gets known StreamType values.
+     *
+     * @return known StreamType values.
+     */
     public static Collection<StreamType> values() {
         return values(StreamType.class);
     }

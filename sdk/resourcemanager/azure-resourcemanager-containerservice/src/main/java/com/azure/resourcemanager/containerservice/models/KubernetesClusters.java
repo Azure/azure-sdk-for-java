@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 /** Entry point to managed Kubernetes service management API. */
-@Fluent()
+@Fluent
 public interface KubernetesClusters
     extends HasManager<ContainerServiceManager>,
         SupportsCreating<KubernetesCluster.DefinitionStages.Blank>,
@@ -37,18 +37,22 @@ public interface KubernetesClusters
     /**
      * Returns the list of available Kubernetes versions available for the given Azure region.
      *
+     * @deprecated use {@link #listOrchestrators(Region, ContainerServiceResourceTypes)}
      * @param region the Azure region to query into
      * @return a set of Kubernetes versions which can be used when creating a service in this region
      */
+    @Deprecated
     Set<String> listKubernetesVersions(Region region);
 
     /**
      * Returns the list of available Kubernetes versions available for the given Azure region.
      *
+     * @deprecated use {@link #listOrchestratorsAsync(Region, ContainerServiceResourceTypes)}
      * @param region the Azure region to query into
      * @return a future representation of a set of Kubernetes versions which can be used when creating a service in this
      *     region
      */
+    @Deprecated
     Mono<Set<String>> listKubernetesVersionsAsync(Region region);
 
     /**

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataFlowReferenceType. */
+/** Data flow reference type. */
 public final class DataFlowReferenceType extends ExpandableStringEnum<DataFlowReferenceType> {
     /** Static value DataFlowReference for DataFlowReferenceType. */
     public static final DataFlowReferenceType DATA_FLOW_REFERENCE = fromString("DataFlowReference");
@@ -24,7 +24,11 @@ public final class DataFlowReferenceType extends ExpandableStringEnum<DataFlowRe
         return fromString(name, DataFlowReferenceType.class);
     }
 
-    /** @return known DataFlowReferenceType values. */
+    /**
+     * Gets known DataFlowReferenceType values.
+     *
+     * @return known DataFlowReferenceType values.
+     */
     public static Collection<DataFlowReferenceType> values() {
         return values(DataFlowReferenceType.class);
     }

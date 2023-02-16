@@ -40,8 +40,7 @@ public final class BackendAddressPoolPropertiesFormat {
     private List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations;
 
     /*
-     * An array of references to load balancing rules that use this backend
-     * address pool.
+     * An array of references to load balancing rules that use this backend address pool.
      */
     @JsonProperty(value = "loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
@@ -53,15 +52,13 @@ public final class BackendAddressPoolPropertiesFormat {
     private SubResource outboundRule;
 
     /*
-     * An array of references to outbound rules that use this backend address
-     * pool.
+     * An array of references to outbound rules that use this backend address pool.
      */
     @JsonProperty(value = "outboundRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> outboundRules;
 
     /*
-     * An array of references to inbound NAT rules that use this backend
-     * address pool.
+     * An array of references to inbound NAT rules that use this backend address pool.
      */
     @JsonProperty(value = "inboundNatRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> inboundNatRules;
@@ -73,11 +70,20 @@ public final class BackendAddressPoolPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Amount of seconds Load Balancer waits for before sending RESET to client
-     * and backend address.
+     * Amount of seconds Load Balancer waits for before sending RESET to client and backend address.
      */
     @JsonProperty(value = "drainPeriodInSeconds")
     private Integer drainPeriodInSeconds;
+
+    /*
+     * A reference to a virtual network.
+     */
+    @JsonProperty(value = "virtualNetwork")
+    private SubResource virtualNetwork;
+
+    /** Creates an instance of BackendAddressPoolPropertiesFormat class. */
+    public BackendAddressPoolPropertiesFormat() {
+    }
 
     /**
      * Get the location property: The location of the backend address pool.
@@ -215,6 +221,26 @@ public final class BackendAddressPoolPropertiesFormat {
      */
     public BackendAddressPoolPropertiesFormat withDrainPeriodInSeconds(Integer drainPeriodInSeconds) {
         this.drainPeriodInSeconds = drainPeriodInSeconds;
+        return this;
+    }
+
+    /**
+     * Get the virtualNetwork property: A reference to a virtual network.
+     *
+     * @return the virtualNetwork value.
+     */
+    public SubResource virtualNetwork() {
+        return this.virtualNetwork;
+    }
+
+    /**
+     * Set the virtualNetwork property: A reference to a virtual network.
+     *
+     * @param virtualNetwork the virtualNetwork value to set.
+     * @return the BackendAddressPoolPropertiesFormat object itself.
+     */
+    public BackendAddressPoolPropertiesFormat withVirtualNetwork(SubResource virtualNetwork) {
+        this.virtualNetwork = virtualNetwork;
         return this;
     }
 

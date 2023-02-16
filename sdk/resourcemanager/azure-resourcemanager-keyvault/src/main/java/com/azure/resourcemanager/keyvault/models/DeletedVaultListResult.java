@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.fluent.models.DeletedVaultInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of vaults. */
 @Fluent
 public final class DeletedVaultListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedVaultListResult.class);
-
     /*
      * The list of deleted vaults.
      */

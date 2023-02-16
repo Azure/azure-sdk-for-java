@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SshPublicKeys List. */
 public final class SshPublicKeysListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKeys_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKeys_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_ListBySubscription_MinimumSet_Gen.
@@ -18,11 +16,11 @@ public final class SshPublicKeysListSamples {
      */
     public static void sshPublicKeysListBySubscriptionMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().list(Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().list(com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKeys_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKeys_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_ListBySubscription_MaximumSet_Gen.
@@ -31,6 +29,6 @@ public final class SshPublicKeysListSamples {
      */
     public static void sshPublicKeysListBySubscriptionMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().list(Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().list(com.azure.core.util.Context.NONE);
     }
 }

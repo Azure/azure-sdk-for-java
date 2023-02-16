@@ -27,17 +27,6 @@ public final class ActivityRunsImpl implements ActivityRuns {
         this.serviceManager = serviceManager;
     }
 
-    public ActivityRunsQueryResponse queryByPipelineRun(
-        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
-        ActivityRunsQueryResponseInner inner =
-            this.serviceClient().queryByPipelineRun(resourceGroupName, factoryName, runId, filterParameters);
-        if (inner != null) {
-            return new ActivityRunsQueryResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ActivityRunsQueryResponse> queryByPipelineRunWithResponse(
         String resourceGroupName,
         String factoryName,
@@ -54,6 +43,17 @@ public final class ActivityRunsImpl implements ActivityRuns {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ActivityRunsQueryResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ActivityRunsQueryResponse queryByPipelineRun(
+        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
+        ActivityRunsQueryResponseInner inner =
+            this.serviceClient().queryByPipelineRun(resourceGroupName, factoryName, runId, filterParameters);
+        if (inner != null) {
+            return new ActivityRunsQueryResponseImpl(inner, this.manager());
         } else {
             return null;
         }

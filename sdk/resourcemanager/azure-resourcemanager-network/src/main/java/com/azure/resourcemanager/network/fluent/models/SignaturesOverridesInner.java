@@ -25,18 +25,20 @@ public final class SignaturesOverridesInner extends ProxyResource {
     private String id;
 
     /*
-     * Will contain the type of the resource:
-     * Microsoft.Network/firewallPolicies/intrusionDetectionSignaturesOverrides
+     * Will contain the type of the resource: Microsoft.Network/firewallPolicies/intrusionDetectionSignaturesOverrides
      */
     @JsonProperty(value = "type")
     private String type;
 
     /*
-     * Will contain the properties of the resource (the actual signature
-     * overrides)
+     * Will contain the properties of the resource (the actual signature overrides)
      */
     @JsonProperty(value = "properties")
     private SignaturesOverridesProperties properties;
+
+    /** Creates an instance of SignaturesOverridesInner class. */
+    public SignaturesOverridesInner() {
+    }
 
     /**
      * Get the name property: Contains the name of the resource (default).

@@ -173,6 +173,24 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippets for {@link DataLakeFileSystemClient#exists()}
+     */
+    public void existsCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.exists
+        System.out.printf("Exists? %b%n", client.exists());
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.exists
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemClient#existsWithResponse(Duration, Context)}
+     */
+    public void existsWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.existsWithResponse#Duration-Context
+        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, new Context("Key", "Value")).getValue());
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.existsWithResponse#Duration-Context
+    }
+
+    /**
      * Code snippet for {@link DataLakeFileSystemClient#setMetadata(Map)}
      */
     public void setMetadata() {
@@ -731,7 +749,7 @@ public class FileSystemClientJavaDocCodeSamples {
 //        DataLakeFileSystemClient fileSystemClient = client.rename("newFileSystemName");
 //        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String
 //    }
-//
+
 //    /**
 //     * Code snippet for {@link DataLakeFileSystemClient#renameWithResponse(FileSystemRenameOptions, Duration, Context)}
 //     */

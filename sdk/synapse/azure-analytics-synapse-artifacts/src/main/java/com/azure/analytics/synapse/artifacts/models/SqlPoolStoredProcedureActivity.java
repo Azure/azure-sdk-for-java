@@ -25,18 +25,19 @@ public class SqlPoolStoredProcedureActivity extends Activity {
     private SqlPoolReference sqlPool;
 
     /*
-     * Stored procedure name. Type: string (or Expression with resultType
-     * string).
+     * Stored procedure name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.storedProcedureName", required = true)
     private Object storedProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}".
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "typeProperties.storedProcedureParameters")
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
+
+    /** Creates an instance of SqlPoolStoredProcedureActivity class. */
+    public SqlPoolStoredProcedureActivity() {}
 
     /**
      * Get the sqlPool property: SQL pool stored procedure reference.

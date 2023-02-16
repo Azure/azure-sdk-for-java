@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
 /** The ExtractiveSummarizationLROResult model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -19,6 +20,9 @@ public final class ExtractiveSummarizationLROResult extends AnalyzeTextLROResult
      */
     @JsonProperty(value = "results", required = true)
     private ExtractiveSummarizationResult results;
+
+    /** Creates an instance of ExtractiveSummarizationLROResult class. */
+    public ExtractiveSummarizationLROResult() {}
 
     /**
      * Get the results property: The results property.
@@ -37,6 +41,27 @@ public final class ExtractiveSummarizationLROResult extends AnalyzeTextLROResult
      */
     public ExtractiveSummarizationLROResult setResults(ExtractiveSummarizationResult results) {
         this.results = results;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationLROResult setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
+        super.setLastUpdateDateTime(lastUpdateDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationLROResult setStatus(State status) {
+        super.setStatus(status);
         return this;
     }
 }

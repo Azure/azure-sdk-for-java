@@ -161,21 +161,6 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified tap configuration on a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceTapConfigurationInner get(
-        String resourceGroupName, String networkInterfaceName, String tapConfigurationName);
-
-    /**
-     * Get the specified tap configuration on a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,6 +170,21 @@ public interface NetworkInterfaceTapConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkInterfaceTapConfigurationInner> getWithResponse(
         String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context);
+
+    /**
+     * Get the specified tap configuration on a network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param tapConfigurationName The name of the tap configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified tap configuration on a network interface.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkInterfaceTapConfigurationInner get(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName);
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.

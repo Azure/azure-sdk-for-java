@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("LongTermSchedulePolicy")
 @Immutable
 public final class LongTermSchedulePolicy extends SchedulePolicy {
+    /** Creates an instance of LongTermSchedulePolicy class. */
+    public LongTermSchedulePolicy() {
+    }
+
     /**
      * Validates the instance.
      *

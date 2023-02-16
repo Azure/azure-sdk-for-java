@@ -19,12 +19,15 @@ public final class AsanaLinkedServiceTypeProperties {
     private SecretBase apiToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of AsanaLinkedServiceTypeProperties class. */
+    public AsanaLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the apiToken property: The api token for the Asana source.

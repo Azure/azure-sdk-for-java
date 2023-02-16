@@ -13,8 +13,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public class LogAnalyticsInputBase {
     /*
-     * SAS Uri of the logging blob container to which LogAnalytics Api writes
-     * output logs to.
+     * SAS Uri of the logging blob container to which LogAnalytics Api writes output logs to.
      */
     @JsonProperty(value = "blobContainerSasUri", required = true)
     private String blobContainerSasUri;
@@ -60,6 +59,10 @@ public class LogAnalyticsInputBase {
      */
     @JsonProperty(value = "groupByUserAgent")
     private Boolean groupByUserAgent;
+
+    /** Creates an instance of LogAnalyticsInputBase class. */
+    public LogAnalyticsInputBase() {
+    }
 
     /**
      * Get the blobContainerSasUri property: SAS Uri of the logging blob container to which LogAnalytics Api writes

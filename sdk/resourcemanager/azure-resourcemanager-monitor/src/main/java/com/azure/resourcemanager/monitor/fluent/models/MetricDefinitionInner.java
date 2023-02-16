@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.AggregationType;
 import com.azure.resourcemanager.monitor.models.MetricAvailability;
 import com.azure.resourcemanager.monitor.models.MetricClass;
 import com.azure.resourcemanager.monitor.models.Unit;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Metric definition class specifies the metadata for a metric. */
 @Fluent
 public final class MetricDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDefinitionInner.class);
-
     /*
      * Flag to indicate whether the dimension is required.
      */
@@ -38,8 +34,7 @@ public final class MetricDefinitionInner {
     private String namespace;
 
     /*
-     * the name and the display name of the metric, i.e. it is a localizable
-     * string.
+     * the name and the display name of the metric, i.e. it is a localizable string.
      */
     @JsonProperty(value = "name")
     private LocalizableStringInner name;
@@ -69,8 +64,7 @@ public final class MetricDefinitionInner {
     private Unit unit;
 
     /*
-     * the primary aggregation type value defining how to use the values for
-     * display.
+     * the primary aggregation type value defining how to use the values for display.
      */
     @JsonProperty(value = "primaryAggregationType")
     private AggregationType primaryAggregationType;
@@ -82,8 +76,7 @@ public final class MetricDefinitionInner {
     private List<AggregationType> supportedAggregationTypes;
 
     /*
-     * the collection of what aggregation intervals are available to be
-     * queried.
+     * the collection of what aggregation intervals are available to be queried.
      */
     @JsonProperty(value = "metricAvailabilities")
     private List<MetricAvailability> metricAvailabilities;
@@ -95,11 +88,14 @@ public final class MetricDefinitionInner {
     private String id;
 
     /*
-     * the name and the display name of the dimension, i.e. it is a localizable
-     * string.
+     * the name and the display name of the dimension, i.e. it is a localizable string.
      */
     @JsonProperty(value = "dimensions")
     private List<LocalizableStringInner> dimensions;
+
+    /** Creates an instance of MetricDefinitionInner class. */
+    public MetricDefinitionInner() {
+    }
 
     /**
      * Get the isDimensionRequired property: Flag to indicate whether the dimension is required.

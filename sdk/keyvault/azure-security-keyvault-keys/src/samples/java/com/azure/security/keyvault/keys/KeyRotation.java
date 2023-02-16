@@ -23,14 +23,19 @@ public class KeyRotation {
      * create a new key version.
      *
      * @param args Unused. Arguments to the program.
+     *
      * @throws IllegalArgumentException when an invalid key vault endpoint is passed.
      */
     public static void main(String[] args) {
-        // Instantiate a KeyClient that will be used to call the service. Notice that the KeyClient is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        /* Instantiate a KeyClient that will be used to call the service. Notice that the client is using default Azure
+        credentials. For more information on this and other types of credentials, see this document:
+        https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
+
+        To get started, you'll need a URL to an Azure Key Vault. See the README
+        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
+        for links and instructions. */
         KeyClient keyClient = new KeyClientBuilder()
-            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -47,15 +52,16 @@ public class KeyRotation {
         List<KeyRotationLifetimeAction> keyRotationLifetimeActionList = new ArrayList<>();
         KeyRotationLifetimeAction rotateLifetimeAction = new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE)
             .setTimeAfterCreate("P90D"); // Rotate the key after 90 days of its creation.
+
         keyRotationLifetimeActionList.add(rotateLifetimeAction);
+
         KeyRotationPolicy keyRotationPolicy = new KeyRotationPolicy()
             .setLifetimeActions(keyRotationLifetimeActionList)
             .setExpiresIn("P6M"); // Make any new versions of the key expire 6 months after creation.
 
         // An object containing the details of the recently updated key rotation policy will be returned by the update
         // method.
-        KeyRotationPolicy updatedPolicy =
-            keyClient.updateKeyRotationPolicy(keyName, keyRotationPolicy);
+        KeyRotationPolicy updatedPolicy = keyClient.updateKeyRotationPolicy(keyName, keyRotationPolicy);
 
         System.out.printf("Updated key rotation policy with id: %s%n", updatedPolicy.getId());
 

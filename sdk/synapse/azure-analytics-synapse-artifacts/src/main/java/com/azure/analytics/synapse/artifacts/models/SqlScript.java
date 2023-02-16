@@ -34,8 +34,7 @@ public final class SqlScript {
     private SqlScriptContent content;
 
     /*
-     * The folder that this SQL script is in. If not specified, this SQL script
-     * will appear at the root level.
+     * The folder that this SQL script is in. If not specified, this SQL script will appear at the root level.
      */
     @JsonProperty(value = "folder")
     private SqlScriptFolder folder;
@@ -44,6 +43,9 @@ public final class SqlScript {
      * SQL script.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of SqlScript class. */
+    public SqlScript() {}
 
     /**
      * Get the description property: The description of the SQL script.

@@ -27,8 +27,8 @@ import java.util.Map;
     defaultImpl = Credential.class)
 @JsonTypeName("Credential")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class),
-    @JsonSubTypes.Type(name = "ManagedIdentity", value = ManagedIdentityCredential.class)
+    @JsonSubTypes.Type(name = "ManagedIdentity", value = ManagedIdentityCredential.class),
+    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class)
 })
 @Fluent
 public class Credential {
@@ -45,11 +45,14 @@ public class Credential {
     private List<Object> annotations;
 
     /*
-     * The Azure Data Factory nested object which contains the information and
-     * credential which can be used to connect with related store or compute
-     * resource.
+     * The Azure Data Factory nested object which contains the information and credential which can be used to connect
+     * with related store or compute resource.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of Credential class. */
+    public Credential() {
+    }
 
     /**
      * Get the description property: Credential description.

@@ -30,8 +30,6 @@ import java.util.Map;
 })
 @Fluent
 public class MultiMetricCriteria {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MultiMetricCriteria.class);
-
     /*
      * Name of the criteria.
      */
@@ -63,8 +61,8 @@ public class MultiMetricCriteria {
     private List<MetricDimension> dimensions;
 
     /*
-     * Allows creating an alert rule on a custom metric that isn't yet emitted,
-     * by causing the metric validation to be skipped.
+     * Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be
+     * skipped.
      */
     @JsonProperty(value = "skipMetricValidation")
     private Boolean skipMetricValidation;
@@ -73,6 +71,10 @@ public class MultiMetricCriteria {
      * The types of conditions for a multi resource alert.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MultiMetricCriteria class. */
+    public MultiMetricCriteria() {
+    }
 
     /**
      * Get the name property: Name of the criteria.
@@ -232,17 +234,17 @@ public class MultiMetricCriteria {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model MultiMetricCriteria"));
         }
         if (metricName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property metricName in model MultiMetricCriteria"));
         }
         if (timeAggregation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property timeAggregation in model MultiMetricCriteria"));
@@ -251,4 +253,6 @@ public class MultiMetricCriteria {
             dimensions().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MultiMetricCriteria.class);
 }

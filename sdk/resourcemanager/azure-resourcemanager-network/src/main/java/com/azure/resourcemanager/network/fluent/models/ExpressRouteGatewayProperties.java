@@ -39,6 +39,16 @@ public final class ExpressRouteGatewayProperties {
     @JsonProperty(value = "virtualHub", required = true)
     private VirtualHubId virtualHub;
 
+    /*
+     * Configures this gateway to accept traffic from non Virtual WAN networks.
+     */
+    @JsonProperty(value = "allowNonVirtualWanTraffic")
+    private Boolean allowNonVirtualWanTraffic;
+
+    /** Creates an instance of ExpressRouteGatewayProperties class. */
+    public ExpressRouteGatewayProperties() {
+    }
+
     /**
      * Get the autoScaleConfiguration property: Configuration for auto scaling.
      *
@@ -107,6 +117,28 @@ public final class ExpressRouteGatewayProperties {
      */
     public ExpressRouteGatewayProperties withVirtualHub(VirtualHubId virtualHub) {
         this.virtualHub = virtualHub;
+        return this;
+    }
+
+    /**
+     * Get the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
+     * networks.
+     *
+     * @return the allowNonVirtualWanTraffic value.
+     */
+    public Boolean allowNonVirtualWanTraffic() {
+        return this.allowNonVirtualWanTraffic;
+    }
+
+    /**
+     * Set the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
+     * networks.
+     *
+     * @param allowNonVirtualWanTraffic the allowNonVirtualWanTraffic value to set.
+     * @return the ExpressRouteGatewayProperties object itself.
+     */
+    public ExpressRouteGatewayProperties withAllowNonVirtualWanTraffic(Boolean allowNonVirtualWanTraffic) {
+        this.allowNonVirtualWanTraffic = allowNonVirtualWanTraffic;
         return this;
     }
 

@@ -14,11 +14,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class WindowsVMGuestPatchAutomaticByPlatformSettings {
     /*
-     * Specifies the reboot setting for all AutomaticByPlatform patch
-     * installation operations.
+     * Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
      */
     @JsonProperty(value = "rebootSetting")
     private WindowsVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting;
+
+    /** Creates an instance of WindowsVMGuestPatchAutomaticByPlatformSettings class. */
+    public WindowsVMGuestPatchAutomaticByPlatformSettings() {
+    }
 
     /**
      * Get the rebootSetting property: Specifies the reboot setting for all AutomaticByPlatform patch installation

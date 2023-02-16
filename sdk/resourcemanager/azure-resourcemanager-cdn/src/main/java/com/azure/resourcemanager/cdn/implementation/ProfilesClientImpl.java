@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.ProfilesClient;
@@ -55,8 +54,6 @@ public final class ProfilesClientImpl
         InnerSupportsListing<ProfileInner>,
         InnerSupportsDelete<Void>,
         ProfilesClient {
-    private final ClientLogger logger = new ClientLogger(ProfilesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProfilesService service;
 
@@ -672,14 +669,7 @@ public final class ProfilesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, profileName)
-            .flatMap(
-                (Response<ProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1692,14 +1682,7 @@ public final class ProfilesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SsoUriInner> generateSsoUriAsync(String resourceGroupName, String profileName) {
         return generateSsoUriWithResponseAsync(resourceGroupName, profileName)
-            .flatMap(
-                (Response<SsoUriInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1856,14 +1839,7 @@ public final class ProfilesClientImpl
     public Mono<SupportedOptimizationTypesListResultInner> listSupportedOptimizationTypesAsync(
         String resourceGroupName, String profileName) {
         return listSupportedOptimizationTypesWithResponseAsync(resourceGroupName, profileName)
-            .flatMap(
-                (Response<SupportedOptimizationTypesListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2100,7 +2076,8 @@ public final class ProfilesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2136,7 +2113,8 @@ public final class ProfilesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2173,7 +2151,8 @@ public final class ProfilesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2210,7 +2189,8 @@ public final class ProfilesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2247,7 +2227,8 @@ public final class ProfilesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2283,7 +2264,8 @@ public final class ProfilesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

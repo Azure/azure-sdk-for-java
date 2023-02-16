@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the dsc node report error type. */
 @Fluent
 public final class DscReportError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscReportError.class);
-
     /*
      * Gets or sets the source of the error.
      */

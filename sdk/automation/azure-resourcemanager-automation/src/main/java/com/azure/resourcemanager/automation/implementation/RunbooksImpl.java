@@ -13,10 +13,11 @@ import com.azure.resourcemanager.automation.fluent.RunbooksClient;
 import com.azure.resourcemanager.automation.fluent.models.RunbookInner;
 import com.azure.resourcemanager.automation.models.Runbook;
 import com.azure.resourcemanager.automation.models.Runbooks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 
 public final class RunbooksImpl implements Runbooks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunbooksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RunbooksImpl.class);
 
     private final RunbooksClient innerClient;
 
@@ -36,11 +37,11 @@ public final class RunbooksImpl implements Runbooks {
         this.serviceClient().publish(resourceGroupName, automationAccountName, runbookName, context);
     }
 
-    public String getContent(String resourceGroupName, String automationAccountName, String runbookName) {
+    public Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName) {
         return this.serviceClient().getContent(resourceGroupName, automationAccountName, runbookName);
     }
 
-    public Response<String> getContentWithResponse(
+    public Response<Flux<ByteBuffer>> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return this
             .serviceClient()
@@ -96,7 +97,7 @@ public final class RunbooksImpl implements Runbooks {
     public Runbook getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -104,7 +105,7 @@ public final class RunbooksImpl implements Runbooks {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,7 +114,7 @@ public final class RunbooksImpl implements Runbooks {
         }
         String runbookName = Utils.getValueFromIdByName(id, "runbooks");
         if (runbookName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'runbooks'.", id)));
@@ -124,7 +125,7 @@ public final class RunbooksImpl implements Runbooks {
     public Response<Runbook> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,7 +133,7 @@ public final class RunbooksImpl implements Runbooks {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +142,7 @@ public final class RunbooksImpl implements Runbooks {
         }
         String runbookName = Utils.getValueFromIdByName(id, "runbooks");
         if (runbookName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'runbooks'.", id)));
@@ -152,7 +153,7 @@ public final class RunbooksImpl implements Runbooks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -160,7 +161,7 @@ public final class RunbooksImpl implements Runbooks {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,18 +170,18 @@ public final class RunbooksImpl implements Runbooks {
         }
         String runbookName = Utils.getValueFromIdByName(id, "runbooks");
         if (runbookName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'runbooks'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,7 +189,7 @@ public final class RunbooksImpl implements Runbooks {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -197,7 +198,7 @@ public final class RunbooksImpl implements Runbooks {
         }
         String runbookName = Utils.getValueFromIdByName(id, "runbooks");
         if (runbookName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'runbooks'.", id)));

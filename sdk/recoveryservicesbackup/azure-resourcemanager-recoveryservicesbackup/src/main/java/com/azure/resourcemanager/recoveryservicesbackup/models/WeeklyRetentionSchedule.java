@@ -30,6 +30,10 @@ public final class WeeklyRetentionSchedule {
     @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
+    /** Creates an instance of WeeklyRetentionSchedule class. */
+    public WeeklyRetentionSchedule() {
+    }
+
     /**
      * Get the daysOfTheWeek property: List of days of week for weekly retention policy.
      *

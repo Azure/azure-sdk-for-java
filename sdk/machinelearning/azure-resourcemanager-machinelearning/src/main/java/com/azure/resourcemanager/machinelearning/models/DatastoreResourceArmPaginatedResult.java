@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class DatastoreResourceArmPaginatedResult {
     /*
-     * The link to the next page of Datastore objects. If null, there are no
-     * additional pages.
+     * The link to the next page of Datastore objects. If null, there are no additional pages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -23,7 +22,11 @@ public final class DatastoreResourceArmPaginatedResult {
      * An array of objects of type Datastore.
      */
     @JsonProperty(value = "value")
-    private List<DatastoreDataInner> value;
+    private List<DatastoreInner> value;
+
+    /** Creates an instance of DatastoreResourceArmPaginatedResult class. */
+    public DatastoreResourceArmPaginatedResult() {
+    }
 
     /**
      * Get the nextLink property: The link to the next page of Datastore objects. If null, there are no additional
@@ -52,7 +55,7 @@ public final class DatastoreResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<DatastoreDataInner> value() {
+    public List<DatastoreInner> value() {
         return this.value;
     }
 
@@ -62,7 +65,7 @@ public final class DatastoreResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the DatastoreResourceArmPaginatedResult object itself.
      */
-    public DatastoreResourceArmPaginatedResult withValue(List<DatastoreDataInner> value) {
+    public DatastoreResourceArmPaginatedResult withValue(List<DatastoreInner> value) {
         this.value = value;
         return this;
     }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.fluent.models.MonitoringTagRulesInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response of a list operation. */
 @Fluent
 public final class MonitoringTagRulesListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoringTagRulesListResponse.class);
-
     /*
      * Results of a list operation.
      */
@@ -27,6 +23,10 @@ public final class MonitoringTagRulesListResponse {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of MonitoringTagRulesListResponse class. */
+    public MonitoringTagRulesListResponse() {
+    }
 
     /**
      * Get the value property: Results of a list operation.

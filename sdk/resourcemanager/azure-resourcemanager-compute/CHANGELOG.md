@@ -1,6 +1,76 @@
 # Release History
 
-## 2.17.0-beta.1 (Unreleased)
+## 2.24.0-beta.1 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed wrong javadocs of `withSsh()` in `VirtualMachine` and `VirtualMachineScaleSet`.
+- Fixed a bug that scaling up scale sets results in outdated models for existing VMs.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+## 2.22.0 (2022-12-23)
+
+### Features Added
+
+- Supported `withHibernationSupport` method in `Disk` to support hibernation for the OS on the disk.
+
+## 2.21.0 (2022-11-24)
+
+### Features Added
+
+- Supported `withCopyStart` method in `Snapshot` for copying incremental snapshot from incremental snapshot.
+- Supported `awaitCopyStartCompletion` and `awaitCopyStartCompletionAsync` method in `Snapshot`.
+- Supported `copyCompletionPercent` and `copyCompletionError` method in `Snapshot` for retrieving `CopyStart` progress.
+- Supported `withTrustedLaunch`, `withSecureBoot` and `withVTpm` methods in `VirtualMachine`.
+- Supported `UBUNTU_SERVER_18_04_LTS_GEN2`, `UBUNTU_SERVER_20_04_LTS` and `UBUNTU_SERVER_20_04_LTS_GEN2` in `KnownLinuxVirtualMachineImage`.
+- Supported `WINDOWS_SERVER_2019_DATACENTER_GEN2`, `WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS_GEN2`, 
+  `WINDOWS_SERVER_2016_DATACENTER_GEN2` and `WINDOWS_DESKTOP_10_21H2_PRO_GEN2` in `KnownWindowsVirtualMachineImage`.
+- Supported `withTrustedLaunch` and `withHyperVGeneration` methods in `GalleryImage`.
+
+### Breaking Changes
+
+- Property `uri` removed from class `GalleryArtifactVersionSource`. This property was non-functional.
+- Type of property `GalleryImageVersionStorageProfile.source` changed to the class `GalleryArtifactVersionFullSource`, a subclass of `GalleryArtifactVersionSource`.
+- Type of property `GalleryOSDiskImage.source` changed to the class `GalleryDiskImageSource`, a subclass of `GalleryArtifactVersionSource`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated Gallery to `2022-03-03`.
+
+## 2.20.0 (2022-10-26)
+
+### Bugs Fixed
+
+- Fixed bug where `getInstanceView()` in `VirtualMachineExtension` throws NPE if the VM is in deallocated state.
+
+## 2.19.0 (2022-09-23)
+
+### Breaking Changes
+
+- Property `protectedSettingsFromKeyVault` in `VirtualMachineExtensionUpdate` changed from `Object` to `KeyVaultSecretReference`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-08-01`.
+
+## 2.18.0 (2022-08-26)
+
+### Bugs Fixed
+
+- Fixed bug where `withDataFromDisk(Disk managedDisk)` in `Snapshot` mistakenly used SKU from Disk. ([#29811](https://github.com/Azure/azure-sdk-for-java/issues/29811))
+
+## 2.17.0 (2022-07-25)
 
 ### Breaking Changes
 

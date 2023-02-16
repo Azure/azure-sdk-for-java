@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RestorePointCollectionSourceProperties {
     /*
-     * Location of the source resource used to create this restore point
-     * collection.
+     * Location of the source resource used to create this restore point collection.
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
-     * Resource Id of the source resource used to create this restore point
-     * collection
+     * Resource Id of the source resource used to create this restore point collection
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of RestorePointCollectionSourceProperties class. */
+    public RestorePointCollectionSourceProperties() {
+    }
 
     /**
      * Get the location property: Location of the source resource used to create this restore point collection.

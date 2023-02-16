@@ -25,17 +25,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class StorageAccountPropertiesUpdateParameters {
     /*
-     * Custom domain assigned to the storage account by the user. Name is the
-     * CNAME source. Only one custom domain is supported per storage account at
-     * this time. To clear the existing custom domain, use an empty string for
-     * the custom domain name property.
+     * Custom domain assigned to the storage account by the user. Name is the CNAME source. Only one custom domain is
+     * supported per storage account at this time. To clear the existing custom domain, use an empty string for the
+     * custom domain name property.
      */
     @JsonProperty(value = "customDomain")
     private CustomDomain customDomain;
 
     /*
-     * Not applicable. Azure Storage encryption at rest is enabled by default
-     * for all storage accounts and cannot be disabled.
+     * Not applicable. Azure Storage encryption at rest is enabled by default for all storage accounts and cannot be
+     * disabled.
      */
     @JsonProperty(value = "encryption")
     private Encryption encryption;
@@ -53,10 +52,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     private KeyPolicy keyPolicy;
 
     /*
-     * Required for storage accounts where kind = BlobStorage. The access tier
-     * is used for billing. The 'Premium' access tier is the default value for
-     * premium block blobs storage account type and it cannot be changed for
-     * the premium block blobs storage account type.
+     * Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium'
+     * access tier is the default value for premium block blobs storage account type and it cannot be changed for the
+     * premium block blobs storage account type.
      */
     @JsonProperty(value = "accessTier")
     private AccessTier accessTier;
@@ -92,84 +90,76 @@ public final class StorageAccountPropertiesUpdateParameters {
     private NetworkRuleSet networkRuleSet;
 
     /*
-     * Allow large file shares if sets to Enabled. It cannot be disabled once
-     * it is enabled.
+     * Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled.
      */
     @JsonProperty(value = "largeFileSharesState")
     private LargeFileSharesState largeFileSharesState;
 
     /*
-     * Maintains information about the network routing choice opted by the user
-     * for data transfer
+     * Maintains information about the network routing choice opted by the user for data transfer
      */
     @JsonProperty(value = "routingPreference")
     private RoutingPreference routingPreference;
 
     /*
-     * Allow or disallow public access to all blobs or containers in the
-     * storage account. The default interpretation is true for this property.
+     * Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is
+     * true for this property.
      */
     @JsonProperty(value = "allowBlobPublicAccess")
     private Boolean allowBlobPublicAccess;
 
     /*
-     * Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
+     * Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for
+     * this property.
      */
     @JsonProperty(value = "minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
     /*
-     * Indicates whether the storage account permits requests to be authorized
-     * with the account access key via Shared Key. If false, then all requests,
-     * including shared access signatures, must be authorized with Azure Active
-     * Directory (Azure AD). The default value is null, which is equivalent to
-     * true.
+     * Indicates whether the storage account permits requests to be authorized with the account access key via Shared
+     * Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active
+     * Directory (Azure AD). The default value is null, which is equivalent to true.
      */
     @JsonProperty(value = "allowSharedKeyAccess")
     private Boolean allowSharedKeyAccess;
 
     /*
-     * Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
+     * Allow or disallow cross AAD tenant object replication. The default interpretation is true for this property.
      */
     @JsonProperty(value = "allowCrossTenantReplication")
     private Boolean allowCrossTenantReplication;
 
     /*
-     * A boolean flag which indicates whether the default authentication is
-     * OAuth or not. The default interpretation is false for this property.
+     * A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is
+     * false for this property.
      */
     @JsonProperty(value = "defaultToOAuthAuthentication")
     private Boolean defaultToOAuthAuthentication;
 
     /*
-     * Allow or disallow public network access to Storage Account. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * Allow or disallow public network access to Storage Account. Value is optional but if passed in, must be
+     * 'Enabled' or 'Disabled'.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * The property is immutable and can only be set to true at the account
-     * creation time. When set to true, it enables object level immutability
-     * for all the containers in the account by default.
+     * The property is immutable and can only be set to true at the account creation time. When set to true, it enables
+     * object level immutability for all the containers in the account by default.
      */
     @JsonProperty(value = "immutableStorageWithVersioning")
     private ImmutableStorageAccount immutableStorageWithVersioning;
 
     /*
-     * Restrict copy to and from Storage Accounts within an AAD tenant or with
-     * Private Links to the same VNet.
+     * Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
      */
     @JsonProperty(value = "allowedCopyScope")
     private AllowedCopyScope allowedCopyScope;
 
     /*
-     * Allows you to specify the type of endpoint. Set this to AzureDNSZone to
-     * create a large number of accounts in a single subscription, which
-     * creates accounts in an Azure DNS Zone and the endpoint URL will have an
-     * alphanumeric DNS Zone identifier.
+     * Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a
+     * single subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric
+     * DNS Zone identifier.
      */
     @JsonProperty(value = "dnsEndpointType")
     private DnsEndpointType dnsEndpointType;

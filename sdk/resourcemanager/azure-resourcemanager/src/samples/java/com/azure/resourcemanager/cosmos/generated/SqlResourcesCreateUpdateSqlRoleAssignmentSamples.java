@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.SqlRoleAssignmentCreateUpdateParameters;
 
 /** Samples for SqlResources CreateUpdateSqlRoleAssignment. */
 public final class SqlResourcesCreateUpdateSqlRoleAssignmentSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlRoleAssignmentCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlRoleAssignmentCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlRoleAssignmentCreateUpdate.
@@ -33,6 +32,6 @@ public final class SqlResourcesCreateUpdateSqlRoleAssignmentSamples {
                     .withScope(
                         "/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases")
                     .withPrincipalId("myPrincipalId"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

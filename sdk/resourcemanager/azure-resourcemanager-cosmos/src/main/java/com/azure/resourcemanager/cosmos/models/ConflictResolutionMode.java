@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConflictResolutionMode. */
+/** Indicates the conflict resolution mode. */
 public final class ConflictResolutionMode extends ExpandableStringEnum<ConflictResolutionMode> {
     /** Static value LastWriterWins for ConflictResolutionMode. */
     public static final ConflictResolutionMode LAST_WRITER_WINS = fromString("LastWriterWins");
 
     /** Static value Custom for ConflictResolutionMode. */
     public static final ConflictResolutionMode CUSTOM = fromString("Custom");
+
+    /**
+     * Creates a new instance of ConflictResolutionMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConflictResolutionMode() {
+    }
 
     /**
      * Creates or finds a ConflictResolutionMode from its string representation.

@@ -44,6 +44,7 @@ import com.azure.resourcemanager.machinelearning.fluent.OperationsClient;
 import com.azure.resourcemanager.machinelearning.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.machinelearning.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.machinelearning.fluent.QuotasClient;
+import com.azure.resourcemanager.machinelearning.fluent.SchedulesClient;
 import com.azure.resourcemanager.machinelearning.fluent.UsagesClient;
 import com.azure.resourcemanager.machinelearning.fluent.VirtualMachineSizesClient;
 import com.azure.resourcemanager.machinelearning.fluent.WorkspaceConnectionsClient;
@@ -433,6 +434,18 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         return this.onlineDeployments;
     }
 
+    /** The SchedulesClient object to access its operations. */
+    private final SchedulesClient schedules;
+
+    /**
+     * Gets the SchedulesClient object to access its operations.
+     *
+     * @return the SchedulesClient object.
+     */
+    public SchedulesClient getSchedules() {
+        return this.schedules;
+    }
+
     /** The WorkspaceFeaturesClient object to access its operations. */
     private final WorkspaceFeaturesClient workspaceFeatures;
 
@@ -467,7 +480,7 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-02-01-preview";
+        this.apiVersion = "2022-10-01";
         this.operations = new OperationsClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
         this.usages = new UsagesClientImpl(this);
@@ -493,6 +506,7 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         this.modelVersions = new ModelVersionsClientImpl(this);
         this.onlineEndpoints = new OnlineEndpointsClientImpl(this);
         this.onlineDeployments = new OnlineDeploymentsClientImpl(this);
+        this.schedules = new SchedulesClientImpl(this);
         this.workspaceFeatures = new WorkspaceFeaturesClientImpl(this);
     }
 

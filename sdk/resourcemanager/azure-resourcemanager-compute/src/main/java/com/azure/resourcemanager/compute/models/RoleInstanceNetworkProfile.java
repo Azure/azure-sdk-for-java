@@ -13,11 +13,14 @@ import java.util.List;
 @Immutable
 public final class RoleInstanceNetworkProfile {
     /*
-     * Specifies the list of resource Ids for the network interfaces associated
-     * with the role instance.
+     * Specifies the list of resource Ids for the network interfaces associated with the role instance.
      */
     @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> networkInterfaces;
+
+    /** Creates an instance of RoleInstanceNetworkProfile class. */
+    public RoleInstanceNetworkProfile() {
+    }
 
     /**
      * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with

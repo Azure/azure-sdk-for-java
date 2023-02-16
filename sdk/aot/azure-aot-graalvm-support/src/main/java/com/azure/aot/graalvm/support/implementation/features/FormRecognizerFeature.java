@@ -21,7 +21,7 @@ public class FormRecognizerFeature implements GraalVMFeature {
     @Override
     public Set<String[]> getDynamicProxies() {
         return setsOf(
-            interfaces("com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl$FormRecognizerClientService")
+            interfaces("com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl$FormRecognizerClientService")
         );
     }
 }

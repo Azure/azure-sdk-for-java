@@ -12,11 +12,14 @@ import java.util.List;
 @Fluent
 public final class SignaturesOverridesListInner {
     /*
-     * Describes a list consisting exactly one item describing the policy's
-     * signature override status
+     * Describes a list consisting exactly one item describing the policy's signature override status
      */
     @JsonProperty(value = "value")
     private List<SignaturesOverridesInner> value;
+
+    /** Creates an instance of SignaturesOverridesListInner class. */
+    public SignaturesOverridesListInner() {
+    }
 
     /**
      * Get the value property: Describes a list consisting exactly one item describing the policy's signature override

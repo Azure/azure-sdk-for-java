@@ -13,6 +13,18 @@ public interface Locations {
      * Gets the capabilities for the specified location.
      *
      * @param location The Azure location (region) for which to make the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the capabilities for the specified location along with {@link Response}.
+     */
+    Response<CapabilitiesResult> getCapabilitiesWithResponse(String location, Context context);
+
+    /**
+     * Gets the capabilities for the specified location.
+     *
+     * @param location The Azure location (region) for which to make the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -21,16 +33,16 @@ public interface Locations {
     CapabilitiesResult getCapabilities(String location);
 
     /**
-     * Gets the capabilities for the specified location.
+     * Lists the usages for the specified location.
      *
      * @param location The Azure location (region) for which to make the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the capabilities for the specified location.
+     * @return the response for the operation to get regional usages for a subscription along with {@link Response}.
      */
-    Response<CapabilitiesResult> getCapabilitiesWithResponse(String location, Context context);
+    Response<UsagesListResult> listUsagesWithResponse(String location, Context context);
 
     /**
      * Lists the usages for the specified location.
@@ -44,16 +56,17 @@ public interface Locations {
     UsagesListResult listUsages(String location);
 
     /**
-     * Lists the usages for the specified location.
+     * Lists the billingSpecs for the specified subscription and location.
      *
      * @param location The Azure location (region) for which to make the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for the operation to get regional usages for a subscription.
+     * @return the response for the operation to get regional billingSpecs for a subscription along with {@link
+     *     Response}.
      */
-    Response<UsagesListResult> listUsagesWithResponse(String location, Context context);
+    Response<BillingResponseListResult> listBillingSpecsWithResponse(String location, Context context);
 
     /**
      * Lists the billingSpecs for the specified subscription and location.
@@ -67,16 +80,18 @@ public interface Locations {
     BillingResponseListResult listBillingSpecs(String location);
 
     /**
-     * Lists the billingSpecs for the specified subscription and location.
+     * Get the async operation status.
      *
      * @param location The Azure location (region) for which to make the request.
+     * @param operationId The long running operation id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for the operation to get regional billingSpecs for a subscription.
+     * @return the async operation status along with {@link Response}.
      */
-    Response<BillingResponseListResult> listBillingSpecsWithResponse(String location, Context context);
+    Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(
+        String location, String operationId, Context context);
 
     /**
      * Get the async operation status.
@@ -91,18 +106,18 @@ public interface Locations {
     AsyncOperationResult getAzureAsyncOperationStatus(String location, String operationId);
 
     /**
-     * Get the async operation status.
+     * Check the cluster name is available or not.
      *
      * @param location The Azure location (region) for which to make the request.
-     * @param operationId The long running operation id.
+     * @param parameters The request spec of checking name availability.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the async operation status.
+     * @return the response spec of checking name availability along with {@link Response}.
      */
-    Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(
-        String location, String operationId, Context context);
+    Response<NameAvailabilityCheckResult> checkNameAvailabilityWithResponse(
+        String location, NameAvailabilityCheckRequestParameters parameters, Context context);
 
     /**
      * Check the cluster name is available or not.
@@ -118,18 +133,18 @@ public interface Locations {
         String location, NameAvailabilityCheckRequestParameters parameters);
 
     /**
-     * Check the cluster name is available or not.
+     * Validate the cluster create request spec is valid or not.
      *
      * @param location The Azure location (region) for which to make the request.
-     * @param parameters The request spec of checking name availability.
+     * @param parameters The cluster create request specification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response spec of checking name availability.
+     * @return the response of cluster create request validation along with {@link Response}.
      */
-    Response<NameAvailabilityCheckResult> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityCheckRequestParameters parameters, Context context);
+    Response<ClusterCreateValidationResult> validateClusterCreateRequestWithResponse(
+        String location, ClusterCreateRequestValidationParameters parameters, Context context);
 
     /**
      * Validate the cluster create request spec is valid or not.
@@ -143,18 +158,4 @@ public interface Locations {
      */
     ClusterCreateValidationResult validateClusterCreateRequest(
         String location, ClusterCreateRequestValidationParameters parameters);
-
-    /**
-     * Validate the cluster create request spec is valid or not.
-     *
-     * @param location The Azure location (region) for which to make the request.
-     * @param parameters The cluster create request specification.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of cluster create request validation.
-     */
-    Response<ClusterCreateValidationResult> validateClusterCreateRequestWithResponse(
-        String location, ClusterCreateRequestValidationParameters parameters, Context context);
 }

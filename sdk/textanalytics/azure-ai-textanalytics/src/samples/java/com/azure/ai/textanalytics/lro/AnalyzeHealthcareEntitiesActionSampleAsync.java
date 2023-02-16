@@ -114,15 +114,16 @@ public class AnalyzeHealthcareEntitiesActionSampleAsync {
                             System.out.printf("\tEntity text: %s, category: %s, role: %s.%n",
                                 entity.getText(), entity.getCategory(), role.getName());
                         }
-                    }
-                    // FHIR bundle in JSON format
-                    final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
-                    if (fhirBundle != null) {
-                        System.out.printf("FHIR bundle: %s%n", fhirBundle);
+                        System.out.printf("Relation confidence score: %f.%n", entityRelation.getConfidenceScore());
+                        // FHIR bundle in JSON format
+                        final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
+                        if (fhirBundle != null) {
+                            System.out.printf("FHIR bundle: %s%n", fhirBundle);
+                        }
                     }
                 }
             } else {
-                System.out.printf("\tCannot execute Extractive Summarization action. Error: %s%n",
+                System.out.printf("\tCannot execute Healthcare Entities Analysis action. Error: %s%n",
                     actionResult.getError().getMessage());
             }
         }

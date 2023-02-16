@@ -61,6 +61,10 @@ public final class ApplicationGatewayPathRulePropertiesFormat {
     @JsonProperty(value = "firewallPolicy")
     private SubResource firewallPolicy;
 
+    /** Creates an instance of ApplicationGatewayPathRulePropertiesFormat class. */
+    public ApplicationGatewayPathRulePropertiesFormat() {
+    }
+
     /**
      * Get the paths property: Path rules of URL path map.
      *

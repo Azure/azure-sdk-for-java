@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResourceType;
 import java.time.OffsetDateTime;
 
 /** Samples for PolicyStates SummarizeForPolicySetDefinition. */
@@ -22,6 +23,7 @@ public final class PolicyStatesSummarizeForPolicySetDefinitionSamples {
         manager
             .policyStates()
             .summarizeForPolicySetDefinitionWithResponse(
+                PolicyStatesSummaryResourceType.LATEST,
                 "fffedd8f-ffff-fffd-fffd-fffed2f84852",
                 "3e3807c1-65c9-49e0-a406-82d8ae3e338c",
                 1,

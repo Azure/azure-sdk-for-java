@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Big Data pools Collection of Big Data pool information. */
+/**
+ * Collection of Big Data pools
+ *
+ * <p>Collection of Big Data pool information.
+ */
 @Fluent
 public final class BigDataPoolResourceInfoListResult {
     /*
@@ -22,6 +26,9 @@ public final class BigDataPoolResourceInfoListResult {
      */
     @JsonProperty(value = "value")
     private List<BigDataPoolResourceInfo> value;
+
+    /** Creates an instance of BigDataPoolResourceInfoListResult class. */
+    public BigDataPoolResourceInfoListResult() {}
 
     /**
      * Get the nextLink property: Link to the next page of results.

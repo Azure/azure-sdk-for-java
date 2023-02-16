@@ -8,14 +8,14 @@ import com.azure.messaging.eventhubs.Messages;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
+import reactor.util.context.Context;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.WORK_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SUBSCRIBER_ID_KEY;
 
 /**
  * Subscriber that takes {@link SynchronousReceiveWork} and publishes events to them in the order received.
@@ -25,13 +25,19 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     private final ClientLogger logger;
     private final SynchronousReceiveWork work;
     private volatile Subscription subscription;
+    private final Context context;
+    private final String subscriberId;
 
     public SynchronousEventSubscriber(SynchronousReceiveWork work) {
         this.work = Objects.requireNonNull(work, "'work' cannot be null.");
-        Map<String, Object> loggingContext = new HashMap<>();
-        loggingContext.put(WORK_ID_KEY, this.work.getId());
+        this.subscriberId = String.valueOf(work.getId());
+        this.context = super.currentContext().put(SUBSCRIBER_ID_KEY, subscriberId);
+        this.logger = new ClientLogger(SynchronousEventSubscriber.class, Collections.singletonMap(SUBSCRIBER_ID_KEY, subscriberId));
+    }
 
-        this.logger = new ClientLogger(SynchronousEventSubscriber.class, loggingContext);
+    @Override
+    public Context currentContext() {
+        return context;
     }
 
     /**

@@ -24,6 +24,10 @@ public final class PrivateEndpointConnectionForPrivateLinkHubInner
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of PrivateEndpointConnectionForPrivateLinkHubInner class. */
+    public PrivateEndpointConnectionForPrivateLinkHubInner() {
+    }
+
     /**
      * Get the name property: The name property.
      *

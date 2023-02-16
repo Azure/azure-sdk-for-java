@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for H264Complexity. */
+/** Tells the encoder how to choose its encoding settings. The default value is Balanced. */
 public final class H264Complexity extends ExpandableStringEnum<H264Complexity> {
     /** Static value Speed for H264Complexity. */
     public static final H264Complexity SPEED = fromString("Speed");
@@ -18,6 +18,15 @@ public final class H264Complexity extends ExpandableStringEnum<H264Complexity> {
 
     /** Static value Quality for H264Complexity. */
     public static final H264Complexity QUALITY = fromString("Quality");
+
+    /**
+     * Creates a new instance of H264Complexity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public H264Complexity() {
+    }
 
     /**
      * Creates or finds a H264Complexity from its string representation.

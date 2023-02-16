@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.OptimizationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of the GetSupportedOptimizationTypes API. */
 @Immutable
 public final class SupportedOptimizationTypesListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportedOptimizationTypesListResultInner.class);
-
     /*
      * Supported optimization types for a profile.
      */

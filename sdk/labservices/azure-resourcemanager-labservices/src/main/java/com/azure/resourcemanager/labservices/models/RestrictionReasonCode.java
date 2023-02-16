@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RestrictionReasonCode. */
+/** The reason for the restriction. */
 public final class RestrictionReasonCode extends ExpandableStringEnum<RestrictionReasonCode> {
     /** Static value QuotaId for RestrictionReasonCode. */
     public static final RestrictionReasonCode QUOTA_ID = fromString("QuotaId");
@@ -28,7 +28,11 @@ public final class RestrictionReasonCode extends ExpandableStringEnum<Restrictio
         return fromString(name, RestrictionReasonCode.class);
     }
 
-    /** @return known RestrictionReasonCode values. */
+    /**
+     * Gets known RestrictionReasonCode values.
+     *
+     * @return known RestrictionReasonCode values.
+     */
     public static Collection<RestrictionReasonCode> values() {
         return values(RestrictionReasonCode.class);
     }

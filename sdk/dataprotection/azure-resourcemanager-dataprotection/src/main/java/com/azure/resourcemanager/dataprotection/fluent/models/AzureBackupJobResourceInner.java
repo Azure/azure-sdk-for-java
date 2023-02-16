@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupJob;
 import com.azure.resourcemanager.dataprotection.models.DppResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** AzureBackup Job Resource Class. */
 @Fluent
 public final class AzureBackupJobResourceInner extends DppResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupJobResourceInner.class);
-
     /*
      * AzureBackupJobResource properties
      */
     @JsonProperty(value = "properties")
     private AzureBackupJob properties;
+
+    /** Creates an instance of AzureBackupJobResourceInner class. */
+    public AzureBackupJobResourceInner() {
+    }
 
     /**
      * Get the properties property: AzureBackupJobResource properties.

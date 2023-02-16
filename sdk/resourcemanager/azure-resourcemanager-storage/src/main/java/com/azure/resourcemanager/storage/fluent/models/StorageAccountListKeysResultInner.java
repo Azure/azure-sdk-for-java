@@ -13,8 +13,7 @@ import java.util.List;
 @Immutable
 public final class StorageAccountListKeysResultInner {
     /*
-     * Gets the list of storage account keys and their properties for the
-     * specified storage account.
+     * Gets the list of storage account keys and their properties for the specified storage account.
      */
     @JsonProperty(value = "keys", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageAccountKey> keys;

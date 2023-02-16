@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class OptionsResource {
     /*
-     * Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-     * ThroughputSetting resource when retrieving offer details.
+     * Value of the Cosmos DB resource throughput or autoscaleSettings. Use the ThroughputSetting resource when
+     * retrieving offer details.
      */
     @JsonProperty(value = "throughput")
     private Integer throughput;
@@ -22,6 +22,10 @@ public class OptionsResource {
      */
     @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettings autoscaleSettings;
+
+    /** Creates an instance of OptionsResource class. */
+    public OptionsResource() {
+    }
 
     /**
      * Get the throughput property: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the

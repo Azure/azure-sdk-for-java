@@ -49,6 +49,10 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayRoutingRulePropertiesFormat class. */
+    public ApplicationGatewayRoutingRulePropertiesFormat() {
+    }
+
     /**
      * Get the ruleType property: Rule type.
      *

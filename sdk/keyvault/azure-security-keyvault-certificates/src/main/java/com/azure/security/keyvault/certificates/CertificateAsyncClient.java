@@ -11,34 +11,13 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.PollingContext;
-import com.azure.security.keyvault.certificates.implementation.CertificateImportParameters;
-import com.azure.security.keyvault.certificates.implementation.CertificateIssuerSetParameters;
-import com.azure.security.keyvault.certificates.implementation.CertificateIssuerUpdateParameters;
-import com.azure.security.keyvault.certificates.implementation.CertificateMergeParameters;
-import com.azure.security.keyvault.certificates.implementation.CertificateOperationUpdateParameter;
-import com.azure.security.keyvault.certificates.implementation.CertificatePolicyRequest;
-import com.azure.security.keyvault.certificates.implementation.CertificateRequestAttributes;
-import com.azure.security.keyvault.certificates.implementation.CertificateRequestParameters;
-import com.azure.security.keyvault.certificates.implementation.CertificateRestoreParameters;
-import com.azure.security.keyvault.certificates.implementation.CertificateService;
-import com.azure.security.keyvault.certificates.implementation.CertificateUpdateParameters;
-import com.azure.security.keyvault.certificates.implementation.Contacts;
-import com.azure.security.keyvault.certificates.implementation.IssuerAttributes;
-import com.azure.security.keyvault.certificates.implementation.IssuerCredentials;
-import com.azure.security.keyvault.certificates.implementation.OrganizationDetails;
+import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
-import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -54,20 +33,12 @@ import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * The CertificateAsyncClient provides asynchronous methods to manage {@link KeyVaultCertificate certifcates} in the Azure Key Vault. The client
@@ -84,7 +55,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * <pre>
  * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -93,37 +64,18 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * @see CertificateClientBuilder
  * @see PagedFlux
  */
-@ServiceClient(builder = CertificateClientBuilder.class, isAsync = true, serviceInterfaces = CertificateService.class)
+@ServiceClient(builder = CertificateClientBuilder.class, isAsync = true, serviceInterfaces = CertificateClientImpl.CertificateService.class)
 public final class CertificateAsyncClient {
-    private final String apiVersion;
-    static final String ACCEPT_LANGUAGE = "en-US";
-    static final int DEFAULT_MAX_PAGE_RESULTS = 25;
-    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-
-    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
-
-    private final String vaultUrl;
-    private final CertificateService service;
     private final ClientLogger logger = new ClientLogger(CertificateAsyncClient.class);
-
-    private final HttpPipeline pipeline;
+    private final CertificateClientImpl implClient;
 
     /**
-     * Creates a CertificateAsyncClient that uses {@code pipeline} to service requests
+     * Creates a CertificateAsyncClient to service requests
      *
-     * @param vaultUrl URL for the Azure KeyVault service.
-     * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
-     * @param version {@link CertificateServiceVersion} of the service to be used when making requests.
+     * @param implClient The implementation client to route requests through.
      */
-    CertificateAsyncClient(URL vaultUrl, HttpPipeline pipeline, CertificateServiceVersion version) {
-        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
-        this.vaultUrl = vaultUrl.toString();
-        this.service = RestProxy.create(CertificateService.class, pipeline);
-        this.pipeline = pipeline;
-        apiVersion = version.getVersion();
+    CertificateAsyncClient(CertificateClientImpl implClient) {
+        this.implClient = implClient;
     }
 
     /**
@@ -131,7 +83,7 @@ public final class CertificateAsyncClient {
      * @return the vault endpoint url
      */
     public String getVaultUrl() {
-        return vaultUrl;
+        return implClient.getVaultUrl();
     }
 
     /**
@@ -140,11 +92,7 @@ public final class CertificateAsyncClient {
      * @return The pipeline.
      */
     HttpPipeline getHttpPipeline() {
-        return this.pipeline;
-    }
-
-    Duration getDefaultPollingInterval() {
-        return DEFAULT_POLLING_INTERVAL;
+        return implClient.getHttpPipeline();
     }
 
     /**
@@ -179,38 +127,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return new PollerFlux<>(getDefaultPollingInterval(),
-            activationOperation(certificateName, policy, isEnabled, tags),
-            createPollOperation(certificateName),
-            cancelOperation(certificateName),
-            fetchResultOperation(certificateName));
-    }
-
-    private BiFunction<PollingContext<CertificateOperation>,
-            PollResponse<CertificateOperation>,
-            Mono<CertificateOperation>> cancelOperation(String certificateName) {
-        return (pollingContext, firstResponse) -> withContext(context
-            -> cancelCertificateOperationWithResponse(certificateName, context))
-            .flatMap(FluxUtil::toMono);
-    }
-
-    private Function<PollingContext<CertificateOperation>, Mono<CertificateOperation>> activationOperation(String certificateName,
-                                                                                      CertificatePolicy policy,
-                                                                                      boolean enabled,
-                                                                                      Map<String, String> tags) {
-        return (pollingContext) -> withContext(context -> createCertificateWithResponse(certificateName,
-                policy,
-                enabled,
-                tags,
-                context))
-            .flatMap(certificateOperationResponse -> Mono.just(certificateOperationResponse.getValue()));
-    }
-
-    private Function<PollingContext<CertificateOperation>,
-            Mono<KeyVaultCertificateWithPolicy>> fetchResultOperation(String certificateName) {
-        return (pollingContext) -> withContext(context
-            -> getCertificateWithResponse(certificateName, "", context))
-                        .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue()));
+        return implClient.beginCreateCertificate(certificateName, policy, isEnabled, tags);
     }
 
     /**
@@ -244,53 +161,6 @@ public final class CertificateAsyncClient {
         return beginCreateCertificate(certificateName, policy, true, null);
     }
 
-    /*
-       Polling operation to poll on create certificate operation status.
-     */
-    private Function<PollingContext<CertificateOperation>, Mono<PollResponse<CertificateOperation>>> createPollOperation(String certificateName) {
-        return (pollingContext) -> {
-
-            try {
-                return withContext(context -> service.getCertificateOperation(vaultUrl, certificateName, apiVersion,
-                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
-                    .flatMap(this::processCertificateOperationResponse);
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
-            }
-        };
-    }
-
-    private Mono<PollResponse<CertificateOperation>> processCertificateOperationResponse(Response<CertificateOperation> certificateOperationResponse) {
-        LongRunningOperationStatus status = null;
-        switch (certificateOperationResponse.getValue().getStatus()) {
-            case "inProgress":
-                status = LongRunningOperationStatus.IN_PROGRESS;
-                break;
-            case "completed":
-                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                break;
-            case "failed":
-                status = LongRunningOperationStatus.FAILED;
-                break;
-            default:
-                //should not reach here
-                status = LongRunningOperationStatus.fromString(certificateOperationResponse.getValue().getStatus(), true);
-                break;
-        }
-        return Mono.just(new PollResponse<>(status, certificateOperationResponse.getValue()));
-    }
-
-    Mono<Response<CertificateOperation>> createCertificateWithResponse(String certificateName, CertificatePolicy certificatePolicy, boolean enabled, Map<String, String> tags, Context context) {
-        CertificateRequestParameters certificateRequestParameters = new CertificateRequestParameters()
-            .certificatePolicy(new CertificatePolicyRequest(certificatePolicy))
-            .certificateAttributes(new CertificateRequestAttributes().enabled(enabled))
-            .tags(tags);
-        return service.createCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, certificateRequestParameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
-    }
-
 
     /**
      * Gets a pending {@link CertificateOperation} from the key vault. This operation requires the certificates/get permission.
@@ -317,11 +187,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return new PollerFlux<>(getDefaultPollingInterval(),
-            (pollingContext) -> Mono.empty(),
-            createPollOperation(certificateName),
-            cancelOperation(certificateName),
-            fetchResultOperation(certificateName));
+        return implClient.getCertificateOperation(certificateName);
     }
 
     /**
@@ -349,7 +215,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificateWithPolicy> getCertificate(String certificateName) {
         try {
-            return withContext(context -> getCertificateWithResponse(certificateName, "",
+            return withContext(context -> implClient.getCertificateWithResponseAsync(certificateName, "",
                 context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -382,29 +248,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificateWithPolicy>> getCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> getCertificateWithResponse(certificateName, "", context));
+            return withContext(context -> implClient.getCertificateWithResponseAsync(certificateName, "", context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultCertificateWithPolicy>> getCertificateWithResponse(String certificateName, String version, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return service.getCertificateWithPolicy(vaultUrl, certificateName, version, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Retrieving certificate - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Retrieved the certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to Retrieve the certificate - {}", certificateName, error));
-    }
-
-    Mono<Response<KeyVaultCertificate>> getCertificateVersionWithResponse(String certificateName, String version, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return service.getCertificate(vaultUrl, certificateName, version, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.verbose("Retrieving certificate - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Retrieved the certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to Retrieve the certificate - {}", certificateName, error));
     }
 
     /**
@@ -435,7 +282,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificate>> getCertificateVersionWithResponse(String certificateName, String version) {
         try {
-            return withContext(context -> getCertificateVersionWithResponse(certificateName, version == null ? "" : version,
+            return withContext(context -> implClient.getCertificateVersionWithResponseAsync(certificateName, version == null ? "" : version,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -468,7 +315,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificate> getCertificateVersion(String certificateName, String version) {
         try {
-            return withContext(context -> getCertificateVersionWithResponse(certificateName, version == null ? "" : version,
+            return withContext(context -> implClient.getCertificateVersionWithResponseAsync(certificateName, version == null ? "" : version,
                 context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -508,7 +355,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificate> updateCertificateProperties(CertificateProperties properties) {
         try {
-            return withContext(context -> updateCertificatePropertiesWithResponse(properties, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> implClient.updateCertificatePropertiesWithResponseAsync(properties, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -547,25 +394,11 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificate>> updateCertificatePropertiesWithResponse(CertificateProperties properties) {
         try {
-            return withContext(context -> updateCertificatePropertiesWithResponse(properties,
+            return withContext(context -> implClient.updateCertificatePropertiesWithResponseAsync(properties,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultCertificate>> updateCertificatePropertiesWithResponse(CertificateProperties properties, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        Objects.requireNonNull(properties, "properties' cannot be null.");
-        CertificateUpdateParameters parameters = new CertificateUpdateParameters()
-            .tags(properties.getTags())
-            .certificateAttributes(new CertificateRequestAttributes(properties));
-        return service.updateCertificate(vaultUrl, properties.getName(), properties.getVersion(), apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Updating certificate - {}",  properties.getName()))
-            .doOnSuccess(response -> logger.verbose("Updated the certificate - {}", properties.getName()))
-            .doOnError(error -> logger.warning("Failed to update the certificate - {}", properties.getName(), error));
     }
 
     /**
@@ -595,48 +428,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
-        return new PollerFlux<>(getDefaultPollingInterval(),
-            activationOperation(certificateName),
-            createDeletePollOperation(certificateName),
-            (context, firstResponse) -> Mono.empty(),
-            (context) -> Mono.empty());
-    }
-
-    private Function<PollingContext<DeletedCertificate>, Mono<DeletedCertificate>> activationOperation(String certificateName) {
-        return (pollingContext) -> withContext(context -> deleteCertificateWithResponse(certificateName,
-            context))
-            .flatMap(deletedCertificateResponse -> Mono.just(deletedCertificateResponse.getValue()));
-    }
-
-    /*
-    Polling operation to poll on create delete certificate operation status.
-    */
-    private Function<PollingContext<DeletedCertificate>, Mono<PollResponse<DeletedCertificate>>> createDeletePollOperation(String keyName) {
-        return pollingContext ->
-            withContext(context -> service.getDeletedCertificatePoller(vaultUrl, keyName, apiVersion,
-                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
-                .flatMap(deletedCertificateResponse -> {
-                    if (deletedCertificateResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                            pollingContext.getLatestResponse().getValue())));
-                    }
-                    if (deletedCertificateResponse.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                            pollingContext.getLatestResponse().getValue())));
-                    }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deletedCertificateResponse.getValue())));
-                })
-                // This means either vault has soft-delete disabled or permission is not granted for the get deleted certificate operation.
-                // In both cases deletion operation was successful when activation operation succeeded before reaching here.
-                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollingContext.getLatestResponse().getValue()));
-    }
-
-    Mono<Response<DeletedCertificate>> deleteCertificateWithResponse(String certificateName, Context context) {
-        return service.deleteCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Deleting certificate - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Deleted the certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to delete the certificate - {}", certificateName, error));
+        return implClient.beginDeleteCertificate(certificateName);
     }
 
     /**
@@ -665,7 +457,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedCertificate> getDeletedCertificate(String certificateName) {
         try {
-            return withContext(context -> getDeletedCertificateWithResponse(certificateName, context))
+            return withContext(context -> implClient.getDeletedCertificateWithResponseAsync(certificateName, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -699,20 +491,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> getDeletedCertificateWithResponse(certificateName, context));
+            return withContext(context -> implClient.getDeletedCertificateWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponse(String certificateName, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return service.getDeletedCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Retrieving deleted certificate - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Retrieved the deleted certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to Retrieve the deleted certificate - {}", certificateName, error));
     }
 
     /**
@@ -771,20 +553,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> purgeDeletedCertificateWithResponse(certificateName, context));
+            return withContext(context -> implClient.purgeDeletedCertificateWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Void>> purgeDeletedCertificateWithResponse(String certificateName, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return service.purgeDeletedcertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Purging certificate - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Purged the certificate - {}", response.getStatusCode()))
-            .doOnError(error -> logger.warning("Failed to purge the certificate - {}", certificateName, error));
     }
 
     /**
@@ -814,50 +586,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return new PollerFlux<>(getDefaultPollingInterval(),
-            recoverActivationOperation(certificateName),
-            createRecoverPollOperation(certificateName),
-            (context, firstResponse) -> Mono.empty(),
-            context -> Mono.empty());
-    }
-
-    private Function<PollingContext<KeyVaultCertificateWithPolicy>, Mono<KeyVaultCertificateWithPolicy>> recoverActivationOperation(String certificateName) {
-        return (pollingContext) -> withContext(context -> recoverDeletedCertificateWithResponse(certificateName,
-            context))
-            .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue()));
-    }
-
-    /*
-    Polling operation to poll on create recover certificate operation status.
-    */
-    private Function<PollingContext<KeyVaultCertificateWithPolicy>, Mono<PollResponse<KeyVaultCertificateWithPolicy>>> createRecoverPollOperation(String keyName) {
-        return pollingContext ->
-            withContext(context -> service.getCertificatePoller(vaultUrl, keyName, "", apiVersion,
-                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
-                .flatMap(certificateResponse -> {
-                    if (certificateResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                            pollingContext.getLatestResponse().getValue())));
-                    }
-                    if (certificateResponse.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                            pollingContext.getLatestResponse().getValue())));
-                    }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                        certificateResponse.getValue())));
-                })
-                // This means permission is not granted for the get deleted key operation.
-                // In both cases deletion operation was successful when activation operation succeeded before reaching here.
-                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    pollingContext.getLatestResponse().getValue()));
-    }
-
-    Mono<Response<KeyVaultCertificateWithPolicy>> recoverDeletedCertificateWithResponse(String certificateName, Context context) {
-        return service.recoverDeletedCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Recovering deleted certificate - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Recovered the deleted certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to recover the deleted certificate - {}", certificateName, error));
+        return implClient.beginRecoverDeletedCertificate(certificateName);
     }
 
     /**
@@ -885,7 +614,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupCertificate(String certificateName) {
         try {
-            return withContext(context -> backupCertificateWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> implClient.backupCertificateWithResponseAsync(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -917,22 +646,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> backupCertificateWithResponse(certificateName, context));
+            return withContext(context -> implClient.backupCertificateWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<byte[]>> backupCertificateWithResponse(String certificateName, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return service.backupCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Backing up certificate - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Backed up the certificate - {}", response.getStatusCode()))
-            .doOnError(error -> logger.warning("Failed to back up the certificate - {}", certificateName, error))
-            .flatMap(certificateBackupResponse -> Mono.just(new SimpleResponse<>(certificateBackupResponse.getRequest(),
-                certificateBackupResponse.getStatusCode(), certificateBackupResponse.getHeaders(), certificateBackupResponse.getValue().getValue())));
     }
 
     /**
@@ -960,7 +677,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificateWithPolicy> restoreCertificateBackup(byte[] backup) {
         try {
-            return withContext(context -> restoreCertificateBackupWithResponse(backup, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> implClient.restoreCertificateBackupWithResponseAsync(backup, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -991,21 +708,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificateWithPolicy>> restoreCertificateBackupWithResponse(byte[] backup) {
         try {
-            return withContext(context -> restoreCertificateBackupWithResponse(backup, context));
+            return withContext(context -> implClient.restoreCertificateBackupWithResponseAsync(backup, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultCertificateWithPolicy>> restoreCertificateBackupWithResponse(byte[] backup, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        CertificateRestoreParameters parameters = new CertificateRestoreParameters().certificateBundleBackup(backup);
-        return service.restoreCertificate(vaultUrl, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Restoring the certificate"))
-            .doOnSuccess(response -> logger.verbose("Restored the certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to restore the certificate - {}", error));
     }
 
     /**
@@ -1033,14 +739,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending) {
-        try {
-            return new PagedFlux<>(() -> withContext(context -> listCertificatesFirstPage(includePending,
-                context)),
-                continuationToken -> withContext(context -> listCertificatesNextPage(continuationToken,
-                    context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return implClient.listPropertiesOfCertificates(includePending);
     }
 
     /**
@@ -1067,55 +766,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates() {
-        try {
-            return new PagedFlux<>(() -> withContext(context -> listCertificatesFirstPage(false,
-                context)),
-                continuationToken -> withContext(context -> listCertificatesNextPage(continuationToken,
-                    context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return implClient.listPropertiesOfCertificates();
     }
 
     PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
-        return new PagedFlux<>(
-            () -> listCertificatesFirstPage(includePending, context),
-            continuationToken -> listCertificatesNextPage(continuationToken, context));
-    }
-
-    /*
-     * Gets attributes of all the certificates given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link CertificateAsyncClient#listCertificates()}.
-     *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the listCertificates operations.
-     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
-     */
-    private Mono<PagedResponse<CertificateProperties>> listCertificatesNextPage(String continuationToken, Context context) {
-        try {
-            return service.getCertificates(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing next certificates page - Page {} ", continuationToken))
-                .doOnSuccess(response -> logger.verbose("Listed next certificates page - Page {} ", continuationToken))
-                .doOnError(error -> logger.warning("Failed to list next certificates page - Page {} ", continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /*
-     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
-     */
-    private Mono<PagedResponse<CertificateProperties>> listCertificatesFirstPage(boolean includePending, Context context) {
-        try {
-            return service
-                .getCertificates(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, includePending, apiVersion, ACCEPT_LANGUAGE,
-                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing certificates"))
-                .doOnSuccess(response -> logger.verbose("Listed certificates"))
-                .doOnError(error -> logger.warning("Failed to list certificates", error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return implClient.listPropertiesOfCertificates(includePending, context);
     }
 
 
@@ -1141,16 +796,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates() {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listDeletedCertificatesFirstPage(false,
-                    context)),
-                continuationToken -> withContext(
-                    context -> listDeletedCertificatesNextPage(continuationToken,
-                        context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return implClient.listDeletedCertificates();
     }
 
     /**
@@ -1176,57 +822,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates(boolean includePending) {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listDeletedCertificatesFirstPage(includePending, context)),
-                continuationToken -> withContext(
-                    context -> listDeletedCertificatesNextPage(continuationToken, context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return implClient.listDeletedCertificates(includePending);
     }
 
     PagedFlux<DeletedCertificate> listDeletedCertificates(Boolean includePending, Context context) {
-        return new PagedFlux<>(
-            () -> listDeletedCertificatesFirstPage(includePending, context),
-            continuationToken -> listDeletedCertificatesNextPage(continuationToken, context));
-    }
-
-    /*
-     * Gets attributes of all the certificates given by the {@code nextPageLink}
-     *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A {@link Mono} of {@link PagedResponse<DeletedCertificate>} from the next page of results.
-     */
-    private Mono<PagedResponse<DeletedCertificate>> listDeletedCertificatesNextPage(String continuationToken, Context context) {
-        try {
-            return service
-                .getDeletedCertificates(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(
-                    ignored -> logger.verbose("Listing next deleted certificates page - Page {} ", continuationToken))
-                .doOnSuccess(
-                    response -> logger.verbose("Listed next deleted certificates page - Page {} ", continuationToken))
-                .doOnError(error -> logger
-                    .warning("Failed to list next deleted certificates page - Page {} ", continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /*
-     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
-     */
-    private Mono<PagedResponse<DeletedCertificate>> listDeletedCertificatesFirstPage(boolean includePending, Context context) {
-        try {
-            return service.getDeletedCertificates(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, includePending, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing deleted certificates"))
-                .doOnSuccess(response -> logger.verbose("Listed deleted certificates"))
-                .doOnError(error -> logger.warning("Failed to list deleted certificates", error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return implClient.listDeletedCertificates(includePending, context);
     }
 
     /**
@@ -1256,47 +856,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName) {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listCertificateVersionsFirstPage(certificateName, context)),
-                continuationToken -> withContext(context -> listCertificateVersionsNextPage(continuationToken,
-                    context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return implClient.listPropertiesOfCertificateVersions(certificateName);
     }
 
     PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName, Context context) {
-        return new PagedFlux<>(
-            () -> listCertificateVersionsFirstPage(certificateName, context),
-            continuationToken -> listCertificateVersionsNextPage(continuationToken, context));
-    }
-
-    private Mono<PagedResponse<CertificateProperties>> listCertificateVersionsFirstPage(String certificateName, Context context) {
-        try {
-            return service.getCertificateVersions(vaultUrl, certificateName, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing certificate versions - {}", certificateName))
-                .doOnSuccess(response -> logger.verbose("Listed certificate versions - {}", certificateName))
-                .doOnError(error -> logger.warning("Failed to list certificate versions - {}", certificateName, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /*
-     * Gets attributes of all the certificates given by the {@code nextPageLink}
-     */
-    private Mono<PagedResponse<CertificateProperties>> listCertificateVersionsNextPage(String continuationToken, Context context) {
-        try {
-            return service.getCertificates(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing next certificate versions page - Page {} ", continuationToken))
-                .doOnSuccess(response -> logger.verbose("Listed next certificate versions page - Page {} ", continuationToken))
-                .doOnError(error -> logger.warning("Failed to list next certificate versions page - Page {} ", continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return implClient.listPropertiesOfCertificateVersions(certificateName, context);
     }
 
     /**
@@ -1326,7 +890,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificate> mergeCertificate(MergeCertificateOptions mergeCertificateOptions) {
         try {
-            return withContext(context -> mergeCertificateWithResponse(mergeCertificateOptions, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> implClient.mergeCertificateWithResponseAsync(mergeCertificateOptions, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1359,24 +923,12 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificateWithPolicy>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions) {
         try {
-            return withContext(context -> mergeCertificateWithResponse(mergeCertificateOptions, context));
+            return withContext(context -> implClient.mergeCertificateWithResponseAsync(mergeCertificateOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<KeyVaultCertificateWithPolicy>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, Context context) {
-        context = context == null ? Context.NONE : context;
-        Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
-        CertificateMergeParameters mergeParameters = new CertificateMergeParameters().x509Certificates(mergeCertificateOptions.getX509Certificates())
-            .tags(mergeCertificateOptions.getTags())
-            .certificateAttributes(new CertificateRequestAttributes().enabled(mergeCertificateOptions.isEnabled()));
-        return service.mergeCertificate(vaultUrl, mergeCertificateOptions.getName(), apiVersion, ACCEPT_LANGUAGE, mergeParameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Merging certificate - {}",  mergeCertificateOptions.getName()))
-            .doOnSuccess(response -> logger.verbose("Merged certificate  - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to merge certificate - {}", mergeCertificateOptions.getName(), error));
-    }
 
     /**
      * Retrieves the policy of the specified certificate in the key vault. This operation requires the {@code certificates/get} permission.
@@ -1403,7 +955,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificatePolicy> getCertificatePolicy(String certificateName) {
         try {
-            return withContext(context -> getCertificatePolicyWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> implClient.getCertificatePolicyWithResponseAsync(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1434,19 +986,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponse(String certificateName) {
         try {
-            return withContext(context -> getCertificatePolicyWithResponse(certificateName, context));
+            return withContext(context -> implClient.getCertificatePolicyWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponse(String certificateName, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getCertificatePolicy(vaultUrl, apiVersion, ACCEPT_LANGUAGE, certificateName, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Retrieving certificate policy - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Retrieved certificate policy - {}", certificateName))
-            .doOnError(error -> logger.warning("Failed to retrieve certificate policy - {}", certificateName, error));
     }
 
     /**
@@ -1483,7 +1026,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificatePolicy> updateCertificatePolicy(String certificateName, CertificatePolicy policy) {
         try {
-            return withContext(context -> updateCertificatePolicyWithResponse(certificateName, policy, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> implClient.updateCertificatePolicyWithResponseAsync(certificateName, policy, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1524,20 +1067,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponse(String certificateName, CertificatePolicy policy) {
         try {
-            return withContext(context -> updateCertificatePolicyWithResponse(certificateName, policy, context));
+            return withContext(context -> implClient.updateCertificatePolicyWithResponseAsync(certificateName, policy, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponse(String certificateName, CertificatePolicy policy, Context context) {
-        context = context == null ? Context.NONE : context;
-        CertificatePolicyRequest policyRequest = new CertificatePolicyRequest(policy);
-        return service.updateCertificatePolicy(vaultUrl, apiVersion, ACCEPT_LANGUAGE, certificateName, policyRequest, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Updating certificate policy - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Updated the certificate policy - {}", response.getValue().getUpdatedOn()))
-            .doOnError(error -> logger.warning("Failed to update the certificate policy - {}", certificateName, error));
     }
 
     /**
@@ -1552,7 +1085,7 @@ public final class CertificateAsyncClient {
      * <pre>
      * CertificateIssuer issuer = new CertificateIssuer&#40;&quot;issuerName&quot;, &quot;providerName&quot;&#41;
      *     .setAccountId&#40;&quot;keyvaultuser&quot;&#41;
-     *     .setPassword&#40;&quot;temp2&quot;&#41;;
+     *     .setPassword&#40;&quot;fakePasswordPlaceholder&quot;&#41;;
      * certificateAsyncClient.createIssuer&#40;issuer&#41;
      *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuerResponse -&gt; &#123;
@@ -1570,7 +1103,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateIssuer> createIssuer(CertificateIssuer issuer) {
         try {
-            return withContext(context -> createIssuerWithResponse(issuer, context))
+            return withContext(context -> implClient.createIssuerWithResponseAsync(issuer, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1589,7 +1122,7 @@ public final class CertificateAsyncClient {
      * <pre>
      * CertificateIssuer newIssuer = new CertificateIssuer&#40;&quot;issuerName&quot;, &quot;providerName&quot;&#41;
      *     .setAccountId&#40;&quot;keyvaultuser&quot;&#41;
-     *     .setPassword&#40;&quot;temp2&quot;&#41;;
+     *     .setPassword&#40;&quot;fakePasswordPlaceholder&quot;&#41;;
      * certificateAsyncClient.createIssuerWithResponse&#40;newIssuer&#41;
      *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuerResponse -&gt; &#123;
@@ -1608,33 +1141,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateIssuer>> createIssuerWithResponse(CertificateIssuer issuer) {
         try {
-            return withContext(context -> createIssuerWithResponse(issuer, context));
+            return withContext(context -> implClient.createIssuerWithResponseAsync(issuer, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<CertificateIssuer>> createIssuerWithResponse(CertificateIssuer issuer, Context context) {
-        context = context == null ? Context.NONE : context;
-        CertificateIssuerSetParameters parameters = new CertificateIssuerSetParameters()
-            .provider(issuer.getProvider())
-            .organizationDetails(new OrganizationDetails()
-                .id(issuer.getOrganizationId())
-                .adminDetails(issuer.getAdministratorContacts()))
-            .credentials(new IssuerCredentials()
-                .password(issuer.getPassword())
-                .accountId(issuer.getAccountId()))
-            .attributes(new IssuerAttributes()
-                .enabled(issuer.isEnabled()));
-
-        return service.setCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuer.getName(), parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored ->
-                logger.verbose("Creating certificate issuer - {}",  issuer.getName()))
-            .doOnSuccess(response ->
-                logger.verbose("Created the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error ->
-                logger.warning("Failed to create the certificate issuer - {}", issuer.getName(), error));
     }
 
     /**
@@ -1663,7 +1173,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateIssuer>> getIssuerWithResponse(String issuerName) {
         try {
-            return withContext(context -> getIssuerWithResponse(issuerName, context));
+            return withContext(context -> implClient.getIssuerWithResponseAsync(issuerName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1695,23 +1205,11 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateIssuer> getIssuer(String issuerName) {
         try {
-            return withContext(context -> getIssuerWithResponse(issuerName, context))
+            return withContext(context -> implClient.getIssuerWithResponseAsync(issuerName, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<CertificateIssuer>> getIssuerWithResponse(String issuerName, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored ->
-                logger.verbose("Retrieving certificate issuer - {}",  issuerName))
-            .doOnSuccess(response ->
-                logger.verbose("Retrieved the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error ->
-                logger.warning("Failed to retreive the certificate issuer - {}", issuerName, error));
     }
 
     /**
@@ -1739,7 +1237,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName) {
         try {
-            return withContext(context -> deleteIssuerWithResponse(issuerName, context));
+            return withContext(context -> implClient.deleteIssuerWithResponseAsync(issuerName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1770,24 +1268,11 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateIssuer> deleteIssuer(String issuerName) {
         try {
-            return withContext(context -> deleteIssuerWithResponse(issuerName, context))
+            return withContext(context -> implClient.deleteIssuerWithResponseAsync(issuerName, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return service.deleteCertificateIssuer(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored ->
-                logger.verbose("Deleting certificate issuer - {}",  issuerName))
-            .doOnSuccess(response ->
-                logger.verbose("Deleted the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error ->
-                logger.warning("Failed to delete the certificate issuer - {}", issuerName, error));
     }
 
 
@@ -1813,55 +1298,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IssuerProperties> listPropertiesOfIssuers() {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listPropertiesOfIssuersFirstPage(context)),
-                continuationToken -> withContext(context -> listPropertiesOfIssuersNextPage(continuationToken,
-                    context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    PagedFlux<IssuerProperties> listPropertiesOfIssuers(Context context) {
-        return new PagedFlux<>(
-            () -> listPropertiesOfIssuersFirstPage(context),
-            continuationToken -> listPropertiesOfIssuersNextPage(continuationToken, context));
-    }
-
-    private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersFirstPage(Context context) {
-        try {
-            return service.getCertificateIssuers(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing certificate issuers - {}"))
-                .doOnSuccess(response -> logger.verbose("Listed certificate issuers - {}"))
-                .doOnError(error -> logger.warning("Failed to list certificate issuers - {}", error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /*
-     * Gets attributes of all the certificates given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listKeyVersions()}.
-     *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the listKeys operations.
-     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
-     */
-    private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersNextPage(String continuationToken, Context context) {
-        try {
-            return service.getCertificateIssuers(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored ->
-                    logger.verbose("Listing next certificate issuers page - Page {} ", continuationToken))
-                .doOnSuccess(response ->
-                    logger.verbose("Listed next certificate issuers page - Page {} ", continuationToken))
-                .doOnError(error ->
-                    logger.warning("Failed to list next certificate issuers page - Page {} ", continuationToken,
-                        error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return implClient.listPropertiesOfIssuers();
     }
 
     /**
@@ -1898,7 +1335,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateIssuer> updateIssuer(CertificateIssuer issuer) {
         try {
-            return withContext(context -> updateIssuerWithResponse(issuer, context))
+            return withContext(context -> implClient.updateIssuerWithResponseAsync(issuer, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1938,34 +1375,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateIssuer>> updateIssuerWithResponse(CertificateIssuer issuer) {
         try {
-            return withContext(context -> updateIssuerWithResponse(issuer, context));
+            return withContext(context -> implClient.updateIssuerWithResponseAsync(issuer, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<CertificateIssuer>> updateIssuerWithResponse(CertificateIssuer issuer, Context context) {
-        context = context == null ? Context.NONE : context;
-        CertificateIssuerUpdateParameters updateParameters = new CertificateIssuerUpdateParameters()
-            .provider(issuer.getProvider())
-            .organizationDetails(new OrganizationDetails()
-                .id(issuer.getOrganizationId())
-                .adminDetails(issuer.getAdministratorContacts()))
-            .credentials(new IssuerCredentials()
-                .password(issuer.getPassword())
-                .accountId(issuer.getAccountId()))
-            .attributes(new IssuerAttributes()
-                .enabled(issuer.isEnabled()));
-
-        return service.updateCertificateIssuer(vaultUrl, issuer.getName(), apiVersion, ACCEPT_LANGUAGE,
-            updateParameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored ->
-                logger.verbose("Updating certificate issuer - {}",  issuer.getName()))
-            .doOnSuccess(response ->
-                logger.verbose("Updated up the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error ->
-                logger.warning("Failed to updated the certificate issuer - {}", issuer.getName(), error));
     }
 
     /**
@@ -1992,27 +1405,9 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> setContacts(List<CertificateContact> contacts) {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> setCertificateContactsWithResponse(contacts, context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return implClient.setContacts(contacts);
     }
 
-    PagedFlux<CertificateContact> setContacts(List<CertificateContact> contacts, Context context) {
-        return new PagedFlux<>(
-            () -> setCertificateContactsWithResponse(contacts, context));
-    }
-
-    private Mono<PagedResponse<CertificateContact>> setCertificateContactsWithResponse(List<CertificateContact> contacts, Context context) {
-        Contacts contactsParams = new Contacts().contactList(contacts);
-        return service.setCertificateContacts(vaultUrl, apiVersion, ACCEPT_LANGUAGE, contactsParams, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Listing certificate contacts - {}"))
-            .doOnSuccess(response -> logger.verbose("Listed certificate contacts - {}"))
-            .doOnError(error -> logger.warning("Failed to list certificate contacts - {}", error));
-    }
 
     /**
      * Lists the certificate contacts in the key vault. This operation requires the certificates/managecontacts permission.
@@ -2033,29 +1428,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> listContacts() {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listCertificateContactsFirstPage(context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    PagedFlux<CertificateContact> listContacts(Context context) {
-        return new PagedFlux<>(
-            () -> listCertificateContactsFirstPage(context));
-    }
-
-    private Mono<PagedResponse<CertificateContact>> listCertificateContactsFirstPage(Context context) {
-        try {
-            return service.getCertificateContacts(vaultUrl, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing certificate contacts - {}"))
-                .doOnSuccess(response -> logger.verbose("Listed certificate contacts - {}"))
-                .doOnError(error -> logger.warning("Failed to list certificate contacts - {}", error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return implClient.listContacts();
     }
 
     /**
@@ -2077,25 +1450,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> deleteContacts() {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> deleteCertificateContactsWithResponse(context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    PagedFlux<CertificateContact> deleteContacts(Context context) {
-        return new PagedFlux<>(
-            () -> deleteCertificateContactsWithResponse(context));
-    }
-
-    private Mono<PagedResponse<CertificateContact>> deleteCertificateContactsWithResponse(Context context) {
-        return service.deleteCertificateContacts(vaultUrl, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Deleting certificate contacts - {}"))
-            .doOnSuccess(response -> logger.verbose("Deleted certificate contacts - {}"))
-            .doOnError(error -> logger.warning("Failed to delete certificate contacts - {}", error));
+        return implClient.deleteContacts();
     }
 
     /**
@@ -2122,7 +1477,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> deleteCertificateOperation(String certificateName) {
         try {
-            return withContext(context -> deleteCertificateOperationWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> implClient.deleteCertificateOperationWithResponseAsync(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -2152,29 +1507,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponse(String certificateName) {
         try {
-            return withContext(context -> deleteCertificateOperationWithResponse(certificateName, context));
+            return withContext(context -> implClient.deleteCertificateOperationWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponse(String certificateName, Context context) {
-        return service.deletetCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Deleting certificate operation - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Deleted the certificate operation - {}", response.getStatusCode()))
-            .doOnError(error -> logger.warning("Failed to delete the certificate operation - {}", certificateName, error));
-    }
-
-    Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponse(String certificateName, Context context) {
-        context = context == null ? Context.NONE : context;
-        CertificateOperationUpdateParameter parameter = new CertificateOperationUpdateParameter().cancellationRequested(true);
-
-        return service.updateCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, parameter, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Cancelling certificate operation - {}",  certificateName))
-            .doOnSuccess(response -> logger.verbose("Cancelled the certificate operation - {}", response.getValue().getStatus()))
-            .doOnError(error -> logger.warning("Failed to cancel the certificate operation - {}", certificateName, error));
     }
 
     /**
@@ -2200,7 +1536,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> cancelCertificateOperation(String certificateName) {
         try {
-            return withContext(context -> cancelCertificateOperationWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> implClient.cancelCertificateOperationWithResponseAsync(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -2229,7 +1565,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponse(String certificateName) {
         try {
-            return withContext(context -> cancelCertificateOperationWithResponse(certificateName, context));
+            return withContext(context -> implClient.cancelCertificateOperationWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -2262,7 +1598,7 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificateWithPolicy> importCertificate(ImportCertificateOptions importCertificateOptions) {
         try {
-            return withContext(context -> importCertificateWithResponse(importCertificateOptions, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> implClient.importCertificateWithResponseAsync(importCertificateOptions, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -2293,38 +1629,9 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificateWithPolicy>> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions) {
         try {
-            return withContext(context -> importCertificateWithResponse(importCertificateOptions, context));
+            return withContext(context -> implClient.importCertificateWithResponseAsync(importCertificateOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultCertificateWithPolicy>> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        CertificateImportParameters parameters = new CertificateImportParameters()
-            .base64EncodedCertificate(transformCertificateForImport(importCertificateOptions))
-            .certificateAttributes(new CertificateRequestAttributes(importCertificateOptions))
-            .password(importCertificateOptions.getPassword())
-            .tags(importCertificateOptions.getTags());
-
-        if (importCertificateOptions.getPolicy() != null) {
-            parameters.certificatePolicy(new CertificatePolicyRequest(importCertificateOptions.getPolicy()));
-        }
-
-        return service.importCertificate(vaultUrl, importCertificateOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
-    }
-
-    private String transformCertificateForImport(ImportCertificateOptions options) {
-        CertificatePolicy policy = options.getPolicy();
-
-        if (policy != null) {
-            CertificateContentType contentType = policy.getContentType();
-            if (contentType != null && contentType.equals(CertificateContentType.PEM)) {
-                return new String(options.getCertificate(), StandardCharsets.US_ASCII);
-            }
-        }
-        return Base64.getEncoder().encodeToString(options.getCertificate());
     }
 }

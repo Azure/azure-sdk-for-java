@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrackAttribute. */
+/** The TrackAttribute to filter the tracks by. */
 public final class TrackAttribute extends ExpandableStringEnum<TrackAttribute> {
     /** Static value Bitrate for TrackAttribute. */
     public static final TrackAttribute BITRATE = fromString("Bitrate");
 
     /** Static value Language for TrackAttribute. */
     public static final TrackAttribute LANGUAGE = fromString("Language");
+
+    /**
+     * Creates a new instance of TrackAttribute value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrackAttribute() {
+    }
 
     /**
      * Creates or finds a TrackAttribute from its string representation.

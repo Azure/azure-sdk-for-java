@@ -1,6 +1,6 @@
 # Release History
 
-## 11.5.0-beta.12 (Unreleased)
+## 11.6.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,121 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.6.0-beta.4 (2023-01-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.23` to version `1.2.24`.
+
+## 11.6.0-beta.3 (2022-11-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.22` to version `1.2.23`.
+
+## 11.5.2 (2022-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.22` to version `1.2.23`.
+- 
+## 11.6.0-beta.2 (2022-10-12)
+
+### Bugs Fixed
+
+- [Bug fix for incorrect JSON property names](https://github.com/Azure/azure-sdk-for-java/pull/31388)
+- 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.21` to version `1.2.22`.
+- 
+## 11.5.1 (2022-10-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.21` to version `1.2.22`.
+
+
+## 11.6.0-beta.1 (2022-09-06)
+
+### Features Added
+
+- All features from the `11.5.x` betas that weren't included in `11.5.0`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.20` to version `1.2.21`.
+
+## 11.5.0 (2022-09-06)
+
+### Features Added
+
+- Added multi-cloud support via `SearchAudience` to allow users to select the Azure cloud where the resource is located. ([#30331](https://github.com/Azure/azure-sdk-for-java/pull/30331))
+- Added interfaces from `com.azure.core.client.traits` to `SearchIndexerClientBuilder`, `SearchIndexClientBuilder`
+  and `SearchClientBuilder`.
+
+### Other Changes
+
+- Doesn't include other features added in the `11.5.x` betas. To continue using those features upgrade to `11.6.0-beta.1`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.20` to version `1.2.21`.
+
+## 11.4.13 (2022-08-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.19` to version `1.2.20`.
+
+## 11.5.0-beta.12 (2022-08-17)
+
+### Features Added
+
+- Added multi-cloud support via `SearchAudience` to allow users to select the Azure cloud where the resource is located. ([#30331](https://github.com/Azure/azure-sdk-for-java/pull/30331))
+- Added new languages to `ImageAnalysisSkillLanguage` and `OcrSkillLanguage`. ([#30363](https://github.com/Azure/azure-sdk-for-java/pull/30363))
+
+### Other Changes
+
+- Added fluent setter overloads to subclasses that return the subclass type instead of the super class type
+  allowing for fluent calls to maintain type instead of requiring a type cast.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.19` to version `1.2.20`.
 
 ## 11.5.0-beta.11 (2022-07-01)
 

@@ -12,11 +12,14 @@ import java.util.List;
 @Fluent
 public final class TrackSelection {
     /*
-     * TrackSelections is a track property condition list which can specify
-     * track(s)
+     * TrackSelections is a track property condition list which can specify track(s)
      */
     @JsonProperty(value = "trackSelections")
     private List<TrackPropertyCondition> trackSelections;
+
+    /** Creates an instance of TrackSelection class. */
+    public TrackSelection() {
+    }
 
     /**
      * Get the trackSelections property: TrackSelections is a track property condition list which can specify track(s).

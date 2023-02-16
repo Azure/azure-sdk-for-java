@@ -23,23 +23,22 @@ import java.util.List;
 @Fluent
 public final class CommunityGalleryImageProperties {
     /*
-     * This property allows you to specify the type of the OS that is included
-     * in the disk when creating a VM from a managed image. <br><br> Possible
-     * values are: <br><br> **Windows** <br><br> **Linux**
+     * This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
+     * managed image. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**
      */
     @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
 
     /*
-     * This property allows the user to specify whether the virtual machines
-     * created under this image are 'Generalized' or 'Specialized'.
+     * This property allows the user to specify whether the virtual machines created under this image are 'Generalized'
+     * or 'Specialized'.
      */
     @JsonProperty(value = "osState", required = true)
     private OperatingSystemStateTypes osState;
 
     /*
-     * The end of life date of the gallery image definition. This property can
-     * be used for decommissioning purposes. This property is updatable.
+     * The end of life date of the gallery image definition. This property can be used for decommissioning purposes.
+     * This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
@@ -51,8 +50,8 @@ public final class CommunityGalleryImageProperties {
     private GalleryImageIdentifier identifier;
 
     /*
-     * The properties describe the recommended machine configuration for this
-     * Image Definition. These properties are updatable.
+     * The properties describe the recommended machine configuration for this Image Definition. These properties are
+     * updatable.
      */
     @JsonProperty(value = "recommended")
     private RecommendedMachineConfiguration recommended;
@@ -64,8 +63,7 @@ public final class CommunityGalleryImageProperties {
     private Disallowed disallowed;
 
     /*
-     * The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      */
     @JsonProperty(value = "hyperVGeneration")
     private HyperVGeneration hyperVGeneration;
@@ -77,8 +75,7 @@ public final class CommunityGalleryImageProperties {
     private List<GalleryImageFeature> features;
 
     /*
-     * Describes the gallery image definition purchase plan. This is used by
-     * marketplace images.
+     * Describes the gallery image definition purchase plan. This is used by marketplace images.
      */
     @JsonProperty(value = "purchasePlan")
     private ImagePurchasePlan purchasePlan;
@@ -100,6 +97,10 @@ public final class CommunityGalleryImageProperties {
      */
     @JsonProperty(value = "eula")
     private String eula;
+
+    /** Creates an instance of CommunityGalleryImageProperties class. */
+    public CommunityGalleryImageProperties() {
+    }
 
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when

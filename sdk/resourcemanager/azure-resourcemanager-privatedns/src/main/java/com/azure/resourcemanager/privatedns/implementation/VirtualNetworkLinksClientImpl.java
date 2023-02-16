@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.privatedns.fluent.VirtualNetworkLinksClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualNetworkLinksClient. */
 public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksClient {
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkLinksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VirtualNetworkLinksService service;
 
@@ -180,7 +177,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -256,7 +254,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -329,7 +328,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdateAsync(
@@ -368,7 +367,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdateAsync(
@@ -408,7 +407,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
@@ -439,7 +438,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
@@ -470,7 +469,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkLinkInner> createOrUpdateAsync(
@@ -496,7 +495,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkLinkInner> createOrUpdateAsync(
@@ -528,7 +527,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualNetworkLinkInner> createOrUpdateAsync(
@@ -645,7 +644,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -717,7 +717,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -786,7 +787,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(
@@ -821,7 +822,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(
@@ -858,7 +859,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
@@ -885,7 +886,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
@@ -913,7 +914,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkLinkInner> updateAsync(
@@ -937,7 +938,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkLinkInner> updateAsync(
@@ -965,7 +966,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualNetworkLinkInner> updateAsync(
@@ -1069,7 +1070,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1131,7 +1132,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1193,7 +1194,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1220,7 +1221,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1250,7 +1251,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1272,7 +1273,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1298,7 +1299,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1319,7 +1320,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName) {
@@ -1343,7 +1344,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1429,7 +1430,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone.
+     * @return a virtual network link to the specified Private DNS zone along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualNetworkLinkInner>> getWithResponseAsync(
@@ -1486,7 +1488,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone.
+     * @return a virtual network link to the specified Private DNS zone along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualNetworkLinkInner>> getWithResponseAsync(
@@ -1539,20 +1542,13 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone.
+     * @return a virtual network link to the specified Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkLinkInner> getAsync(
         String resourceGroupName, String privateZoneName, String virtualNetworkLinkName) {
         return getWithResponseAsync(resourceGroupName, privateZoneName, virtualNetworkLinkName)
-            .flatMap(
-                (Response<VirtualNetworkLinkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1582,7 +1578,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone.
+     * @return a virtual network link to the specified Private DNS zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkLinkInner> getWithResponse(
@@ -1600,7 +1596,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkLinkInner>> listSinglePageAsync(
@@ -1662,7 +1659,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkLinkInner>> listSinglePageAsync(
@@ -1720,7 +1718,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String privateZoneName, Integer top) {
@@ -1737,7 +1736,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String privateZoneName) {
@@ -1758,7 +1758,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualNetworkLinkInner> listAsync(
@@ -1776,7 +1777,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkLinkInner> list(String resourceGroupName, String privateZoneName) {
@@ -1795,7 +1797,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkLinkInner> list(
@@ -1806,11 +1809,13 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkLinkInner>> listNextSinglePageAsync(String nextLink) {
@@ -1841,12 +1846,14 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkLinkInner>> listNextSinglePageAsync(String nextLink, Context context) {

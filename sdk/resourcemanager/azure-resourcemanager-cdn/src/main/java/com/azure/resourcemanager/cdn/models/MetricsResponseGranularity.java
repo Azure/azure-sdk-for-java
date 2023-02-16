@@ -30,7 +30,11 @@ public final class MetricsResponseGranularity extends ExpandableStringEnum<Metri
         return fromString(name, MetricsResponseGranularity.class);
     }
 
-    /** @return known MetricsResponseGranularity values. */
+    /**
+     * Gets known MetricsResponseGranularity values.
+     *
+     * @return known MetricsResponseGranularity values.
+     */
     public static Collection<MetricsResponseGranularity> values() {
         return values(MetricsResponseGranularity.class);
     }

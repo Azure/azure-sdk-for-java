@@ -29,18 +29,22 @@ public final class ExpressRouteCircuitRoutesTableSummary {
     private Integer as;
 
     /*
-     * The length of time that the BGP session has been in the Established
-     * state, or the current status if not in the Established state.
+     * The length of time that the BGP session has been in the Established state, or the current status if not in the
+     * Established state.
      */
     @JsonProperty(value = "upDown")
     private String upDown;
 
     /*
-     * Current state of the BGP session, and the number of prefixes that have
-     * been received from a neighbor or peer group.
+     * Current state of the BGP session, and the number of prefixes that have been received from a neighbor or peer
+     * group.
      */
     @JsonProperty(value = "statePfxRcd")
     private String statePfxRcd;
+
+    /** Creates an instance of ExpressRouteCircuitRoutesTableSummary class. */
+    public ExpressRouteCircuitRoutesTableSummary() {
+    }
 
     /**
      * Get the neighbor property: IP address of the neighbor.

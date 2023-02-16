@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureResource;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureResource;
 /** Samples for SqlResources CreateUpdateSqlStoredProcedure. */
 public final class SqlResourcesCreateUpdateSqlStoredProcedureSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlStoredProcedureCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlStoredProcedureCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlStoredProcedureCreateUpdate.
@@ -34,6 +33,6 @@ public final class SqlResourcesCreateUpdateSqlStoredProcedureSamples {
                 new SqlStoredProcedureCreateUpdateParameters()
                     .withResource(new SqlStoredProcedureResource().withId("storedProcedureName").withBody("body"))
                     .withOptions(new CreateUpdateOptions()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

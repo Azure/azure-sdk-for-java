@@ -41,15 +41,6 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
         return Utils.mapPage(inner, inner1 -> new AuthConfigImpl(inner1, this.manager()));
     }
 
-    public AuthConfig get(String resourceGroupName, String containerAppName, String authConfigName) {
-        AuthConfigInner inner = this.serviceClient().get(resourceGroupName, containerAppName, authConfigName);
-        if (inner != null) {
-            return new AuthConfigImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AuthConfig> getWithResponse(
         String resourceGroupName, String containerAppName, String authConfigName, Context context) {
         Response<AuthConfigInner> inner =
@@ -65,13 +56,22 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
         }
     }
 
-    public void delete(String resourceGroupName, String containerAppName, String authConfigName) {
-        this.serviceClient().delete(resourceGroupName, containerAppName, authConfigName);
+    public AuthConfig get(String resourceGroupName, String containerAppName, String authConfigName) {
+        AuthConfigInner inner = this.serviceClient().get(resourceGroupName, containerAppName, authConfigName);
+        if (inner != null) {
+            return new AuthConfigImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String containerAppName, String authConfigName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, containerAppName, authConfigName, context);
+    }
+
+    public void delete(String resourceGroupName, String containerAppName, String authConfigName) {
+        this.serviceClient().delete(resourceGroupName, containerAppName, authConfigName);
     }
 
     public AuthConfig getById(String id) {

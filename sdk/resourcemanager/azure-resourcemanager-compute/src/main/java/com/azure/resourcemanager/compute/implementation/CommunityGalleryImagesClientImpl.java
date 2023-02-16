@@ -56,7 +56,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CommunityGalleryImagesService {
+    public interface CommunityGalleryImagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries"
@@ -136,7 +136,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -192,7 +192,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -222,30 +222,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
     public Mono<CommunityGalleryImageInner> getAsync(
         String location, String publicGalleryName, String galleryImageName) {
         return getWithResponseAsync(location, publicGalleryName, galleryImageName)
-            .flatMap(
-                (Response<CommunityGalleryImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a community gallery image.
-     *
-     * @param location Resource location.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param galleryImageName The name of the community gallery image definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunityGalleryImageInner get(String location, String publicGalleryName, String galleryImageName) {
-        return getAsync(location, publicGalleryName, galleryImageName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -264,6 +241,22 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
     public Response<CommunityGalleryImageInner> getWithResponse(
         String location, String publicGalleryName, String galleryImageName, Context context) {
         return getWithResponseAsync(location, publicGalleryName, galleryImageName, context).block();
+    }
+
+    /**
+     * Get a community gallery image.
+     *
+     * @param location Resource location.
+     * @param publicGalleryName The public name of the community gallery.
+     * @param galleryImageName The name of the community gallery image definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a community gallery image.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunityGalleryImageInner get(String location, String publicGalleryName, String galleryImageName) {
+        return getWithResponse(location, publicGalleryName, galleryImageName, Context.NONE).getValue();
     }
 
     /**
@@ -299,7 +292,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
             return Mono
                 .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -359,7 +352,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
             return Mono
                 .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -451,7 +444,8 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -487,7 +481,8 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

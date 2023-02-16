@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Caching. */
+/** Caching type of Data Disk. */
 public final class Caching extends ExpandableStringEnum<Caching> {
     /** Static value None for Caching. */
     public static final Caching NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class Caching extends ExpandableStringEnum<Caching> {
 
     /** Static value ReadWrite for Caching. */
     public static final Caching READ_WRITE = fromString("ReadWrite");
+
+    /**
+     * Creates a new instance of Caching value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Caching() {
+    }
 
     /**
      * Creates or finds a Caching from its string representation.

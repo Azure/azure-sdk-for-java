@@ -26,6 +26,10 @@ public class UserAssignedServiceIdentity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
+    /** Creates an instance of UserAssignedServiceIdentity class. */
+    public UserAssignedServiceIdentity() {
+    }
+
     /**
      * Get the type property: Type of manage identity.
      *

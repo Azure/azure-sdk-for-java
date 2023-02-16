@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtensionUpdate;
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSetExtensions Update. */
 public final class VirtualMachineScaleSetExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtensions_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtensions_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetExtensions_Update_MaximumSet_Gen.
@@ -49,11 +48,11 @@ public final class VirtualMachineScaleSetExtensionsUpdateSamples {
                             .deserialize("{}", Object.class, SerializerEncoding.JSON))
                     .withProvisionAfterExtensions(Arrays.asList("aa"))
                     .withSuppressFailures(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtensions_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtensions_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetExtensions_Update_MinimumSet_Gen.
@@ -72,6 +71,6 @@ public final class VirtualMachineScaleSetExtensionsUpdateSamples {
                 "aaaaaaaaaaaaaaaaaaaaaaaaaa",
                 "aa",
                 new VirtualMachineScaleSetExtensionUpdate(),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

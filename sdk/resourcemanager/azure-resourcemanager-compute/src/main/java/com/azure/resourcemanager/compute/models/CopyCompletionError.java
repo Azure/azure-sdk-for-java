@@ -12,18 +12,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CopyCompletionError {
     /*
-     * Indicates the error code if the background copy of a resource created
-     * via the CopyStart operation fails.
+     * Indicates the error code if the background copy of a resource created via the CopyStart operation fails.
      */
     @JsonProperty(value = "errorCode", required = true)
     private CopyCompletionErrorReason errorCode;
 
     /*
-     * Indicates the error message if the background copy of a resource created
-     * via the CopyStart operation fails.
+     * Indicates the error message if the background copy of a resource created via the CopyStart operation fails.
      */
     @JsonProperty(value = "errorMessage", required = true)
     private String errorMessage;
+
+    /** Creates an instance of CopyCompletionError class. */
+    public CopyCompletionError() {
+    }
 
     /**
      * Get the errorCode property: Indicates the error code if the background copy of a resource created via the

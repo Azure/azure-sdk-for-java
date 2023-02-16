@@ -696,7 +696,7 @@ public final class CosmosEncryptionAsyncContainer {
                     page -> {
                         boolean useEtagAsContinuation = isChangeFeed;
                         boolean isNoChangesResponse = isChangeFeed ?
-                            ModelBridgeInternal.getNoCHangesFromFeedResponse(page)
+                            ModelBridgeInternal.getNoChangesFromFeedResponse(page)
                             : false;
                         List<Mono<JsonNode>> jsonNodeArrayMonoList =
                             page.getResults().stream().map(jsonNode -> decryptResponseNode(jsonNode)).collect(Collectors.toList());

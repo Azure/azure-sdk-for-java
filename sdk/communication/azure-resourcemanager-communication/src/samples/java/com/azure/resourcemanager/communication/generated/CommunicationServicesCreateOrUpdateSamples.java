@@ -7,7 +7,7 @@ package com.azure.resourcemanager.communication.generated;
 /** Samples for CommunicationServices CreateOrUpdate. */
 public final class CommunicationServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/communicationServices/createOrUpdate.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/communicationServices/createOrUpdate.json
      */
     /**
      * Sample code: Create or update resource.

@@ -23,6 +23,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.util.Constants;
 import com.azure.search.documents.implementation.util.Utility;
@@ -84,6 +85,7 @@ public class SearchIndexerClientBuilder implements
 
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
+    private SearchAudience audience;
 
     private SearchServiceVersion serviceVersion;
     private String endpoint;
@@ -115,7 +117,21 @@ public class SearchIndexerClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SearchIndexerClient buildClient() {
-        return new SearchIndexerClient(buildAsyncClient());
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+
+        SearchServiceVersion buildVersion = (serviceVersion == null)
+            ? SearchServiceVersion.getLatest()
+            : serviceVersion;
+
+        if (httpPipeline != null) {
+            return new SearchIndexerClient(endpoint, buildVersion, httpPipeline);
+        }
+
+        HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration,
+            retryPolicy, retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies,
+            httpClient, LOGGER);
+
+        return new SearchIndexerClient(endpoint, buildVersion, pipeline);
     }
 
     /**
@@ -143,7 +159,7 @@ public class SearchIndexerClientBuilder implements
         }
 
         HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration,
-            retryPolicy, retryOptions, azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies,
+            retryPolicy, retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies,
             httpClient, LOGGER);
 
         return new SearchIndexerAsyncClient(endpoint, buildVersion, pipeline);
@@ -190,6 +206,21 @@ public class SearchIndexerClientBuilder implements
     @Override
     public SearchIndexerClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = credential;
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD).
+     * <p>
+     * The audience is not considered when using a {@link #credential(AzureKeyCredential) shared key}.
+     * <p>
+     * If {@code audience} is null the public cloud audience will be assumed.
+     *
+     * @param audience The Audience to use for authentication with Azure Active Directory (AAD).
+     * @return The updated SearchClientBuilder object.
+     */
+    public SearchIndexerClientBuilder audience(SearchAudience audience) {
+        this.audience = audience;
         return this;
     }
 

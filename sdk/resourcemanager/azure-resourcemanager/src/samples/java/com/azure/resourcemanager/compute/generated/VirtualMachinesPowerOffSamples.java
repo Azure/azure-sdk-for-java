@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines PowerOff. */
 public final class VirtualMachinesPowerOffSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_PowerOff_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PowerOff_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_PowerOff_MinimumSet_Gen.
@@ -22,11 +20,11 @@ public final class VirtualMachinesPowerOffSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaa", null, Context.NONE);
+            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_PowerOff_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PowerOff_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_PowerOff_MaximumSet_Gen.
@@ -39,6 +37,6 @@ public final class VirtualMachinesPowerOffSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", true, Context.NONE);
+            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", true, com.azure.core.util.Context.NONE);
     }
 }

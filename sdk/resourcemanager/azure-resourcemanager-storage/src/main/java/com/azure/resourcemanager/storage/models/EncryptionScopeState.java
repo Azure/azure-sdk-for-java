@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionScopeState. */
+/** The state of the encryption scope. Possible values (case-insensitive): Enabled, Disabled. */
 public final class EncryptionScopeState extends ExpandableStringEnum<EncryptionScopeState> {
     /** Static value Enabled for EncryptionScopeState. */
     public static final EncryptionScopeState ENABLED = fromString("Enabled");

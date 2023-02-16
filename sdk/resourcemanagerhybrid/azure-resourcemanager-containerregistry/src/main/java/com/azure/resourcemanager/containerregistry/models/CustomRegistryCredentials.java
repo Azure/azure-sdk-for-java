@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the credentials that will be used to access a custom registry during a run. */
 @Fluent
 public final class CustomRegistryCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomRegistryCredentials.class);
-
     /*
      * The username for logging into the custom registry.
      */

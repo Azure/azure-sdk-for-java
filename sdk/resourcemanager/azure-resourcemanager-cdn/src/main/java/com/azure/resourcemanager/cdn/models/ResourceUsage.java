@@ -35,7 +35,7 @@ public class ResourceUsage {
      * @return unit of the usage
      */
     public String unit() {
-        return this.inner.unit();
+        return this.inner.unit() == null ? null : this.inner.unit().toString();
     }
 
     /**

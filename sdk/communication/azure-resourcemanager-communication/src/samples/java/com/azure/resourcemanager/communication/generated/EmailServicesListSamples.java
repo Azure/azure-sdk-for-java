@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EmailServices List. */
 public final class EmailServicesListSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/emailServices/listBySubscription.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/listBySubscription.json
      */
     /**
      * Sample code: List EmailService resources by subscription.

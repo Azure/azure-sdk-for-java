@@ -5,18 +5,19 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.DscNodeConfigurationCreateOrUpdateParametersProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create or update node configuration operation. */
-@JsonFlatten
 @Fluent
-public class DscNodeConfigurationCreateOrUpdateParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DscNodeConfigurationCreateOrUpdateParameters.class);
+public final class DscNodeConfigurationCreateOrUpdateParameters {
+    /*
+     * Node configuration properties
+     */
+    @JsonProperty(value = "properties")
+    private DscNodeConfigurationCreateOrUpdateParametersProperties innerProperties;
 
     /*
      * Name of the node configuration.
@@ -28,25 +29,17 @@ public class DscNodeConfigurationCreateOrUpdateParameters {
      * Gets or sets the tags attached to the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Gets or sets the source.
+    /**
+     * Get the innerProperties property: Node configuration properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.source")
-    private ContentSource source;
-
-    /*
-     * Gets or sets the configuration of the node.
-     */
-    @JsonProperty(value = "properties.configuration")
-    private DscConfigurationAssociationProperty configuration;
-
-    /*
-     * If a new build version of NodeConfiguration is required.
-     */
-    @JsonProperty(value = "properties.incrementNodeConfigurationBuild")
-    private Boolean incrementNodeConfigurationBuild;
+    private DscNodeConfigurationCreateOrUpdateParametersProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the node configuration.
@@ -94,7 +87,7 @@ public class DscNodeConfigurationCreateOrUpdateParameters {
      * @return the source value.
      */
     public ContentSource source() {
-        return this.source;
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
@@ -104,7 +97,10 @@ public class DscNodeConfigurationCreateOrUpdateParameters {
      * @return the DscNodeConfigurationCreateOrUpdateParameters object itself.
      */
     public DscNodeConfigurationCreateOrUpdateParameters withSource(ContentSource source) {
-        this.source = source;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeConfigurationCreateOrUpdateParametersProperties();
+        }
+        this.innerProperties().withSource(source);
         return this;
     }
 
@@ -114,7 +110,7 @@ public class DscNodeConfigurationCreateOrUpdateParameters {
      * @return the configuration value.
      */
     public DscConfigurationAssociationProperty configuration() {
-        return this.configuration;
+        return this.innerProperties() == null ? null : this.innerProperties().configuration();
     }
 
     /**
@@ -125,7 +121,10 @@ public class DscNodeConfigurationCreateOrUpdateParameters {
      */
     public DscNodeConfigurationCreateOrUpdateParameters withConfiguration(
         DscConfigurationAssociationProperty configuration) {
-        this.configuration = configuration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeConfigurationCreateOrUpdateParametersProperties();
+        }
+        this.innerProperties().withConfiguration(configuration);
         return this;
     }
 
@@ -135,7 +134,7 @@ public class DscNodeConfigurationCreateOrUpdateParameters {
      * @return the incrementNodeConfigurationBuild value.
      */
     public Boolean incrementNodeConfigurationBuild() {
-        return this.incrementNodeConfigurationBuild;
+        return this.innerProperties() == null ? null : this.innerProperties().incrementNodeConfigurationBuild();
     }
 
     /**
@@ -146,7 +145,10 @@ public class DscNodeConfigurationCreateOrUpdateParameters {
      */
     public DscNodeConfigurationCreateOrUpdateParameters withIncrementNodeConfigurationBuild(
         Boolean incrementNodeConfigurationBuild) {
-        this.incrementNodeConfigurationBuild = incrementNodeConfigurationBuild;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeConfigurationCreateOrUpdateParametersProperties();
+        }
+        this.innerProperties().withIncrementNodeConfigurationBuild(incrementNodeConfigurationBuild);
         return this;
     }
 
@@ -156,11 +158,8 @@ public class DscNodeConfigurationCreateOrUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (source() != null) {
-            source().validate();
-        }
-        if (configuration() != null) {
-            configuration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

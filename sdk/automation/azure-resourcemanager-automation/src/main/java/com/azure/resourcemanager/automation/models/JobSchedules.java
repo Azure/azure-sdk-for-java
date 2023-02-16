@@ -33,7 +33,7 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context);
@@ -61,7 +61,7 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job schedule.
+     * @return definition of the job schedule along with {@link Response}.
      */
     Response<JobSchedule> getWithResponse(
         String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context);
@@ -74,7 +74,7 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job schedule operation.
+     * @return the response model for the list job schedule operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobSchedule> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -88,7 +88,7 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job schedule operation.
+     * @return the response model for the list job schedule operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobSchedule> listByAutomationAccount(
         String resourceGroupName, String automationAccountName, String filter, Context context);
@@ -100,7 +100,7 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job schedule.
+     * @return definition of the job schedule along with {@link Response}.
      */
     JobSchedule getById(String id);
 
@@ -112,7 +112,7 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job schedule.
+     * @return definition of the job schedule along with {@link Response}.
      */
     Response<JobSchedule> getByIdWithResponse(String id, Context context);
 
@@ -134,7 +134,7 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

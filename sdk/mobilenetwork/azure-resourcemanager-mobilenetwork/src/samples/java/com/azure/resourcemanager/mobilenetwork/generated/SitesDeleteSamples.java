@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Sites Delete. */
 public final class SitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SiteDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SiteDelete.json
      */
     /**
      * Sample code: Delete mobile network site.
@@ -17,6 +15,6 @@ public final class SitesDeleteSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteMobileNetworkSite(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.sites().delete("rg1", "testMobileNetwork", "testSite", Context.NONE);
+        manager.sites().delete("rg1", "testMobileNetwork", "testSite", com.azure.core.util.Context.NONE);
     }
 }

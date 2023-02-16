@@ -65,6 +65,10 @@ public final class AzureFirewallNetworkRule {
     @JsonProperty(value = "destinationIpGroups")
     private List<String> destinationIpGroups;
 
+    /** Creates an instance of AzureFirewallNetworkRule class. */
+    public AzureFirewallNetworkRule() {
+    }
+
     /**
      * Get the name property: Name of the network rule.
      *

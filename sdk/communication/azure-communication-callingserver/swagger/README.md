@@ -31,9 +31,9 @@ To update generated files for calling service, run the following command
 
 ### Code generation settings
 ``` yaml
-tag: package-2021-08-30-preview
+tag: package-2022-04-07-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3893616381e816729ef9cdd768e87fb2845e189d/specification/communication/data-plane/CallingServer/readme.md
+    - https://github.com/richardcho-msft/azure-rest-api-specs/blob/dev-communication-CallingServer-2022-04-07-preview/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
@@ -49,78 +49,230 @@ context-client-method-parameter: true
 title: Azure Communication CallingServer Service 
 directive:
 - rename-model:
-    from: CallRecordingStateChangeEvent
-    to: CallRecordingStateChangeEventInternal    
+    from: AcsCallParticipant
+    to: AcsCallParticipantInternal    
 - rename-model:
-    from: AddParticipantResultEvent
-    to: AddParticipantResultEventInternal    
+    from: AddParticipantsRequest
+    to: AddParticipantsRequestInternal    
 - rename-model:
-    from: PlayAudioResultEvent
-    to: PlayAudioResultEventInternal   
+    from: AddParticipantsResponse
+    to: AddParticipantsResponseInternal
 - rename-model:
-    from: ToneReceivedEvent
-    to: ToneReceivedEventInternal      
+    from: CallConnectionProperties
+    to: CallConnectionPropertiesInternal     
 - rename-model:
-    from: CallConnectionStateChangedEvent
-    to: CallConnectionStateChangedEventInternal
+    from: CallingOperationResultDetails
+    to: CallingOperationResultDetailsInternal
 - rename-model:
-    from: ParticipantsUpdatedEvent
-    to: ParticipantsUpdatedEventInternal
+    from: CallingOperationStatus
+    to: CallingOperationStatusInternal
 - rename-model:
-    from: CallParticipant
-    to: CallParticipantInternal
+    from: CallSource
+    to: CallSourceInternal
 - rename-model:
-    from: JoinCallResult
-    to: JoinCallResultInternal
+    from: CommunicationCloudEnvironmentModel
+    to: CommunicationCloudEnvironmentInternal
 - rename-model:
-    from: PlayAudioResult
-    to: PlayAudioResultInternal
+    from: GetParticipantsResponse
+    to: GetParticipantsResponseInternal
 - rename-model:
-    from: CallRecordingProperties
-    to: CallRecordingPropertiesInternal
+    from: RemoveParticipantsRequest
+    to: RemoveParticipantsRequestInternal
 - rename-model:
-    from: StartCallRecordingResult
-    to: StartCallRecordingResultInternal
+    from: RemoveParticipantsResponse
+    to: RemoveParticipantsResponseInternal
 - rename-model:
-    from: CreateCallResult
-    to: CreateCallResultInternal
+    from: TransferCallResponse
+    to: TransferCallResponseInternal
 - rename-model:
-    from: AddParticipantResult
-    to: AddParticipantResultInternal    
+    from: TransferToParticipantRequest
+    to: TransferToParticipantRequestInternal
 - rename-model:
-    from: CancelAllMediaOperationsResult
-    to: CancelAllMediaOperationsResultInternal
+    from: CreateCallRequest
+    to: CreateCallRequestInternal
 - rename-model:
-    from: ResultInfo
-    to: ResultInfoInternal
+    from: AnswerCallRequest
+    to: AnswerCallRequestInternal
 - rename-model:
-    from: ToneInfo
-    to: ToneInfoInternal                                            
+    from: RedirectCallRequest
+    to: RedirectCallRequestInternal
+- rename-model:
+    from: RejectCallRequest
+    to: RejectCallRequestInternal
+- rename-model:
+    from: CallLocator
+    to: CallLocatorInternal
+- rename-model:
+    from: RecordingIdResponse
+    to: RecordingIdResponseInternal
+- rename-model:
+    from: RecordingStateResponse
+    to: RecordingStateResponseInternal
+- rename-model:
+    from: PlayResponse
+    to: PlayResponseInternal
+- rename-model:
+    from: PlaySource
+    to: PlaySourceInternal
+- rename-model:
+    from: FileSource
+    to: FileSourceInternal
+- rename-model:
+    from: PlayOptions
+    to: PlayOptionsInternal
+- rename-model:
+    from: StartCallRecordingRequest
+    to: StartCallRecordingRequestInternal
+- rename-model:
+    from: ChannelAffinity
+    to: ChannelAffinityInternal        
+- rename-model:
+    from: DtmfConfigurations
+    to: DtmfConfigurationsInternal        
+- rename-model:
+    from: RecognizeConfigurations
+    to: RecognizeConfigurationsInternal   
+- rename-model:
+    from: MediaStreamingConfiguration
+    to: MediaStreamingConfigurationInternal
+    
+# Remove models
+- remove-model: AddParticipantsFailedEvent
+- remove-model: AddParticipantsSucceededEvent
+- remove-model: CallConnectedEvent
+- remove-model: CallDisconnectedEvent
+- remove-model: CallTransferAcceptedEvent
+- remove-model: CallTransferFailedEvent
+- remove-model: ParticipantsUpdatedEvent
+- remove-model: RecordingStateChangedEvent
+- remove-model: PlayCompleted
+- remove-model: PlayFailed
+- remove-model: ResultInfo
 ```
 
-### Rename RecordingChannelType to RecordingChannel
+### Rename RecordingChannelType to RecordingChannelInternal
 ``` yaml
 directive:
   - from: swagger-document
     where: $.definitions.RecordingChannelType
     transform: >
-      $["x-ms-enum"].name = "RecordingChannel";
+      $["x-ms-enum"].name = "RecordingChannelInternal";
 ```
 
-### Rename RecordingContentType to RecordingContent
+### Rename RecordingContentType to RecordingContentInternal
 ``` yaml
 directive:
   - from: swagger-document
     where: $.definitions.RecordingContentType
     transform: >
-      $["x-ms-enum"].name = "RecordingContent";
+      $["x-ms-enum"].name = "RecordingContentInternal";
 ```
 
-### Rename RecordingFormatType to RecordingFormat
+### Rename RecordingFormatType to RecordingFormatInternal
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions.RecordingFormatType["x-ms-enum"]
   transform: >
-    $.name = "RecordingFormat";
+    $.name = "RecordingFormatInternal";
+```
+
+### Rename RecordingState to RecordingStateInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingState["x-ms-enum"]
+  transform: >
+    $.name = "RecordingStateInternal";
+```
+
+### Rename PlaySourceType to PlaySourceTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.PlaySourceType["x-ms-enum"]
+  transform: >
+    $.name = "PlaySourceTypeInternal";
+```
+
+### Rename CallLocatorKind to CallLocatorKindInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.CallLocatorKind["x-ms-enum"]
+  transform: >
+    $.name = "CallLocatorKindInternal";
+```
+
+### Rename CallConnectionStateModel to CallConnectionStateModelInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.CallConnectionStateModel["x-ms-enum"]
+  transform: >
+    $.name = "CallConnectionStateModelInternal";
+```
+
+### Rename AcsEventType to AcsEventTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.AcsEventType["x-ms-enum"]
+  transform: >
+    $.name = "AcsEventTypeInternal";
+```
+
+### Rename CallRejectReason to CallRejectReasonInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.CallRejectReason["x-ms-enum"]
+  transform: >
+    $.name = "CallRejectReasonInternal";
+```
+
+### Rename StopTones to StopTonesInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.StopTones["x-ms-enum"]
+  transform: >
+    $.name = "StopTonesInternal";
+```
+
+
+### Rename RecognizeInputType to RecognizeInputTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecognizeInputType["x-ms-enum"]
+  transform: >
+    $.name = "RecognizeInputTypeInternal";
+```
+
+### Rename MediaStreamingAudioChannelType to MediaStreamingAudioChannelTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingAudioChannelType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingAudioChannelTypeInternal";
+```
+
+### Rename MediaStreamingContentType to MediaStreamingContentTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingContentType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingContentTypeInternal";
+```
+
+### Rename MediaStreamingTransportType to MediaStreamingTransportType
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingTransportTypeInternal";
 ```

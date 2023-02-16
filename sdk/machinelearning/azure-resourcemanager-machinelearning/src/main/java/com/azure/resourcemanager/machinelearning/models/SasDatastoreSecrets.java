@@ -21,6 +21,10 @@ public final class SasDatastoreSecrets extends DatastoreSecretsInner {
     @JsonProperty(value = "sasToken")
     private String sasToken;
 
+    /** Creates an instance of SasDatastoreSecrets class. */
+    public SasDatastoreSecrets() {
+    }
+
     /**
      * Get the sasToken property: Storage container SAS token.
      *

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The number of instances that can be used during this profile. */
 @Fluent
 public final class ScaleCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleCapacity.class);
-
     /*
      * the minimum number of instances for the resource.
      */
@@ -21,20 +18,22 @@ public final class ScaleCapacity {
     private String minimum;
 
     /*
-     * the maximum number of instances for the resource. The actual maximum
-     * number of instances is limited by the cores that are available in the
-     * subscription.
+     * the maximum number of instances for the resource. The actual maximum number of instances is limited by the cores
+     * that are available in the subscription.
      */
     @JsonProperty(value = "maximum", required = true)
     private String maximum;
 
     /*
-     * the number of instances that will be set if metrics are not available
-     * for evaluation. The default is only used if the current instance count
-     * is lower than the default.
+     * the number of instances that will be set if metrics are not available for evaluation. The default is only used
+     * if the current instance count is lower than the default.
      */
     @JsonProperty(value = "default", required = true)
     private String defaultProperty;
+
+    /** Creates an instance of ScaleCapacity class. */
+    public ScaleCapacity() {
+    }
 
     /**
      * Get the minimum property: the minimum number of instances for the resource.
@@ -107,19 +106,21 @@ public final class ScaleCapacity {
      */
     public void validate() {
         if (minimum() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property minimum in model ScaleCapacity"));
         }
         if (maximum() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property maximum in model ScaleCapacity"));
         }
         if (defaultProperty() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property defaultProperty in model ScaleCapacity"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScaleCapacity.class);
 }

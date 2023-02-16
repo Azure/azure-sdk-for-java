@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
 /** The EntityRecognitionLROResult model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -19,6 +20,9 @@ public final class EntityRecognitionLROResult extends AnalyzeTextLROResult {
      */
     @JsonProperty(value = "results", required = true)
     private EntitiesResult results;
+
+    /** Creates an instance of EntityRecognitionLROResult class. */
+    public EntityRecognitionLROResult() {}
 
     /**
      * Get the results property: The results property.
@@ -37,6 +41,27 @@ public final class EntityRecognitionLROResult extends AnalyzeTextLROResult {
      */
     public EntityRecognitionLROResult setResults(EntitiesResult results) {
         this.results = results;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityRecognitionLROResult setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityRecognitionLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
+        super.setLastUpdateDateTime(lastUpdateDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityRecognitionLROResult setStatus(State status) {
+        super.setStatus(status);
         return this;
     }
 }

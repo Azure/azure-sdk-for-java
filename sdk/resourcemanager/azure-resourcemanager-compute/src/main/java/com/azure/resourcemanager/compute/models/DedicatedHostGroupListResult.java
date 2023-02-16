@@ -20,11 +20,15 @@ public final class DedicatedHostGroupListResult {
     private List<DedicatedHostGroupInner> value;
 
     /*
-     * The URI to fetch the next page of Dedicated Host Groups. Call ListNext()
-     * with this URI to fetch the next page of Dedicated Host Groups.
+     * The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this URI to fetch the next page of
+     * Dedicated Host Groups.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of DedicatedHostGroupListResult class. */
+    public DedicatedHostGroupListResult() {
+    }
 
     /**
      * Get the value property: The list of dedicated host groups.

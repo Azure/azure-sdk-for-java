@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.NaptConfiguration;
@@ -14,22 +15,41 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Attached data network resource. */
+/** Attached data network resource. Must be created in the same location as its parent packet core data plane. */
 @Fluent
 public final class AttachedDataNetworkInner extends Resource {
     /*
-     * Data network properties.
+     * Attached data network properties.
      */
     @JsonProperty(value = "properties", required = true)
     private AttachedDataNetworkPropertiesFormat innerProperties = new AttachedDataNetworkPropertiesFormat();
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of AttachedDataNetworkInner class. */
+    public AttachedDataNetworkInner() {
+    }
+
     /**
-     * Get the innerProperties property: Data network properties.
+     * Get the innerProperties property: Attached data network properties.
      *
      * @return the innerProperties value.
      */
     private AttachedDataNetworkPropertiesFormat innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -56,8 +76,8 @@ public final class AttachedDataNetworkInner extends Resource {
     }
 
     /**
-     * Get the userPlaneDataInterface property: The user plane interface on the data network. In 5G networks this is
-     * called as N6 interface whereas in 4G networks this is called as SGi interface.
+     * Get the userPlaneDataInterface property: The user plane interface on the data network. For 5G networks, this is
+     * the N6 interface. For 4G networks, this is the SGi interface.
      *
      * @return the userPlaneDataInterface value.
      */
@@ -66,8 +86,8 @@ public final class AttachedDataNetworkInner extends Resource {
     }
 
     /**
-     * Set the userPlaneDataInterface property: The user plane interface on the data network. In 5G networks this is
-     * called as N6 interface whereas in 4G networks this is called as SGi interface.
+     * Set the userPlaneDataInterface property: The user plane interface on the data network. For 5G networks, this is
+     * the N6 interface. For 4G networks, this is the SGi interface.
      *
      * @param userPlaneDataInterface the userPlaneDataInterface value to set.
      * @return the AttachedDataNetworkInner object itself.
@@ -81,8 +101,33 @@ public final class AttachedDataNetworkInner extends Resource {
     }
 
     /**
-     * Get the naptConfiguration property: The Network Address and Port Translation configuration. If not specified the
-     * attached data network uses a default NAPT configuration with NAPT enabled.
+     * Get the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network. This
+     * configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
+     *
+     * @return the dnsAddresses value.
+     */
+    public List<String> dnsAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsAddresses();
+    }
+
+    /**
+     * Set the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network. This
+     * configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
+     *
+     * @param dnsAddresses the dnsAddresses value to set.
+     * @return the AttachedDataNetworkInner object itself.
+     */
+    public AttachedDataNetworkInner withDnsAddresses(List<String> dnsAddresses) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttachedDataNetworkPropertiesFormat();
+        }
+        this.innerProperties().withDnsAddresses(dnsAddresses);
+        return this;
+    }
+
+    /**
+     * Get the naptConfiguration property: The network address and port translation (NAPT) configuration. If this is not
+     * specified, the attached data network will use a default NAPT configuration with NAPT enabled.
      *
      * @return the naptConfiguration value.
      */
@@ -91,8 +136,8 @@ public final class AttachedDataNetworkInner extends Resource {
     }
 
     /**
-     * Set the naptConfiguration property: The Network Address and Port Translation configuration. If not specified the
-     * attached data network uses a default NAPT configuration with NAPT enabled.
+     * Set the naptConfiguration property: The network address and port translation (NAPT) configuration. If this is not
+     * specified, the attached data network will use a default NAPT configuration with NAPT enabled.
      *
      * @param naptConfiguration the naptConfiguration value to set.
      * @return the AttachedDataNetworkInner object itself.
@@ -106,10 +151,11 @@ public final class AttachedDataNetworkInner extends Resource {
     }
 
     /**
-     * Get the userEquipmentAddressPoolPrefix property: The user equipment address pool prefixes for the attached data
-     * network that are dynamically assigned by the core to UEs when they set up a PDU session. At least one of
-     * userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined then
-     * they must be the same size.
+     * Get the userEquipmentAddressPoolPrefix property: The user equipment (UE) address pool prefixes for the attached
+     * data network from which the packet core instance will dynamically assign IP addresses to UEs. The packet core
+     * instance assigns an IP address to a UE when the UE sets up a PDU session. You must define at least one of
+     * userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you define both, they must be of the
+     * same size.
      *
      * @return the userEquipmentAddressPoolPrefix value.
      */
@@ -118,10 +164,11 @@ public final class AttachedDataNetworkInner extends Resource {
     }
 
     /**
-     * Set the userEquipmentAddressPoolPrefix property: The user equipment address pool prefixes for the attached data
-     * network that are dynamically assigned by the core to UEs when they set up a PDU session. At least one of
-     * userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined then
-     * they must be the same size.
+     * Set the userEquipmentAddressPoolPrefix property: The user equipment (UE) address pool prefixes for the attached
+     * data network from which the packet core instance will dynamically assign IP addresses to UEs. The packet core
+     * instance assigns an IP address to a UE when the UE sets up a PDU session. You must define at least one of
+     * userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you define both, they must be of the
+     * same size.
      *
      * @param userEquipmentAddressPoolPrefix the userEquipmentAddressPoolPrefix value to set.
      * @return the AttachedDataNetworkInner object itself.
@@ -135,11 +182,11 @@ public final class AttachedDataNetworkInner extends Resource {
     }
 
     /**
-     * Get the userEquipmentStaticAddressPoolPrefix property: The user equipment address pool prefixes for the attached
-     * data network that are statically assigned by the core to UEs when they set up a PDU session. The mapping of
-     * static IP to sim is configured in staticIpConfiguration on the sim resource. At least one of
-     * userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined then
-     * they must be the same size.
+     * Get the userEquipmentStaticAddressPoolPrefix property: The user equipment (UE) address pool prefixes for the
+     * attached data network from which the packet core instance will assign static IP addresses to UEs. The packet core
+     * instance assigns an IP address to a UE when the UE sets up a PDU session. The static IP address for a specific UE
+     * is set in StaticIPConfiguration on the corresponding SIM resource. At least one of userEquipmentAddressPoolPrefix
+     * and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined, they must be of the same size.
      *
      * @return the userEquipmentStaticAddressPoolPrefix value.
      */
@@ -148,11 +195,11 @@ public final class AttachedDataNetworkInner extends Resource {
     }
 
     /**
-     * Set the userEquipmentStaticAddressPoolPrefix property: The user equipment address pool prefixes for the attached
-     * data network that are statically assigned by the core to UEs when they set up a PDU session. The mapping of
-     * static IP to sim is configured in staticIpConfiguration on the sim resource. At least one of
-     * userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined then
-     * they must be the same size.
+     * Set the userEquipmentStaticAddressPoolPrefix property: The user equipment (UE) address pool prefixes for the
+     * attached data network from which the packet core instance will assign static IP addresses to UEs. The packet core
+     * instance assigns an IP address to a UE when the UE sets up a PDU session. The static IP address for a specific UE
+     * is set in StaticIPConfiguration on the corresponding SIM resource. At least one of userEquipmentAddressPoolPrefix
+     * and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined, they must be of the same size.
      *
      * @param userEquipmentStaticAddressPoolPrefix the userEquipmentStaticAddressPoolPrefix value to set.
      * @return the AttachedDataNetworkInner object itself.

@@ -14,24 +14,21 @@ parameters:
   - name: TestOptions
     type: string
     default: ''
-  - name: AdditionalBuildOptions
-    type: string
-    default: ''
   - name: TestParallelization
     type: string
     default: '1C'
   - name: ParallelTestPlayback
     type: string
     default: 'false'
-  - name: SkipAggregateReports
-    type: boolean
-    default: false
   - name: TestResultsFiles
     type: string
     default: ''
   - name: TestEnvVars
     type: object
     default: {}
+  - name: TestVersionSupport
+    type: string
+    default: 'false'
   - name: IsLiveTest
     type: boolean
     default: false
@@ -44,13 +41,15 @@ steps:
     displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} ${{ parameters.AdditionalBuildOptions }} -pl $(ProjectList) -am
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'install'
+    env:
+      AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
@@ -71,17 +70,17 @@ steps:
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
     displayName: 'Generate pom for aggregate code coverage report'
-    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
+    condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
-      scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
-      arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }}'
+      scriptPath: 'eng/scripts/generate_aggregate_pom.py'
+      arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
 
   - task: Maven@3
     displayName: 'Generate aggregate code coverage report'
-    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
+    condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
-      mavenPomFile: aggregate-coverage-pom.xml
+      mavenPomFile: aggregate-pom.xml
       options: '$(DefaultOptions)'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
@@ -99,7 +98,7 @@ steps:
       # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
       # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
       # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} ${{ parameters.AdditionalBuildOptions }}
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -137,6 +136,9 @@ steps:
   - task: PublishTestResults@2
     condition: always()
     inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/TEST-*.xml'
+      searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
       mergeTestResults: true
       testRunTitle: $(Agent.JobName)
       ${{ if ne(parameters.TestResultsFiles, '') }}:
@@ -145,7 +147,7 @@ steps:
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
   - task: PublishCodeCoverageResults@1
-    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'))
+    condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
       codeCoverageTool: JaCoCo
       summaryFileLocation: target/site/test-coverage/jacoco.xml

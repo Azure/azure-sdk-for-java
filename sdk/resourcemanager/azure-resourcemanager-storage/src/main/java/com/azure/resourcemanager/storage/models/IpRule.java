@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class IpRule {
     /*
-     * Specifies the IP or IP range in CIDR format. Only IPV4 address is
-     * allowed.
+     * Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      */
     @JsonProperty(value = "value", required = true)
     private String ipAddressOrRange;

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A logic app receiver. */
 @Fluent
 public final class LogicAppReceiver {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogicAppReceiver.class);
-
     /*
-     * The name of the logic app receiver. Names must be unique across all
-     * receivers within an action group.
+     * The name of the logic app receiver. Names must be unique across all receivers within an action group.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -38,6 +34,10 @@ public final class LogicAppReceiver {
      */
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
+
+    /** Creates an instance of LogicAppReceiver class. */
+    public LogicAppReceiver() {
+    }
 
     /**
      * Get the name property: The name of the logic app receiver. Names must be unique across all receivers within an
@@ -128,19 +128,21 @@ public final class LogicAppReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model LogicAppReceiver"));
         }
         if (resourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property resourceId in model LogicAppReceiver"));
         }
         if (callbackUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property callbackUrl in model LogicAppReceiver"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LogicAppReceiver.class);
 }

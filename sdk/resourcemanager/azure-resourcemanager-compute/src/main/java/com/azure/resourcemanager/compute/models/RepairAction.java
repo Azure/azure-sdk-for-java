@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RepairAction. */
+/**
+ * Type of repair action (replace, restart, reimage) that will be used for repairing unhealthy virtual machines in the
+ * scale set. Default value is replace.
+ */
 public final class RepairAction extends ExpandableStringEnum<RepairAction> {
     /** Static value Replace for RepairAction. */
     public static final RepairAction REPLACE = fromString("Replace");
@@ -18,6 +21,15 @@ public final class RepairAction extends ExpandableStringEnum<RepairAction> {
 
     /** Static value Reimage for RepairAction. */
     public static final RepairAction REIMAGE = fromString("Reimage");
+
+    /**
+     * Creates a new instance of RepairAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RepairAction() {
+    }
 
     /**
      * Creates or finds a RepairAction from its string representation.

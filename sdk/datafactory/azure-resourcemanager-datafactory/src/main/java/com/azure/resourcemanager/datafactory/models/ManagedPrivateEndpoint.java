@@ -41,8 +41,7 @@ public final class ManagedPrivateEndpoint {
     private Boolean isReserved;
 
     /*
-     * The ARM resource ID of the resource to which the managed private
-     * endpoint is created
+     * The ARM resource ID of the resource to which the managed private endpoint is created
      */
     @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
@@ -57,6 +56,10 @@ public final class ManagedPrivateEndpoint {
      * Properties of a managed private endpoint
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of ManagedPrivateEndpoint class. */
+    public ManagedPrivateEndpoint() {
+    }
 
     /**
      * Get the connectionState property: The managed private endpoint connection state.

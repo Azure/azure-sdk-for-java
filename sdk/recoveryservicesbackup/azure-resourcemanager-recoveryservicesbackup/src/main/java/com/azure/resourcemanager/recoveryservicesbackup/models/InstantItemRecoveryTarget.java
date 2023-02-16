@@ -17,6 +17,10 @@ public final class InstantItemRecoveryTarget {
     @JsonProperty(value = "clientScripts")
     private List<ClientScriptForConnect> clientScripts;
 
+    /** Creates an instance of InstantItemRecoveryTarget class. */
+    public InstantItemRecoveryTarget() {
+    }
+
     /**
      * Get the clientScripts property: List of client scripts.
      *

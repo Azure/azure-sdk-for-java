@@ -32,26 +32,11 @@ public interface QueryResult {
     String type();
 
     /**
-     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
-     * Gets the location property: Resource location.
+     * Gets the location property: The geo-location where the resource lives.
      *
      * @return the location value.
      */
     String location();
-
-    /**
-     * Gets the sku property: Resource SKU.
-     *
-     * @return the sku value.
-     */
-    String sku();
 
     /**
      * Gets the tags property: Resource tags.
@@ -59,6 +44,20 @@ public interface QueryResult {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the sku property: SKU of the resource.
+     *
+     * @return the sku value.
+     */
+    String sku();
+
+    /**
+     * Gets the etag property: ETag of the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
 
     /**
      * Gets the nextLink property: The link (url) to the next page of results.

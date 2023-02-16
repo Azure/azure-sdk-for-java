@@ -27,6 +27,9 @@ public enum WafMetricsResponseSeriesItemUnit {
      */
     @JsonCreator
     public static WafMetricsResponseSeriesItemUnit fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         WafMetricsResponseSeriesItemUnit[] items = WafMetricsResponseSeriesItemUnit.values();
         for (WafMetricsResponseSeriesItemUnit item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum WafMetricsResponseSeriesItemUnit {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseAccounts ListUsages. */
 public final class DatabaseAccountsListUsagesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountGetUsages.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountGetUsages.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountGetUsages.
@@ -22,6 +20,6 @@ public final class DatabaseAccountsListUsagesSamples {
             .manager()
             .serviceClient()
             .getDatabaseAccounts()
-            .listUsages("rg1", "ddb1", "$filter=name.value eq 'Storage'", Context.NONE);
+            .listUsages("rg1", "ddb1", "$filter=name.value eq 'Storage'", com.azure.core.util.Context.NONE);
     }
 }

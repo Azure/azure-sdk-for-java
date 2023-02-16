@@ -14,12 +14,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
-import org.springframework.data.util.*;
-import org.springframework.lang.*;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 public class AbstractQueryGeneratorTest {
 
@@ -59,6 +61,18 @@ public class AbstractQueryGeneratorTest {
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
         Assert.assertEquals(result.getQueryText(), " WHERE STARTSWITH(r.firstName, @firstName0, true) ");
+    }
+
+    @Test
+    public void generateBinaryQueryWithSort() {
+        Criteria hasLastName = Criteria.getInstance(CriteriaType.ARRAY_CONTAINS, "lastName",
+            Collections.singletonList("ANDERSON"),
+            Part.IgnoreCaseType.ALWAYS);
+        CosmosQuery query = new CosmosQuery(hasLastName).with(Sort.by(ASC, "id"));
+
+        SqlQuerySpec result = queryGenerator.generateCosmos(query);
+
+        Assert.assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ORDER BY r.id ASC");
     }
 
     @Test

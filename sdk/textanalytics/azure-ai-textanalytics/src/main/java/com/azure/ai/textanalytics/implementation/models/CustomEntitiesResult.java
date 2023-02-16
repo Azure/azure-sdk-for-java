@@ -17,6 +17,9 @@ public final class CustomEntitiesResult extends CustomResult {
     @JsonProperty(value = "documents", required = true)
     private List<CustomEntitiesResultDocumentsItem> documents;
 
+    /** Creates an instance of CustomEntitiesResult class. */
+    public CustomEntitiesResult() {}
+
     /**
      * Get the documents property: Response by document.
      *
@@ -34,6 +37,34 @@ public final class CustomEntitiesResult extends CustomResult {
      */
     public CustomEntitiesResult setDocuments(List<CustomEntitiesResultDocumentsItem> documents) {
         this.documents = documents;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesResult setErrors(List<DocumentError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesResult setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesResult setProjectName(String projectName) {
+        super.setProjectName(projectName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesResult setDeploymentName(String deploymentName) {
+        super.setDeploymentName(deploymentName);
         return this;
     }
 }

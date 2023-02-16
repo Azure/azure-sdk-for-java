@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NodeState. */
+/** The state of the node in Cassandra ring. */
 public final class NodeState extends ExpandableStringEnum<NodeState> {
     /** Static value Normal for NodeState. */
     public static final NodeState NORMAL = fromString("Normal");
@@ -24,6 +24,15 @@ public final class NodeState extends ExpandableStringEnum<NodeState> {
 
     /** Static value Stopped for NodeState. */
     public static final NodeState STOPPED = fromString("Stopped");
+
+    /**
+     * Creates a new instance of NodeState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NodeState() {
+    }
 
     /**
      * Creates or finds a NodeState from its string representation.

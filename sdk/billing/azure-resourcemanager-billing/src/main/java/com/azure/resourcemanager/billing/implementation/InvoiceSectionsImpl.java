@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.InvoiceSectionsClient;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionInner;
 import com.azure.resourcemanager.billing.models.InvoiceSection;
 import com.azure.resourcemanager.billing.models.InvoiceSections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class InvoiceSectionsImpl implements InvoiceSections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceSectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InvoiceSectionsImpl.class);
 
     private final InvoiceSectionsClient innerClient;
 
@@ -41,16 +40,6 @@ public final class InvoiceSectionsImpl implements InvoiceSections {
         return Utils.mapPage(inner, inner1 -> new InvoiceSectionImpl(inner1, this.manager()));
     }
 
-    public InvoiceSection get(String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        InvoiceSectionInner inner =
-            this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName);
-        if (inner != null) {
-            return new InvoiceSectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<InvoiceSection> getWithResponse(
         String billingAccountName, String billingProfileName, String invoiceSectionName, Context context) {
         Response<InvoiceSectionInner> inner =
@@ -61,6 +50,16 @@ public final class InvoiceSectionsImpl implements InvoiceSections {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new InvoiceSectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public InvoiceSection get(String billingAccountName, String billingProfileName, String invoiceSectionName) {
+        InvoiceSectionInner inner =
+            this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName);
+        if (inner != null) {
+            return new InvoiceSectionImpl(inner, this.manager());
         } else {
             return null;
         }

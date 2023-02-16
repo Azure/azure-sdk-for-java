@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfidentialVMEncryptionType. */
+/** confidential VM encryption types. */
 public final class ConfidentialVMEncryptionType extends ExpandableStringEnum<ConfidentialVMEncryptionType> {
     /** Static value EncryptedVMGuestStateOnlyWithPmk for ConfidentialVMEncryptionType. */
     public static final ConfidentialVMEncryptionType ENCRYPTED_VMGUEST_STATE_ONLY_WITH_PMK =
@@ -19,6 +19,15 @@ public final class ConfidentialVMEncryptionType extends ExpandableStringEnum<Con
 
     /** Static value EncryptedWithCmk for ConfidentialVMEncryptionType. */
     public static final ConfidentialVMEncryptionType ENCRYPTED_WITH_CMK = fromString("EncryptedWithCmk");
+
+    /**
+     * Creates a new instance of ConfidentialVMEncryptionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConfidentialVMEncryptionType() {
+    }
 
     /**
      * Creates or finds a ConfidentialVMEncryptionType from its string representation.

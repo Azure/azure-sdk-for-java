@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Navigation for DSC Report Resource. */
 @Fluent
 public final class DscReportResourceNavigation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscReportResourceNavigation.class);
-
     /*
      * Gets or sets the ID of the resource to navigate to.
      */

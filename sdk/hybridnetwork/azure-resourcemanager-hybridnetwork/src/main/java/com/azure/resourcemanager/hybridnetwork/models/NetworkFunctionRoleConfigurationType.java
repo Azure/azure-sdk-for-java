@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkFunctionRoleConfigurationType. */
+/** Role type. */
 public final class NetworkFunctionRoleConfigurationType
     extends ExpandableStringEnum<NetworkFunctionRoleConfigurationType> {
     /** Static value Unknown for NetworkFunctionRoleConfigurationType. */
@@ -28,7 +28,11 @@ public final class NetworkFunctionRoleConfigurationType
         return fromString(name, NetworkFunctionRoleConfigurationType.class);
     }
 
-    /** @return known NetworkFunctionRoleConfigurationType values. */
+    /**
+     * Gets known NetworkFunctionRoleConfigurationType values.
+     *
+     * @return known NetworkFunctionRoleConfigurationType values.
+     */
     public static Collection<NetworkFunctionRoleConfigurationType> values() {
         return values(NetworkFunctionRoleConfigurationType.class);
     }

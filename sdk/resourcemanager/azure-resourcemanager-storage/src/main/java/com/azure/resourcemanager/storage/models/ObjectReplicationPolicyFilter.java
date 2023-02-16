@@ -15,16 +15,14 @@ import java.util.List;
 @Fluent
 public final class ObjectReplicationPolicyFilter {
     /*
-     * Optional. Filters the results to replicate only blobs whose names begin
-     * with the specified prefix.
+     * Optional. Filters the results to replicate only blobs whose names begin with the specified prefix.
      */
     @JsonProperty(value = "prefixMatch")
     private List<String> prefixMatch;
 
     /*
-     * Blobs created after the time will be replicated to the destination. It
-     * must be in datetime format 'yyyy-MM-ddTHH:mm:ssZ'. Example:
-     * 2020-02-19T16:05:00Z
+     * Blobs created after the time will be replicated to the destination. It must be in datetime format
+     * 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z
      */
     @JsonProperty(value = "minCreationTime")
     private String minCreationTime;

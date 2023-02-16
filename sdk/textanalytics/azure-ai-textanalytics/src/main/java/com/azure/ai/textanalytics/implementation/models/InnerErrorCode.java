@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InnerErrorCode. */
+/** Human-readable error code. */
 public final class InnerErrorCode extends ExpandableStringEnum<InnerErrorCode> {
     /** Static value InvalidRequest for InnerErrorCode. */
     public static final InnerErrorCode INVALID_REQUEST = fromString("InvalidRequest");
@@ -63,7 +63,11 @@ public final class InnerErrorCode extends ExpandableStringEnum<InnerErrorCode> {
         return fromString(name, InnerErrorCode.class);
     }
 
-    /** @return known InnerErrorCode values. */
+    /**
+     * Gets known InnerErrorCode values.
+     *
+     * @return known InnerErrorCode values.
+     */
     public static Collection<InnerErrorCode> values() {
         return values(InnerErrorCode.class);
     }

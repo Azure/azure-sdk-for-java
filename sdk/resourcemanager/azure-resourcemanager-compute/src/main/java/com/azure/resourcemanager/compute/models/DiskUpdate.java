@@ -27,11 +27,15 @@ public final class DiskUpdate {
     private Map<String, String> tags;
 
     /*
-     * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS,
-     * UltraSSD_LRS, Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
+     * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS,
+     * StandardSSD_ZRS, or PremiumV2_LRS.
      */
     @JsonProperty(value = "sku")
     private DiskSku sku;
+
+    /** Creates an instance of DiskUpdate class. */
+    public DiskUpdate() {
+    }
 
     /**
      * Get the innerProperties property: Disk resource update properties.
@@ -532,6 +536,35 @@ public final class DiskUpdate {
             this.innerProperties = new DiskUpdateProperties();
         }
         this.innerProperties().withDataAccessAuthMode(dataAccessAuthMode);
+        return this;
+    }
+
+    /**
+     * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @return the optimizedForFrequentAttach value.
+     */
+    public Boolean optimizedForFrequentAttach() {
+        return this.innerProperties() == null ? null : this.innerProperties().optimizedForFrequentAttach();
+    }
+
+    /**
+     * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withOptimizedForFrequentAttach(Boolean optimizedForFrequentAttach) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withOptimizedForFrequentAttach(optimizedForFrequentAttach);
         return this;
     }
 

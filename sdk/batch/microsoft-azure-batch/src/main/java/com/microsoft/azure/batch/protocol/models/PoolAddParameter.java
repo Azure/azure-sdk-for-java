@@ -93,7 +93,7 @@ public class PoolAddParameter {
     private Integer targetDedicatedNodes;
 
     /**
-     * The desired number of low-priority Compute Nodes in the Pool.
+     * The desired number of Spot/Low-priority Compute Nodes in the Pool.
      * This property must not be specified if enableAutoScale is set to true.
      * If enableAutoScale is set to false, then you must set either
      * targetDedicatedNodes, targetLowPriorityNodes, or both.
@@ -177,6 +177,9 @@ public class PoolAddParameter {
 
     /**
      * The list of Packages to be installed on each Compute Node in the Pool.
+     * When creating a pool, the package's application ID must be fully
+     * qualified
+     * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
      * Changes to Package references affect all new Nodes joining the Pool, but
      * do not affect Compute Nodes that are already in the Pool until they are
      * rebooted or reimaged. There is a maximum of 10 Package references on any
@@ -234,6 +237,14 @@ public class PoolAddParameter {
      */
     @JsonProperty(value = "mountConfiguration")
     private List<MountConfiguration> mountConfiguration;
+
+    /**
+     * The desired node communication mode for the pool.
+     * If omitted, the default value is Default. Possible values include:
+     * 'default', 'classic', 'simplified'.
+     */
+    @JsonProperty(value = "targetNodeCommunicationMode")
+    private NodeCommunicationMode targetNodeCommunicationMode;
 
     /**
      * Get the ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two Pool IDs within an Account that differ only by case).
@@ -536,7 +547,7 @@ public class PoolAddParameter {
     }
 
     /**
-     * Get changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
+     * Get when creating a pool, the package's application ID must be fully qualified (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}). Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
      *
      * @return the applicationPackageReferences value
      */
@@ -545,7 +556,7 @@ public class PoolAddParameter {
     }
 
     /**
-     * Set changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
+     * Set when creating a pool, the package's application ID must be fully qualified (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}). Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set
      * @return the PoolAddParameter object itself.
@@ -672,6 +683,26 @@ public class PoolAddParameter {
      */
     public PoolAddParameter withMountConfiguration(List<MountConfiguration> mountConfiguration) {
         this.mountConfiguration = mountConfiguration;
+        return this;
+    }
+
+    /**
+     * Get if omitted, the default value is Default. Possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @return the targetNodeCommunicationMode value
+     */
+    public NodeCommunicationMode targetNodeCommunicationMode() {
+        return this.targetNodeCommunicationMode;
+    }
+
+    /**
+     * Set if omitted, the default value is Default. Possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set
+     * @return the PoolAddParameter object itself.
+     */
+    public PoolAddParameter withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
+        this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;
     }
 

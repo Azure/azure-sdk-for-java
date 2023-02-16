@@ -14,11 +14,10 @@ import com.azure.resourcemanager.avs.fluent.models.ScriptExecutionInner;
 import com.azure.resourcemanager.avs.models.ScriptExecution;
 import com.azure.resourcemanager.avs.models.ScriptExecutions;
 import com.azure.resourcemanager.avs.models.ScriptOutputStreamType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 public final class ScriptExecutionsImpl implements ScriptExecutions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptExecutionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptExecutionsImpl.class);
 
     private final ScriptExecutionsClient innerClient;
 
@@ -41,15 +40,6 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
         return Utils.mapPage(inner, inner1 -> new ScriptExecutionImpl(inner1, this.manager()));
     }
 
-    public ScriptExecution get(String resourceGroupName, String privateCloudName, String scriptExecutionName) {
-        ScriptExecutionInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, scriptExecutionName);
-        if (inner != null) {
-            return new ScriptExecutionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ScriptExecution> getWithResponse(
         String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context) {
         Response<ScriptExecutionInner> inner =
@@ -65,23 +55,21 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
         }
     }
 
+    public ScriptExecution get(String resourceGroupName, String privateCloudName, String scriptExecutionName) {
+        ScriptExecutionInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, scriptExecutionName);
+        if (inner != null) {
+            return new ScriptExecutionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String privateCloudName, String scriptExecutionName) {
         this.serviceClient().delete(resourceGroupName, privateCloudName, scriptExecutionName);
     }
 
     public void delete(String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context) {
         this.serviceClient().delete(resourceGroupName, privateCloudName, scriptExecutionName, context);
-    }
-
-    public ScriptExecution getExecutionLogs(
-        String resourceGroupName, String privateCloudName, String scriptExecutionName) {
-        ScriptExecutionInner inner =
-            this.serviceClient().getExecutionLogs(resourceGroupName, privateCloudName, scriptExecutionName);
-        if (inner != null) {
-            return new ScriptExecutionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ScriptExecution> getExecutionLogsWithResponse(
@@ -106,10 +94,21 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
         }
     }
 
+    public ScriptExecution getExecutionLogs(
+        String resourceGroupName, String privateCloudName, String scriptExecutionName) {
+        ScriptExecutionInner inner =
+            this.serviceClient().getExecutionLogs(resourceGroupName, privateCloudName, scriptExecutionName);
+        if (inner != null) {
+            return new ScriptExecutionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public ScriptExecution getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,14 +116,14 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String scriptExecutionName = Utils.getValueFromIdByName(id, "scriptExecutions");
         if (scriptExecutionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +136,7 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
     public Response<ScriptExecution> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,14 +144,14 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String scriptExecutionName = Utils.getValueFromIdByName(id, "scriptExecutions");
         if (scriptExecutionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -165,7 +164,7 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -173,14 +172,14 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String scriptExecutionName = Utils.getValueFromIdByName(id, "scriptExecutions");
         if (scriptExecutionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -193,7 +192,7 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -201,14 +200,14 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String scriptExecutionName = Utils.getValueFromIdByName(id, "scriptExecutions");
         if (scriptExecutionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

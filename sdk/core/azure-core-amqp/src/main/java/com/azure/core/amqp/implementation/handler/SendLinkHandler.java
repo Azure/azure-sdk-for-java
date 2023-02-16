@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Delivery;
@@ -20,6 +21,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
+import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_STATE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
@@ -44,8 +46,16 @@ public class SendLinkHandler extends LinkHandler {
     private final Sinks.Many<Integer> creditProcessor = Sinks.many().unicast().onBackpressureBuffer();
     private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().onBackpressureBuffer();
 
+    /**
+     * @deprecated use {@link SendLinkHandler#SendLinkHandler(String, String, String, String, AmqpMetricsProvider)} instead.
+     */
+    @Deprecated
     public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
-        super(connectionId, hostname, entityPath);
+        this(connectionId, hostname, linkName, entityPath, new AmqpMetricsProvider(null, hostname, null));
+    }
+
+    public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath, AmqpMetricsProvider metricsProvider) {
+        super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = entityPath;
     }
@@ -173,7 +183,7 @@ public class SendLinkHandler extends LinkHandler {
                 .addKeyValue(LINK_NAME_KEY, getLinkName())
                 .addKeyValue("unsettled", sender.getUnsettled())
                 .addKeyValue("credit", sender.getRemoteCredit())
-                .addKeyValue("deliveryState", delivery.getRemoteState())
+                .addKeyValue(DELIVERY_STATE_KEY, delivery.getRemoteState())
                 .addKeyValue("delivery.isBuffered", delivery.isBuffered())
                 .addKeyValue("delivery.id", deliveryTag)
                 .log("onDelivery");

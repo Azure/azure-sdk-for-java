@@ -326,10 +326,13 @@ class CosmosPartitionPlannerITest
       rawPartitionMetadata
     }
 
-    Loan(CosmosClientCache.apply(clientConfig, None, "CosmosPartitionPlannerITest-01"))
-      .to(clientCacheItem => {
-        val container = clientCacheItem
-          .client
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache.apply(clientConfig, None, "CosmosPartitionPlannerITest-01"))
+      ))
+      .to(clientCacheItems => {
+        val container = clientCacheItems(0).get
+          .cosmosClient
           .getDatabase(containerConfig.database)
           .getContainer(containerConfig.container)
 

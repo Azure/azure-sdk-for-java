@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetIdentityType;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** Samples for DiskEncryptionSets CreateOrUpdate. */
 public final class DiskEncryptionSetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentTenant.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentTenant.json
      */
     /**
      * Sample code: Create a disk encryption set with key vault from a different tenant.
@@ -45,15 +44,13 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
                                     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}",
                                     new VirtualMachineIdentityUserAssignedIdentities())))
                     .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
-                    .withActiveKey(
-                        new KeyForDiskEncryptionSet()
-                            .withKeyUrl("https://myvaultdifferenttenant.vault-int.azure-int.net/keys/{key}"))
+                    .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder"))
                     .withFederatedClientId("00000000-0000-0000-0000-000000000000"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create.json
      */
     /**
      * Sample code: Create a disk encryption set.
@@ -79,12 +76,12 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
                                 new SourceVault()
                                     .withId(
                                         "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault"))
-                            .withKeyUrl("https://myvmvault.vault-int.azure-int.net/keys/{key}")),
-                Context.NONE);
+                            .withKeyUrl("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentSubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentSubscription.json
      */
     /**
      * Sample code: Create a disk encryption set with key vault from a different subscription.
@@ -105,10 +102,8 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
                     .withLocation("West US")
                     .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
                     .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
-                    .withActiveKey(
-                        new KeyForDiskEncryptionSet()
-                            .withKeyUrl("https://myvaultdifferentsub.vault-int.azure-int.net/keys/{key}")),
-                Context.NONE);
+                    .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

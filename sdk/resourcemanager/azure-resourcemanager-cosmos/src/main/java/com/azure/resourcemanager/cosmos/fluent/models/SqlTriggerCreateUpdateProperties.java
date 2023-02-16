@@ -20,11 +20,15 @@ public final class SqlTriggerCreateUpdateProperties {
     private SqlTriggerResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This
-     * corresponds to the headers sent with the request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
+     * request.
      */
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
+
+    /** Creates an instance of SqlTriggerCreateUpdateProperties class. */
+    public SqlTriggerCreateUpdateProperties() {
+    }
 
     /**
      * Get the resource property: The standard JSON format of a trigger.

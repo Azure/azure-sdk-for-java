@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "101618b3-72db-48c4-88b4-0344756e04d4",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-azure-ref" : "20220809T220815Z-gu5mc89ux17apbrm5n76u6e4ng00000000kg00000001bkr3",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2, 2022-07-18-preview",
+      "Connection" : "keep-alive",
+      "Last-Modified" : "Tue, 09 Aug 2022 22:08:16 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 09 Aug 2022 22:08:16 GMT",
+      "ETag" : "\"2d019a99-0000-0700-0000-62f2dad00000\"",
+      "trace-id" : "c5d19996cb1fbe5a0a461f44c55cc1a9",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy\",\"name\":\"JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"longest-idle\",\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "42c1c507-175b-4628-8914-60df27ad8a88"
+    },
+    "Response" : {
+      "x-azure-ref" : "20220809T220817Z-gu5mc89ux17apbrm5n76u6e4ng00000000kg00000001bm05",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "trace-id" : "a2106447ff85c7bd9c5f2ddba889a999",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2, 2022-07-18-preview",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Tue, 09 Aug 2022 22:08:17 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

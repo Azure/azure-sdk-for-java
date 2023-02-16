@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBPrivateEndpointConnectionDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBPrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: Deletes a private endpoint connection with a given name.
@@ -23,6 +21,6 @@ public final class PrivateEndpointConnectionsDeleteSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .delete("rg1", "ddb1", "privateEndpointConnectionName", Context.NONE);
+            .delete("rg1", "ddb1", "privateEndpointConnectionName", com.azure.core.util.Context.NONE);
     }
 }

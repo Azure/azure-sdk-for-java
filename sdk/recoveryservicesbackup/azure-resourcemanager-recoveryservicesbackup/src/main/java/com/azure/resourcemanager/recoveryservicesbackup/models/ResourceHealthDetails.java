@@ -35,6 +35,10 @@ public class ResourceHealthDetails {
     @JsonProperty(value = "recommendations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> recommendations;
 
+    /** Creates an instance of ResourceHealthDetails class. */
+    public ResourceHealthDetails() {
+    }
+
     /**
      * Get the code property: Health Code.
      *

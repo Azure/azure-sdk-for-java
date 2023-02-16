@@ -29,7 +29,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.certificates.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateIdentifier;
 
 import java.net.MalformedURLException;
@@ -53,7 +55,7 @@ import java.util.Map;
  * <pre>
  * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -62,33 +64,21 @@ import java.util.Map;
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link CertificateClientBuilder}.</p>
  *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation -->
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withHttpClient -->
  * <pre>
  * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation -->
+ * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withHttpClient -->
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
  * {@link String vaultUrl}
  * can be specified. It provides finer control over the construction of {@link CertificateAsyncClient} and {@link
  * CertificateClient}</p>
- *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
- *     .build&#40;&#41;;
- * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation -->
  *
  * <p> The minimal configuration options required by {@link CertificateClientBuilder certificateClientBuilder} to build
  * {@link CertificateClient}
@@ -98,7 +88,7 @@ import java.util.Map;
  * <pre>
  * CertificateClient certificateClient = new CertificateClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -124,7 +114,7 @@ public final class CertificateClientBuilder implements
 
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private URL vaultUrl;
+    private String vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
@@ -132,6 +122,7 @@ public final class CertificateClientBuilder implements
     private Configuration configuration;
     private CertificateServiceVersion version;
     private ClientOptions clientOptions;
+    private boolean disableChallengeResourceVerification = false;
 
     /**
      * The constructor with defaults.
@@ -162,7 +153,7 @@ public final class CertificateClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateClient buildClient() {
-        return new CertificateClient(buildAsyncClient());
+        return new CertificateClient(buildInnerClient());
     }
 
     /**
@@ -184,10 +175,14 @@ public final class CertificateClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
+        return new CertificateAsyncClient(buildInnerClient());
+    }
+
+    private CertificateClientImpl buildInnerClient() {
         Configuration buildConfiguration = (configuration != null) ? configuration
             : Configuration.getGlobalConfiguration().clone();
 
-        URL buildEndpoint = getBuildEndpoint(buildConfiguration);
+        String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
@@ -197,7 +192,7 @@ public final class CertificateClientBuilder implements
         CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new CertificateAsyncClient(vaultUrl, pipeline, serviceVersion);
+            return new CertificateClientImpl(vaultUrl, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -230,7 +225,7 @@ public final class CertificateClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -243,11 +238,12 @@ public final class CertificateClientBuilder implements
             .httpClient(httpClient)
             .build();
 
-        return new CertificateAsyncClient(vaultUrl, pipeline, serviceVersion);
+        return new CertificateClientImpl(vaultUrl, pipeline, serviceVersion);
     }
 
     /**
-     * Sets the vault endpoint URL to send HTTP requests to.
+     * Sets the vault endpoint URL to send HTTP requests to. You should validate that this URL references a valid Key
+     * Vault resource. Refer to the following <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * @param vaultUrl The vault endpoint url is used as destination on Azure to send requests to. If you have a
      * certificate identifier, create a new {@link KeyVaultCertificateIdentifier} to parse it and obtain the
@@ -263,7 +259,8 @@ public final class CertificateClientBuilder implements
         }
 
         try {
-            this.vaultUrl = new URL(vaultUrl);
+            URL url = new URL(vaultUrl);
+            this.vaultUrl = url.toString();
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
         }
@@ -486,7 +483,19 @@ public final class CertificateClientBuilder implements
         return this;
     }
 
-    private URL getBuildEndpoint(Configuration configuration) {
+    /**
+     * Disables verifying if the authentication challenge resource matches the Key Vault domain. This verification is
+     * performed by default.
+     *
+     * @return The updated {@link CertificateClientBuilder} object.
+     */
+    public CertificateClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
+
+        return this;
+    }
+
+    private String getBuildEndpoint(Configuration configuration) {
         if (vaultUrl != null) {
             return vaultUrl;
         }
@@ -497,7 +506,8 @@ public final class CertificateClientBuilder implements
         }
 
         try {
-            return new URL(configEndpoint);
+            URL url = new URL(configEndpoint);
+            return url.toString();
         } catch (MalformedURLException ex) {
             return null;
         }

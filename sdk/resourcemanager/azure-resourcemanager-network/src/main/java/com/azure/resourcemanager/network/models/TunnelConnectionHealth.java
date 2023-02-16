@@ -40,6 +40,10 @@ public final class TunnelConnectionHealth {
     @JsonProperty(value = "lastConnectionEstablishedUtcTime", access = JsonProperty.Access.WRITE_ONLY)
     private String lastConnectionEstablishedUtcTime;
 
+    /** Creates an instance of TunnelConnectionHealth class. */
+    public TunnelConnectionHealth() {
+    }
+
     /**
      * Get the tunnel property: Tunnel name.
      *

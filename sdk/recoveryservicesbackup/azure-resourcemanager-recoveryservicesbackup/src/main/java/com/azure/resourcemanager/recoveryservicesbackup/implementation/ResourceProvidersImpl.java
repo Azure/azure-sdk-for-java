@@ -30,15 +30,6 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         this.serviceManager = serviceManager;
     }
 
-    public OperationStatus getOperationStatus(String vaultName, String resourceGroupName, String operationId) {
-        OperationStatusInner inner = this.serviceClient().getOperationStatus(vaultName, resourceGroupName, operationId);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OperationStatus> getOperationStatusWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         Response<OperationStatusInner> inner =
@@ -49,6 +40,15 @@ public final class ResourceProvidersImpl implements ResourceProviders {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatus getOperationStatus(String vaultName, String resourceGroupName, String operationId) {
+        OperationStatusInner inner = this.serviceClient().getOperationStatus(vaultName, resourceGroupName, operationId);
+        if (inner != null) {
+            return new OperationStatusImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.models.NodeCountsInner;
 import com.azure.resourcemanager.automation.models.CountType;
 import com.azure.resourcemanager.automation.models.NodeCountInformations;
 import com.azure.resourcemanager.automation.models.NodeCounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NodeCountInformationsImpl implements NodeCountInformations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodeCountInformationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NodeCountInformationsImpl.class);
 
     private final NodeCountInformationsClient innerClient;
 

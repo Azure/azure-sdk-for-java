@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources DeleteSqlTrigger. */
 public final class SqlResourcesDeleteSqlTriggerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlTriggerDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlTriggerDelete.json
      */
     /**
      * Sample code: CosmosDBSqlTriggerDelete.
@@ -22,6 +20,7 @@ public final class SqlResourcesDeleteSqlTriggerSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .deleteSqlTrigger("rg1", "ddb1", "databaseName", "containerName", "triggerName", Context.NONE);
+            .deleteSqlTrigger(
+                "rg1", "ddb1", "databaseName", "containerName", "triggerName", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MigrationState. */
+/** This property denotes the container level immutability to object level immutability migration state. */
 public final class MigrationState extends ExpandableStringEnum<MigrationState> {
     /** Static value InProgress for MigrationState. */
     public static final MigrationState IN_PROGRESS = fromString("InProgress");

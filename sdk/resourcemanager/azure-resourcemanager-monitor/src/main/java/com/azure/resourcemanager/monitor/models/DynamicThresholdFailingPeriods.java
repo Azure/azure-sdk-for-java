@@ -5,29 +5,27 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The minimum number of violations required within the selected lookback time window required to raise an alert. */
 @Fluent
 public final class DynamicThresholdFailingPeriods {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicThresholdFailingPeriods.class);
-
     /*
-     * The number of aggregated lookback points. The lookback time window is
-     * calculated based on the aggregation granularity (windowSize) and the
-     * selected number of aggregated points.
+     * The number of aggregated lookback points. The lookback time window is calculated based on the aggregation
+     * granularity (windowSize) and the selected number of aggregated points.
      */
     @JsonProperty(value = "numberOfEvaluationPeriods", required = true)
     private float numberOfEvaluationPeriods;
 
     /*
-     * The number of violations to trigger an alert. Should be smaller or equal
-     * to numberOfEvaluationPeriods.
+     * The number of violations to trigger an alert. Should be smaller or equal to numberOfEvaluationPeriods.
      */
     @JsonProperty(value = "minFailingPeriodsToAlert", required = true)
     private float minFailingPeriodsToAlert;
+
+    /** Creates an instance of DynamicThresholdFailingPeriods class. */
+    public DynamicThresholdFailingPeriods() {
+    }
 
     /**
      * Get the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window is

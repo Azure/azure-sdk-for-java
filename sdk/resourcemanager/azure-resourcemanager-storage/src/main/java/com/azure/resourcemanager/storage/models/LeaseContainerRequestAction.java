@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LeaseContainerRequestAction. */
+/** Specifies the lease action. Can be one of the available actions. */
 public final class LeaseContainerRequestAction extends ExpandableStringEnum<LeaseContainerRequestAction> {
     /** Static value Acquire for LeaseContainerRequestAction. */
     public static final LeaseContainerRequestAction ACQUIRE = fromString("Acquire");

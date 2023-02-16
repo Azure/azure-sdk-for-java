@@ -11,13 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SharedGalleryDataDiskImage extends SharedGalleryDiskImage {
     /*
-     * This property specifies the logical unit number of the data disk. This
-     * value is used to identify data disks within the Virtual Machine and
-     * therefore must be unique for each data disk attached to the Virtual
-     * Machine.
+     * This property specifies the logical unit number of the data disk. This value is used to identify data disks
+     * within the Virtual Machine and therefore must be unique for each data disk attached to the Virtual Machine.
      */
     @JsonProperty(value = "lun", required = true)
     private int lun;
+
+    /** Creates an instance of SharedGalleryDataDiskImage class. */
+    public SharedGalleryDataDiskImage() {
+    }
 
     /**
      * Get the lun property: This property specifies the logical unit number of the data disk. This value is used to

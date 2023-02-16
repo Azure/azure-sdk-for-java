@@ -24,18 +24,20 @@ public final class RestorableLocationResource {
     private String regionalDatabaseAccountInstanceId;
 
     /*
-     * The creation time of the regional restorable database account (ISO-8601
-     * format).
+     * The creation time of the regional restorable database account (ISO-8601 format).
      */
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
-     * The time at which the regional restorable database account has been
-     * deleted (ISO-8601 format).
+     * The time at which the regional restorable database account has been deleted (ISO-8601 format).
      */
     @JsonProperty(value = "deletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionTime;
+
+    /** Creates an instance of RestorableLocationResource class. */
+    public RestorableLocationResource() {
+    }
 
     /**
      * Get the locationName property: The location of the regional restorable account.

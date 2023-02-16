@@ -15,13 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class ImageVertical {
     /*
-     * [Required] Collection of registered Tabular Dataset Ids and other data
-     * settings required for training and validating models.
-     */
-    @JsonProperty(value = "dataSettings", required = true)
-    private ImageVerticalDataSettings dataSettings;
-
-    /*
      * [Required] Limit settings for the AutoML job.
      */
     @JsonProperty(value = "limitSettings", required = true)
@@ -33,26 +26,22 @@ public class ImageVertical {
     @JsonProperty(value = "sweepSettings")
     private ImageSweepSettings sweepSettings;
 
-    /**
-     * Get the dataSettings property: [Required] Collection of registered Tabular Dataset Ids and other data settings
-     * required for training and validating models.
-     *
-     * @return the dataSettings value.
+    /*
+     * Validation data inputs.
      */
-    public ImageVerticalDataSettings dataSettings() {
-        return this.dataSettings;
-    }
+    @JsonProperty(value = "validationData")
+    private MLTableJobInput validationData;
 
-    /**
-     * Set the dataSettings property: [Required] Collection of registered Tabular Dataset Ids and other data settings
-     * required for training and validating models.
-     *
-     * @param dataSettings the dataSettings value to set.
-     * @return the ImageVertical object itself.
+    /*
+     * The fraction of training dataset that needs to be set aside for validation purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
      */
-    public ImageVertical withDataSettings(ImageVerticalDataSettings dataSettings) {
-        this.dataSettings = dataSettings;
-        return this;
+    @JsonProperty(value = "validationDataSize")
+    private Double validationDataSize;
+
+    /** Creates an instance of ImageVertical class. */
+    public ImageVertical() {
     }
 
     /**
@@ -96,18 +85,53 @@ public class ImageVertical {
     }
 
     /**
+     * Get the validationData property: Validation data inputs.
+     *
+     * @return the validationData value.
+     */
+    public MLTableJobInput validationData() {
+        return this.validationData;
+    }
+
+    /**
+     * Set the validationData property: Validation data inputs.
+     *
+     * @param validationData the validationData value to set.
+     * @return the ImageVertical object itself.
+     */
+    public ImageVertical withValidationData(MLTableJobInput validationData) {
+        this.validationData = validationData;
+        return this;
+    }
+
+    /**
+     * Get the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
+     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
+     *
+     * @return the validationDataSize value.
+     */
+    public Double validationDataSize() {
+        return this.validationDataSize;
+    }
+
+    /**
+     * Set the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
+     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
+     *
+     * @param validationDataSize the validationDataSize value to set.
+     * @return the ImageVertical object itself.
+     */
+    public ImageVertical withValidationDataSize(Double validationDataSize) {
+        this.validationDataSize = validationDataSize;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (dataSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataSettings in model ImageVertical"));
-        } else {
-            dataSettings().validate();
-        }
         if (limitSettings() == null) {
             throw LOGGER
                 .logExceptionAsError(
@@ -117,6 +141,9 @@ public class ImageVertical {
         }
         if (sweepSettings() != null) {
             sweepSettings().validate();
+        }
+        if (validationData() != null) {
+            validationData().validate();
         }
     }
 

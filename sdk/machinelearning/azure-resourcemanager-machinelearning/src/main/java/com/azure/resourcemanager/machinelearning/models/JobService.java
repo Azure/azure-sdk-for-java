@@ -49,6 +49,10 @@ public final class JobService {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
+    /** Creates an instance of JobService class. */
+    public JobService() {
+    }
+
     /**
      * Get the endpoint property: Url for endpoint.
      *

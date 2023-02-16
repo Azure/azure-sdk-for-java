@@ -14,10 +14,9 @@ import com.azure.resourcemanager.dnsresolver.fluent.DnsResolversClient;
 import com.azure.resourcemanager.dnsresolver.fluent.models.DnsResolverInner;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolver;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolvers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DnsResolversImpl implements DnsResolvers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsResolversImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DnsResolversImpl.class);
 
     private final DnsResolversClient innerClient;
 
@@ -98,7 +97,7 @@ public final class DnsResolversImpl implements DnsResolvers {
     public DnsResolver getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,7 +105,7 @@ public final class DnsResolversImpl implements DnsResolvers {
         }
         String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
@@ -117,7 +116,7 @@ public final class DnsResolversImpl implements DnsResolvers {
     public Response<DnsResolver> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,7 +124,7 @@ public final class DnsResolversImpl implements DnsResolvers {
         }
         String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
@@ -136,7 +135,7 @@ public final class DnsResolversImpl implements DnsResolvers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,7 +143,7 @@ public final class DnsResolversImpl implements DnsResolvers {
         }
         String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
@@ -156,7 +155,7 @@ public final class DnsResolversImpl implements DnsResolvers {
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,7 +163,7 @@ public final class DnsResolversImpl implements DnsResolvers {
         }
         String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));

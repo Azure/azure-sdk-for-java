@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the parameters for the origin group override action. */
 @Fluent
 public final class OriginGroupOverrideActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginGroupOverrideActionParameters.class);
-
     /*
      * The typeName property.
      */
@@ -78,7 +75,7 @@ public final class OriginGroupOverrideActionParameters {
      */
     public void validate() {
         if (originGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property originGroup in model OriginGroupOverrideActionParameters"));
@@ -86,4 +83,6 @@ public final class OriginGroupOverrideActionParameters {
             originGroup().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OriginGroupOverrideActionParameters.class);
 }

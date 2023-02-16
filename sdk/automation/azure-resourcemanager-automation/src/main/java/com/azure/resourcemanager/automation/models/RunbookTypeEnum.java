@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RunbookTypeEnum. */
+/** Gets or sets the type of the runbook. */
 public final class RunbookTypeEnum extends ExpandableStringEnum<RunbookTypeEnum> {
     /** Static value Script for RunbookTypeEnum. */
     public static final RunbookTypeEnum SCRIPT = fromString("Script");
@@ -28,6 +28,12 @@ public final class RunbookTypeEnum extends ExpandableStringEnum<RunbookTypeEnum>
     /** Static value GraphPowerShell for RunbookTypeEnum. */
     public static final RunbookTypeEnum GRAPH_POWER_SHELL = fromString("GraphPowerShell");
 
+    /** Static value Python2 for RunbookTypeEnum. */
+    public static final RunbookTypeEnum PYTHON2 = fromString("Python2");
+
+    /** Static value Python3 for RunbookTypeEnum. */
+    public static final RunbookTypeEnum PYTHON3 = fromString("Python3");
+
     /**
      * Creates or finds a RunbookTypeEnum from its string representation.
      *
@@ -39,7 +45,11 @@ public final class RunbookTypeEnum extends ExpandableStringEnum<RunbookTypeEnum>
         return fromString(name, RunbookTypeEnum.class);
     }
 
-    /** @return known RunbookTypeEnum values. */
+    /**
+     * Gets known RunbookTypeEnum values.
+     *
+     * @return known RunbookTypeEnum values.
+     */
     public static Collection<RunbookTypeEnum> values() {
         return values(RunbookTypeEnum.class);
     }

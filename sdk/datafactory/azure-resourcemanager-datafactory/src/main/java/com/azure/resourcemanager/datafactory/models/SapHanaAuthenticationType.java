@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapHanaAuthenticationType. */
+/** The authentication type to be used to connect to the SAP HANA server. */
 public final class SapHanaAuthenticationType extends ExpandableStringEnum<SapHanaAuthenticationType> {
     /** Static value Basic for SapHanaAuthenticationType. */
     public static final SapHanaAuthenticationType BASIC = fromString("Basic");
 
     /** Static value Windows for SapHanaAuthenticationType. */
     public static final SapHanaAuthenticationType WINDOWS = fromString("Windows");
+
+    /**
+     * Creates a new instance of SapHanaAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapHanaAuthenticationType() {
+    }
 
     /**
      * Creates or finds a SapHanaAuthenticationType from its string representation.

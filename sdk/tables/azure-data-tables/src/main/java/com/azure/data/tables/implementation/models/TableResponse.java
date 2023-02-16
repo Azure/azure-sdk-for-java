@@ -35,4 +35,32 @@ public final class TableResponse extends TableResponseProperties {
         this.odataMetadata = odataMetadata;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public TableResponse setTableName(String tableName) {
+        super.setTableName(tableName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TableResponse setOdataType(String odataType) {
+        super.setOdataType(odataType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TableResponse setOdataId(String odataId) {
+        super.setOdataId(odataId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TableResponse setOdataEditLink(String odataEditLink) {
+        super.setOdataEditLink(odataEditLink);
+        return this;
+    }
 }

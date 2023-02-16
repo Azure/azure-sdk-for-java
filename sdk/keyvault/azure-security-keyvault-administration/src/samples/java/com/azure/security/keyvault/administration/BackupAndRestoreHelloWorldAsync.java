@@ -18,14 +18,15 @@ public class BackupAndRestoreHelloWorldAsync {
      * @throws IllegalArgumentException when an invalid key vault URL is passed.
      */
     public static void main(String[] args) {
-        /* Instantiate a KeyVaultAccessControlClient that will be used to call the service. Notice that the client is
-        using default Azure credentials. To make default credentials work, ensure that environment variables
-        'AZURE_CLIENT_ID', 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        /* Instantiate a KeyVaultBackupAsyncClient that will be used to call the service. Notice that the client is
+        using default Azure credentials. For more information on this and other types of credentials, see this document:
+        https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
-        To get started, you'll need a URI to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
+        To get started, you'll need a URL to an Azure Key Vault Managed HSM. See the README
+        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
         for links and instructions. */
         KeyVaultBackupAsyncClient backupAsyncClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 

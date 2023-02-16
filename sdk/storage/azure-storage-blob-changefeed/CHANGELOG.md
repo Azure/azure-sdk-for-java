@@ -3,7 +3,7 @@
 ## 12.0.0-beta.19 (Unreleased)
 
 ### Features Added
-- GA release for STG 83
+- Added support for 2021-12-02 service version.
 
 ### Breaking Changes
 

@@ -14,23 +14,9 @@ import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityReque
 /** An instance of this class provides access to all the operations defined in NamespacesClient. */
 public interface NamespacesClient {
     /**
-     * Checks if resource name is available.
+     * Checks the resource name availability.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param checkNameAvailabilityRequest The check name availability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkNameAvailability(
-        String resourceGroupName, String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest);
-
-    /**
-     * Checks if resource name is available.
+     * <p>Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -48,4 +34,22 @@ public interface NamespacesClient {
         String environmentName,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest,
         Context context);
+
+    /**
+     * Checks the resource name availability.
+     *
+     * <p>Checks if resource name is available.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param checkNameAvailabilityRequest The check name availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameAvailabilityResponseInner checkNameAvailability(
+        String resourceGroupName, String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest);
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WafMatchVariable. */
+/** Match variable to compare against. */
 public final class WafMatchVariable extends ExpandableStringEnum<WafMatchVariable> {
     /** Static value RemoteAddr for WafMatchVariable. */
     public static final WafMatchVariable REMOTE_ADDR = fromString("RemoteAddr");
@@ -48,7 +48,11 @@ public final class WafMatchVariable extends ExpandableStringEnum<WafMatchVariabl
         return fromString(name, WafMatchVariable.class);
     }
 
-    /** @return known WafMatchVariable values. */
+    /**
+     * Gets known WafMatchVariable values.
+     *
+     * @return known WafMatchVariable values.
+     */
     public static Collection<WafMatchVariable> values() {
         return values(WafMatchVariable.class);
     }

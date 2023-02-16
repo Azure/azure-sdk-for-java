@@ -3,9 +3,12 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedIterable;
+import com.azure.core.util.paging.PageRetrieverSync;
 
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -68,5 +71,14 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends Continuabl
     @SuppressWarnings("deprecation")
     public PagedIterableBase(PagedFluxBase<T, P> pagedFluxBase) {
         super(pagedFluxBase);
+    }
+
+    /**
+     * Creates instance given the {@link PageRetrieverSync page retriever} {@link Supplier}.
+     *
+     * @param provider The page retriever {@link Supplier}.
+     */
+    public PagedIterableBase(Supplier<PageRetrieverSync<String, P>> provider) {
+        super(provider, null, token -> !CoreUtils.isNullOrEmpty(token));
     }
 }

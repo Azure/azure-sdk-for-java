@@ -16,6 +16,10 @@ public class ComputeInstanceSchema {
     @JsonProperty(value = "properties")
     private ComputeInstanceProperties properties;
 
+    /** Creates an instance of ComputeInstanceSchema class. */
+    public ComputeInstanceSchema() {
+    }
+
     /**
      * Get the properties property: Properties of ComputeInstance.
      *

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,7 +14,9 @@ import java.util.List;
 @JsonTypeName("ProcessNotAllowed")
 @Fluent
 public final class ProcessNotAllowed extends AllowlistCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProcessNotAllowed.class);
+    /** Creates an instance of ProcessNotAllowed class. */
+    public ProcessNotAllowed() {
+    }
 
     /** {@inheritDoc} */
     @Override

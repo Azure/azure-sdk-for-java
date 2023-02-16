@@ -4,32 +4,36 @@
 
 package com.azure.ai.anomalydetector.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AnomalyInterpretation model. */
-@Fluent
+/** Interpretation of the anomalous timestamp. */
+@Immutable
 public final class AnomalyInterpretation {
     /*
-     * The variable property.
+     * Variable.
      */
     @JsonProperty(value = "variable")
     private String variable;
 
     /*
-     * The contributionScore property.
+     * This score shows the percentage contributing to the anomalous timestamp. A
+     * number between 0 and 1.
      */
     @JsonProperty(value = "contributionScore")
-    private Float contributionScore;
+    private Double contributionScore;
 
     /*
-     * The correlationChanges property.
+     * Correlation changes among the anomalous variables
      */
     @JsonProperty(value = "correlationChanges")
     private CorrelationChanges correlationChanges;
 
+    /** Creates an instance of AnomalyInterpretation class. */
+    private AnomalyInterpretation() {}
+
     /**
-     * Get the variable property: The variable property.
+     * Get the variable property: Variable.
      *
      * @return the variable value.
      */
@@ -38,53 +42,21 @@ public final class AnomalyInterpretation {
     }
 
     /**
-     * Set the variable property: The variable property.
-     *
-     * @param variable the variable value to set.
-     * @return the AnomalyInterpretation object itself.
-     */
-    public AnomalyInterpretation setVariable(String variable) {
-        this.variable = variable;
-        return this;
-    }
-
-    /**
-     * Get the contributionScore property: The contributionScore property.
+     * Get the contributionScore property: This score shows the percentage contributing to the anomalous timestamp. A
+     * number between 0 and 1.
      *
      * @return the contributionScore value.
      */
-    public Float getContributionScore() {
+    public Double getContributionScore() {
         return this.contributionScore;
     }
 
     /**
-     * Set the contributionScore property: The contributionScore property.
-     *
-     * @param contributionScore the contributionScore value to set.
-     * @return the AnomalyInterpretation object itself.
-     */
-    public AnomalyInterpretation setContributionScore(Float contributionScore) {
-        this.contributionScore = contributionScore;
-        return this;
-    }
-
-    /**
-     * Get the correlationChanges property: The correlationChanges property.
+     * Get the correlationChanges property: Correlation changes among the anomalous variables.
      *
      * @return the correlationChanges value.
      */
     public CorrelationChanges getCorrelationChanges() {
         return this.correlationChanges;
-    }
-
-    /**
-     * Set the correlationChanges property: The correlationChanges property.
-     *
-     * @param correlationChanges the correlationChanges value to set.
-     * @return the AnomalyInterpretation object itself.
-     */
-    public AnomalyInterpretation setCorrelationChanges(CorrelationChanges correlationChanges) {
-        this.correlationChanges = correlationChanges;
-        return this;
     }
 }

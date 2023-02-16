@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OriginResourceState. */
+/** Resource status of the origin. */
 public final class OriginResourceState extends ExpandableStringEnum<OriginResourceState> {
     /** Static value Creating for OriginResourceState. */
     public static final OriginResourceState CREATING = fromString("Creating");
@@ -30,7 +30,11 @@ public final class OriginResourceState extends ExpandableStringEnum<OriginResour
         return fromString(name, OriginResourceState.class);
     }
 
-    /** @return known OriginResourceState values. */
+    /**
+     * Gets known OriginResourceState values.
+     *
+     * @return known OriginResourceState values.
+     */
     public static Collection<OriginResourceState> values() {
         return values(OriginResourceState.class);
     }

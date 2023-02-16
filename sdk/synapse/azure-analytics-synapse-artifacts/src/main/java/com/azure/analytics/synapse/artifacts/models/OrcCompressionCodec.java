@@ -33,7 +33,11 @@ public final class OrcCompressionCodec extends ExpandableStringEnum<OrcCompressi
         return fromString(name, OrcCompressionCodec.class);
     }
 
-    /** @return known OrcCompressionCodec values. */
+    /**
+     * Gets known OrcCompressionCodec values.
+     *
+     * @return known OrcCompressionCodec values.
+     */
     public static Collection<OrcCompressionCodec> values() {
         return values(OrcCompressionCodec.class);
     }

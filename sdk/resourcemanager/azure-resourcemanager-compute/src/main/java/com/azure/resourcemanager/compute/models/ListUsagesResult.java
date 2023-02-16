@@ -20,12 +20,15 @@ public final class ListUsagesResult {
     private List<UsageInner> value;
 
     /*
-     * The URI to fetch the next page of compute resource usage information.
-     * Call ListNext() with this to fetch the next page of compute resource
-     * usage information.
+     * The URI to fetch the next page of compute resource usage information. Call ListNext() with this to fetch the
+     * next page of compute resource usage information.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ListUsagesResult class. */
+    public ListUsagesResult() {
+    }
 
     /**
      * Get the value property: The list of compute resource usages.

@@ -24,6 +24,10 @@ public final class AsanaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AsanaLinkedServiceTypeProperties innerTypeProperties = new AsanaLinkedServiceTypeProperties();
 
+    /** Creates an instance of AsanaLinkedService class. */
+    public AsanaLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Asana linked service properties.
      *

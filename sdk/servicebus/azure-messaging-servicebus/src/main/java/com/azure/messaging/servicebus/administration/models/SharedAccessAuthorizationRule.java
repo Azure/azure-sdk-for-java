@@ -5,7 +5,7 @@ package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
 
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;

@@ -22,6 +22,10 @@ public final class ExtendedProperties {
     @JsonProperty(value = "linuxVmApplicationName")
     private String linuxVmApplicationName;
 
+    /** Creates an instance of ExtendedProperties class. */
+    public ExtendedProperties() {
+    }
+
     /**
      * Get the diskExclusionProperties property: Extended Properties for Disk Exclusion.
      *

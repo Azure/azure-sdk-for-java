@@ -31,15 +31,13 @@ public final class BackupStatusResponseInner {
     private FabricName fabricName;
 
     /*
-     * Specifies the product specific container name. E.g.
-     * iaasvmcontainer;iaasvmcontainer;csname;vmname.
+     * Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;csname;vmname.
      */
     @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
-     * Specifies the product specific ds name. E.g.
-     * vm;iaasvmcontainer;csname;vmname.
+     * Specifies the product specific ds name. E.g. vm;iaasvmcontainer;csname;vmname.
      */
     @JsonProperty(value = "protectedItemName")
     private String protectedItemName;
@@ -67,6 +65,10 @@ public final class BackupStatusResponseInner {
      */
     @JsonProperty(value = "registrationStatus")
     private String registrationStatus;
+
+    /** Creates an instance of BackupStatusResponseInner class. */
+    public BackupStatusResponseInner() {
+    }
 
     /**
      * Get the protectionStatus property: Specifies whether the container is registered or not.

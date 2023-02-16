@@ -17,6 +17,10 @@ public final class PrivateLinkResource extends ProxyResource {
     @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties properties;
 
+    /** Creates an instance of PrivateLinkResource class. */
+    public PrivateLinkResource() {
+    }
+
     /**
      * Get the properties property: Resource properties.
      *

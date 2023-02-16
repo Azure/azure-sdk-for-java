@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class AzureSearchLinkedService extends LinkedService {
     /*
-     * URL for Azure Search service. Type: string (or Expression with
-     * resultType string).
+     * URL for Azure Search service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
@@ -32,12 +31,14 @@ public class AzureSearchLinkedService extends LinkedService {
     private SecretBase key;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of AzureSearchLinkedService class. */
+    public AzureSearchLinkedService() {}
 
     /**
      * Get the url property: URL for Azure Search service. Type: string (or Expression with resultType string).

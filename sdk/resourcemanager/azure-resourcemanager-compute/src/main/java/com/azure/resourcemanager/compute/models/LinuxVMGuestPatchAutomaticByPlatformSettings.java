@@ -13,11 +13,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LinuxVMGuestPatchAutomaticByPlatformSettings {
     /*
-     * Specifies the reboot setting for all AutomaticByPlatform patch
-     * installation operations.
+     * Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
      */
     @JsonProperty(value = "rebootSetting")
     private LinuxVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting;
+
+    /** Creates an instance of LinuxVMGuestPatchAutomaticByPlatformSettings class. */
+    public LinuxVMGuestPatchAutomaticByPlatformSettings() {
+    }
 
     /**
      * Get the rebootSetting property: Specifies the reboot setting for all AutomaticByPlatform patch installation

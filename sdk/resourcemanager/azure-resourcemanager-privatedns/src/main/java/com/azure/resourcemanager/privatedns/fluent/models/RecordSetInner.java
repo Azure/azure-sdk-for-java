@@ -6,7 +6,6 @@ package com.azure.resourcemanager.privatedns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.privatedns.models.ARecord;
 import com.azure.resourcemanager.privatedns.models.AaaaRecord;
 import com.azure.resourcemanager.privatedns.models.CnameRecord;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.privatedns.models.PtrRecord;
 import com.azure.resourcemanager.privatedns.models.SoaRecord;
 import com.azure.resourcemanager.privatedns.models.SrvRecord;
 import com.azure.resourcemanager.privatedns.models.TxtRecord;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +21,6 @@ import java.util.Map;
 /** Describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS zone. */
 @Fluent
 public final class RecordSetInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSetInner.class);
-
     /*
      * The ETag of the record set.
      */

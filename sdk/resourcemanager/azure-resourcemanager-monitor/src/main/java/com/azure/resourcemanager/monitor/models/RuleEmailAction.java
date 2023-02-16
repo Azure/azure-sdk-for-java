@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,26 +14,26 @@ import java.util.List;
  * Specifies the action to send email when the rule condition is evaluated. The discriminator is always RuleEmailAction
  * in this case.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleEmailAction")
-@JsonFlatten
 @Fluent
-public class RuleEmailAction extends RuleAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleEmailAction.class);
-
+public final class RuleEmailAction extends RuleAction {
     /*
-     * Whether the administrators (service and co-administrators) of the
-     * service should be notified when the alert is activated.
+     * Whether the administrators (service and co-administrators) of the service should be notified when the alert is
+     * activated.
      */
     @JsonProperty(value = "sendToServiceOwners")
     private Boolean sendToServiceOwners;
 
     /*
-     * the list of administrator's custom email addresses to notify of the
-     * activation of the alert.
+     * the list of administrator's custom email addresses to notify of the activation of the alert.
      */
     @JsonProperty(value = "customEmails")
     private List<String> customEmails;
+
+    /** Creates an instance of RuleEmailAction class. */
+    public RuleEmailAction() {
+    }
 
     /**
      * Get the sendToServiceOwners property: Whether the administrators (service and co-administrators) of the service

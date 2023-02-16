@@ -10,9 +10,13 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum CallingServerServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2021-08-30-preview}.
+     * Service version {@code 2022-04-07-preview}.
      */
-    V2021_08_30_PREVIEW("2021-08-30-preview");
+    V2022_04_07_PREVIEW("2022-04-07-preview"),
+    /**
+     * Service version {@code 2021-11-15-preview}.
+     */
+    V2021_11_15_PREVIEW("2021-11-15-preview");
 
     private final String version;
 
@@ -34,6 +38,6 @@ public enum CallingServerServiceVersion implements ServiceVersion {
      * @return The latest {@link CallingServerServiceVersion} object.
      */
     public static CallingServerServiceVersion getLatest() {
-        return V2021_08_30_PREVIEW;
+        return V2022_04_07_PREVIEW;
     }
 }

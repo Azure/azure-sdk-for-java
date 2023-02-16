@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServices Start. */
 public final class CloudServicesStartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Start.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudService_Start.json
      */
     /**
      * Sample code: Start Cloud Service.
@@ -22,6 +20,6 @@ public final class CloudServicesStartSamples {
             .manager()
             .serviceClient()
             .getCloudServices()
-            .start("ConstosoRG", "{cs-name}", Context.NONE);
+            .start("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

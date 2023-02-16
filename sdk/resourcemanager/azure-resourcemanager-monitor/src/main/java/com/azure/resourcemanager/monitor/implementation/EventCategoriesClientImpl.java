@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.EventCategoriesClient;
 import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
 import com.azure.resourcemanager.monitor.models.EventCategoryCollection;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EventCategoriesClient. */
 public final class EventCategoriesClientImpl implements EventCategoriesClient {
-    private final ClientLogger logger = new ClientLogger(EventCategoriesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EventCategoriesService service;
 
@@ -57,7 +54,7 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientEventCa")
-    private interface EventCategoriesService {
+    public interface EventCategoriesService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Insights/eventcategories")
         @ExpectedResponses({200})
@@ -75,7 +72,9 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available event categories supported in the Activity Logs Service.
+     * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
+     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocalizableStringInner>> listSinglePageAsync() {
@@ -104,7 +103,9 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available event categories supported in the Activity Logs Service.
+     * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
+     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocalizableStringInner>> listSinglePageAsync(Context context) {
@@ -131,7 +132,9 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available event categories supported in the Activity Logs Service.
+     * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
+     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LocalizableStringInner> listAsync() {
@@ -146,7 +149,9 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available event categories supported in the Activity Logs Service.
+     * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
+     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LocalizableStringInner> listAsync(Context context) {
@@ -159,7 +164,9 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available event categories supported in the Activity Logs Service.
+     * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
+     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalizableStringInner> list() {
@@ -174,7 +181,9 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available event categories supported in the Activity Logs Service.
+     * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
+     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalizableStringInner> list(Context context) {

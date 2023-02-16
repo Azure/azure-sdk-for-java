@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class MySqlTableDataset extends Dataset {
     /*
-     * The MySQL table name. Type: string (or Expression with resultType
-     * string).
+     * The MySQL table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
+
+    /** Creates an instance of MySqlTableDataset class. */
+    public MySqlTableDataset() {}
 
     /**
      * Get the tableName property: The MySQL table name. Type: string (or Expression with resultType string).

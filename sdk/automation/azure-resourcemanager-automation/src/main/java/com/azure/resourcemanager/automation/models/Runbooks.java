@@ -7,6 +7,8 @@ package com.azure.resourcemanager.automation.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 
 /** Resource collection API of Runbooks. */
 public interface Runbooks {
@@ -46,7 +48,7 @@ public interface Runbooks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    String getContent(String resourceGroupName, String automationAccountName, String runbookName);
+    Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
      * Retrieve the content of runbook identified by runbook name.
@@ -58,9 +60,9 @@ public interface Runbooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
-    Response<String> getContentWithResponse(
+    Response<Flux<ByteBuffer>> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
 
     /**
@@ -86,7 +88,7 @@ public interface Runbooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response}.
      */
     Response<Runbook> getWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
@@ -113,7 +115,7 @@ public interface Runbooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
@@ -126,7 +128,7 @@ public interface Runbooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list runbook operation.
+     * @return the response model for the list runbook operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Runbook> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -139,7 +141,7 @@ public interface Runbooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list runbook operation.
+     * @return the response model for the list runbook operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Runbook> listByAutomationAccount(
         String resourceGroupName, String automationAccountName, Context context);
@@ -151,7 +153,7 @@ public interface Runbooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response}.
      */
     Runbook getById(String id);
 
@@ -163,7 +165,7 @@ public interface Runbooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response}.
      */
     Response<Runbook> getByIdWithResponse(String id, Context context);
 
@@ -185,7 +187,7 @@ public interface Runbooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

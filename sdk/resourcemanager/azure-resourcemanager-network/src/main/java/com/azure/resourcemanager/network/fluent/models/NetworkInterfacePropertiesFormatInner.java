@@ -30,8 +30,7 @@ public final class NetworkInterfacePropertiesFormatInner {
     private NetworkSecurityGroupInner networkSecurityGroup;
 
     /*
-     * A reference to the private endpoint to which the network interface is
-     * linked.
+     * A reference to the private endpoint to which the network interface is linked.
      */
     @JsonProperty(value = "privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointInner privateEndpoint;
@@ -73,10 +72,17 @@ public final class NetworkInterfacePropertiesFormatInner {
     private Boolean vnetEncryptionSupported;
 
     /*
-     * If the network interface is accelerated networking enabled.
+     * If the network interface is configured for accelerated networking. Not applicable to VM sizes which require
+     * accelerated networking.
      */
     @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;
+
+    /*
+     * Indicates whether to disable tcp state tracking.
+     */
+    @JsonProperty(value = "disableTcpStateTracking")
+    private Boolean disableTcpStateTracking;
 
     /*
      * Indicates whether IP forwarding is enabled on this network interface.
@@ -91,8 +97,7 @@ public final class NetworkInterfacePropertiesFormatInner {
     private List<String> hostedWorkloads;
 
     /*
-     * A reference to the dscp configuration to which the network interface is
-     * linked.
+     * A reference to the dscp configuration to which the network interface is linked.
      */
     @JsonProperty(value = "dscpConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource dscpConfiguration;
@@ -138,6 +143,10 @@ public final class NetworkInterfacePropertiesFormatInner {
      */
     @JsonProperty(value = "auxiliaryMode")
     private NetworkInterfaceAuxiliaryMode auxiliaryMode;
+
+    /** Creates an instance of NetworkInterfacePropertiesFormatInner class. */
+    public NetworkInterfacePropertiesFormatInner() {
+    }
 
     /**
      * Get the virtualMachine property: The reference to a virtual machine.
@@ -257,7 +266,8 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
-     * Get the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
+     * Get the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
+     * Not applicable to VM sizes which require accelerated networking.
      *
      * @return the enableAcceleratedNetworking value.
      */
@@ -266,13 +276,34 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
-     * Set the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
+     * Set the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
+     * Not applicable to VM sizes which require accelerated networking.
      *
      * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
     public NetworkInterfacePropertiesFormatInner withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.disableTcpStateTracking;
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
+        this.disableTcpStateTracking = disableTcpStateTracking;
         return this;
     }
 

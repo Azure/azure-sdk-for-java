@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConfigurationProfilesVersions Get. */
 public final class ConfigurationProfilesVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/getConfigurationProfileVersion.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getConfigurationProfileVersion.json
      */
     /**
      * Sample code: Get a configuration profile version.

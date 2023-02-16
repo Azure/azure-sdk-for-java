@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation
 
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
-import com.azure.cosmos.implementation.changefeed.implementation.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedState, ChangeFeedStateV1}
+import com.azure.cosmos.implementation.changefeed.common.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
 import com.azure.cosmos.models.{FeedRange, PartitionKey, SparkModelBridgeInternal}
@@ -58,6 +58,34 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     }).toArray
 
     ChangeFeedState.merge(states).toString
+  }
+
+  def extractCollectionRid(continuation: String): String = {
+    val state = ChangeFeedState.fromString(continuation)
+    state.getContainerRid
+  }
+
+  def validateCollectionRidOfChangeFeedState
+  (
+    continuation: String,
+    expectedCollectionRid: String,
+    ignoreOffsetWhenInvalid: Boolean
+  ): Boolean = {
+    val extractedRid = extractCollectionRid(continuation)
+    val isOffsetValid = extractedRid.equalsIgnoreCase(expectedCollectionRid)
+    if (!isOffsetValid) {
+      val message = s"The provided change feed continuation state is for a different container. Offset's " +
+        s"container: ${extractedRid}, Current container: $expectedCollectionRid, " +
+        s"Continuation: $continuation"
+
+      if (!ignoreOffsetWhenInvalid) {
+        throw new IllegalStateException(message)
+      }
+
+      logWarning(message)
+    }
+
+    isOffsetValid
   }
 
   def createChangeFeedStateJson
@@ -246,7 +274,10 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     val continuations = tokens
       .map(token => {
         val pkRangeId = token._1
-        val lsn: Long = token._2
+
+        // Spark 3 tracks the last LSN for which docs have been successfully processed
+        // Spark 2 LSN is offset by 1 because in Spark 2 the next-to-be-sent-as-continuation LSN is tracked
+        val lsn: Long = token._2 + 1
 
         val range: Range[String] = if (pkRangesByPkRangeId.contains(pkRangeId)) {
           pkRangesByPkRangeId.get(pkRangeId).get.toRange
@@ -293,5 +324,9 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       changeFeedState.toString,
       None
     ).json()
+  }
+
+  def configureSimpleObjectMapper(allowDuplicateProperties: Boolean) : Unit = {
+    Utils.configureSimpleObjectMapper(allowDuplicateProperties)
   }
 }

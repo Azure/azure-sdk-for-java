@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The dsc extensionHandler property associated with the node. */
 @Fluent
 public final class DscNodeExtensionHandlerAssociationProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscNodeExtensionHandlerAssociationProperty.class);
-
     /*
      * Gets or sets the name of the extension handler.
      */

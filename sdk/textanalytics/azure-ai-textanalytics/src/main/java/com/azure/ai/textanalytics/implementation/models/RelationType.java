@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RelationType. */
+/** Type of relation. Examples include: `DosageOfMedication` or 'FrequencyOfMedication', etc. */
 public final class RelationType extends ExpandableStringEnum<RelationType> {
     /** Static value Abbreviation for RelationType. */
     public static final RelationType ABBREVIATION = fromString("Abbreviation");
@@ -84,7 +84,11 @@ public final class RelationType extends ExpandableStringEnum<RelationType> {
         return fromString(name, RelationType.class);
     }
 
-    /** @return known RelationType values. */
+    /**
+     * Gets known RelationType values.
+     *
+     * @return known RelationType values.
+     */
     public static Collection<RelationType> values() {
         return values(RelationType.class);
     }

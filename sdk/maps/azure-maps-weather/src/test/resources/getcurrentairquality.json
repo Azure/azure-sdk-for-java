@@ -1,0 +1,81 @@
+{
+    "results": [
+        {
+            "dateTime": "2022-03-23T21:00:00Z",
+            "index": 19.8,
+            "globalIndex": 19.7,
+            "dominantPollutant": "Ozone",
+            "category": "Excellent",
+            "categoryColor": "#00E39B",
+            "description": "The air quality is ideal for most individuals; enjoy your normal outdoor activities.",
+            "pollutants": [
+                {
+                    "type": "NO2",
+                    "name": "Nitrogen Dioxide",
+                    "index": 4.7,
+                    "globalIndex": 4.7,
+                    "concentration": {
+                        "value": 9.3,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "O3",
+                    "name": "Ozone",
+                    "index": 19.8,
+                    "globalIndex": 19.7,
+                    "concentration": {
+                        "value": 49.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM10",
+                    "name": "Particulate Matter 10",
+                    "index": 9.0,
+                    "globalIndex": 9.7,
+                    "concentration": {
+                        "value": 9.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "PM2.5",
+                    "name": "Particulate Matter 2.5",
+                    "index": 17.6,
+                    "globalIndex": 8.5,
+                    "concentration": {
+                        "value": 4.2,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "CO",
+                    "name": "Carbon Monoxide",
+                    "index": 1.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 138.1,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                },
+                {
+                    "type": "SO2",
+                    "name": "Sulfur Dioxide",
+                    "index": 0.4,
+                    "globalIndex": 0.7,
+                    "concentration": {
+                        "value": 0.7,
+                        "unit": "µg/m³",
+                        "unitType": 31
+                    }
+                }
+            ]
+        }
+    ]
+}

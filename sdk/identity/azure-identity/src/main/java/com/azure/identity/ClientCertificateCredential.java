@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -48,6 +49,7 @@ public class ClientCertificateCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ClientCertificateCredential.class);
 
     private final IdentityClient identityClient;
+    private final IdentitySyncClient identitySyncClient;
 
     /**
      * Creates a ClientSecretCredential with default identity client options.
@@ -62,14 +64,16 @@ public class ClientCertificateCredential implements TokenCredential {
                                 String certificatePassword, IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(certificatePath == null ? certificate : certificatePath,
                 "'certificate' and 'certificatePath' cannot both be null.");
-        identityClient = new IdentityClientBuilder()
+        IdentityClientBuilder builder = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
             .certificatePath(certificatePath)
             .certificate(certificate)
             .certificatePassword(certificatePassword)
-            .identityClientOptions(identityClientOptions)
-            .build();
+            .identityClientOptions(identityClientOptions);
+
+        identityClient = builder.build();
+        identitySyncClient = builder.buildSyncClient();
     }
 
     @Override
@@ -80,5 +84,23 @@ public class ClientCertificateCredential implements TokenCredential {
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
                 request, error));
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        try {
+            AccessToken token = identitySyncClient.authenticateWithConfidentialClientCache(request);
+            LoggingUtil.logTokenSuccess(LOGGER, request);
+            return token;
+        } catch (Exception e) { }
+
+        try {
+            AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);
+            LoggingUtil.logTokenSuccess(LOGGER, request);
+            return token;
+        } catch (Exception e) {
+            LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
+            throw e;
+        }
     }
 }

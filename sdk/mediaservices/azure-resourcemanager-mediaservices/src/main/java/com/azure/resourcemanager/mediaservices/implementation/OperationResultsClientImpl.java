@@ -50,7 +50,7 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesOp")
-    private interface OperationResultsService {
+    public interface OperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
@@ -71,7 +71,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     }
 
     /**
-     * Get asset track operation result.
+     * Get operation result.
+     *
+     * <p>Get asset track operation result.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -114,6 +116,7 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -127,14 +130,16 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
                             assetName,
                             trackName,
                             operationId,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get asset track operation result.
+     * Get operation result.
+     *
+     * <p>Get asset track operation result.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -183,6 +188,7 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -194,13 +200,15 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
                 assetName,
                 trackName,
                 operationId,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Get asset track operation result.
+     * Get operation result.
+     *
+     * <p>Get asset track operation result.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -220,26 +228,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     }
 
     /**
-     * Get asset track operation result.
+     * Get operation result.
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param assetName The Asset name.
-     * @param trackName The Asset Track name.
-     * @param operationId Operation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset track operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackInner get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
-        return getAsync(resourceGroupName, accountName, assetName, trackName, operationId).block();
-    }
-
-    /**
-     * Get asset track operation result.
+     * <p>Get asset track operation result.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -261,5 +252,27 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         String operationId,
         Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, operationId, context).block();
+    }
+
+    /**
+     * Get operation result.
+     *
+     * <p>Get asset track operation result.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param trackName The Asset Track name.
+     * @param operationId Operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return asset track operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssetTrackInner get(
+        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
+        return getWithResponse(resourceGroupName, accountName, assetName, trackName, operationId, Context.NONE)
+            .getValue();
     }
 }

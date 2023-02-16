@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Instances Delete. */
 public final class InstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_Delete.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_Delete.json
      */
     /**
      * Sample code: Deletes instance.

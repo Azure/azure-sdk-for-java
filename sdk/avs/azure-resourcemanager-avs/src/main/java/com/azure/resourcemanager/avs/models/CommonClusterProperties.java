@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The common properties of a cluster. */
 @Fluent
 public class CommonClusterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommonClusterProperties.class);
-
     /*
      * The cluster size
      */
@@ -38,6 +34,10 @@ public class CommonClusterProperties {
      */
     @JsonProperty(value = "hosts")
     private List<String> hosts;
+
+    /** Creates an instance of CommonClusterProperties class. */
+    public CommonClusterProperties() {
+    }
 
     /**
      * Get the clusterSize property: The cluster size.

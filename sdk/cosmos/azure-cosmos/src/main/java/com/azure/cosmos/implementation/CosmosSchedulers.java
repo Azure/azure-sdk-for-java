@@ -10,6 +10,8 @@ public class CosmosSchedulers {
     private final static String COSMOS_PARALLEL_THREAD_NAME =  "cosmos-parallel";
     private final static String TRANSPORT_RESPONSE_BOUNDED_ELASTIC_THREAD_NAME = "transport-response-bounded-elastic";
     private final static String BULK_EXECUTOR_BOUNDED_ELASTIC_THREAD_NAME = "bulk-executor-bounded-elastic";
+    private final static String OPEN_CONNECTIONS_BOUNDED_ELASTIC_THREAD_NAME = "open-connections-bounded-elastic";
+    private final static String ASYNC_CACHE_BACKGROUND_REFRESH_THREAD_NAME = "async-cache-background-refresh-bounded-elastic";
     private final static int TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60; // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
 
     // Using a custom parallel scheduler to be able to schedule retries etc.
@@ -36,5 +38,23 @@ public class CosmosSchedulers {
         BULK_EXECUTOR_BOUNDED_ELASTIC_THREAD_NAME,
         TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
         true
+    );
+
+    // Custom bounded elastic scheduler for open connections
+    public final static Scheduler OPEN_CONNECTIONS_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
+            Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+            Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+            OPEN_CONNECTIONS_BOUNDED_ELASTIC_THREAD_NAME,
+            TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
+            true
+    );
+
+    // Custom bounded elastic scheduler for async cache background refresh task
+    public final static Scheduler ASYNC_CACHE_BACKGROUND_REFRESH_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
+            Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+            Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+            ASYNC_CACHE_BACKGROUND_REFRESH_THREAD_NAME,
+            TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
+            true
     );
 }

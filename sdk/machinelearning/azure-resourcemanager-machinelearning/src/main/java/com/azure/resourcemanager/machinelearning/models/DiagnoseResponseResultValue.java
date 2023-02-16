@@ -65,6 +65,10 @@ public final class DiagnoseResponseResultValue {
     @JsonProperty(value = "otherResults")
     private List<DiagnoseResult> otherResults;
 
+    /** Creates an instance of DiagnoseResponseResultValue class. */
+    public DiagnoseResponseResultValue() {
+    }
+
     /**
      * Get the userDefinedRouteResults property: The userDefinedRouteResults property.
      *

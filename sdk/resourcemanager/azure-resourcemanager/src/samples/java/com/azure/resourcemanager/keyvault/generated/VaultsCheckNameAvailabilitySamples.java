@@ -10,7 +10,7 @@ import com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParam
 /** Samples for Vaults CheckNameAvailability. */
 public final class VaultsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2019-09-01/examples/checkVaultNameAvailability.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/checkVaultNameAvailability.json
      */
     /**
      * Sample code: Validate a vault name.

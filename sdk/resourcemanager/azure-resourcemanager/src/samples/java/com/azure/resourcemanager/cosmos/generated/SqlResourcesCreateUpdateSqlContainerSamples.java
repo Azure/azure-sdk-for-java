@@ -4,7 +4,8 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.cosmos.models.ClientEncryptionIncludedPath;
+import com.azure.resourcemanager.cosmos.models.ClientEncryptionPolicy;
 import com.azure.resourcemanager.cosmos.models.ConflictResolutionMode;
 import com.azure.resourcemanager.cosmos.models.ConflictResolutionPolicy;
 import com.azure.resourcemanager.cosmos.models.ContainerPartitionKey;
@@ -27,7 +28,7 @@ import java.util.Map;
 /** Samples for SqlResources CreateUpdateSqlContainer. */
 public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlContainerCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlContainerCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlContainerCreateUpdate.
@@ -84,9 +85,20 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
                             .withConflictResolutionPolicy(
                                 new ConflictResolutionPolicy()
                                     .withMode(ConflictResolutionMode.LAST_WRITER_WINS)
-                                    .withConflictResolutionPath("/path")))
+                                    .withConflictResolutionPath("/path"))
+                            .withClientEncryptionPolicy(
+                                new ClientEncryptionPolicy()
+                                    .withIncludedPaths(
+                                        Arrays
+                                            .asList(
+                                                new ClientEncryptionIncludedPath()
+                                                    .withPath("/path")
+                                                    .withClientEncryptionKeyId("fakeTokenPlaceholder")
+                                                    .withEncryptionType("Deterministic")
+                                                    .withEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256")))
+                                    .withPolicyFormatVersion(2)))
                     .withOptions(new CreateUpdateOptions()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

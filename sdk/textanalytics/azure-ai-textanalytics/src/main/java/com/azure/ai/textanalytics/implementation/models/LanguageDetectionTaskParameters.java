@@ -4,10 +4,25 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /** Supported parameters for a Language Detection task. */
-@Immutable
+@Fluent
 public final class LanguageDetectionTaskParameters extends PreBuiltTaskParameters {
+    /** Creates an instance of LanguageDetectionTaskParameters class. */
+    public LanguageDetectionTaskParameters() {}
 
+    /** {@inheritDoc} */
+    @Override
+    public LanguageDetectionTaskParameters setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LanguageDetectionTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
+        return this;
+    }
 }

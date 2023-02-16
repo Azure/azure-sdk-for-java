@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2023-02-09)
+
+### Enhancements
+- Updated the OpenTelemetry SDK baseline to version 1.20.0
+- Replace System.getenv usage with Azure SDK Configuration
+
+### Breaking Changes
+- Change the Exporter implementations from public to package-private
+
+## 1.0.0-beta.6 (2022-09-06)
+
+### New Features
+- Add metrics exporter.
+- Add logs exporter.
+- Add disk persistence and retries for ingestion failures.
+- Add heartbeat telemetry.
 
 ## 1.0.0-beta.5 (2021-11-12)
 

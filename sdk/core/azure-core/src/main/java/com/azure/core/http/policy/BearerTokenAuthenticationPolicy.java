@@ -6,6 +6,8 @@ package com.azure.core.http.policy;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -23,7 +25,6 @@ import static com.azure.core.util.AuthorizationChallengeHandler.WWW_AUTHENTICATE
  */
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
-    private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER = "Bearer";
 
     private final String[] scopes;
@@ -174,7 +175,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         return cache.getToken(tokenRequestContext, checkToForceFetchToken)
             .flatMap(token -> {
-                context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
+                setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
                 return Mono.empty();
             });
     }
@@ -182,6 +183,10 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context,
         TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         AccessToken token = cache.getTokenSync(tokenRequestContext, checkToForceFetchToken);
-        context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
+        setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
+    }
+
+    private static void setAuthorizationHeader(HttpHeaders headers, String token) {
+        headers.set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
     }
 }

@@ -3,9 +3,12 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
@@ -47,7 +50,8 @@ public class ClientSecretCredentialTest {
         })) {
             // test
             ClientSecretCredential credential =
-                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret).build();
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret)
+                    .additionallyAllowedTenants("*").build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -56,6 +60,27 @@ public class ClientSecretCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
+            Assert.assertNotNull(identityClientMock);
+        }
+
+        // mock
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+            when(identitySyncClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
+        })) {
+            // test
+            ClientSecretCredential credential =
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret)
+                    .additionallyAllowedTenants("*").build();
+
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+
+            accessToken = credential.getTokenSync(request2);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             Assert.assertNotNull(identityClientMock);
         }
     }
@@ -76,10 +101,28 @@ public class ClientSecretCredentialTest {
         })) {
             // test
             ClientSecretCredential credential =
-                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret).build();
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
+                    .additionallyAllowedTenants("*").build();
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof MsalServiceException && "bad secret".equals(e.getMessage()))
                 .verify();
+            Assert.assertNotNull(identityClientMock);
+        }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClient(request)).thenThrow(new MsalServiceException("bad secret", "BadSecret"));
+            when(identitySyncClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+        })) {
+            // test
+            ClientSecretCredential credential =
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
+                    .additionallyAllowedTenants("*").build();
+            try {
+                credential.getTokenSync(request);
+            } catch (Exception e) {
+                Assert.assertTrue(e instanceof MsalServiceException && "bad secret".equals(e.getMessage()));
+            }
             Assert.assertNotNull(identityClientMock);
         }
     }
@@ -99,24 +142,73 @@ public class ClientSecretCredentialTest {
         })) {
             // test
             try {
-                new ClientSecretCredentialBuilder().clientId(CLIENT_ID).clientSecret(secret).build();
+                new ClientSecretCredentialBuilder().clientId(CLIENT_ID).clientSecret(secret)
+                    .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assert.assertTrue(e.getMessage().contains("tenantId"));
             }
             try {
-                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientSecret(secret).build();
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientSecret(secret)
+                    .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assert.assertTrue(e.getMessage().contains("clientId"));
             }
             try {
-                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).build();
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
+                    .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assert.assertTrue(e.getMessage().contains("clientSecret"));
             }
             Assert.assertNotNull(identityClientMock);
         }
+    }
+
+    @Test
+    public void testInvalidAdditionalTenant() throws Exception {
+        // setup
+        String badSecret = "badsecret";
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        ClientSecretCredential credential =
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
+                .additionallyAllowedTenants("RANDOM").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testInvalidMultiTenantAuth() throws Exception {
+        // setup
+        String badSecret = "badsecret";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        ClientSecretCredential credential =
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testValidMultiTenantAuth() throws Exception {
+        // setup
+        String badSecret = "badsecret";
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        ClientSecretCredential credential =
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
+                .additionallyAllowedTenants("*").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof MsalServiceException)
+            .verify();
     }
 }

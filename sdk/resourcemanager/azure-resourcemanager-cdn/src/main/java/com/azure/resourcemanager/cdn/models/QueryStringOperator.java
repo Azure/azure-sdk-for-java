@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QueryStringOperator. */
+/** Describes operator to be matched. */
 public final class QueryStringOperator extends ExpandableStringEnum<QueryStringOperator> {
     /** Static value Any for QueryStringOperator. */
     public static final QueryStringOperator ANY = fromString("Any");
@@ -51,7 +51,11 @@ public final class QueryStringOperator extends ExpandableStringEnum<QueryStringO
         return fromString(name, QueryStringOperator.class);
     }
 
-    /** @return known QueryStringOperator values. */
+    /**
+     * Gets known QueryStringOperator values.
+     *
+     * @return known QueryStringOperator values.
+     */
     public static Collection<QueryStringOperator> values() {
         return values(QueryStringOperator.class);
     }

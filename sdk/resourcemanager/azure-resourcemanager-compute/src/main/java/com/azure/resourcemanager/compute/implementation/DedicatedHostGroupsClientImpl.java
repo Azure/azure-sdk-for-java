@@ -68,7 +68,7 @@ public final class DedicatedHostGroupsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface DedicatedHostGroupsService {
+    public interface DedicatedHostGroupsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
@@ -217,7 +217,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -276,7 +276,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -308,32 +308,7 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> createOrUpdateAsync(
         String resourceGroupName, String hostGroupName, DedicatedHostGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, parameters)
-            .flatMap(
-                (Response<DedicatedHostGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please see
-     * [Dedicated Host Documentation] (https://go.microsoft.com/fwlink/?linkid=2082596).
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Parameters supplied to the Create Dedicated Host Group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHostGroupInner createOrUpdate(
-        String resourceGroupName, String hostGroupName, DedicatedHostGroupInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, hostGroupName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -354,6 +329,24 @@ public final class DedicatedHostGroupsClientImpl
     public Response<DedicatedHostGroupInner> createOrUpdateWithResponse(
         String resourceGroupName, String hostGroupName, DedicatedHostGroupInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, parameters, context).block();
+    }
+
+    /**
+     * Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please see
+     * [Dedicated Host Documentation] (https://go.microsoft.com/fwlink/?linkid=2082596).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param parameters Parameters supplied to the Create Dedicated Host Group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DedicatedHostGroupInner createOrUpdate(
+        String resourceGroupName, String hostGroupName, DedicatedHostGroupInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, hostGroupName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -395,7 +388,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -453,7 +446,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -484,31 +477,7 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> updateAsync(
         String resourceGroupName, String hostGroupName, DedicatedHostGroupUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, hostGroupName, parameters)
-            .flatMap(
-                (Response<DedicatedHostGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update an dedicated host group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHostGroupInner update(
-        String resourceGroupName, String hostGroupName, DedicatedHostGroupUpdate parameters) {
-        return updateAsync(resourceGroupName, hostGroupName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -528,6 +497,23 @@ public final class DedicatedHostGroupsClientImpl
     public Response<DedicatedHostGroupInner> updateWithResponse(
         String resourceGroupName, String hostGroupName, DedicatedHostGroupUpdate parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, hostGroupName, parameters, context).block();
+    }
+
+    /**
+     * Update an dedicated host group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DedicatedHostGroupInner update(
+        String resourceGroupName, String hostGroupName, DedicatedHostGroupUpdate parameters) {
+        return updateWithResponse(resourceGroupName, hostGroupName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -561,7 +547,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -611,7 +597,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -637,21 +623,7 @@ public final class DedicatedHostGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String hostGroupName) {
-        return deleteWithResponseAsync(resourceGroupName, hostGroupName).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete a dedicated host group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String hostGroupName) {
-        deleteAsync(resourceGroupName, hostGroupName).block();
+        return deleteWithResponseAsync(resourceGroupName, hostGroupName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -668,6 +640,20 @@ public final class DedicatedHostGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String hostGroupName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, hostGroupName, context).block();
+    }
+
+    /**
+     * Delete a dedicated host group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String hostGroupName) {
+        deleteWithResponse(resourceGroupName, hostGroupName, Context.NONE);
     }
 
     /**
@@ -706,7 +692,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -761,7 +747,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -781,34 +767,6 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     *     views of the dedicated hosts under the dedicated host group. 'UserData' is not supported for dedicated host
-     *     group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DedicatedHostGroupInner> getByResourceGroupAsync(
-        String resourceGroupName, String hostGroupName, InstanceViewTypes expand) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, hostGroupName, expand)
-            .flatMap(
-                (Response<DedicatedHostGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Retrieves information about a dedicated host group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -819,30 +777,7 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> getByResourceGroupAsync(String resourceGroupName, String hostGroupName) {
         final InstanceViewTypes expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, hostGroupName, expand)
-            .flatMap(
-                (Response<DedicatedHostGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Retrieves information about a dedicated host group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHostGroupInner getByResourceGroup(String resourceGroupName, String hostGroupName) {
-        final InstanceViewTypes expand = null;
-        return getByResourceGroupAsync(resourceGroupName, hostGroupName, expand).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -864,6 +799,22 @@ public final class DedicatedHostGroupsClientImpl
     public Response<DedicatedHostGroupInner> getByResourceGroupWithResponse(
         String resourceGroupName, String hostGroupName, InstanceViewTypes expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, hostGroupName, expand, context).block();
+    }
+
+    /**
+     * Retrieves information about a dedicated host group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DedicatedHostGroupInner getByResourceGroup(String resourceGroupName, String hostGroupName) {
+        final InstanceViewTypes expand = null;
+        return getByResourceGroupWithResponse(resourceGroupName, hostGroupName, expand, Context.NONE).getValue();
     }
 
     /**
@@ -895,7 +846,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -951,7 +902,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1064,7 +1015,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1108,7 +1059,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1187,7 +1138,8 @@ public final class DedicatedHostGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1224,7 +1176,8 @@ public final class DedicatedHostGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1262,7 +1215,8 @@ public final class DedicatedHostGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1299,7 +1253,8 @@ public final class DedicatedHostGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

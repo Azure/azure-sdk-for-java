@@ -14,7 +14,7 @@ public final class SslConfiguration {
      * Enable or disable ssl for scoring
      */
     @JsonProperty(value = "status")
-    private SslConfigurationStatus status;
+    private SslConfigStatus status;
 
     /*
      * Cert data
@@ -46,12 +46,16 @@ public final class SslConfiguration {
     @JsonProperty(value = "overwriteExistingDomain")
     private Boolean overwriteExistingDomain;
 
+    /** Creates an instance of SslConfiguration class. */
+    public SslConfiguration() {
+    }
+
     /**
      * Get the status property: Enable or disable ssl for scoring.
      *
      * @return the status value.
      */
-    public SslConfigurationStatus status() {
+    public SslConfigStatus status() {
         return this.status;
     }
 
@@ -61,7 +65,7 @@ public final class SslConfiguration {
      * @param status the status value to set.
      * @return the SslConfiguration object itself.
      */
-    public SslConfiguration withStatus(SslConfigurationStatus status) {
+    public SslConfiguration withStatus(SslConfigStatus status) {
         this.status = status;
         return this;
     }

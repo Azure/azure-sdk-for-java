@@ -23,9 +23,8 @@ public final class MicrosoftGraphSharingDetail {
     private MicrosoftGraphInsightIdentity sharedBy;
 
     /*
-     * The date and time the file was last shared. The timestamp represents
-     * date and time information using ISO 8601 format and is always in UTC
-     * time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * The date and time the file was last shared. The timestamp represents date and time information using ISO 8601
+     * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * 2014-01-01T00:00:00Z. Read-only.
      */
     @JsonProperty(value = "sharedDateTime")
@@ -44,8 +43,7 @@ public final class MicrosoftGraphSharingDetail {
     private String sharingSubject;
 
     /*
-     * Determines the way the document was shared, can be by a 'Link',
-     * 'Attachment', 'Group', 'Site'.
+     * Determines the way the document was shared, can be by a 'Link', 'Attachment', 'Group', 'Site'.
      */
     @JsonProperty(value = "sharingType")
     private String sharingType;
@@ -54,6 +52,10 @@ public final class MicrosoftGraphSharingDetail {
      * sharingDetail
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSharingDetail class. */
+    public MicrosoftGraphSharingDetail() {
+    }
 
     /**
      * Get the sharedBy property: insightIdentity.

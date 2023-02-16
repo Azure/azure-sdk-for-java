@@ -7,7 +7,6 @@ package com.azure.resourcemanager.search.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.search.fluent.AdminKeysClient;
@@ -23,8 +22,6 @@ import java.time.Duration;
 /** Initializes a new instance of the SearchManagementClientImpl type. */
 @ServiceClient(builder = SearchManagementClientBuilder.class)
 public final class SearchManagementClientImpl extends AzureServiceClient implements SearchManagementClient {
-    private final ClientLogger logger = new ClientLogger(SearchManagementClientImpl.class);
-
     /**
      * The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
      * Manager API or the portal.

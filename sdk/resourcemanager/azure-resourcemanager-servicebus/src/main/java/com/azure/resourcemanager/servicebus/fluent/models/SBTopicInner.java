@@ -5,133 +5,61 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicebus.implementation.DurationSerializer;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /** Description of topic resource. */
-@JsonFlatten
 @Fluent
-public class SBTopicInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SBTopicInner.class);
+public final class SBTopicInner extends Resource {
+    /*
+     * Properties of topic resource.
+     */
+    @JsonProperty(value = "properties")
+    private SBTopicProperties innerProperties;
 
     /*
-     * Size of the topic, in bytes.
+     * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "properties.sizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
-    private Long sizeInBytes;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * Exact time the message was created.
+     * The geo-location where the resource lives
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
 
-    /*
-     * The exact time the message was updated.
+    /**
+     * Get the innerProperties property: Properties of topic resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
+    private SBTopicProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Last time the message was sent, or a request was received, for this
-     * topic.
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.accessedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime accessedAt;
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
-    /*
-     * Number of subscriptions.
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
      */
-    @JsonProperty(value = "properties.subscriptionCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer subscriptionCount;
-
-    /*
-     * Message count details
-     */
-    @JsonProperty(value = "properties.countDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private MessageCountDetails countDetails;
-
-    /*
-     * ISO 8601 Default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent
-     * to Service Bus. This is the default value used when TimeToLive is not
-     * set on a message itself.
-     */
-    @JsonProperty(value = "properties.defaultMessageTimeToLive")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration defaultMessageTimeToLive;
-
-    /*
-     * Maximum size of the topic in megabytes, which is the size of the memory
-     * allocated for the topic. Default is 1024.
-     */
-    @JsonProperty(value = "properties.maxSizeInMegabytes")
-    private Integer maxSizeInMegabytes;
-
-    /*
-     * Value indicating if this topic requires duplicate detection.
-     */
-    @JsonProperty(value = "properties.requiresDuplicateDetection")
-    private Boolean requiresDuplicateDetection;
-
-    /*
-     * ISO8601 timespan structure that defines the duration of the duplicate
-     * detection history. The default value is 10 minutes.
-     */
-    @JsonProperty(value = "properties.duplicateDetectionHistoryTimeWindow")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration duplicateDetectionHistoryTimeWindow;
-
-    /*
-     * Value that indicates whether server-side batched operations are enabled.
-     */
-    @JsonProperty(value = "properties.enableBatchedOperations")
-    private Boolean enableBatchedOperations;
-
-    /*
-     * Enumerates the possible values for the status of a messaging entity.
-     */
-    @JsonProperty(value = "properties.status")
-    private EntityStatus status;
-
-    /*
-     * Value that indicates whether the topic supports ordering.
-     */
-    @JsonProperty(value = "properties.supportOrdering")
-    private Boolean supportOrdering;
-
-    /*
-     * ISO 8601 timespan idle interval after which the topic is automatically
-     * deleted. The minimum duration is 5 minutes.
-     */
-    @JsonProperty(value = "properties.autoDeleteOnIdle")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration autoDeleteOnIdle;
-
-    /*
-     * Value that indicates whether the topic to be partitioned across multiple
-     * message brokers is enabled.
-     */
-    @JsonProperty(value = "properties.enablePartitioning")
-    private Boolean enablePartitioning;
-
-    /*
-     * Value that indicates whether Express Entities are enabled. An express
-     * topic holds a message in memory temporarily before writing it to
-     * persistent storage.
-     */
-    @JsonProperty(value = "properties.enableExpress")
-    private Boolean enableExpress;
+    public String location() {
+        return this.location;
+    }
 
     /**
      * Get the sizeInBytes property: Size of the topic, in bytes.
@@ -139,7 +67,7 @@ public class SBTopicInner extends Resource {
      * @return the sizeInBytes value.
      */
     public Long sizeInBytes() {
-        return this.sizeInBytes;
+        return this.innerProperties() == null ? null : this.innerProperties().sizeInBytes();
     }
 
     /**
@@ -148,7 +76,7 @@ public class SBTopicInner extends Resource {
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
-        return this.createdAt;
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
     }
 
     /**
@@ -157,7 +85,7 @@ public class SBTopicInner extends Resource {
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
-        return this.updatedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
     }
 
     /**
@@ -166,7 +94,7 @@ public class SBTopicInner extends Resource {
      * @return the accessedAt value.
      */
     public OffsetDateTime accessedAt() {
-        return this.accessedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().accessedAt();
     }
 
     /**
@@ -175,7 +103,7 @@ public class SBTopicInner extends Resource {
      * @return the subscriptionCount value.
      */
     public Integer subscriptionCount() {
-        return this.subscriptionCount;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionCount();
     }
 
     /**
@@ -184,7 +112,7 @@ public class SBTopicInner extends Resource {
      * @return the countDetails value.
      */
     public MessageCountDetails countDetails() {
-        return this.countDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().countDetails();
     }
 
     /**
@@ -195,7 +123,7 @@ public class SBTopicInner extends Resource {
      * @return the defaultMessageTimeToLive value.
      */
     public Duration defaultMessageTimeToLive() {
-        return this.defaultMessageTimeToLive;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultMessageTimeToLive();
     }
 
     /**
@@ -207,7 +135,10 @@ public class SBTopicInner extends Resource {
      * @return the SBTopicInner object itself.
      */
     public SBTopicInner withDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        this.defaultMessageTimeToLive = defaultMessageTimeToLive;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withDefaultMessageTimeToLive(defaultMessageTimeToLive);
         return this;
     }
 
@@ -218,7 +149,7 @@ public class SBTopicInner extends Resource {
      * @return the maxSizeInMegabytes value.
      */
     public Integer maxSizeInMegabytes() {
-        return this.maxSizeInMegabytes;
+        return this.innerProperties() == null ? null : this.innerProperties().maxSizeInMegabytes();
     }
 
     /**
@@ -229,7 +160,35 @@ public class SBTopicInner extends Resource {
      * @return the SBTopicInner object itself.
      */
     public SBTopicInner withMaxSizeInMegabytes(Integer maxSizeInMegabytes) {
-        this.maxSizeInMegabytes = maxSizeInMegabytes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withMaxSizeInMegabytes(maxSizeInMegabytes);
+        return this;
+    }
+
+    /**
+     * Get the maxMessageSizeInKilobytes property: Maximum size (in KB) of the message payload that can be accepted by
+     * the topic. This property is only used in Premium today and default is 1024.
+     *
+     * @return the maxMessageSizeInKilobytes value.
+     */
+    public Long maxMessageSizeInKilobytes() {
+        return this.innerProperties() == null ? null : this.innerProperties().maxMessageSizeInKilobytes();
+    }
+
+    /**
+     * Set the maxMessageSizeInKilobytes property: Maximum size (in KB) of the message payload that can be accepted by
+     * the topic. This property is only used in Premium today and default is 1024.
+     *
+     * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
+     * @return the SBTopicInner object itself.
+     */
+    public SBTopicInner withMaxMessageSizeInKilobytes(Long maxMessageSizeInKilobytes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withMaxMessageSizeInKilobytes(maxMessageSizeInKilobytes);
         return this;
     }
 
@@ -239,7 +198,7 @@ public class SBTopicInner extends Resource {
      * @return the requiresDuplicateDetection value.
      */
     public Boolean requiresDuplicateDetection() {
-        return this.requiresDuplicateDetection;
+        return this.innerProperties() == null ? null : this.innerProperties().requiresDuplicateDetection();
     }
 
     /**
@@ -249,7 +208,10 @@ public class SBTopicInner extends Resource {
      * @return the SBTopicInner object itself.
      */
     public SBTopicInner withRequiresDuplicateDetection(Boolean requiresDuplicateDetection) {
-        this.requiresDuplicateDetection = requiresDuplicateDetection;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withRequiresDuplicateDetection(requiresDuplicateDetection);
         return this;
     }
 
@@ -260,7 +222,7 @@ public class SBTopicInner extends Resource {
      * @return the duplicateDetectionHistoryTimeWindow value.
      */
     public Duration duplicateDetectionHistoryTimeWindow() {
-        return this.duplicateDetectionHistoryTimeWindow;
+        return this.innerProperties() == null ? null : this.innerProperties().duplicateDetectionHistoryTimeWindow();
     }
 
     /**
@@ -271,7 +233,10 @@ public class SBTopicInner extends Resource {
      * @return the SBTopicInner object itself.
      */
     public SBTopicInner withDuplicateDetectionHistoryTimeWindow(Duration duplicateDetectionHistoryTimeWindow) {
-        this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withDuplicateDetectionHistoryTimeWindow(duplicateDetectionHistoryTimeWindow);
         return this;
     }
 
@@ -282,7 +247,7 @@ public class SBTopicInner extends Resource {
      * @return the enableBatchedOperations value.
      */
     public Boolean enableBatchedOperations() {
-        return this.enableBatchedOperations;
+        return this.innerProperties() == null ? null : this.innerProperties().enableBatchedOperations();
     }
 
     /**
@@ -293,7 +258,10 @@ public class SBTopicInner extends Resource {
      * @return the SBTopicInner object itself.
      */
     public SBTopicInner withEnableBatchedOperations(Boolean enableBatchedOperations) {
-        this.enableBatchedOperations = enableBatchedOperations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withEnableBatchedOperations(enableBatchedOperations);
         return this;
     }
 
@@ -303,7 +271,7 @@ public class SBTopicInner extends Resource {
      * @return the status value.
      */
     public EntityStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -313,7 +281,10 @@ public class SBTopicInner extends Resource {
      * @return the SBTopicInner object itself.
      */
     public SBTopicInner withStatus(EntityStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -323,7 +294,7 @@ public class SBTopicInner extends Resource {
      * @return the supportOrdering value.
      */
     public Boolean supportOrdering() {
-        return this.supportOrdering;
+        return this.innerProperties() == null ? null : this.innerProperties().supportOrdering();
     }
 
     /**
@@ -333,7 +304,10 @@ public class SBTopicInner extends Resource {
      * @return the SBTopicInner object itself.
      */
     public SBTopicInner withSupportOrdering(Boolean supportOrdering) {
-        this.supportOrdering = supportOrdering;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withSupportOrdering(supportOrdering);
         return this;
     }
 
@@ -344,7 +318,7 @@ public class SBTopicInner extends Resource {
      * @return the autoDeleteOnIdle value.
      */
     public Duration autoDeleteOnIdle() {
-        return this.autoDeleteOnIdle;
+        return this.innerProperties() == null ? null : this.innerProperties().autoDeleteOnIdle();
     }
 
     /**
@@ -355,7 +329,10 @@ public class SBTopicInner extends Resource {
      * @return the SBTopicInner object itself.
      */
     public SBTopicInner withAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        this.autoDeleteOnIdle = autoDeleteOnIdle;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withAutoDeleteOnIdle(autoDeleteOnIdle);
         return this;
     }
 
@@ -366,7 +343,7 @@ public class SBTopicInner extends Resource {
      * @return the enablePartitioning value.
      */
     public Boolean enablePartitioning() {
-        return this.enablePartitioning;
+        return this.innerProperties() == null ? null : this.innerProperties().enablePartitioning();
     }
 
     /**
@@ -377,7 +354,10 @@ public class SBTopicInner extends Resource {
      * @return the SBTopicInner object itself.
      */
     public SBTopicInner withEnablePartitioning(Boolean enablePartitioning) {
-        this.enablePartitioning = enablePartitioning;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withEnablePartitioning(enablePartitioning);
         return this;
     }
 
@@ -388,7 +368,7 @@ public class SBTopicInner extends Resource {
      * @return the enableExpress value.
      */
     public Boolean enableExpress() {
-        return this.enableExpress;
+        return this.innerProperties() == null ? null : this.innerProperties().enableExpress();
     }
 
     /**
@@ -399,7 +379,10 @@ public class SBTopicInner extends Resource {
      * @return the SBTopicInner object itself.
      */
     public SBTopicInner withEnableExpress(Boolean enableExpress) {
-        this.enableExpress = enableExpress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBTopicProperties();
+        }
+        this.innerProperties().withEnableExpress(enableExpress);
         return this;
     }
 
@@ -409,8 +392,8 @@ public class SBTopicInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (countDetails() != null) {
-            countDetails().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

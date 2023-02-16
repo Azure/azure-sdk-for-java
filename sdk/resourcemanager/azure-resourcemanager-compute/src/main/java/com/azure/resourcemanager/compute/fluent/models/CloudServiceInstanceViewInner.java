@@ -20,17 +20,14 @@ public final class CloudServiceInstanceViewInner {
     private InstanceViewStatusesSummary roleInstance;
 
     /*
-     * The version of the SDK that was used to generate the package for the
-     * cloud service.
+     * The version of the SDK that was used to generate the package for the cloud service.
      */
     @JsonProperty(value = "sdkVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sdkVersion;
 
     /*
-     * Specifies a list of unique identifiers generated internally for the
-     * cloud service. <br /><br /> NOTE: If you are using Azure Diagnostics
-     * extension, this property can be used as 'DeploymentId' for querying
-     * details.
+     * Specifies a list of unique identifiers generated internally for the cloud service. <br /><br /> NOTE: If you are
+     * using Azure Diagnostics extension, this property can be used as 'DeploymentId' for querying details.
      */
     @JsonProperty(value = "privateIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> privateIds;
@@ -40,6 +37,10 @@ public final class CloudServiceInstanceViewInner {
      */
     @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceInstanceViewStatus> statuses;
+
+    /** Creates an instance of CloudServiceInstanceViewInner class. */
+    public CloudServiceInstanceViewInner() {
+    }
 
     /**
      * Get the roleInstance property: Instance view statuses.

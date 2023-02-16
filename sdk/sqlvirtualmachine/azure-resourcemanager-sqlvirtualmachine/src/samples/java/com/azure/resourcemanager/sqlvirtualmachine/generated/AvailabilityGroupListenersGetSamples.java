@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AvailabilityGroupListeners Get. */
 public final class AvailabilityGroupListenersGetSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/GetAvailabilityGroupListener.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/GetAvailabilityGroupListener.json
      */
     /**
      * Sample code: Gets an availability group listener.

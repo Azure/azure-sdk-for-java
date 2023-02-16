@@ -19,6 +19,10 @@ public final class MicrosoftGraphWorkbookFunctions extends MicrosoftGraphEntity 
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookFunctions class. */
+    public MicrosoftGraphWorkbookFunctions() {
+    }
+
     /**
      * Get the additionalProperties property: workbookFunctions.
      *

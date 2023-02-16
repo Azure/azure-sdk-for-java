@@ -48,6 +48,9 @@ public final class BlockList {
     @JsonProperty(value = "UncommittedBlocks")
     private UncommittedBlocksWrapper uncommittedBlocks;
 
+    /** Creates an instance of BlockList class. */
+    public BlockList() {}
+
     /**
      * Get the committedBlocks property: The CommittedBlocks property.
      *

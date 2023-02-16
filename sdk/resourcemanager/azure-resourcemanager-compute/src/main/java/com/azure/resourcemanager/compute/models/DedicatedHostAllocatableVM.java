@@ -17,11 +17,14 @@ public final class DedicatedHostAllocatableVM {
     private String vmSize;
 
     /*
-     * Maximum number of VMs of size vmSize that can fit in the dedicated
-     * host's remaining capacity.
+     * Maximum number of VMs of size vmSize that can fit in the dedicated host's remaining capacity.
      */
     @JsonProperty(value = "count")
     private Double count;
+
+    /** Creates an instance of DedicatedHostAllocatableVM class. */
+    public DedicatedHostAllocatableVM() {
+    }
 
     /**
      * Get the vmSize property: VM size in terms of which the unutilized capacity is represented.

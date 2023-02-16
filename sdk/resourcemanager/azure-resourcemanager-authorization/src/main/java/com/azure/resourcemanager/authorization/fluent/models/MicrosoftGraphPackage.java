@@ -16,9 +16,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphPackage {
     /*
-     * A string indicating the type of package. While oneNote is the only
-     * currently defined value, you should expect other package types to be
-     * returned and handle them accordingly.
+     * A string indicating the type of package. While oneNote is the only currently defined value, you should expect
+     * other package types to be returned and handle them accordingly.
      */
     @JsonProperty(value = "type")
     private String type;
@@ -27,6 +26,10 @@ public final class MicrosoftGraphPackage {
      * package
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPackage class. */
+    public MicrosoftGraphPackage() {
+    }
 
     /**
      * Get the type property: A string indicating the type of package. While oneNote is the only currently defined

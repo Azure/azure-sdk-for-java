@@ -6,7 +6,7 @@ package com.microsoft.azure.batch;
 import com.microsoft.azure.batch.protocol.models.*;
 import org.junit.*;
 
-import java.util.List;
+import java.util.*;
 
 public class JobTests extends BatchIntegrationTestBase {
     private static CloudPool livePool;
@@ -45,6 +45,8 @@ public class JobTests extends BatchIntegrationTestBase {
             // GET
             CloudJob job = batchClient.jobOperations().getJob(jobId);
             Assert.assertNotNull(job);
+            Assert.assertNotNull(job.allowTaskPreemption());
+            Assert.assertEquals(-1, (int) job.maxParallelTasks());
             Assert.assertEquals(jobId, job.id());
             Assert.assertEquals((Integer) 0, job.priority());
 
@@ -106,6 +108,17 @@ public class JobTests extends BatchIntegrationTestBase {
             CloudJob job = batchClient.jobOperations().getJob(jobId);
             Assert.assertEquals(JobState.ACTIVE, job.state());
 
+            // UPDATE
+            JobUpdateParameter updateParam = new JobUpdateParameter();
+            Integer maxTaskRetryCount = 3;
+            Integer priority = 500;
+            updateParam.withPoolInfo(poolInfo).withPriority(priority).withConstraints(new JobConstraints().withMaxTaskRetryCount(maxTaskRetryCount));
+            batchClient.jobOperations().updateJob(jobId, updateParam);
+
+            job = batchClient.jobOperations().getJob(jobId);
+            Assert.assertEquals(priority, job.priority());
+            Assert.assertEquals(maxTaskRetryCount, job.constraints().maxTaskRetryCount());
+
             batchClient.jobOperations().disableJob(jobId, DisableJobOption.REQUEUE.REQUEUE);
             job = batchClient.jobOperations().getJob(jobId);
             Assert.assertEquals(JobState.DISABLING, job.state());
@@ -130,6 +143,56 @@ public class JobTests extends BatchIntegrationTestBase {
             Thread.sleep(2 * 1000);
             job = batchClient.jobOperations().getJob(jobId);
             Assert.assertEquals(JobState.COMPLETED, job.state());
+        }
+        finally {
+            try {
+                batchClient.jobOperations().deleteJob(jobId);
+            }
+            catch (Exception e) {
+                // Ignore here
+            }
+        }
+    }
+
+    @Test
+    public void canCRUDJobWithPoolNodeCommunicationMode() throws Exception {
+        // CREATE
+        String jobId = getStringIdWithUserNamePrefix("-Job-canCRUDWithPoolNodeComm");
+        NodeCommunicationMode targetMode = NodeCommunicationMode.SIMPLIFIED;
+
+        ImageReference imgRef = new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
+                .withSku("18.04-LTS").withVersion("latest");
+        VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
+        configuration.withNodeAgentSKUId("batch.node.ubuntu 18.04").withImageReference(imgRef);
+        PoolSpecification poolSpec = new PoolSpecification()
+                                    .withVmSize("STANDARD_D1_V2")
+                .withVirtualMachineConfiguration(configuration)
+                .withTargetNodeCommunicationMode(targetMode);
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.withAutoPoolSpecification(new AutoPoolSpecification().withPool(poolSpec).withPoolLifetimeOption(PoolLifetimeOption.JOB));
+
+        batchClient.jobOperations().createJob(jobId, poolInfo);
+
+        try {
+            // GET
+            CloudJob job = batchClient.jobOperations().getJob(jobId);
+            Assert.assertNotNull(job);
+            Assert.assertEquals(jobId, job.id());
+            Assert.assertEquals(targetMode, job.poolInfo().autoPoolSpecification().pool().targetNodeCommunicationMode());
+
+            // DELETE
+            batchClient.jobOperations().deleteJob(jobId);
+            try {
+                batchClient.jobOperations().getJob(jobId);
+                Assert.assertTrue("Shouldn't be here, the job should be deleted", true);
+            } catch (BatchErrorException err) {
+                if (!err.body().code().equals(BatchErrorCodeStrings.JobNotFound)) {
+                    throw err;
+                }
+            }
+
+            Thread.sleep(1 * 1000);
         }
         finally {
             try {

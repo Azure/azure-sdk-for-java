@@ -30,6 +30,9 @@ public enum FileLastWrittenMode {
      */
     @JsonCreator
     public static FileLastWrittenMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FileLastWrittenMode[] items = FileLastWrittenMode.values();
         for (FileLastWrittenMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum FileLastWrittenMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

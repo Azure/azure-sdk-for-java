@@ -67,25 +67,6 @@ public interface DiskRestorePointsClient {
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
      * @param diskRestorePointName The name of the disk restore point created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk restorePoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskRestorePointInner get(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName);
-
-    /**
-     * Get disk restorePoint resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
-     * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
-     * @param diskRestorePointName The name of the disk restore point created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -99,6 +80,25 @@ public interface DiskRestorePointsClient {
         String vmRestorePointName,
         String diskRestorePointName,
         Context context);
+
+    /**
+     * Get disk restorePoint resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
+     * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
+     * @param diskRestorePointName The name of the disk restore point created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk restorePoint resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DiskRestorePointInner get(
+        String resourceGroupName,
+        String restorePointCollectionName,
+        String vmRestorePointName,
+        String diskRestorePointName);
 
     /**
      * Lists diskRestorePoints under a vmRestorePoint.

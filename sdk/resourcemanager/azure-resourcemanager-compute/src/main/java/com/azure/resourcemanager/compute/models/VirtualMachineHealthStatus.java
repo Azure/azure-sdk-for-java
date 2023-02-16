@@ -16,6 +16,10 @@ public final class VirtualMachineHealthStatus {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceViewStatus status;
 
+    /** Creates an instance of VirtualMachineHealthStatus class. */
+    public VirtualMachineHealthStatus() {
+    }
+
     /**
      * Get the status property: The health status information for the VM.
      *

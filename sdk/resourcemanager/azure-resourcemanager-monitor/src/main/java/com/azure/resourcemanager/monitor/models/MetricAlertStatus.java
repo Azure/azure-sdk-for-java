@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An alert status. */
 @Fluent
 public final class MetricAlertStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertStatus.class);
-
     /*
      * The status name.
      */
@@ -37,6 +33,10 @@ public final class MetricAlertStatus {
      */
     @JsonProperty(value = "properties")
     private MetricAlertStatusProperties properties;
+
+    /** Creates an instance of MetricAlertStatus class. */
+    public MetricAlertStatus() {
+    }
 
     /**
      * Get the name property: The status name.

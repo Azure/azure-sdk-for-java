@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WindowsVMGuestPatchAutomaticByPlatformRebootSetting. */
+/** Specifies the reboot setting for all AutomaticByPlatform patch installation operations. */
 public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
     extends ExpandableStringEnum<WindowsVMGuestPatchAutomaticByPlatformRebootSetting> {
     /** Static value Unknown for WindowsVMGuestPatchAutomaticByPlatformRebootSetting. */
@@ -22,6 +22,15 @@ public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
 
     /** Static value Always for WindowsVMGuestPatchAutomaticByPlatformRebootSetting. */
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting ALWAYS = fromString("Always");
+
+    /**
+     * Creates a new instance of WindowsVMGuestPatchAutomaticByPlatformRebootSetting value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WindowsVMGuestPatchAutomaticByPlatformRebootSetting() {
+    }
 
     /**
      * Creates or finds a WindowsVMGuestPatchAutomaticByPlatformRebootSetting from its string representation.

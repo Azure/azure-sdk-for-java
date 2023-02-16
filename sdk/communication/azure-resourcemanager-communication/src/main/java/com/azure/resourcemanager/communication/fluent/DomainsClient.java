@@ -18,7 +18,9 @@ import com.azure.resourcemanager.communication.models.VerificationParameter;
 /** An instance of this class provides access to all the operations defined in DomainsClient. */
 public interface DomainsClient {
     /**
-     * Get the Domains resource and its properties.
+     * Get
+     *
+     * <p>Get the Domains resource and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -32,7 +34,9 @@ public interface DomainsClient {
     DomainResourceInner get(String resourceGroupName, String emailServiceName, String domainName);
 
     /**
-     * Get the Domains resource and its properties.
+     * Get
+     *
+     * <p>Get the Domains resource and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -48,7 +52,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName, Context context);
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -64,7 +70,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName, DomainResourceInner parameters);
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -85,7 +93,9 @@ public interface DomainsClient {
         Context context);
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -101,7 +111,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName, DomainResourceInner parameters);
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -122,7 +134,9 @@ public interface DomainsClient {
         Context context);
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -137,7 +151,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName);
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -153,7 +169,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName, Context context);
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -166,7 +184,9 @@ public interface DomainsClient {
     void delete(String resourceGroupName, String emailServiceName, String domainName);
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -180,7 +200,9 @@ public interface DomainsClient {
     void delete(String resourceGroupName, String emailServiceName, String domainName, Context context);
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -196,7 +218,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName, UpdateDomainRequestParameters parameters);
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -217,7 +241,9 @@ public interface DomainsClient {
         Context context);
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -233,7 +259,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName, UpdateDomainRequestParameters parameters);
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -254,7 +282,9 @@ public interface DomainsClient {
         Context context);
 
     /**
-     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * List by EmailService
+     *
+     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -268,7 +298,9 @@ public interface DomainsClient {
     PagedIterable<DomainResourceInner> listByEmailServiceResource(String resourceGroupName, String emailServiceName);
 
     /**
-     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * List by EmailService
+     *
+     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -284,7 +316,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, Context context);
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -300,7 +334,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters);
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -321,7 +357,9 @@ public interface DomainsClient {
         Context context);
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -336,7 +374,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters);
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -356,7 +396,9 @@ public interface DomainsClient {
         Context context);
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -372,7 +414,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters);
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -393,7 +437,9 @@ public interface DomainsClient {
         Context context);
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -408,7 +454,9 @@ public interface DomainsClient {
         String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters);
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.

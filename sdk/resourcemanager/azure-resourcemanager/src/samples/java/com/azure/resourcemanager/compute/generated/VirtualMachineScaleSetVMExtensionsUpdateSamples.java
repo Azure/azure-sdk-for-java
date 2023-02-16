@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMExtensionUpdate;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.io.IOException;
 /** Samples for VirtualMachineScaleSetVMExtensions Update. */
 public final class VirtualMachineScaleSetVMExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtensions_Update.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtensions_Update.json
      */
     /**
      * Sample code: Update VirtualMachineScaleSet VM extension.
@@ -42,6 +41,6 @@ public final class VirtualMachineScaleSetVMExtensionsUpdateSamples {
                             .createDefaultManagementSerializerAdapter()
                             .deserialize(
                                 "{\"UserName\":\"xyz@microsoft.com\"}", Object.class, SerializerEncoding.JSON)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

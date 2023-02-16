@@ -1,0 +1,82 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob267797bba')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6ebed2ce-511e-44ff-beb8-daf223890ec3",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "6ebed2ce-511e-44ff-beb8-daf223890ec3",
+      "StatusCode" : "201",
+      "Date" : "Tue, 17 Jan 2023 20:35:13 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "6ebed2ce-511e-44ff-beb8-daf223890ec3",
+      "ETag" : "W/\"0x8DAF8CA56C02060\"",
+      "elapsed-time" : "49",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "439",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CA56C02060\\\"\",\"name\":\"azs-java-test-blob267797bba\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null,\"encryptionKey\":null,\"identity\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "6ebed2ce-511e-44ff-beb8-daf223890ec3",
+      "Location" : "https://alzimmer-basic.search.windows.net/datasources('azs-java-test-blob267797bba')?api-version=2021-04-30-Preview",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob267797bba')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7c9b3f8c-cd8d-4d56-84c1-cdf651f2ea36",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "7c9b3f8c-cd8d-4d56-84c1-cdf651f2ea36",
+      "StatusCode" : "200",
+      "Date" : "Tue, 17 Jan 2023 20:35:15 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "7c9b3f8c-cd8d-4d56-84c1-cdf651f2ea36",
+      "ETag" : "W/\"0x8DAF8CA56D0E6C6\"",
+      "elapsed-time" : "42",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "432",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CA56D0E6C6\\\"\",\"name\":\"azs-java-test-blob267797bba\",\"description\":\"an update\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null,\"encryptionKey\":null,\"identity\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "7c9b3f8c-cd8d-4d56-84c1-cdf651f2ea36",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob267797bba')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0d9c172a-4fd2-448b-8be8-9ee19f51f34b"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "0d9c172a-4fd2-448b-8be8-9ee19f51f34b",
+      "elapsed-time" : "23",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "0d9c172a-4fd2-448b-8be8-9ee19f51f34b",
+      "StatusCode" : "204",
+      "Date" : "Tue, 17 Jan 2023 20:35:15 GMT",
+      "x-ms-client-request-id" : "0d9c172a-4fd2-448b-8be8-9ee19f51f34b"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-java-test-blob267797bba" ]
+}

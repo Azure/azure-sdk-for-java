@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,68 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.2 (2023-02-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.36.0`.
+- Update `azure-data-schemaregistry` dependency to `1.4.0-beta.2`.
+
+## 1.2.0-beta.1 (2023-01-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.4.0-beta.1`.
+
+## 1.1.2 (2023-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.35.0`.
+- Update `azure-data-schemaregistry` dependency to `1.3.2`.
+
+## 1.1.1 (2022-11-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.34.0`.
+- Update `azure-data-schemaregistry` dependency to `1.3.1`.
+
+## 1.1.0 (2022-10-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.33.0`.
+- Update `azure-data-schemaregistry` dependency to `1.3.0`.
+
+## 1.0.4 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.32.0`.
+- Update `azure-data-schemaregistry` dependency to `1.2.4`.
+
+## 1.0.3 (2022-08-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.31.0`.
+- Update `azure-data-schemaregistry` dependency to `1.2.3`.
 
 ## 1.0.2 (2022-07-12)
 

@@ -36,15 +36,6 @@ public final class KeysImpl implements Keys {
         return Utils.mapPage(inner, inner1 -> new KeyImpl(inner1, this.manager()));
     }
 
-    public Key get(String resourceGroupName, String workspaceName, String keyName) {
-        KeyInner inner = this.serviceClient().get(resourceGroupName, workspaceName, keyName);
-        if (inner != null) {
-            return new KeyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Key> getWithResponse(
         String resourceGroupName, String workspaceName, String keyName, Context context) {
         Response<KeyInner> inner =
@@ -60,8 +51,8 @@ public final class KeysImpl implements Keys {
         }
     }
 
-    public Key delete(String resourceGroupName, String workspaceName, String keyName) {
-        KeyInner inner = this.serviceClient().delete(resourceGroupName, workspaceName, keyName);
+    public Key get(String resourceGroupName, String workspaceName, String keyName) {
+        KeyInner inner = this.serviceClient().get(resourceGroupName, workspaceName, keyName);
         if (inner != null) {
             return new KeyImpl(inner, this.manager());
         } else {
@@ -79,6 +70,15 @@ public final class KeysImpl implements Keys {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new KeyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Key delete(String resourceGroupName, String workspaceName, String keyName) {
+        KeyInner inner = this.serviceClient().delete(resourceGroupName, workspaceName, keyName);
+        if (inner != null) {
+            return new KeyImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -28,6 +28,10 @@ public final class DeviceProperties {
     @JsonProperty(value = "linkSpeedInMbps")
     private Integer linkSpeedInMbps;
 
+    /** Creates an instance of DeviceProperties class. */
+    public DeviceProperties() {
+    }
+
     /**
      * Get the deviceVendor property: Name of the device Vendor.
      *

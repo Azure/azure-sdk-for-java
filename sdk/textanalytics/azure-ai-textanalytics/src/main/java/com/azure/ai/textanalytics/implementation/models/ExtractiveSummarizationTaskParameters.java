@@ -23,12 +23,14 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
     private ExtractiveSummarizationSortingCriteria sortBy;
 
     /*
-     * Specifies the method used to interpret string offsets.  Defaults to Text
-     * Elements (Graphemes) according to Unicode v8.0.0. For additional
-     * information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
+     * Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
+
+    /** Creates an instance of ExtractiveSummarizationTaskParameters class. */
+    public ExtractiveSummarizationTaskParameters() {}
 
     /**
      * Get the sentenceCount property: The sentenceCount property.
@@ -91,6 +93,20 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      */
     public ExtractiveSummarizationTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationTaskParameters setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
         return this;
     }
 }

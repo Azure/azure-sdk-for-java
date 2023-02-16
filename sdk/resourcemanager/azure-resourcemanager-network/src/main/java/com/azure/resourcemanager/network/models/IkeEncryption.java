@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IkeEncryption. */
+/** The IKE encryption algorithm (IKE phase 2). */
 public final class IkeEncryption extends ExpandableStringEnum<IkeEncryption> {
     /** Static value DES for IkeEncryption. */
     public static final IkeEncryption DES = fromString("DES");

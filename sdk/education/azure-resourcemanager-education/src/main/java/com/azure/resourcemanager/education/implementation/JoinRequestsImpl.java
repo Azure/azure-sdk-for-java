@@ -47,17 +47,6 @@ public final class JoinRequestsImpl implements JoinRequests {
         return Utils.mapPage(inner, inner1 -> new JoinRequestDetailsImpl(inner1, this.manager()));
     }
 
-    public JoinRequestDetails get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
-        JoinRequestDetailsInner inner =
-            this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName);
-        if (inner != null) {
-            return new JoinRequestDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<JoinRequestDetails> getWithResponse(
         String billingAccountName,
         String billingProfileName,
@@ -79,9 +68,15 @@ public final class JoinRequestsImpl implements JoinRequests {
         }
     }
 
-    public void approve(
+    public JoinRequestDetails get(
         String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
-        this.serviceClient().approve(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName);
+        JoinRequestDetailsInner inner =
+            this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName);
+        if (inner != null) {
+            return new JoinRequestDetailsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> approveWithResponse(
@@ -95,9 +90,9 @@ public final class JoinRequestsImpl implements JoinRequests {
             .approveWithResponse(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, context);
     }
 
-    public void deny(
+    public void approve(
         String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
-        this.serviceClient().deny(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName);
+        this.serviceClient().approve(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName);
     }
 
     public Response<Void> denyWithResponse(
@@ -109,6 +104,11 @@ public final class JoinRequestsImpl implements JoinRequests {
         return this
             .serviceClient()
             .denyWithResponse(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, context);
+    }
+
+    public void deny(
+        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+        this.serviceClient().deny(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName);
     }
 
     private JoinRequestsClient serviceClient() {

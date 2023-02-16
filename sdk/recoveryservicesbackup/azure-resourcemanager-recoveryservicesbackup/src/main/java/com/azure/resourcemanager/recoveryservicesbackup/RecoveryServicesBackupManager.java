@@ -41,6 +41,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupUsa
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupWorkloadItemsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BmsPrepareDataMoveOperationResultsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.DeletedProtectionContainersImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ExportJobsOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.FeatureSupportsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ItemLevelRecoveryConnectionsImpl;
@@ -91,6 +92,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupUsageSummar
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupWorkloadItems;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Backups;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BmsPrepareDataMoveOperationResults;
+import com.azure.resourcemanager.recoveryservicesbackup.models.DeletedProtectionContainers;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ExportJobsOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupports;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ItemLevelRecoveryConnections;
@@ -221,6 +223,8 @@ public final class RecoveryServicesBackupManager {
     private BackupProtectableItems backupProtectableItems;
 
     private BackupProtectionContainers backupProtectionContainers;
+
+    private DeletedProtectionContainers deletedProtectionContainers;
 
     private SecurityPINs securityPINs;
 
@@ -397,7 +401,7 @@ public final class RecoveryServicesBackupManager {
                 .append("-")
                 .append("com.azure.resourcemanager.recoveryservicesbackup")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -1015,6 +1019,19 @@ public final class RecoveryServicesBackupManager {
                 new BackupProtectionContainersImpl(clientObject.getBackupProtectionContainers(), this);
         }
         return backupProtectionContainers;
+    }
+
+    /**
+     * Gets the resource collection API of DeletedProtectionContainers.
+     *
+     * @return Resource collection API of DeletedProtectionContainers.
+     */
+    public DeletedProtectionContainers deletedProtectionContainers() {
+        if (this.deletedProtectionContainers == null) {
+            this.deletedProtectionContainers =
+                new DeletedProtectionContainersImpl(clientObject.getDeletedProtectionContainers(), this);
+        }
+        return deletedProtectionContainers;
     }
 
     /**

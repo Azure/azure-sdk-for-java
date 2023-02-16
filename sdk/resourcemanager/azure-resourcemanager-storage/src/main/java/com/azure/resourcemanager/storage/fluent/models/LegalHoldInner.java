@@ -13,26 +13,22 @@ import java.util.List;
 @Fluent
 public final class LegalHoldInner {
     /*
-     * The hasLegalHold public property is set to true by SRP if there are at
-     * least one existing tag. The hasLegalHold public property is set to false
-     * by SRP if all existing legal hold tags are cleared out. There can be a
-     * maximum of 1000 blob containers with hasLegalHold=true for a given
-     * account.
+     * The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold
+     * public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum
+     * of 1000 blob containers with hasLegalHold=true for a given account.
      */
     @JsonProperty(value = "hasLegalHold", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasLegalHold;
 
     /*
-     * Each tag should be 3 to 23 alphanumeric characters and is normalized to
-     * lower case at SRP.
+     * Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
      */
     @JsonProperty(value = "tags", required = true)
     private List<String> tags;
 
     /*
-     * When enabled, new blocks can be written to both 'Append and Bock Blobs'
-     * while maintaining legal hold protection and compliance. Only new blocks
-     * can be added and any existing blocks cannot be modified or deleted.
+     * When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining legal hold protection
+     * and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted.
      */
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;

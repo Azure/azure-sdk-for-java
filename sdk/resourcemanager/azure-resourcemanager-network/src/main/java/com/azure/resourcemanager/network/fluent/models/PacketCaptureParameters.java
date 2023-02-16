@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
+import com.azure.resourcemanager.network.models.PacketCaptureMachineScope;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
+import com.azure.resourcemanager.network.models.PacketCaptureTargetType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,10 +17,23 @@ import java.util.List;
 @Fluent
 public class PacketCaptureParameters {
     /*
-     * The ID of the targeted resource, only VM is currently supported.
+     * The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently supported.
      */
     @JsonProperty(value = "target", required = true)
     private String target;
+
+    /*
+     * A list of AzureVMSS instances which can be included or excluded to run packet capture. If both included and
+     * excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     */
+    @JsonProperty(value = "scope")
+    private PacketCaptureMachineScope scope;
+
+    /*
+     * Target type of the resource provided.
+     */
+    @JsonProperty(value = "targetType")
+    private PacketCaptureTargetType targetType;
 
     /*
      * Number of bytes captured per packet, the remaining bytes are truncated.
@@ -50,8 +65,13 @@ public class PacketCaptureParameters {
     @JsonProperty(value = "filters")
     private List<PacketCaptureFilter> filters;
 
+    /** Creates an instance of PacketCaptureParameters class. */
+    public PacketCaptureParameters() {
+    }
+
     /**
-     * Get the target property: The ID of the targeted resource, only VM is currently supported.
+     * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
+     * supported.
      *
      * @return the target value.
      */
@@ -60,13 +80,56 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the target property: The ID of the targeted resource, only VM is currently supported.
+     * Set the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
+     * supported.
      *
      * @param target the target value to set.
      * @return the PacketCaptureParameters object itself.
      */
     public PacketCaptureParameters withTarget(String target) {
         this.target = target;
+        return this;
+    }
+
+    /**
+     * Get the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
+     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     *
+     * @return the scope value.
+     */
+    public PacketCaptureMachineScope scope() {
+        return this.scope;
+    }
+
+    /**
+     * Set the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
+     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     *
+     * @param scope the scope value to set.
+     * @return the PacketCaptureParameters object itself.
+     */
+    public PacketCaptureParameters withScope(PacketCaptureMachineScope scope) {
+        this.scope = scope;
+        return this;
+    }
+
+    /**
+     * Get the targetType property: Target type of the resource provided.
+     *
+     * @return the targetType value.
+     */
+    public PacketCaptureTargetType targetType() {
+        return this.targetType;
+    }
+
+    /**
+     * Set the targetType property: Target type of the resource provided.
+     *
+     * @param targetType the targetType value to set.
+     * @return the PacketCaptureParameters object itself.
+     */
+    public PacketCaptureParameters withTargetType(PacketCaptureTargetType targetType) {
+        this.targetType = targetType;
         return this;
     }
 
@@ -180,6 +243,9 @@ public class PacketCaptureParameters {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property target in model PacketCaptureParameters"));
+        }
+        if (scope() != null) {
+            scope().validate();
         }
         if (storageLocation() == null) {
             throw LOGGER

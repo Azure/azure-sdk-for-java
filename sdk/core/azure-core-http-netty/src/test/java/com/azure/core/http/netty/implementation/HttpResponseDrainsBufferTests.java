@@ -24,10 +24,17 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.CompletionHandler;
+import java.nio.channels.WritableByteChannel;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
@@ -46,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpResponseDrainsBufferTests {
     private static final String LONG_BODY_PATH = "/long";
-    private static final byte[] LONG_BODY = new byte[4 * 1024 * 1024]; // 4 MB
+    private static final byte[] LONG_BODY = new byte[1024 * 1024]; // 1 MB
 
     private static ResourceLeakDetector.Level originalLevel;
     private static WireMockServer wireMockServer;
@@ -104,6 +111,99 @@ public class HttpResponseDrainsBufferTests {
     @Test
     public void closeHttpResponseWithConsumingPartialBody() {
         runScenario(response -> response.getBody().next().flatMap(ignored -> Mono.fromRunnable(response::close)));
+    }
+
+    @Test
+    public void closeHttpResponseWithConsumingPartialWriteAsync() {
+        runScenario(response -> response.writeBodyToAsync(new ThrowingAsynchronousByteChannel())
+            .onErrorResume(throwable -> Mono.empty()));
+    }
+
+    private static final class ThrowingAsynchronousByteChannel implements AsynchronousByteChannel {
+        private boolean open = true;
+        int writeCount = 0;
+
+        @Override
+        public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
+        }
+
+        @Override
+        public Future<Integer> read(ByteBuffer dst) {
+            return null;
+        }
+
+        @Override
+        public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
+            if (writeCount++ < 3) {
+                int remaining = src.remaining();
+                src.position(src.position() + remaining);
+                handler.completed(remaining, attachment);
+            } else {
+                handler.failed(new IOException(), attachment);
+            }
+        }
+
+        @Override
+        public Future<Integer> write(ByteBuffer src) {
+            if (writeCount++ < 3) {
+                int remaining = src.remaining();
+                src.position(src.position() + remaining);
+
+                return CompletableFuture.completedFuture(remaining);
+            } else {
+                CompletableFuture<Integer> failed = new CompletableFuture<>();
+                failed.completeExceptionally(new IOException());
+                return failed;
+            }
+        }
+
+        @Override
+        public boolean isOpen() {
+            return open;
+        }
+
+        @Override
+        public void close() {
+            open = false;
+        }
+    }
+
+    @Test
+    public void closeHttpResponseWithConsumingPartialWrite() {
+        runScenario(response -> {
+            try {
+                response.writeBodyTo(new ThrowingWritableByteChannel());
+            } catch (Exception ignored) {
+            }
+
+            return Mono.empty();
+        });
+    }
+
+    private static final class ThrowingWritableByteChannel implements WritableByteChannel {
+        private boolean open = true;
+        int writeCount = 0;
+
+        @Override
+        public int write(ByteBuffer src) throws IOException {
+            if (writeCount++ < 3) {
+                int remaining = src.remaining();
+                src.position(src.position() + remaining);
+                return remaining;
+            } else {
+                throw new IOException();
+            }
+        }
+
+        @Override
+        public boolean isOpen() {
+            return open;
+        }
+
+        @Override
+        public void close() throws IOException {
+            open = false;
+        }
     }
 
     @Test

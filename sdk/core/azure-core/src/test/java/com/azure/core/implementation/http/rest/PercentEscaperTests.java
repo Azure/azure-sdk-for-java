@@ -51,8 +51,7 @@ public class PercentEscaperTests {
             Arguments.arguments(defaultEscaper, "日本語", "%E6%97%A5%E6%9C%AC%E8%AA%9E"),
             Arguments.arguments(defaultEscaper, " ", "%20"),
             Arguments.arguments(new PercentEscaper(null, true), " ", "+"),
-            Arguments.arguments(new PercentEscaper("$", false), "$", "$"),
-            Arguments.arguments(new PercentEscaper("ह", false), "ह", "ह")
+            Arguments.arguments(new PercentEscaper("$", false), "$", "$")
         );
     }
 

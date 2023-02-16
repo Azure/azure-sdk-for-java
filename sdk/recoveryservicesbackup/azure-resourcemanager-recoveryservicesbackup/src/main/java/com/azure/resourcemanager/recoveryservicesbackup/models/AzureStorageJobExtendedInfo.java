@@ -32,6 +32,10 @@ public final class AzureStorageJobExtendedInfo {
     @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
 
+    /** Creates an instance of AzureStorageJobExtendedInfo class. */
+    public AzureStorageJobExtendedInfo() {
+    }
+
     /**
      * Get the tasksList property: List of tasks for this job.
      *

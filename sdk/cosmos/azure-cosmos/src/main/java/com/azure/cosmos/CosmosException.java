@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,9 +22,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
@@ -82,14 +84,14 @@ public class CosmosException extends AzureException {
     private CosmosError cosmosError;
 
     /**
-     * RNTBD channel task queue size
+     * RNTBD endpoint statistics
      */
-    private int rntbdChannelTaskQueueSize;
+    private RntbdEndpointStatistics rntbdEndpointStatistics;
 
     /**
      * RNTBD endpoint statistics
      */
-    private RntbdEndpointStatistics rntbdEndpointStatistics;
+    private RntbdChannelStatistics rntbdChannelStatistics;
 
     /**
      * LSN
@@ -122,11 +124,6 @@ public class CosmosException extends AzureException {
     private int requestPayloadLength;
 
     /**
-     * RNTBD pending request queue size
-     */
-    private int rntbdPendingRequestQueueSize;
-
-    /**
      * RNTBD request length
      */
     private int rntbdRequestLength;
@@ -141,6 +138,11 @@ public class CosmosException extends AzureException {
      */
     private boolean sendingRequestHasStarted;
 
+    /***
+     * All selectable replica status.
+     */
+    private final List<String> replicaStatusList = new ArrayList<>();
+
     /**
      * Creates a new instance of the CosmosException class.
      *
@@ -152,7 +154,7 @@ public class CosmosException extends AzureException {
     protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
-        this.responseHeaders = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+        this.responseHeaders = new ConcurrentHashMap<>();
 
         //  Since ConcurrentHashMap only takes non-null entries, so filtering them before putting them in.
         if (responseHeaders != null) {
@@ -494,6 +496,14 @@ public class CosmosException extends AzureException {
         return this.rntbdEndpointStatistics;
     }
 
+    RntbdChannelStatistics getRntbdChannelStatistics() {
+        return this.rntbdChannelStatistics;
+    }
+
+    void setRntbdChannelStatistics(RntbdChannelStatistics rntbdChannelStatistics) {
+        this.rntbdChannelStatistics = rntbdChannelStatistics;
+    }
+
     void setRntbdRequestLength(int rntbdRequestLength) {
         this.rntbdRequestLength = rntbdRequestLength;
     }
@@ -526,20 +536,8 @@ public class CosmosException extends AzureException {
         this.sendingRequestHasStarted = hasSendingRequestStarted;
     }
 
-    int getRntbdChannelTaskQueueSize() {
-        return this.rntbdChannelTaskQueueSize;
-    }
-
-    void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
-        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
-    }
-
-    int getRntbdPendingRequestQueueSize() {
-        return this.rntbdChannelTaskQueueSize;
-    }
-
-    void setRntbdPendingRequestQueueSize(int rntbdPendingRequestQueueSize) {
-        this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
+    List<String> getReplicaStatusList() {
+        return this.replicaStatusList;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -547,7 +545,32 @@ public class CosmosException extends AzureException {
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.CosmosExceptionHelper.setCosmosExceptionAccessor(
-            (statusCode, innerException) -> new CosmosException(statusCode, innerException));
+                new ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor() {
+                    @Override
+                    public CosmosException createCosmosException(int statusCode, Exception innerException) {
+                        return new CosmosException(statusCode, innerException);
+                    }
+
+                    @Override
+                    public List<String> getReplicaStatusList(CosmosException cosmosException) {
+                        return cosmosException.getReplicaStatusList();
+                    }
+
+                    @Override
+                    public CosmosException setRntbdChannelStatistics(
+                        CosmosException cosmosException,
+                        RntbdChannelStatistics rntbdChannelStatistics) {
+
+                        cosmosException.setRntbdChannelStatistics(rntbdChannelStatistics);
+                        return cosmosException;
+                    }
+
+                    @Override
+                    public RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException) {
+                        return cosmosException.getRntbdChannelStatistics();
+                    }
+
+                });
     }
 
     static { initialize(); }

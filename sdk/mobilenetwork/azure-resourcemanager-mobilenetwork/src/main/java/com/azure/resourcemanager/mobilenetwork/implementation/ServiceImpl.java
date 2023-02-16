@@ -80,6 +80,10 @@ public final class ServiceImpl implements Service, Service.Definition, Service.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServiceInner innerModel() {
         return this.innerObject;
     }

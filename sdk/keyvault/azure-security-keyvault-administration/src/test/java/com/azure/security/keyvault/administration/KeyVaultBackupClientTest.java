@@ -3,6 +3,7 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
@@ -33,13 +34,18 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupClient client;
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        KeyVaultBackupAsyncClient asyncClient = spy(getClientBuilder(httpClient, forCleanup).buildAsyncClient());
-
+        client = spy(getClientBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+            : httpClient), forCleanup).buildClient());
         if (interceptorManager.isPlaybackMode()) {
-            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+            when(client.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
+    }
 
-        client = new KeyVaultBackupClient(asyncClient);
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> true)
+            .assertSync()
+            .build();
     }
 
     /**

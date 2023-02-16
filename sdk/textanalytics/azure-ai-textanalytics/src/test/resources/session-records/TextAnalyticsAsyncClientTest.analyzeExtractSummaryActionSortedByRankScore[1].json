@@ -1,61 +1,64 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-04-01-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "595a1c52-3ef1-4540-bef7-82dc04a69fe0",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "29d91487-c580-413e-9b28-bece3516b291",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "101",
+      "x-ms-region" : "West US 2",
+      "x-envoy-upstream-service-time" : "83",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/59d8cc1f-90ea-412b-9f07-a6265193705a?api-version=2022-04-01-preview",
+      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/72f290ff-7ce7-4954-9ed5-9f16ccbbcda7?api-version=2022-10-01-preview",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "aed5f5ba-46f6-403d-a0d3-45e1dcff20e6",
+      "apim-request-id" : "f116f684-4aeb-45f6-aaf4-41e8912980d1",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Fri, 06 May 2022 17:53:53 GMT"
+      "Date" : "Mon, 14 Nov 2022 18:49:43 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/59d8cc1f-90ea-412b-9f07-a6265193705a?api-version=2022-04-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/72f290ff-7ce7-4954-9ed5-9f16ccbbcda7?api-version=2022-10-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "49860535-7aad-4f07-934a-3a0108ff1755"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c3d00d82-884b-40ef-80cb-216639d4fbdb"
     },
     "Response" : {
-      "content-length" : "1392",
-      "x-envoy-upstream-service-time" : "41",
+      "content-length" : "1372",
+      "x-ms-region" : "West US 2",
+      "x-envoy-upstream-service-time" : "53",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f01fd1d7-4e07-4d87-a0ea-bb351010484b",
+      "apim-request-id" : "dadb4562-671b-4153-9e72-0cb53edd955a",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"59d8cc1f-90ea-412b-9f07-a6265193705a\",\"lastUpdateDateTime\":\"2022-05-06T17:53:55Z\",\"createdDateTime\":\"2022-05-06T17:53:53Z\",\"expirationDateTime\":\"2022-05-07T17:53:53Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"ExtractiveSummarizationLROResults\",\"lastUpdateDateTime\":\"2022-05-06T17:53:55.4580473Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentences\":[{\"text\":\"In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).\",\"rankScore\":1.0,\"offset\":324,\"length\":192},{\"text\":\"As Chief Technology Officer of Azure AI Cognitive Services, I have been working with a team of amazing scientists and engineers to turn this quest into a reality.\",\"rankScore\":0.94,\"offset\":161,\"length\":162},{\"text\":\"At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding.\",\"rankScore\":0.83,\"offset\":0,\"length\":160},{\"text\":\"The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks, much in the way humans do today.\",\"rankScore\":0.53,\"offset\":856,\"length\":158}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-08-01\"}}]}}",
-      "Date" : "Fri, 06 May 2022 17:54:23 GMT",
+      "Body" : "{\"jobId\":\"72f290ff-7ce7-4954-9ed5-9f16ccbbcda7\",\"lastUpdateDateTime\":\"2022-11-14T18:49:44Z\",\"createdDateTime\":\"2022-11-14T18:49:43Z\",\"expirationDateTime\":\"2022-11-15T18:49:43Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"ExtractiveSummarizationLROResults\",\"lastUpdateDateTime\":\"2022-11-14T18:49:44.4518076Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentences\":[{\"text\":\"We believe XYZ-code will enable us to fulfill our long-term vision: cross-domain transfer learning, spanning modalities and languages.\",\"rankScore\":1.0,\"offset\":721,\"length\":134},{\"text\":\"The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks, much in the way humans do today.\",\"rankScore\":0.81,\"offset\":856,\"length\":158},{\"text\":\"At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding.\",\"rankScore\":0.69,\"offset\":0,\"length\":160},{\"text\":\"In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).\",\"rankScore\":0.68,\"offset\":324,\"length\":192}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-08-31-preview\"}}]}}",
+      "Date" : "Mon, 14 Nov 2022 18:50:13 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/59d8cc1f-90ea-412b-9f07-a6265193705a?api-version=2022-04-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/72f290ff-7ce7-4954-9ed5-9f16ccbbcda7?api-version=2022-10-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "13407a29-968b-4e7d-8866-4bba4b931d77"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "20d32caa-aa9b-42c9-a0bb-b27f88fee83a"
     },
     "Response" : {
-      "content-length" : "1392",
-      "x-envoy-upstream-service-time" : "45",
+      "content-length" : "1372",
+      "x-ms-region" : "West US 2",
+      "x-envoy-upstream-service-time" : "35",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "6770b578-cf8e-4cf5-8426-d4223f09c60b",
+      "apim-request-id" : "178a147c-ebbd-4870-8e63-1bb4b37d57d8",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"59d8cc1f-90ea-412b-9f07-a6265193705a\",\"lastUpdateDateTime\":\"2022-05-06T17:53:55Z\",\"createdDateTime\":\"2022-05-06T17:53:53Z\",\"expirationDateTime\":\"2022-05-07T17:53:53Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"ExtractiveSummarizationLROResults\",\"lastUpdateDateTime\":\"2022-05-06T17:53:55.4580473Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentences\":[{\"text\":\"In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).\",\"rankScore\":1.0,\"offset\":324,\"length\":192},{\"text\":\"As Chief Technology Officer of Azure AI Cognitive Services, I have been working with a team of amazing scientists and engineers to turn this quest into a reality.\",\"rankScore\":0.94,\"offset\":161,\"length\":162},{\"text\":\"At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding.\",\"rankScore\":0.83,\"offset\":0,\"length\":160},{\"text\":\"The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks, much in the way humans do today.\",\"rankScore\":0.53,\"offset\":856,\"length\":158}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-08-01\"}}]}}",
-      "Date" : "Fri, 06 May 2022 17:54:23 GMT",
+      "Body" : "{\"jobId\":\"72f290ff-7ce7-4954-9ed5-9f16ccbbcda7\",\"lastUpdateDateTime\":\"2022-11-14T18:49:44Z\",\"createdDateTime\":\"2022-11-14T18:49:43Z\",\"expirationDateTime\":\"2022-11-15T18:49:43Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"ExtractiveSummarizationLROResults\",\"lastUpdateDateTime\":\"2022-11-14T18:49:44.4518076Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentences\":[{\"text\":\"We believe XYZ-code will enable us to fulfill our long-term vision: cross-domain transfer learning, spanning modalities and languages.\",\"rankScore\":1.0,\"offset\":721,\"length\":134},{\"text\":\"The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks, much in the way humans do today.\",\"rankScore\":0.81,\"offset\":856,\"length\":158},{\"text\":\"At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding.\",\"rankScore\":0.69,\"offset\":0,\"length\":160},{\"text\":\"In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).\",\"rankScore\":0.68,\"offset\":324,\"length\":192}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-08-31-preview\"}}]}}",
+      "Date" : "Mon, 14 Nov 2022 18:50:13 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

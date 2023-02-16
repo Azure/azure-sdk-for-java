@@ -119,21 +119,6 @@ public interface DataFlowDebugSessionsClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition with debug content.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for starting data flow debug session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AddDataFlowToDebugSessionResponseInner addDataFlow(
-        String resourceGroupName, String factoryName, DataFlowDebugPackage request);
-
-    /**
-     * Add a data flow into debug session.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition with debug content.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -145,17 +130,19 @@ public interface DataFlowDebugSessionsClient {
         String resourceGroupName, String factoryName, DataFlowDebugPackage request, Context context);
 
     /**
-     * Deletes a data flow debug session.
+     * Add a data flow into debug session.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param request Data flow debug session definition for deletion.
+     * @param request Data flow debug session definition with debug content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for starting data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request);
+    AddDataFlowToDebugSessionResponseInner addDataFlow(
+        String resourceGroupName, String factoryName, DataFlowDebugPackage request);
 
     /**
      * Deletes a data flow debug session.
@@ -172,6 +159,19 @@ public interface DataFlowDebugSessionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request, Context context);
+
+    /**
+     * Deletes a data flow debug session.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param request Data flow debug session definition for deletion.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request);
 
     /**
      * Execute a data flow debug command.

@@ -33,7 +33,11 @@ public final class EnterpriseGradeCdnStatus extends ExpandableStringEnum<Enterpr
         return fromString(name, EnterpriseGradeCdnStatus.class);
     }
 
-    /** @return known EnterpriseGradeCdnStatus values. */
+    /**
+     * Gets known EnterpriseGradeCdnStatus values.
+     *
+     * @return known EnterpriseGradeCdnStatus values.
+     */
     public static Collection<EnterpriseGradeCdnStatus> values() {
         return values(EnterpriseGradeCdnStatus.class);
     }

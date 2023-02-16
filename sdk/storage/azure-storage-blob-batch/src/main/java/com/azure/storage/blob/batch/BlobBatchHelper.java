@@ -43,13 +43,7 @@ class BlobBatchHelper {
      * This pattern matches finding the status code of the batch response.
      */
     private static final Pattern STATUS_CODE_PATTERN = Pattern
-        .compile("HTTP\\/\\d\\.\\d\\s?(\\d+)\\s?\\w+", Pattern.CASE_INSENSITIVE);
-
-    /*
-     * This pattern matches finding the 'application/http' portion of the body.
-     */
-    private static final Pattern APPLICATION_HTTP_PATTERN = Pattern
-        .compile("application\\/http", Pattern.CASE_INSENSITIVE);
+        .compile("HTTP/\\d\\.\\d\\s?(\\d+)\\s?\\w+", Pattern.CASE_INSENSITIVE);
 
     /*
      * The following patterns were previously used in 'String.split' calls. 'String.split' internally compiles the
@@ -57,8 +51,7 @@ class BlobBatchHelper {
      * single character. Compiling these patterns here will help reduce the number of regex compilations, greatly
      * improving performance.
      */
-    private static final Pattern HTTP_NEWLINE_PATTERN = Pattern.compile(HTTP_NEWLINE);
-    private static final Pattern HTTP_DOUBLE_NEWLINE_PATTERN = Pattern.compile(HTTP_NEWLINE + HTTP_NEWLINE_PATTERN);
+    private static final Pattern HTTP_DOUBLE_NEWLINE_PATTERN = Pattern.compile(HTTP_NEWLINE + HTTP_NEWLINE);
     private static final Pattern HTTP_HEADER_SPLIT_PATTERN = Pattern.compile(":\\s*");
 
     // This method connects the batch response values to the individual batch operations based on their Content-Id
@@ -108,7 +101,7 @@ class BlobBatchHelper {
                 // Split the batch response body into batch operation responses.
                 for (String subResponse : subResponses) {
                     // This is a split value that isn't a response.
-                    if (!APPLICATION_HTTP_PATTERN.matcher(subResponse).find()) {
+                    if (!subResponse.contains("application/http")) {
                         continue;
                     }
 
@@ -166,7 +159,16 @@ class BlobBatchHelper {
     private static HttpHeaders getHttpHeaders(String responseMetadata) {
         HttpHeaders headers = new HttpHeaders();
 
-        for (String line : HTTP_NEWLINE_PATTERN.split(responseMetadata)) {
+        int previousIndex = 0;
+        int index;
+        do {
+            index = responseMetadata.indexOf(HTTP_NEWLINE, previousIndex);
+            String line = (index == -1)
+                ? responseMetadata.substring(previousIndex)
+                : responseMetadata.substring(previousIndex, index);
+
+            previousIndex = index + 2;
+
             if (CoreUtils.isNullOrEmpty(line) || (line.startsWith("HTTP") && !line.contains(":"))) {
                 continue;
             }
@@ -177,7 +179,7 @@ class BlobBatchHelper {
             } else {
                 headers.set(headerPieces[0], headerPieces[1]);
             }
-        }
+        } while (index != -1);
 
         return headers;
     }

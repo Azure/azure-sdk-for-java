@@ -30,15 +30,13 @@ public final class HealthcareEntity {
     private String subcategory;
 
     /*
-     * Start position for the entity text. Use of different 'stringIndexType'
-     * values can affect the offset returned.
+     * Start position for the entity text. Use of different 'stringIndexType' values can affect the offset returned.
      */
     @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
-     * Length for the entity text. Use of different 'stringIndexType' values
-     * can affect the length returned.
+     * Length for the entity text. Use of different 'stringIndexType' values can affect the length returned.
      */
     @JsonProperty(value = "length", required = true)
     private int length;
@@ -56,8 +54,7 @@ public final class HealthcareEntity {
     private HealthcareAssertion assertion;
 
     /*
-     * Preferred name for the entity. Example: 'histologically' would have a
-     * 'name' of 'histologic'.
+     * Preferred name for the entity. Example: 'histologically' would have a 'name' of 'histologic'.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -67,6 +64,9 @@ public final class HealthcareEntity {
      */
     @JsonProperty(value = "links")
     private List<HealthcareEntityLink> links;
+
+    /** Creates an instance of HealthcareEntity class. */
+    public HealthcareEntity() {}
 
     /**
      * Get the text property: Entity text as appears in the request.

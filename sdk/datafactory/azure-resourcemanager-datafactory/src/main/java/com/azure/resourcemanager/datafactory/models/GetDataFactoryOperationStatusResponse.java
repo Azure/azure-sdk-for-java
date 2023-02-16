@@ -26,6 +26,10 @@ public final class GetDataFactoryOperationStatusResponse {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of GetDataFactoryOperationStatusResponse class. */
+    public GetDataFactoryOperationStatusResponse() {
+    }
+
     /**
      * Get the status property: Status of the operation.
      *

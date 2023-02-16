@@ -23,6 +23,10 @@ public final class EmissionPoliciesPropertiesFormat {
     @JsonProperty(value = "emissionDestinations")
     private List<EmissionPolicyDestination> emissionDestinations;
 
+    /** Creates an instance of EmissionPoliciesPropertiesFormat class. */
+    public EmissionPoliciesPropertiesFormat() {
+    }
+
     /**
      * Get the emissionType property: Emission format type.
      *

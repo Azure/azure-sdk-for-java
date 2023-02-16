@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Architecture. */
+/** The architecture of the image. Applicable to OS disks only. */
 public final class Architecture extends ExpandableStringEnum<Architecture> {
     /** Static value x64 for Architecture. */
     public static final Architecture X64 = fromString("x64");
 
     /** Static value Arm64 for Architecture. */
     public static final Architecture ARM64 = fromString("Arm64");
+
+    /**
+     * Creates a new instance of Architecture value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Architecture() {
+    }
 
     /**
      * Creates or finds a Architecture from its string representation.

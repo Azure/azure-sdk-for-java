@@ -28,6 +28,10 @@ public final class PolicyAssignmentPropertiesRoleDefinition {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of PolicyAssignmentPropertiesRoleDefinition class. */
+    public PolicyAssignmentPropertiesRoleDefinition() {
+    }
+
     /**
      * Get the id property: Id of the role definition.
      *

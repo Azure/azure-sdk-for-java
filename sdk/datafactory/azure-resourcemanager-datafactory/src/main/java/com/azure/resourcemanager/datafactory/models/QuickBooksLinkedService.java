@@ -24,6 +24,10 @@ public final class QuickBooksLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private QuickBooksLinkedServiceTypeProperties innerTypeProperties = new QuickBooksLinkedServiceTypeProperties();
 
+    /** Creates an instance of QuickBooksLinkedService class. */
+    public QuickBooksLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: QuickBooks server linked service properties.
      *

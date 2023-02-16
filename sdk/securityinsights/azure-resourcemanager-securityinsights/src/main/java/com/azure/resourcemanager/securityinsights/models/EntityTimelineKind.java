@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EntityTimelineKind. */
+/** The entity query kind. */
 public final class EntityTimelineKind extends ExpandableStringEnum<EntityTimelineKind> {
     /** Static value Activity for EntityTimelineKind. */
     public static final EntityTimelineKind ACTIVITY = fromString("Activity");
@@ -18,6 +18,9 @@ public final class EntityTimelineKind extends ExpandableStringEnum<EntityTimelin
 
     /** Static value SecurityAlert for EntityTimelineKind. */
     public static final EntityTimelineKind SECURITY_ALERT = fromString("SecurityAlert");
+
+    /** Static value Anomaly for EntityTimelineKind. */
+    public static final EntityTimelineKind ANOMALY = fromString("Anomaly");
 
     /**
      * Creates or finds a EntityTimelineKind from its string representation.

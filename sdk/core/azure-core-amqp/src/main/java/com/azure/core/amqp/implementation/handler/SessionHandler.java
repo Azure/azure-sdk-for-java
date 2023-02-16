@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -26,13 +27,24 @@ public class SessionHandler extends Handler {
     private final String sessionName;
     private final Duration openTimeout;
     private final ReactorDispatcher reactorDispatcher;
+    private final AmqpMetricsProvider metricsProvider;
 
+    /**
+     * @deprecated use {@link SessionHandler#SessionHandler(String, String, String, ReactorDispatcher, Duration, AmqpMetricsProvider)} instead.
+     */
+    @Deprecated
     public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
                           Duration openTimeout) {
+        this(connectionId, hostname, sessionName, reactorDispatcher, openTimeout, new AmqpMetricsProvider(null, hostname, null));
+    }
+
+    public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
+        Duration openTimeout, AmqpMetricsProvider metricProvider) {
         super(connectionId, hostname);
         this.sessionName = sessionName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;
+        this.metricsProvider = metricProvider;
     }
 
     public AmqpErrorContext getErrorContext() {
@@ -77,7 +89,6 @@ public class SessionHandler extends Handler {
         } else {
             logBuilder = logger.atInfo();
         }
-
 
         logBuilder.addKeyValue(SESSION_NAME_KEY, sessionName)
             .addKeyValue("sessionIncCapacity", session.getIncomingCapacity())
@@ -126,6 +137,7 @@ public class SessionHandler extends Handler {
                 String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s] condition[%s]",
                     id, sessionName, condition), context);
 
+            metricsProvider.recordHandlerError(AmqpMetricsProvider.ErrorSource.SESSION, condition);
             onError(exception);
         }
     }

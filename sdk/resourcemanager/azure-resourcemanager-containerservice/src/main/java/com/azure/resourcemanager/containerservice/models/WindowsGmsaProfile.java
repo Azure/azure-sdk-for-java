@@ -11,31 +11,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class WindowsGmsaProfile {
     /*
-     * Whether to enable Windows gMSA. Specifies whether to enable Windows gMSA
-     * in the managed cluster.
+     * Whether to enable Windows gMSA.
+     *
+     * Specifies whether to enable Windows gMSA in the managed cluster.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * Specifies the DNS server for Windows gMSA. <br><br> Set it to empty if
-     * you have configured the DNS server in the vnet which is used to create
-     * the managed cluster.
+     * Specifies the DNS server for Windows gMSA. <br><br> Set it to empty if you have configured the DNS server in the
+     * vnet which is used to create the managed cluster.
      */
     @JsonProperty(value = "dnsServer")
     private String dnsServer;
 
     /*
-     * Specifies the root domain name for Windows gMSA. <br><br> Set it to
-     * empty if you have configured the DNS server in the vnet which is used to
-     * create the managed cluster.
+     * Specifies the root domain name for Windows gMSA. <br><br> Set it to empty if you have configured the DNS server
+     * in the vnet which is used to create the managed cluster.
      */
     @JsonProperty(value = "rootDomainName")
     private String rootDomainName;
 
+    /** Creates an instance of WindowsGmsaProfile class. */
+    public WindowsGmsaProfile() {
+    }
+
     /**
-     * Get the enabled property: Whether to enable Windows gMSA. Specifies whether to enable Windows gMSA in the managed
-     * cluster.
+     * Get the enabled property: Whether to enable Windows gMSA.
+     *
+     * <p>Specifies whether to enable Windows gMSA in the managed cluster.
      *
      * @return the enabled value.
      */
@@ -44,8 +48,9 @@ public final class WindowsGmsaProfile {
     }
 
     /**
-     * Set the enabled property: Whether to enable Windows gMSA. Specifies whether to enable Windows gMSA in the managed
-     * cluster.
+     * Set the enabled property: Whether to enable Windows gMSA.
+     *
+     * <p>Specifies whether to enable Windows gMSA in the managed cluster.
      *
      * @param enabled the enabled value to set.
      * @return the WindowsGmsaProfile object itself.

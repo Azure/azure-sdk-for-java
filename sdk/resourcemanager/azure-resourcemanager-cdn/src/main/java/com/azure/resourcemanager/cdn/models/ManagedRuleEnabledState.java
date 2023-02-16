@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedRuleEnabledState. */
+/** Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified. */
 public final class ManagedRuleEnabledState extends ExpandableStringEnum<ManagedRuleEnabledState> {
     /** Static value Disabled for ManagedRuleEnabledState. */
     public static final ManagedRuleEnabledState DISABLED = fromString("Disabled");
@@ -27,7 +27,11 @@ public final class ManagedRuleEnabledState extends ExpandableStringEnum<ManagedR
         return fromString(name, ManagedRuleEnabledState.class);
     }
 
-    /** @return known ManagedRuleEnabledState values. */
+    /**
+     * Gets known ManagedRuleEnabledState values.
+     *
+     * @return known ManagedRuleEnabledState values.
+     */
     public static Collection<ManagedRuleEnabledState> values() {
         return values(ManagedRuleEnabledState.class);
     }

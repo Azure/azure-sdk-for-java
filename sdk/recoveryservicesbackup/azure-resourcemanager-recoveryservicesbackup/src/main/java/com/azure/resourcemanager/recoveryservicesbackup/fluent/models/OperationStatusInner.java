@@ -56,6 +56,10 @@ public final class OperationStatusInner {
     @JsonProperty(value = "properties")
     private OperationStatusExtendedInfo properties;
 
+    /** Creates an instance of OperationStatusInner class. */
+    public OperationStatusInner() {
+    }
+
     /**
      * Get the id property: ID of the operation.
      *

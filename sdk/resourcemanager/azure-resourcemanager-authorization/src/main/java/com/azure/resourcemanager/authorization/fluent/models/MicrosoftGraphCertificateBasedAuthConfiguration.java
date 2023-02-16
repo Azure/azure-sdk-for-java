@@ -17,8 +17,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphCertificateBasedAuthConfiguration extends MicrosoftGraphEntity {
     /*
-     * Collection of certificate authorities which creates a trusted
-     * certificate chain.
+     * Collection of certificate authorities which creates a trusted certificate chain.
      */
     @JsonProperty(value = "certificateAuthorities")
     private List<MicrosoftGraphCertificateAuthority> certificateAuthorities;
@@ -27,6 +26,10 @@ public final class MicrosoftGraphCertificateBasedAuthConfiguration extends Micro
      * certificateBasedAuthConfiguration
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphCertificateBasedAuthConfiguration class. */
+    public MicrosoftGraphCertificateBasedAuthConfiguration() {
+    }
 
     /**
      * Get the certificateAuthorities property: Collection of certificate authorities which creates a trusted

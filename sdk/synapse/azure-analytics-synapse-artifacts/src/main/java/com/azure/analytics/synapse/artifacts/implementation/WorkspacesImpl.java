@@ -97,15 +97,7 @@ public final class WorkspacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Workspace> getAsync() {
-        return getWithResponseAsync()
-                .flatMap(
-                        (Response<Workspace> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -119,27 +111,7 @@ public final class WorkspacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Workspace> getAsync(Context context) {
-        return getWithResponseAsync(context)
-                .flatMap(
-                        (Response<Workspace> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Get Workspace.
-     *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Workspace get() {
-        return getAsync().block();
+        return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -154,5 +126,17 @@ public final class WorkspacesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Workspace> getWithResponse(Context context) {
         return getWithResponseAsync(context).block();
+    }
+
+    /**
+     * Get Workspace.
+     *
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Workspace get() {
+        return getWithResponse(Context.NONE).getValue();
     }
 }

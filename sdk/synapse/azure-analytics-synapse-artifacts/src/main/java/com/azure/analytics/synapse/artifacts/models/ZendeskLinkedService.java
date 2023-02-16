@@ -25,15 +25,13 @@ public class ZendeskLinkedService extends LinkedService {
     private ZendeskAuthenticationType authenticationType;
 
     /*
-     * The url to connect Zendesk source. Type: string (or Expression with
-     * resultType string).
+     * The url to connect Zendesk source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
-     * The username of the Zendesk source. Type: string (or Expression with
-     * resultType string).
+     * The username of the Zendesk source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -51,12 +49,14 @@ public class ZendeskLinkedService extends LinkedService {
     private SecretBase apiToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of ZendeskLinkedService class. */
+    public ZendeskLinkedService() {}
 
     /**
      * Get the authenticationType property: The authentication type to use.

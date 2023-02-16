@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BindingType. */
+/** Custom Domain binding type. */
 public final class BindingType extends ExpandableStringEnum<BindingType> {
     /** Static value Disabled for BindingType. */
     public static final BindingType DISABLED = fromString("Disabled");

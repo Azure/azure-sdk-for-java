@@ -39,21 +39,27 @@ public interface SubvolumeInfo {
     SystemData systemData();
 
     /**
-     * Gets the path property: path Path to the subvolume.
+     * Gets the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @return the path value.
      */
     String path();
 
     /**
-     * Gets the size property: size Truncate subvolume to the provided size in bytes.
+     * Gets the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @return the size value.
      */
     Long size();
 
     /**
-     * Gets the parentPath property: name parent path to the subvolume.
+     * Gets the parentPath property: name
+     *
+     * <p>parent path to the subvolume.
      *
      * @return the parentPath value.
      */
@@ -127,9 +133,12 @@ public interface SubvolumeInfo {
         /** The stage of the SubvolumeInfo definition allowing to specify path. */
         interface WithPath {
             /**
-             * Specifies the path property: path Path to the subvolume.
+             * Specifies the path property: path
              *
-             * @param path path Path to the subvolume.
+             * <p>Path to the subvolume.
+             *
+             * @param path path
+             *     <p>Path to the subvolume.
              * @return the next definition stage.
              */
             WithCreate withPath(String path);
@@ -137,9 +146,12 @@ public interface SubvolumeInfo {
         /** The stage of the SubvolumeInfo definition allowing to specify size. */
         interface WithSize {
             /**
-             * Specifies the size property: size Truncate subvolume to the provided size in bytes.
+             * Specifies the size property: size
              *
-             * @param size size Truncate subvolume to the provided size in bytes.
+             * <p>Truncate subvolume to the provided size in bytes.
+             *
+             * @param size size
+             *     <p>Truncate subvolume to the provided size in bytes.
              * @return the next definition stage.
              */
             WithCreate withSize(Long size);
@@ -147,9 +159,12 @@ public interface SubvolumeInfo {
         /** The stage of the SubvolumeInfo definition allowing to specify parentPath. */
         interface WithParentPath {
             /**
-             * Specifies the parentPath property: name parent path to the subvolume.
+             * Specifies the parentPath property: name
              *
-             * @param parentPath name parent path to the subvolume.
+             * <p>parent path to the subvolume.
+             *
+             * @param parentPath name
+             *     <p>parent path to the subvolume.
              * @return the next definition stage.
              */
             WithCreate withParentPath(String parentPath);
@@ -184,9 +199,12 @@ public interface SubvolumeInfo {
         /** The stage of the SubvolumeInfo update allowing to specify size. */
         interface WithSize {
             /**
-             * Specifies the size property: size Truncate subvolume to the provided size in bytes.
+             * Specifies the size property: size
              *
-             * @param size size Truncate subvolume to the provided size in bytes.
+             * <p>Truncate subvolume to the provided size in bytes.
+             *
+             * @param size size
+             *     <p>Truncate subvolume to the provided size in bytes.
              * @return the next definition stage.
              */
             Update withSize(Long size);
@@ -194,9 +212,12 @@ public interface SubvolumeInfo {
         /** The stage of the SubvolumeInfo update allowing to specify path. */
         interface WithPath {
             /**
-             * Specifies the path property: path path to the subvolume.
+             * Specifies the path property: path
              *
-             * @param path path path to the subvolume.
+             * <p>path to the subvolume.
+             *
+             * @param path path
+             *     <p>path to the subvolume.
              * @return the next definition stage.
              */
             Update withPath(String path);
@@ -218,7 +239,9 @@ public interface SubvolumeInfo {
     SubvolumeInfo refresh(Context context);
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -227,7 +250,9 @@ public interface SubvolumeInfo {
     SubvolumeModel getMetadata();
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

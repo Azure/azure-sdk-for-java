@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PreferredRoutingGateway. */
+/** The preferred routing gateway types. */
 public final class PreferredRoutingGateway extends ExpandableStringEnum<PreferredRoutingGateway> {
     /** Static value ExpressRoute for PreferredRoutingGateway. */
     public static final PreferredRoutingGateway EXPRESS_ROUTE = fromString("ExpressRoute");

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MongoDBResources GetMongoDBDatabaseThroughput. */
 public final class MongoDBResourcesGetMongoDBDatabaseThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBMongoDBDatabaseThroughputGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBDatabaseThroughputGet.json
      */
     /**
      * Sample code: CosmosDBMongoDBDatabaseThroughputGet.
@@ -22,6 +20,6 @@ public final class MongoDBResourcesGetMongoDBDatabaseThroughputSamples {
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .getMongoDBDatabaseThroughputWithResponse("rg1", "ddb1", "databaseName", Context.NONE);
+            .getMongoDBDatabaseThroughputWithResponse("rg1", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }
 }

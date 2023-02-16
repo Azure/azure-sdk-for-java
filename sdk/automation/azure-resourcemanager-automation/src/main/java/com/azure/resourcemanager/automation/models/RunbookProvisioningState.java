@@ -7,7 +7,7 @@ package com.azure.resourcemanager.automation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RunbookProvisioningState. */
+/** Gets or sets the provisioning state of the runbook. */
 public enum RunbookProvisioningState {
     /** Enum value Succeeded. */
     SUCCEEDED("Succeeded");
@@ -27,6 +27,9 @@ public enum RunbookProvisioningState {
      */
     @JsonCreator
     public static RunbookProvisioningState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RunbookProvisioningState[] items = RunbookProvisioningState.values();
         for (RunbookProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum RunbookProvisioningState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

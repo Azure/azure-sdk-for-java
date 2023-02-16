@@ -34,6 +34,10 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOnenoteResource class. */
+    public MicrosoftGraphOnenoteResource() {
+    }
+
     /**
      * Get the content property: The content stream.
      *

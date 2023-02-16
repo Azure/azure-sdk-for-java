@@ -31,7 +31,7 @@ public interface Webhooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<String> generateUriWithResponse(String resourceGroupName, String automationAccountName, Context context);
 
@@ -57,7 +57,7 @@ public interface Webhooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String webhookName, Context context);
@@ -85,7 +85,7 @@ public interface Webhooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response}.
      */
     Response<Webhook> getWithResponse(
         String resourceGroupName, String automationAccountName, String webhookName, Context context);
@@ -98,7 +98,7 @@ public interface Webhooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Webhook> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -112,7 +112,7 @@ public interface Webhooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list webhook operation.
+     * @return the response model for the list webhook operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Webhook> listByAutomationAccount(
         String resourceGroupName, String automationAccountName, String filter, Context context);
@@ -124,7 +124,7 @@ public interface Webhooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response}.
      */
     Webhook getById(String id);
 
@@ -136,7 +136,7 @@ public interface Webhooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type.
+     * @return definition of the webhook type along with {@link Response}.
      */
     Response<Webhook> getByIdWithResponse(String id, Context context);
 
@@ -158,7 +158,7 @@ public interface Webhooks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

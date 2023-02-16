@@ -6,34 +6,165 @@ package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
-/** Model info. */
+/** Basic custom model information. */
 @Fluent
-public final class ModelInfo extends ModelSummary {
+public final class ModelInfo {
     /*
-     * Supported document types.
+     * Model identifier.
      */
-    @JsonProperty(value = "docTypes")
-    private Map<String, DocTypeInfo> docTypes;
+    @JsonProperty(value = "modelId", required = true)
+    private UUID modelId;
+
+    /*
+     * Status of the model.
+     */
+    @JsonProperty(value = "status", required = true)
+    private ModelStatus status;
+
+    /*
+     * Date and time (UTC) when the model was created.
+     */
+    @JsonProperty(value = "createdDateTime", required = true)
+    private OffsetDateTime createdDateTime;
+
+    /*
+     * Date and time (UTC) when the status was last updated.
+     */
+    @JsonProperty(value = "lastUpdatedDateTime", required = true)
+    private OffsetDateTime lastUpdatedDateTime;
+
+    /*
+     * Optional user defined model name (max length: 1024).
+     */
+    @JsonProperty(value = "modelName")
+    private String modelName;
+
+    /*
+     * Optional model attributes.
+     */
+    @JsonProperty(value = "attributes")
+    private Attributes attributes;
 
     /**
-     * Get the docTypes property: Supported document types.
+     * Get the modelId property: Model identifier.
      *
-     * @return the docTypes value.
+     * @return the modelId value.
      */
-    public Map<String, DocTypeInfo> getDocTypes() {
-        return this.docTypes;
+    public UUID getModelId() {
+        return this.modelId;
     }
 
     /**
-     * Set the docTypes property: Supported document types.
+     * Set the modelId property: Model identifier.
      *
-     * @param docTypes the docTypes value to set.
+     * @param modelId the modelId value to set.
      * @return the ModelInfo object itself.
      */
-    public ModelInfo setDocTypes(Map<String, DocTypeInfo> docTypes) {
-        this.docTypes = docTypes;
+    public ModelInfo setModelId(UUID modelId) {
+        this.modelId = modelId;
+        return this;
+    }
+
+    /**
+     * Get the status property: Status of the model.
+     *
+     * @return the status value.
+     */
+    public ModelStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: Status of the model.
+     *
+     * @param status the status value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setStatus(ModelStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Get the createdDateTime property: Date and time (UTC) when the model was created.
+     *
+     * @return the createdDateTime value.
+     */
+    public OffsetDateTime getCreatedDateTime() {
+        return this.createdDateTime;
+    }
+
+    /**
+     * Set the createdDateTime property: Date and time (UTC) when the model was created.
+     *
+     * @param createdDateTime the createdDateTime value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setCreatedDateTime(OffsetDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+        return this;
+    }
+
+    /**
+     * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
+     *
+     * @return the lastUpdatedDateTime value.
+     */
+    public OffsetDateTime getLastUpdatedDateTime() {
+        return this.lastUpdatedDateTime;
+    }
+
+    /**
+     * Set the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
+     *
+     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
+        this.lastUpdatedDateTime = lastUpdatedDateTime;
+        return this;
+    }
+
+    /**
+     * Get the modelName property: Optional user defined model name (max length: 1024).
+     *
+     * @return the modelName value.
+     */
+    public String getModelName() {
+        return this.modelName;
+    }
+
+    /**
+     * Set the modelName property: Optional user defined model name (max length: 1024).
+     *
+     * @param modelName the modelName value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setModelName(String modelName) {
+        this.modelName = modelName;
+        return this;
+    }
+
+    /**
+     * Get the attributes property: Optional model attributes.
+     *
+     * @return the attributes value.
+     */
+    public Attributes getAttributes() {
+        return this.attributes;
+    }
+
+    /**
+     * Set the attributes property: Optional model attributes.
+     *
+     * @param attributes the attributes value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setAttributes(Attributes attributes) {
+        this.attributes = attributes;
         return this;
     }
 }

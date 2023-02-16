@@ -7,8 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.util.Collection;
-
 /**
  * Defines values for FhirVersion.
  */
@@ -27,9 +25,5 @@ public final class FhirVersion extends ExpandableStringEnum<FhirVersion> {
     public static FhirVersion fromString(String name) {
         return fromString(name, FhirVersion.class);
     }
-
-    /** @return known FhirVersion values. */
-    public static Collection<FhirVersion> values() {
-        return values(FhirVersion.class);
-    }
 }
+

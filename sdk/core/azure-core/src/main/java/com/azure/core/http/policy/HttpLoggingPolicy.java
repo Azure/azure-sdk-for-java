@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -207,7 +208,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return;
             }
 
-            String contentType = request.getHeaders().getValue("Content-Type");
+            String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             long contentLength = getContentLength(logger, request.getHeaders());
 
             logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
@@ -225,12 +226,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                                 throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                             }
                         })
-                        .doFinally(ignored -> {
-                            logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
-                                    new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
-                                .log(REQUEST_LOG_MESSAGE);
-
-                        }));
+                        .doFinally(ignored -> logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
+                                prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
+                                stream.toString(StandardCharsets.UTF_8)))
+                            .log(REQUEST_LOG_MESSAGE)));
                 return;
             }
 
@@ -329,52 +328,25 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A URL with query parameters redacted based on configurations in this policy.
      */
     private static String getRedactedUrl(URL url, Set<String> allowedQueryParameterNames) {
-        UrlBuilder builder = UrlBuilder.parse(url);
-        String allowedQueryString = getAllowedQueryString(url.getQuery(), allowedQueryParameterNames);
-
-        // return a UrlBuilder with a new query.
-        // builder.clearQuery() is required here to explicitly clear
-        // UrlBuilder.query field - simply calling setQuery() will not do it.
-        // setQuery() could have full-replacement semantics, but some SDKs are
-        // using it as an appending mechanism.
-        return builder
-                .clearQuery()
-                .setQuery(allowedQueryString)
-                .toString();
-    }
-
-    /*
-     * Generates the logging safe query parameters string.
-     *
-     * @param queryString Query parameter string from the request URL.
-     * @return A query parameter string redacted based on the configurations in this policy.
-     */
-    private static String getAllowedQueryString(String queryString, Set<String> allowedQueryParameterNames) {
-        if (CoreUtils.isNullOrEmpty(queryString)) {
-            return "";
+        String query = url.getQuery();
+        if (CoreUtils.isNullOrEmpty(query)) {
+            // URL doesn't have a query string, just return the URL as-is.
+            return url.toString();
         }
 
-        StringBuilder queryStringBuilder = new StringBuilder();
-        String[] queryParams = queryString.split("&");
-        for (String queryParam : queryParams) {
-            if (queryStringBuilder.length() > 0) {
-                queryStringBuilder.append("&");
-            }
+        // URL does have a query string that may need redactions.
+        // Use UrlBuilder to break apart the URL, clear the query string, and add the redacted query string.
+        UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
 
-            String[] queryPair = queryParam.split("=", 2);
-            if (queryPair.length == 2) {
-                String queryName = queryPair[0];
-                if (allowedQueryParameterNames.contains(queryName.toLowerCase(Locale.ROOT))) {
-                    queryStringBuilder.append(queryParam);
-                } else {
-                    queryStringBuilder.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
-                }
+        ImplUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
+            if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
+                urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
             } else {
-                queryStringBuilder.append(queryParam);
+                urlBuilder.addQueryParameter(queryParam.getKey(), REDACTED_PLACEHOLDER);
             }
-        }
+        });
 
-        return queryStringBuilder.toString();
+        return urlBuilder.toString();
     }
 
     /*
@@ -384,10 +356,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
      */
-    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers, LoggingEventBuilder logBuilder) {
+    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers,
+        LoggingEventBuilder logBuilder) {
         for (HttpHeader header : headers) {
             String headerName = header.getName();
-            logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT)) ? header.getValue() : REDACTED_PLACEHOLDER);
+            logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))
+                ? header.getValue() : REDACTED_PLACEHOLDER);
         }
     }
 
@@ -426,7 +400,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static long getContentLength(ClientLogger logger, HttpHeaders headers) {
         long contentLength = 0;
 
-        String contentLengthString = headers.getValue("Content-Length");
+        String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (CoreUtils.isNullOrEmpty(contentLengthString)) {
             return contentLength;
         }
@@ -434,8 +408,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             contentLength = Long.parseLong(contentLengthString);
         } catch (NumberFormatException | NullPointerException e) {
-            logger.warning("Could not parse the HTTP header content-length: '{}'.",
-                headers.getValue("content-length"), e);
+            logger.warning("Could not parse the HTTP header content-length: '{}'.", contentLengthString, e);
         }
 
         return contentLength;
@@ -549,11 +522,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                     }
                 })
-                .doFinally(ignored -> {
-                    logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
-                            new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
-                        .log(RESPONSE_LOG_MESSAGE);
-                });
+                .doFinally(ignored -> logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
+                        prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
+                            stream.toString(StandardCharsets.UTF_8)))
+                    .log(RESPONSE_LOG_MESSAGE));
         }
 
         @Override

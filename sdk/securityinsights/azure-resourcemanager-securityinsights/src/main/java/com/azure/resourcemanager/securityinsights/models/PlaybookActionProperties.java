@@ -12,13 +12,13 @@ import java.util.UUID;
 @Fluent
 public final class PlaybookActionProperties {
     /*
-     * The resource id of the playbook resource
+     * The resource id of the playbook resource.
      */
     @JsonProperty(value = "logicAppResourceId")
     private String logicAppResourceId;
 
     /*
-     * The tenant id of the playbook resource
+     * The tenant id of the playbook resource.
      */
     @JsonProperty(value = "tenantId")
     private UUID tenantId;

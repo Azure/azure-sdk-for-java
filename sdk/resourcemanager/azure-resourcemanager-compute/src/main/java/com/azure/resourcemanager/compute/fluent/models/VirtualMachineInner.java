@@ -32,13 +32,10 @@ import java.util.Map;
 @Fluent
 public final class VirtualMachineInner extends Resource {
     /*
-     * Specifies information about the marketplace image used to create the
-     * virtual machine. This element is only used for marketplace images.
-     * Before you can use a marketplace image from an API, you must enable the
-     * image for programmatic use.  In the Azure portal, find the marketplace
-     * image that you want to use and then click **Want to deploy
-     * programmatically, Get Started ->**. Enter any required information and
-     * then click **Save**.
+     * Specifies information about the marketplace image used to create the virtual machine. This element is only used
+     * for marketplace images. Before you can use a marketplace image from an API, you must enable the image for
+     * programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to
+     * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
     @JsonProperty(value = "plan")
     private Plan plan;
@@ -72,6 +69,10 @@ public final class VirtualMachineInner extends Resource {
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
+
+    /** Creates an instance of VirtualMachineInner class. */
+    public VirtualMachineInner() {
+    }
 
     /**
      * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
@@ -819,7 +820,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */

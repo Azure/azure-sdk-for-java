@@ -26,6 +26,10 @@ public final class TensorFlow extends DistributionConfiguration {
     @JsonProperty(value = "workerCount")
     private Integer workerCount;
 
+    /** Creates an instance of TensorFlow class. */
+    public TensorFlow() {
+    }
+
     /**
      * Get the parameterServerCount property: Number of parameter server tasks.
      *

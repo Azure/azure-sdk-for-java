@@ -11,20 +11,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HealthcareRelationEntity {
     /*
-     * Reference link object, using a JSON pointer RFC 6901 (URI Fragment
-     * Identifier Representation), pointing to the entity .
+     * Reference link object, using a JSON pointer RFC 6901 (URI Fragment Identifier Representation), pointing to the
+     * entity .
      */
     @JsonProperty(value = "ref", required = true)
     private String ref;
 
     /*
-     * Role of entity in the relationship. For example: 'CD20-positive diffuse
-     * large B-cell lymphoma' has the following entities with their roles in
-     * parenthesis:  CD20 (GeneOrProtein), Positive (Expression), diffuse large
-     * B-cell lymphoma (Diagnosis).
+     * Role of entity in the relationship. For example: 'CD20-positive diffuse large B-cell lymphoma' has the following
+     * entities with their roles in parenthesis:  CD20 (GeneOrProtein), Positive (Expression), diffuse large B-cell
+     * lymphoma (Diagnosis).
      */
     @JsonProperty(value = "role", required = true)
     private String role;
+
+    /** Creates an instance of HealthcareRelationEntity class. */
+    public HealthcareRelationEntity() {}
 
     /**
      * Get the ref property: Reference link object, using a JSON pointer RFC 6901 (URI Fragment Identifier

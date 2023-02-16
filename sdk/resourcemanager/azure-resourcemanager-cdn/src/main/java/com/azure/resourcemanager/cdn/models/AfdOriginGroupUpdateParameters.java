@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginGroupUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** AFDOrigin group properties needed for origin group creation or update. */
 @Fluent
 public final class AfdOriginGroupUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginGroupUpdateParameters.class);
-
     /*
      * The JSON object that contains the properties of the origin group.
      */
@@ -119,37 +115,6 @@ public final class AfdOriginGroupUpdateParameters {
             .innerProperties()
             .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
                 trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
-        return this;
-    }
-
-    /**
-     * Get the responseBasedAfdOriginErrorDetectionSettings property: The JSON object that contains the properties to
-     * determine origin health using real requests/responses. This property is currently not supported.
-     *
-     * @return the responseBasedAfdOriginErrorDetectionSettings value.
-     */
-    public ResponseBasedOriginErrorDetectionParameters responseBasedAfdOriginErrorDetectionSettings() {
-        return this.innerProperties() == null
-            ? null
-            : this.innerProperties().responseBasedAfdOriginErrorDetectionSettings();
-    }
-
-    /**
-     * Set the responseBasedAfdOriginErrorDetectionSettings property: The JSON object that contains the properties to
-     * determine origin health using real requests/responses. This property is currently not supported.
-     *
-     * @param responseBasedAfdOriginErrorDetectionSettings the responseBasedAfdOriginErrorDetectionSettings value to
-     *     set.
-     * @return the AfdOriginGroupUpdateParameters object itself.
-     */
-    public AfdOriginGroupUpdateParameters withResponseBasedAfdOriginErrorDetectionSettings(
-        ResponseBasedOriginErrorDetectionParameters responseBasedAfdOriginErrorDetectionSettings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AfdOriginGroupUpdatePropertiesParameters();
-        }
-        this
-            .innerProperties()
-            .withResponseBasedAfdOriginErrorDetectionSettings(responseBasedAfdOriginErrorDetectionSettings);
         return this;
     }
 

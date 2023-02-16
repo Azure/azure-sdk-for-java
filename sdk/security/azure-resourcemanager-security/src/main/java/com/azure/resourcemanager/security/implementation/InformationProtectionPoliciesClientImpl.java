@@ -27,17 +27,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.InformationProtectionPoliciesClient;
 import com.azure.resourcemanager.security.fluent.models.InformationProtectionPolicyInner;
-import com.azure.resourcemanager.security.models.InformationProtectionPoliciesInformationProtectionPolicyName;
 import com.azure.resourcemanager.security.models.InformationProtectionPolicyList;
+import com.azure.resourcemanager.security.models.InformationProtectionPolicyName;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in InformationProtectionPoliciesClient. */
 public final class InformationProtectionPoliciesClientImpl implements InformationProtectionPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(InformationProtectionPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final InformationProtectionPoliciesService service;
 
@@ -65,7 +62,7 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterInform")
-    private interface InformationProtectionPoliciesService {
+    public interface InformationProtectionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}")
         @ExpectedResponses({200})
@@ -75,7 +72,7 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("informationProtectionPolicyName")
-                InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
+                InformationProtectionPolicyName informationProtectionPolicyName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -88,7 +85,7 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("informationProtectionPolicyName")
-                InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
+                InformationProtectionPolicyName informationProtectionPolicyName,
             @BodyParam("application/json") InformationProtectionPolicyInner informationProtectionPolicy,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -124,11 +121,11 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InformationProtectionPolicyInner>> getWithResponseAsync(
-        String scope, InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName) {
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -170,13 +167,11 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InformationProtectionPolicyInner>> getWithResponseAsync(
-        String scope,
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
-        Context context) {
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -208,20 +203,31 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InformationProtectionPolicyInner> getAsync(
-        String scope, InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName) {
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName) {
         return getWithResponseAsync(scope, informationProtectionPolicyName)
-            .flatMap(
-                (Response<InformationProtectionPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Details of the information protection policy.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param informationProtectionPolicyName Name of the information protection policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information protection policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<InformationProtectionPolicyInner> getWithResponse(
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName, Context context) {
+        return getWithResponseAsync(scope, informationProtectionPolicyName, context).block();
     }
 
     /**
@@ -237,28 +243,8 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InformationProtectionPolicyInner get(
-        String scope, InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName) {
-        return getAsync(scope, informationProtectionPolicyName).block();
-    }
-
-    /**
-     * Details of the information protection policy.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param informationProtectionPolicyName Name of the information protection policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InformationProtectionPolicyInner> getWithResponse(
-        String scope,
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
-        Context context) {
-        return getWithResponseAsync(scope, informationProtectionPolicyName, context).block();
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName) {
+        return getWithResponse(scope, informationProtectionPolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -271,12 +257,12 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InformationProtectionPolicyInner>> createOrUpdateWithResponseAsync(
         String scope,
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
+        InformationProtectionPolicyName informationProtectionPolicyName,
         InformationProtectionPolicyInner informationProtectionPolicy) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -329,12 +315,12 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InformationProtectionPolicyInner>> createOrUpdateWithResponseAsync(
         String scope,
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
+        InformationProtectionPolicyName informationProtectionPolicyName,
         InformationProtectionPolicyInner informationProtectionPolicy,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -384,22 +370,39 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InformationProtectionPolicyInner> createOrUpdateAsync(
         String scope,
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
+        InformationProtectionPolicyName informationProtectionPolicyName,
         InformationProtectionPolicyInner informationProtectionPolicy) {
         return createOrUpdateWithResponseAsync(scope, informationProtectionPolicyName, informationProtectionPolicy)
-            .flatMap(
-                (Response<InformationProtectionPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Details of the information protection policy.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param informationProtectionPolicyName Name of the information protection policy.
+     * @param informationProtectionPolicy Information protection policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information protection policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<InformationProtectionPolicyInner> createOrUpdateWithResponse(
+        String scope,
+        InformationProtectionPolicyName informationProtectionPolicyName,
+        InformationProtectionPolicyInner informationProtectionPolicy,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                scope, informationProtectionPolicyName, informationProtectionPolicy, context)
+            .block();
     }
 
     /**
@@ -417,33 +420,11 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InformationProtectionPolicyInner createOrUpdate(
         String scope,
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
+        InformationProtectionPolicyName informationProtectionPolicyName,
         InformationProtectionPolicyInner informationProtectionPolicy) {
-        return createOrUpdateAsync(scope, informationProtectionPolicyName, informationProtectionPolicy).block();
-    }
-
-    /**
-     * Details of the information protection policy.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param informationProtectionPolicyName Name of the information protection policy.
-     * @param informationProtectionPolicy Information protection policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InformationProtectionPolicyInner> createOrUpdateWithResponse(
-        String scope,
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
-        InformationProtectionPolicyInner informationProtectionPolicy,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                scope, informationProtectionPolicyName, informationProtectionPolicy, context)
-            .block();
+        return createOrUpdateWithResponse(
+                scope, informationProtectionPolicyName, informationProtectionPolicy, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -454,7 +435,8 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InformationProtectionPolicyInner>> listSinglePageAsync(String scope) {
@@ -492,7 +474,8 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InformationProtectionPolicyInner>> listSinglePageAsync(String scope, Context context) {
@@ -529,7 +512,7 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InformationProtectionPolicyInner> listAsync(String scope) {
@@ -545,7 +528,7 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InformationProtectionPolicyInner> listAsync(String scope, Context context) {
@@ -561,7 +544,7 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InformationProtectionPolicyInner> list(String scope) {
@@ -577,7 +560,7 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InformationProtectionPolicyInner> list(String scope, Context context) {
@@ -587,11 +570,13 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InformationProtectionPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -622,12 +607,14 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InformationProtectionPolicyInner>> listNextSinglePageAsync(

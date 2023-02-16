@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Use to provide parameters when requesting an export of all devices in the IoT hub. */
 @Fluent
 public final class ExportDevicesRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportDevicesRequest.class);
-
     /*
      * The export blob container URI.
      */
@@ -27,16 +24,14 @@ public final class ExportDevicesRequest {
     private boolean excludeKeys;
 
     /*
-     * The name of the blob that will be created in the provided output blob
-     * container. This blob will contain the exported device registry
-     * information for the IoT Hub.
+     * The name of the blob that will be created in the provided output blob container. This blob will contain the
+     * exported device registry information for the IoT Hub.
      */
     @JsonProperty(value = "exportBlobName")
     private String exportBlobName;
 
     /*
-     * Specifies authentication type being used for connecting to the storage
-     * account.
+     * Specifies authentication type being used for connecting to the storage account.
      */
     @JsonProperty(value = "authenticationType")
     private AuthenticationType authenticationType;
@@ -54,9 +49,8 @@ public final class ExportDevicesRequest {
     private Boolean includeConfigurations;
 
     /*
-     * The name of the blob that will be created in the provided output blob
-     * container. This blob will contain the exported configurations for the
-     * Iot Hub.
+     * The name of the blob that will be created in the provided output blob container. This blob will contain the
+     * exported configurations for the Iot Hub.
      */
     @JsonProperty(value = "configurationsBlobName")
     private String configurationsBlobName;
@@ -214,7 +208,7 @@ public final class ExportDevicesRequest {
      */
     public void validate() {
         if (exportBlobContainerUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property exportBlobContainerUri in model ExportDevicesRequest"));
@@ -223,4 +217,6 @@ public final class ExportDevicesRequest {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExportDevicesRequest.class);
 }

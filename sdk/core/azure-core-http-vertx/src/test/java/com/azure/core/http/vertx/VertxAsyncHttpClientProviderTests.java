@@ -48,7 +48,7 @@ public class VertxAsyncHttpClientProviderTests {
             .createInstance(null);
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
         io.vertx.core.net.ProxyOptions proxyOptions = options.getProxyOptions();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
@@ -64,7 +64,7 @@ public class VertxAsyncHttpClientProviderTests {
             .createInstance(new HttpClientOptions());
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
         io.vertx.core.net.ProxyOptions proxyOptions = options.getProxyOptions();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
@@ -84,7 +84,7 @@ public class VertxAsyncHttpClientProviderTests {
         VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider()
             .createInstance(clientOptions);
 
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
         io.vertx.core.net.ProxyOptions vertxProxyOptions = options.getProxyOptions();
         assertNotNull(vertxProxyOptions);
@@ -113,7 +113,7 @@ public class VertxAsyncHttpClientProviderTests {
         VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider()
             .createInstance(clientOptions);
 
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
         assertEquals(timeout.toMillis(), options.getConnectTimeout());
         assertEquals(timeout.getSeconds(), options.getIdleTimeout());

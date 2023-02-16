@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class RelationalTableDataset extends Dataset {
     /*
-     * The relational table name. Type: string (or Expression with resultType
-     * string).
+     * The relational table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
+
+    /** Creates an instance of RelationalTableDataset class. */
+    public RelationalTableDataset() {}
 
     /**
      * Get the tableName property: The relational table name. Type: string (or Expression with resultType string).

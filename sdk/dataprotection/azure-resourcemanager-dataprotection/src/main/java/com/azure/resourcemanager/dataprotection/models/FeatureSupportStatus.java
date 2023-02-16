@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FeatureSupportStatus. */
+/** feature support status. */
 public final class FeatureSupportStatus extends ExpandableStringEnum<FeatureSupportStatus> {
     /** Static value Invalid for FeatureSupportStatus. */
     public static final FeatureSupportStatus INVALID = fromString("Invalid");
@@ -29,6 +29,15 @@ public final class FeatureSupportStatus extends ExpandableStringEnum<FeatureSupp
     public static final FeatureSupportStatus GENERALLY_AVAILABLE = fromString("GenerallyAvailable");
 
     /**
+     * Creates a new instance of FeatureSupportStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FeatureSupportStatus() {
+    }
+
+    /**
      * Creates or finds a FeatureSupportStatus from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class FeatureSupportStatus extends ExpandableStringEnum<FeatureSupp
         return fromString(name, FeatureSupportStatus.class);
     }
 
-    /** @return known FeatureSupportStatus values. */
+    /**
+     * Gets known FeatureSupportStatus values.
+     *
+     * @return known FeatureSupportStatus values.
+     */
     public static Collection<FeatureSupportStatus> values() {
         return values(FeatureSupportStatus.class);
     }

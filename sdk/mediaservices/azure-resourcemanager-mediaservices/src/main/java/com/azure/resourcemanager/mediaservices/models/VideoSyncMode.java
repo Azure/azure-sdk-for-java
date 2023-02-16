@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VideoSyncMode. */
+/** The Video Sync Mode. */
 public final class VideoSyncMode extends ExpandableStringEnum<VideoSyncMode> {
     /** Static value Auto for VideoSyncMode. */
     public static final VideoSyncMode AUTO = fromString("Auto");
@@ -21,6 +21,15 @@ public final class VideoSyncMode extends ExpandableStringEnum<VideoSyncMode> {
 
     /** Static value Vfr for VideoSyncMode. */
     public static final VideoSyncMode VFR = fromString("Vfr");
+
+    /**
+     * Creates a new instance of VideoSyncMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VideoSyncMode() {
+    }
 
     /**
      * Creates or finds a VideoSyncMode from its string representation.

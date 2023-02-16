@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of NetAppResources. */
 public interface NetAppResources {
     /**
-     * Check if a resource name is available.
+     * Check resource name availability
+     *
+     * <p>Check if a resource name is available.
      *
      * @param location The location.
      * @param body Name availability request.
@@ -22,7 +24,9 @@ public interface NetAppResources {
     CheckAvailabilityResponse checkNameAvailability(String location, ResourceNameAvailabilityRequest body);
 
     /**
-     * Check if a resource name is available.
+     * Check resource name availability
+     *
+     * <p>Check if a resource name is available.
      *
      * @param location The location.
      * @param body Name availability request.
@@ -36,7 +40,9 @@ public interface NetAppResources {
         String location, ResourceNameAvailabilityRequest body, Context context);
 
     /**
-     * Check if a file path is available.
+     * Check file path availability
+     *
+     * <p>Check if a file path is available.
      *
      * @param location The location.
      * @param body File path availability request.
@@ -48,7 +54,9 @@ public interface NetAppResources {
     CheckAvailabilityResponse checkFilePathAvailability(String location, FilePathAvailabilityRequest body);
 
     /**
-     * Check if a file path is available.
+     * Check file path availability
+     *
+     * <p>Check if a file path is available.
      *
      * @param location The location.
      * @param body File path availability request.
@@ -62,7 +70,9 @@ public interface NetAppResources {
         String location, FilePathAvailabilityRequest body, Context context);
 
     /**
-     * Check if a quota is available.
+     * Check quota availability
+     *
+     * <p>Check if a quota is available.
      *
      * @param location The location.
      * @param body Quota availability request.
@@ -74,7 +84,9 @@ public interface NetAppResources {
     CheckAvailabilityResponse checkQuotaAvailability(String location, QuotaAvailabilityRequest body);
 
     /**
-     * Check if a quota is available.
+     * Check quota availability
+     *
+     * <p>Check if a quota is available.
      *
      * @param location The location.
      * @param body Quota availability request.
@@ -86,4 +98,31 @@ public interface NetAppResources {
      */
     Response<CheckAvailabilityResponse> checkQuotaAvailabilityWithResponse(
         String location, QuotaAvailabilityRequest body, Context context);
+
+    /**
+     * Describes region specific information.
+     *
+     * <p>Provides storage to network proximity and logical zone mapping information.
+     *
+     * @param location The location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides region specific information.
+     */
+    RegionInfo queryRegionInfo(String location);
+
+    /**
+     * Describes region specific information.
+     *
+     * <p>Provides storage to network proximity and logical zone mapping information.
+     *
+     * @param location The location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides region specific information along with {@link Response}.
+     */
+    Response<RegionInfo> queryRegionInfoWithResponse(String location, Context context);
 }

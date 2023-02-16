@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("DockerBuildRequest")
 @Fluent
 public final class DockerBuildRequest extends RunRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DockerBuildRequest.class);
-
     /*
      * The fully qualified image names including the repository and tag.
      */
@@ -319,6 +316,13 @@ public final class DockerBuildRequest extends RunRequest {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DockerBuildRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -328,7 +332,7 @@ public final class DockerBuildRequest extends RunRequest {
     public void validate() {
         super.validate();
         if (dockerFilePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dockerFilePath in model DockerBuildRequest"));
@@ -337,7 +341,7 @@ public final class DockerBuildRequest extends RunRequest {
             arguments().forEach(e -> e.validate());
         }
         if (platform() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property platform in model DockerBuildRequest"));
         } else {
@@ -350,4 +354,6 @@ public final class DockerBuildRequest extends RunRequest {
             credentials().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DockerBuildRequest.class);
 }

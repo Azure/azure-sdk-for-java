@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.ImageInner;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetParameters;
 import com.azure.resourcemanager.compute.models.ImageDataDisk;
@@ -18,7 +17,7 @@ import java.util.Arrays;
 /** Samples for Images CreateOrUpdate. */
 public final class ImagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromASnapshot.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_CreateFromASnapshot.json
      */
     /**
      * Sample code: Create a virtual machine image from a snapshot.
@@ -47,11 +46,11 @@ public final class ImagesCreateOrUpdateSamples {
                                     .withOsType(OperatingSystemTypes.LINUX)
                                     .withOsState(OperatingSystemStateTypes.GENERALIZED))
                             .withZoneResilient(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromAManagedDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_CreateFromAManagedDisk.json
      */
     /**
      * Sample code: Create a virtual machine image from a managed disk.
@@ -81,11 +80,11 @@ public final class ImagesCreateOrUpdateSamples {
                                     .withOsType(OperatingSystemTypes.LINUX)
                                     .withOsState(OperatingSystemStateTypes.GENERALIZED))
                             .withZoneResilient(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromABlobWithDiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_CreateFromABlobWithDiskEncryptionSet.json
      */
     /**
      * Sample code: Create a virtual machine image from a blob with DiskEncryptionSet resource.
@@ -115,11 +114,11 @@ public final class ImagesCreateOrUpdateSamples {
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"))
                                     .withOsType(OperatingSystemTypes.LINUX)
                                     .withOsState(OperatingSystemStateTypes.GENERALIZED))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromAManagedDiskWithDiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_CreateFromAManagedDiskWithDiskEncryptionSet.json
      */
     /**
      * Sample code: Create a virtual machine image from a managed disk with DiskEncryptionSet resource.
@@ -152,11 +151,11 @@ public final class ImagesCreateOrUpdateSamples {
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"))
                                     .withOsType(OperatingSystemTypes.LINUX)
                                     .withOsState(OperatingSystemStateTypes.GENERALIZED))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_Create_DataDiskFromABlobIncluded.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_Create_DataDiskFromABlobIncluded.json
      */
     /**
      * Sample code: Create a virtual machine image that includes a data disk from a blob.
@@ -190,11 +189,11 @@ public final class ImagesCreateOrUpdateSamples {
                                                 "https://mystorageaccount.blob.core.windows.net/dataimages/dataimage.vhd")
                                             .withLun(1)))
                             .withZoneResilient(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromASnapshotWithDiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_CreateFromASnapshotWithDiskEncryptionSet.json
      */
     /**
      * Sample code: Create a virtual machine image from a snapshot with DiskEncryptionSet resource.
@@ -227,11 +226,11 @@ public final class ImagesCreateOrUpdateSamples {
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"))
                                     .withOsType(OperatingSystemTypes.LINUX)
                                     .withOsState(OperatingSystemStateTypes.GENERALIZED))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_Create_DataDiskFromASnapshotIncluded.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_Create_DataDiskFromASnapshotIncluded.json
      */
     /**
      * Sample code: Create a virtual machine image that includes a data disk from a snapshot.
@@ -270,11 +269,11 @@ public final class ImagesCreateOrUpdateSamples {
                                                         "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"))
                                             .withLun(1)))
                             .withZoneResilient(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromABlob.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_CreateFromABlob.json
      */
     /**
      * Sample code: Create a virtual machine image from a blob.
@@ -300,11 +299,11 @@ public final class ImagesCreateOrUpdateSamples {
                                     .withOsType(OperatingSystemTypes.LINUX)
                                     .withOsState(OperatingSystemStateTypes.GENERALIZED))
                             .withZoneResilient(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromAVM.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_CreateFromAVM.json
      */
     /**
      * Sample code: Create a virtual machine image from an existing virtual machine.
@@ -327,11 +326,11 @@ public final class ImagesCreateOrUpdateSamples {
                         new SubResource()
                             .withId(
                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_Create_DataDiskFromAManagedDiskIncluded.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/imageExamples/Image_Create_DataDiskFromAManagedDiskIncluded.json
      */
     /**
      * Sample code: Create a virtual machine image that includes a data disk from a managed disk.
@@ -370,6 +369,6 @@ public final class ImagesCreateOrUpdateSamples {
                                                         "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2"))
                                             .withLun(1)))
                             .withZoneResilient(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

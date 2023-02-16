@@ -30,7 +30,7 @@ public class EventHubsCrudTests extends AbstractResourceCrudTests<EventHub, Tupl
         EventHubNamespace eventHubNamespace = mock(EventHubNamespace.class);
 
         when(resourceManager.eventHubNamespaces()).thenReturn(namespaces);
-        ManagementException exception = getManagementException(statusCode, message);
+        ManagementException exception = createManagementException(statusCode, message);
         when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey().getT1()))
             .thenReturn(eventHubNamespace);
 
@@ -44,7 +44,7 @@ public class EventHubsCrudTests extends AbstractResourceCrudTests<EventHub, Tupl
     void createStubManagementException() {
         EventHubNamespaces namespaces = mock(EventHubNamespaces.class);
         EventHubNamespace eventHubNamespace = mock(EventHubNamespace.class);
-        ManagementException exception = getManagementException(500, "Create event hubs namespace exception");
+        ManagementException exception = createManagementException(500, "Create event hubs namespace exception");
         when(resourceManager.eventHubNamespaces()).thenReturn(namespaces);
         when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey().getT1()))
             .thenReturn(eventHubNamespace);

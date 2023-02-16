@@ -73,7 +73,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.5.0-beta.11</version>
+    <version>11.6.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -234,6 +234,7 @@ These are just a few of the basics - please [check out our Samples][samples_read
 * [Adding documents to your index](#adding-documents-to-your-index)
 * [Retrieving a specific document from your index](#retrieving-a-specific-document-from-your-index)
 * [Async APIs](#async-apis)
+- [Create a client that can authenticate in a national cloud](#authenticate-in-a-national-cloud)
 
 ### Querying
 
@@ -418,6 +419,25 @@ SEARCH_ASYNC_CLIENT.search("luxury")
         Hotel hotel = result.getDocument(Hotel.class);
         System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
     });
+```
+
+### Authenticate in a National Cloud
+
+To authenticate in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
+
+- Set the `AuthorityHost` in the credential options or via the `AZURE_AUTHORITY_HOST` environment variable
+- Set the `audience` in `SearchClientBuilder`, `SearchIndexClientBuilder`, or `SearchIndexerClientBuilder`
+
+```java readme-sample-nationalCloud
+// Create a SearchClient that will authenticate through AAD in the China national cloud.
+SearchClient searchClient = new SearchClientBuilder()
+    .endpoint(ENDPOINT)
+    .indexName(INDEX_NAME)
+    .credential(new DefaultAzureCredentialBuilder()
+        .authorityHost(AzureAuthorityHosts.AZURE_CHINA)
+        .build())
+    .audience(SearchAudience.AZURE_CHINA)
+    .buildClient();
 ```
 
 ## Troubleshooting

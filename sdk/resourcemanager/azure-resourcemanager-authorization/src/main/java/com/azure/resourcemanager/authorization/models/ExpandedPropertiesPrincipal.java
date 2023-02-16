@@ -34,6 +34,10 @@ public final class ExpandedPropertiesPrincipal {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of ExpandedPropertiesPrincipal class. */
+    public ExpandedPropertiesPrincipal() {
+    }
+
     /**
      * Get the id property: Id of the principal.
      *

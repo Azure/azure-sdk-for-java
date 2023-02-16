@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.fluent.DisasterRecoveryConfigsClient;
 import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.fluent.models.ArmDisasterRecoveryInner;
@@ -37,13 +36,12 @@ import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityR
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.models.ArmDisasterRecoveryListResult;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailability;
+import com.azure.resourcemanager.servicebus.models.FailoverProperties;
 import com.azure.resourcemanager.servicebus.models.SBAuthorizationRuleListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DisasterRecoveryConfigsClient. */
 public final class DisasterRecoveryConfigsClientImpl implements DisasterRecoveryConfigsClient {
-    private final ClientLogger logger = new ClientLogger(DisasterRecoveryConfigsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DisasterRecoveryConfigsService service;
 
@@ -69,22 +67,6 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
     @Host("{$host}")
     @ServiceInterface(name = "ServiceBusManagement")
     private interface DisasterRecoveryConfigsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/CheckNameAvailability")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") CheckNameAvailability parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
@@ -121,7 +103,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
                 + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
@@ -178,13 +160,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             @PathParam("alias") String alias,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") FailoverProperties parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/AuthorizationRules")
+                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SBAuthorizationRuleListResult>> listAuthorizationRules(
@@ -200,7 +183,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/AuthorizationRules"
+                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules"
                 + "/{authorizationRuleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -218,7 +201,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/AuthorizationRules"
+                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules"
                 + "/{authorizationRuleName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -230,6 +213,22 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             @PathParam("authorizationRuleName") String authorizationRuleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
+                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/CheckNameAvailability")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailability(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") CheckNameAvailability parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -255,179 +254,6 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
     }
 
     /**
-     * Check the give namespace name availability.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param name The Name to check the namespace name availability and The namespace name can contain only letters,
-     *     numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Check Name availability request properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName, String namespaceName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        CheckNameAvailability parameters = new CheckNameAvailability();
-        parameters.withName(name);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Check the give namespace name availability.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param name The Name to check the namespace name availability and The namespace name can contain only letters,
-     *     numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Check Name availability request properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName, String namespaceName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        CheckNameAvailability parameters = new CheckNameAvailability();
-        parameters.withName(name);
-        context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Check the give namespace name availability.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param name The Name to check the namespace name availability and The namespace name can contain only letters,
-     *     numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Check Name availability request properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
-        String resourceGroupName, String namespaceName, String name) {
-        return checkNameAvailabilityWithResponseAsync(resourceGroupName, namespaceName, name)
-            .flatMap(
-                (Response<CheckNameAvailabilityResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Check the give namespace name availability.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param name The Name to check the namespace name availability and The namespace name can contain only letters,
-     *     numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Check Name availability request properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResultInner checkNameAvailability(
-        String resourceGroupName, String namespaceName, String name) {
-        return checkNameAvailabilityAsync(resourceGroupName, namespaceName, name).block();
-    }
-
-    /**
-     * Check the give namespace name availability.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param name The Name to check the namespace name availability and The namespace name can contain only letters,
-     *     numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Check Name availability request properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String namespaceName, String name, Context context) {
-        return checkNameAvailabilityWithResponseAsync(resourceGroupName, namespaceName, name, context).block();
-    }
-
-    /**
      * Gets all Alias(Disaster Recovery configurations).
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
@@ -435,7 +261,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Alias(Disaster Recovery configurations).
+     * @return all Alias(Disaster Recovery configurations) along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ArmDisasterRecoveryInner>> listSinglePageAsync(
@@ -493,7 +320,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Alias(Disaster Recovery configurations).
+     * @return all Alias(Disaster Recovery configurations) along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ArmDisasterRecoveryInner>> listSinglePageAsync(
@@ -547,7 +375,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Alias(Disaster Recovery configurations).
+     * @return all Alias(Disaster Recovery configurations) as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ArmDisasterRecoveryInner> listAsync(String resourceGroupName, String namespaceName) {
@@ -564,7 +392,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Alias(Disaster Recovery configurations).
+     * @return all Alias(Disaster Recovery configurations) as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ArmDisasterRecoveryInner> listAsync(
@@ -582,7 +410,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Alias(Disaster Recovery configurations).
+     * @return all Alias(Disaster Recovery configurations) as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArmDisasterRecoveryInner> list(String resourceGroupName, String namespaceName) {
@@ -598,7 +426,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Alias(Disaster Recovery configurations).
+     * @return all Alias(Disaster Recovery configurations) as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArmDisasterRecoveryInner> list(
@@ -616,7 +444,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
+     * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArmDisasterRecoveryInner>> createOrUpdateWithResponseAsync(
@@ -677,7 +506,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
+     * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ArmDisasterRecoveryInner>> createOrUpdateWithResponseAsync(
@@ -738,20 +568,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
+     * @return single item in List or Get Alias(Disaster Recovery configuration) operation on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArmDisasterRecoveryInner> createOrUpdateAsync(
         String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, alias, parameters)
-            .flatMap(
-                (Response<ArmDisasterRecoveryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -783,7 +607,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
+     * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArmDisasterRecoveryInner> createOrUpdateWithResponse(
@@ -804,7 +628,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName, String alias) {
@@ -857,7 +681,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -907,12 +731,11 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String alias) {
-        return deleteWithResponseAsync(resourceGroupName, namespaceName, alias)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, namespaceName, alias).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -940,7 +763,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -957,7 +780,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
+     * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArmDisasterRecoveryInner>> getWithResponseAsync(
@@ -1011,7 +835,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
+     * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ArmDisasterRecoveryInner>> getWithResponseAsync(
@@ -1061,19 +886,13 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
+     * @return single item in List or Get Alias(Disaster Recovery configuration) operation on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArmDisasterRecoveryInner> getAsync(String resourceGroupName, String namespaceName, String alias) {
         return getWithResponseAsync(resourceGroupName, namespaceName, alias)
-            .flatMap(
-                (Response<ArmDisasterRecoveryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1102,7 +921,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
+     * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArmDisasterRecoveryInner> getWithResponse(
@@ -1119,7 +938,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> breakPairingWithResponseAsync(
@@ -1173,7 +992,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> breakPairingWithResponseAsync(
@@ -1223,12 +1042,11 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> breakPairingAsync(String resourceGroupName, String namespaceName, String alias) {
-        return breakPairingWithResponseAsync(resourceGroupName, namespaceName, alias)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return breakPairingWithResponseAsync(resourceGroupName, namespaceName, alias).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1256,7 +1074,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> breakPairingWithResponse(
@@ -1270,14 +1088,15 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
+     * @param parameters Parameters required to create an Alias(Disaster Recovery configuration).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> failOverWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias) {
+        String resourceGroupName, String namespaceName, String alias, FailoverProperties parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1299,6 +1118,9 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
+            parameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1312,6 +1134,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
                             alias,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            parameters,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1323,15 +1146,16 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
+     * @param parameters Parameters required to create an Alias(Disaster Recovery configuration).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> failOverWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, Context context) {
+        String resourceGroupName, String namespaceName, String alias, FailoverProperties parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1354,6 +1178,9 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1364,8 +1191,28 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
                 alias,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                parameters,
                 accept,
                 context);
+    }
+
+    /**
+     * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param alias The Disaster Recovery configuration name.
+     * @param parameters Parameters required to create an Alias(Disaster Recovery configuration).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> failOverAsync(
+        String resourceGroupName, String namespaceName, String alias, FailoverProperties parameters) {
+        return failOverWithResponseAsync(resourceGroupName, namespaceName, alias, parameters)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1377,12 +1224,13 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failOverAsync(String resourceGroupName, String namespaceName, String alias) {
-        return failOverWithResponseAsync(resourceGroupName, namespaceName, alias)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        final FailoverProperties parameters = null;
+        return failOverWithResponseAsync(resourceGroupName, namespaceName, alias, parameters)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1397,7 +1245,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void failOver(String resourceGroupName, String namespaceName, String alias) {
-        failOverAsync(resourceGroupName, namespaceName, alias).block();
+        final FailoverProperties parameters = null;
+        failOverAsync(resourceGroupName, namespaceName, alias, parameters).block();
     }
 
     /**
@@ -1406,16 +1255,17 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
+     * @param parameters Parameters required to create an Alias(Disaster Recovery configuration).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> failOverWithResponse(
-        String resourceGroupName, String namespaceName, String alias, Context context) {
-        return failOverWithResponseAsync(resourceGroupName, namespaceName, alias, context).block();
+        String resourceGroupName, String namespaceName, String alias, FailoverProperties parameters, Context context) {
+        return failOverWithResponseAsync(resourceGroupName, namespaceName, alias, parameters, context).block();
     }
 
     /**
@@ -1427,7 +1277,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return the authorization rules for a namespace along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesSinglePageAsync(
@@ -1490,7 +1341,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return the authorization rules for a namespace along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesSinglePageAsync(
@@ -1549,7 +1401,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return the authorization rules for a namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(
@@ -1569,7 +1421,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return the authorization rules for a namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(
@@ -1588,7 +1440,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return the authorization rules for a namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
@@ -1606,7 +1458,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return the authorization rules for a namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
@@ -1624,7 +1476,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name.
+     * @return an authorization rule for a namespace by rule name along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(
@@ -1684,7 +1537,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name.
+     * @return an authorization rule for a namespace by rule name along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(
@@ -1740,20 +1594,13 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name.
+     * @return an authorization rule for a namespace by rule name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBAuthorizationRuleInner> getAuthorizationRuleAsync(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
         return getAuthorizationRuleWithResponseAsync(resourceGroupName, namespaceName, alias, authorizationRuleName)
-            .flatMap(
-                (Response<SBAuthorizationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1785,7 +1632,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name.
+     * @return an authorization rule for a namespace by rule name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SBAuthorizationRuleInner> getAuthorizationRuleWithResponse(
@@ -1805,7 +1652,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace.
+     * @return the primary and secondary connection strings for the namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
@@ -1865,7 +1713,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace.
+     * @return the primary and secondary connection strings for the namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
@@ -1921,20 +1770,13 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace.
+     * @return the primary and secondary connection strings for the namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessKeysInner> listKeysAsync(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, alias, authorizationRuleName)
-            .flatMap(
-                (Response<AccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1966,7 +1808,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace.
+     * @return the primary and secondary connection strings for the namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> listKeysWithResponse(
@@ -1976,13 +1818,178 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
     }
 
     /**
-     * Get the next page of items.
+     * Check the give namespace name availability.
      *
-     * @param nextLink The nextLink parameter.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param parameters Parameters to check availability of the given namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the List Alias(Disaster Recovery configuration) operation.
+     * @return description of a Check Name availability request properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
+        String resourceGroupName, String namespaceName, CheckNameAvailability parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .checkNameAvailability(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            namespaceName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Check the give namespace name availability.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param parameters Parameters to check availability of the given namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a Check Name availability request properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
+        String resourceGroupName, String namespaceName, CheckNameAvailability parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .checkNameAvailability(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                namespaceName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Check the give namespace name availability.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param parameters Parameters to check availability of the given namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a Check Name availability request properties on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
+        String resourceGroupName, String namespaceName, CheckNameAvailability parameters) {
+        return checkNameAvailabilityWithResponseAsync(resourceGroupName, namespaceName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Check the give namespace name availability.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param parameters Parameters to check availability of the given namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a Check Name availability request properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameAvailabilityResultInner checkNameAvailability(
+        String resourceGroupName, String namespaceName, CheckNameAvailability parameters) {
+        return checkNameAvailabilityAsync(resourceGroupName, namespaceName, parameters).block();
+    }
+
+    /**
+     * Check the give namespace name availability.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param parameters Parameters to check availability of the given namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a Check Name availability request properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        String resourceGroupName, String namespaceName, CheckNameAvailability parameters, Context context) {
+        return checkNameAvailabilityWithResponseAsync(resourceGroupName, namespaceName, parameters, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the List Alias(Disaster Recovery configuration) operation along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ArmDisasterRecoveryInner>> listNextSinglePageAsync(String nextLink) {
@@ -2013,12 +2020,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the List Alias(Disaster Recovery configuration) operation.
+     * @return the result of the List Alias(Disaster Recovery configuration) operation along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ArmDisasterRecoveryInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2049,11 +2058,13 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Namespace operation.
+     * @return the response to the List Namespace operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesNextSinglePageAsync(String nextLink) {
@@ -2085,12 +2096,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Namespace operation.
+     * @return the response to the List Namespace operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesNextSinglePageAsync(

@@ -12,22 +12,19 @@ import java.util.List;
 @Fluent
 public final class ManagedClusterPodIdentityProvisioningErrorBody {
     /*
-     * An identifier for the error. Codes are invariant and are intended to be
-     * consumed programmatically.
+     * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
      */
     @JsonProperty(value = "code")
     private String code;
 
     /*
-     * A message describing the error, intended to be suitable for display in a
-     * user interface.
+     * A message describing the error, intended to be suitable for display in a user interface.
      */
     @JsonProperty(value = "message")
     private String message;
 
     /*
-     * The target of the particular error. For example, the name of the
-     * property in error.
+     * The target of the particular error. For example, the name of the property in error.
      */
     @JsonProperty(value = "target")
     private String target;
@@ -37,6 +34,10 @@ public final class ManagedClusterPodIdentityProvisioningErrorBody {
      */
     @JsonProperty(value = "details")
     private List<ManagedClusterPodIdentityProvisioningErrorBody> details;
+
+    /** Creates an instance of ManagedClusterPodIdentityProvisioningErrorBody class. */
+    public ManagedClusterPodIdentityProvisioningErrorBody() {
+    }
 
     /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed

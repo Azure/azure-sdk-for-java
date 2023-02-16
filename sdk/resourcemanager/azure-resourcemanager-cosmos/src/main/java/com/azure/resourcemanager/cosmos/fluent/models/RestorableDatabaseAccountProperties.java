@@ -27,8 +27,7 @@ public final class RestorableDatabaseAccountProperties {
     private OffsetDateTime creationTime;
 
     /*
-     * The time at which the restorable database account has been deleted
-     * (ISO-8601 format).
+     * The time at which the restorable database account has been deleted (ISO-8601 format).
      */
     @JsonProperty(value = "deletionTime")
     private OffsetDateTime deletionTime;
@@ -44,6 +43,10 @@ public final class RestorableDatabaseAccountProperties {
      */
     @JsonProperty(value = "restorableLocations", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableLocationResource> restorableLocations;
+
+    /** Creates an instance of RestorableDatabaseAccountProperties class. */
+    public RestorableDatabaseAccountProperties() {
+    }
 
     /**
      * Get the accountName property: The name of the global database account.

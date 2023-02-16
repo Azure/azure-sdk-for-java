@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Galleries List. */
 public final class GalleriesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_ListBySubscription.json
      */
     /**
      * Sample code: List galleries in a subscription.
@@ -17,6 +15,6 @@ public final class GalleriesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listGalleriesInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().list(Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getGalleries().list(com.azure.core.util.Context.NONE);
     }
 }

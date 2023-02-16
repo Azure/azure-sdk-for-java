@@ -5,6 +5,8 @@ package com.azure.spring.data.cosmos.repository.support;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
@@ -101,6 +103,20 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         } else {
             return cosmosOperations.upsert(entityInformation.getContainerName(), entity);
         }
+    }
+
+    @Override
+    public <S extends T> Mono<S> save(K id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations) {
+        Assert.notNull(id, "entity must not be null");
+        // patch items
+        return cosmosOperations.patch(id, partitionKey, domainType, patchOperations);
+    }
+
+    @Override
+    public <S extends T> Mono<S> save(K id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+        Assert.notNull(id, "entity must not be null");
+        // patch items
+        return cosmosOperations.patch(id, partitionKey, domainType, patchOperations, options);
     }
 
     @Override

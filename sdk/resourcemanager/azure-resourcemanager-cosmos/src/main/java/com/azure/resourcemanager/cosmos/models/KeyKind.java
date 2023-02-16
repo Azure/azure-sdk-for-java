@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KeyKind. */
+/** The access key to regenerate. */
 public final class KeyKind extends ExpandableStringEnum<KeyKind> {
     /** Static value primary for KeyKind. */
     public static final KeyKind PRIMARY = fromString("primary");
@@ -21,6 +21,15 @@ public final class KeyKind extends ExpandableStringEnum<KeyKind> {
 
     /** Static value secondaryReadonly for KeyKind. */
     public static final KeyKind SECONDARY_READONLY = fromString("secondaryReadonly");
+
+    /**
+     * Creates a new instance of KeyKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyKind() {
+    }
 
     /**
      * Creates or finds a KeyKind from its string representation.

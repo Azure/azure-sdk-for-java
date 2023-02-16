@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.CdnWebApplicationFirewallPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,18 +15,14 @@ import java.util.List;
  */
 @Fluent
 public final class CdnWebApplicationFirewallPolicyList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CdnWebApplicationFirewallPolicyList.class);
-
     /*
-     * List of Azure CDN WebApplicationFirewallPolicies within a resource
-     * group.
+     * List of Azure CDN WebApplicationFirewallPolicies within a resource group.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CdnWebApplicationFirewallPolicyInner> value;
 
     /*
-     * URL to get the next set of WebApplicationFirewallPolicy objects if there
-     * are any.
+     * URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

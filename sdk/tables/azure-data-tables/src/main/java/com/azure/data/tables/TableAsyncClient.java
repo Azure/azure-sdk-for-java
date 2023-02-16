@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -38,8 +39,8 @@ import com.azure.data.tables.implementation.models.TableServiceError;
 import com.azure.data.tables.implementation.models.TransactionalBatchAction;
 import com.azure.data.tables.implementation.models.TransactionalBatchChangeSet;
 import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody;
-import com.azure.data.tables.implementation.models.TransactionalBatchResponse;
 import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
+import com.azure.data.tables.implementation.models.TransactionalBatchSubmitBatchHeaders;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableAccessPolicy;
@@ -1682,7 +1683,7 @@ public final class TableAsyncClient {
     }
 
     private Mono<Response<List<TableTransactionActionResponse>>> parseResponse(TransactionalBatchRequestBody requestBody,
-                                                                               TransactionalBatchResponse response) {
+        ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> response) {
         TableServiceError error = null;
         String errorMessage = null;
         TransactionalBatchChangeSet changes = null;

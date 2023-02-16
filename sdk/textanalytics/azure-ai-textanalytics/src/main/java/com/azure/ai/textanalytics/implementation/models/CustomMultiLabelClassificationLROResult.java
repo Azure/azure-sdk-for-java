@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
 /** The CustomMultiLabelClassificationLROResult model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -18,14 +19,17 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
      * The results property.
      */
     @JsonProperty(value = "results", required = true)
-    private CustomMultiLabelClassificationResult results;
+    private CustomLabelClassificationResult results;
+
+    /** Creates an instance of CustomMultiLabelClassificationLROResult class. */
+    public CustomMultiLabelClassificationLROResult() {}
 
     /**
      * Get the results property: The results property.
      *
      * @return the results value.
      */
-    public CustomMultiLabelClassificationResult getResults() {
+    public CustomLabelClassificationResult getResults() {
         return this.results;
     }
 
@@ -35,8 +39,29 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
      * @param results the results value to set.
      * @return the CustomMultiLabelClassificationLROResult object itself.
      */
-    public CustomMultiLabelClassificationLROResult setResults(CustomMultiLabelClassificationResult results) {
+    public CustomMultiLabelClassificationLROResult setResults(CustomLabelClassificationResult results) {
         this.results = results;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomMultiLabelClassificationLROResult setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomMultiLabelClassificationLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
+        super.setLastUpdateDateTime(lastUpdateDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomMultiLabelClassificationLROResult setStatus(State status) {
+        super.setStatus(status);
         return this;
     }
 }

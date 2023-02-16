@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureFileShareType. */
+/** File Share type XSync or XSMB. */
 public final class AzureFileShareType extends ExpandableStringEnum<AzureFileShareType> {
     /** Static value Invalid for AzureFileShareType. */
     public static final AzureFileShareType INVALID = fromString("Invalid");
@@ -18,6 +18,15 @@ public final class AzureFileShareType extends ExpandableStringEnum<AzureFileShar
 
     /** Static value XSync for AzureFileShareType. */
     public static final AzureFileShareType XSYNC = fromString("XSync");
+
+    /**
+     * Creates a new instance of AzureFileShareType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFileShareType() {
+    }
 
     /**
      * Creates or finds a AzureFileShareType from its string representation.

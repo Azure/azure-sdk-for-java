@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.models.UserInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paged list of users. */
 @Immutable
 public final class PagedUsers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PagedUsers.class);
-
     /*
      * The array page of user results.
      */

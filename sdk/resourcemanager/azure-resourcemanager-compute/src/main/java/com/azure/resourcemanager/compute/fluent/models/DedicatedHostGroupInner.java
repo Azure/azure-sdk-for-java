@@ -27,13 +27,16 @@ public final class DedicatedHostGroupInner extends Resource {
     private DedicatedHostGroupProperties innerProperties;
 
     /*
-     * Availability Zone to use for this host group. Only single zone is
-     * supported. The zone can be assigned only during creation. If not
-     * provided, the group supports all zones in the region. If provided,
-     * enforces each host in the group to be in the same zone.
+     * Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only
+     * during creation. If not provided, the group supports all zones in the region. If provided, enforces each host in
+     * the group to be in the same zone.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /** Creates an instance of DedicatedHostGroupInner class. */
+    public DedicatedHostGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: Dedicated Host Group Properties.

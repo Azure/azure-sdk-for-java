@@ -5,45 +5,53 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SqlTempDbSettings model. */
+/** Set tempDb storage settings for SQL Server. */
 @Fluent
 public final class SqlTempDbSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlTempDbSettings.class);
-
     /*
-     * SQL Server default file size
+     * SQL Server tempdb data file size
      */
     @JsonProperty(value = "dataFileSize")
     private Integer dataFileSize;
 
     /*
-     * SQL Server default file autoGrowth size
+     * SQL Server tempdb data file autoGrowth size
      */
     @JsonProperty(value = "dataGrowth")
     private Integer dataGrowth;
 
     /*
-     * SQL Server default file size
+     * SQL Server tempdb log file size
      */
     @JsonProperty(value = "logFileSize")
     private Integer logFileSize;
 
     /*
-     * SQL Server default file autoGrowth size
+     * SQL Server tempdb log file autoGrowth size
      */
     @JsonProperty(value = "logGrowth")
     private Integer logGrowth;
 
     /*
-     * SQL Server default file count
+     * SQL Server tempdb data file count
      */
     @JsonProperty(value = "dataFileCount")
     private Integer dataFileCount;
+
+    /*
+     * SQL Server tempdb persist folder choice
+     */
+    @JsonProperty(value = "persistFolder")
+    private Boolean persistFolder;
+
+    /*
+     * SQL Server tempdb persist folder location
+     */
+    @JsonProperty(value = "persistFolderPath")
+    private String persistFolderPath;
 
     /*
      * Logical Unit Numbers for the disks.
@@ -58,7 +66,7 @@ public final class SqlTempDbSettings {
     private String defaultFilePath;
 
     /**
-     * Get the dataFileSize property: SQL Server default file size.
+     * Get the dataFileSize property: SQL Server tempdb data file size.
      *
      * @return the dataFileSize value.
      */
@@ -67,7 +75,7 @@ public final class SqlTempDbSettings {
     }
 
     /**
-     * Set the dataFileSize property: SQL Server default file size.
+     * Set the dataFileSize property: SQL Server tempdb data file size.
      *
      * @param dataFileSize the dataFileSize value to set.
      * @return the SqlTempDbSettings object itself.
@@ -78,7 +86,7 @@ public final class SqlTempDbSettings {
     }
 
     /**
-     * Get the dataGrowth property: SQL Server default file autoGrowth size.
+     * Get the dataGrowth property: SQL Server tempdb data file autoGrowth size.
      *
      * @return the dataGrowth value.
      */
@@ -87,7 +95,7 @@ public final class SqlTempDbSettings {
     }
 
     /**
-     * Set the dataGrowth property: SQL Server default file autoGrowth size.
+     * Set the dataGrowth property: SQL Server tempdb data file autoGrowth size.
      *
      * @param dataGrowth the dataGrowth value to set.
      * @return the SqlTempDbSettings object itself.
@@ -98,7 +106,7 @@ public final class SqlTempDbSettings {
     }
 
     /**
-     * Get the logFileSize property: SQL Server default file size.
+     * Get the logFileSize property: SQL Server tempdb log file size.
      *
      * @return the logFileSize value.
      */
@@ -107,7 +115,7 @@ public final class SqlTempDbSettings {
     }
 
     /**
-     * Set the logFileSize property: SQL Server default file size.
+     * Set the logFileSize property: SQL Server tempdb log file size.
      *
      * @param logFileSize the logFileSize value to set.
      * @return the SqlTempDbSettings object itself.
@@ -118,7 +126,7 @@ public final class SqlTempDbSettings {
     }
 
     /**
-     * Get the logGrowth property: SQL Server default file autoGrowth size.
+     * Get the logGrowth property: SQL Server tempdb log file autoGrowth size.
      *
      * @return the logGrowth value.
      */
@@ -127,7 +135,7 @@ public final class SqlTempDbSettings {
     }
 
     /**
-     * Set the logGrowth property: SQL Server default file autoGrowth size.
+     * Set the logGrowth property: SQL Server tempdb log file autoGrowth size.
      *
      * @param logGrowth the logGrowth value to set.
      * @return the SqlTempDbSettings object itself.
@@ -138,7 +146,7 @@ public final class SqlTempDbSettings {
     }
 
     /**
-     * Get the dataFileCount property: SQL Server default file count.
+     * Get the dataFileCount property: SQL Server tempdb data file count.
      *
      * @return the dataFileCount value.
      */
@@ -147,13 +155,53 @@ public final class SqlTempDbSettings {
     }
 
     /**
-     * Set the dataFileCount property: SQL Server default file count.
+     * Set the dataFileCount property: SQL Server tempdb data file count.
      *
      * @param dataFileCount the dataFileCount value to set.
      * @return the SqlTempDbSettings object itself.
      */
     public SqlTempDbSettings withDataFileCount(Integer dataFileCount) {
         this.dataFileCount = dataFileCount;
+        return this;
+    }
+
+    /**
+     * Get the persistFolder property: SQL Server tempdb persist folder choice.
+     *
+     * @return the persistFolder value.
+     */
+    public Boolean persistFolder() {
+        return this.persistFolder;
+    }
+
+    /**
+     * Set the persistFolder property: SQL Server tempdb persist folder choice.
+     *
+     * @param persistFolder the persistFolder value to set.
+     * @return the SqlTempDbSettings object itself.
+     */
+    public SqlTempDbSettings withPersistFolder(Boolean persistFolder) {
+        this.persistFolder = persistFolder;
+        return this;
+    }
+
+    /**
+     * Get the persistFolderPath property: SQL Server tempdb persist folder location.
+     *
+     * @return the persistFolderPath value.
+     */
+    public String persistFolderPath() {
+        return this.persistFolderPath;
+    }
+
+    /**
+     * Set the persistFolderPath property: SQL Server tempdb persist folder location.
+     *
+     * @param persistFolderPath the persistFolderPath value to set.
+     * @return the SqlTempDbSettings object itself.
+     */
+    public SqlTempDbSettings withPersistFolderPath(String persistFolderPath) {
+        this.persistFolderPath = persistFolderPath;
         return this;
     }
 

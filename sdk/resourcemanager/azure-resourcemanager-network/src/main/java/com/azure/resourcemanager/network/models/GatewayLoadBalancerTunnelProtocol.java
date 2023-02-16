@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GatewayLoadBalancerTunnelProtocol. */
+/** Protocol of gateway load balancer tunnel interface. */
 public final class GatewayLoadBalancerTunnelProtocol extends ExpandableStringEnum<GatewayLoadBalancerTunnelProtocol> {
     /** Static value None for GatewayLoadBalancerTunnelProtocol. */
     public static final GatewayLoadBalancerTunnelProtocol NONE = fromString("None");

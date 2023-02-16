@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapHanaPartitionOption. */
+/** The partition mechanism that will be used for SAP HANA read in parallel. */
 public final class SapHanaPartitionOption extends ExpandableStringEnum<SapHanaPartitionOption> {
     /** Static value None for SapHanaPartitionOption. */
     public static final SapHanaPartitionOption NONE = fromString("None");
@@ -30,7 +30,11 @@ public final class SapHanaPartitionOption extends ExpandableStringEnum<SapHanaPa
         return fromString(name, SapHanaPartitionOption.class);
     }
 
-    /** @return known SapHanaPartitionOption values. */
+    /**
+     * Gets known SapHanaPartitionOption values.
+     *
+     * @return known SapHanaPartitionOption values.
+     */
     public static Collection<SapHanaPartitionOption> values() {
         return values(SapHanaPartitionOption.class);
     }

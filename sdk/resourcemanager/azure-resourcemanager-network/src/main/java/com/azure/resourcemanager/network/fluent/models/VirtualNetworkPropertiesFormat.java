@@ -18,15 +18,13 @@ import java.util.List;
 @Fluent
 public final class VirtualNetworkPropertiesFormat {
     /*
-     * The AddressSpace that contains an array of IP address ranges that can be
-     * used by subnets.
+     * The AddressSpace that contains an array of IP address ranges that can be used by subnets.
      */
     @JsonProperty(value = "addressSpace")
     private AddressSpace addressSpace;
 
     /*
-     * The dhcpOptions that contains an array of DNS servers available to VMs
-     * deployed in the virtual network.
+     * The dhcpOptions that contains an array of DNS servers available to VMs deployed in the virtual network.
      */
     @JsonProperty(value = "dhcpOptions")
     private DhcpOptions dhcpOptions;
@@ -62,16 +60,14 @@ public final class VirtualNetworkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Indicates if DDoS protection is enabled for all the protected resources
-     * in the virtual network. It requires a DDoS protection plan associated
-     * with the resource.
+     * Indicates if DDoS protection is enabled for all the protected resources in the virtual network. It requires a
+     * DDoS protection plan associated with the resource.
      */
     @JsonProperty(value = "enableDdosProtection")
     private Boolean enableDdosProtection;
 
     /*
-     * Indicates if VM protection is enabled for all the subnets in the virtual
-     * network.
+     * Indicates if VM protection is enabled for all the subnets in the virtual network.
      */
     @JsonProperty(value = "enableVmProtection")
     private Boolean enableVmProtection;
@@ -83,15 +79,13 @@ public final class VirtualNetworkPropertiesFormat {
     private SubResource ddosProtectionPlan;
 
     /*
-     * Bgp Communities sent over ExpressRoute with each route corresponding to
-     * a prefix in this VNET.
+     * Bgp Communities sent over ExpressRoute with each route corresponding to a prefix in this VNET.
      */
     @JsonProperty(value = "bgpCommunities")
     private VirtualNetworkBgpCommunities bgpCommunities;
 
     /*
-     * Indicates if encryption is enabled on virtual network and if VM without
-     * encryption is allowed in encrypted VNet.
+     * Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet.
      */
     @JsonProperty(value = "encryption")
     private VirtualNetworkEncryption encryption;
@@ -101,6 +95,10 @@ public final class VirtualNetworkPropertiesFormat {
      */
     @JsonProperty(value = "ipAllocations")
     private List<SubResource> ipAllocations;
+
+    /** Creates an instance of VirtualNetworkPropertiesFormat class. */
+    public VirtualNetworkPropertiesFormat() {
+    }
 
     /**
      * Get the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by

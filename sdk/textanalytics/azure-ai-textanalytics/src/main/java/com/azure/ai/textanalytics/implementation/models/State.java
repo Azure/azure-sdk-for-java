@@ -4,59 +4,50 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Defines values for State. */
-public enum State {
-    /** Enum value notStarted. */
-    NOT_STARTED("notStarted"),
+/** The status of the task at the mentioned last update time. */
+public final class State extends ExpandableStringEnum<State> {
+    /** Static value notStarted for State. */
+    public static final State NOT_STARTED = fromString("notStarted");
 
-    /** Enum value running. */
-    RUNNING("running"),
+    /** Static value running for State. */
+    public static final State RUNNING = fromString("running");
 
-    /** Enum value succeeded. */
-    SUCCEEDED("succeeded"),
+    /** Static value succeeded for State. */
+    public static final State SUCCEEDED = fromString("succeeded");
 
-    /** Enum value partiallySucceeded. */
-    PARTIALLY_SUCCEEDED("partiallySucceeded"),
+    /** Static value failed for State. */
+    public static final State FAILED = fromString("failed");
 
-    /** Enum value failed. */
-    FAILED("failed"),
+    /** Static value cancelled for State. */
+    public static final State CANCELLED = fromString("cancelled");
 
-    /** Enum value cancelled. */
-    CANCELLED("cancelled"),
+    /** Static value cancelling for State. */
+    public static final State CANCELLING = fromString("cancelling");
 
-    /** Enum value cancelling. */
-    CANCELLING("cancelling");
+    /** Static value partiallyCompleted for State. */
+    public static final State PARTIALLY_COMPLETED = fromString("partiallyCompleted");
 
-    /** The actual serialized value for a State instance. */
-    private final String value;
-
-    State(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a State from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding State.
+     */
+    @JsonCreator
+    public static State fromString(String name) {
+        return fromString(name, State.class);
     }
 
     /**
-     * Parses a serialized value to a State instance.
+     * Gets known State values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed State object, or null if unable to parse.
+     * @return known State values.
      */
-    @JsonCreator
-    public static State fromString(String value) {
-        State[] items = State.values();
-        for (State item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<State> values() {
+        return values(State.class);
     }
 }

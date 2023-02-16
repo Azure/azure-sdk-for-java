@@ -15,19 +15,19 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * appRoleAssignment Represents an Azure Active Directory object. The directoryObject type is the base type for many
- * other directory entity types.
+ * appRoleAssignment
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirectoryObjectInner {
     /*
-     * The identifier (id) for the app role which is assigned to the principal.
-     * This app role must be exposed in the appRoles property on the resource
-     * application's service principal (resourceId). If the resource
-     * application has not declared any app roles, a default app role ID of
-     * 00000000-0000-0000-0000-000000000000 can be specified to signal that the
-     * principal is assigned to the resource app without any specific app
-     * roles. Required on create. Does not support $filter.
+     * The identifier (id) for the app role which is assigned to the principal. This app role must be exposed in the
+     * appRoles property on the resource application's service principal (resourceId). If the resource application has
+     * not declared any app roles, a default app role ID of 00000000-0000-0000-0000-000000000000 can be specified to
+     * signal that the principal is assigned to the resource app without any specific app roles. Required on create.
+     * Does not support $filter.
      */
     @JsonProperty(value = "appRoleId")
     private UUID appRoleId;
@@ -39,47 +39,49 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     private OffsetDateTime createdDateTime;
 
     /*
-     * The display name of the user, group, or service principal that was
-     * granted the app role assignment. Read-only. Supports $filter (eq and
-     * startswith).
+     * The display name of the user, group, or service principal that was granted the app role assignment. Read-only.
+     * Supports $filter (eq and startswith).
      */
     @JsonProperty(value = "principalDisplayName")
     private String principalDisplayName;
 
     /*
-     * The unique identifier (id) for the user, group or service principal
-     * being granted the app role. Required on create. Does not support
-     * $filter.
+     * The unique identifier (id) for the user, group or service principal being granted the app role. Required on
+     * create. Does not support $filter.
      */
     @JsonProperty(value = "principalId")
     private UUID principalId;
 
     /*
-     * The type of the assigned principal. This can either be 'User', 'Group'
-     * or 'ServicePrincipal'. Read-only. Does not support $filter.
+     * The type of the assigned principal. This can either be 'User', 'Group' or 'ServicePrincipal'. Read-only. Does
+     * not support $filter.
      */
     @JsonProperty(value = "principalType")
     private String principalType;
 
     /*
-     * The display name of the resource app's service principal to which the
-     * assignment is made. Does not support $filter.
+     * The display name of the resource app's service principal to which the assignment is made. Does not support
+     * $filter.
      */
     @JsonProperty(value = "resourceDisplayName")
     private String resourceDisplayName;
 
     /*
-     * The unique identifier (id) for the resource service principal for which
-     * the assignment is made. Required on create. Supports $filter (eq only).
+     * The unique identifier (id) for the resource service principal for which the assignment is made. Required on
+     * create. Supports $filter (eq only).
      */
     @JsonProperty(value = "resourceId")
     private UUID resourceId;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAppRoleAssignment class. */
+    public MicrosoftGraphAppRoleAssignment() {
+    }
 
     /**
      * Get the appRoleId property: The identifier (id) for the app role which is assigned to the principal. This app

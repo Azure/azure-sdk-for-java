@@ -17,10 +17,9 @@ public final class VirtualMachineSizeInner {
     private String name;
 
     /*
-     * The number of cores supported by the virtual machine size. For
-     * Constrained vCPU capable VM sizes, this number represents the total
-     * vCPUs of quota that the VM uses. For accurate vCPU count, please refer
-     * to https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
+     * The number of cores supported by the virtual machine size. For Constrained vCPU capable VM sizes, this number
+     * represents the total vCPUs of quota that the VM uses. For accurate vCPU count, please refer to
+     * https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
      * https://docs.microsoft.com/rest/api/compute/resourceskus/list
      */
     @JsonProperty(value = "numberOfCores")
@@ -45,11 +44,14 @@ public final class VirtualMachineSizeInner {
     private Integer memoryInMB;
 
     /*
-     * The maximum number of data disks that can be attached to the virtual
-     * machine size.
+     * The maximum number of data disks that can be attached to the virtual machine size.
      */
     @JsonProperty(value = "maxDataDiskCount")
     private Integer maxDataDiskCount;
+
+    /** Creates an instance of VirtualMachineSizeInner class. */
+    public VirtualMachineSizeInner() {
+    }
 
     /**
      * Get the name property: The name of the virtual machine size.

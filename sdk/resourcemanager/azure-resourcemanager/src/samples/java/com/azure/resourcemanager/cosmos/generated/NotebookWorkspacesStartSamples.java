@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
 
 /** Samples for NotebookWorkspaces Start. */
 public final class NotebookWorkspacesStartSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBNotebookWorkspaceStart.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBNotebookWorkspaceStart.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceStart.
@@ -23,6 +22,6 @@ public final class NotebookWorkspacesStartSamples {
             .manager()
             .serviceClient()
             .getNotebookWorkspaces()
-            .start("rg1", "ddb1", NotebookWorkspaceName.DEFAULT, Context.NONE);
+            .start("rg1", "ddb1", NotebookWorkspaceName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }

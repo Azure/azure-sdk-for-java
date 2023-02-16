@@ -6,6 +6,8 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -46,6 +48,7 @@ public class CosmosQueryRequestOptions {
     private UUID correlationActivityId;
     private boolean emptyPageDiagnosticsEnabled;
     private Function<JsonNode, ?> itemFactoryMethod;
+    private String queryName;
     /**
      * Instantiates a new query request options.
      */
@@ -83,6 +86,9 @@ public class CosmosQueryRequestOptions {
         this.correlationActivityId = options.correlationActivityId;
         this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
         this.itemFactoryMethod = options.itemFactoryMethod;
+        this.queryName = options.queryName;
+        this.feedRange = options.feedRange;
+        this.thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -438,7 +444,6 @@ public class CosmosQueryRequestOptions {
      * Gets the {@link FeedRange}
      * @return the {@link FeedRange}
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FeedRange getFeedRange() {
         return feedRange;
     }
@@ -448,7 +453,6 @@ public class CosmosQueryRequestOptions {
      * @param feedRange the {@link FeedRange}
      * @return the CosmosQueryRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setFeedRange(FeedRange feedRange) {
         this.feedRange = feedRange;
         return this;
@@ -458,7 +462,6 @@ public class CosmosQueryRequestOptions {
      * Get throughput control group name.
      * @return The throughput control group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -469,7 +472,6 @@ public class CosmosQueryRequestOptions {
      * @param throughputControlGroupName The throughput control group name.
      * @return A {@link CosmosQueryRequestOptions}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
         return this;
@@ -479,7 +481,6 @@ public class CosmosQueryRequestOptions {
      * Gets the Dedicated Gateway Request Options
      * @return the Dedicated Gateway Request Options
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
         return this.dedicatedGatewayRequestOptions;
     }
@@ -489,7 +490,6 @@ public class CosmosQueryRequestOptions {
      * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
      * @return the CosmosQueryRequestOptions
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
         return this;
@@ -550,6 +550,32 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
+     * Gets the logical query name - this identifier is only used for metrics and logs
+     * to distinguish different queries in telemetry. Cardinality of unique  values for queryName should be
+     * reasonably low - like significantly smaller than 100.
+     *
+     * @param defaultQueryName the default query name that should be used if none is specified on request options
+     * @return the logical query name
+     */
+    String getQueryNameOrDefault(String defaultQueryName) {
+        return !Strings.isNullOrWhiteSpace(queryName) ? queryName : defaultQueryName;
+    }
+
+    /**
+     * Sets the logical query name - this identifier is only used for metrics and logs
+     * to distinguish different queries in telemetry. Cardinality of unique  values for queryName should be
+     * reasonably low - like significantly smaller than 100.
+     *
+     * @param queryName a logical query name to distinguish this query pattern from others
+     * @return the logical query name
+     */
+    public CosmosQueryRequestOptions setQueryName(String queryName) {
+        this.queryName = queryName;
+
+        return this;
+    }
+
+    /**
      * Sets the custom query request option value by key
      *
      * @param name  a string representing the custom option's name
@@ -589,6 +615,15 @@ public class CosmosQueryRequestOptions {
     CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(boolean emptyPageDiagnosticsEnabled) {
         this.emptyPageDiagnosticsEnabled = emptyPageDiagnosticsEnabled;
         return this;
+    }
+
+    CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(boolean emptyPageDiagnosticsEnabled) {
+        if (this.emptyPageDiagnosticsEnabled == emptyPageDiagnosticsEnabled)
+        {
+            return this;
+        }
+
+        return new CosmosQueryRequestOptions(this).setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
     }
 
     Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
@@ -671,6 +706,11 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
+                public CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
+                    return queryRequestOptions.withEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
+                }
+
+                @Override
                 @SuppressWarnings("unchecked")
                 public <T> Function<JsonNode, T> getItemFactoryMethod(
                     CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT) {
@@ -684,6 +724,33 @@ public class CosmosQueryRequestOptions {
                     Function<JsonNode, ?> factoryMethod) {
 
                     return queryRequestOptions.setItemFactoryMethod(factoryMethod);
+                }
+
+                @Override
+                public String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions,
+                                                    String defaultQueryName) {
+
+                    return queryRequestOptions.getQueryNameOrDefault(defaultQueryName);
+                }
+
+                @Override
+                public RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions) {
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.setConsistencyLevel(queryRequestOptions.getConsistencyLevel());
+                    requestOptions.setSessionToken(queryRequestOptions.getSessionToken());
+                    requestOptions.setPartitionKey(queryRequestOptions.getPartitionKey());
+                    requestOptions.setThroughputControlGroupName(queryRequestOptions.getThroughputControlGroupName());
+                    requestOptions.setOperationContextAndListenerTuple(queryRequestOptions.getOperationContextAndListenerTuple());
+                    requestOptions.setDedicatedGatewayRequestOptions(queryRequestOptions.getDedicatedGatewayRequestOptions());
+                    requestOptions.setThresholdForDiagnosticsOnTracer(queryRequestOptions.getThresholdForDiagnosticsOnTracer());
+
+                    if (queryRequestOptions.customOptions != null) {
+                        for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
+                            requestOptions.setHeader(entry.getKey(), entry.getValue());
+                        }
+                    }
+
+                    return requestOptions;
                 }
             });
     }

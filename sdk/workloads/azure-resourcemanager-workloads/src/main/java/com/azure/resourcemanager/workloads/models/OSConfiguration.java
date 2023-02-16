@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class OSConfiguration {
+    /** Creates an instance of OSConfiguration class. */
+    public OSConfiguration() {
+    }
+
     /**
      * Validates the instance.
      *

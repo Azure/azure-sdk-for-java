@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.RoutesClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RoutesClient. */
 public final class RoutesClientImpl implements RoutesClient {
-    private final ClientLogger logger = new ClientLogger(RoutesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RoutesService service;
 
@@ -507,14 +504,7 @@ public final class RoutesClientImpl implements RoutesClient {
     public Mono<RouteInner> getAsync(
         String resourceGroupName, String profileName, String endpointName, String routeName) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, routeName)
-            .flatMap(
-                (Response<RouteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1585,7 +1575,8 @@ public final class RoutesClientImpl implements RoutesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1621,7 +1612,8 @@ public final class RoutesClientImpl implements RoutesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

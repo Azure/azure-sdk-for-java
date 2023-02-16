@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
 /** A rule condition based on a metric crossing a threshold. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition")
-@JsonFlatten
 @Fluent
-public class ThresholdRuleCondition extends RuleCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThresholdRuleCondition.class);
-
+public final class ThresholdRuleCondition extends RuleCondition {
     /*
      * the operator used to compare the data and the threshold.
      */
@@ -34,20 +29,22 @@ public class ThresholdRuleCondition extends RuleCondition {
     private double threshold;
 
     /*
-     * the period of time (in ISO 8601 duration format) that is used to monitor
-     * alert activity based on the threshold. If specified then it must be
-     * between 5 minutes and 1 day.
+     * the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
+     * If specified then it must be between 5 minutes and 1 day.
      */
     @JsonProperty(value = "windowSize")
     private Duration windowSize;
 
     /*
-     * the time aggregation operator. How the data that are collected should be
-     * combined over time. The default value is the PrimaryAggregationType of
-     * the Metric.
+     * the time aggregation operator. How the data that are collected should be combined over time. The default value
+     * is the PrimaryAggregationType of the Metric.
      */
     @JsonProperty(value = "timeAggregation")
     private TimeAggregationOperator timeAggregation;
+
+    /** Creates an instance of ThresholdRuleCondition class. */
+    public ThresholdRuleCondition() {
+    }
 
     /**
      * Get the operator property: the operator used to compare the data and the threshold.
@@ -149,9 +146,11 @@ public class ThresholdRuleCondition extends RuleCondition {
     public void validate() {
         super.validate();
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model ThresholdRuleCondition"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ThresholdRuleCondition.class);
 }

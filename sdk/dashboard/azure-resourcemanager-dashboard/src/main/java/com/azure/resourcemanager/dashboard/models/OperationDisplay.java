@@ -11,33 +11,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class OperationDisplay {
     /*
-     * The localized friendly form of the resource provider name, i.e.,
-     * Microsoft.Dashboard.
+     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+     * Compute".
      */
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
-     * The localized friendly name of the resource type related to this
-     * operation, e.g., 'grafana'.
+     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+     * Schedule Collections".
      */
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
-     * Operation type, e.g., read, write, delete, etc.
+     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+     * Machine", "Restart Virtual Machine".
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
-     * Description of the operation, e.g., 'Read grafana'.
+     * The short, localized friendly description of the operation; suitable for tool tips and detailed views.
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /**
-     * Get the provider property: The localized friendly form of the resource provider name, i.e., Microsoft.Dashboard.
+     * Get the provider property: The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring
+     * Insights" or "Microsoft Compute".
      *
      * @return the provider value.
      */
@@ -46,8 +48,8 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the resource property: The localized friendly name of the resource type related to this operation, e.g.,
-     * 'grafana'.
+     * Get the resource property: The localized friendly name of the resource type related to this operation. E.g.
+     * "Virtual Machines" or "Job Schedule Collections".
      *
      * @return the resource value.
      */
@@ -56,7 +58,8 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the operation property: Operation type, e.g., read, write, delete, etc.
+     * Get the operation property: The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
+     * "Create or Update Virtual Machine", "Restart Virtual Machine".
      *
      * @return the operation value.
      */
@@ -65,7 +68,8 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the description property: Description of the operation, e.g., 'Read grafana'.
+     * Get the description property: The short, localized friendly description of the operation; suitable for tool tips
+     * and detailed views.
      *
      * @return the description value.
      */

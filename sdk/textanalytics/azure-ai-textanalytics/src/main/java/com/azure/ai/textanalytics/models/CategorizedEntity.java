@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
+import com.azure.core.util.IterableStream;
 
 /**
  * The {@link CategorizedEntity} model.
@@ -15,6 +16,7 @@ public final class CategorizedEntity {
     private final double confidenceScore;
     private int offset;
     private int length;
+    private IterableStream<BaseResolution> resolutions;
 
     /**
      * Creates a {@link CategorizedEntity} model that describes entity.
@@ -43,6 +45,11 @@ public final class CategorizedEntity {
                 @Override
                 public void setOffset(CategorizedEntity entity, int offset) {
                     entity.setOffset(offset);
+                }
+
+                @Override
+                public void setResolutions(CategorizedEntity entity, IterableStream<BaseResolution> resolutions) {
+                    entity.setResolutions(resolutions);
                 }
             });
     }
@@ -108,5 +115,25 @@ public final class CategorizedEntity {
 
     private void setLength(int length) {
         this.length = length;
+    }
+
+    /**
+     * Get the resolutions property: The collection of entity resolution objects.
+     * More information in https://aka.ms/azsdk/language/ner-resolutions
+     *
+     * @return the resolutions value.
+     */
+    public IterableStream<? extends BaseResolution> getResolutions() {
+        return this.resolutions;
+    }
+
+    /**
+     * Set the resolutions property: The collection of entity resolution objects.
+     * More information in https://aka.ms/azsdk/language/ner-resolutions
+     *
+     * @param resolutions the resolutions value to set.
+     */
+    private void setResolutions(IterableStream<BaseResolution> resolutions) {
+        this.resolutions = resolutions;
     }
 }

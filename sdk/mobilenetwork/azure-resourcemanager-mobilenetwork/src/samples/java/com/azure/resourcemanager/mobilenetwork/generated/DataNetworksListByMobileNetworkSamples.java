@@ -4,20 +4,18 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataNetworks ListByMobileNetwork. */
 public final class DataNetworksListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/DataNetworkListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/DataNetworkListByMobileNetwork.json
      */
     /**
-     * Sample code: List mobile network dataNetworks in a mobile network.
+     * Sample code: List data networks in a mobile network.
      *
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listMobileNetworkDataNetworksInAMobileNetwork(
+    public static void listDataNetworksInAMobileNetwork(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.dataNetworks().listByMobileNetwork("rg1", "testMobileNetwork", Context.NONE);
+        manager.dataNetworks().listByMobileNetwork("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }

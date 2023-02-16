@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.DiagnoseRequestProperties;
 import com.azure.resourcemanager.machinelearning.models.DiagnoseWorkspaceParameters;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for Workspaces Diagnose. */
 public final class WorkspacesDiagnoseSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Workspace/diagnose.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Workspace/diagnose.json
      */
     /**
      * Sample code: Diagnose Workspace.
@@ -38,7 +37,7 @@ public final class WorkspacesDiagnoseSamples {
                             .withContainerRegistry(mapOf())
                             .withApplicationInsights(mapOf())
                             .withOthers(mapOf())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

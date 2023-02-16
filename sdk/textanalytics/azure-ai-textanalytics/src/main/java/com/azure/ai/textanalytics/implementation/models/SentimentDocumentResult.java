@@ -12,15 +12,13 @@ import java.util.List;
 @Fluent
 public class SentimentDocumentResult extends DocumentResult {
     /*
-     * Predicted sentiment for document (Negative, Neutral, Positive, or
-     * Mixed).
+     * Predicted sentiment for document (Negative, Neutral, Positive, or Mixed).
      */
     @JsonProperty(value = "sentiment", required = true)
     private DocumentSentimentValue sentiment;
 
     /*
-     * Document level sentiment confidence scores between 0 and 1 for each
-     * sentiment class.
+     * Document level sentiment confidence scores between 0 and 1 for each sentiment class.
      */
     @JsonProperty(value = "confidenceScores", required = true)
     private SentimentConfidenceScorePerLabel confidenceScores;
@@ -30,6 +28,9 @@ public class SentimentDocumentResult extends DocumentResult {
      */
     @JsonProperty(value = "sentences", required = true)
     private List<SentenceSentiment> sentences;
+
+    /** Creates an instance of SentimentDocumentResult class. */
+    public SentimentDocumentResult() {}
 
     /**
      * Get the sentiment property: Predicted sentiment for document (Negative, Neutral, Positive, or Mixed).
@@ -90,6 +91,27 @@ public class SentimentDocumentResult extends DocumentResult {
      */
     public SentimentDocumentResult setSentences(List<SentenceSentiment> sentences) {
         this.sentences = sentences;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
         return this;
     }
 }

@@ -159,20 +159,6 @@ public interface VirtualApplianceSitesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Appliance Site.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualApplianceSiteInner get(String resourceGroupName, String networkVirtualApplianceName, String siteName);
-
-    /**
-     * Gets the specified Virtual Appliance Site.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param siteName The name of the site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -182,6 +168,20 @@ public interface VirtualApplianceSitesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualApplianceSiteInner> getWithResponse(
         String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context);
+
+    /**
+     * Gets the specified Virtual Appliance Site.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
+     * @param siteName The name of the site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Virtual Appliance Site.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualApplianceSiteInner get(String resourceGroupName, String networkVirtualApplianceName, String siteName);
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.

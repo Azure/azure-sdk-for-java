@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources ListSqlUserDefinedFunctions. */
 public final class SqlResourcesListSqlUserDefinedFunctionsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlUserDefinedFunctionList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlUserDefinedFunctionList.json
      */
     /**
      * Sample code: CosmosDBSqlUserDefinedFunctionList.
@@ -22,6 +20,7 @@ public final class SqlResourcesListSqlUserDefinedFunctionsSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .listSqlUserDefinedFunctions("rgName", "ddb1", "databaseName", "containerName", Context.NONE);
+            .listSqlUserDefinedFunctions(
+                "rgName", "ddb1", "databaseName", "containerName", com.azure.core.util.Context.NONE);
     }
 }

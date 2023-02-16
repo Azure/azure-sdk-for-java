@@ -28,17 +28,23 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.monitor.fluent.ActionGroupsClient;
 import com.azure.resourcemanager.monitor.fluent.models.ActionGroupResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.TestNotificationDetailsResponseInner;
 import com.azure.resourcemanager.monitor.models.ActionGroupList;
 import com.azure.resourcemanager.monitor.models.ActionGroupPatchBody;
 import com.azure.resourcemanager.monitor.models.EnableRequest;
+import com.azure.resourcemanager.monitor.models.NotificationRequestBody;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ActionGroupsClient. */
@@ -47,8 +53,6 @@ public final class ActionGroupsClientImpl
         InnerSupportsListing<ActionGroupResourceInner>,
         InnerSupportsDelete<Void>,
         ActionGroupsClient {
-    private final ClientLogger logger = new ClientLogger(ActionGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ActionGroupsService service;
 
@@ -72,10 +76,10 @@ public final class ActionGroupsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientActionG")
-    private interface ActionGroupsService {
+    public interface ActionGroupsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/actionGroups/{actionGroupName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -91,7 +95,7 @@ public final class ActionGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/actionGroups/{actionGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -106,7 +110,7 @@ public final class ActionGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/actionGroups/{actionGroupName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -121,7 +125,7 @@ public final class ActionGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/actionGroups/{actionGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -136,7 +140,93 @@ public final class ActionGroupsClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/actionGroups")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/createNotifications")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> postTestNotifications(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") NotificationRequestBody notificationRequest,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
+                + "/createNotifications")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createNotificationsAtResourceGroupLevel(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") NotificationRequestBody notificationRequest,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
+                + "/actionGroups/{actionGroupName}/createNotifications")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createNotificationsAtActionGroupResourceLevel(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("actionGroupName") String actionGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") NotificationRequestBody notificationRequest,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/notificationStatus/{notificationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TestNotificationDetailsResponseInner>> getTestNotifications(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("notificationId") String notificationId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
+                + "/notificationStatus/{notificationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TestNotificationDetailsResponseInner>> getTestNotificationsAtResourceGroupLevel(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("notificationId") String notificationId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
+                + "/actionGroups/{actionGroupName}/notificationStatus/{notificationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TestNotificationDetailsResponseInner>> getTestNotificationsAtActionGroupResourceLevel(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("actionGroupName") String actionGroupName,
+            @PathParam("notificationId") String notificationId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/actionGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ActionGroupList>> list(
@@ -148,7 +238,7 @@ public final class ActionGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/actionGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -162,9 +252,9 @@ public final class ActionGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/actionGroups/{actionGroupName}/subscribe")
-        @ExpectedResponses({200, 409})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> enableReceiver(
             @HostParam("$host") String endpoint,
@@ -180,13 +270,13 @@ public final class ActionGroupsClientImpl
     /**
      * Create a new action group or update an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param actionGroup The action group to create or use for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource.
+     * @return an action group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActionGroupResourceInner>> createOrUpdateWithResponseAsync(
@@ -216,7 +306,7 @@ public final class ActionGroupsClientImpl
         } else {
             actionGroup.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -237,14 +327,14 @@ public final class ActionGroupsClientImpl
     /**
      * Create a new action group or update an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param actionGroup The action group to create or use for the update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource.
+     * @return an action group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ActionGroupResourceInner>> createOrUpdateWithResponseAsync(
@@ -274,7 +364,7 @@ public final class ActionGroupsClientImpl
         } else {
             actionGroup.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -292,32 +382,43 @@ public final class ActionGroupsClientImpl
     /**
      * Create a new action group or update an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param actionGroup The action group to create or use for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource.
+     * @return an action group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActionGroupResourceInner> createOrUpdateAsync(
         String resourceGroupName, String actionGroupName, ActionGroupResourceInner actionGroup) {
         return createOrUpdateWithResponseAsync(resourceGroupName, actionGroupName, actionGroup)
-            .flatMap(
-                (Response<ActionGroupResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create a new action group or update an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param actionGroup The action group to create or use for the update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an action group resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ActionGroupResourceInner> createOrUpdateWithResponse(
+        String resourceGroupName, String actionGroupName, ActionGroupResourceInner actionGroup, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, actionGroupName, actionGroup, context).block();
+    }
+
+    /**
+     * Create a new action group or update an existing one.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param actionGroup The action group to create or use for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,36 +429,18 @@ public final class ActionGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActionGroupResourceInner createOrUpdate(
         String resourceGroupName, String actionGroupName, ActionGroupResourceInner actionGroup) {
-        return createOrUpdateAsync(resourceGroupName, actionGroupName, actionGroup).block();
-    }
-
-    /**
-     * Create a new action group or update an existing one.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param actionGroupName The name of the action group.
-     * @param actionGroup The action group to create or use for the update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ActionGroupResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName, String actionGroupName, ActionGroupResourceInner actionGroup, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, actionGroupName, actionGroup, context).block();
+        return createOrUpdateWithResponse(resourceGroupName, actionGroupName, actionGroup, Context.NONE).getValue();
     }
 
     /**
      * Get an action group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group.
+     * @return an action group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActionGroupResourceInner>> getByResourceGroupWithResponseAsync(
@@ -382,7 +465,7 @@ public final class ActionGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -402,13 +485,13 @@ public final class ActionGroupsClientImpl
     /**
      * Get an action group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group.
+     * @return an action group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ActionGroupResourceInner>> getByResourceGroupWithResponseAsync(
@@ -433,7 +516,7 @@ public final class ActionGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -450,51 +533,29 @@ public final class ActionGroupsClientImpl
     /**
      * Get an action group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group.
+     * @return an action group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActionGroupResourceInner> getByResourceGroupAsync(String resourceGroupName, String actionGroupName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, actionGroupName)
-            .flatMap(
-                (Response<ActionGroupResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get an action group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param actionGroupName The name of the action group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActionGroupResourceInner getByResourceGroup(String resourceGroupName, String actionGroupName) {
-        return getByResourceGroupAsync(resourceGroupName, actionGroupName).block();
-    }
-
-    /**
-     * Get an action group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group.
+     * @return an action group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActionGroupResourceInner> getByResourceGroupWithResponse(
@@ -503,14 +564,29 @@ public final class ActionGroupsClientImpl
     }
 
     /**
-     * Delete an action group.
+     * Get an action group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return an action group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActionGroupResourceInner getByResourceGroup(String resourceGroupName, String actionGroupName) {
+        return getByResourceGroupWithResponse(resourceGroupName, actionGroupName, Context.NONE).getValue();
+    }
+
+    /**
+     * Delete an action group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String actionGroupName) {
@@ -534,7 +610,7 @@ public final class ActionGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -554,13 +630,13 @@ public final class ActionGroupsClientImpl
     /**
      * Delete an action group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -585,7 +661,7 @@ public final class ActionGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -602,43 +678,28 @@ public final class ActionGroupsClientImpl
     /**
      * Delete an action group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String actionGroupName) {
-        return deleteWithResponseAsync(resourceGroupName, actionGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, actionGroupName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Delete an action group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param actionGroupName The name of the action group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String actionGroupName) {
-        deleteAsync(resourceGroupName, actionGroupName).block();
-    }
-
-    /**
-     * Delete an action group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String actionGroupName, Context context) {
@@ -646,15 +707,29 @@ public final class ActionGroupsClientImpl
     }
 
     /**
+     * Delete an action group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String actionGroupName) {
+        deleteWithResponse(resourceGroupName, actionGroupName, Context.NONE);
+    }
+
+    /**
      * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param actionGroupPatch Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource.
+     * @return an action group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActionGroupResourceInner>> updateWithResponseAsync(
@@ -685,7 +760,7 @@ public final class ActionGroupsClientImpl
         } else {
             actionGroupPatch.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -706,14 +781,14 @@ public final class ActionGroupsClientImpl
     /**
      * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param actionGroupPatch Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource.
+     * @return an action group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ActionGroupResourceInner>> updateWithResponseAsync(
@@ -744,7 +819,7 @@ public final class ActionGroupsClientImpl
         } else {
             actionGroupPatch.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -762,32 +837,43 @@ public final class ActionGroupsClientImpl
     /**
      * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param actionGroupPatch Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource.
+     * @return an action group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActionGroupResourceInner> updateAsync(
         String resourceGroupName, String actionGroupName, ActionGroupPatchBody actionGroupPatch) {
         return updateWithResponseAsync(resourceGroupName, actionGroupName, actionGroupPatch)
-            .flatMap(
-                (Response<ActionGroupResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param actionGroupPatch Parameters supplied to the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an action group resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ActionGroupResourceInner> updateWithResponse(
+        String resourceGroupName, String actionGroupName, ActionGroupPatchBody actionGroupPatch, Context context) {
+        return updateWithResponseAsync(resourceGroupName, actionGroupName, actionGroupPatch, context).block();
+    }
+
+    /**
+     * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
      * @param actionGroupPatch Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -798,25 +884,1269 @@ public final class ActionGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActionGroupResourceInner update(
         String resourceGroupName, String actionGroupName, ActionGroupPatchBody actionGroupPatch) {
-        return updateAsync(resourceGroupName, actionGroupName, actionGroupPatch).block();
+        return updateWithResponse(resourceGroupName, actionGroupName, actionGroupPatch, Context.NONE).getValue();
     }
 
     /**
-     * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
+     * Send test notifications to a set of provided receivers.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param actionGroupName The name of the action group.
-     * @param actionGroupPatch Parameters supplied to the operation.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> postTestNotificationsWithResponseAsync(
+        NotificationRequestBody notificationRequest) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (notificationRequest == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter notificationRequest is required and cannot be null."));
+        } else {
+            notificationRequest.validate();
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .postTestNotifications(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            notificationRequest,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param notificationRequest The notification request body which includes the contact details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource.
+     * @return the details of the test notification results along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ActionGroupResourceInner> updateWithResponse(
-        String resourceGroupName, String actionGroupName, ActionGroupPatchBody actionGroupPatch, Context context) {
-        return updateWithResponseAsync(resourceGroupName, actionGroupName, actionGroupPatch, context).block();
+    private Mono<Response<Flux<ByteBuffer>>> postTestNotificationsWithResponseAsync(
+        NotificationRequestBody notificationRequest, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (notificationRequest == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter notificationRequest is required and cannot be null."));
+        } else {
+            notificationRequest.validate();
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .postTestNotifications(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                apiVersion,
+                notificationRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginPostTestNotificationsAsync(NotificationRequestBody notificationRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono = postTestNotificationsWithResponseAsync(notificationRequest);
+        return this
+            .client
+            .<TestNotificationDetailsResponseInner, TestNotificationDetailsResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TestNotificationDetailsResponseInner.class,
+                TestNotificationDetailsResponseInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginPostTestNotificationsAsync(NotificationRequestBody notificationRequest, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = postTestNotificationsWithResponseAsync(notificationRequest, context);
+        return this
+            .client
+            .<TestNotificationDetailsResponseInner, TestNotificationDetailsResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TestNotificationDetailsResponseInner.class,
+                TestNotificationDetailsResponseInner.class,
+                context);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginPostTestNotifications(NotificationRequestBody notificationRequest) {
+        return beginPostTestNotificationsAsync(notificationRequest).getSyncPoller();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginPostTestNotifications(NotificationRequestBody notificationRequest, Context context) {
+        return beginPostTestNotificationsAsync(notificationRequest, context).getSyncPoller();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TestNotificationDetailsResponseInner> postTestNotificationsAsync(
+        NotificationRequestBody notificationRequest) {
+        return beginPostTestNotificationsAsync(notificationRequest)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TestNotificationDetailsResponseInner> postTestNotificationsAsync(
+        NotificationRequestBody notificationRequest, Context context) {
+        return beginPostTestNotificationsAsync(notificationRequest, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestNotificationDetailsResponseInner postTestNotifications(NotificationRequestBody notificationRequest) {
+        return postTestNotificationsAsync(notificationRequest).block();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestNotificationDetailsResponseInner postTestNotifications(
+        NotificationRequestBody notificationRequest, Context context) {
+        return postTestNotificationsAsync(notificationRequest, context).block();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createNotificationsAtResourceGroupLevelWithResponseAsync(
+        String resourceGroupName, NotificationRequestBody notificationRequest) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (notificationRequest == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter notificationRequest is required and cannot be null."));
+        } else {
+            notificationRequest.validate();
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createNotificationsAtResourceGroupLevel(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            apiVersion,
+                            notificationRequest,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createNotificationsAtResourceGroupLevelWithResponseAsync(
+        String resourceGroupName, NotificationRequestBody notificationRequest, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (notificationRequest == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter notificationRequest is required and cannot be null."));
+        } else {
+            notificationRequest.validate();
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .createNotificationsAtResourceGroupLevel(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                notificationRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtResourceGroupLevelAsync(
+            String resourceGroupName, NotificationRequestBody notificationRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createNotificationsAtResourceGroupLevelWithResponseAsync(resourceGroupName, notificationRequest);
+        return this
+            .client
+            .<TestNotificationDetailsResponseInner, TestNotificationDetailsResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TestNotificationDetailsResponseInner.class,
+                TestNotificationDetailsResponseInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtResourceGroupLevelAsync(
+            String resourceGroupName, NotificationRequestBody notificationRequest, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createNotificationsAtResourceGroupLevelWithResponseAsync(resourceGroupName, notificationRequest, context);
+        return this
+            .client
+            .<TestNotificationDetailsResponseInner, TestNotificationDetailsResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TestNotificationDetailsResponseInner.class,
+                TestNotificationDetailsResponseInner.class,
+                context);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtResourceGroupLevel(
+            String resourceGroupName, NotificationRequestBody notificationRequest) {
+        return beginCreateNotificationsAtResourceGroupLevelAsync(resourceGroupName, notificationRequest)
+            .getSyncPoller();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtResourceGroupLevel(
+            String resourceGroupName, NotificationRequestBody notificationRequest, Context context) {
+        return beginCreateNotificationsAtResourceGroupLevelAsync(resourceGroupName, notificationRequest, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TestNotificationDetailsResponseInner> createNotificationsAtResourceGroupLevelAsync(
+        String resourceGroupName, NotificationRequestBody notificationRequest) {
+        return beginCreateNotificationsAtResourceGroupLevelAsync(resourceGroupName, notificationRequest)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TestNotificationDetailsResponseInner> createNotificationsAtResourceGroupLevelAsync(
+        String resourceGroupName, NotificationRequestBody notificationRequest, Context context) {
+        return beginCreateNotificationsAtResourceGroupLevelAsync(resourceGroupName, notificationRequest, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestNotificationDetailsResponseInner createNotificationsAtResourceGroupLevel(
+        String resourceGroupName, NotificationRequestBody notificationRequest) {
+        return createNotificationsAtResourceGroupLevelAsync(resourceGroupName, notificationRequest).block();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestNotificationDetailsResponseInner createNotificationsAtResourceGroupLevel(
+        String resourceGroupName, NotificationRequestBody notificationRequest, Context context) {
+        return createNotificationsAtResourceGroupLevelAsync(resourceGroupName, notificationRequest, context).block();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createNotificationsAtActionGroupResourceLevelWithResponseAsync(
+        String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (actionGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter actionGroupName is required and cannot be null."));
+        }
+        if (notificationRequest == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter notificationRequest is required and cannot be null."));
+        } else {
+            notificationRequest.validate();
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createNotificationsAtActionGroupResourceLevel(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            actionGroupName,
+                            apiVersion,
+                            notificationRequest,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createNotificationsAtActionGroupResourceLevelWithResponseAsync(
+        String resourceGroupName,
+        String actionGroupName,
+        NotificationRequestBody notificationRequest,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (actionGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter actionGroupName is required and cannot be null."));
+        }
+        if (notificationRequest == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter notificationRequest is required and cannot be null."));
+        } else {
+            notificationRequest.validate();
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .createNotificationsAtActionGroupResourceLevel(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                actionGroupName,
+                apiVersion,
+                notificationRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtActionGroupResourceLevelAsync(
+            String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createNotificationsAtActionGroupResourceLevelWithResponseAsync(
+                resourceGroupName, actionGroupName, notificationRequest);
+        return this
+            .client
+            .<TestNotificationDetailsResponseInner, TestNotificationDetailsResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TestNotificationDetailsResponseInner.class,
+                TestNotificationDetailsResponseInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtActionGroupResourceLevelAsync(
+            String resourceGroupName,
+            String actionGroupName,
+            NotificationRequestBody notificationRequest,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createNotificationsAtActionGroupResourceLevelWithResponseAsync(
+                resourceGroupName, actionGroupName, notificationRequest, context);
+        return this
+            .client
+            .<TestNotificationDetailsResponseInner, TestNotificationDetailsResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TestNotificationDetailsResponseInner.class,
+                TestNotificationDetailsResponseInner.class,
+                context);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtActionGroupResourceLevel(
+            String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest) {
+        return beginCreateNotificationsAtActionGroupResourceLevelAsync(
+                resourceGroupName, actionGroupName, notificationRequest)
+            .getSyncPoller();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtActionGroupResourceLevel(
+            String resourceGroupName,
+            String actionGroupName,
+            NotificationRequestBody notificationRequest,
+            Context context) {
+        return beginCreateNotificationsAtActionGroupResourceLevelAsync(
+                resourceGroupName, actionGroupName, notificationRequest, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TestNotificationDetailsResponseInner> createNotificationsAtActionGroupResourceLevelAsync(
+        String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest) {
+        return beginCreateNotificationsAtActionGroupResourceLevelAsync(
+                resourceGroupName, actionGroupName, notificationRequest)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TestNotificationDetailsResponseInner> createNotificationsAtActionGroupResourceLevelAsync(
+        String resourceGroupName,
+        String actionGroupName,
+        NotificationRequestBody notificationRequest,
+        Context context) {
+        return beginCreateNotificationsAtActionGroupResourceLevelAsync(
+                resourceGroupName, actionGroupName, notificationRequest, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestNotificationDetailsResponseInner createNotificationsAtActionGroupResourceLevel(
+        String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest) {
+        return createNotificationsAtActionGroupResourceLevelAsync(
+                resourceGroupName, actionGroupName, notificationRequest)
+            .block();
+    }
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestNotificationDetailsResponseInner createNotificationsAtActionGroupResourceLevel(
+        String resourceGroupName,
+        String actionGroupName,
+        NotificationRequestBody notificationRequest,
+        Context context) {
+        return createNotificationsAtActionGroupResourceLevelAsync(
+                resourceGroupName, actionGroupName, notificationRequest, context)
+            .block();
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param notificationId The notification id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TestNotificationDetailsResponseInner>> getTestNotificationsWithResponseAsync(
+        String notificationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (notificationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter notificationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getTestNotifications(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            notificationId,
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param notificationId The notification id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<TestNotificationDetailsResponseInner>> getTestNotificationsWithResponseAsync(
+        String notificationId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (notificationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter notificationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getTestNotifications(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                notificationId,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param notificationId The notification id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TestNotificationDetailsResponseInner> getTestNotificationsAsync(String notificationId) {
+        return getTestNotificationsWithResponseAsync(notificationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param notificationId The notification id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TestNotificationDetailsResponseInner> getTestNotificationsWithResponse(
+        String notificationId, Context context) {
+        return getTestNotificationsWithResponseAsync(notificationId, context).block();
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param notificationId The notification id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestNotificationDetailsResponseInner getTestNotifications(String notificationId) {
+        return getTestNotificationsWithResponse(notificationId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationId The notification id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TestNotificationDetailsResponseInner>>
+        getTestNotificationsAtResourceGroupLevelWithResponseAsync(String resourceGroupName, String notificationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (notificationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter notificationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getTestNotificationsAtResourceGroupLevel(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            notificationId,
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationId The notification id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<TestNotificationDetailsResponseInner>>
+        getTestNotificationsAtResourceGroupLevelWithResponseAsync(
+            String resourceGroupName, String notificationId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (notificationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter notificationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getTestNotificationsAtResourceGroupLevel(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                notificationId,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationId The notification id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TestNotificationDetailsResponseInner> getTestNotificationsAtResourceGroupLevelAsync(
+        String resourceGroupName, String notificationId) {
+        return getTestNotificationsAtResourceGroupLevelWithResponseAsync(resourceGroupName, notificationId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationId The notification id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TestNotificationDetailsResponseInner> getTestNotificationsAtResourceGroupLevelWithResponse(
+        String resourceGroupName, String notificationId, Context context) {
+        return getTestNotificationsAtResourceGroupLevelWithResponseAsync(resourceGroupName, notificationId, context)
+            .block();
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param notificationId The notification id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestNotificationDetailsResponseInner getTestNotificationsAtResourceGroupLevel(
+        String resourceGroupName, String notificationId) {
+        return getTestNotificationsAtResourceGroupLevelWithResponse(resourceGroupName, notificationId, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationId The notification id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TestNotificationDetailsResponseInner>>
+        getTestNotificationsAtActionGroupResourceLevelWithResponseAsync(
+            String resourceGroupName, String actionGroupName, String notificationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (actionGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter actionGroupName is required and cannot be null."));
+        }
+        if (notificationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter notificationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getTestNotificationsAtActionGroupResourceLevel(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            actionGroupName,
+                            notificationId,
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationId The notification id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<TestNotificationDetailsResponseInner>>
+        getTestNotificationsAtActionGroupResourceLevelWithResponseAsync(
+            String resourceGroupName, String actionGroupName, String notificationId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (actionGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter actionGroupName is required and cannot be null."));
+        }
+        if (notificationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter notificationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-06-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getTestNotificationsAtActionGroupResourceLevel(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                actionGroupName,
+                notificationId,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationId The notification id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TestNotificationDetailsResponseInner> getTestNotificationsAtActionGroupResourceLevelAsync(
+        String resourceGroupName, String actionGroupName, String notificationId) {
+        return getTestNotificationsAtActionGroupResourceLevelWithResponseAsync(
+                resourceGroupName, actionGroupName, notificationId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationId The notification id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TestNotificationDetailsResponseInner> getTestNotificationsAtActionGroupResourceLevelWithResponse(
+        String resourceGroupName, String actionGroupName, String notificationId, Context context) {
+        return getTestNotificationsAtActionGroupResourceLevelWithResponseAsync(
+                resourceGroupName, actionGroupName, notificationId, context)
+            .block();
+    }
+
+    /**
+     * Get the test notifications by the notification id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param notificationId The notification id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestNotificationDetailsResponseInner getTestNotificationsAtActionGroupResourceLevel(
+        String resourceGroupName, String actionGroupName, String notificationId) {
+        return getTestNotificationsAtActionGroupResourceLevelWithResponse(
+                resourceGroupName, actionGroupName, notificationId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -824,7 +2154,8 @@ public final class ActionGroupsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a subscription.
+     * @return a list of all action groups in a subscription along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActionGroupResourceInner>> listSinglePageAsync() {
@@ -840,7 +2171,7 @@ public final class ActionGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -861,7 +2192,8 @@ public final class ActionGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a subscription.
+     * @return a list of all action groups in a subscription along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActionGroupResourceInner>> listSinglePageAsync(Context context) {
@@ -877,7 +2209,7 @@ public final class ActionGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -893,7 +2225,7 @@ public final class ActionGroupsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a subscription.
+     * @return a list of all action groups in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ActionGroupResourceInner> listAsync() {
@@ -907,7 +2239,7 @@ public final class ActionGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a subscription.
+     * @return a list of all action groups in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ActionGroupResourceInner> listAsync(Context context) {
@@ -919,7 +2251,7 @@ public final class ActionGroupsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a subscription.
+     * @return a list of all action groups in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionGroupResourceInner> list() {
@@ -933,7 +2265,7 @@ public final class ActionGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a subscription.
+     * @return a list of all action groups in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionGroupResourceInner> list(Context context) {
@@ -943,11 +2275,12 @@ public final class ActionGroupsClientImpl
     /**
      * Get a list of all action groups in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a resource group.
+     * @return a list of all action groups in a resource group along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActionGroupResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -967,7 +2300,7 @@ public final class ActionGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -990,12 +2323,13 @@ public final class ActionGroupsClientImpl
     /**
      * Get a list of all action groups in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a resource group.
+     * @return a list of all action groups in a resource group along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActionGroupResourceInner>> listByResourceGroupSinglePageAsync(
@@ -1016,7 +2350,7 @@ public final class ActionGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1036,11 +2370,11 @@ public final class ActionGroupsClientImpl
     /**
      * Get a list of all action groups in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a resource group.
+     * @return a list of all action groups in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ActionGroupResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1050,12 +2384,12 @@ public final class ActionGroupsClientImpl
     /**
      * Get a list of all action groups in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a resource group.
+     * @return a list of all action groups in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ActionGroupResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1065,11 +2399,11 @@ public final class ActionGroupsClientImpl
     /**
      * Get a list of all action groups in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a resource group.
+     * @return a list of all action groups in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionGroupResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -1079,12 +2413,12 @@ public final class ActionGroupsClientImpl
     /**
      * Get a list of all action groups in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a resource group.
+     * @return a list of all action groups in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionGroupResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1095,17 +2429,17 @@ public final class ActionGroupsClientImpl
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
      * is only supported for Email or SMS receivers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
-     * @param receiverName The name of the receiver to resubscribe.
+     * @param enableRequest The receiver to re-enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableReceiverWithResponseAsync(
-        String resourceGroupName, String actionGroupName, String receiverName) {
+        String resourceGroupName, String actionGroupName, EnableRequest enableRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1126,13 +2460,13 @@ public final class ActionGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (receiverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter receiverName is required and cannot be null."));
+        if (enableRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter enableRequest is required and cannot be null."));
+        } else {
+            enableRequest.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
-        EnableRequest enableRequest = new EnableRequest();
-        enableRequest.withReceiverName(receiverName);
         return FluxUtil
             .withContext(
                 context ->
@@ -1153,18 +2487,18 @@ public final class ActionGroupsClientImpl
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
      * is only supported for Email or SMS receivers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
-     * @param receiverName The name of the receiver to resubscribe.
+     * @param enableRequest The receiver to re-enable.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableReceiverWithResponseAsync(
-        String resourceGroupName, String actionGroupName, String receiverName, Context context) {
+        String resourceGroupName, String actionGroupName, EnableRequest enableRequest, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1185,13 +2519,13 @@ public final class ActionGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (receiverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter receiverName is required and cannot be null."));
+        if (enableRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter enableRequest is required and cannot be null."));
+        } else {
+            enableRequest.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
-        EnableRequest enableRequest = new EnableRequest();
-        enableRequest.withReceiverName(receiverName);
         context = this.client.mergeContext(context);
         return service
             .enableReceiver(
@@ -1209,52 +2543,53 @@ public final class ActionGroupsClientImpl
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
      * is only supported for Email or SMS receivers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
-     * @param receiverName The name of the receiver to resubscribe.
+     * @param enableRequest The receiver to re-enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enableReceiverAsync(String resourceGroupName, String actionGroupName, String receiverName) {
-        return enableReceiverWithResponseAsync(resourceGroupName, actionGroupName, receiverName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> enableReceiverAsync(
+        String resourceGroupName, String actionGroupName, EnableRequest enableRequest) {
+        return enableReceiverWithResponseAsync(resourceGroupName, actionGroupName, enableRequest)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
      * is only supported for Email or SMS receivers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param actionGroupName The name of the action group.
-     * @param receiverName The name of the receiver to resubscribe.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableReceiver(String resourceGroupName, String actionGroupName, String receiverName) {
-        enableReceiverAsync(resourceGroupName, actionGroupName, receiverName).block();
-    }
-
-    /**
-     * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
-     * is only supported for Email or SMS receivers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param actionGroupName The name of the action group.
-     * @param receiverName The name of the receiver to resubscribe.
+     * @param enableRequest The receiver to re-enable.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableReceiverWithResponse(
-        String resourceGroupName, String actionGroupName, String receiverName, Context context) {
-        return enableReceiverWithResponseAsync(resourceGroupName, actionGroupName, receiverName, context).block();
+        String resourceGroupName, String actionGroupName, EnableRequest enableRequest, Context context) {
+        return enableReceiverWithResponseAsync(resourceGroupName, actionGroupName, enableRequest, context).block();
+    }
+
+    /**
+     * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
+     * is only supported for Email or SMS receivers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param actionGroupName The name of the action group.
+     * @param enableRequest The receiver to re-enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enableReceiver(String resourceGroupName, String actionGroupName, EnableRequest enableRequest) {
+        enableReceiverWithResponse(resourceGroupName, actionGroupName, enableRequest, Context.NONE);
     }
 }

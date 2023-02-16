@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptExecutionParameterType. */
+/** The type of execution parameter. */
 public final class ScriptExecutionParameterType extends ExpandableStringEnum<ScriptExecutionParameterType> {
     /** Static value Value for ScriptExecutionParameterType. */
     public static final ScriptExecutionParameterType VALUE = fromString("Value");
@@ -30,7 +30,11 @@ public final class ScriptExecutionParameterType extends ExpandableStringEnum<Scr
         return fromString(name, ScriptExecutionParameterType.class);
     }
 
-    /** @return known ScriptExecutionParameterType values. */
+    /**
+     * Gets known ScriptExecutionParameterType values.
+     *
+     * @return known ScriptExecutionParameterType values.
+     */
     public static Collection<ScriptExecutionParameterType> values() {
         return values(ScriptExecutionParameterType.class);
     }

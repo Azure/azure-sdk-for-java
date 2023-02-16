@@ -48,9 +48,8 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
     private SubResource publicIpPrefix;
 
     /*
-     * Available from Api-Version 2019-07-01 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
-     * Possible values are: 'IPv4' and 'IPv6'.
+     * Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or
+     * IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      */
     @JsonProperty(value = "publicIPAddressVersion")
     private IpVersions publicIpAddressVersion;
@@ -60,6 +59,10 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
      */
     @JsonProperty(value = "publicIPAllocationMethod")
     private PublicIpAllocationMethod publicIpAllocationMethod;
+
+    /** Creates an instance of VirtualMachinePublicIpAddressConfigurationProperties class. */
+    public VirtualMachinePublicIpAddressConfigurationProperties() {
+    }
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.

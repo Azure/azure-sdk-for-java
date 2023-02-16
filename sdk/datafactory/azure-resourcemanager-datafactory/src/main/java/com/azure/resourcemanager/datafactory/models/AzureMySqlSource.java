@@ -20,6 +20,10 @@ public final class AzureMySqlSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of AzureMySqlSource class. */
+    public AzureMySqlSource() {
+    }
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *

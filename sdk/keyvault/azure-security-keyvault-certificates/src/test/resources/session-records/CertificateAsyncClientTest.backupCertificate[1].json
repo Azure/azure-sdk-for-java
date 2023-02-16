@@ -1,0 +1,705 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/create?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "Date" : "Mon, 03 Oct 2022 19:41:07 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "42f4b7ec-c682-42b6-a89a-932aaaf32d82",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3&request_id=7b40544234d8478f8f4bb0a444929e7e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:08 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a2c386e9-a3f6-4661-8c48-9c1244b80fde",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:09 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "1705207e-cd2a-4ce1-bf64-4c521d225d2c",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:10 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "27b6ff33-1877-402b-972a-7f475ef35c53",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "50165c60-bd2d-4eba-8178-aafea379186d",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:12 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "30c4093d-bba2-4fe6-9398-debad33c4f32",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:13 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "2f3c1cb6-1dc3-4fa9-a8d8-58618edcb513",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "b91e716d-a19e-44ba-8829-df346246e4c2",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "2c145ae9-61b6-4ad5-b02a-0c97e7461427",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "6f7175af-bbf8-4928-92b9-9e5c985793d5",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "16114a3f-e327-4938-a3a1-0a41813b1800",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:20 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "e860df7e-d852-4d22-95da-af5c62bd04e2",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:21 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "724102e5-4772-413c-a429-d1f26bf506c6",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:22 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "09664d1e-b444-4ff7-832f-572e3847baad",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "b78632eb-cf0e-4c2b-8218-2ff8bf847c69",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:25 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "87e602c5-854b-488b-acfa-4b99569074a3",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:26 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "5221284a-73bb-408c-9931-74f3354796da",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:27 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "6fbfc934-23c2-404d-b2b7-d3cdf82e7a49",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:28 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f90f641b-5305-413b-9789-1d927c6d20b4",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:29 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "b6b0f89c-9f59-4491-8b05-fe9051685011",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:30 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a458739e-8614-4be7-928e-a9b03c9957b9",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "ce3e9041-c4be-4546-bb45-8aa78a8df78f",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:32 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "1270bdb4-3f5e-4f64-bb90-4632da0c17e0",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:33 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a024c742-d7b0-4f2f-b6c2-8263da85101f",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "861",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:34 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "d5b6db3a-fafc-4ac3-ab6a-9fc27457b342",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "789",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f85e039e-89fe-49b5-ac3a-912db2c635ff",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVjCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE35xPwCYEHqJKo6S5iEp69I/ZaKX2fjyMQOJGvGZ4vLQglORCAcOvkVik22NSnrNtuJXkTNbVBg3YxJJynW6+LS3FtDMRwC8JlpinaJlCeNb8rAKC3wgnFxfuCWuIm00MoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDaQAwZgIxAPijUVbdsrBQlLXB3Tn4x9Ju1jRR/sYbmujDm9JZ9WrGl8lS99IGTQTjlH/+oH9wkwIxAOVVZ4qBygSOwnCnrFmZYF/30qIUum+GUyktLy1X9RcjW8vFYtEqdMujdCSLaS0cYA==\",\"cancellation_requested\":false,\"status\":\"completed\",\"target\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5\",\"request_id\":\"7b40544234d8478f8f4bb0a444929e7e\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1980",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:35 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "60f223bd-18a6-4796-9adf-95fb76c2eaf5",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/a314a41e6ea8407f98b5bbd08d9141ae\",\"kid\":\"https://vigera-identity-keyvault.vault.azure.net/keys/testcert2006471c0f5/a314a41e6ea8407f98b5bbd08d9141ae\",\"sid\":\"https://vigera-identity-keyvault.vault.azure.net/secrets/testcert2006471c0f5/a314a41e6ea8407f98b5bbd08d9141ae\",\"x5t\":\"rMd-qN_aeeJz0TMQmxXRbewSUQw\",\"cer\":\"MIIB2jCCAWGgAwIBAgIQHxHxlW2ITDCILqqs1yg8yDAKBggqhkjOPQQDAzASMRAwDgYDVQQDEwdkZWZhdWx0MB4XDTIyMTAwMzE5MzEzNVoXDTI0MTAwMzE5NDEzNVowEjEQMA4GA1UEAxMHZGVmYXVsdDB2MBAGByqGSM49AgEGBSuBBAAiA2IABN+cT8AmBB6iSqOkuYhKevSP2Wil9n48jEDiRrxmeLy0IJTkQgHDr5FYpNtjUp6zbbiV5EzW1QYN2MSScp1uvi0txbQzEcAvCZaYp2iZQnjW/KwCgt8IJxcX7glriJtNDKN8MHowDgYDVR0PAQH/BAQDAgIMMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFBzxajhfAkCbhCExohmLGtLkyX88MB0GA1UdDgQWBBQc8Wo4XwJAm4QhMaIZixrS5Ml/PDAKBggqhkjOPQQDAwNnADBkAjARf3+649lGCnbMXhdjgm7wPzmMi+PByvFJ7MGERY04gJpo0F4XBDYsraBf9sjUF7ECMAwgIJBbFlZDslpZNTN3oIjl7PvV+ZEwz4yKY8JfJMxakaFoboIv9jo0wCLyy85n7A==\",\"attributes\":{\"enabled\":true,\"nbf\":1664825495,\"exp\":1727984495,\"created\":1664826095,\"updated\":1664826095,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90},\"policy\":{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"EC\",\"key_size\":384,\"reuse_key\":true,\"crv\":\"P-384\"},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=default\",\"sans\":{},\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"keyAgreement\",\"keyCertSign\"],\"validity_months\":24,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"days_before_expiry\":40},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\",\"cert_transparency\":false},\"attributes\":{\"enabled\":true,\"created\":1664826067,\"updated\":1664826067}},\"pending\":{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5/pending\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert2006471c0f5/backup?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "29955",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:41:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "33214348-77ff-4831-b4ec-0b16b859af1b",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":\"JkF6dXJlS2V5VmF1bHRLZXlCYWNrdXBWMS5taWNyb3NvZnQuY29tZXlKcmFXUWlPaUkwTXpnMVlqQTNZaTFrTlRRM0xUUXlaVFV0WVdVNVpTMDJNVEJrWXpNNVpHWmhaamdpTENKaGJHY2lPaUpTVTBFdFQwRkZVQzB5TlRZaUxDSmxibU1pT2lKQk1qVTJRMEpETFVoVE5URXlJbjAubV9fOUtqQ3pOems3cHB6aC1xS21xZGh0WnNtUUZWb1Y5ZUdjd3VZVHB2em1zcl96TzR2TEhrVVEwRDRRN0VHTTRhcTRaWWlhNW9LYXpYaElkOGJWakNPMVpoLXZBbFN0ZHNMSS1YZUhtTG1MYUdmLW13MVJjYWlEazlFeEo0R1d6WG5TZzhXcDl5VVJER094UWZfNE9PUlNwSWVyZ1lfSVAxQ3R2ZllmTTFpUmhZZWJoQ0h0V0ROc2FVN1hzX3YxU3Z6SExuWWVWUWNXX3RPMzh4bnRQTW9SRjZOZnRYZ3A1cjU0QkYyMDlvNEpINFFmSXlLSzJaTnVSdFhoeGpOWXFfRnkzVnMwUzVCc3hlZlRGbTFGcERhZi1seUszUHhpZWstTU9ZUGFvdkMzNU5HVmtIbzdiZmc3R2pLUkFjSGU0YTdXWExTY0RoYzN4QTFYSUV1RXV3LjBDanpWNkU1ZkRnS1cwOTkzTDhRWFEuSnZTWjRTbkJTME11dkRQX2lUN0VaR1J4dzdDa01WeDRKRTlGbGZNaHV5bVk4cXdyX3lGdXozTDZiN3RRbW5vczc5WUxmUTJuLUVJVGxVcEszeTl4eHkxVDdzd1RCZmY0X3lIYTNuUDAtQWx6WTAtLV9nR3dUOGpSOUZXTXFES3YzMHRkWDktTmZMTUxRUG93M2NEUkVPNUpRQUpHMGM5THJ4cmdwQ24xeThJeEpYZEUxekMyUUxGbDV0emtvd0ROME91enFFOVo3b0xJWUktMVBHZW13U3RRZjBSNlp3eHQ5MkljRDNKbWxCdG9wdlRTZFZhbjV4OTZ4ODJZWURlMURUYVFKYzNRLTJzNzV3dUZoWVBYeUYxQlVRRDhtRzZEdjEtWlpGcmkyckVMd1U0cFBIZm0zUlY1UUIxbW51SXBSeGNJaVFxZkdDMU5UcUZubENVMkw2WTcyZ2g3M1QzTGtxTVZ2eXJiX3FHZnlHZk9BUVRlTWRneGpyNmd4ekpLa1h2bTI3bTdxMTJsalBUamNsRHVaSDZYRUdiUlJBMWE0THl4OC15X2pzNEhRUVRaTTVOY3dVaGVEOEk5ZjF2RTJyN3VROGVndy1ReVluSjdMazU4QUc3Yi1qVDZWNTNOMXNWU0t6ckJ0MXBNZU5DNEV1eWdveENjbGR0M0xDZHViVEswR184MlhZZzBjT2FqNVREMFNRa05kSEd6MFRtY1JpSEtrWXMxSU1iS1pVX2xYUVJoNWJLZHh1d0o0UnlNY2llcGhITktPZDdDZTdLOGRMZUhLUUlrM1JSU2tkUkE1cFVwZ285Y3MtQkNIYndFOWJhaElyendlTFcyeFNMemEtYlNHSTBHQ3lUdDU1WTJKQ3hOYmd2cjlUV2JtaHhTOV9hTkhFSGVOdnNuemRqV2RjNEFwR3pwQmY0M2hXdFRTZ3FSLU53bC1BX0pkcTAyeFFTblRGeG5SMk56aVVFcm11TTNtaWdMZ3gwOW1mY2pPOU1ZMmZiTkxiM1k2Q1Nad0lpTW0tamFfT2xWNjVyMm9fTDdsN3VMdEJwQVJoelU0bkFoOTlGeGFhLXJic1hqQ2xBUWk5dDctVFE2cEtiNklpaDZqR2VZWnptUzBhcEZBZ0ZYWURxZ1EzOF9HNE1JZnlwZmVlRllBV0NDNWw1Q2RNaHNldzRkbVpPLUt1YjNSbzJOVVVjRHpyMEpWTVRKQU91SWloMUdfRGlENXlhM2VYZmdSdzFQNlNseDZmM05rX3VCZ3hra0xrNXBacnlmWjhFU1QyOFNrS2RibzkyRE85SUpjandzSUhRUkd0QnpvZUVRazZrOGZDSFNsNTdTeXhTMDlUZTd5RG9teTRfWklHM3JaaTlpdE5UOE5vdGYzT1BfT2Q3RmpESHJEODh4LTdPQVo4ZHNvOUc0eEhMWW44UG9nOGMxSXZLTzh2Ty1mRG5WY3BZLXV6VHV4RDRaMDhUZXRGTkl3bHBZUjBGb3FQeW5WUlZ4Vl9lcXlBeWZSMV9GaG9tcTl5Y1BHdHFzTkFPRnlQV3hkRW1QaXozT3M3SGFNcFRwa29JeFllRTBhZ3FLUk9iQ2U0anhvYk16VnFPSXg1UllqRzBacWdtZVd3RFhUUWpmOVdsaVp1X0ZfanR1VVhzWVcyUG5hVkFQdDllN0p0ajd3aDlBVHdkYUxLY1dtdWZ2VGtobjZyWFEtQ3ZfWWtEekNLOWNXMDZCdjlDVGhkLWJ1OURPcGlpc3dOVTdzZG1CcmE2NHFPcUhzR1RMSEFpM0o0djFic3daeTVGbjctQXh1UzZGclBVanlrOExET3FfckVRbUxCZFRsbFVDOGl2VnJVckJ1bHh1ZkhrdWUzVEhBWlB2ZjhNZFJDMWJuUmlqb2xrZWVwWGdpX1pSd01rWE5XS19GR0JyQkJ0UXFBcFNuV2J4LUdlZUk5UWpXVXFlVUhacjZLS1ptRDdOQ21OdHJkVGEtZ05VVFYtRlZfd05RUFBOcDlRTnVNYWxTWWN4RGx1MXdpM3IxNG9KbS1IUDBPc3dONDNnZ1cxNEpSZmF0SmZoT2Q0MDdoTW9HOVBXem1sUW1JZTNVWFB2bHlBNlVWLTBfZC1ucS1pYlRpbmFMcm10QzVTenMtRUJ2amxIQXhYMjZ5b3VIUkxFdTB2cFMya2ZGWWRZdFBsYjZWd0RxZVZIR3haQV94c0c3akx6NktyVTJUaFRNenJPMzdKZjVtZ0dPLXBudzR0WUFRZk1xckllUlUwOWZCN0VXOXhFNFhkd2w4M3J4ME50cXZnakVrekhTa0xVYVpVRG5jMENVdVdpWVNINEhQUHBIOUVLSEo1N1E1eDZ3WkFfeXlYXzZSWWFneHNwdDd5NUd2YjBHaEw4MlFEZHdwQzZ3WVV3dEZFd1lDRjZCenZfZWNzd3RuUV83bm9zRG1PdDdfVUhiUUt4SVAzcEk4REszOGNCZVptYng3VXMycUE1TFhfUnF3NVRmYVpxRzlMWFBhRlM0dDNXMVRpWlFWTDFsaXJjV19kbGNHcjVBZnhfNTdlV1FJb3NKUloxNkVnbzB0RnRCRVluRUt1M2FyZmZKdF9hZzRZdG95ZTlrM0g4SzlVRTdQNXpDNFdyMl90ZE04Uk85QVJNeUZyMmN5cjBRZ3NKUENRWVI5TTdVNlNKN1BGcURnRnJVVFdOSXdlbnVubGh4TWdxY3EzdGdUeWtoQU1fTC1XckdvUUVtX1N4MVdkanQyd3czMTRPSWhpOU02c01hYkcyaVJzQnB4MnhwM0xmYVZYTUVxd2NLdjl1Zjd6OHdCV1k3ajVRbTh4YnhrUi1OUURCOFVkS0hwdzN4cmNsZ2ZVWnJQTHhIUEFsVnQwTzBocjN6c2RwNW9reWY5aC1idkhYbTNqUjdvZWRxMU1BU1Vmb0l2N19YT2NXdFl2ZV9NSmxjSGl1VjZVYThYbmg1dWVQYlFlMVNVVkQ1RTl3Y2FiRDIyTnhPYXVUdHhHOHlJZDNBUTU3QlNpSlNGaU1SVnV3VmZxVVk5b1lYZDNBUmZrUDM0VVNFMURvUVNCc0N4SUlYejlrM0cwNmtVOHd4RXdQVXh2QWphc01GdHJkck04QnplMkJSeDZ5cDFwWlA4ZGRpNVE3aHRyTE4tRll0am5zdGxkMnlHdlRsSUozM0VLQk9IWFlJZUVNTkotbkt0WHFqOU9UdnRIUDhqN0ZyTXBJWXVlUWZTaHhKYmhnT3l4NEtUZmJWdkJOZmxVeHJBX0JOc2lBLWJUeWJZWkVmNzU1R0stWkVCWWJ5SHY0OHdodF9BODU4XzZIMjJqUFNPQlBVUWdsd2ZnWkJMbi1qcFZLOTBNT2lsYlRkbnU5SmVVUFVtNHZaY1FvUDN5LVpJWUFwQnJ4UDREV2xJdnpvc3E4akxXbEplVXZ3dWpmWHltMGkxUE9lV0t1RFkyNmI2Ui1NWHdNR3pIaDlUY0Z5Mllaemc4RTctb3d2T29sV0wzRmJtUUtFWE1kakVTdlVQeDRlUjFmLWQ0NktYN0VyOGRXU3BZOEY1Vm9ZU2J1WWpjMWFFLTc3bXNpWThWdmdTQ2JPeUg4SDRnWnRLZnY4N3dhRmFxbzhkQThrU2hkWnRadXZOT3BZajFSM3BfWm53NUpYMTg0Y1lUQzdPZVF3TGtpanB4M2MzTExUUnFJYTN2eWtab3VhRnBtOC1LTmdSelBweWNXcE1wYndYckY4MjBNMlZ6YXN1aGc2RUVERXRpWTA3VFIxUWtQT1lBQ0o5ZVVXYzM1U1V4RFluYktRdXAwU1lPbmJNeVQ1TlBpYzVjTG1TdlVWc3JSQTZMb19ucmo3SEFVWkNwdTdnMk5hNk9FWHQ5WEhoSExDaG9lMUF2ZkZKMTlLa0dfTE1QcHA3UF9objdKdTZvSjJiVl9aNlNUZXpEaE82N3d3Q1JPVlZwSk1vVmQ0N3NoVm5hRktZWUtaX0dpZVM3U19GVWNHR1dUMV9hZzBnUGRTNTNhdEJpQnRCRFBteU10LTNlVUVwM29Panp3ZTBzam00UDNPbjZPc0ZSWGhxblg0MUw5THRXME1NUW5PT3pJSEVOMllPM2gxWklVTFZYZm94LVJCZ1NTQjlXQmlfZC13UEFaQUtVQ1czNjB5Z0dfMkdLR0ZXcVJ6bTBNVzFxZWlXS1ZQbVI1TnBNYXp3azRvVEN0VHp2b05mSWJMWmFzT3g1cEVyNzJ3SHVtOFZ2UkNIQnBiM3EzZXVrcnpCQ2s4NUQzM3pEVzV2ODVoQkNMWm9BMzlWNUM3azZZamFWVEl4ZGFDb05IMFZOQldaRkQyMUtJNFpnZm9hZFVSeEotc24xRkdObDBaLTExUFpPSXVjVm1HazZSMkVpVEFheDJabTVoTHR6U1g1bmIzN0pURGI1SFlnR2VuRmh4RFZCOHpPOV94VE12eHRzejQzOHVlQURDaldnc0NWOWJHRkZUbERXT09QSEhkS0hSLUZYazZvWVN4WC1KSHh5UldSVFNka21sTW5WdXI4WmRuczhGZ2Y3TDN4Yk1ISkt3eU1ISE1NTV9aRFJCVkp1aEx5S25iSDh3bFJPcWZfVjBNZnNwTFRBamFTSVliYnk0MDVVMVExMzRTdUFXazV6eENhM0RTOHdQa0JpLXA4SlBrblQyUWVBV3VYa3BjMGhIVnhONHZqQWw3WFJOOWN5LUhQWmF0TkhJR0pUWDlqQWlPYVcyc0Y2UURkV29jWHRaY1g1czg0aTZTS2JudWIxeDdUZXBlakkzd0RvWmRGMWJKWE5IT1ZpQl9Uc3c1cHM5bGhKM1RtN3UwLV9QWXFNWWh5el9XcXpVNW1FOEhBdi0zQ2dMTnk3QlFoWTl4bHItUDY4ZFVKOFZ4bVFqQ2tlMHBMb3g1TnM4VEdaMjhNbVdtNlFUemhjRXJnWUZjbkY4alNzVlJUbzNQdEdSNWl4dkVCeVlucGozWGQ2Qlg1aDluSmNiVkhYREl2c040SU9ONmR2bDczQzNucDkyZl9ZaGUtSHY5dHFuWlpoeTVqdzZ4ODJoOUtHZWlfNmN6NFl2d2RTaEdjdm1jd1lwQzlJRVBKcEpucVhhVUkxLVhXaWVvaFRkRVJQRWpfZVRyNFg1R1UzQlZCRVIzTVVIQmctaG4yS3FoRzZyRXA0QWJDSEljeGwtRlNhZFJCbUx4MWs3VHpFS21pbk04a3JrZzZ0cS1WNno2enhUN1hEd2VTdEVKbHlPQUdhMzFhZ2VSZ1A2bkllaFVmek9uTXZSaXZXLWk0dTk4TVlJQUZiLVVGUC1pZWsxQlVTRFRiZjBYMFF0Tml6VEM4OTk3ajRpLW1YOGhWc2g0UDMzMDhuTThBX3J0Slk1bk40cFRRclBtZXBpQkxWeFdNMThIWVp5eXFUdTN0cEdHQTlQUl8zYVEzQ0t4b014QlZraFZlN3NfRVBpUG9HWFYxLURBVS1BSzk0SGVWRV9zY05KSklERU4zM0ZUMVpMRnVjeGNiNzVXdE5QbHJPOWxDdGZaN2E5eDNHcGdGeUREZTZfOGtMRXFkRWN3cE9reVZJRE1PbU0wcjFLN29EbUg2ZVVTOFBKMWhoMEdJbkpjd0hQaTdIOEpnejF2WVlJVk9nQWFVWmdYcHVQMFFXQnE1N24tTUd1QVBOWnI5QzZ4aWhaaVZHMkZxdWlzQXNTcDhoYjhUUS13LVpXd1NSbHBmZWZfRHk4NW5GZlBzWDFNMmhLOUU0N0hvLWFDWW0wWnlscFI4MUhvWDNlSUl6enVsMXdNdFBCbDJmRDQ2UUs4eDBPTlktdUpwNWtyT2c1My1KRlhSMlVjQkNnazdUZTNMWURwNWZfNHhxV2tIZkNJZHhfRlRJY1N2VERDNFI2VjhSZ0hQRkxCQkxYa01ZNTVSSEZKdU9SdlhaWG5QaUtPanM4c2JuQV81MWh6aVJTSmNHRWZfb19nWWNGMUhIaWowN01fWmswQ3J3bU94SDJyemxlc1VhQm1EMDB5TVVudWpZbjNPUHl1UlhXQWF1bHBnV1Z4NlNERDRfanZzUXQyZW5nWjJJblhLWFZkclI3ZF83TWJhNXJGQjlEMk9xZVJHNXJLQnZscXRldzZnbS1pUTZORGV2WFhDbmRWdVMwbDkwUU1QanBCeXkwSGJUOHRyODQ3YXl6b25hUnpvQjRtSm52VTBPdThtaEphclM4ZVNqMlZTY2M4dzVmemxDNzRiUEdNOUtubUhTY2M5UFY3SHJvV29ZTWU1UWliTWIwSHNEbzhkTDBFdW50Z3h6cmlVRHVxQ2tSQWJVODJIaDZaeFlwRlRrdjlkaEZLNW9CRk9VRkNOQWFZbmZ0MXF0VGFMa19rOWhiUS1XamhQTGRsOFg5SE9JQkF4S01JU2w0WTI1SnpGbGNjRHdZSzZTV0k2S043UEJ1Ty1FRlk2TVZPOHd0QnVIbGt1M3B5dUNYWmVuYXJTY2xzdGFNM0pKdkFZaWdwWkR2RTRpcU1KbXFTblZhSXVMOWxtbENZR25idDdzRngxckRORkNLaGhBNWo4bksyNDNMMmZ1ZHJCRVQxbWtnYkliNTNoXzBtcU96N1p0M2dDSlB6Mkg5UjRtZUVjdDhDRUphcU9qNmJxZlZYLVRFRmlrZk1LLU1WRWp2SnptNjlobERobU5DOTlfYWk4YmpfZDRuVlBXSjVUdzNjSXNWczFwOW9JOXNtSjhicmtQNUxOSTN2ZVV0c0UyWDR0dFg2RW8td3djZzR3N0NsYVgxcFRYUTBVMVRmbUlXNVRaT29mdTBLSkdyS05oZlJwR2UxQkt0N01kbU9GOEF4d1R1R2k2aHBkM091YUVDRElwYmhCMWQ4Mkl3bGI3bV9jQWcwTXZRR2l4QlFwR2YyMUVhdjlkX01lR2w1S2cwdUk4Y2tqNGtNaWJfTU15MEt4UGlBVjJIMWF2U2dtMzU1YUk0aXRjSDZQV1lOcVZhN2hYMVRLOWR5NUxIaEVQMmgtbzZjX2Jwd1BkaVVJQzI2VTNuMkFtMVc0ZWN0eUY0NDRqTVcwS19USXU1eWdkcy02UHgtOXhuTUxia2F2SE9HZGxXTjhLU1otUlBzdzlSY1F6RWt5VnEwVlN2WThnSENSTkdoSVo0UEluRlR3VUhqNW5KX1dncmZVYTBkSnRieTVScnhwdXhRN2h6QkszRWlJVFVGeFVRei1ZMXB2ME9iTTNGd3YyNnJvemhyR2FOSGZ4OHZxQWFUa2duclhiYXVpeFJxLXVId09WU1RTbFRHYWlYWndOMlNTOGg1YV9NdmprVGRZYmp1YWcwX2tEMVRvamJhQThIR0FFQjF5NlFmbWV6UWRkVGpnOTkteDZOZDZjV1ZpM3VPemRTbk5CR2dQU2MzWUVkZXZOWnpXQlg3Z0d5bnRtekhqTWE4MGFwaUQ0ZWZTVGxGUXlMSW9nbnhfa1lkSU9lelNkWElLYWlLQ045NUtuZ09xTHM4ZWRPMUViSjJyR1JlQTJIaFhGZElmaGMzaGc1UXp2eGpZVzIxN21OMFhZajU1blY1ZTFYSU1ad2pwQVlOdU5UV2xhdm5QWGlTb0h6SmFjSE9GcXgzaDU4V0dPeTBiNWdZNUNNQUlndEtYXzZlQk5UbW5wcV9EcjVvNDN3NlVoa1g4bkN4eHJQUGxKVnJiTTlzbDdubFhFNC1BS0puUElDMWNIeFNhQTF1QkR3VlcxS1dRR0p6cWowVm1BcFpqem1BXzFHRmpEbVd5cjQtQUhiVDVxS0NWRXhWMHEzNjJpaWUxUU52Y3RGMmtUc2ZaZ1k4RVFfenVPN3BBcUwtanFxWlZFa0ZNSk0yMGVLYVdpWE1vMGR3WXNZR1FBRmRiTHJnRW9DVVI2Z3lxS0w1bFJuSzNXc1l1bHlzZFhPV2pGT1NDTWJjZDRnVnJibk95VE1pMFE0YUt6b0JENi15bnZkTVZGY3Y4eC1CUjlwdkd3a3NVc1VSeTdnZTlrUVNCSmZyWEhTYjkyZHNVREc0emJ2bmZiZ0FYNnpVZEMxRXlXUjI2V3NXTGR3VE1QLVNpeXlaLWdfN1pub1RCSTlUT0ZQbHc0VEM4Wjl2aVZ5ZUpLMUEzNXluYk9ZVExBNy04Rm5Sc01EWkpLSzJPcUNDWkx5cV9TbS1zcHRCYjllZGxPNndrQ0phVE9GWlVybHBOaXdTamRod2lxaTdENk9NT1hwMDB6VTZkdDJoRzI0cHNHY1VybTg4TUxrNGdUeDZnS0FzQTVnUVlCcWdXVFN5b1U3UG81dzctdnJHa1pTNGQyRFZxcEh3d1JTcFdjXzJZNFEweDZVNlI2ZnpsLUZoRzlGWTFfZGxPU2dZSExENlo4M0hhUmhmUzk3T0FNRkNqbTFZd2hkcDdJYWVSX1cxdk9NUzI0aVhDVWFGYnpOelZocUlha2FJREVrZUs2ZEpXb1N5YnAyQWwtWGkxRHAwYUYyR1RJbldoN3NOdlpZTnpXcUpBZlcwX0VMdmNoRTRhOG9fdkY2X1hURUVfY1kyZzdwNGZodUZjdnBubDdib18tdWlTaUJpX01KbVdHb3FtcDRUSXoyZ0dMUFpOT2k3b21xRDktaFhPTTlLcWVVd242QlQ2a1pVRjhaaFdLeGxTZmVQTFlNVDdoejhSb1ZOZEZXNHREc0U4Ml9ZZXZHZ0dhYXBRUEN2RTZXX2pJUVNmeHNUdXJUSWlnRGJwY2JLU1Q4dUpLbFRlU1M3MDVWU2ltWVNkamFkTmFFbldLZ1htZDVFdlVSY0R5aVhnTW9aVkM3RHhkbkNicVpNTV9nWVdkWkxvU0NTWFZZeVozNU5rR29WdlVOX1ZYZzcxaklJc3R2eDNLazNhdmsyUElMWWpqNnp3aUxnczR4X3psYkt6UW5EN1FEQVk4WWhqeEdRZjNadFhPX2M1Y0NjQjRSeUczenFBVkZnd1d0Qy01UmJwcnBxWnpVQ2Q3UXplS0dFM2hDMDZMdDU4QlBVVjd0TmRBVjBKR3FzNnJpVVNVSXpETlA0NkotMnRzeXIzdEtIVGpvbFhMZ2pRYWxDRV9LNUV0VUE4TGdaLVdZT1FZclUzVFd2cnZ4UDBwcWxrWmhvM2lEWFBMS1NZNkZwRjZxMURhMXI4VkVqazhJNDQwY1ZXVk5hV09sYU9DNHVVRWFXcFlPUjNMXzJGNDFzS2Y0c0hSdHoxX0swazl6RlplaG1kbGs3cFVmYTh3elBxbkNDRXNsVXNTeXRGdXZKOUwtM2IxVjBxbEt1ZHNsRVZaMFVHRmRUaUdJd2JVbWI1RnhxWlU2RFdXbDhlekRxZE9TeWc3NkMxRm5UQWpxcWtnTElvbF9Jd1FkQ05xMC1fdkxOTk02Yk5oeUJKazlwUkNVUXVZbnd3Nzk0UjRQRlBmVDBFVVFlYjBXbjlhTkN0SDZZeFFCckQzZzFQT3ZDNnpRX2FEYkY3VExwQk0zdTdhVFVxYkdRZzQ3MzVBUGFWbzFNREo2UlVybU13a21TLV8wYlBYV256b0FWOUhnWXVWY2YxNElUQWZrY0FYM0NhRHlGT3VaR205T2xQTTJWalFhRWVDLUd6MkN3Z3g5cS1OTlUxRmhRX3RMakdHa252NHJuUWRjSHpuLXNUS0s4Uk1kaGZrUEpfYWJKMzh5V3FuSU1QMFhOYU1iNi00SHhwOTlFUUllYzJsRVJ4VUlpT3JYQ2pydzRQSE1nY2EzRWxwTXhBZFRXdFJ0dkZwSUE1YjRYUGdCWmRMdzVCYjl0TG9VeU9oYkJPSUxyeUFqTk1TSnZDZFFuaVNkZ0VOdWY1WkY5NkdNWGcxVWtLT1FVVDlUQ2VXSElRaGVwZ2wxVXFQOWY3ZTBPWDhXOVBrcTA2MHVDU1RIWTdXdEwydVg4Qkx2SEVjRkJGQjJWMVJmaUdJa09UMERnbTJYZkE0RmpsQ09SX01wUjl4ZHljRVBPZkFXMUpvV1NyWV9qbXlHVzRLVUNSSW9UVnhKUnRFNVJvZ3dlYWFQVGxXd3RlbEFfT3FHSFpMUUMza1NvTlZnYmpJb2RWeWFiM1RyRmJPbEMzTk1sYjdabHpaZjhIQTE0NzVtOF9OZDQxQlhKRWY5OUlXRF9SRGNLdFRMeE9YTWZVeEdRcWNVQmxNa1FsWnk0bmFmS3lYLW9wOTlVNFFTRm8walBkdG9LeXYzZnc4TXpGNXNQdVlDNXdQZGgtTy14YjBnS05JMzFCdlZpbWxsRFhScGZRLW1YVTZlaUtKZW82dG1nd0I2MFRCOUJfWWYyR2ZBazFNdlZkanJQQWV2N2JFTUhkdnQyZS1GRHREamhEeGgyYU9PdEI3Sm1IbHpMcjNGeWZ4SnBOcHcyTmpzZmFFU2FjazhJcnFTWFE1V2I3UlA3Z1NKdjBWNlVjQ0RHY0FyZ3ZQekdWTTJjZ0pOQzBNVmtsb3U2bUdpYkotWlJ2VVpMR19TRFZLRjFyaE5aVzFOVl9VcFJsU2N6eDc3VTkwd0pzLXUwYU5HZEtnR1RTSlcxV05kVFR0dVN3OVFvRlJicFdFTVUyUGtZUy1IOEplTGgzOGI3a1JQTF9weF9Vb1BOZ2djUmU1bjR2V0NKNTlQLW5MOEVuVG1OU0ZMRjlTZnYtV2k4SGRaTWlZTWtONTYwdUdHbHdISlQ0UUw0aEFBRl9PeXJ5SlFSbDd6U2E1WGhBcHFYOWxMZ2tCeDd3djYwZDR3Nk1DYzNmd3p5c21MUENRQUxQNFpOWng1a2tYNVlDd0NBLUo3eGRoQVN2UDJXQzN2RmI5cTVUdG5kaTdLeEtiZG5RZTJMZTJ5Z3RVWHRlVHpGdlQxZUpsdTAwWU56bjdfVVVNRG5jbWJfblQ3ZDRvblE5Mm1pb1BIMVMtcWFLZ2lrZzBXQ3l6THlzdENlUmNIUHVBemxvQ2ZFYm81c2V6cFFTdTBkY1Z5MXVJbHJqSUpyVjdCRjdtUXM5emI2UkluNFY1M0trdGdNblozTGlmeGt3WDZWZUZ4MVJBSjJZUEtraGdHM29nbTViQ3JBV29kZnl1bEJfTVlHUFNMTHRXVGh0SmVmUFRFYldiTXRkYjNmcTk4SlMycG5VZjBUeUhQM2I5Mi1VOU1nSG5VMEQ2aFNNWkplYm1FWVZfRXVjUEVOeWJzWlotQ0RSdFlCVEpEWXVZVUw0NkdwQ3ZObUhwZFdiQ25rLXRidjdNRi04OENEcDJuODR4YVQtS2FfNktlVVZQNnhwQWl6cVdvUGZPWDdEZU9LUGtOdDA4dnIyVTdvbVFDQ3ZMZjlweV9rSENpS01zOHRYN2JDMlZqVW04c2VvemhfQ1g0dno3YW9yN3ZKQmRNNms4NkVVeEYtSlFCaDN1b1B0Y2xFbEFPZnBCTFJMcV9ubEcxY2Y2clZrcldWT1A3ZW80amNqQm1faTBsNW9ZNVRsT190eUZFS08zMm5YVmhiT014WTdlQVoyekh5QjJyRk5uWjVWM25INy0wOUgxZE4zZWVBaDBJRUdpbjdkTUMxVEEwcVNBSzBCR1lPUk9NM3NNVlFBWnNrRTJQdE93dkF0Y0JVZmo0QXlXVlFJUDN0bkVMcEpyLVVUQ3hXd25IRDVBZ1JsbWJodE82cVVLYWxJMTk1aUN6MHZlTFhHc1NiTmtDRk9HRkJEMXhDU3prNnJSQ0QtLUZIVVFDdEhVbmpqR1NkRndJM19QTm03WjJKUmwyVFRHckpzemJjbnlQZzQ1cXh5Nm9GZ0ZiVE9YZHlMZHFheDRmQ0NiWWo5VW90ZGhYWkJuVVp4a3N5YlNLcllxUTVVMHNyVXozWnNzU3hpYVVTSDZzeTBrUEdidjlqMUhVQUpwd09LbGczT0twbkVNdnVOSzFPUXdiV2tIQ09rdjA3Ri1mSTZNRjU0LUtQc2F1emV3MDY3VXBXQVZqdDdHdWJwODFWb2ZycU1YeHZ1SkhSaU9jQ1RJSUg1RTVMb2piMU1RRmhCUUtOREdNWTVyaU5RcGJxRnB0OS1VOWpOQXVzZ2RKd1JwMk9sZEh4ZEtkSTRxczM5RTJLdno1dy0wZkw0SEdudXIyal9RZXdyOG5KLV9vNVlrWENNZGFHcC1fTkY1anNncDd5bmp5Q3pyM1RmcGpmakVmMEZqV3JRb0JoT05oSE5PU0c5dU50dGctYkRCV0xwTFI0N1Fib3VEU0NGb0tzUXh3ejZCa3hyV0FQVFptbUJkNVJqd1dYMExaZzAwTlB3WnFaR1VMZGRBUTNJXzlsaFlxQWZIMG9fQ1VRYVdmQXBldWN4ZUs4alAzYXRsLXFhS3RHVU5fYmI2bzZuNlJWVjFZd1J6VlRLQm05NXY3LW9abUVwTjRtUUtnWkxBN1BqZS12NWZreHFUSUlOeUcxT2FTWTZpS1gyRndxVHNlRVFJOVFoSTFwUGJPdUxhYWtGd1VmQVBveGlhSkJBUkdqSHJBNDQ5alcyNXBTT0ctY3hVYmI4TFpYOC1KSDlrdmRfWlVXSWYzNUViTnBuUHhNbllCOEtVUS1OT0c0SEZxa3k0RHZXeU84QkRYazJzNkNBRDU3UEtCRnZMSFd1dUFVcEdEVVV2QXVCSHBYcUF0LXc0ZlFFX085RzVQM083dzRBWm85MnVhZ2pPSVpMRjdCaTNjSW9vVjVpZDhSWEI4bGVVNnN5eFkxQ3ZtN1oxMmFVRXd0OTM4NFNmaGxoT0Joc3ppbU54SVFxLWlGM0NxOHRJLUJlU2NEdHA4S1pmNHN5ZTFRNmJaN2d1M2J6MDh2ZkE0enBoTTBQUTRGUFB3RmdhellSRG1tazFXZzA0OUQ5SXl2emRKZVdudHpNcTlvWmpJMWhXaVJRSXktcy1QRHc4SVY0VThlZnhrRWVGQXBnd3E2dkJpcUdGWXJ5RVZNT3NBN09OZi1oeG9uQ0JXYTNLRUlEN0hpdHY3YUhRejJhdU5zVFo2OW4tMVd2VFI1elhLMENpdzNiN09qb1ZnVThhTTlXSHZDRHlUQWpjRVFRNGpWc2VTMnp3dzl2WDl1SGhsTTk0bUthSXRTNVNEMkJVWENYMHBDbHZEX2VqTFVXUFYzX2lUaDl0UlVyWnc5MF9ySUtvNEQzY0tKQ2lpMnZ3UzYydGRUQWFFR0Q5MVFrVHR0MFdVdzVyeDgtSk5DcUowSlFubEpucDdJZ3BfTDhsYkowanJpci1KVWJTZ1lvY1lBbnhWZktHN2tkUzVyQ0hzVU9adWNhekNrUXR1MV9UMElGSEVFU3QxUHFCei04djdoOW1SRGZOeFpnb0RIM3NFbG9GVmphQXFaem9Vb2UtR3ZYMDhUQ0w0alhUWldMUE5WMExTY2pVa1lwRHlZX19jMnU0QTRsZlY1VnFfcUJoenZPNFNlUlF4THFHMkd4aG1QNk5pYnJDTUllYUtRX1gwWEJwNERtbGtpNWotYkItRElMcUlWQ0VST2RDa1ZON2VEUEQydGpXTGJ0cWtXLURUU1p0YWNVWU5PSHhyRm5VZ1ZFLVR2WXRxVVJpRTZvYjdleUZyVFlObHdTM1dTaVBKVDE3WGFKQmZlWWZXZmZWQTBlWUN6TW9FS0d0MWZ6Q2hDMHJ4MnJwTHM3Y0Nxa2Q0RVA5MzVIcFVrNVdQQXJmbVlnQWdUMy02TjV0aEVyZmlOcTJYS04wdFpWVzlIN0VyOHVMcElfRmcwOWZnM2gxbTJmdHhhTkg5NHlCTDJmaFdTUk90OWNPZXNwOERIWkJsQzlXZGh0V28zM2hEeUUtdjNMSWg1dmJsbjd2SXE4eVpxczZEWk1xRjBZQ1YtR0pNcVd4SUNlamRUMWRpdnlmTndLUXJZS3NsVi16WU55bkhvczk2MlJGOFRpeUk1eUk0R09CYXEzRHBSUktRVmFZQUlkaFBaTEJfVW1yeGdYdHlCOXo3dUl5d2M1cXdxS0hlSEpWMzZOVy16NjIwcEZTRkFiRVpWT2lwWmRrU1VJRTVMVFZkR0doMUY4cUc4VFktZXRlMThlQmkzNVBWM1RxOFVLUEhBUzBzN2U5S3lUREVUUTBJVElFYnQ0cTM1X25KWVh3NDZ6djJhNkdlejhxanNWVHFRVlRGLWZwTWdEZ1FGVGMtc0RpWDBEeEYyWWhiVnlXT3hMR3pUNnplbUJ4V2tiU3VuVUE5dXUzcTZWUmZjZkFlWXBQbHBwR0FYdWFPck0xMzl4cTNyYkpURkJWWnZjbkRJZGExb2VlbmlnekhRSUcycDkxc2pqQm1SNklmc2dCcEh0bWNtaEc0NEg3X2hLRlduMml3aXBtZmFNNDJjZjU0TmlPTnY4QUFfWU1hMmtvOXFGM2FfaGI4OFBIUHJCWHh6SEJFeGZxSzNJME8tNmxiZEc0VDV3RlU2cFFNM2tGRGNfOFR2YTQ3czRRdG9kOTdhODJuME1lUWk1V2xXM1pvb3hrbUZTR0NKNHItdWxQNTBiM2d6cGpYdFZQVVRvZU11RzAyTFhlcVZreHI1WnI0bmpMenRhSTFUbUo4S042ck5QQWtwdkV5UVVWMHRFTE5KXzg4NUNYZGR6M3kwSnB4SlFKN2hibmFtR1JfclRNNGRoYnVCR0xxTkJ6Tndlc2ZBdGp1WmtLN2taWUVIZ0lwaF9pa0RjVlA4bTdkUXh3TFJzclUyblZaRHZ3WlFydC01LVhha2tEdlNabmlTa1RIbDBGWWRRcXdudzZxYjZEZnZpZ3o5aUFELVhacEFQaU5NalF6UUxHRjBtNFloUzdTTENDUUpudW43UDBoLVpoeFdSNmxudDMzQS1RRlN2UU9OQzNuclJndUNZN2JQTEVCRzIzVGFndDNMSzhuMTRKVDM2bGdCdWFCbUNZOTU3T3lGZXhfVE9uSldBU3BacHJ2TE5pZlJPN3J2UjYtekw1QUp6R3FhN2VjNVZ3bEp2Mi1UaVJ2TW1aVDBKYnNqTE8zVlByNEZPOVpCVlg3ZnA0RjBRQWRPemt4aTF6cVl5T3RRdkdjT19BNDd3d2kwdHNLQktta0k3ZjIzQlYyTWF3dXFNSFBuT2JobnpQTE5MOVJGaWZ1cm0wc2dGLUx4TUZoWTBrcmI3QS0zOW9NU1BlcmJodHFOczFNMjZvN19nVnNmR2RFdWo3RkhmLXNjQ3dXZnFJaHpWbjNzZjhzVVdvcWJaZG5FMTlTRnBwcTg1YWlyTXBjU1UtRkc5b1pHMnpwT3NnVkQyLUltWnJLMS1XWXVhcVZVZUlQVVMtVkNSeHI1YU15T01MTXpHZFpOMVNVcGJoZnlfb1h5VWNYQVpmSUcxNUpad0VzbUZVMXRBUU5ZRUxad3k3Tm8teVJwTnVYalNxN21idVNTMk5zRFJsZ19IYm5DTkVZaUJRM3pjT1NndXNMT0hkUnpQLWM0NVFqb3ZkYzFwVkg3LTUzWGpjT2R3dTJGVWlzdlozMHNhTjNXcXBOM3oxSnFkWTdkQ19uTWhpOUh5R05iYVlMbEdXWGNMYXQwUEVoazRvc19DQ0p3bXVhSUZZdmZKNTJ6dDNxTVZPdHBwc0lvQnpmbXl2SlZ1bFBtdmhMQ29wNS15OUdqeGVUUm8ySlZVOUVxeTIwdWpEV3BOUXVEeFBKckROTnBVRElueVpNU2gtbk10THZwR0U0bllWRmZ1SUdQeDI4ZVBZRGV5N3lYZE5sQ3RHZG80VXE1Ry1HQVRSN282bHlyTUloTlIzMS1Ud1UxMEg3T2U5MDFZMjJybUdWWlNIWG1kRFMyYVhNYUJvLXRfazBzUVBBaklwTUEyX0t5QXRxTFFSU1E2X0pkSFNFWlp5Z0wtUzI2Y05oRUgwc0E2VHV1Wl9HYnVKQ3ZBTXp1MTZjM1M3eEwzcmdXOUxKSWdNMGJDajlrVDY1NTFFSFFBR0FmbXlEUEtDMnN0WTFmQllGTURNRHdKeUUxRTBPdGpBN3BiOUV3R0tCTDdSc0MyN2h0WXQxVm1UTjZGYlk2VXRSRmRfRWZRZUFUemNNN0J1ODVIM1MwWXEyQjYxbkxSRDR6MmNoZURsenl2N2dNUlZmLVBEdk56cHNCMGtkX29SX3FWVE1xMm9YdkF1YXQ2QzZ6NG1kQ05FSmtHNmdYQXFRa29OMHVtb0E3cmFrX2VEZUxQbFh4MzMzZ2J2ZFZ5YXNqY01CTnVKdWZVQmhFWDBUcjl2MmdzcUdpaFBYWGZ1SVNla0lPOU9LRjVOaFdyU2c0YzNqLXBCOVlPbVhVYVJPdHh3OGJGYUh6TFZzVV9zZWJ1VFlEZXZBRXBoa2hneFdQR2tyZ1g0Y184bXNoS0xsTEY5UTEyRXJTYjZlQjZ1YWFST1lQc2pYRGprZm1NTC1DaktMdzliV3Fiekc1VTRzeGtHN1RXelFwWUx0eXh3SDh5QnJlWEg3UlJfdUtwMmkybE5XUXFwWjZEMEhsZkJVSm52YlJZTHhDQjVCZGZjaXBfeXpDUWVKR1F3U0VJZXhtanJkSmRsRVduRDMzWjBQaXF4ZnBKTHoxNVRqRVpJS1FBWXZTODdST3dodG5mZFNCZjkwQVVJQ0FLbjNvWVlOZWpKMWNRTkV1Q1E5UHNPOGQyTVhfSjh5WXh6eUdKZVlXNm4zMmFjU3FlWDRIZjNHemoxaDZPblZiLWVRdGtGeGYzX1Ywc3NaQW00aVlma19vZmJ4S2NtVFYzUmUxTEN4Y3lrN3Q1SFVZTzVKZUswMUtsaTMwQzZ0TWdfTGo5VHpEczJWV2UwZmFFTWVVb2NXSEJLUDVrbjNGNDRqM1FvRDF0LTdZV0tHbE8zbUh3ekZKd1lCSExwZ0YtMjY4T3Q1dWFSMkYwVXFBclRhS3V5ZDZOWGV1dnluZWYzZnRZWmxuRFhRenlFNGZjaEVrY2xWQ0dXemhyenFaSk1LWnRfMF9ydjFuTUZIaXJTX2k0Z1NZQ1B5N2lEZHh5aWlwSUtyOG14emdKVzFDdGtFeUVoMFItR3FHWElHWGFuQVl1bTMyd213T0FUUUVrOWctcTFXZklIOEVlSXBodUJQZmlDQWFCcGp0azZEYmVUSFRIQ19rckdwQmNFZUlaRDU0Nm1Pa0lZd19jV05qbl9BclZiQkNxeE1WLUJ4QUhhby02X2xFT2VrTWhZTHdDMWlNX045Q3liMW9UcFlnN3I4UXFkd2JTM0hfX1BYM0ZMdFlZcmRwemhDaTZKUl9TcjYxbWNxNDlPU3p1eG55OGlLNTRmR2V5QmRORXMtY2dBUldBRjlQX1haTDdKekdYTzAzWEM0eGhrSWhRVGZ5NU9BU2Y0THNMX19PVDFsRF9QRDAzR1luR1pXdldicXhsejBjNGFjWE11V3dUUWZvS2xPblByeVNQdEhZZmMyRThfbnJyYS1nUHhWZk04QXRPOThZYTNpQjVMSm5XSEZ5amt6dGZQTlUtc19xQWRZM3lJZWFCenk3ODJSZlozakNvaUJITE54Z3lkYjlPSWtGZVo2ekRnRXRxRmZsejR4anhMUkdjaWNRbE1lUFRJM1pvZllJTzlyUkcwaHAtS2pmaDZQTFA3S1F3UFk5aV9GeXowX1plLWNEVGZPNnd4emtFZ2I0Tks0ckQtQzhjNnNraWJ0ME5WUzRsWXY0RXhXZDdERDIyZEN1cThtRGQ0VXVCdTVsdk51NWhEdTVJVGI3cmRfdUJjaF9aVXM0R0Q4eUF2U2tCcUtzS3Z3Y0ZrVV9SYjQ3djVkeER1RVlvWkdoS3pwX1J0TG55YU16ZzFGc0FCSll1OG5RZFFXWV9ITFNOVTdUNU5zXzZRcXd6Wm5PcTRTX0dhNlJNVmhkZEZWdTl3UkExTmM3STFPOUQ1VFlmbGExT2RqaG1uT0pNUU1ZYTNYcDB1NmFkMUpMeE11QUhpVUd0NGk1a2VLeTF1a0wyaXNlTXp1eXhPVWhIeHZzY3dIUlFaXzRMRDdSdTFwQlZpZ3p2aFhsLWdMS2hUd01MZGFHVzFoUEJDa3FsbUp3azVUVWhBLW4zbmdzaUF6ZkRVNVBYbkJEaG83dV9tWDVkZE5nNDVhTC13TkxCZ2dpVWZKWXU3b2xSa3lQOXAyVlR4YzdtVjJTMklOUVBLdHFkUjdnU0pUX1pHaG9xNWpwRG5fTmxQWjZCR1FnSmIxVnJ4azdRck1lSGRxeVM1enJmRjFiTVZxNmpXa3E5REJGS2tBdGdQMDc5QTZlLUt3ak84YmItMUt6TzVLdEk4VUE5ZER1U3hjVGkwczV0MHJfNk16dl9SSzJiLTlwR2Y3UkdRTjMzejN5ejcxdUpQTlZ4VGd1Q1pybXFJU0dsNDB5c2pfQUNvbUIwdjBOQk1YR1JGWHZDSzl6cC1PdVhaaHhjQlN3bWlRM2VDV1l0QWNkQnhhVUg4OEtHWnFlOGJ5V2dHQTh3aXhfZ2xLbzI4YkZmMGRTclotcnlTLUk0QmowWHl3eS1xbGVxbWluN1k0eUNyNzNoNVdoSmpxNHQ2UTdBNV9CcGx6MnBHTHFOcndqcWpmczQ4S0M1ZWd0aEg4NmlDTUZwWFZaaEh1OFdvQkhsY2ROZjVKQ2lVcWZxU3NLY2RIUnNqYzJJUy1sM0Z3djdFQURJTjVRYng0eGpnT2x0aVA2YVMzN2ZESkp5VGU0Sk9UdTdmWEpIMHlrVmd4YzdSYlU4WHFzblFJdFU3NFlsNkxpbE4zUVI5a2FtNnhjWkszbG5Ray10THpHNFNLSG5KQ0o3enRFRDh0U043QWpmM0lqb3gxd2JWVHk5RFFzV0JrcmwzbXBubmVXXzJBdnFnaUkyaE1fekp4aXRReG8wOWllbmJkaTAyaFNKaG1xTTh2Ui1YakRnYW1DMWNONldtMkUwMVhaZ29qRDhveE5LQ0xwUGpDNTJNSzN1QjdUT1ZRNHpGcDc0WllKc1d2XzNITVdmTC0za3lTUUg3NVR6MHdqX3prNTY3eXRtOUNyVFBQNThpWldmeVE1TTNxNHllT1d6N0Q5dW9CbUc2cWNkcEU0dUVXOEtsMHRBQzQ4QkxiU1Qtb2N3b2RNVkdtNVBmSXYtZXMxOHlqWHZhcV9RYmRicFNUYWtqMzJlOEt2NUJXQ2NGSkc1RWkwSnhVbWhZM2FXN1RENlRTaU4xQzc2N09LSmN2UzN3VlNYRmx4a2VxcVNKM3pCN0dtblVYVVRNRDdGbE9xUWpCODdIQjFRTGdxTjFoYjNOY1ZwX3JOWHc5bWZHZndTN1hFZXRPMHBfeC10aVJOdEhKR093WExPLTRBVHA1Z3ZrYnpQR0xITU1lTzIzMXVBeFQ5ekU3QkVqY3VFZG5leGRhc185NHRub1JWS29ia082Q2NOcHRBbWpJVnV6aGxWVTIxX1dhQlhKQV9yczZic3NaZ2lBZm9MX3ZzM0I1Z05Ec0FPQjU0YmozLTRWNUdicEN1V2Jza3JCb2p6bHVBanRjQ2NISUU0NExxNWtoQ0hBMlk0Q00tMndpaEdsMHJGOVZyMnRwRHBmSmp5ZkNwQXctTTV5Ul93ckU3dEYzajluUjYzNFMweFBXaWo4aVJjWnJZc1BTdGVyUkcyT3BSZGpaNHVma1hNQ29lUmlDMldoUkpBY21QZFhzM3lxVG9oYXlLaUM3MENGVE9fT1dpRDR6QTk0OWdWandmVHdsTlNZWk1faExtTFZUdGRHZm1ad3hZMG40TUFWcVlQRmdKakhZaTJYV1RfS2VyYm80cElBeUR0NlZrWDMxdFFaT0tpcnFfS050WGhsRXBXZUc1eERUUXhwdVlOYk9zR29jUGw2S2o2Q05qcUc1bnBDYTBRb2U1UktOVFRKRU9BZG5uZXdKZHNSQmdwMG5zN0R2LWpleTJZSEtfTVlTdFZtcldodHRwb3NnbE90SGRlS0kycjJyM1ZrYWVmOGw5emJzVmJJWl93XzBrMkRJOTBLTnlHTVdHRmtvNkYxVEFKMnBTb3QzVkZRVnBXM2lwbkRORHBvbDN0TzZCZERubWtLc0Z0WDBoYmx1T0JYcDVQSEtaUVVnLVpEeVpZa3A3X3J4d3BsS2gtLVoyWkpOUnZnU29zdUlCRnRLY296UWxzZGF6eWRrbmNPNzNaY3E5bTdpU3V4UkRZbTdBZ3BYLTBpNXowQzZNX1hvUS1CZGh1d0ZaX2E4UWd5eDF2aS1aWl82d2ZrWWUtdWowREFtVE1SSkpRa2FkaEM5SEUyOTNyQlF5NEJmdmUxeFZhcWxrWHZjclBTT2RPNE1hYjJYNWNIWS1NMkRfZnFFZFpkTlJQRTk5ZEN0MzdKaFZHWGE2b3diWDJla3l3UVpmbDhIQXdJbGtLMUpQY1JkODVrQm9NcWt6bjNvUkx1bWtORUItNG4xSzQycTJCbkc5Mmx2c2ZybUJJVDNUaTFWQW95YXRnRVFIQ3ptSFMwRjN6eVIyVE52ZUZyY19BbUdtWVBnU0FZOXpHQ3ZkajI2WTVSbEhIR2hfMG50WUt4djl1cTN0bW1xbF9oY2twYVJZazRtalZ2bGJWV3ZobjFVdjhxTXEwOXhDUjk3aDVmTWZwYV9wZGM0LXhKdGRhS19tTVppYjAwUlRXTzh4UWJHanVUeTB6MV91UFhISlN4UklUVUJNY2d6bDVnU091QlFJbm9wb3JmcUxhaXJsVk42b3pXSUtLazAtdXh2c2oyRUVzcnluRWZDSGw2WWRaeTlscUVOY2xaVFhhVlI2Z3FIazdtMlhiMndDVVRIQnNPcFFaRGRVblFmbm91UDlRSjk1RF9YZmVvX2psbnk4dVh6UVVrMWN6TVNtZGZOeU1fbnNiMTRBWEVTREVyT21zWDNJTmMwS0FTTU9ZN3ItSlp4QlRkOWZJeEk1ZFRNRWhHMnF3dFdHOG5jbkVwVGFMWklKZ05MWXgzSEtXUkxRLTVxRTNpZkpPUVdUR1ZuZzRSdURReEVDYWtMZ2VJOUZmdVdKVGhHLXpLU0ZxSE1hUnFjTzQ2blAxZkFpblcxbFZUb2VmYTJjeHBQR204VzBHZnhNa20zRU5zdFRPZUNxemZIRXNsY0tCUjRxcUJiWDFBWkFidXVkbG1HTW15aEZkLVBRNjFIdnVNZXNNTEVhOUtCaU5Dek5BUFdGNkJDcHNYSVZvUVFGT3YzMF9EMzFDY3Q5SWZOUlJGYzhDVmptT2t4U0V2V3U4ay1oZlpsTmFQZEJwVUFCN29wR3liQndyWHZYQUx5cnpjYk5DVzJRZFJkTkF4VjR4QlJ3WWdjMkYtVEZHTmtzVnpmWjFEdG1UcE5GeGNHU2E0OWdGbHVHOFE0N3R5WTdZMXNtNkFiYjJ6RTZtTU1JYm03aWh3UXR2Q3Q2eG5hQ0RNa0twUVEtNzhnUXdjZG5rV01VV3NORG0xUDMtSjJpSDhlcmM4VzV2MERBOTI2NmpXXy1vSU1sQml5a2h6R1FWMXAxTkNDN1hvZEduYkF5QUJfMTRUSTRDckswVUF3QTNPYUNpdllZRmNNSk9zM19Tb0kzQWJXX3dXQkozbWgzQUpPTjY2cGotaUFzOFIxMGFEaFpJTFZwLWVoczgzLVBfMHczNVU0ajRJQjIzYXNzQVVoLXNEOTQ3Sk45QjhQNkJ1RVRNRl9aZXpFY1otcGlVZlJNMFkwWEJiZkRzNVpuVl80U0ZoVEtmN1RFb0pVUldBblZ0WV9nRTJjSE1aRnRRNGM3WEEwU3RiQy1Qd2JmRzlkb25SUnY3aGNHMVZVdXNUb21Fam5ScERia1MwQVpNdVFqQ2NlTzZOd1BNdzkzc3I0Y3A1SFdMeEdQUkRhRXN2T2VRUkVFM3AtQVNIenN5MGxaYU9xTFlRSGQwZDN2bmdOUjBkcExoNVdrYTBLaXpValFuLW9UaTRQc1dxNHlQbmpQSVQ0OUE3aGJTS2s2eDRTd0w0Zk44aEpHTXRDS3ZGZF8zSW5oZDVVZFdvRVR5TFhYQ1JMSE1fNVhlV1lIQm5lVlBNeTdxaFZzVjZwczZETjNwZUljNUpab2tjSmpOTWZNV0U3SDA2a0g3bGtxNkd1WnhEcXZxVGxfaXJDdlE2QU9xeTV3cm0yM2ZVYUtrdHdpcklLeHlQSlNvcFRCcXhWTnNaM015RzhidVVFRW1FaHhHVEgzaEwyMUd0azRjMHhnLUpJQ2pUSWVITmt4Z0FjUkQ2dXdVa2kwN25NMlNpclZSMGhRTzVQa1VURkNBWGczTkN4WXF2UVo4M0FlX1FtOC1IWFJyWFBpdmVJRnZCUmxCN3lCLWRnbU9HODl5ZFV3QWN6SEI2UUx5VDNVWXVmOEJpSzdWQndkR283QUxQdkU4TEJqV2lXTjVpNHBLR0k4UlgxaDJrV0g1dVR4bnU4UEc0bEFmOXdXNjhBTHpsY2d5VHdvNFllQUZyM0cteW85XzBTcXhyTXdJbEg5cExOdHZieHEzZHczakZINHFSZC1TUlVTNlV5V01HV2MyaDZ1MUlfSW1XVUIzT2R4R1dJWkp2cGsxeF9ncmRLWnBMU1hFR3RwZTVRRkZ2TEtiWnJjM3FJN3Uyb0VPOEZMMTljU0NZLUQtWThLTm55UHBwM3htSDlxWjF2WnNUczBCNmVmOEdVUW1jTjN3c1F5akFsMVVNdUQwOHN0Wkc0WEpDVFBrYTRBQ3k2SHlCZDRpeTI2MVM3Tl9ITXJuZ0FNZFoyb2taQlZsYXhibUdqY0U1S0J1WDN0SjIyOXloZk1ad3VVYlBFTFVjYklhdldFblNKMUEteC03SUZyTVVRVWt2Z0hubXFsUDRoWDZKdWJvdnptdXNfbUthS2ZORkdfV1c0Smg1OXNKSHVtQjFaQzNRTDZZMF9yWmdqLTVvMmktWHJsY3RvNEVadXFldFdJNnZWUUVocG52X3JZdUo4c0NlS1FRT2JIckpsV1Qzc2hLbzZ0U2RTSzgzamhScUJpWUJoaDZNd25sV0FQVDd0RjFUM1ZhZkppUzFnelF6Nm0wdGd3R1RpSk1HdFN6YkN4cEo2NE5TQ1dKLVAySlVLVlVHa0hYcjEyekNnSWkwVWtjWmF3YjVLWmZhVnNxQ284Wmo3RFdfTXpWUUc0RndHMHh3UHNkSHFEdHZWRU5KNHN1WEd2aC1aLU54dFRPZzQ4NVo3MWhfU1htd01wV3B6QVB1ZHllQnRwSUNIcnhnMUlNb2EwNnBmWEF5Uk9IQlRJd2FGTm1Mbko3X01qMDQ2ZWJ0dHJtalI2U3JwcU5FZVNMVEh2N3dVdFlmRFJtZk5qeG5EVmJlUWpuLWg4SjBlYVp5bXA4akJxS052S1JtckhzSkl0U3UzSUdJOG9Sbk45Y1JXYnZPTFBWbmxTdFRfeV8wc1FhSDNudTU3RlBHZEx1YU9WcVpzbWo5QThOaS04eXV4ZXg3OHp3WTVZR3g3dXhpTEtYNVA4OFpkWmd2RDduaU5xY2FNNERDZ1UwZXprZERKaG5TVjlFa1M0RGZiMEVHLVNvWGhnamsyZmRMeWlrR1FzM2ZDVnlWcEdrNWNQMFE3aGNNWnVyR1A0bVlwWHkxVVNhVVZmWGNPYXFVeTM1OVRwZXdWdHl1ZFZrWnNuVklzYVNqRGUzbUlVdVlTZlhDb0h5TVBHYUx1Q0RyV3gxU01LZWRZYzd6UDlDaVhpV3hoNjJjR3NfVk9pMWl1MFdNNlNiVGdLYkVuenZmMGw3YWF6cGhQaGxkTjhORXlNSGNaZ2E2REswXzZwalJZc0xaZXpxMy1pX0lKbFd1NVVrZjcyU19nRmFFd3Q4UUZxMlNrV0ZpREpPUkJxWlVYWU9BV1REV0p6NDMxR1FWQzFXd2MzVGRSSk5BTWkwSzFORGVVYjduenAzOUxsc05FY3QxX05hUU9Zc25JMU54MmdJRk5ZUFB5djZnckNZb3gxUVZLNUZjaEF3UWZESW54ajdXVDI5aWlpNXF1Ml9mcG1SUzBQVUZDLXdoWlh5dV94YkoyemZZREtqSTJCOFh1Rk5sZS0yLVoxUjhMNVozSm9WdnVYbXJ6eGdITDk4WGZpMTZmbVlDU19QTlJ0d295X1JGQW5KZzVNRzVfbFhtaFU1eS1FNXZ4NEFIeUNaOWJYYkd1WjFKaVZjZmFtUldMcnp6Q2hfUDctTmR1MWFZM0pmVDFfX0tZTmpsSjAtc2d5ZXFETUNSN1V4eWQ1WG96THFVNzVPSFdUWE1ubUUxZ3R5clhYVl9zbEdYdmpEVFY3cjNJeHY0ODE0QWR4Yml0Wm5Xa0NtRFlrR3pCcTZ5TGRRMFc1WjZWTE4xMm5CNk8wbk11Y09iWEJXVDE5UmttLUpZT0pMVHRMR0tHN0wxbm9SOU42cUN6bFh3a2hTem9rSWo3S1VFbEtzOUtxMGFqUzg3d2JrTkR1QkJnRnVISE5ZbXBiNEJiZHFWRmtiakdOb050d1o1U3AtSUxMOUVGNkNjSm15WmltSjFUSUg5LUVnTVo1aEgyM2ZEMkRhb2FZcEtYejZZU2FVLS1GZm1jY0pwT0UydWVfQms0WkdDNWR1QzNHRlJkbXozTzJUd2VQdDk5UjF2aDcxLXpsY0hLUUJFSllTN1VsWDVXamg5X3FLMHVYZ0RQMVFLWFFSMjZIWEdvYXNrMWlqMl8zTUs1WWUwenlldmp1YTBMdk5PeEtUTnRmQ2M1b1V3MUtFbWdwbnZPN1RXV3N3RHRWVHZ1cDkzRm1rdWtHQ29POEJhOW9SNkVfUmVmbkw3cnlHNlVFUV82Y1dlYkh3NjN6Z3JMelh4cFFqY2Q4eHg1aldFYUxRS0g1TFhUZHdvaWl0NkI0UmhyR1I1bW84dldfOFhmTEtfZFZITC1lTEZyMDQ2eVhLQ1lzeUswM05EZnJnYVUzaERRX1Z6emdKZXd6SV96YWU0WTJBaHM2cjVRdTF5MnBkekVMSmpwQkZJMmtiOV9jZzZmUW5hQ1VyUURNUnczRkJpQU1WRFNkbzUtSU5xLURZdjZqc19LUWw0R0dNSW95N2tXbnp5LWNDcVZGNWVJNmE1RFFSZUdtLS1rQlp2Qk1Vd2t1QlBuYTF2WFBYYkNvMTV0RDlUMkVGbnlqRjJIelpURk01NUFSeFNOd1ZWR2ZIZXZHOUxhcTZrLUgyc044Qmo1LUlQTTFWX3Q1OGVlVXdib09jU3o2WXBWV2dYQzRVYml5UFh4UndqVURVTHBFX2R0R2JJWUlpRmRSc3B2ek5SN1pjRzQzaGlFN2RXaEhSOWd5RmRuZjR3emYyR2p1aGoxRWZ0VWlwYTRtSlk2ams1SFlaMFlZWXVMaVNmZlpSY2o5X1VwRV9XTXhtdlZXMWlLQXJhTEJmZEE3SUpoUEFUYTQ4ajdwQlhrVmFTalF4N3VqaGxIU2xmVWdDTHZELUMyZUV4LVdJb1ViYW41bzdnU1M3YWYxNDVqeEtzRVgzRHdWc3F4T2ttejQtUUQ0UzF4QlFZdWZPYWZpV0ZKY0p2RkFuUTk5RlQ2dW1LcTJOaF9TQWpESVFUajcyODJNTnpmeUo5dU9EckFqWWJuekVpeDFLSnB1LVRkeVJlVmpvMXltUkhGMGhKdV9YLV95Mi1URmVRa2E5c21fWFJHc0QtbE9RUjgtcEhSZGo4TXhvSXNKaFpGVjdSTVQweFJTUUw2dE50bDNsWFh1R2xVa1FfUDJCbkdwU0UtOHNxakNIMVIwS1J3MWM4dThoOFRBeVNaTjh2RjZMb0xsczI3bktVRlZNTmFLV3VfVjRDQzNETTF3VWpuaGI1TFdIMTBoR1hFWmdHNXdYM056RjB1ejhCR1VzdjI0dEpSN1BJSVNpTmVUYUhwYVp1OWNTZURBM3R4SjdmOGpJV0hhWV9VT0VucXljNkJSYzk1V1FkdUh1NnZDeElwVnU1M3lrNWdfd19NdTRzNmlRVHhYTFNHT2tzWGl2bkVHVm1SSDRMLUhnTlBJZnktQzQwRUN3VW9hYnh3SlpVQUtOV0xSc01GTm1PMExFSHZ2T0ZXYXFsc3pjLXpadll1LWg0ck13WnNiSlRTcjBCa3AxLVhySEVRSFlERlEwWkd6TXZRMVVjMllmbHgzOFdGRC1pdHc2aUlHVDNhWjRvRnJVd2RzamF1N2tIQ2Y0ZEk2YTdkNkt2eFNFZUtvRGFsOWN0c3BvUlRWTjVxSjY2R2hGOXdaOU9WLWJvM2VZSFRCSnQxM1pzV0pvN3hmblZadE5wcmdHOWd0OWF6T3BaZHRmUXVGb0gzT0NDWU5peWVTYnAwaWdvaVNGSmdfYkJHY2pnR3hTV3VXeFNEZFh1Mm5wbUMyOGpIX01IMk1kZjNvcXhCT2F2MzhmZzBra2hIa2N4T2xIdkxXQVlmSm1kQlB2MlFQTm1zOVdNUFFKU2ZnQVMwa0psLWtma0pKcElVemdFQ3NLWU5qSWMzdFpGdGhBeEIzNldzYjBHVkN6M3hWc0VfUjFMYkZ5TnRqUGpNUEMwSWhyNWxOVE81bUNVNWxZel9kQlVIT0hNYUZ3ZHhvaEpjRmFPSDBZZkp2Nm9RZXVuY3RSM0NxTFgzNWh5YUJhUHhwcnBnQzRtWHhlRTN1a0lpN1IwN1Zaa2hKVENtX3NtMXdkT1JGaEtKcVI1aldudV9XOFFXWDVUY2h0NlNRNHRtMzl3RjdlcE4wTHpVV08xU3l1d0ZfYUFrTEpxSHVqQVd0VEVlRlN2OFlPNklWVDNISGFqQm5GcXZ3ZjYwcExYVXZLY3JmdHFlR3N1c0c2aVVJc0p1aXNHdHR0U3ZtZTk1RXZrOEpRTklGclU5U1JvVTZlemljWk1xSmpxbkNNbU1iMmROM3U0bEl0Qy14b3haNkhFcnpDRHZzRFJjY2x4Uk93ZElHQk1KTWZlTzJCTVJFWnhvWUE3WmVHaEtoQXhDSS1sdEhQQjdCMlVWa25NNFlsU3BWN0hucXNVdllVQ3NXVnBGQXFDYVZNeWV1bmp6OXNhWUF5S1BoeGp5UXplbXp3bnV5YXMtcXNyZGw0SmNQWWJaV2g5dHRpU3BiS2Q4d0JoLXN5TGlEcWRFLVJVbTd6dk1fVFg4TXlYZUE4a2tBYzVNdFBkSUh4c2g0SUwzb2xSdjI4LXhOdFduQTlHbk1QeDJiaVRDUTR6YzhJQ0NPQWRRTHk5ZUZqSmxMMmFEWDlPVXhqbjNpWl9ONlNJT3FGbjM4SllVQW5VM3BmQVNyWWdEaDBFeDBaQ3dTa0N0OVFWcDh1MnFrcXExZ1QtdUhMVjRvWXkyXzYxZkZmSTl3RTZuV2pKQXR3UkVUN1Ffa0NHblN2TTB3SXBkRC02SFM3eUoxRm5pYkhBdXVFbnBYdFd0dHVLQ2tpMjE3RkJjWHZiRHpFVm5pYVNNOFJMRDlPekRDWnRpMXFoTDFfSEo5WXVYNFZ1SldDZ0MwcHRDUUdFbTF5ZnRnejRmZ0RJUFZGalR2NGx0a2lDUjNhb1ltdGFMZFV1TDkzbFVObVhPTk1sa2lyMjBUNTd1RXp4S05TZEQ1a1U3aGMzTHlHMGtyWW1Ea2t4Y2RYMFZnZ0tmcnF1c2swOHBacDFyamt5emNsZ2VPX0lKdXpKTEtEeC1rMEl3VXNUOFhJcGlxR0h0ZlJFdWxGQmhaNlhZS3N2MVh6VndWYV9KVnRFblFjU1hlNWRaZ1FXZkI0NGN2SzdMVzhPYzV6YUhjQldub1JQSHVQMG0ydmwzMGxUWnMzUmdDLWUyZFJZMlU5YzU2MnRZZmx0U2JQZFZXVHZMWk5DNnEyNW5NRXFhLVNIM1FRUFdCeEZIRDBhS3RjdDhPNDREbUhRanNFTlgySU5EWEZRZHhZT3VtdUQ5X0tNRzhkU2NuVm9FQ2h3R0lHY1Z4VWs3OVhHbDRybEFRTFhaZ085cEJxZlMtRHhSWERKcTRtMmg4ckhjRlRTM3ZQVFdXMS0zdzVrX09GWXVuMjFsZ1ROM3V3TUhLV3R2Q3pYc2NEc2VWWks0S04taEZYZ1VoQW8ySlNjZ0dPclhVblRnc0trN2RFRFNyblVPc1hqRk1hWk8yd29nMFdUYkxfMWNXMG9jSGRlelhDMzk1TEw3Y2FnT2ZrNHFCR1NmT3ExT0dxZGpmeGZIdmdOR2NIRkx1M3pIZ3paLWNIQ1ZkcUg5akp6MlktSGxtS1RrSzNRd0hYTkhOdnRCekFpZF82VnVTWGRpdGU0QWdMak0wdng1MlR1MG5TOFJXc25MRi04RDdFaHMzcC1fM09melVsQlVjblRKTXFMZ2NSSFlQWVRkckhBNDJDM3F3bU5ra0hpek1EZjE3eFdKYVJDUnlQTFhfSmY0Q2Qxd296VHVIcnVZcWVKc3VBSi03VVAtRExZdmUzRi1udF9FUUw5Vy1ZMWRoQ2hzcHpvV0VCQ3ZKenRjSUNZbEptYURsMmZQWWN0OHJ4aW8yVHBUMWpNYXFURXQ1d2NzYTF3Tjg5YmhjSThsZkxnTmI1T1NIWW1jV2JjOEp1eUNYMzZaMmFjaExFVjNXbThKbkZtamw4aVV5dlVsX0s4Y2ZEOHpjQXBaSTB5UEJnanJ2WVNvSF9QV1h0ZkM2NWtWV1A0YmZ3Yjktc2tucUxRNzU4VGthcUNsaXNBS0FmR3k4YldEXzJiUWstSmxoLUwzbFRzSElVWFdNMU5zQ05COG9sSVd6bHhwbjZiclFVQUlNd0NFUm03SjlxaEpJRVA4QnYwQ0xEWWVDY3l6R2xiM0ZhdzZhN0thQWZZV1BuaS1sMGF5cHJpVkdFZC1PbjJXYjBLT2ZNTmwtaGNHVXA3VG54OHNPSFZ5b2tRMGpvY0loSXZna0pocHpDUkZCYTlfNWdUZ2dnY3FGaVhxd2p0UXVrdE5nODdHdHhpZHprRnFoYjRDUDM0QmNaOElHTTh1LWNiV0RFWXhnWFozWkVQZzVSRDhsRFFNcWh0Q09NY3lTNDFQSmdaWXU0Q1RqX0tBd2xFU3V6NmdHMGxQMk5wQ2FVc25tTkdQenowR3FsYVBtWGVzWFNGRS0tX1pjZXNjbzhNVEdGQW1BSHVLN1J6TXFYeUVWRjR6a0VUVXlzdEp4UThMMjBWa2ozNVQ0SUpDQUVwVnZoSjBkR0IxRjJzcXpJMllhU2o1MG9iUXBMU2xFTkh5bllGWHdUdU1kMXkxdGFuQUNiUlpjZUlkLUphZnpHXzhEOUdzOGxfSkxZemNuUzkxYThUcW5jVHJucHdxT1d1V2ZISzVscEZqLVZWR2J2Rk53a3hoTndLMDdTTFhhektkclFCcEpxMnBFN2tGelBiXzBZdnBuRDFhRnFXYmpHZzVNcVlxQ0tfZE5ueEJQZmpjLjhIdTZYbTVaUXJ1c0NxNjJvc1RFUlZFVmdPUVBxb01HQzZpQl9iWWJmbU0\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "testcert2006471c0f5" ]
+}

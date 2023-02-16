@@ -56,11 +56,19 @@ public interface SimPolicy {
     SystemData systemData();
 
     /**
-     * Gets the provisioningState property: The provisioning state of the sim policy resource.
+     * Gets the provisioningState property: The provisioning state of the SIM policy resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
+
+    /**
+     * Gets the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM policy on
+     * that site.
+     *
+     * @return the siteProvisioningState value.
+     */
+    Map<String, SiteProvisioningState> siteProvisioningState();
 
     /**
      * Gets the ueAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given
@@ -72,7 +80,7 @@ public interface SimPolicy {
 
     /**
      * Gets the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice
-     * must exist in the `sliceConfigurations` map.
+     * must exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      *
      * @return the defaultSlice value.
      */
@@ -114,6 +122,13 @@ public interface SimPolicy {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.SimPolicyInner object.
@@ -182,10 +197,11 @@ public interface SimPolicy {
         interface WithDefaultSlice {
             /**
              * Specifies the defaultSlice property: The default slice to use if the UE does not explicitly specify it.
-             * This slice must exist in the `sliceConfigurations` map..
+             * This slice must exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM
+             * policy..
              *
              * @param defaultSlice The default slice to use if the UE does not explicitly specify it. This slice must
-             *     exist in the `sliceConfigurations` map.
+             *     exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
              * @return the next definition stage.
              */
             WithSliceConfigurations withDefaultSlice(SliceResourceId defaultSlice);

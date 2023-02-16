@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources ListSqlDatabases. */
 public final class SqlResourcesListSqlDatabasesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlDatabaseList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlDatabaseList.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseList.
@@ -22,6 +20,6 @@ public final class SqlResourcesListSqlDatabasesSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .listSqlDatabases("rgName", "ddb1", Context.NONE);
+            .listSqlDatabases("rgName", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

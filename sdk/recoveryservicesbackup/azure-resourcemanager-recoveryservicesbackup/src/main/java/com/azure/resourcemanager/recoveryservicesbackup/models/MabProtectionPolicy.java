@@ -27,6 +27,10 @@ public final class MabProtectionPolicy extends ProtectionPolicy {
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
+    /** Creates an instance of MabProtectionPolicy class. */
+    public MabProtectionPolicy() {
+    }
+
     /**
      * Get the schedulePolicy property: Backup schedule of backup policy.
      *

@@ -12,38 +12,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ImmutabilityPolicyProperty {
     /*
-     * The immutability period for the blobs in the container since the policy
-     * creation, in days.
+     * The immutability period for the blobs in the container since the policy creation, in days.
      */
     @JsonProperty(value = "immutabilityPeriodSinceCreationInDays")
     private Integer immutabilityPeriodSinceCreationInDays;
 
     /*
-     * The ImmutabilityPolicy state of a blob container, possible values
-     * include: Locked and Unlocked.
+     * The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private ImmutabilityPolicyState state;
 
     /*
-     * This property can only be changed for unlocked time-based retention
-     * policies. When enabled, new blocks can be written to an append blob
-     * while maintaining immutability protection and compliance. Only new
-     * blocks can be added and any existing blocks cannot be modified or
-     * deleted. This property cannot be changed with ExtendImmutabilityPolicy
-     * API.
+     * This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be
+     * written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added
+     * and any existing blocks cannot be modified or deleted. This property cannot be changed with
+     * ExtendImmutabilityPolicy API.
      */
     @JsonProperty(value = "allowProtectedAppendWrites")
     private Boolean allowProtectedAppendWrites;
 
     /*
-     * This property can only be changed for unlocked time-based retention
-     * policies. When enabled, new blocks can be written to both 'Append and
-     * Bock Blobs' while maintaining immutability protection and compliance.
-     * Only new blocks can be added and any existing blocks cannot be modified
-     * or deleted. This property cannot be changed with
-     * ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and
-     * 'allowProtectedAppendWritesAll' properties are mutually exclusive.
+     * This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be
+     * written to both 'Append and Bock Blobs' while maintaining immutability protection and compliance. Only new
+     * blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with
+     * ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and 'allowProtectedAppendWritesAll' properties
+     * are mutually exclusive.
      */
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;

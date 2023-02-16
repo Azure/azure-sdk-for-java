@@ -23,7 +23,7 @@ public final class CustomDomainsEnableCustomHttpsSamples {
             .manager()
             .serviceClient()
             .getCustomDomains()
-            .enableCustomHttpsWithResponse("RG", "profile1", "endpoint1", "www-someDomain-net", null, Context.NONE);
+            .enableCustomHttps("RG", "profile1", "endpoint1", "www-someDomain-net", null, Context.NONE);
     }
 
     /*
@@ -41,6 +41,6 @@ public final class CustomDomainsEnableCustomHttpsSamples {
             .manager()
             .serviceClient()
             .getCustomDomains()
-            .enableCustomHttpsWithResponse("RG", "profile1", "endpoint1", "www-someDomain-net", null, Context.NONE);
+            .enableCustomHttps("RG", "profile1", "endpoint1", "www-someDomain-net", null, Context.NONE);
     }
 }

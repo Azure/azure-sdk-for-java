@@ -12,12 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings {
     /*
-     * The Domain name label.The concatenation of the domain name label and vm
-     * index will be the domain name labels of the PublicIPAddress resources
-     * that will be created
+     * The Domain name label.The concatenation of the domain name label and vm index will be the domain name labels of
+     * the PublicIPAddress resources that will be created
      */
     @JsonProperty(value = "domainNameLabel", required = true)
     private String domainNameLabel;
+
+    /** Creates an instance of VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings class. */
+    public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings() {
+    }
 
     /**
      * Get the domainNameLabel property: The Domain name label.The concatenation of the domain name label and vm index

@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DpmBackupEngine")
 @Fluent
 public final class DpmBackupEngine extends BackupEngineBase {
+    /** Creates an instance of DpmBackupEngine class. */
+    public DpmBackupEngine() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public DpmBackupEngine withFriendlyName(String friendlyName) {

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseResource;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for SqlResources CreateUpdateSqlDatabase. */
 public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlDatabaseCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlDatabaseCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseCreateUpdate.
@@ -36,7 +35,7 @@ public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
                     .withTags(mapOf())
                     .withResource(new SqlDatabaseResource().withId("databaseName"))
                     .withOptions(new CreateUpdateOptions()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

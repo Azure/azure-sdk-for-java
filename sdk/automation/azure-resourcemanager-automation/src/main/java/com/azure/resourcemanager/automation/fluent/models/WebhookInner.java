@@ -5,88 +5,29 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Definition of the webhook type. */
-@JsonFlatten
 @Fluent
-public class WebhookInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookInner.class);
-
+public final class WebhookInner extends ProxyResource {
     /*
-     * Gets or sets the value of the enabled flag of the webhook.
+     * Gets or sets the webhook properties.
      */
-    @JsonProperty(value = "properties.isEnabled")
-    private Boolean isEnabled;
+    @JsonProperty(value = "properties")
+    private WebhookProperties innerProperties;
 
-    /*
-     * Gets or sets the webhook uri.
+    /**
+     * Get the innerProperties property: Gets or sets the webhook properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.uri")
-    private String uri;
-
-    /*
-     * Gets or sets the expiry time.
-     */
-    @JsonProperty(value = "properties.expiryTime")
-    private OffsetDateTime expiryTime;
-
-    /*
-     * Gets or sets the last invoked time.
-     */
-    @JsonProperty(value = "properties.lastInvokedTime")
-    private OffsetDateTime lastInvokedTime;
-
-    /*
-     * Gets or sets the parameters of the job that is created when the webhook
-     * calls the runbook it is associated with.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, String> parameters;
-
-    /*
-     * Gets or sets the runbook the webhook is associated with.
-     */
-    @JsonProperty(value = "properties.runbook")
-    private RunbookAssociationProperty runbook;
-
-    /*
-     * Gets or sets the name of the hybrid worker group the webhook job will
-     * run on.
-     */
-    @JsonProperty(value = "properties.runOn")
-    private String runOn;
-
-    /*
-     * Gets or sets the creation time.
-     */
-    @JsonProperty(value = "properties.creationTime")
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets or sets the last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime")
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Details of the user who last modified the Webhook
-     */
-    @JsonProperty(value = "properties.lastModifiedBy")
-    private String lastModifiedBy;
-
-    /*
-     * Gets or sets the description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private WebhookProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the isEnabled property: Gets or sets the value of the enabled flag of the webhook.
@@ -94,7 +35,7 @@ public class WebhookInner extends ProxyResource {
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
-        return this.isEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
     }
 
     /**
@@ -104,7 +45,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withIsEnabled(isEnabled);
         return this;
     }
 
@@ -114,7 +58,7 @@ public class WebhookInner extends ProxyResource {
      * @return the uri value.
      */
     public String uri() {
-        return this.uri;
+        return this.innerProperties() == null ? null : this.innerProperties().uri();
     }
 
     /**
@@ -124,7 +68,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withUri(String uri) {
-        this.uri = uri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withUri(uri);
         return this;
     }
 
@@ -134,7 +81,7 @@ public class WebhookInner extends ProxyResource {
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
-        return this.expiryTime;
+        return this.innerProperties() == null ? null : this.innerProperties().expiryTime();
     }
 
     /**
@@ -144,7 +91,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withExpiryTime(OffsetDateTime expiryTime) {
-        this.expiryTime = expiryTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withExpiryTime(expiryTime);
         return this;
     }
 
@@ -154,7 +104,7 @@ public class WebhookInner extends ProxyResource {
      * @return the lastInvokedTime value.
      */
     public OffsetDateTime lastInvokedTime() {
-        return this.lastInvokedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastInvokedTime();
     }
 
     /**
@@ -164,7 +114,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withLastInvokedTime(OffsetDateTime lastInvokedTime) {
-        this.lastInvokedTime = lastInvokedTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withLastInvokedTime(lastInvokedTime);
         return this;
     }
 
@@ -175,7 +128,7 @@ public class WebhookInner extends ProxyResource {
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -186,7 +139,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -196,7 +152,7 @@ public class WebhookInner extends ProxyResource {
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
-        return this.runbook;
+        return this.innerProperties() == null ? null : this.innerProperties().runbook();
     }
 
     /**
@@ -206,7 +162,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withRunbook(RunbookAssociationProperty runbook) {
-        this.runbook = runbook;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withRunbook(runbook);
         return this;
     }
 
@@ -216,7 +175,7 @@ public class WebhookInner extends ProxyResource {
      * @return the runOn value.
      */
     public String runOn() {
-        return this.runOn;
+        return this.innerProperties() == null ? null : this.innerProperties().runOn();
     }
 
     /**
@@ -226,7 +185,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withRunOn(String runOn) {
-        this.runOn = runOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withRunOn(runOn);
         return this;
     }
 
@@ -236,7 +198,7 @@ public class WebhookInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -246,7 +208,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withCreationTime(OffsetDateTime creationTime) {
-        this.creationTime = creationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withCreationTime(creationTime);
         return this;
     }
 
@@ -256,7 +221,7 @@ public class WebhookInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -266,7 +231,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withLastModifiedTime(OffsetDateTime lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withLastModifiedTime(lastModifiedTime);
         return this;
     }
 
@@ -276,7 +244,7 @@ public class WebhookInner extends ProxyResource {
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
-        return this.lastModifiedBy;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedBy();
     }
 
     /**
@@ -286,7 +254,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
@@ -296,7 +267,7 @@ public class WebhookInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -306,7 +277,10 @@ public class WebhookInner extends ProxyResource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -316,8 +290,8 @@ public class WebhookInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (runbook() != null) {
-            runbook().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

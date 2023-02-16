@@ -14,6 +14,10 @@ import com.azure.core.management.SubResource;
  */
 @Fluent
 public final class DiskEncryptionSetParameters extends SubResource {
+    /** Creates an instance of DiskEncryptionSetParameters class. */
+    public DiskEncryptionSetParameters() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public DiskEncryptionSetParameters withId(String id) {

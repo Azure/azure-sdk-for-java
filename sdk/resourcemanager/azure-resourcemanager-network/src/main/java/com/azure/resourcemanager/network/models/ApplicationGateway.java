@@ -405,7 +405,7 @@ public interface ApplicationGateway
         interface WithWebApplicationFirewall {
 
             /**
-             * Specifies webApplicationFirewallConfiguration with default values.
+             * Specifies webApplicationFirewallConfiguration with default values. WebApplicationFirewall is required if selected tier is 'WAF_v2'
              *
              * @param enabled enable the firewall when created
              * @param mode Web application firewall mode.

@@ -24,61 +24,52 @@ public final class DataCenterResourceProperties {
     private String dataCenterLocation;
 
     /*
-     * Resource id of a subnet the nodes in this data center should have their
-     * network interfaces connected to. The subnet must be in the same region
-     * specified in 'dataCenterLocation' and must be able to route to the
-     * subnet specified in the cluster's 'delegatedManagementSubnetId'
-     * property. This resource id will be of the form
+     * Resource id of a subnet the nodes in this data center should have their network interfaces connected to. The
+     * subnet must be in the same region specified in 'dataCenterLocation' and must be able to route to the subnet
+     * specified in the cluster's 'delegatedManagementSubnetId' property. This resource id will be of the form
      * '/subscriptions/<subscription id>/resourceGroups/<resource
-     * group>/providers/Microsoft.Network/virtualNetworks/<virtual
-     * network>/subnets/<subnet>'.
+     * group>/providers/Microsoft.Network/virtualNetworks/<virtual network>/subnets/<subnet>'.
      */
     @JsonProperty(value = "delegatedSubnetId")
     private String delegatedSubnetId;
 
     /*
-     * The number of nodes the data center should have. This is the desired
-     * number. After it is set, it may take some time for the data center to be
-     * scaled to match. To monitor the number of nodes and their status, use
-     * the fetchNodeStatus method on the cluster.
+     * The number of nodes the data center should have. This is the desired number. After it is set, it may take some
+     * time for the data center to be scaled to match. To monitor the number of nodes and their status, use the
+     * fetchNodeStatus method on the cluster.
      */
     @JsonProperty(value = "nodeCount")
     private Integer nodeCount;
 
     /*
-     * IP addresses for seed nodes in this data center. This is for reference.
-     * Generally you will want to use the seedNodes property on the cluster,
-     * which aggregates the seed nodes from all data centers in the cluster.
+     * IP addresses for seed nodes in this data center. This is for reference. Generally you will want to use the
+     * seedNodes property on the cluster, which aggregates the seed nodes from all data centers in the cluster.
      */
     @JsonProperty(value = "seedNodes", access = JsonProperty.Access.WRITE_ONLY)
     private List<SeedNode> seedNodes;
 
     /*
-     * A fragment of a cassandra.yaml configuration file to be included in the
-     * cassandra.yaml for all nodes in this data center. The fragment should be
-     * Base64 encoded, and only a subset of keys are allowed.
+     * A fragment of a cassandra.yaml configuration file to be included in the cassandra.yaml for all nodes in this
+     * data center. The fragment should be Base64 encoded, and only a subset of keys are allowed.
      */
     @JsonProperty(value = "base64EncodedCassandraYamlFragment")
     private String base64EncodedCassandraYamlFragment;
 
     /*
-     * Key uri to use for encryption of managed disks. Ensure the system
-     * assigned identity of the cluster has been assigned appropriate
-     * permissions(key get/wrap/unwrap permissions) on the key.
+     * Key uri to use for encryption of managed disks. Ensure the system assigned identity of the cluster has been
+     * assigned appropriate permissions(key get/wrap/unwrap permissions) on the key.
      */
     @JsonProperty(value = "managedDiskCustomerKeyUri")
     private String managedDiskCustomerKeyUri;
 
     /*
-     * Indicates the Key Uri of the customer key to use for encryption of the
-     * backup storage account.
+     * Indicates the Key Uri of the customer key to use for encryption of the backup storage account.
      */
     @JsonProperty(value = "backupStorageCustomerKeyUri")
     private String backupStorageCustomerKeyUri;
 
     /*
-     * Virtual Machine SKU used for data centers. Default value is
-     * Standard_DS14_v2
+     * Virtual Machine SKU used for data centers. Default value is Standard_DS14_v2
      */
     @JsonProperty(value = "sku")
     private String sku;
@@ -96,12 +87,15 @@ public final class DataCenterResourceProperties {
     private Integer diskCapacity;
 
     /*
-     * If the azure data center has Availability Zone support, apply it to the
-     * Virtual Machine ScaleSet that host the cassandra data center virtual
-     * machines.
+     * If the azure data center has Availability Zone support, apply it to the Virtual Machine ScaleSet that host the
+     * cassandra data center virtual machines.
      */
     @JsonProperty(value = "availabilityZone")
     private Boolean availabilityZone;
+
+    /** Creates an instance of DataCenterResourceProperties class. */
+    public DataCenterResourceProperties() {
+    }
 
     /**
      * Get the provisioningState property: The status of the resource at the time the operation was called.

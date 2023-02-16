@@ -16,13 +16,15 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.data.tables.implementation.models.ServicesGetPropertiesResponse;
-import com.azure.data.tables.implementation.models.ServicesGetStatisticsResponse;
-import com.azure.data.tables.implementation.models.ServicesSetPropertiesResponse;
+import com.azure.data.tables.implementation.models.ServicesGetPropertiesHeaders;
+import com.azure.data.tables.implementation.models.ServicesGetStatisticsHeaders;
+import com.azure.data.tables.implementation.models.ServicesSetPropertiesHeaders;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TableServiceProperties;
+import com.azure.data.tables.implementation.models.TableServiceStats;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Services. */
@@ -53,7 +55,7 @@ public final class ServicesImpl {
         @Put("/")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ServicesSetPropertiesResponse> setProperties(
+        Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -67,7 +69,7 @@ public final class ServicesImpl {
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ServicesGetPropertiesResponse> getProperties(
+        Mono<ResponseBase<ServicesGetPropertiesHeaders, TableServiceProperties>> getProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -80,7 +82,7 @@ public final class ServicesImpl {
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ServicesGetStatisticsResponse> getStatistics(
+        Mono<ResponseBase<ServicesGetStatisticsHeaders, TableServiceStats>> getStatistics(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -103,10 +105,10 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithResponseAsync(
+    public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
             TableServiceProperties tableServiceProperties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
@@ -135,10 +137,10 @@ public final class ServicesImpl {
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
-     *     Resource Sharing) rules.
+     *     Resource Sharing) rules along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesGetPropertiesResponse> getPropertiesWithResponseAsync(
+    public Mono<ResponseBase<ServicesGetPropertiesHeaders, TableServiceProperties>> getPropertiesWithResponseAsync(
             Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
@@ -158,10 +160,10 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the service.
+     * @return stats for the service along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesGetStatisticsResponse> getStatisticsWithResponseAsync(
+    public Mono<ResponseBase<ServicesGetStatisticsHeaders, TableServiceStats>> getStatisticsWithResponseAsync(
             Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";

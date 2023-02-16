@@ -12,19 +12,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MongoDbAtlasLinkedServiceTypeProperties {
     /*
-     * The MongoDB Atlas connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The MongoDB Atlas connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the MongoDB Atlas database that you want to access. Type:
-     * string (or Expression with resultType string).
+     * The name of the MongoDB Atlas database that you want to access. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "database", required = true)
     private Object database;
+
+    /** Creates an instance of MongoDbAtlasLinkedServiceTypeProperties class. */
+    public MongoDbAtlasLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or

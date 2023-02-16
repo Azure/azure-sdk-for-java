@@ -22,8 +22,7 @@ public final class MicrosoftGraphFolderView {
     private String sortBy;
 
     /*
-     * If true, indicates that items should be sorted in descending order.
-     * Otherwise, items should be sorted ascending.
+     * If true, indicates that items should be sorted in descending order. Otherwise, items should be sorted ascending.
      */
     @JsonProperty(value = "sortOrder")
     private String sortOrder;
@@ -38,6 +37,10 @@ public final class MicrosoftGraphFolderView {
      * folderView
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphFolderView class. */
+    public MicrosoftGraphFolderView() {
+    }
 
     /**
      * Get the sortBy property: The method by which the folder should be sorted.

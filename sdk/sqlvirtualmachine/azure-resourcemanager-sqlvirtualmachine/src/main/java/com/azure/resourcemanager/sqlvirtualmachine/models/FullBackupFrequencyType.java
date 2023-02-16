@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FullBackupFrequencyType. */
+/** Frequency of full backups. In both cases, full backups begin during the next scheduled time window. */
 public final class FullBackupFrequencyType extends ExpandableStringEnum<FullBackupFrequencyType> {
     /** Static value Daily for FullBackupFrequencyType. */
     public static final FullBackupFrequencyType DAILY = fromString("Daily");
@@ -27,7 +27,11 @@ public final class FullBackupFrequencyType extends ExpandableStringEnum<FullBack
         return fromString(name, FullBackupFrequencyType.class);
     }
 
-    /** @return known FullBackupFrequencyType values. */
+    /**
+     * Gets known FullBackupFrequencyType values.
+     *
+     * @return known FullBackupFrequencyType values.
+     */
     public static Collection<FullBackupFrequencyType> values() {
         return values(FullBackupFrequencyType.class);
     }

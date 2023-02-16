@@ -3,27 +3,26 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.models.FeedResponse;
-import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 
 /**
  * Represents the context passed to {@link ChangeFeedObserver} events.
  */
-public interface ChangeFeedObserverContext {
+public interface ChangeFeedObserverContext<T> {
 
     /**
-     * Gets the id of the partition for the current event.
+     * Gets the lease token
      *
-     * @return the id of the partition for the current event.
+     * @return the lease token.
      */
-    String getPartitionKeyRangeId();
+    String getLeaseToken();
 
     /**
      * Gets the response from the underlying call.
      *
      * @return the response from the underlying call.
      */
-    FeedResponse<JsonNode> getFeedResponse();
+    FeedResponse<T> getFeedResponse();
 
     /**
      * Checkpoints progress of a stream. This method is valid only if manual checkpoint was configured.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource identifiers for a policy. */
 @Immutable
 public final class PolicyReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyReference.class);
-
     /*
      * The resource identifier of the policy definition.
      */
@@ -27,8 +23,7 @@ public final class PolicyReference {
     private String policySetDefinitionId;
 
     /*
-     * The reference identifier of a specific policy definition within a policy
-     * set definition.
+     * The reference identifier of a specific policy definition within a policy set definition.
      */
     @JsonProperty(value = "policyDefinitionReferenceId", access = JsonProperty.Access.WRITE_ONLY)
     private String policyDefinitionReferenceId;
@@ -38,6 +33,10 @@ public final class PolicyReference {
      */
     @JsonProperty(value = "policyAssignmentId", access = JsonProperty.Access.WRITE_ONLY)
     private String policyAssignmentId;
+
+    /** Creates an instance of PolicyReference class. */
+    public PolicyReference() {
+    }
 
     /**
      * Get the policyDefinitionId property: The resource identifier of the policy definition.

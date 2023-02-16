@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PcStatus. */
+/** The status of the packet capture session. */
 public final class PcStatus extends ExpandableStringEnum<PcStatus> {
     /** Static value NotStarted for PcStatus. */
     public static final PcStatus NOT_STARTED = fromString("NotStarted");

@@ -80,6 +80,27 @@ public interface ContainerAppsApiClient {
     DaprComponentsClient getDaprComponents();
 
     /**
+     * Gets the ContainerAppsDiagnosticsClient object to access its operations.
+     *
+     * @return the ContainerAppsDiagnosticsClient object.
+     */
+    ContainerAppsDiagnosticsClient getContainerAppsDiagnostics();
+
+    /**
+     * Gets the ManagedEnvironmentDiagnosticsClient object to access its operations.
+     *
+     * @return the ManagedEnvironmentDiagnosticsClient object.
+     */
+    ManagedEnvironmentDiagnosticsClient getManagedEnvironmentDiagnostics();
+
+    /**
+     * Gets the ManagedEnvironmentsDiagnosticsClient object to access its operations.
+     *
+     * @return the ManagedEnvironmentsDiagnosticsClient object.
+     */
+    ManagedEnvironmentsDiagnosticsClient getManagedEnvironmentsDiagnostics();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -120,4 +141,46 @@ public interface ContainerAppsApiClient {
      * @return the ContainerAppsSourceControlsClient object.
      */
     ContainerAppsSourceControlsClient getContainerAppsSourceControls();
+
+    /**
+     * Gets the ConnectedEnvironmentsClient object to access its operations.
+     *
+     * @return the ConnectedEnvironmentsClient object.
+     */
+    ConnectedEnvironmentsClient getConnectedEnvironments();
+
+    /**
+     * Gets the ConnectedEnvironmentsCertificatesClient object to access its operations.
+     *
+     * @return the ConnectedEnvironmentsCertificatesClient object.
+     */
+    ConnectedEnvironmentsCertificatesClient getConnectedEnvironmentsCertificates();
+
+    /**
+     * Gets the ConnectedEnvironmentsDaprComponentsClient object to access its operations.
+     *
+     * @return the ConnectedEnvironmentsDaprComponentsClient object.
+     */
+    ConnectedEnvironmentsDaprComponentsClient getConnectedEnvironmentsDaprComponents();
+
+    /**
+     * Gets the ConnectedEnvironmentsStoragesClient object to access its operations.
+     *
+     * @return the ConnectedEnvironmentsStoragesClient object.
+     */
+    ConnectedEnvironmentsStoragesClient getConnectedEnvironmentsStorages();
+
+    /**
+     * Gets the AvailableWorkloadProfilesClient object to access its operations.
+     *
+     * @return the AvailableWorkloadProfilesClient object.
+     */
+    AvailableWorkloadProfilesClient getAvailableWorkloadProfiles();
+
+    /**
+     * Gets the BillingMetersClient object to access its operations.
+     *
+     * @return the BillingMetersClient object.
+     */
+    BillingMetersClient getBillingMeters();
 }

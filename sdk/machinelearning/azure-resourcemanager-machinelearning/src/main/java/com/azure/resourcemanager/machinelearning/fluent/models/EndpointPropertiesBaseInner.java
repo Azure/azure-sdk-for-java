@@ -15,9 +15,8 @@ import java.util.Map;
 @Fluent
 public class EndpointPropertiesBaseInner {
     /*
-     * [Required] Use 'Key' for key based authentication and 'AMLToken' for
-     * Azure Machine Learning token-based authentication. 'Key' doesn't expire
-     * but 'AMLToken' does.
+     * [Required] Use 'Key' for key based authentication and 'AMLToken' for Azure Machine Learning token-based
+     * authentication. 'Key' doesn't expire but 'AMLToken' does.
      */
     @JsonProperty(value = "authMode", required = true)
     private EndpointAuthMode authMode;
@@ -30,15 +29,13 @@ public class EndpointPropertiesBaseInner {
 
     /*
      * EndpointAuthKeys to set initially on an Endpoint.
-     * This property will always be returned as null. AuthKey values must be
-     * retrieved using the ListKeys API.
+     * This property will always be returned as null. AuthKey values must be retrieved using the ListKeys API.
      */
     @JsonProperty(value = "keys")
     private EndpointAuthKeysInner keys;
 
     /*
-     * Property dictionary. Properties can be added, but not removed or
-     * altered.
+     * Property dictionary. Properties can be added, but not removed or altered.
      */
     @JsonProperty(value = "properties")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -55,6 +52,10 @@ public class EndpointPropertiesBaseInner {
      */
     @JsonProperty(value = "swaggerUri", access = JsonProperty.Access.WRITE_ONLY)
     private String swaggerUri;
+
+    /** Creates an instance of EndpointPropertiesBaseInner class. */
+    public EndpointPropertiesBaseInner() {
+    }
 
     /**
      * Get the authMode property: [Required] Use 'Key' for key based authentication and 'AMLToken' for Azure Machine

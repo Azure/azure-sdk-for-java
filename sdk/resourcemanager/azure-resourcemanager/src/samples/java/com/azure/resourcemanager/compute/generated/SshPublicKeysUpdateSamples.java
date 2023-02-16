@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.SshPublicKeyUpdateResource;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for SshPublicKeys Update. */
 public final class SshPublicKeysUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKeys_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKeys_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_Update_MaximumSet_Gen.
@@ -28,12 +27,12 @@ public final class SshPublicKeysUpdateSamples {
             .updateWithResponse(
                 "rgcompute",
                 "aaaaaaaaaaaa",
-                new SshPublicKeyUpdateResource().withTags(mapOf("key2854", "a")).withPublicKey("{ssh-rsa public key}"),
-                Context.NONE);
+                new SshPublicKeyUpdateResource().withTags(mapOf("key2854", "a")).withPublicKey("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKeys_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKeys_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_Update_MinimumSet_Gen.
@@ -46,7 +45,8 @@ public final class SshPublicKeysUpdateSamples {
             .manager()
             .serviceClient()
             .getSshPublicKeys()
-            .updateWithResponse("rgcompute", "aaaaaaaaaaa", new SshPublicKeyUpdateResource(), Context.NONE);
+            .updateWithResponse(
+                "rgcompute", "aaaaaaaaaaa", new SshPublicKeyUpdateResource(), com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

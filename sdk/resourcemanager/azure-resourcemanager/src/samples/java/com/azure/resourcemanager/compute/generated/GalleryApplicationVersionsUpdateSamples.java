@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPublishingProfile;
+import com.azure.resourcemanager.compute.models.GalleryApplicationVersionSafetyProfile;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionUpdate;
 import com.azure.resourcemanager.compute.models.StorageAccountType;
 import com.azure.resourcemanager.compute.models.TargetRegion;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 /** Samples for GalleryApplicationVersions Update. */
 public final class GalleryApplicationVersionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplicationVersion_Update.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplicationVersion_Update.json
      */
     /**
      * Sample code: Update a simple gallery Application Version.
@@ -44,7 +44,8 @@ public final class GalleryApplicationVersionsUpdateSamples {
                                         new TargetRegion()
                                             .withName("West US")
                                             .withRegionalReplicaCount(1)
-                                            .withStorageAccountType(StorageAccountType.STANDARD_LRS)))
+                                            .withStorageAccountType(StorageAccountType.STANDARD_LRS)
+                                            .withExcludeFromLatest(false)))
                             .withReplicaCount(1)
                             .withEndOfLifeDate(OffsetDateTime.parse("2019-07-01T07:00:00Z"))
                             .withStorageAccountType(StorageAccountType.STANDARD_LRS)
@@ -57,7 +58,9 @@ public final class GalleryApplicationVersionsUpdateSamples {
                                     .withInstall(
                                         "powershell -command \"Expand-Archive -Path package.zip -DestinationPath"
                                             + " C:\\package\"")
-                                    .withRemove("del C:\\package "))),
-                Context.NONE);
+                                    .withRemove("del C:\\package ")))
+                    .withSafetyProfile(
+                        new GalleryApplicationVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
+                com.azure.core.util.Context.NONE);
     }
 }

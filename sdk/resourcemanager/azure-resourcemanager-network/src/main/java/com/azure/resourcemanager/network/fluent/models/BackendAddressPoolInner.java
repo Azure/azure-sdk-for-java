@@ -22,9 +22,8 @@ public final class BackendAddressPoolInner extends SubResource {
     private BackendAddressPoolPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of backend
-     * address pools used by the load balancer. This name can be used to access
-     * the resource.
+     * The name of the resource that is unique within the set of backend address pools used by the load balancer. This
+     * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,6 +39,10 @@ public final class BackendAddressPoolInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of BackendAddressPoolInner class. */
+    public BackendAddressPoolInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of load balancer backend address pool.
@@ -244,6 +247,29 @@ public final class BackendAddressPoolInner extends SubResource {
             this.innerProperties = new BackendAddressPoolPropertiesFormat();
         }
         this.innerProperties().withDrainPeriodInSeconds(drainPeriodInSeconds);
+        return this;
+    }
+
+    /**
+     * Get the virtualNetwork property: A reference to a virtual network.
+     *
+     * @return the virtualNetwork value.
+     */
+    public SubResource virtualNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetwork();
+    }
+
+    /**
+     * Set the virtualNetwork property: A reference to a virtual network.
+     *
+     * @param virtualNetwork the virtualNetwork value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withVirtualNetwork(SubResource virtualNetwork) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendAddressPoolPropertiesFormat();
+        }
+        this.innerProperties().withVirtualNetwork(virtualNetwork);
         return this;
     }
 

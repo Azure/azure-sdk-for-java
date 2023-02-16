@@ -5,110 +5,31 @@
 package com.azure.resourcemanager.deploymentmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deploymentmanager.models.Authentication;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The resource that defines the source location where the artifacts are located. */
-@JsonFlatten
 @Fluent
-public class ArtifactSourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArtifactSourceInner.class);
-
+public final class ArtifactSourceInner extends Resource {
     /*
-     * The type of artifact source used.
+     * The properties that define the artifact source.
      */
-    @JsonProperty(value = "properties.sourceType")
-    private String sourceType;
+    @JsonProperty(value = "properties")
+    private ArtifactSourceProperties innerProperties;
 
-    /*
-     * The path from the location that the 'authentication' property [say, a
-     * SAS URI to the blob container] refers to, to the location of the
-     * artifacts. This can be used to differentiate different versions of the
-     * artifacts. Or, different types of artifacts like binaries or templates.
-     * The location referenced by the authentication property concatenated with
-     * this optional artifactRoot path forms the artifact source location where
-     * the artifacts are expected to be found.
-     */
-    @JsonProperty(value = "properties.artifactRoot")
-    private String artifactRoot;
-
-    /*
-     * The authentication method to use to access the artifact source.
-     */
-    @JsonProperty(value = "properties.authentication")
-    private Authentication authentication;
-
-    /**
-     * Get the sourceType property: The type of artifact source used.
-     *
-     * @return the sourceType value.
-     */
-    public String sourceType() {
-        return this.sourceType;
+    /** Creates an instance of ArtifactSourceInner class. */
+    public ArtifactSourceInner() {
     }
 
     /**
-     * Set the sourceType property: The type of artifact source used.
+     * Get the innerProperties property: The properties that define the artifact source.
      *
-     * @param sourceType the sourceType value to set.
-     * @return the ArtifactSourceInner object itself.
+     * @return the innerProperties value.
      */
-    public ArtifactSourceInner withSourceType(String sourceType) {
-        this.sourceType = sourceType;
-        return this;
-    }
-
-    /**
-     * Get the artifactRoot property: The path from the location that the 'authentication' property [say, a SAS URI to
-     * the blob container] refers to, to the location of the artifacts. This can be used to differentiate different
-     * versions of the artifacts. Or, different types of artifacts like binaries or templates. The location referenced
-     * by the authentication property concatenated with this optional artifactRoot path forms the artifact source
-     * location where the artifacts are expected to be found.
-     *
-     * @return the artifactRoot value.
-     */
-    public String artifactRoot() {
-        return this.artifactRoot;
-    }
-
-    /**
-     * Set the artifactRoot property: The path from the location that the 'authentication' property [say, a SAS URI to
-     * the blob container] refers to, to the location of the artifacts. This can be used to differentiate different
-     * versions of the artifacts. Or, different types of artifacts like binaries or templates. The location referenced
-     * by the authentication property concatenated with this optional artifactRoot path forms the artifact source
-     * location where the artifacts are expected to be found.
-     *
-     * @param artifactRoot the artifactRoot value to set.
-     * @return the ArtifactSourceInner object itself.
-     */
-    public ArtifactSourceInner withArtifactRoot(String artifactRoot) {
-        this.artifactRoot = artifactRoot;
-        return this;
-    }
-
-    /**
-     * Get the authentication property: The authentication method to use to access the artifact source.
-     *
-     * @return the authentication value.
-     */
-    public Authentication authentication() {
-        return this.authentication;
-    }
-
-    /**
-     * Set the authentication property: The authentication method to use to access the artifact source.
-     *
-     * @param authentication the authentication value to set.
-     * @return the ArtifactSourceInner object itself.
-     */
-    public ArtifactSourceInner withAuthentication(Authentication authentication) {
-        this.authentication = authentication;
-        return this;
+    private ArtifactSourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -126,13 +47,90 @@ public class ArtifactSourceInner extends Resource {
     }
 
     /**
+     * Get the sourceType property: The type of artifact source used.
+     *
+     * @return the sourceType value.
+     */
+    public String sourceType() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceType();
+    }
+
+    /**
+     * Set the sourceType property: The type of artifact source used.
+     *
+     * @param sourceType the sourceType value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withSourceType(String sourceType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withSourceType(sourceType);
+        return this;
+    }
+
+    /**
+     * Get the artifactRoot property: The path from the location that the 'authentication' property [say, a SAS URI to
+     * the blob container] refers to, to the location of the artifacts. This can be used to differentiate different
+     * versions of the artifacts. Or, different types of artifacts like binaries or templates. The location referenced
+     * by the authentication property concatenated with this optional artifactRoot path forms the artifact source
+     * location where the artifacts are expected to be found.
+     *
+     * @return the artifactRoot value.
+     */
+    public String artifactRoot() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifactRoot();
+    }
+
+    /**
+     * Set the artifactRoot property: The path from the location that the 'authentication' property [say, a SAS URI to
+     * the blob container] refers to, to the location of the artifacts. This can be used to differentiate different
+     * versions of the artifacts. Or, different types of artifacts like binaries or templates. The location referenced
+     * by the authentication property concatenated with this optional artifactRoot path forms the artifact source
+     * location where the artifacts are expected to be found.
+     *
+     * @param artifactRoot the artifactRoot value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withArtifactRoot(String artifactRoot) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withArtifactRoot(artifactRoot);
+        return this;
+    }
+
+    /**
+     * Get the authentication property: The authentication method to use to access the artifact source.
+     *
+     * @return the authentication value.
+     */
+    public Authentication authentication() {
+        return this.innerProperties() == null ? null : this.innerProperties().authentication();
+    }
+
+    /**
+     * Set the authentication property: The authentication method to use to access the artifact source.
+     *
+     * @param authentication the authentication value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withAuthentication(Authentication authentication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withAuthentication(authentication);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (authentication() != null) {
-            authentication().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

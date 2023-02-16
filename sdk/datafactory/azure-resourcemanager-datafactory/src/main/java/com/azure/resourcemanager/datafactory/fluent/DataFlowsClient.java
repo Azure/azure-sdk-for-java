@@ -20,22 +20,6 @@ public interface DataFlowsClient {
      * @param factoryName The factory name.
      * @param dataFlowName The data flow name.
      * @param dataFlow Data flow resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data flow resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataFlowResourceInner createOrUpdate(
-        String resourceGroupName, String factoryName, String dataFlowName, DataFlowResourceInner dataFlow);
-
-    /**
-     * Creates or updates a data flow.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param dataFlowName The data flow name.
-     * @param dataFlow Data flow resource definition.
      * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -54,18 +38,20 @@ public interface DataFlowsClient {
         Context context);
 
     /**
-     * Gets a data flow.
+     * Creates or updates a data flow.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param dataFlowName The data flow name.
+     * @param dataFlow Data flow resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
+     * @return data flow resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataFlowResourceInner get(String resourceGroupName, String factoryName, String dataFlowName);
+    DataFlowResourceInner createOrUpdate(
+        String resourceGroupName, String factoryName, String dataFlowName, DataFlowResourceInner dataFlow);
 
     /**
      * Gets a data flow.
@@ -86,7 +72,7 @@ public interface DataFlowsClient {
         String resourceGroupName, String factoryName, String dataFlowName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a data flow.
+     * Gets a data flow.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -94,9 +80,10 @@ public interface DataFlowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data flow.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String factoryName, String dataFlowName);
+    DataFlowResourceInner get(String resourceGroupName, String factoryName, String dataFlowName);
 
     /**
      * Deletes a data flow.
@@ -113,6 +100,19 @@ public interface DataFlowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String dataFlowName, Context context);
+
+    /**
+     * Deletes a data flow.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param dataFlowName The data flow name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String factoryName, String dataFlowName);
 
     /**
      * Lists data flows.

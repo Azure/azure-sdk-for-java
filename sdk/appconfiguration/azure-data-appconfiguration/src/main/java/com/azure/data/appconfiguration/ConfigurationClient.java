@@ -12,8 +12,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.data.appconfiguration.implementation.ConfigurationService;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
+import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -41,18 +41,32 @@ import java.time.OffsetDateTime;
  *
  * @see ConfigurationClientBuilder
  */
-@ServiceClient(builder = ConfigurationClientBuilder.class, serviceInterfaces = ConfigurationService.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class,
+    serviceInterfaces = ConfigurationClientImpl.ConfigurationService.class)
 public final class ConfigurationClient {
-    private final ConfigurationAsyncClient client;
+    private final ConfigurationClientImpl serviceClient;
+    private final SyncTokenPolicy syncTokenPolicy;
 
     /**
      * Creates a ConfigurationClient that sends requests to the configuration service at {@code serviceEndpoint}. Each
      * service call goes through the {@code pipeline}.
      *
-     * @param client The {@link ConfigurationAsyncClient} that the client routes its request through.
+     * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
+     * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
+     * service requests receive up-to-date values.
      */
-    ConfigurationClient(ConfigurationAsyncClient client) {
-        this.client = client;
+    ConfigurationClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
+        this.serviceClient = serviceClient;
+        this.syncTokenPolicy = syncTokenPolicy;
+    }
+
+    /**
+     * Gets the service endpoint for the Azure App Configuration instance.
+     *
+     * @return the service endpoint for the Azure App Configuration instance.
+     */
+    public String getEndpoint() {
+        return serviceClient.getEndpoint();
     }
 
     /**
@@ -156,7 +170,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               Context context) {
-        return client.addConfigurationSetting(setting, context).block();
+        return serviceClient.addConfigurationSettingWithResponse(setting, context);
     }
 
     /**
@@ -274,7 +288,7 @@ public final class ConfigurationClient {
      * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
      *
      * @param setting The setting to create or update based on its key, optional label and optional ETag combination.
-     * @param ifUnchanged A boolean indicates if {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
+     * @param ifUnchanged A boolean indicates if {@code setting} {@link ConfigurationSetting#getETag ETag} is used as an
      * IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response contains the {@link ConfigurationSetting} that was created or updated, or {@code null},
@@ -291,7 +305,7 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               boolean ifUnchanged,
                                                                               Context context) {
-        return client.setConfigurationSetting(setting, ifUnchanged, context).block();
+        return serviceClient.setConfigurationSettingWithResponse(setting, ifUnchanged, context);
     }
 
     /**
@@ -350,9 +364,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getConfigurationSetting(String key, String label, OffsetDateTime acceptDateTime) {
-        return client.getConfigurationSetting(
+        return serviceClient.getConfigurationSettingWithResponse(
             new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime, false, Context.NONE)
-            .flatMap(FluxUtil::toMono).block();
+            .getValue();
     }
 
     /**
@@ -414,7 +428,7 @@ public final class ConfigurationClient {
      * @param setting The setting to retrieve.
      * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null}
      * then the current state of the configuration setting will be returned.
-     * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
+     * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as an
      * If-None-Match header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response contains the {@link ConfigurationSetting} stored in the service, or {@code null}, if the
@@ -428,7 +442,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
-        return client.getConfigurationSetting(setting, acceptDateTime, ifChanged, context).block();
+        return serviceClient.getConfigurationSettingWithResponse(setting, acceptDateTime, ifChanged, context);
     }
 
     /**
@@ -521,7 +535,7 @@ public final class ConfigurationClient {
      * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
      *
      * @param setting The setting to delete based on its key, optional label and optional ETag combination.
-     * @param ifUnchanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
+     * @param ifUnchanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as an
      * IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
@@ -538,7 +552,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
-        return client.deleteConfigurationSetting(setting, ifUnchanged, context).block();
+        return serviceClient.deleteConfigurationSettingWithResponse(setting, ifUnchanged, context);
     }
 
     /**
@@ -670,7 +684,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, boolean isReadOnly,
                                                                   Context context) {
-        return client.setReadOnly(setting, isReadOnly, context).block();
+        return serviceClient.setReadOnlyWithResponse(setting, isReadOnly, context);
     }
 
     /**
@@ -721,12 +735,12 @@ public final class ConfigurationClient {
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
-     * provided, the {@link PagedIterable} contains all of the current settings in the service.
+     * provided, the {@link PagedIterable} contains all the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
-        return new PagedIterable<>(client.listConfigurationSettings(selector, context));
+        return serviceClient.listConfigurationSettings(selector, context);
     }
 
     /**
@@ -795,7 +809,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
-        return new PagedIterable<>(client.listRevisions(selector, context));
+        return serviceClient.listRevisions(selector, context);
     }
 
     /**
@@ -805,6 +819,6 @@ public final class ConfigurationClient {
      * @throws NullPointerException if the given token is null.
      */
     public void updateSyncToken(String token) {
-        client.updateSyncToken(token);
+        syncTokenPolicy.updateSyncToken(token);
     }
 }

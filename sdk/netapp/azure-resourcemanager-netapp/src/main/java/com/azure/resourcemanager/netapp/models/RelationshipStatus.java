@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RelationshipStatus. */
+/** Status of the mirror relationship. */
 public final class RelationshipStatus extends ExpandableStringEnum<RelationshipStatus> {
     /** Static value Idle for RelationshipStatus. */
     public static final RelationshipStatus IDLE = fromString("Idle");

@@ -9,13 +9,8 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.exception.AzureException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -23,34 +18,16 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 class ActiveClientTokenManagerTest {
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
     private static final String AUDIENCE = "an-audience-test";
     private static final String SCOPES = "scopes-test";
-    private static final Duration DEFAULT_DURATION = Duration.ofSeconds(20);
-
-    @Mock
-    private ClaimsBasedSecurityNode cbsNode;
-    private AutoCloseable mocksCloseable;
-
-    @BeforeEach
-    void setup() {
-        mocksCloseable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void teardown() throws Exception {
-        Mockito.framework().clearInlineMock(this);
-
-        if (mocksCloseable != null) {
-            mocksCloseable.close();
-        }
-    }
+    private static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
 
     /**
      * Verify that we can get successes and errors from CBS node.
@@ -58,8 +35,8 @@ class ActiveClientTokenManagerTest {
     @Test
     void getAuthorizationResults() {
         // Arrange
+        ClaimsBasedSecurityNode cbsNode = new MockClaimsBasedSecurityNode(() -> getNextExpiration(DEFAULT_DURATION));
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(DEFAULT_DURATION));
 
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
@@ -78,17 +55,15 @@ class ActiveClientTokenManagerTest {
     @Test
     void getAuthorizationResultsSuccessFailure() {
         // Arrange
-        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        final IllegalArgumentException error = new IllegalArgumentException("Some error");
         final AtomicBoolean returnError = new AtomicBoolean(false);
-
-        when(cbsNode.authorize(any(), any())).thenAnswer(invocationOnMock -> {
+        ClaimsBasedSecurityNode cbsNode = new MockClaimsBasedSecurityNode(() -> {
             if (returnError.get()) {
-                return Mono.error(error);
+                return Mono.error(new IllegalArgumentException("Some error"));
             } else {
                 return Mono.just(OffsetDateTime.now(ZoneOffset.UTC).plus(DEFAULT_DURATION));
             }
         });
+        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
 
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
@@ -108,8 +83,8 @@ class ActiveClientTokenManagerTest {
     @Test
     void cannotAuthorizeDisposedInstance() {
         // Arrange
+        ClaimsBasedSecurityNode cbsNode = new MockClaimsBasedSecurityNode(() -> getNextExpiration(DEFAULT_DURATION));
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(DEFAULT_DURATION));
 
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
         tokenManager.authorize().then(Mono.fromRunnable(tokenManager::close)).block();
@@ -123,16 +98,22 @@ class ActiveClientTokenManagerTest {
     /**
      * Verify that the ActiveClientTokenManager reschedules the authorization task.
      */
-    @SuppressWarnings("unchecked")
     @Test
     void getAuthorizationResultsRetriableError() {
         // Arrange
-        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
         final AmqpException error = new AmqpException(true, AmqpErrorCondition.ARGUMENT_ERROR,
             "Retryable argument error", new AmqpErrorContext("Test-context-namespace"));
 
-        when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(DEFAULT_DURATION), Mono.error(error),
-            getNextExpiration(DEFAULT_DURATION));
+        AtomicInteger authorizationCalls = new AtomicInteger();
+        ClaimsBasedSecurityNode cbsNode = new MockClaimsBasedSecurityNode(() -> {
+            switch (authorizationCalls.getAndIncrement()) {
+                case 0: return getNextExpiration(DEFAULT_DURATION);
+                case 1: return Mono.error(error);
+                case 2: return getNextExpiration(DEFAULT_DURATION);
+                default: return Mono.error(new IllegalStateException("Too many authorization requests"));
+            }
+        });
+        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
 
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
@@ -150,16 +131,22 @@ class ActiveClientTokenManagerTest {
     /**
      * Verify that the ActiveClientTokenManager does not get more authorization tasks.
      */
-    @SuppressWarnings("unchecked")
     @Test
     void getAuthorizationResultsNonRetriableError() {
         // Arrange
-        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
         final AmqpException error = new AmqpException(false, AmqpErrorCondition.TIMEOUT_ERROR, "Test CBS node error.",
             new AmqpErrorContext("Test-context-namespace"));
 
-        when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(DEFAULT_DURATION), Mono.error(error),
-            getNextExpiration(DEFAULT_DURATION));
+        AtomicInteger authorizationCalls = new AtomicInteger();
+        ClaimsBasedSecurityNode cbsNode = new MockClaimsBasedSecurityNode(() -> {
+            switch (authorizationCalls.getAndIncrement()) {
+                case 0: return getNextExpiration(DEFAULT_DURATION);
+                case 1: return Mono.error(error);
+                case 2: return getNextExpiration(DEFAULT_DURATION);
+                default: return Mono.error(new IllegalStateException("Too many authorization requests"));
+            }
+        });
+        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
 
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
@@ -175,5 +162,23 @@ class ActiveClientTokenManagerTest {
 
     private Mono<OffsetDateTime> getNextExpiration(Duration duration) {
         return Mono.fromCallable(() -> OffsetDateTime.now(ZoneOffset.UTC).plus(duration));
+    }
+
+    private static final class MockClaimsBasedSecurityNode implements ClaimsBasedSecurityNode {
+        private final Supplier<Mono<OffsetDateTime>> authorizationSupplier;
+
+        MockClaimsBasedSecurityNode(Supplier<Mono<OffsetDateTime>> authorizationSupplier) {
+            this.authorizationSupplier = authorizationSupplier;
+        }
+
+        @Override
+        public Mono<OffsetDateTime> authorize(String audience, String scopes) {
+            return authorizationSupplier.get();
+        }
+
+        @Override
+        public void close() {
+            // no-op
+        }
     }
 }

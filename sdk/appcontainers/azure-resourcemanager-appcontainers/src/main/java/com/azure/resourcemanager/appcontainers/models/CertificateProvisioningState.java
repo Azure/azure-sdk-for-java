@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificateProvisioningState. */
+/** Provisioning state of the certificate. */
 public final class CertificateProvisioningState extends ExpandableStringEnum<CertificateProvisioningState> {
     /** Static value Succeeded for CertificateProvisioningState. */
     public static final CertificateProvisioningState SUCCEEDED = fromString("Succeeded");

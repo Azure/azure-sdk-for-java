@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IncidentLabelType. */
+/** The type of the label. */
 public final class IncidentLabelType extends ExpandableStringEnum<IncidentLabelType> {
     /** Static value User for IncidentLabelType. */
     public static final IncidentLabelType USER = fromString("User");

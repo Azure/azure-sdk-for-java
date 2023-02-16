@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CommunicationServices ListKeys. */
 public final class CommunicationServicesListKeysSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/communicationServices/listKeys.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/communicationServices/listKeys.json
      */
     /**
      * Sample code: List keys.

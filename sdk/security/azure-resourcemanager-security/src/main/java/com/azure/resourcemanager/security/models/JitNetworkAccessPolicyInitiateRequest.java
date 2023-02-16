@@ -6,15 +6,12 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JitNetworkAccessPolicyInitiateRequest model. */
 @Fluent
 public final class JitNetworkAccessPolicyInitiateRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JitNetworkAccessPolicyInitiateRequest.class);
-
     /*
      * A list of virtual machines & ports to open access for
      */
@@ -26,6 +23,10 @@ public final class JitNetworkAccessPolicyInitiateRequest {
      */
     @JsonProperty(value = "justification")
     private String justification;
+
+    /** Creates an instance of JitNetworkAccessPolicyInitiateRequest class. */
+    public JitNetworkAccessPolicyInitiateRequest() {
+    }
 
     /**
      * Get the virtualMachines property: A list of virtual machines &amp; ports to open access for.
@@ -75,7 +76,7 @@ public final class JitNetworkAccessPolicyInitiateRequest {
      */
     public void validate() {
         if (virtualMachines() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property virtualMachines in model JitNetworkAccessPolicyInitiateRequest"));
@@ -83,4 +84,6 @@ public final class JitNetworkAccessPolicyInitiateRequest {
             virtualMachines().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessPolicyInitiateRequest.class);
 }

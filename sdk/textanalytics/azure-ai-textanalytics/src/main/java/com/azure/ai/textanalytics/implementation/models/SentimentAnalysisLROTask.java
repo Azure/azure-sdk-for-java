@@ -20,6 +20,9 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private SentimentAnalysisTaskParameters parameters;
 
+    /** Creates an instance of SentimentAnalysisLROTask class. */
+    public SentimentAnalysisLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for a Sentiment Analysis task.
      *
@@ -37,6 +40,13 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
      */
     public SentimentAnalysisLROTask setParameters(SentimentAnalysisTaskParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentAnalysisLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
         return this;
     }
 }

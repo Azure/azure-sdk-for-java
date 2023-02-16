@@ -17,6 +17,10 @@ public final class OperationPropertiesFormat {
     @JsonProperty(value = "serviceSpecification")
     private OperationPropertiesFormatServiceSpecification serviceSpecification;
 
+    /** Creates an instance of OperationPropertiesFormat class. */
+    public OperationPropertiesFormat() {
+    }
+
     /**
      * Get the serviceSpecification property: Specification of the service.
      *

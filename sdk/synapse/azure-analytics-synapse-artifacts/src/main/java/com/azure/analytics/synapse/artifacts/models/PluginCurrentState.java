@@ -42,7 +42,11 @@ public final class PluginCurrentState extends ExpandableStringEnum<PluginCurrent
         return fromString(name, PluginCurrentState.class);
     }
 
-    /** @return known PluginCurrentState values. */
+    /**
+     * Gets known PluginCurrentState values.
+     *
+     * @return known PluginCurrentState values.
+     */
     public static Collection<PluginCurrentState> values() {
         return values(PluginCurrentState.class);
     }

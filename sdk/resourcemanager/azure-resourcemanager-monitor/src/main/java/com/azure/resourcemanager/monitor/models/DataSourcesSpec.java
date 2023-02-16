@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specification of data sources that will be collected. */
 @Fluent
 public class DataSourcesSpec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataSourcesSpec.class);
-
     /*
      * The list of performance counter data source configurations.
      */
@@ -38,6 +34,22 @@ public class DataSourcesSpec {
      */
     @JsonProperty(value = "extensions")
     private List<ExtensionDataSource> extensions;
+
+    /*
+     * The list of Log files source configurations.
+     */
+    @JsonProperty(value = "logFiles")
+    private List<LogFilesDataSource> logFiles;
+
+    /*
+     * The list of IIS logs source configurations.
+     */
+    @JsonProperty(value = "iisLogs")
+    private List<IisLogsDataSource> iisLogs;
+
+    /** Creates an instance of DataSourcesSpec class. */
+    public DataSourcesSpec() {
+    }
 
     /**
      * Get the performanceCounters property: The list of performance counter data source configurations.
@@ -120,6 +132,46 @@ public class DataSourcesSpec {
     }
 
     /**
+     * Get the logFiles property: The list of Log files source configurations.
+     *
+     * @return the logFiles value.
+     */
+    public List<LogFilesDataSource> logFiles() {
+        return this.logFiles;
+    }
+
+    /**
+     * Set the logFiles property: The list of Log files source configurations.
+     *
+     * @param logFiles the logFiles value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec withLogFiles(List<LogFilesDataSource> logFiles) {
+        this.logFiles = logFiles;
+        return this;
+    }
+
+    /**
+     * Get the iisLogs property: The list of IIS logs source configurations.
+     *
+     * @return the iisLogs value.
+     */
+    public List<IisLogsDataSource> iisLogs() {
+        return this.iisLogs;
+    }
+
+    /**
+     * Set the iisLogs property: The list of IIS logs source configurations.
+     *
+     * @param iisLogs the iisLogs value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec withIisLogs(List<IisLogsDataSource> iisLogs) {
+        this.iisLogs = iisLogs;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -136,6 +188,12 @@ public class DataSourcesSpec {
         }
         if (extensions() != null) {
             extensions().forEach(e -> e.validate());
+        }
+        if (logFiles() != null) {
+            logFiles().forEach(e -> e.validate());
+        }
+        if (iisLogs() != null) {
+            iisLogs().forEach(e -> e.validate());
         }
     }
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdStateProperties;
 import com.azure.resourcemanager.cdn.models.SecretParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the Secret to create. */
 @Fluent
 public final class SecretProperties extends AfdStateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretProperties.class);
-
     /*
      * The name of the profile which holds the secret.
      */

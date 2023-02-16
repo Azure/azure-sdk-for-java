@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GroupTypeEnum. */
+/** Type of the HybridWorkerGroup. */
 public final class GroupTypeEnum extends ExpandableStringEnum<GroupTypeEnum> {
     /** Static value User for GroupTypeEnum. */
     public static final GroupTypeEnum USER = fromString("User");
@@ -27,7 +27,11 @@ public final class GroupTypeEnum extends ExpandableStringEnum<GroupTypeEnum> {
         return fromString(name, GroupTypeEnum.class);
     }
 
-    /** @return known GroupTypeEnum values. */
+    /**
+     * Gets known GroupTypeEnum values.
+     *
+     * @return known GroupTypeEnum values.
+     */
     public static Collection<GroupTypeEnum> values() {
         return values(GroupTypeEnum.class);
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SharedGalleryImageVersions Get. */
 public final class SharedGalleryImageVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/sharedGalleryExamples/SharedGalleryImageVersion_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/sharedGalleryExamples/SharedGalleryImageVersion_Get.json
      */
     /**
      * Sample code: Get a shared gallery image version.
@@ -23,6 +21,10 @@ public final class SharedGalleryImageVersionsGetSamples {
             .serviceClient()
             .getSharedGalleryImageVersions()
             .getWithResponse(
-                "myLocation", "galleryUniqueName", "myGalleryImageName", "myGalleryImageVersionName", Context.NONE);
+                "myLocation",
+                "galleryUniqueName",
+                "myGalleryImageName",
+                "myGalleryImageVersionName",
+                com.azure.core.util.Context.NONE);
     }
 }

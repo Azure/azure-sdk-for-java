@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts Head. */
 public final class AccountsHeadSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Accounts/Accounts_Head.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_Head.json
      */
     /**
      * Sample code: Checks whether account exists.

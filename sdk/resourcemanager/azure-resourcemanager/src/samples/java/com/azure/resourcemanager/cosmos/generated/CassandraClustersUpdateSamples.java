@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.ClusterResourceInner;
 import com.azure.resourcemanager.cosmos.models.AuthenticationMethod;
 import com.azure.resourcemanager.cosmos.models.Certificate;
@@ -17,7 +16,7 @@ import java.util.Map;
 /** Samples for CassandraClusters Update. */
 public final class CassandraClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBManagedCassandraClusterPatch.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraClusterPatch.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterPatch.
@@ -53,7 +52,7 @@ public final class CassandraClustersUpdateSamples {
                                         new SeedNode().withIpAddress("10.52.221.3"),
                                         new SeedNode().withIpAddress("10.52.221.4")))
                             .withHoursBetweenBackups(12)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

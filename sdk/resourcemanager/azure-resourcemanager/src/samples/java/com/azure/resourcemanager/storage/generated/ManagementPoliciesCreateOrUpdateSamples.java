@@ -24,7 +24,81 @@ import java.util.Arrays;
 /** Samples for ManagementPolicies CreateOrUpdate. */
 public final class ManagementPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicyColdTierActions.json
+     */
+    /**
+     * Sample code: StorageAccountSetManagementPolicyColdTierActions.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountSetManagementPolicyColdTierActions(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .storageAccounts()
+            .manager()
+            .serviceClient()
+            .getManagementPolicies()
+            .createOrUpdateWithResponse(
+                "res7687",
+                "sto9699",
+                ManagementPolicyName.DEFAULT,
+                new ManagementPolicyInner()
+                    .withPolicy(
+                        new ManagementPolicySchema()
+                            .withRules(
+                                Arrays
+                                    .asList(
+                                        new ManagementPolicyRule()
+                                            .withEnabled(true)
+                                            .withName("olcmtest1")
+                                            .withType(RuleType.LIFECYCLE)
+                                            .withDefinition(
+                                                new ManagementPolicyDefinition()
+                                                    .withActions(
+                                                        new ManagementPolicyAction()
+                                                            .withBaseBlob(
+                                                                new ManagementPolicyBaseBlob()
+                                                                    .withTierToCool(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterModificationGreaterThan(
+                                                                                30.0F))
+                                                                    .withTierToArchive(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterModificationGreaterThan(
+                                                                                90.0F))
+                                                                    .withTierToCold(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterModificationGreaterThan(
+                                                                                30.0F))
+                                                                    .withDelete(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterModificationGreaterThan(
+                                                                                1000.0F)))
+                                                            .withSnapshot(
+                                                                new ManagementPolicySnapShot()
+                                                                    .withTierToCold(
+                                                                        new DateAfterCreation()
+                                                                            .withDaysAfterCreationGreaterThan(30f))
+                                                                    .withDelete(
+                                                                        new DateAfterCreation()
+                                                                            .withDaysAfterCreationGreaterThan(30f)))
+                                                            .withVersion(
+                                                                new ManagementPolicyVersion()
+                                                                    .withTierToCold(
+                                                                        new DateAfterCreation()
+                                                                            .withDaysAfterCreationGreaterThan(30f))
+                                                                    .withDelete(
+                                                                        new DateAfterCreation()
+                                                                            .withDaysAfterCreationGreaterThan(30f))))
+                                                    .withFilters(
+                                                        new ManagementPolicyFilter()
+                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
+                                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyWithSnapshotAndVersion.
@@ -61,15 +135,15 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                                     .withTierToCool(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                30.0f))
+                                                                                30.0F))
                                                                     .withTierToArchive(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                90.0f))
+                                                                                90.0F))
                                                                     .withDelete(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                1000.0f)))
+                                                                                1000.0F)))
                                                             .withSnapshot(
                                                                 new ManagementPolicySnapShot()
                                                                     .withTierToCool(
@@ -100,7 +174,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyForBlockAndAppendBlobs.
@@ -137,7 +211,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                                     .withDelete(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                90.0f)))
+                                                                                90.0F)))
                                                             .withSnapshot(
                                                                 new ManagementPolicySnapShot()
                                                                     .withDelete(
@@ -157,7 +231,63 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicyHotTierActions.json
+     */
+    /**
+     * Sample code: StorageAccountSetManagementPolicyHotTierActions.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountSetManagementPolicyHotTierActions(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .storageAccounts()
+            .manager()
+            .serviceClient()
+            .getManagementPolicies()
+            .createOrUpdateWithResponse(
+                "res7687",
+                "sto9699",
+                ManagementPolicyName.DEFAULT,
+                new ManagementPolicyInner()
+                    .withPolicy(
+                        new ManagementPolicySchema()
+                            .withRules(
+                                Arrays
+                                    .asList(
+                                        new ManagementPolicyRule()
+                                            .withEnabled(true)
+                                            .withName("olcmtest1")
+                                            .withType(RuleType.LIFECYCLE)
+                                            .withDefinition(
+                                                new ManagementPolicyDefinition()
+                                                    .withActions(
+                                                        new ManagementPolicyAction()
+                                                            .withBaseBlob(
+                                                                new ManagementPolicyBaseBlob()
+                                                                    .withTierToHot(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterModificationGreaterThan(
+                                                                                30.0F)))
+                                                            .withSnapshot(
+                                                                new ManagementPolicySnapShot()
+                                                                    .withTierToHot(
+                                                                        new DateAfterCreation()
+                                                                            .withDaysAfterCreationGreaterThan(30f)))
+                                                            .withVersion(
+                                                                new ManagementPolicyVersion()
+                                                                    .withTierToHot(
+                                                                        new DateAfterCreation()
+                                                                            .withDaysAfterCreationGreaterThan(30f))))
+                                                    .withFilters(
+                                                        new ManagementPolicyFilter()
+                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
+                                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.
@@ -194,15 +324,15 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                                     .withTierToCool(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterLastAccessTimeGreaterThan(
-                                                                                30.0f))
+                                                                                30.0F))
                                                                     .withTierToArchive(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterLastAccessTimeGreaterThan(
-                                                                                90.0f))
+                                                                                90.0F))
                                                                     .withDelete(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterLastAccessTimeGreaterThan(
-                                                                                1000.0f))
+                                                                                1000.0F))
                                                                     .withEnableAutoTierToHotFromCool(true))
                                                             .withSnapshot(
                                                                 new ManagementPolicySnapShot()
@@ -217,7 +347,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicies.
@@ -253,15 +383,15 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                                     .withTierToCool(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                30.0f))
+                                                                                30.0F))
                                                                     .withTierToArchive(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                90.0f))
+                                                                                90.0F))
                                                                     .withDelete(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                1000.0f)))
+                                                                                1000.0F)))
                                                             .withSnapshot(
                                                                 new ManagementPolicySnapShot()
                                                                     .withDelete(
@@ -284,15 +414,15 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                                     .withTierToCool(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                30.0f))
+                                                                                30.0F))
                                                                     .withTierToArchive(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                90.0f))
+                                                                                90.0F))
                                                                     .withDelete(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                1000.0f))))
+                                                                                1000.0F))))
                                                     .withFilters(
                                                         new ManagementPolicyFilter()
                                                             .withPrefixMatch(Arrays.asList("olcmtestcontainer2"))
@@ -312,7 +442,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.
@@ -348,14 +478,14 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                                 new ManagementPolicyBaseBlob()
                                                                     .withTierToCool(
                                                                         new DateAfterModification()
-                                                                            .withDaysAfterCreationGreaterThan(30.0f))
+                                                                            .withDaysAfterCreationGreaterThan(30.0F))
                                                                     .withTierToArchive(
                                                                         new DateAfterModification()
-                                                                            .withDaysAfterCreationGreaterThan(90.0f))
+                                                                            .withDaysAfterCreationGreaterThan(90.0F))
                                                                     .withDelete(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterCreationGreaterThan(
-                                                                                1000.0f))))
+                                                                                1000.0F))))
                                                     .withFilters(
                                                         new ManagementPolicyFilter()
                                                             .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
@@ -364,7 +494,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_LastTierChangeTimeActions.
@@ -401,30 +531,30 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                                     .withTierToCool(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                30.0f))
+                                                                                30.0F))
                                                                     .withTierToArchive(
                                                                         new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(90.0f)
+                                                                            .withDaysAfterModificationGreaterThan(90.0F)
                                                                             .withDaysAfterLastTierChangeGreaterThan(
-                                                                                120.0f))
+                                                                                120.0F))
                                                                     .withDelete(
                                                                         new DateAfterModification()
                                                                             .withDaysAfterModificationGreaterThan(
-                                                                                1000.0f)))
+                                                                                1000.0F)))
                                                             .withSnapshot(
                                                                 new ManagementPolicySnapShot()
                                                                     .withTierToArchive(
                                                                         new DateAfterCreation()
                                                                             .withDaysAfterCreationGreaterThan(30f)
                                                                             .withDaysAfterLastTierChangeGreaterThan(
-                                                                                90.0f)))
+                                                                                90.0F)))
                                                             .withVersion(
                                                                 new ManagementPolicyVersion()
                                                                     .withTierToArchive(
                                                                         new DateAfterCreation()
                                                                             .withDaysAfterCreationGreaterThan(30f)
                                                                             .withDaysAfterLastTierChangeGreaterThan(
-                                                                                90.0f))))
+                                                                                90.0F))))
                                                     .withFilters(
                                                         new ManagementPolicyFilter()
                                                             .withPrefixMatch(Arrays.asList("olcmtestcontainer"))

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the parameters for the Url Signing action. */
 @Fluent
 public final class UrlSigningActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UrlSigningActionParameters.class);
-
     /*
      * The typeName property.
      */
@@ -28,8 +24,7 @@ public final class UrlSigningActionParameters {
     private Algorithm algorithm;
 
     /*
-     * Defines which query string parameters in the url to be considered for
-     * expires, key id etc.
+     * Defines which query string parameters in the url to be considered for expires, key id etc.
      */
     @JsonProperty(value = "parameterNameOverride")
     private List<UrlSigningParamIdentifier> parameterNameOverride;

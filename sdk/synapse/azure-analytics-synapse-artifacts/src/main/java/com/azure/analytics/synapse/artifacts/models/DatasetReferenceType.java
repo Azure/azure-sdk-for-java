@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatasetReferenceType. */
+/** Dataset reference type. */
 public final class DatasetReferenceType extends ExpandableStringEnum<DatasetReferenceType> {
     /** Static value DatasetReference for DatasetReferenceType. */
     public static final DatasetReferenceType DATASET_REFERENCE = fromString("DatasetReference");
@@ -24,7 +24,11 @@ public final class DatasetReferenceType extends ExpandableStringEnum<DatasetRefe
         return fromString(name, DatasetReferenceType.class);
     }
 
-    /** @return known DatasetReferenceType values. */
+    /**
+     * Gets known DatasetReferenceType values.
+     *
+     * @return known DatasetReferenceType values.
+     */
     public static Collection<DatasetReferenceType> values() {
         return values(DatasetReferenceType.class);
     }

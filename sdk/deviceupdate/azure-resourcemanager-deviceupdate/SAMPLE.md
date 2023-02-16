@@ -54,7 +54,7 @@
 /** Samples for Accounts Create. */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Accounts/Accounts_Create.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_Create.json
      */
     /**
      * Sample code: Creates or updates Account.
@@ -75,7 +75,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts Delete. */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Accounts/Accounts_Delete.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_Delete.json
      */
     /**
      * Sample code: Deletes an account.
@@ -96,7 +96,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts GetByResourceGroup. */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Accounts/Accounts_Get.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_Get.json
      */
     /**
      * Sample code: Gets Account details.
@@ -117,7 +117,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts Head. */
 public final class AccountsHeadSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Accounts/Accounts_Head.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_Head.json
      */
     /**
      * Sample code: Checks whether account exists.
@@ -138,7 +138,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts List. */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Accounts/Accounts_List.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_List.json
      */
     /**
      * Sample code: Get list of Accounts.
@@ -159,7 +159,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts ListByResourceGroup. */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Accounts/Accounts_List.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_List.json
      */
     /**
      * Sample code: Gets list of Accounts.
@@ -183,7 +183,7 @@ import java.util.Map;
 /** Samples for Accounts Update. */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Accounts/Accounts_Update.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_Update.json
      */
     /**
      * Sample code: Updates Account.
@@ -220,7 +220,7 @@ import java.util.Arrays;
 /** Samples for Instances Create. */
 public final class InstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_Create.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_Create.json
      */
     /**
      * Sample code: Creates or updates Instance.
@@ -259,7 +259,7 @@ import com.azure.core.util.Context;
 /** Samples for Instances Delete. */
 public final class InstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_Delete.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_Delete.json
      */
     /**
      * Sample code: Deletes instance.
@@ -280,7 +280,7 @@ import com.azure.core.util.Context;
 /** Samples for Instances Get. */
 public final class InstancesGetSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_Get.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_Get.json
      */
     /**
      * Sample code: Gets list of Instances.
@@ -301,7 +301,7 @@ import com.azure.core.util.Context;
 /** Samples for Instances Head. */
 public final class InstancesHeadSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_Head.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_Head.json
      */
     /**
      * Sample code: Checks whether instance exists.
@@ -322,7 +322,7 @@ import com.azure.core.util.Context;
 /** Samples for Instances ListByAccount. */
 public final class InstancesListByAccountSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_ListByAccount.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_ListByAccount.json
      */
     /**
      * Sample code: Gets list of Instances by Account.
@@ -347,7 +347,7 @@ import java.util.Map;
 /** Samples for Instances Update. */
 public final class InstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_Update.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_Update.json
      */
     /**
      * Sample code: Updates Instance.
@@ -380,7 +380,7 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Operations_List.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Operations_List.json
      */
     /**
      * Sample code: Gets list of Operations.
@@ -404,7 +404,7 @@ import java.util.Arrays;
 /** Samples for PrivateEndpointConnectionProxies CreateOrUpdate. */
 public final class PrivateEndpointConnectionProxiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_CreateOrUpdate.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyCreateOrUpdate.
@@ -452,7 +452,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnectionProxies Delete. */
 public final class PrivateEndpointConnectionProxiesDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Delete.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Delete.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyDelete.
@@ -474,7 +474,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnectionProxies Get. */
 public final class PrivateEndpointConnectionProxiesGetSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Get.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Get.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyGet.
@@ -496,7 +496,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnectionProxies ListByAccount. */
 public final class PrivateEndpointConnectionProxiesListByAccountSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_ListByAccount.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_ListByAccount.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyList.
@@ -519,7 +519,7 @@ import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointUpdate;
 /** Samples for PrivateEndpointConnectionProxies UpdatePrivateEndpointProperties. */
 public final class PrivateEndpointConnectionProxiesUpdatePrivateEndpointPropertiesSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_PrivateEndpointUpdate.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_PrivateEndpointUpdate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyPrivateEndpointUpdate.
@@ -560,7 +560,7 @@ import java.util.Arrays;
 /** Samples for PrivateEndpointConnectionProxies Validate. */
 public final class PrivateEndpointConnectionProxiesValidateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Validate.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Validate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyValidate.
@@ -612,7 +612,7 @@ import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceConnectio
 /** Samples for PrivateEndpointConnections CreateOrUpdate. */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnections/PrivateEndpointConnection_CreateOrUpdate.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnections/PrivateEndpointConnection_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionCreateOrUpdate.
@@ -642,7 +642,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnections/PrivateEndpointConnection_Delete.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnections/PrivateEndpointConnection_Delete.json
      */
     /**
      * Sample code: PrivateEndpointConnectionDelete.
@@ -664,7 +664,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnections/PrivateEndpointConnection_Get.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnections/PrivateEndpointConnection_Get.json
      */
     /**
      * Sample code: PrivateEndpointConnectionGet.
@@ -686,7 +686,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections ListByAccount. */
 public final class PrivateEndpointConnectionsListByAccountSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnections/PrivateEndpointConnection_ListByAccount.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnections/PrivateEndpointConnection_ListByAccount.json
      */
     /**
      * Sample code: PrivateEndpointConnectionList.
@@ -708,7 +708,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources Get. */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateLinkResources/PrivateLinkResources_Get.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateLinkResources/PrivateLinkResources_Get.json
      */
     /**
      * Sample code: PrivateLinkResourcesGet.
@@ -729,7 +729,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources ListByAccount. */
 public final class PrivateLinkResourcesListByAccountSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateLinkResources/PrivateLinkResources_ListByAccount.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateLinkResources/PrivateLinkResources_ListByAccount.json
      */
     /**
      * Sample code: PrivateLinkResourcesList.
@@ -751,7 +751,7 @@ import com.azure.resourcemanager.deviceupdate.models.CheckNameAvailabilityReques
 /** Samples for ResourceProvider CheckNameAvailability. */
 public final class ResourceProviderCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/CheckNameAvailability_AlreadyExists.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/CheckNameAvailability_AlreadyExists.json
      */
     /**
      * Sample code: CheckNameAvailability_AlreadyExists.
@@ -768,7 +768,7 @@ public final class ResourceProviderCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/CheckNameAvailability_Available.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/CheckNameAvailability_Available.json
      */
     /**
      * Sample code: CheckNameAvailability_Available.

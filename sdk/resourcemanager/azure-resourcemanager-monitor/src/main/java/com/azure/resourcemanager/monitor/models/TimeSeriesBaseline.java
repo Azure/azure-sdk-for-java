@@ -6,7 +6,6 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
 /** The baseline values for a single time series. */
 @Fluent
 public final class TimeSeriesBaseline {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesBaseline.class);
-
     /*
      * The aggregation type of the metric.
      */
@@ -45,6 +42,10 @@ public final class TimeSeriesBaseline {
      */
     @JsonProperty(value = "metadataValues")
     private List<BaselineMetadata> metadataValues;
+
+    /** Creates an instance of TimeSeriesBaseline class. */
+    public TimeSeriesBaseline() {
+    }
 
     /**
      * Get the aggregation property: The aggregation type of the metric.
@@ -153,7 +154,7 @@ public final class TimeSeriesBaseline {
      */
     public void validate() {
         if (aggregation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property aggregation in model TimeSeriesBaseline"));
         }
@@ -161,12 +162,12 @@ public final class TimeSeriesBaseline {
             dimensions().forEach(e -> e.validate());
         }
         if (timestamps() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timestamps in model TimeSeriesBaseline"));
         }
         if (data() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property data in model TimeSeriesBaseline"));
         } else {
@@ -176,4 +177,6 @@ public final class TimeSeriesBaseline {
             metadataValues().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TimeSeriesBaseline.class);
 }

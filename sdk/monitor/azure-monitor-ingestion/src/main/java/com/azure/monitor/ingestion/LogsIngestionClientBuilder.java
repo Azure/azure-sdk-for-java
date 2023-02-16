@@ -25,7 +25,29 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Fluent builder for creating instances of {@link LogsIngestionClient} and {@link LogsIngestionAsyncClient}.
+ * Fluent builder for creating instances of {@link LogsIngestionClient} and {@link LogsIngestionAsyncClient}. To
+ * create a client, {@link #endpoint data collection endpoint} and {@link #credential(TokenCredential)
+ * AAD token} are required.
+ *
+ * <p><strong>Instantiating an asynchronous Logs ingestion client</strong></p>
+ * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
+ * <pre>
+ * LogsIngestionAsyncClient logsIngestionAsyncClient = new LogsIngestionClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
+ *
+ * <p><strong>Instantiating a synchronous Logs ingestion client</strong></p>
+ * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
+ * <pre>
+ * LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {LogsIngestionClient.class, LogsIngestionAsyncClient.class})
 public final class LogsIngestionClientBuilder implements ConfigurationTrait<LogsIngestionClientBuilder>,
@@ -33,6 +55,8 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClientBuilder.class);
     private final IngestionUsingDataCollectionRulesClientBuilder innerLogBuilder =
             new IngestionUsingDataCollectionRulesClientBuilder();
+    private String endpoint;
+    private TokenCredential tokenCredential;
 
     /**
      * Sets the log query endpoint.
@@ -44,6 +68,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
         try {
             new URL(endpoint);
             innerLogBuilder.endpoint(endpoint);
+            this.endpoint = endpoint;
             return this;
         } catch (MalformedURLException exception) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'endpoint' must be a valid URL.", exception));
@@ -134,6 +159,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     @Override
     public LogsIngestionClientBuilder credential(TokenCredential tokenCredential) {
         innerLogBuilder.credential(tokenCredential);
+        this.tokenCredential = tokenCredential;
         return this;
     }
 
@@ -171,6 +197,12 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
      * @return An asynchronous {@link LogsIngestionAsyncClient}.
      */
     public LogsIngestionAsyncClient buildAsyncClient() {
+        if (endpoint == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("endpoint is required to build the client."));
+        }
+        if (tokenCredential == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("credential is required to build the client."));
+        }
         return new LogsIngestionAsyncClient(innerLogBuilder.buildAsyncClient());
     }
 

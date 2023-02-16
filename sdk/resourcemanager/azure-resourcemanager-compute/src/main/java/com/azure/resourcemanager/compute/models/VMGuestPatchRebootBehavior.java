@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VMGuestPatchRebootBehavior. */
+/** Describes the reboot requirements of the patch. */
 public final class VMGuestPatchRebootBehavior extends ExpandableStringEnum<VMGuestPatchRebootBehavior> {
     /** Static value Unknown for VMGuestPatchRebootBehavior. */
     public static final VMGuestPatchRebootBehavior UNKNOWN = fromString("Unknown");
@@ -21,6 +21,15 @@ public final class VMGuestPatchRebootBehavior extends ExpandableStringEnum<VMGue
 
     /** Static value CanRequestReboot for VMGuestPatchRebootBehavior. */
     public static final VMGuestPatchRebootBehavior CAN_REQUEST_REBOOT = fromString("CanRequestReboot");
+
+    /**
+     * Creates a new instance of VMGuestPatchRebootBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMGuestPatchRebootBehavior() {
+    }
 
     /**
      * Creates or finds a VMGuestPatchRebootBehavior from its string representation.

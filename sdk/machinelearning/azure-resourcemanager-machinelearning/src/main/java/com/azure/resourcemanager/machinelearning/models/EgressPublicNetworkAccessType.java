@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EgressPublicNetworkAccessType. */
+/** Enum to determine whether PublicNetworkAccess is Enabled or Disabled for egress of a deployment. */
 public final class EgressPublicNetworkAccessType extends ExpandableStringEnum<EgressPublicNetworkAccessType> {
     /** Static value Enabled for EgressPublicNetworkAccessType. */
     public static final EgressPublicNetworkAccessType ENABLED = fromString("Enabled");
 
     /** Static value Disabled for EgressPublicNetworkAccessType. */
     public static final EgressPublicNetworkAccessType DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of EgressPublicNetworkAccessType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EgressPublicNetworkAccessType() {
+    }
 
     /**
      * Creates or finds a EgressPublicNetworkAccessType from its string representation.

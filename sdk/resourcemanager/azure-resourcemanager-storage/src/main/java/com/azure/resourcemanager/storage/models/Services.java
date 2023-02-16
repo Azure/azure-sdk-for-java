@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Services. */
+/**
+ * The signed services accessible with the account SAS. Possible values include: Blob (b), Queue (q), Table (t), File
+ * (f).
+ */
 public final class Services extends ExpandableStringEnum<Services> {
     /** Static value b for Services. */
     public static final Services B = fromString("b");

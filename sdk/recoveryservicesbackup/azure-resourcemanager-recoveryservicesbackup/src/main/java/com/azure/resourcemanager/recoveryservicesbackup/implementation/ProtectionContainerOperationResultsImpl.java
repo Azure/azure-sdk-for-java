@@ -27,17 +27,6 @@ public final class ProtectionContainerOperationResultsImpl implements Protection
         this.serviceManager = serviceManager;
     }
 
-    public ProtectionContainerResource get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String operationId) {
-        ProtectionContainerResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName, operationId);
-        if (inner != null) {
-            return new ProtectionContainerResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ProtectionContainerResource> getWithResponse(
         String vaultName,
         String resourceGroupName,
@@ -55,6 +44,17 @@ public final class ProtectionContainerOperationResultsImpl implements Protection
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ProtectionContainerResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ProtectionContainerResource get(
+        String vaultName, String resourceGroupName, String fabricName, String containerName, String operationId) {
+        ProtectionContainerResourceInner inner =
+            this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName, operationId);
+        if (inner != null) {
+            return new ProtectionContainerResourceImpl(inner, this.manager());
         } else {
             return null;
         }

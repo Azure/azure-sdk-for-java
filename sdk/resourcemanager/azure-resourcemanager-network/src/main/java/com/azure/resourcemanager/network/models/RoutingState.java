@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoutingState. */
+/** The current routing state of the VirtualHub. */
 public final class RoutingState extends ExpandableStringEnum<RoutingState> {
     /** Static value None for RoutingState. */
     public static final RoutingState NONE = fromString("None");

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Identity for the resource. */
 @Fluent
 public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
-
     /*
      * The principal ID of resource identity.
      */
@@ -29,16 +26,15 @@ public class Identity {
     private String tenantId;
 
     /*
-     * The type of managed identity used. The type 'SystemAssigned,
-     * UserAssigned' includes both an implicitly created identity and a set of
-     * user-assigned identities. The type 'None' will remove all identities.
+     * The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+     * identity and a set of user-assigned identities. The type 'None' will remove all identities.
      */
     @JsonProperty(value = "type", required = true)
     private IdentityType type;
 
     /*
-     * The list of user identities associated with the Kusto cluster. The user
-     * identity dictionary key references will be ARM resource ids in the form:
+     * The list of user identities associated with the Kusto cluster. The user identity dictionary key references will
+     * be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
@@ -116,7 +112,7 @@ public class Identity {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property type in model Identity"));
         }
         if (userAssignedIdentities() != null) {
@@ -130,4 +126,6 @@ public class Identity {
                     });
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Identity.class);
 }

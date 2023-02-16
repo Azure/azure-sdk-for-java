@@ -17,6 +17,9 @@ public class ExtractedSummaryDocumentResult extends DocumentResult {
     @JsonProperty(value = "sentences", required = true)
     private List<ExtractedSummarySentence> sentences;
 
+    /** Creates an instance of ExtractedSummaryDocumentResult class. */
+    public ExtractedSummaryDocumentResult() {}
+
     /**
      * Get the sentences property: A ranked list of sentences representing the extracted summary.
      *
@@ -34,6 +37,27 @@ public class ExtractedSummaryDocumentResult extends DocumentResult {
      */
     public ExtractedSummaryDocumentResult setSentences(List<ExtractedSummarySentence> sentences) {
         this.sentences = sentences;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractedSummaryDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractedSummaryDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractedSummaryDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
         return this;
     }
 }

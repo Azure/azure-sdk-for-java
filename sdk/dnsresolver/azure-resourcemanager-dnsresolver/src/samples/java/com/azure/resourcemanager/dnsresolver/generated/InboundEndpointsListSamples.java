@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for InboundEndpoints List. */
 public final class InboundEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/InboundEndpoint_List.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_List.json
      */
     /**
      * Sample code: List inbound endpoints by DNS resolver.

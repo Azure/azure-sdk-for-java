@@ -3,13 +3,15 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -18,23 +20,28 @@ public class RntbdConnectionStateListener {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListener.class);
 
-    private final IAddressResolver addressResolver;
     private final RntbdEndpoint endpoint;
     private final RntbdConnectionStateListenerMetrics metrics;
+    private final Set<Uri> addressUris;
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final IAddressResolver addressResolver, final RntbdEndpoint endpoint) {
-        this.addressResolver = checkNotNull(addressResolver, "expected non-null addressResolver");
+    public RntbdConnectionStateListener(final RntbdEndpoint endpoint) {
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
         this.metrics = new RntbdConnectionStateListenerMetrics();
+        this.addressUris = ConcurrentHashMap.newKeySet();
     }
 
     // endregion
 
     // region Methods
+
+    public void onBeforeSendRequest(Uri addressUri) {
+        checkNotNull(addressUri, "Argument 'addressUri' should not be null");
+        this.addressUris.add(addressUri);
+    }
 
     public void onException(Throwable exception) {
         checkNotNull(exception, "expect non-null exception");
@@ -43,17 +50,19 @@ public class RntbdConnectionStateListener {
 
         // * An operation could fail due to an IOException which indicates a connection reset by the server,
         // * or a channel closes unexpectedly because the server stopped taking requests
-        //
-        // Currently, only ClosedChannelException will raise onConnectionEvent since it is more sure of a signal the server is going down.
-
+        // * or the channel has been shutdown gracefully
         if (exception instanceof IOException) {
-
             if (exception instanceof ClosedChannelException) {
                 this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, exception));
             } else {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Will not raise the connection state change event for error", exception);
-                }
+                this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_FAILURE, exception));
+            }
+        } else if (exception instanceof RntbdRequestManager.UnhealthyChannelException) {
+            // A channel is closed due to Rntbd health check
+            this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_FAILURE, exception));
+        } else {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Will not raise the connection state change event for error", exception);
             }
         }
     }
@@ -70,23 +79,23 @@ public class RntbdConnectionStateListener {
 
         checkNotNull(exception, "expected non-null exception");
 
-        if (event == RntbdConnectionEvent.READ_EOF) {
-            if (!this.endpoint.isClosed()) {
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{},\"cause\":{})",
-                        event,
-                        RntbdObjectMapper.toJson(Instant.now()),
-                        RntbdObjectMapper.toJson(this.endpoint),
-                        RntbdObjectMapper.toJson(exception));
-                }
-
-                return this.addressResolver.updateAddresses(this.endpoint.serverKey());
-            } else {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Endpoint closed while onConnectionEvent: {}", this.endpoint);
-                }
+        if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{},\"cause\":{})",
+                    event,
+                    RntbdObjectMapper.toJson(Instant.now()),
+                    RntbdObjectMapper.toJson(this.endpoint),
+                    RntbdObjectMapper.toJson(exception));
             }
+
+            // When idleEndpointTimeout reached, SDK will close all existing channels,
+            // which will translate into ClosedChannelException which does not mean server is in unhealthy status.
+            // But it makes sense to make the server as unhealthy as it is safer to validate the server health again for future requests
+            for (Uri addressUri : this.addressUris) {
+                addressUri.setUnhealthy();
+            }
+
+            return addressUris.size();
         }
 
         return 0;

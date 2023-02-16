@@ -1,16 +1,82 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.9.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added `AmqpClientOptions` to enable set identifier for AMQP client and link. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.8.2 (2023-02-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+
+## 2.8.1 (2023-01-05)
+
+### Bugs Fixed
+
+- Removing inactive session when it has timed out, so `ReactorConnection.getSession(String)` does not return the same session.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
+
+## 2.8.0 (2022-11-04)
+
+### Bugs Fixed
+
+- Updating the host value for the Websocket upgrade request to match with the HTTP host ([31825](https://github.com/Azure/azure-sdk-for-java/issues/31825))
+- Enabling HTTP Proxy for custom endpoint and updating Proxy CONNECT request to use the actual front-end host ([31826](https://github.com/Azure/azure-sdk-for-java/issues/31826))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to `1.34.0`.
+
+## 2.7.2 (2022-10-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+- Upgraded Reactor from `3.4.22` to `3.4.23`.
+
+## 2.7.1 (2022-09-01)
+
+### Features Added
+
+- Added AMQP-level metrics to reporting number of sent batches, duration of network call, number of received message and consumer lag as well as 
+  error counters. Metrics are off by default and can be enabled with [azure-core-metrics-opentelemetry](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/README.md)
+  plugin. ([#30583](https://github.com/Azure/azure-sdk-for-java/pull/30583))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.21` to `3.4.22`.
+
+## 2.7.0 (2022-08-05)
+
+### Features Added
+
+- Added `AmqpClientOptions` to enable set identifier for AMQP client and link. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.19` to `3.4.21`.
 
 ## 2.6.0 (2022-06-30)
 

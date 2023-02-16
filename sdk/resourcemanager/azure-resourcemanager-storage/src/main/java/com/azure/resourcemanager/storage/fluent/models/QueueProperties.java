@@ -20,9 +20,8 @@ public final class QueueProperties {
     private Map<String, String> metadata;
 
     /*
-     * Integer indicating an approximate number of messages in the queue. This
-     * number is not lower than the actual number of messages in the queue, but
-     * could be higher.
+     * Integer indicating an approximate number of messages in the queue. This number is not lower than the actual
+     * number of messages in the queue, but could be higher.
      */
     @JsonProperty(value = "approximateMessageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer approximateMessageCount;

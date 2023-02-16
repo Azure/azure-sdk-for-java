@@ -17,6 +17,9 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
     @JsonProperty(value = "entities", required = true)
     private List<LinkedEntity> entities;
 
+    /** Creates an instance of LinkedEntitiesDocumentResult class. */
+    public LinkedEntitiesDocumentResult() {}
+
     /**
      * Get the entities property: Recognized well known entities in the document.
      *
@@ -34,6 +37,27 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
      */
     public LinkedEntitiesDocumentResult setEntities(List<LinkedEntity> entities) {
         this.entities = entities;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedEntitiesDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
         return this;
     }
 }

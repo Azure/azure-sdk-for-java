@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Describes an outbound endpoint for a DNS resolver for PATCH operation. */
 @Fluent
 public final class OutboundEndpointPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundEndpointPatch.class);
-
     /*
      * Tags for outbound endpoint.
      */

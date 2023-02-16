@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties for a group information object. */
 @Fluent
 public final class GroupIdInformationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupIdInformationProperties.class);
-
     /*
      * The group id
      */

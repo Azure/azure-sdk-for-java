@@ -19,11 +19,15 @@ public final class RestorePointCollectionListResult {
     private List<RestorePointCollectionInner> value;
 
     /*
-     * The uri to fetch the next page of RestorePointCollections. Call
-     * ListNext() with this to fetch the next page of RestorePointCollections
+     * The uri to fetch the next page of RestorePointCollections. Call ListNext() with this to fetch the next page of
+     * RestorePointCollections
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of RestorePointCollectionListResult class. */
+    public RestorePointCollectionListResult() {
+    }
 
     /**
      * Get the value property: Gets the list of restore point collections.

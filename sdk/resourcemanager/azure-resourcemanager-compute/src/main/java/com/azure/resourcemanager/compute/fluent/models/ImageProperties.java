@@ -32,14 +32,17 @@ public final class ImageProperties {
     private String provisioningState;
 
     /*
-     * Specifies the HyperVGenerationType of the VirtualMachine created from
-     * the image. From API Version 2019-03-01 if the image source is a blob,
-     * then we need the user to specify the value, if the source is managed
-     * resource like disk or snapshot, we may require the user to specify the
-     * property if we cannot deduce it from the source managed resource.
+     * Specifies the HyperVGenerationType of the VirtualMachine created from the image. From API Version 2019-03-01 if
+     * the image source is a blob, then we need the user to specify the value, if the source is managed resource like
+     * disk or snapshot, we may require the user to specify the property if we cannot deduce it from the source managed
+     * resource.
      */
     @JsonProperty(value = "hyperVGeneration")
     private HyperVGenerationTypes hyperVGeneration;
+
+    /** Creates an instance of ImageProperties class. */
+    public ImageProperties() {
+    }
 
     /**
      * Get the sourceVirtualMachine property: The source virtual machine from which Image is created.

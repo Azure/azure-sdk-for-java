@@ -5,76 +5,32 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.monitor.fluent.models.AlertRule;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** The alert rule object for patch operations. */
-@JsonFlatten
 @Fluent
-public class AlertRuleResourcePatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRuleResourcePatch.class);
-
+public final class AlertRuleResourcePatch {
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * the name of the alert rule.
+     * The properties of an alert rule.
      */
-    @JsonProperty(value = "properties.name")
-    private String name;
+    @JsonProperty(value = "properties")
+    private AlertRule innerProperties;
 
-    /*
-     * the description of the alert rule that will be included in the alert
-     * email.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * the provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
-
-    /*
-     * the flag that indicates whether the alert rule is enabled.
-     */
-    @JsonProperty(value = "properties.isEnabled")
-    private Boolean isEnabled;
-
-    /*
-     * the condition that results in the alert rule being activated.
-     */
-    @JsonProperty(value = "properties.condition")
-    private RuleCondition condition;
-
-    /*
-     * action that is performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
-     */
-    @JsonProperty(value = "properties.action")
-    private RuleAction action;
-
-    /*
-     * the array of actions that are performed when the alert rule becomes
-     * active, and when an alert condition is resolved.
-     */
-    @JsonProperty(value = "properties.actions")
-    private List<RuleAction> actions;
-
-    /*
-     * Last time the rule was updated in ISO8601 format.
-     */
-    @JsonProperty(value = "properties.lastUpdatedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastUpdatedTime;
+    /** Creates an instance of AlertRuleResourcePatch class. */
+    public AlertRuleResourcePatch() {
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -97,12 +53,21 @@ public class AlertRuleResourcePatch {
     }
 
     /**
+     * Get the innerProperties property: The properties of an alert rule.
+     *
+     * @return the innerProperties value.
+     */
+    private AlertRule innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the name property: the name of the alert rule.
      *
      * @return the name value.
      */
     public String name() {
-        return this.name;
+        return this.innerProperties() == null ? null : this.innerProperties().name();
     }
 
     /**
@@ -112,7 +77,10 @@ public class AlertRuleResourcePatch {
      * @return the AlertRuleResourcePatch object itself.
      */
     public AlertRuleResourcePatch withName(String name) {
-        this.name = name;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertRule();
+        }
+        this.innerProperties().withName(name);
         return this;
     }
 
@@ -122,7 +90,7 @@ public class AlertRuleResourcePatch {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -132,7 +100,10 @@ public class AlertRuleResourcePatch {
      * @return the AlertRuleResourcePatch object itself.
      */
     public AlertRuleResourcePatch withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertRule();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -142,7 +113,7 @@ public class AlertRuleResourcePatch {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -152,7 +123,10 @@ public class AlertRuleResourcePatch {
      * @return the AlertRuleResourcePatch object itself.
      */
     public AlertRuleResourcePatch withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertRule();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -162,7 +136,7 @@ public class AlertRuleResourcePatch {
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
-        return this.isEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
     }
 
     /**
@@ -172,7 +146,10 @@ public class AlertRuleResourcePatch {
      * @return the AlertRuleResourcePatch object itself.
      */
     public AlertRuleResourcePatch withIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertRule();
+        }
+        this.innerProperties().withIsEnabled(isEnabled);
         return this;
     }
 
@@ -182,7 +159,7 @@ public class AlertRuleResourcePatch {
      * @return the condition value.
      */
     public RuleCondition condition() {
-        return this.condition;
+        return this.innerProperties() == null ? null : this.innerProperties().condition();
     }
 
     /**
@@ -192,7 +169,10 @@ public class AlertRuleResourcePatch {
      * @return the AlertRuleResourcePatch object itself.
      */
     public AlertRuleResourcePatch withCondition(RuleCondition condition) {
-        this.condition = condition;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertRule();
+        }
+        this.innerProperties().withCondition(condition);
         return this;
     }
 
@@ -203,7 +183,7 @@ public class AlertRuleResourcePatch {
      * @return the action value.
      */
     public RuleAction action() {
-        return this.action;
+        return this.innerProperties() == null ? null : this.innerProperties().action();
     }
 
     /**
@@ -214,7 +194,10 @@ public class AlertRuleResourcePatch {
      * @return the AlertRuleResourcePatch object itself.
      */
     public AlertRuleResourcePatch withAction(RuleAction action) {
-        this.action = action;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertRule();
+        }
+        this.innerProperties().withAction(action);
         return this;
     }
 
@@ -225,7 +208,7 @@ public class AlertRuleResourcePatch {
      * @return the actions value.
      */
     public List<RuleAction> actions() {
-        return this.actions;
+        return this.innerProperties() == null ? null : this.innerProperties().actions();
     }
 
     /**
@@ -236,7 +219,10 @@ public class AlertRuleResourcePatch {
      * @return the AlertRuleResourcePatch object itself.
      */
     public AlertRuleResourcePatch withActions(List<RuleAction> actions) {
-        this.actions = actions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertRule();
+        }
+        this.innerProperties().withActions(actions);
         return this;
     }
 
@@ -246,7 +232,7 @@ public class AlertRuleResourcePatch {
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
-        return this.lastUpdatedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastUpdatedTime();
     }
 
     /**
@@ -255,14 +241,8 @@ public class AlertRuleResourcePatch {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (condition() != null) {
-            condition().validate();
-        }
-        if (action() != null) {
-            action().validate();
-        }
-        if (actions() != null) {
-            actions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -12,26 +12,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureFilesIdentityBasedAuthentication {
     /*
-     * Indicates the directory service used.
+     * Indicates the directory service used. Note that this enum may be extended in the future.
      */
     @JsonProperty(value = "directoryServiceOptions", required = true)
     private DirectoryServiceOptions directoryServiceOptions;
 
     /*
-     * Required if choose AD.
+     * Required if directoryServiceOptions are AD, optional if they are AADKERB.
      */
     @JsonProperty(value = "activeDirectoryProperties")
     private ActiveDirectoryProperties activeDirectoryProperties;
 
     /*
-     * Default share permission for users using Kerberos authentication if RBAC
-     * role is not assigned.
+     * Default share permission for users using Kerberos authentication if RBAC role is not assigned.
      */
     @JsonProperty(value = "defaultSharePermission")
     private DefaultSharePermission defaultSharePermission;
 
     /**
-     * Get the directoryServiceOptions property: Indicates the directory service used.
+     * Get the directoryServiceOptions property: Indicates the directory service used. Note that this enum may be
+     * extended in the future.
      *
      * @return the directoryServiceOptions value.
      */
@@ -40,7 +40,8 @@ public final class AzureFilesIdentityBasedAuthentication {
     }
 
     /**
-     * Set the directoryServiceOptions property: Indicates the directory service used.
+     * Set the directoryServiceOptions property: Indicates the directory service used. Note that this enum may be
+     * extended in the future.
      *
      * @param directoryServiceOptions the directoryServiceOptions value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
@@ -52,7 +53,8 @@ public final class AzureFilesIdentityBasedAuthentication {
     }
 
     /**
-     * Get the activeDirectoryProperties property: Required if choose AD.
+     * Get the activeDirectoryProperties property: Required if directoryServiceOptions are AD, optional if they are
+     * AADKERB.
      *
      * @return the activeDirectoryProperties value.
      */
@@ -61,7 +63,8 @@ public final class AzureFilesIdentityBasedAuthentication {
     }
 
     /**
-     * Set the activeDirectoryProperties property: Required if choose AD.
+     * Set the activeDirectoryProperties property: Required if directoryServiceOptions are AD, optional if they are
+     * AADKERB.
      *
      * @param activeDirectoryProperties the activeDirectoryProperties value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.

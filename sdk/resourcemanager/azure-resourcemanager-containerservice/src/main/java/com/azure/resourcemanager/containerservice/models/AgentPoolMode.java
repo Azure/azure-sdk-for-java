@@ -8,13 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AgentPoolMode. */
+/**
+ * The mode of an agent pool.
+ *
+ * <p>A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool
+ * restrictions and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools.
+ */
 public final class AgentPoolMode extends ExpandableStringEnum<AgentPoolMode> {
     /** Static value System for AgentPoolMode. */
     public static final AgentPoolMode SYSTEM = fromString("System");
 
     /** Static value User for AgentPoolMode. */
     public static final AgentPoolMode USER = fromString("User");
+
+    /**
+     * Creates a new instance of AgentPoolMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AgentPoolMode() {
+    }
 
     /**
      * Creates or finds a AgentPoolMode from its string representation.

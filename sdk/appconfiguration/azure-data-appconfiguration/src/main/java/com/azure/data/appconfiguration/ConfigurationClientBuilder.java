@@ -35,8 +35,13 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 
 import java.net.MalformedURLException;
@@ -111,7 +116,11 @@ public final class ConfigurationClientBuilder implements
     HttpTrait<ConfigurationClientBuilder>,
     ConfigurationTrait<ConfigurationClientBuilder>,
     EndpointTrait<ConfigurationClientBuilder> {
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
+
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private static final SerializerAdapter SERIALIZER_ADAPTER;
 
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
@@ -125,7 +134,14 @@ public final class ConfigurationClientBuilder implements
             .set("x-ms-return-client-request-id", "true")
             .set("Content-Type", "application/json")
             .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
+
+        JacksonAdapter jacksonAdapter = new JacksonAdapter();
+        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonSerializer.getModule());
+        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
+
+        SERIALIZER_ADAPTER = jacksonAdapter;
     }
+
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -168,7 +184,8 @@ public final class ConfigurationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationClient buildClient() {
-        return new ConfigurationClient(buildAsyncClient());
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+        return new ConfigurationClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy);
     }
 
     /**
@@ -188,15 +205,33 @@ public final class ConfigurationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
-        // Global Env configuration store
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+        return new ConfigurationAsyncClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy);
+    }
 
+    /**
+     * Builds an instance of ConfigurationClientImpl with the provided parameters.
+     *
+     * @return an instance of ConfigurationClientImpl.
+     */
+    private ConfigurationClientImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
         // Service version
         ConfigurationServiceVersion serviceVersion = (version != null)
             ? version
             : ConfigurationServiceVersion.getLatest();
+        // Don't share the default auto-created pipeline between App Configuration client instances.
+        return new ConfigurationClientImpl(
+            pipeline == null ? createHttpPipeline(syncTokenPolicy) : pipeline,
+            SERIALIZER_ADAPTER,
+            endpoint,
+            serviceVersion.getVersion());
+    }
+
+    private HttpPipeline createHttpPipeline(SyncTokenPolicy syncTokenPolicy) {
+        // Global Env configuration store
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
 
         // Endpoint
         String buildEndpoint = endpoint;
@@ -205,13 +240,6 @@ public final class ConfigurationClientBuilder implements
         }
         // endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(buildEndpoint, "'Endpoint' is required and can not be null.");
-
-        SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
-
-        // if http pipeline is already defined
-        if (pipeline != null) {
-            return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
-        }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -224,7 +252,8 @@ public final class ConfigurationClientBuilder implements
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY));
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions,
+            new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS)));
 
         policies.add(new AddDatePolicy());
 
@@ -254,12 +283,10 @@ public final class ConfigurationClientBuilder implements
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // customized pipeline
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-                                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                                    .httpClient(httpClient)
-                                    .build();
-
-        return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
     }
 
     /**
@@ -267,7 +294,7 @@ public final class ConfigurationClientBuilder implements
      *
      * @param endpoint The URL of the Azure App Configuration instance.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws IllegalArgumentException If {@code endpoint} is null, or it cannot be parsed into a valid URL.
      */
     @Override
     public ConfigurationClientBuilder endpoint(String endpoint) {

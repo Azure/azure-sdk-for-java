@@ -25,12 +25,14 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
     private List<HealthcareRelation> relations;
 
     /*
-     * JSON bundle containing a FHIR compatible object for consumption in other
-     * Healthcare tools. For additional information see
-     * https://www.hl7.org/fhir/overview.html.
+     * JSON bundle containing a FHIR compatible object for consumption in other Healthcare tools. For additional
+     * information see https://www.hl7.org/fhir/overview.html.
      */
     @JsonProperty(value = "fhirBundle")
     private Map<String, Object> fhirBundle;
+
+    /** Creates an instance of HealthcareEntitiesDocumentResult class. */
+    public HealthcareEntitiesDocumentResult() {}
 
     /**
      * Get the entities property: Healthcare entities.
@@ -91,6 +93,27 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
      */
     public HealthcareEntitiesDocumentResult setFhirBundle(Map<String, Object> fhirBundle) {
         this.fhirBundle = fhirBundle;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareEntitiesDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
         return this;
     }
 }

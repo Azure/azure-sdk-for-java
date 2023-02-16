@@ -27,8 +27,7 @@ public final class CassandraClusterPublicStatusInner {
     private ManagedCassandraReaperStatus reaperStatus;
 
     /*
-     * List relevant information about any connection errors to the
-     * Datacenters.
+     * List relevant information about any connection errors to the Datacenters.
      */
     @JsonProperty(value = "connectionErrors")
     private List<ConnectionError> connectionErrors;
@@ -38,6 +37,10 @@ public final class CassandraClusterPublicStatusInner {
      */
     @JsonProperty(value = "dataCenters")
     private List<CassandraClusterPublicStatusDataCentersItem> dataCenters;
+
+    /** Creates an instance of CassandraClusterPublicStatusInner class. */
+    public CassandraClusterPublicStatusInner() {
+    }
 
     /**
      * Get the etag property: The eTag property.

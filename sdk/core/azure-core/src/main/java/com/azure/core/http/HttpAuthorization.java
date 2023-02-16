@@ -42,6 +42,8 @@ public final class HttpAuthorization {
     }
 
     /**
+     * Gets the scheme of the authorization header.
+     *
      * @return Scheme of the authorization header.
      */
     public String getScheme() {
@@ -49,6 +51,8 @@ public final class HttpAuthorization {
     }
 
     /**
+     * Gets the credential of the authorization header.
+     *
      * @return Credential of the authorization header.
      */
     public String getParameter() {

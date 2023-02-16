@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -76,6 +77,7 @@ public final class ShareServiceAsyncClient {
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareServiceClient from the passed {@link AzureFileStorageImpl implementation client}.
@@ -83,10 +85,11 @@ public final class ShareServiceAsyncClient {
      * @param azureFileStorage Client that interacts with the service interfaces.
      */
     ShareServiceAsyncClient(AzureFileStorageImpl azureFileStorage, String accountName,
-                            ShareServiceVersion serviceVersion) {
+        ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
         this.azureFileStorageClient = azureFileStorage;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -133,7 +136,7 @@ public final class ShareServiceAsyncClient {
      * @return a ShareAsyncClient that interacts with the specified share
      */
     public ShareAsyncClient getShareAsyncClient(String shareName, String snapshot) {
-        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot, accountName, serviceVersion);
+        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot, accountName, serviceVersion, sasToken);
     }
 
     /**
@@ -580,7 +583,7 @@ public final class ShareServiceAsyncClient {
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, ShareCreateOptions options,
         Context context) {
         ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null,
-            accountName, serviceVersion);
+            accountName, serviceVersion, sasToken);
 
         return shareAsyncClient.createWithResponse(options, context).map(response ->
             new SimpleResponse<>(response, shareAsyncClient));

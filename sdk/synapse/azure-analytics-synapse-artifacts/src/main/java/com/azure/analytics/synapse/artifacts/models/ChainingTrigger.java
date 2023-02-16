@@ -23,8 +23,7 @@ import java.util.List;
 @Fluent
 public class ChainingTrigger extends Trigger {
     /*
-     * Pipeline for which runs are created when all upstream pipelines complete
-     * successfully.
+     * Pipeline for which runs are created when all upstream pipelines complete successfully.
      */
     @JsonProperty(value = "pipeline", required = true)
     private TriggerPipelineReference pipeline;
@@ -40,6 +39,9 @@ public class ChainingTrigger extends Trigger {
      */
     @JsonProperty(value = "typeProperties.runDimension", required = true)
     private String runDimension;
+
+    /** Creates an instance of ChainingTrigger class. */
+    public ChainingTrigger() {}
 
     /**
      * Get the pipeline property: Pipeline for which runs are created when all upstream pipelines complete successfully.

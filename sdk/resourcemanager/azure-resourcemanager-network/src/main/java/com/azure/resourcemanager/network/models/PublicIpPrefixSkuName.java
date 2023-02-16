@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicIpPrefixSkuName. */
+/** Name of a public IP prefix SKU. */
 public final class PublicIpPrefixSkuName extends ExpandableStringEnum<PublicIpPrefixSkuName> {
     /** Static value Standard for PublicIpPrefixSkuName. */
     public static final PublicIpPrefixSkuName STANDARD = fromString("Standard");

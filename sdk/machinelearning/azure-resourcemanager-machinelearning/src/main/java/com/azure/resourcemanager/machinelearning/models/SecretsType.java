@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecretsType. */
+/** Enum to determine the datastore secrets type. */
 public final class SecretsType extends ExpandableStringEnum<SecretsType> {
     /** Static value AccountKey for SecretsType. */
     public static final SecretsType ACCOUNT_KEY = fromString("AccountKey");
@@ -22,11 +22,14 @@ public final class SecretsType extends ExpandableStringEnum<SecretsType> {
     /** Static value ServicePrincipal for SecretsType. */
     public static final SecretsType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
-    /** Static value KerberosPassword for SecretsType. */
-    public static final SecretsType KERBEROS_PASSWORD = fromString("KerberosPassword");
-
-    /** Static value KerberosKeytab for SecretsType. */
-    public static final SecretsType KERBEROS_KEYTAB = fromString("KerberosKeytab");
+    /**
+     * Creates a new instance of SecretsType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecretsType() {
+    }
 
     /**
      * Creates or finds a SecretsType from its string representation.

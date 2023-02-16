@@ -6,20 +6,15 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The repeating times at which this profile begins. This element is not used if the FixedDate element is used. */
 @Fluent
 public final class Recurrence {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Recurrence.class);
-
     /*
-     * the recurrence frequency. How often the schedule profile should take
-     * effect. This value must be Week, meaning each week will have the same
-     * set of profiles. For example, to set a daily schedule, set **schedule**
-     * to every day of the week. The frequency property specifies that the
-     * schedule is repeated weekly.
+     * the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning
+     * each week will have the same set of profiles. For example, to set a daily schedule, set **schedule** to every
+     * day of the week. The frequency property specifies that the schedule is repeated weekly.
      */
     @JsonProperty(value = "frequency", required = true)
     private RecurrenceFrequency frequency;
@@ -29,6 +24,10 @@ public final class Recurrence {
      */
     @JsonProperty(value = "schedule", required = true)
     private RecurrentSchedule schedule;
+
+    /** Creates an instance of Recurrence class. */
+    public Recurrence() {
+    }
 
     /**
      * Get the frequency property: the recurrence frequency. How often the schedule profile should take effect. This
@@ -81,16 +80,18 @@ public final class Recurrence {
      */
     public void validate() {
         if (frequency() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property frequency in model Recurrence"));
         }
         if (schedule() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property schedule in model Recurrence"));
         } else {
             schedule().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Recurrence.class);
 }

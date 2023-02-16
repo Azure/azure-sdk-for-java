@@ -178,7 +178,11 @@ public final class ServicePrincipalsServicePrincipalSelect
         return fromString(name, ServicePrincipalsServicePrincipalSelect.class);
     }
 
-    /** @return known ServicePrincipalsServicePrincipalSelect values. */
+    /**
+     * Gets known ServicePrincipalsServicePrincipalSelect values.
+     *
+     * @return known ServicePrincipalsServicePrincipalSelect values.
+     */
     public static Collection<ServicePrincipalsServicePrincipalSelect> values() {
         return values(ServicePrincipalsServicePrincipalSelect.class);
     }

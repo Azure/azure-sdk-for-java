@@ -25,6 +25,10 @@ public final class InstanceTypeSchema {
     @JsonProperty(value = "resources")
     private InstanceTypeSchemaResources resources;
 
+    /** Creates an instance of InstanceTypeSchema class. */
+    public InstanceTypeSchema() {
+    }
+
     /**
      * Get the nodeSelector property: Node Selector.
      *

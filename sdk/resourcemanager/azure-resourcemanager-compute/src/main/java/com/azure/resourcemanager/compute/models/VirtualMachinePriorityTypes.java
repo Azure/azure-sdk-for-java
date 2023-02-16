@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualMachinePriorityTypes. */
+/**
+ * Specifies the priority for a standalone virtual machine or the virtual machines in the scale set.
+ * &lt;br&gt;&lt;br&gt; 'Low' enum will be deprecated in the future, please use 'Spot' as the enum to deploy Azure Spot
+ * VM/VMSS.
+ */
 public final class VirtualMachinePriorityTypes extends ExpandableStringEnum<VirtualMachinePriorityTypes> {
     /** Static value Regular for VirtualMachinePriorityTypes. */
     public static final VirtualMachinePriorityTypes REGULAR = fromString("Regular");
@@ -18,6 +22,15 @@ public final class VirtualMachinePriorityTypes extends ExpandableStringEnum<Virt
 
     /** Static value Spot for VirtualMachinePriorityTypes. */
     public static final VirtualMachinePriorityTypes SPOT = fromString("Spot");
+
+    /**
+     * Creates a new instance of VirtualMachinePriorityTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualMachinePriorityTypes() {
+    }
 
     /**
      * Creates or finds a VirtualMachinePriorityTypes from its string representation.

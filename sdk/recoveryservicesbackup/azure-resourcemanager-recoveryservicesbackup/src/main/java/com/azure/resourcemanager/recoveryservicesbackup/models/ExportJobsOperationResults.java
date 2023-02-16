@@ -17,12 +17,14 @@ public interface ExportJobsOperationResults {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the export job.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API.
+     * @return the operation result of operation triggered by Export Jobs API along with {@link Response}.
      */
-    OperationResultInfoBaseResource get(String vaultName, String resourceGroupName, String operationId);
+    Response<OperationResultInfoBaseResource> getWithResponse(
+        String vaultName, String resourceGroupName, String operationId, Context context);
 
     /**
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
@@ -32,12 +34,10 @@ public interface ExportJobsOperationResults {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the export job.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API along with {@link Response}.
+     * @return the operation result of operation triggered by Export Jobs API.
      */
-    Response<OperationResultInfoBaseResource> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+    OperationResultInfoBaseResource get(String vaultName, String resourceGroupName, String operationId);
 }

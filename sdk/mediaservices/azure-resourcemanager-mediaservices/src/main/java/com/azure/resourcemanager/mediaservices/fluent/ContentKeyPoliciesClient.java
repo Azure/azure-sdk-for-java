@@ -15,7 +15,9 @@ import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyPro
 /** An instance of this class provides access to all the operations defined in ContentKeyPoliciesClient. */
 public interface ContentKeyPoliciesClient {
     /**
-     * Lists the Content Key Policies in the account.
+     * List Content Key Policies
+     *
+     * <p>Lists the Content Key Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -28,7 +30,9 @@ public interface ContentKeyPoliciesClient {
     PagedIterable<ContentKeyPolicyInner> list(String resourceGroupName, String accountName);
 
     /**
-     * Lists the Content Key Policies in the account.
+     * List Content Key Policies
+     *
+     * <p>Lists the Content Key Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -47,21 +51,9 @@ public interface ContentKeyPoliciesClient {
         String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
 
     /**
-     * Get the details of a Content Key Policy in the Media Services account.
+     * Get a Content Key Policy
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param contentKeyPolicyName The Content Key Policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Content Key Policy in the Media Services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ContentKeyPolicyInner get(String resourceGroupName, String accountName, String contentKeyPolicyName);
-
-    /**
-     * Get the details of a Content Key Policy in the Media Services account.
+     * <p>Get the details of a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -77,23 +69,25 @@ public interface ContentKeyPoliciesClient {
         String resourceGroupName, String accountName, String contentKeyPolicyName, Context context);
 
     /**
-     * Create or update a Content Key Policy in the Media Services account.
+     * Get a Content Key Policy
+     *
+     * <p>Get the details of a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Content Key Policy resource.
+     * @return the details of a Content Key Policy in the Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContentKeyPolicyInner createOrUpdate(
-        String resourceGroupName, String accountName, String contentKeyPolicyName, ContentKeyPolicyInner parameters);
+    ContentKeyPolicyInner get(String resourceGroupName, String accountName, String contentKeyPolicyName);
 
     /**
-     * Create or update a Content Key Policy in the Media Services account.
+     * Create or update an Content Key Policy
+     *
+     * <p>Create or update a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -114,20 +108,27 @@ public interface ContentKeyPoliciesClient {
         Context context);
 
     /**
-     * Deletes a Content Key Policy in the Media Services account.
+     * Create or update an Content Key Policy
+     *
+     * <p>Create or update a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
+     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Content Key Policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String accountName, String contentKeyPolicyName);
+    ContentKeyPolicyInner createOrUpdate(
+        String resourceGroupName, String accountName, String contentKeyPolicyName, ContentKeyPolicyInner parameters);
 
     /**
-     * Deletes a Content Key Policy in the Media Services account.
+     * Delete a Content Key Policy
+     *
+     * <p>Deletes a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -143,23 +144,24 @@ public interface ContentKeyPoliciesClient {
         String resourceGroupName, String accountName, String contentKeyPolicyName, Context context);
 
     /**
-     * Updates an existing Content Key Policy in the Media Services account.
+     * Delete a Content Key Policy
+     *
+     * <p>Deletes a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Content Key Policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContentKeyPolicyInner update(
-        String resourceGroupName, String accountName, String contentKeyPolicyName, ContentKeyPolicyInner parameters);
+    void delete(String resourceGroupName, String accountName, String contentKeyPolicyName);
 
     /**
-     * Updates an existing Content Key Policy in the Media Services account.
+     * Update a Content Key Policy
+     *
+     * <p>Updates an existing Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -180,22 +182,27 @@ public interface ContentKeyPoliciesClient {
         Context context);
 
     /**
-     * Get a Content Key Policy including secret values.
+     * Update a Content Key Policy
+     *
+     * <p>Updates an existing Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
+     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Content Key Policy including secret values.
+     * @return a Content Key Policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContentKeyPolicyPropertiesInner getPolicyPropertiesWithSecrets(
-        String resourceGroupName, String accountName, String contentKeyPolicyName);
+    ContentKeyPolicyInner update(
+        String resourceGroupName, String accountName, String contentKeyPolicyName, ContentKeyPolicyInner parameters);
 
     /**
-     * Get a Content Key Policy including secret values.
+     * Get a Content Key Policy with secrets
+     *
+     * <p>Get a Content Key Policy including secret values.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -209,4 +216,21 @@ public interface ContentKeyPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ContentKeyPolicyPropertiesInner> getPolicyPropertiesWithSecretsWithResponse(
         String resourceGroupName, String accountName, String contentKeyPolicyName, Context context);
+
+    /**
+     * Get a Content Key Policy with secrets
+     *
+     * <p>Get a Content Key Policy including secret values.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param contentKeyPolicyName The Content Key Policy name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Content Key Policy including secret values.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContentKeyPolicyPropertiesInner getPolicyPropertiesWithSecrets(
+        String resourceGroupName, String accountName, String contentKeyPolicyName);
 }

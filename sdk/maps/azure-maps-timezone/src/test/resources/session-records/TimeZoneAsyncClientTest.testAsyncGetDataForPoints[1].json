@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/timezone/byId/json?api-version=1.0&options=all&query=Asia/Bahrain",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaTimezoneSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "768",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: C07AD03BB1334BE191E229BA96C1BC1D Ref B: BY3EDGE0314 Ref C: 2022-09-29T21:00:54Z",
+      "Body" : "{\"Version\":\"2022d\",\"ReferenceUtcTimestamp\":\"2022-09-29T21:00:54.4388346Z\",\"TimeZones\":[{\"Id\":\"Asia/Qatar\",\"Aliases\":[\"Asia/Bahrain\"],\"Countries\":[{\"Name\":\"Qatar\",\"Code\":\"QA\"},{\"Name\":\"Bahrain\",\"Code\":\"BH\"}],\"Names\":{\"ISO6391LanguageCode\":\"en\",\"Generic\":\"Arabian Time\",\"Standard\":\"Arabian Standard Time\",\"Daylight\":\"Arabian Daylight Time\"},\"ReferenceTime\":{\"Tag\":\"+03\",\"StandardOffset\":\"03:00:00\",\"DaylightSavings\":\"00:00:00\",\"WallTime\":\"2022-09-30T00:00:54.4388346+03:00\",\"PosixTzValidYear\":2022,\"PosixTz\":\"<+03>-3\"},\"RepresentativePoint\":{\"Latitude\":25.283333333333335,\"Longitude\":51.53333333333333},\"TimeTransitions\":[{\"Tag\":\"+03\",\"StandardOffset\":\"03:00:00\",\"DaylightSavings\":\"00:00:00\",\"UtcStart\":\"1972-05-31T20:00:00Z\",\"UtcEnd\":\"9999-12-31T23:59:59.9999999Z\"}]}]}",
+      "Date" : "Thu, 29 Sep 2022 21:00:53 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

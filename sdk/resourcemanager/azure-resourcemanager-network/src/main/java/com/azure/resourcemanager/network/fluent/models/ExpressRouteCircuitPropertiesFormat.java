@@ -64,15 +64,13 @@ public final class ExpressRouteCircuitPropertiesFormat {
     private ExpressRouteCircuitServiceProviderProperties serviceProviderProperties;
 
     /*
-     * The reference to the ExpressRoutePort resource when the circuit is
-     * provisioned on an ExpressRoutePort resource.
+     * The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource.
      */
     @JsonProperty(value = "expressRoutePort")
     private SubResource expressRoutePort;
 
     /*
-     * The bandwidth of the circuit when the circuit is provisioned on an
-     * ExpressRoutePort resource.
+     * The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource.
      */
     @JsonProperty(value = "bandwidthInGbps")
     private Float bandwidthInGbps;
@@ -106,6 +104,10 @@ public final class ExpressRouteCircuitPropertiesFormat {
      */
     @JsonProperty(value = "authorizationKey")
     private String authorizationKey;
+
+    /** Creates an instance of ExpressRouteCircuitPropertiesFormat class. */
+    public ExpressRouteCircuitPropertiesFormat() {
+    }
 
     /**
      * Get the allowClassicOperations property: Allow classic operations.

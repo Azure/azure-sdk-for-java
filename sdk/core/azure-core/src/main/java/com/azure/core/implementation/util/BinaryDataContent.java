@@ -18,26 +18,32 @@ import java.nio.ReadOnlyBufferException;
  * An abstract internal representation of the content stored in {@link BinaryData}.
  */
 public abstract class BinaryDataContent {
-
     public static final int STREAM_READ_SIZE = 8192;
 
+    static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+    static final String TOO_LARGE_FOR_BYTE_ARRAY
+        = "The content length is too large for a byte array. Content length is: ";
+
     /**
-     * Gets the length of the {@link BinaryDataContent} if it is able to be calculated.
+     * Gets the length of the {@link BinaryDataContent} if it can be calculated.
      * <p>
      * If the content length isn't able to be calculated null will be returned.
-     * @return The length of the {@link BinaryDataContent} if it is able to be calculated, otherwise null.
+     *
+     * @return The length of the {@link BinaryDataContent} if it can be calculated, otherwise null.
      */
     public abstract Long getLength();
 
     /**
      * Returns a {@link String} representation of this {@link BinaryDataContent} by converting its data using the UTF-8
      * character set.
+     *
      * @return A {@link String} representing this {@link BinaryDataContent}.
      */
     public abstract String toString();
 
     /**
      * Returns a byte array representation of this {@link BinaryDataContent}.
+     *
      * @return A byte array representing this {@link BinaryDataContent}.
      */
     public abstract byte[] toBytes();
@@ -47,6 +53,7 @@ public abstract class BinaryDataContent {
      * {@link JsonSerializer}.
      *
      * <p><strong>Get a non-generic Object from the BinaryDataContent</strong></p>
+     *
      * @param <T> Type of the deserialized Object.
      * @param typeReference The {@link Class} representing the Object's type.
      * @return An {@link Object} representing the JSON deserialized {@link BinaryDataContent}.
@@ -57,6 +64,7 @@ public abstract class BinaryDataContent {
 
     /**
      * Returns an {@link InputStream} representation of this {@link BinaryDataContent}.
+     *
      * @return An {@link InputStream} representing the {@link BinaryDataContent}.
      */
     public abstract InputStream toStream();
@@ -72,6 +80,7 @@ public abstract class BinaryDataContent {
 
     /**
      * Converts the {@link BinaryDataContent} into a {@code Flux<ByteBuffer>} for use in reactive streams.
+     *
      * @return The {@link BinaryDataContent} as a {@code Flux<ByteBuffer>}.
      */
     public abstract Flux<ByteBuffer> toFluxByteBuffer();
@@ -89,34 +98,43 @@ public abstract class BinaryDataContent {
     public abstract boolean isReplayable();
 
     /**
-     * Converts the {@link BinaryDataContent} into a {@link BinaryDataContent} that is replayable, i.e. content
-     * can be consumed repeatedly using all accessors.
+     * Converts the {@link BinaryDataContent} into a {@link BinaryDataContent} that is replayable, i.e. content can be
+     * consumed repeatedly using all accessors.
      *
      * <p>
-     * A {@link BinaryDataContent} that is already replayable is returned as is. Otherwise techniques like
-     * marking and resetting a stream or buffering in memory are employed to assure replayability.
+     * A {@link BinaryDataContent} that is already replayable is returned as is. Otherwise techniques like marking and
+     * resetting a stream or buffering in memory are employed to assure replayability.
      * </p>
      *
      * <p>
      * Replayability does not imply thread-safety. The caller must not use data accessors simultaneously.
      * </p>
+     *
      * @return Replayable {@link BinaryDataContent}.
      */
     public abstract BinaryDataContent toReplayableContent();
 
     /**
-     * Converts the {@link BinaryDataContent} into a {@link BinaryDataContent} that is replayable, i.e. content
-     * can be consumed repeatedly using all accessors.
+     * Converts the {@link BinaryDataContent} into a {@link BinaryDataContent} that is replayable, i.e. content can be
+     * consumed repeatedly using all accessors.
      *
      * <p>
-     * A {@link BinaryDataContent} that is already replayable is returned as is. Otherwise techniques like
-     * marking and resetting a stream or buffering in memory are employed to assure replayability.
+     * A {@link BinaryDataContent} that is already replayable is returned as is. Otherwise techniques like marking and
+     * resetting a stream or buffering in memory are employed to assure replayability.
      * </p>
      *
      * <p>
      * Replayability does not imply thread-safety. The caller must not use data accessors simultaneously.
      * </p>
+     *
      * @return Mono that emits replayable {@link BinaryDataContent}.
      */
     public abstract Mono<BinaryDataContent> toReplayableContentAsync();
+
+    /**
+     * Gets the {@link BinaryDataContent} content type.
+     *
+     * @return The {@link BinaryDataContent} content type.
+     */
+    public abstract BinaryDataContentType getContentType();
 }

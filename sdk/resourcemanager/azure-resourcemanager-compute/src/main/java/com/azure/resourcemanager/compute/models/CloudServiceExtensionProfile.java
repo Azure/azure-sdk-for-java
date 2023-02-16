@@ -17,6 +17,10 @@ public final class CloudServiceExtensionProfile {
     @JsonProperty(value = "extensions")
     private List<Extension> extensions;
 
+    /** Creates an instance of CloudServiceExtensionProfile class. */
+    public CloudServiceExtensionProfile() {
+    }
+
     /**
      * Get the extensions property: List of extensions for the cloud service.
      *

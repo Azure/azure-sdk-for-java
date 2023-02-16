@@ -13,7 +13,7 @@ import java.util.UUID;
 /** Samples for ServerBlobAuditingPolicies CreateOrUpdate. */
 public final class ServerBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ServerBlobAuditingCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerBlobAuditingCreateMin.json
      */
     /**
      * Sample code: Update a server's blob auditing policy with minimal parameters.
@@ -33,13 +33,12 @@ public final class ServerBlobAuditingPoliciesCreateOrUpdateSamples {
                 new ServerBlobAuditingPolicyInner()
                     .withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
-                    .withStorageAccountAccessKey(
-                        "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD=="),
+                    .withStorageAccountAccessKey("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ServerBlobAuditingCreateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerBlobAuditingCreateMax.json
      */
     /**
      * Sample code: Update a server's blob auditing policy with all parameters.
@@ -57,10 +56,6 @@ public final class ServerBlobAuditingPoliciesCreateOrUpdateSamples {
                 "blobauditingtest-4799",
                 "blobauditingtest-6440",
                 new ServerBlobAuditingPolicyInner()
-                    .withState(BlobAuditingPolicyState.ENABLED)
-                    .withStorageEndpoint("https://mystorage.blob.core.windows.net")
-                    .withStorageAccountAccessKey(
-                        "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
                     .withRetentionDays(6)
                     .withAuditActionsAndGroups(
                         Arrays
@@ -68,10 +63,13 @@ public final class ServerBlobAuditingPoliciesCreateOrUpdateSamples {
                                 "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
                                 "FAILED_DATABASE_AUTHENTICATION_GROUP",
                                 "BATCH_COMPLETED_GROUP"))
-                    .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000"))
                     .withIsStorageSecondaryKeyInUse(false)
                     .withIsAzureMonitorTargetEnabled(true)
-                    .withQueueDelayMs(4000),
+                    .withQueueDelayMs(4000)
+                    .withState(BlobAuditingPolicyState.ENABLED)
+                    .withStorageEndpoint("https://mystorage.blob.core.windows.net")
+                    .withStorageAccountAccessKey("fakeTokenPlaceholder")
+                    .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000")),
                 Context.NONE);
     }
 }

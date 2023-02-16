@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for FirewallPolicyIdpsSignatureDirection. */
+/** Describes in which direction signature is being enforced: 0 - Inbound, 1 - OutBound, 2 - Bidirectional. */
 public enum FirewallPolicyIdpsSignatureDirection {
     /** Enum value 0. */
     ZERO(0),

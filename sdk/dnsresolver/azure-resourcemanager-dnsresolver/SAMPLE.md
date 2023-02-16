@@ -63,7 +63,7 @@ import java.util.Map;
 /** Samples for DnsForwardingRulesets CreateOrUpdate. */
 public final class DnsForwardingRulesetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_Put.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Put.json
      */
     /**
      * Sample code: Upsert DNS forwarding ruleset.
@@ -76,7 +76,6 @@ public final class DnsForwardingRulesetsCreateOrUpdateSamples {
             .define("samplednsForwardingRuleset")
             .withRegion("westus2")
             .withExistingResourceGroup("sampleResourceGroup")
-            .withTags(mapOf("key1", "value1"))
             .withDnsResolverOutboundEndpoints(
                 Arrays
                     .asList(
@@ -86,6 +85,7 @@ public final class DnsForwardingRulesetsCreateOrUpdateSamples {
                         new SubResource()
                             .withId(
                                 "/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver/outboundEndpoints/sampleOutboundEndpoint1")))
+            .withTags(mapOf("key1", "value1"))
             .create();
     }
 
@@ -110,7 +110,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsForwardingRulesets Delete. */
 public final class DnsForwardingRulesetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_Delete.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Delete.json
      */
     /**
      * Sample code: Delete DNS forwarding ruleset.
@@ -133,7 +133,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsForwardingRulesets GetByResourceGroup. */
 public final class DnsForwardingRulesetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_Get.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Get.json
      */
     /**
      * Sample code: Retrieve DNS forwarding ruleset.
@@ -156,7 +156,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsForwardingRulesets List. */
 public final class DnsForwardingRulesetsListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_ListBySubscription.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListBySubscription.json
      */
     /**
      * Sample code: List DNS forwarding rulesets by subscription.
@@ -178,7 +178,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsForwardingRulesets ListByResourceGroup. */
 public final class DnsForwardingRulesetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_ListByResourceGroup.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListByResourceGroup.json
      */
     /**
      * Sample code: List DNS forwarding rulesets by resource group.
@@ -200,7 +200,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsForwardingRulesets ListByVirtualNetwork. */
 public final class DnsForwardingRulesetsListByVirtualNetworkSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_ListByVirtualNetwork.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListByVirtualNetwork.json
      */
     /**
      * Sample code: List DNS forwarding rulesets by virtual network.
@@ -227,7 +227,7 @@ import java.util.Map;
 /** Samples for DnsForwardingRulesets Update. */
 public final class DnsForwardingRulesetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Patch.json
      */
     /**
      * Sample code: Update DNS forwarding ruleset.
@@ -266,7 +266,7 @@ import java.util.Map;
 /** Samples for DnsResolvers CreateOrUpdate. */
 public final class DnsResolversCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Put.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Put.json
      */
     /**
      * Sample code: Upsert DNS resolver.
@@ -279,11 +279,11 @@ public final class DnsResolversCreateOrUpdateSamples {
             .define("sampleDnsResolver")
             .withRegion("westus2")
             .withExistingResourceGroup("sampleResourceGroup")
-            .withTags(mapOf("key1", "value1"))
             .withVirtualNetwork(
                 new SubResource()
                     .withId(
                         "/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
+            .withTags(mapOf("key1", "value1"))
             .create();
     }
 
@@ -308,7 +308,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsResolvers Delete. */
 public final class DnsResolversDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Delete.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Delete.json
      */
     /**
      * Sample code: Delete DNS resolver.
@@ -329,7 +329,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsResolvers GetByResourceGroup. */
 public final class DnsResolversGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Get.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Get.json
      */
     /**
      * Sample code: Retrieve DNS resolver.
@@ -350,7 +350,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsResolvers List. */
 public final class DnsResolversListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_ListBySubscription.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_ListBySubscription.json
      */
     /**
      * Sample code: List DNS resolvers by subscription.
@@ -372,7 +372,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsResolvers ListByResourceGroup. */
 public final class DnsResolversListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_ListByResourceGroup.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_ListByResourceGroup.json
      */
     /**
      * Sample code: List DNS resolvers by resource group.
@@ -394,7 +394,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsResolvers ListByVirtualNetwork. */
 public final class DnsResolversListByVirtualNetworkSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_ListByVirtualNetwork.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_ListByVirtualNetwork.json
      */
     /**
      * Sample code: List DNS resolvers by virtual network.
@@ -419,7 +419,7 @@ import java.util.Map;
 /** Samples for DnsResolvers Update. */
 public final class DnsResolversUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Patch.json
      */
     /**
      * Sample code: Update DNS resolver.
@@ -460,7 +460,7 @@ import java.util.Map;
 /** Samples for ForwardingRules CreateOrUpdate. */
 public final class ForwardingRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_Put.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Put.json
      */
     /**
      * Sample code: Upsert forwarding rule in a DNS forwarding ruleset.
@@ -505,7 +505,7 @@ import com.azure.core.util.Context;
 /** Samples for ForwardingRules Delete. */
 public final class ForwardingRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_Delete.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Delete.json
      */
     /**
      * Sample code: Delete forwarding rule in a DNS forwarding ruleset.
@@ -530,7 +530,7 @@ import com.azure.core.util.Context;
 /** Samples for ForwardingRules Get. */
 public final class ForwardingRulesGetSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_Get.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Get.json
      */
     /**
      * Sample code: Retrieve forwarding rule in a DNS forwarding ruleset.
@@ -554,7 +554,7 @@ import com.azure.core.util.Context;
 /** Samples for ForwardingRules List. */
 public final class ForwardingRulesListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_List.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_List.json
      */
     /**
      * Sample code: List forwarding rules in a DNS forwarding ruleset.
@@ -580,7 +580,7 @@ import java.util.Map;
 /** Samples for ForwardingRules Update. */
 public final class ForwardingRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Patch.json
      */
     /**
      * Sample code: Update forwarding rule in a DNS forwarding ruleset.
@@ -628,7 +628,7 @@ import java.util.Map;
 /** Samples for InboundEndpoints CreateOrUpdate. */
 public final class InboundEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/InboundEndpoint_Put.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Put.json
      */
     /**
      * Sample code: Upsert inbound endpoint for DNS resolver.
@@ -642,7 +642,6 @@ public final class InboundEndpointsCreateOrUpdateSamples {
             .define("sampleInboundEndpoint")
             .withRegion("westus2")
             .withExistingDnsResolver("sampleResourceGroup", "sampleDnsResolver")
-            .withTags(mapOf("key1", "value1"))
             .withIpConfigurations(
                 Arrays
                     .asList(
@@ -651,8 +650,8 @@ public final class InboundEndpointsCreateOrUpdateSamples {
                                 new SubResource()
                                     .withId(
                                         "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"))
-                            .withPrivateIpAddress("255.255.255.255")
-                            .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)))
+                            .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)))
+            .withTags(mapOf("key1", "value1"))
             .create();
     }
 
@@ -677,7 +676,7 @@ import com.azure.core.util.Context;
 /** Samples for InboundEndpoints Delete. */
 public final class InboundEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/InboundEndpoint_Delete.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Delete.json
      */
     /**
      * Sample code: Delete inbound endpoint for DNS resolver.
@@ -701,7 +700,7 @@ import com.azure.core.util.Context;
 /** Samples for InboundEndpoints Get. */
 public final class InboundEndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/InboundEndpoint_Get.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Get.json
      */
     /**
      * Sample code: Retrieve inbound endpoint for DNS resolver.
@@ -725,7 +724,7 @@ import com.azure.core.util.Context;
 /** Samples for InboundEndpoints List. */
 public final class InboundEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/InboundEndpoint_List.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_List.json
      */
     /**
      * Sample code: List inbound endpoints by DNS resolver.
@@ -750,7 +749,7 @@ import java.util.Map;
 /** Samples for InboundEndpoints Update. */
 public final class InboundEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/InboundEndpoint_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Patch.json
      */
     /**
      * Sample code: Update inbound endpoint for DNS resolver.
@@ -790,7 +789,7 @@ import java.util.Map;
 /** Samples for OutboundEndpoints CreateOrUpdate. */
 public final class OutboundEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Put.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Put.json
      */
     /**
      * Sample code: Upsert outbound endpoint for DNS resolver.
@@ -804,11 +803,11 @@ public final class OutboundEndpointsCreateOrUpdateSamples {
             .define("sampleOutboundEndpoint")
             .withRegion("westus2")
             .withExistingDnsResolver("sampleResourceGroup", "sampleDnsResolver")
-            .withTags(mapOf("key1", "value1"))
             .withSubnet(
                 new SubResource()
                     .withId(
                         "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"))
+            .withTags(mapOf("key1", "value1"))
             .create();
     }
 
@@ -833,7 +832,7 @@ import com.azure.core.util.Context;
 /** Samples for OutboundEndpoints Delete. */
 public final class OutboundEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Delete.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Delete.json
      */
     /**
      * Sample code: Delete outbound endpoint for DNS resolver.
@@ -857,7 +856,7 @@ import com.azure.core.util.Context;
 /** Samples for OutboundEndpoints Get. */
 public final class OutboundEndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Get.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Get.json
      */
     /**
      * Sample code: Retrieve outbound endpoint for DNS resolver.
@@ -881,7 +880,7 @@ import com.azure.core.util.Context;
 /** Samples for OutboundEndpoints List. */
 public final class OutboundEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_List.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_List.json
      */
     /**
      * Sample code: List outbound endpoints by DNS resolver.
@@ -906,7 +905,7 @@ import java.util.Map;
 /** Samples for OutboundEndpoints Update. */
 public final class OutboundEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Patch.json
      */
     /**
      * Sample code: Update outbound endpoint for DNS resolver.
@@ -946,7 +945,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkLinks CreateOrUpdate. */
 public final class VirtualNetworkLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/VirtualNetworkLink_Put.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Put.json
      */
     /**
      * Sample code: Upsert virtual network link to a DNS forwarding ruleset.
@@ -988,7 +987,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualNetworkLinks Delete. */
 public final class VirtualNetworkLinksDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/VirtualNetworkLink_Delete.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Delete.json
      */
     /**
      * Sample code: Delete virtual network link to a DNS forwarding ruleset.
@@ -1013,7 +1012,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualNetworkLinks Get. */
 public final class VirtualNetworkLinksGetSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/VirtualNetworkLink_Get.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Get.json
      */
     /**
      * Sample code: Retrieve virtual network link to a DNS forwarding ruleset.
@@ -1038,7 +1037,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualNetworkLinks List. */
 public final class VirtualNetworkLinksListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/VirtualNetworkLink_List.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_List.json
      */
     /**
      * Sample code: List virtual network links to a DNS forwarding ruleset.
@@ -1063,7 +1062,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkLinks Update. */
 public final class VirtualNetworkLinksUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/VirtualNetworkLink_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Patch.json
      */
     /**
      * Sample code: Update virtual network link to a DNS forwarding ruleset.

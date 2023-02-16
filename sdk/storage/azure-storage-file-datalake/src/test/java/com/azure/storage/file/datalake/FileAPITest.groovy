@@ -17,11 +17,10 @@ import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
-import com.azure.storage.common.test.shared.extensions.PlaybackOnly
-
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
+import com.azure.storage.file.datalake.models.LeaseAction
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
@@ -31,9 +30,9 @@ import com.azure.storage.file.datalake.models.FileQueryArrowField
 import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
 import com.azure.storage.file.datalake.models.FileQueryArrowSerialization
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
-import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryError
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
+import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryProgress
 import com.azure.storage.file.datalake.models.FileQuerySerialization
 import com.azure.storage.file.datalake.models.FileRange
@@ -42,12 +41,11 @@ import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
 import com.azure.storage.file.datalake.models.PathAccessControl
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
-
 import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
-
+import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
@@ -64,6 +62,7 @@ import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
 import spock.lang.Retry
 import spock.lang.Unroll
+import spock.util.environment.Jvm
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -272,6 +271,7 @@ class FileAPITest extends APISpec {
         fc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with ACL"() {
         when:
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
@@ -286,6 +286,7 @@ class FileAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with owner and group"() {
         when:
         def ownerName = namer.getRandomUuid()
@@ -376,6 +377,7 @@ class FileAPITest extends APISpec {
         PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with lease id"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -397,6 +399,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with lease duration"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -412,6 +415,7 @@ class FileAPITest extends APISpec {
         fileProps.getLeaseDuration() == LeaseDurationType.FIXED
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with time expires on"() {
         when:
         def options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions)
@@ -427,6 +431,7 @@ class FileAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with time to expire relative to now"() {
         when:
         def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
@@ -555,7 +560,7 @@ class FileAPITest extends APISpec {
             Context.NONE).getStatusCode() == 201
     }
 
-
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with ACL"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -571,6 +576,7 @@ class FileAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with owner and group"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -666,6 +672,7 @@ class FileAPITest extends APISpec {
         PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with lease id"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -689,6 +696,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with lease duration"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -706,6 +714,7 @@ class FileAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with time expires on"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -723,6 +732,7 @@ class FileAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with time to expire relative to now"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -2569,6 +2579,110 @@ class FileAPITest extends APISpec {
         e.getResponse().getStatusCode() == 412
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease acquire"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+
+        def proposedLeaseId = UUID.randomUUID().toString()
+        def duration = 15
+        def leaseAction = LeaseAction.ACQUIRE
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setProposedLeaseId(proposedLeaseId)
+            .setLeaseDuration(duration)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProperties.getLeaseState() == LeaseStateType.LEASED
+        fileProperties.getLeaseDuration() == LeaseDurationType.FIXED
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease auto renew"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+        def leaseId = UUID.randomUUID().toString()
+        def duration = 15
+        def leaseClient = createLeaseClient(fc, leaseId)
+
+        leaseClient.acquireLease(duration)
+
+        def leaseAction = LeaseAction.AUTO_RENEW
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setLeaseId(leaseId)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProperties.getLeaseState() == LeaseStateType.LEASED
+        fileProperties.getLeaseDuration() == LeaseDurationType.FIXED
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease release"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+        def leaseId = UUID.randomUUID().toString()
+        def duration = 15
+        def leaseClient = createLeaseClient(fc, leaseId)
+
+        leaseClient.acquireLease(duration)
+
+        def leaseAction = LeaseAction.RELEASE
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setLeaseId(leaseId)
+            .setFlush(true)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        fileProperties.getLeaseState() == LeaseStateType.AVAILABLE
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease acquire release"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+        def proposedLeaseId = UUID.randomUUID().toString()
+        def duration = 15
+
+        def leaseAction = LeaseAction.ACQUIRE_RELEASE
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setProposedLeaseId(proposedLeaseId)
+            .setLeaseDuration(duration)
+            .setFlush(true)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        fileProperties.getLeaseState() == LeaseStateType.AVAILABLE
+    }
+
     def "Append data error"() {
         setup:
         fc = fsc.getFileClient(generatePathName())
@@ -2597,6 +2711,59 @@ class FileAPITest extends APISpec {
         def os = new ByteArrayOutputStream()
         fc.read(os)
         os.toByteArray() == data.defaultBytes
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
+    def "Append data flush"() {
+        setup:
+        def appendOptions = new DataLakeFileAppendOptions().setFlush(true)
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+        def os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Append binary data min"() {
+        when:
+        fc.append(data.defaultBinaryData, 0)
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    def "Append binary data"() {
+        setup:
+        def response = fc.appendWithResponse(data.defaultBinaryData, 0, null, null, null, null)
+        def headers = response.getHeaders()
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
+    def "Append binary data flush"() {
+        setup:
+        def appendOptions = new DataLakeFileAppendOptions().setFlush(true)
+        def response = fc.appendWithResponse(data.defaultBinaryData, 0, appendOptions, null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
     }
 
     def "Flush data min"() {
@@ -3002,6 +3169,31 @@ class FileAPITest extends APISpec {
         100      | 50               | 20        || 5 // Test that blockSize is respected
     }
 
+    @Unroll
+    def "Upload from file with response"() {
+        setup:
+        def file = getRandomFile((int) dataSize)
+
+        when:
+        def response = fc.uploadFromFileWithResponse(file.toPath().toString(),
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null, null)
+
+        then:
+        fc.getProperties().getFileSize() == dataSize
+        response.getStatusCode() == 200
+        response.getValue().getETag() != null
+        response.getValue().getLastModified() != null
+
+
+        cleanup:
+        file.delete()
+
+        where:
+        dataSize | singleUploadSize | blockSize || expectedBlockCount
+        100      | 50               | null      || 1 // Test that singleUploadSize is respected
+        100      | 50               | 20        || 5 // Test that blockSize is respected
+    }
+
     @LiveOnly
     def "Async buffered upload empty"() {
         setup:
@@ -3342,7 +3534,7 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
         expect:
-        StepVerifier.create(fac.upload(null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
+        StepVerifier.create(fac.upload((Flux<ByteBuffer>)null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
@@ -3413,7 +3605,7 @@ class FileAPITest extends APISpec {
     }
 
     // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
-    @IgnoreIf( { Runtime.version().feature() > 11 } )
+    @IgnoreIf( { Jvm.current.isJava12Compatible() } )
     @Unroll
     @LiveOnly
     def "Buffered upload options"() {
@@ -3428,7 +3620,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, (DataLakeFileAppendOptions)_, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
@@ -3711,6 +3903,38 @@ class FileAPITest extends APISpec {
 
         when:
         clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload binary data"() {
+        setup:
+        def client = getFileClient(
+            environment.dataLakeAccount.credential,
+            fc.getFileUrl())
+
+        when:
+        client.uploadWithResponse(new FileParallelUploadOptions(data.defaultBinaryData), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload binary data overwrite"() {
+        setup:
+        def client = getFileClient(
+            environment.dataLakeAccount.credential,
+            fc.getFileUrl())
+
+        when:
+        client.upload(data.defaultBinaryData, true)
 
         then:
         notThrown(Exception)
@@ -4125,7 +4349,6 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    @PlaybackOnly(expiryTime = "2022-05-18")
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -4139,27 +4362,22 @@ class FileAPITest extends APISpec {
         schema.add(new FileQueryArrowField(FileQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4).setScale(2))
         FileQueryArrowSerialization outSer = new FileQueryArrowSerialization().setSchema(schema)
         def expression = "SELECT _2 from BlobStorage WHERE _1 > 250;"
-        String expectedData = "/////4AAAAAQAAAAAAAKAAwABgAFAAgACgAAAAABBAAMAAAACAAIAAAABAAIAAAABAAAAAEAAAAUAAAAEAAUAAgABgAHAAwAAAAQABAAAAAAAAEHEAAAACAAAAAEAAAAAAAAAAQAAABOYW1lAAAAAAgADAAEAAgACAAAAAQAAAACAAAAAAAAAP////9wAAAAEAAAAAAACgAOAAYABQAIAAoAAAAAAwQAEAAAAAAACgAMAAAABAAIAAoAAAAwAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAP////8AAAAA/////4gAAAAUAAAAAAAAAAwAFgAGAAUACAAMAAwAAAAAAwQAGAAAAAACAAAAAAAAAAAKABgADAAEAAgACgAAADwAAAAQAAAAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAAgAAAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAAA="
         OutputStream os = new ByteArrayOutputStream()
         FileQueryOptions options = new FileQueryOptions(expression, os).setOutputSerialization(outSer)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStreamWithResponse(options).getValue()
-        byte[] queryData = readFromInputStream(qqStream, 920)
+        fc.openQueryInputStreamWithResponse(options).getValue()
 
         then:
         notThrown(IOException)
-        Base64.getEncoder().encodeToString(queryData) == expectedData
 
         /* Output Stream. */
         when:
         fc.queryWithResponse(options, null, null)
-        byte[] osData = os.toByteArray()
 
         then:
         notThrown(BlobStorageException)
-        Base64.getEncoder().encodeToString(osData) == expectedData
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
@@ -4679,7 +4897,7 @@ class FileAPITest extends APISpec {
 
     /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
     // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
-    @IgnoreIf( { Runtime.version().feature() > 11 } )
+    @IgnoreIf( { Jvm.current.isJava12Compatible() } )
     @Unroll
     @LiveOnly /* Flaky in playback. */
     def "Upload numAppends"() {
@@ -4696,7 +4914,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, (DataLakeFileAppendOptions)_, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends

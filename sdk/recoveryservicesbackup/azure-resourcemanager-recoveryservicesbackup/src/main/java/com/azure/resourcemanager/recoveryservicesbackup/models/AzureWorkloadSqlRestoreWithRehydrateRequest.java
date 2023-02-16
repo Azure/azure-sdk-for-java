@@ -22,6 +22,10 @@ public final class AzureWorkloadSqlRestoreWithRehydrateRequest extends AzureWork
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
+    /** Creates an instance of AzureWorkloadSqlRestoreWithRehydrateRequest class. */
+    public AzureWorkloadSqlRestoreWithRehydrateRequest() {
+    }
+
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
      *

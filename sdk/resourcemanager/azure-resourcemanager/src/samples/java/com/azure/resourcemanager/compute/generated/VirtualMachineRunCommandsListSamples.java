@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineRunCommands List. */
 public final class VirtualMachineRunCommandsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/RunCommand_List.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/RunCommand_List.json
      */
     /**
      * Sample code: VirtualMachineRunCommandList.
@@ -22,6 +20,6 @@ public final class VirtualMachineRunCommandsListSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineRunCommands()
-            .list("SoutheastAsia", Context.NONE);
+            .list("SoutheastAsia", com.azure.core.util.Context.NONE);
     }
 }

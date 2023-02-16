@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,11 +16,8 @@ import java.util.List;
 @JsonTypeName("CustomerCertificate")
 @Fluent
 public final class CustomerCertificateParameters extends SecretParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerCertificateParameters.class);
-
     /*
-     * Resource reference to the Azure Key Vault certificate. Expected to be in
-     * format of
+     * Resource reference to the Azure Key Vault certificate. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
     @JsonProperty(value = "secretSource", required = true)
@@ -196,7 +192,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
     public void validate() {
         super.validate();
         if (secretSource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretSource in model CustomerCertificateParameters"));
@@ -204,4 +200,6 @@ public final class CustomerCertificateParameters extends SecretParameters {
             secretSource().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomerCertificateParameters.class);
 }

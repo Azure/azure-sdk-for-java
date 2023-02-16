@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network specific rules that determine how the Azure Cognitive Search service may be reached. */
 @Fluent
 public final class NetworkRuleSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSet.class);
-
     /*
      * A list of IP restriction rules that defines the inbound network(s) with
      * allowing access to the search service endpoint. At the meantime, all

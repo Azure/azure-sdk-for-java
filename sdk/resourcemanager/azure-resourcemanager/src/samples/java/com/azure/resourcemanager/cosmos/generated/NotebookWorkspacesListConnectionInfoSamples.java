@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
 
 /** Samples for NotebookWorkspaces ListConnectionInfo. */
 public final class NotebookWorkspacesListConnectionInfoSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBNotebookWorkspaceListConnectionInfo.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBNotebookWorkspaceListConnectionInfo.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceListConnectionInfo.
@@ -24,6 +23,7 @@ public final class NotebookWorkspacesListConnectionInfoSamples {
             .manager()
             .serviceClient()
             .getNotebookWorkspaces()
-            .listConnectionInfoWithResponse("rg1", "ddb1", NotebookWorkspaceName.DEFAULT, Context.NONE);
+            .listConnectionInfoWithResponse(
+                "rg1", "ddb1", NotebookWorkspaceName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }

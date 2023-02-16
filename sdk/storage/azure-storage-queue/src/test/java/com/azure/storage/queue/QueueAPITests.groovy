@@ -3,11 +3,14 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.http.policy.ExponentialBackoffOptions
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.HttpClientOptions
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.queue.models.PeekedMessageItem
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
@@ -15,6 +18,7 @@ import com.azure.storage.queue.models.QueueMessageItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
 import reactor.core.publisher.Mono
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -893,6 +897,7 @@ class QueueAPITests extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
+    @Retry(count = 5, delay = 1000)
     def "create queue with small timeouts fail for service client"() {
         setup:
         def clientOptions = new HttpClientOptions()
@@ -905,6 +910,7 @@ class QueueAPITests extends APISpec {
         def clientBuilder = new QueueServiceClientBuilder()
             .endpoint(environment.primaryAccount.blobEndpoint)
             .credential(environment.primaryAccount.credential)
+            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
             .clientOptions(clientOptions)
 
         def serviceClient = clientBuilder.buildClient()

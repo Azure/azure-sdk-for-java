@@ -49,6 +49,32 @@ class RetryTest extends Specification {
             }).verifyComplete()
     }
 
+    def "Retries until max retries with exception"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES_WITH_EXCEPTION, retryTestOptions)
+
+        when:
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
+
+        then:
+        StepVerifier.create(responseMono)
+            .expectErrorSatisfies({
+                assert it instanceof IOException
+                assert it.message == "Exception number " + retryTestOptions.getMaxTries()
+                assert it.suppressed != null
+                assert it.suppressed[0] instanceof IOException
+                assert it.suppressed[0].message == "Exception number 1"
+                assert it.suppressed[1] instanceof IOException
+                assert it.suppressed[1].message == "Exception number 2"
+                assert it.suppressed[2] instanceof IOException
+                assert it.suppressed[2].message == "Exception number 3"
+                assert it.suppressed[3] instanceof IOException
+                assert it.suppressed[3].message == "Exception number 4"
+                assert it.suppressed[4] instanceof IOException
+                assert it.suppressed[4].message == "Exception number 5"
+            }).verify()
+    }
+
     def "Retries non retryable"() {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE, retryTestOptions)

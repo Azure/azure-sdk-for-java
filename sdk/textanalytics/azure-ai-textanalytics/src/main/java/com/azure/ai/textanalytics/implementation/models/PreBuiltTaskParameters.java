@@ -16,6 +16,9 @@ public class PreBuiltTaskParameters extends TaskParameters {
     @JsonProperty(value = "modelVersion")
     private String modelVersion;
 
+    /** Creates an instance of PreBuiltTaskParameters class. */
+    public PreBuiltTaskParameters() {}
+
     /**
      * Get the modelVersion property: The modelVersion property.
      *
@@ -33,6 +36,13 @@ public class PreBuiltTaskParameters extends TaskParameters {
      */
     public PreBuiltTaskParameters setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PreBuiltTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
         return this;
     }
 }

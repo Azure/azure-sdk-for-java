@@ -7,20 +7,16 @@ package com.azure.resourcemanager.policyinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.models.RemediationDeploymentSummary;
 import com.azure.resourcemanager.policyinsights.models.RemediationFilters;
 import com.azure.resourcemanager.policyinsights.models.RemediationPropertiesFailureThreshold;
 import com.azure.resourcemanager.policyinsights.models.ResourceDiscoveryMode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The remediation definition. */
 @Fluent
 public final class RemediationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemediationInner.class);
-
     /*
      * Properties for the remediation.
      */
@@ -28,11 +24,14 @@ public final class RemediationInner extends ProxyResource {
     private RemediationProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of RemediationInner class. */
+    public RemediationInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties for the remediation.

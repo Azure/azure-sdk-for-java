@@ -7,15 +7,12 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceControlInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of regulatory compliance controls response. */
 @Fluent
 public final class RegulatoryComplianceControlList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegulatoryComplianceControlList.class);
-
     /*
      * List of regulatory compliance controls
      */
@@ -27,6 +24,10 @@ public final class RegulatoryComplianceControlList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of RegulatoryComplianceControlList class. */
+    public RegulatoryComplianceControlList() {
+    }
 
     /**
      * Get the value property: List of regulatory compliance controls.
@@ -64,7 +65,7 @@ public final class RegulatoryComplianceControlList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model RegulatoryComplianceControlList"));
@@ -72,4 +73,6 @@ public final class RegulatoryComplianceControlList {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegulatoryComplianceControlList.class);
 }

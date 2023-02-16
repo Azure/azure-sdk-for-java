@@ -154,19 +154,6 @@ public interface SecurityPartnerProvidersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Security Partner Provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityPartnerProviderInner getByResourceGroup(String resourceGroupName, String securityPartnerProviderName);
-
-    /**
-     * Gets the specified Security Partner Provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -176,6 +163,19 @@ public interface SecurityPartnerProvidersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityPartnerProviderInner> getByResourceGroupWithResponse(
         String resourceGroupName, String securityPartnerProviderName, Context context);
+
+    /**
+     * Gets the specified Security Partner Provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param securityPartnerProviderName The name of the Security Partner Provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Security Partner Provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecurityPartnerProviderInner getByResourceGroup(String resourceGroupName, String securityPartnerProviderName);
 
     /**
      * Creates or updates the specified Security Partner Provider.
@@ -326,21 +326,6 @@ public interface SecurityPartnerProvidersClient
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to update Security Partner Provider tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Partner Provider resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityPartnerProviderInner updateTags(
-        String resourceGroupName, String securityPartnerProviderName, TagsObject parameters);
-
-    /**
-     * Updates tags of a Security Partner Provider resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param securityPartnerProviderName The name of the Security Partner Provider.
-     * @param parameters Parameters supplied to update Security Partner Provider tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -350,6 +335,21 @@ public interface SecurityPartnerProvidersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityPartnerProviderInner> updateTagsWithResponse(
         String resourceGroupName, String securityPartnerProviderName, TagsObject parameters, Context context);
+
+    /**
+     * Updates tags of a Security Partner Provider resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param securityPartnerProviderName The name of the Security Partner Provider.
+     * @param parameters Parameters supplied to update Security Partner Provider tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security Partner Provider resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecurityPartnerProviderInner updateTags(
+        String resourceGroupName, String securityPartnerProviderName, TagsObject parameters);
 
     /**
      * Lists all Security Partner Providers in a resource group.

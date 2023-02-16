@@ -19,6 +19,10 @@ public final class OSOptionPropertyList {
     @JsonProperty(value = "osOptionPropertyList", required = true)
     private List<OSOptionProperty> osOptionPropertyList;
 
+    /** Creates an instance of OSOptionPropertyList class. */
+    public OSOptionPropertyList() {
+    }
+
     /**
      * Get the osOptionPropertyList property: The list of OS options.
      *

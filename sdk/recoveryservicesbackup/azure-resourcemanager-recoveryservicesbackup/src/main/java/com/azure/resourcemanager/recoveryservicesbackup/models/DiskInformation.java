@@ -22,6 +22,10 @@ public final class DiskInformation {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of DiskInformation class. */
+    public DiskInformation() {
+    }
+
     /**
      * Get the lun property: The lun property.
      *

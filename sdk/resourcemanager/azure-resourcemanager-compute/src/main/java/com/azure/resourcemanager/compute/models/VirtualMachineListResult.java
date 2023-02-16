@@ -20,11 +20,14 @@ public final class VirtualMachineListResult {
     private List<VirtualMachineInner> value;
 
     /*
-     * The URI to fetch the next page of VMs. Call ListNext() with this URI to
-     * fetch the next page of Virtual Machines.
+     * The URI to fetch the next page of VMs. Call ListNext() with this URI to fetch the next page of Virtual Machines.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of VirtualMachineListResult class. */
+    public VirtualMachineListResult() {
+    }
 
     /**
      * Get the value property: The list of virtual machines.

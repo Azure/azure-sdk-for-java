@@ -8,10 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskDetachOptionTypes. */
+/**
+ * Specifies the detach behavior to be used while detaching a disk or which is already in the process of detachment from
+ * the virtual machine. Supported values: **ForceDetach**. &lt;br&gt;&lt;br&gt; detachOption: **ForceDetach** is
+ * applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an
+ * unexpected failure from the virtual machine and the disk is still not released then use force-detach as a last resort
+ * option to detach the disk forcibly from the VM. All writes might not have been flushed when using this detach
+ * behavior. &lt;br&gt;&lt;br&gt; This feature is still in preview mode and is not supported for VirtualMachineScaleSet.
+ * To force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+ */
 public final class DiskDetachOptionTypes extends ExpandableStringEnum<DiskDetachOptionTypes> {
     /** Static value ForceDetach for DiskDetachOptionTypes. */
     public static final DiskDetachOptionTypes FORCE_DETACH = fromString("ForceDetach");
+
+    /**
+     * Creates a new instance of DiskDetachOptionTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskDetachOptionTypes() {
+    }
 
     /**
      * Creates or finds a DiskDetachOptionTypes from its string representation.

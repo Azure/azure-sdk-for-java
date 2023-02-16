@@ -22,6 +22,10 @@ public final class VirtualMachineImageFeature {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of VirtualMachineImageFeature class. */
+    public VirtualMachineImageFeature() {
+    }
+
     /**
      * Get the name property: The name of the feature.
      *

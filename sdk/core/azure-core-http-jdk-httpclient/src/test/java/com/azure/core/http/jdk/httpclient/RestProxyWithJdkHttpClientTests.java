@@ -36,6 +36,6 @@ public class RestProxyWithJdkHttpClientTests extends RestProxyTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        return new JdkAsyncHttpClientBuilder().build();
+        return new JdkHttpClientBuilder().build();
     }
 }

@@ -22,15 +22,13 @@ public final class MicrosoftGraphScheduleItem {
     private MicrosoftGraphDateTimeZone end;
 
     /*
-     * The sensitivity of the corresponding event. True if the event is marked
-     * private, false otherwise. Optional.
+     * The sensitivity of the corresponding event. True if the event is marked private, false otherwise. Optional.
      */
     @JsonProperty(value = "isPrivate")
     private Boolean isPrivate;
 
     /*
-     * The location where the corresponding event is held or attended from.
-     * Optional.
+     * The location where the corresponding event is held or attended from. Optional.
      */
     @JsonProperty(value = "location")
     private String location;
@@ -57,6 +55,10 @@ public final class MicrosoftGraphScheduleItem {
      * scheduleItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphScheduleItem class. */
+    public MicrosoftGraphScheduleItem() {
+    }
 
     /**
      * Get the end property: dateTimeTimeZone.

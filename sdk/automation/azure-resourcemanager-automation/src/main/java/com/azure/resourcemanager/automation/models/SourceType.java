@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SourceType. */
+/** The source type. Must be one of VsoGit, VsoTfvc, GitHub. */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
     /** Static value VsoGit for SourceType. */
     public static final SourceType VSO_GIT = fromString("VsoGit");
@@ -30,7 +30,11 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
         return fromString(name, SourceType.class);
     }
 
-    /** @return known SourceType values. */
+    /**
+     * Gets known SourceType values.
+     *
+     * @return known SourceType values.
+     */
     public static Collection<SourceType> values() {
         return values(SourceType.class);
     }

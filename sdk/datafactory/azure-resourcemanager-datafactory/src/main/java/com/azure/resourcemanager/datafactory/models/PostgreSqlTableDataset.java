@@ -23,6 +23,10 @@ public final class PostgreSqlTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private PostgreSqlTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of PostgreSqlTableDataset class. */
+    public PostgreSqlTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: PostgreSQL table dataset properties.
      *

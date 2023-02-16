@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebApplicationFirewallMatchVariable. */
+/** Match Variable. */
 public final class WebApplicationFirewallMatchVariable
     extends ExpandableStringEnum<WebApplicationFirewallMatchVariable> {
     /** Static value RemoteAddr for WebApplicationFirewallMatchVariable. */

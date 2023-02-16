@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties {
     /*
-     * User name for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username", required = true)
     private Object username;
@@ -26,6 +25,9 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
      */
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
+
+    /** Creates an instance of WebBasicAuthentication class. */
+    public WebBasicAuthentication() {}
 
     /**
      * Get the username property: User name for Basic authentication. Type: string (or Expression with resultType

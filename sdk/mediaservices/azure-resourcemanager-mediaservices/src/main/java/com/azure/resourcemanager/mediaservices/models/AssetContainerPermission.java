@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AssetContainerPermission. */
+/** The permissions to set on the SAS URL. */
 public final class AssetContainerPermission extends ExpandableStringEnum<AssetContainerPermission> {
     /** Static value Read for AssetContainerPermission. */
     public static final AssetContainerPermission READ = fromString("Read");
@@ -18,6 +18,15 @@ public final class AssetContainerPermission extends ExpandableStringEnum<AssetCo
 
     /** Static value ReadWriteDelete for AssetContainerPermission. */
     public static final AssetContainerPermission READ_WRITE_DELETE = fromString("ReadWriteDelete");
+
+    /**
+     * Creates a new instance of AssetContainerPermission value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AssetContainerPermission() {
+    }
 
     /**
      * Creates or finds a AssetContainerPermission from its string representation.

@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "odata\\.type",
+    property = "odata.type",
     defaultImpl = RuleAction.class)
 @JsonTypeName("RuleAction")
 @JsonSubTypes({
@@ -27,10 +24,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         name = "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction",
         value = RuleWebhookAction.class)
 })
-@JsonFlatten
 @Immutable
 public class RuleAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleAction.class);
+    /** Creates an instance of RuleAction class. */
+    public RuleAction() {
+    }
 
     /**
      * Validates the instance.

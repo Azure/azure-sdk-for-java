@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSets ForceRecoveryServiceFabricPlatformUpdateDomainWalk. */
 public final class VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MinimumSet_Gen.
@@ -24,11 +22,11 @@ public final class VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpda
             .serviceClient()
             .getVirtualMachineScaleSets()
             .forceRecoveryServiceFabricPlatformUpdateDomainWalkWithResponse(
-                "rgcompute", "aaaaaaaaaaaa", 9, null, null, Context.NONE);
+                "rgcompute", "aaaaaaaaaaaa", 9, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MaximumSet_Gen.
@@ -43,6 +41,6 @@ public final class VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpda
             .serviceClient()
             .getVirtualMachineScaleSets()
             .forceRecoveryServiceFabricPlatformUpdateDomainWalkWithResponse(
-                "rgcompute", "aaaaaaaaaaaaaaaa", 30, null, null, Context.NONE);
+                "rgcompute", "aaaaaaaaaaaaaaaa", 30, null, null, com.azure.core.util.Context.NONE);
     }
 }

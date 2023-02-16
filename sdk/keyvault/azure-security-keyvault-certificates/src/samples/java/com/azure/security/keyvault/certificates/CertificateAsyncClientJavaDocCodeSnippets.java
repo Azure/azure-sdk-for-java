@@ -5,13 +5,9 @@ package com.azure.security.keyvault.certificates;
 
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -32,25 +28,24 @@ import java.util.Map;
  * This class contains code samples for generating javadocs through doclets for {@link CertificateAsyncClient}
  */
 public final class CertificateAsyncClientJavaDocCodeSnippets {
-
-    private String key1 = "key1";
-    private String key2 = "key2";
-    private String value1 = "val1";
-    private String value2 = "val2";
+    private final String key1 = "key1";
+    private final String key2 = "key2";
+    private final String value1 = "val1";
+    private final String value2 = "val2";
 
     /**
      * Generates code sample for creating a {@link CertificateAsyncClient}
      * @return An instance of {@link CertificateAsyncClient}
      */
     public CertificateAsyncClient createAsyncClientWithHttpclient() {
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withHttpClient
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .vaultUrl("https://myvault.azure.net/")
+            .vaultUrl("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withHttpClient
         return certificateAsyncClient;
     }
 
@@ -62,27 +57,10 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .vaultUrl("https://myvault.vault.azure.net/")
+            .vaultUrl("<your-key-vault-url>")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation
-        return certificateAsyncClient;
-    }
-
-    /**
-     * Generates code sample for creating a {@link CertificateAsyncClient}
-     * @return An instance of {@link CertificateAsyncClient}
-     */
-    public CertificateAsyncClient createAsyncClientWithPipeline() {
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
-            .build();
-        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .pipeline(pipeline)
-            .vaultUrl("https://myvault.azure.net/")
-            .buildAsyncClient();
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation
         return certificateAsyncClient;
     }
 
@@ -218,7 +196,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#CertificateIssuer
         CertificateIssuer issuer = new CertificateIssuer("issuerName", "providerName")
             .setAccountId("keyvaultuser")
-            .setPassword("temp2");
+            .setPassword("fakePasswordPlaceholder");
         certificateAsyncClient.createIssuer(issuer)
             .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponse -> {
@@ -230,7 +208,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#CertificateIssuer
         CertificateIssuer newIssuer = new CertificateIssuer("issuerName", "providerName")
             .setAccountId("keyvaultuser")
-            .setPassword("temp2");
+            .setPassword("fakePasswordPlaceholder");
         certificateAsyncClient.createIssuerWithResponse(newIssuer)
             .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponse -> {

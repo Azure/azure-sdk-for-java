@@ -24,6 +24,10 @@ public final class ServiceEndpointPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ServiceEndpointPolicyListResult class. */
+    public ServiceEndpointPolicyListResult() {
+    }
+
     /**
      * Get the value property: A list of ServiceEndpointPolicy resources.
      *

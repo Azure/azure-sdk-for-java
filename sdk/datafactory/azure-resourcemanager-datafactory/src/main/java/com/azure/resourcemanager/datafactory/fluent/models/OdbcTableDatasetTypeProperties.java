@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class OdbcTableDatasetTypeProperties {
     /*
-     * The ODBC table name. Type: string (or Expression with resultType
-     * string).
+     * The ODBC table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
+
+    /** Creates an instance of OdbcTableDatasetTypeProperties class. */
+    public OdbcTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: The ODBC table name. Type: string (or Expression with resultType string).

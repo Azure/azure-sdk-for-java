@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Endpoint addresses. */
 @Immutable
 public final class Endpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Endpoints.class);
-
     /*
      * Endpoint for the NSX-T Data Center manager
      */
@@ -31,6 +27,10 @@ public final class Endpoints {
      */
     @JsonProperty(value = "hcxCloudManager", access = JsonProperty.Access.WRITE_ONLY)
     private String hcxCloudManager;
+
+    /** Creates an instance of Endpoints class. */
+    public Endpoints() {
+    }
 
     /**
      * Get the nsxtManager property: Endpoint for the NSX-T Data Center manager.

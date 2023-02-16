@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMs RetrieveBootDiagnosticsData. */
 public final class VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_RetrieveBootDiagnosticsData.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_RetrieveBootDiagnosticsData.json
      */
     /**
      * Sample code: RetrieveBootDiagnosticsData of a virtual machine.
@@ -23,6 +21,7 @@ public final class VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .retrieveBootDiagnosticsDataWithResponse("ResourceGroup", "myvmScaleSet", "0", 60, Context.NONE);
+            .retrieveBootDiagnosticsDataWithResponse(
+                "ResourceGroup", "myvmScaleSet", "0", 60, com.azure.core.util.Context.NONE);
     }
 }

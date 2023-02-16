@@ -25,6 +25,10 @@ public final class AzurePostgreSqlLinkedService extends LinkedService {
     private AzurePostgreSqlLinkedServiceTypeProperties innerTypeProperties =
         new AzurePostgreSqlLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzurePostgreSqlLinkedService class. */
+    public AzurePostgreSqlLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure PostgreSQL linked service properties.
      *

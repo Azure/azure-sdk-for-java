@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties to secure a domain. */
 @Fluent
 public final class AfdDomainHttpsParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdDomainHttpsParameters.class);
-
     /*
      * Defines the source of the SSL certificate.
      */
@@ -99,7 +96,7 @@ public final class AfdDomainHttpsParameters {
      */
     public void validate() {
         if (certificateType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property certificateType in model AfdDomainHttpsParameters"));
@@ -108,4 +105,6 @@ public final class AfdDomainHttpsParameters {
             secret().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AfdDomainHttpsParameters.class);
 }

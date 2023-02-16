@@ -1,5 +1,5 @@
 # Azure Key Vault Key client library for Java
-Azure Key Vault is a cloud service that provides secure storage of keys for encrypting your data. Multiple keys, and multiple versions of the same key, can be kept in the Azure Key Vault. Cryptographic keys in Azure Key Vault are represented as JSON Web Key (JWK) objects.
+Azure Key Vault is a cloud service that provides secure storage of keys for encrypting your data. Multiple keys, and multiple versions of the same key, can be kept in the Azure Key Vault. Cryptographic keys in Azure Key Vault are represented as [JSON Web Key [JWK]][jwk_specification] objects.
 
 Azure Key Vault Managed HSM is a fully-managed, highly-available, single-tenant, standards-compliant cloud service that enables you to safeguard cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validated HSMs.
 
@@ -9,11 +9,8 @@ The Azure Key Vault keys library client supports RSA keys and Elliptic Curve (EC
 
 ## Getting started
 ### Include the package
-
 #### Include the BOM file
-
-Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
-To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+Please include the `azure-sdk-bom` to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number. To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
 
 ```xml
 <dependencyManagement>
@@ -28,6 +25,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
+
 and then include the direct dependency in the dependencies section without the version tag as shown below.
 
 ```xml
@@ -40,131 +38,32 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
-If you want to take dependency on a particular version of the library that is not present in the BOM,
-add the direct dependency to your project as follows.
+If you want to take dependency on a particular version of the library that is not present in the BOM, add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-keys;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.4.4</version>
+    <version>4.5.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
-- [Azure Subscription][azure_subscription]
-- An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
-
-```bash
-az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
-```
+- An [Azure Subscription][azure_subscription].
+- One of the following:
+  - An existing [Azure Key Vault][azure_keyvault]. If you need to create a key vault, you can do so in the Azure Portal by following the steps in [this document][azure_keyvault_portal]. Alternatively, you can use the Azure CLI by following the steps in [this document][azure_keyvault_cli].
+  - An existing [Azure Key Vault Managed HSM][azure_keyvault_mhsm]. If you need to create a Managed HSM, you can do so using the Azure CLI by following the steps in [this document][azure_keyvault_mhsm_cli].
 
 ### Authenticate the client
-In order to interact with the Azure Key Vault service, you'll need to create an instance of the [KeyClient](#create-key-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the default `DefaultAzureCredential` examples shown in this document.
+In order to interact with the Azure Key Vault service, you will need to create an instance of either the [`KeyClient`](#create-key-client) class or the [`CryptographyClient`](#create-cryptography-client) class, as well as a **vault url** and a credential object. The examples shown in this document use a credential object named  [`DefaultAzureCredential`][default_azure_credential], which is appropriate for most scenarios, including local development and production environments. Additionally, we recommend using a [managed identity][managed_identity] for authentication in production environments.
 
-The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+You can find more information on different ways of authenticating and their corresponding credential types in the [Azure Identity documentation][azure_identity].
 
-#### Create/Get credentials
-To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell][azure_cloud_shell]
-
-Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to
-
- * Create a service principal and configure its access to Azure resources:
-
-```bash
-az ad sp create-for-rbac -n <your-application-name> --skip-assignment
-````
-
-Output:
-
-```json
-{
-    "appId": "generated-app-ID",
-    "displayName": "dummy-app-name",
-    "name": "http://dummy-app-name",
-    "password": "random-password",
-    "tenant": "tenant-ID"
-}
-```
-
-* Take note of the service principal objectId
-```PowerShell
-az ad sp show --id <appId> --query objectId
-```
-Output:
-```
-"<your-service-principal-object-id>"
-```
-
-* Use the returned credentials above to set the **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password), and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
-
-```bash
-export AZURE_CLIENT_ID="generated-app-ID"
-export AZURE_CLIENT_SECRET="random-password"
-export AZURE_TENANT_ID="tenant-ID"
-```
-
-* Grant the aforementioned application authorization to perform key operations on the Key Vault:
-
-```bash
-az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --key-permissions backup delete get list create update encrypt decrypt
-```
-
-> --key-permissions:
-> Accepted values: backup, delete, get, list, purge, recover, restore, create, update, encrypt, decrypt, import, wrapkey, unwrapkey, verify, sign
-
-If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Crypto Officer" in our [RBAC guide][rbac_guide].
-If you are managing your keys using Managed HSM, read about its [access control][access_control] that supports different built-in roles isolated from Azure Resource Manager (ARM).
-
-* Use the aforementioned Key Vault name to retrieve details of your Key Vault, which also contain your Key Vault URL:
-
-```bash
-az keyvault show --name <your-key-vault-name>
-```
-
-* Create the Azure Key Vault or Managed HSM and grant the above mentioned application authorization to perform administrative operations on the Managed HSM (replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own unique names and `<your-service-principal-object-id>` with the value from above):
-
-If you are creating a standard Key Vault resource, use the following CLI command:
-```bash
-az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
-```
-
-If you are creating a Managed HSM resource, use the following CLI command:
-```bash
-    az keyvault create --hsm-name <your-key-vault-name> --resource-group <your-resource-group-name> --administrators <your-service-principal-object-id> --location <your-azure-location>
-```
-
-#### Activate your managed HSM
-This section only applies if you are creating a Managed HSM. All data plane commands are disabled until the HSM is activated. You will not be able to create keys or assign roles. Only the designated administrators that were assigned during the create command can activate the HSM. To activate the HSM you must download the security domain.
-
-To activate your HSM you need:
-- Minimum 3 RSA key-pairs (maximum 10)
-- Specify minimum number of keys required to decrypt the security domain (quorum)
-
-To activate the HSM you send at least 3 (maximum 10) RSA public keys to the HSM. The HSM encrypts the security domain with these keys and sends it back.
-Once this security domain is successfully downloaded, your HSM is ready to use.
-You also need to specify quorum, which is the minimum number of private keys required to decrypt the security domain.
-
-The example below shows how to use openssl to generate 3 self signed certificate.
-
-```bash
-openssl req -newkey rsa:2048 -nodes -keyout cert_0.key -x509 -days 365 -out cert_0.cer
-openssl req -newkey rsa:2048 -nodes -keyout cert_1.key -x509 -days 365 -out cert_1.cer
-openssl req -newkey rsa:2048 -nodes -keyout cert_2.key -x509 -days 365 -out cert_2.cer
-```
-
-Use the `az keyvault security-domain download` command to download the security domain and activate your managed HSM.
-The example below uses 3 RSA key pairs (only public keys are needed for this command) and sets the quorum to 2.
-
-```bash
-az keyvault security-domain download --hsm-name <your-key-vault-name> --sd-wrapping-keys ./certs/cert_0.cer ./certs/cert_1.cer ./certs/cert_2.cer --sd-quorum 2 --security-domain-file ContosoMHSM-SD.json
-```
-
-#### Create Key client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the KeyClient:
+#### Create key client
+Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced **your-key-vault-url** with the URL for your key vault or managed HSM, you can create the `KeyClient`:
 
 ```java readme-sample-createKeyClient
 KeyClient keyClient = new KeyClientBuilder()
@@ -173,20 +72,20 @@ KeyClient keyClient = new KeyClientBuilder()
     .buildClient();
 ```
 
-> NOTE: For using an asynchronous client use KeyAsyncClient instead of KeyClient and call `buildAsyncClient()`
+> NOTE: For using an asynchronous client use `KeyAsyncClient` instead of `KeyClient` and call `buildAsyncClient()`.
 
-#### Create Cryptography client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-vault-url** with the URI returned above, you can create the CryptographyClient:
+#### Create cryptography client
+Once you perform [the `DefaultAzureCredential` set up that suits you best][default_azure_credential] and replaced **your-key-vault-url** with the URL for your key vault or managed HSM, you can create the `CryptographyClient`:
 
 ```java readme-sample-createCryptographyClient
-// Create client with key identifier from key vault.
+// Create client with key identifier from Key Vault.
 CryptographyClient cryptoClient = new CryptographyClientBuilder()
-    .credential(new DefaultAzureCredentialBuilder().build())
     .keyIdentifier("<your-key-id-from-key-vault>")
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
-> NOTE: For using an asynchronous client use CryptographyAsyncClient instead of CryptographyClient and call `buildAsyncClient()`
+> NOTE: For using an asynchronous client use `CryptographyAsyncClient` instead of `CryptographyClient` and call `buildAsyncClient()`.
 
 ## Key concepts
 ### Key
@@ -198,10 +97,10 @@ Azure Key Vault supports multiple key types (`RSA` & `EC`) and algorithms, and e
 * updated: Indicates when this version of the key was updated.
 
 ### Key client:
-The key client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing keys and its versions. Asynchronous (KeyAsyncClient) and synchronous (KeyClient) clients exist in the SDK allowing for the selection of a client based on an application's use case. Once you've initialized a key, you can interact with the primary resource types in Key Vault.
+The key client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing keys and its versions. Asynchronous (`KeyAsyncClient`) and synchronous (`KeyClient`) clients exist in the SDK allowing for the selection of a client based on an application's use case. Once you have initialized a key, you can interact with the primary resource types in Key Vault.
 
 ### Cryptography client:
-The cryptography client performs the cryptographic operations locally or calls the Azure Key Vault service depending on how much key information is available locally. It supports encrypting, decrypting, signing, verifying, key wrapping, key unwrapping, and retrieving the configured key. Asynchronous (CryptographyAsyncClient) and synchronous (CryptographyClient) clients exist in the SDK allowing for the selection of a client based on an application's use case.
+The cryptography client performs the cryptographic operations locally or calls the Azure Key Vault service depending on how much key information is available locally. It supports encrypting, decrypting, signing, verifying, key wrapping, key unwrapping, and retrieving the configured key. Asynchronous (`CryptographyAsyncClient`) and synchronous (`CryptographyClient`) clients exist in the SDK allowing for the selection of a client based on an application's use case.
 
 ## Examples
 ### Sync API
@@ -214,7 +113,7 @@ The following sections provide several code snippets covering some of the most c
 - [Encrypt](#encrypt)
 - [Decrypt](#decrypt)
 
-### Create a key
+#### Create a key
 Create a key to be stored in the Azure Key Vault.
 - `createKey` creates a new key in the key vault. If a key with the same name already exists then a new version of the key is created.
 
@@ -230,7 +129,7 @@ KeyVaultKey ecKey = keyClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
 System.out.printf("Key created with name \"%s\" and id %s%n", ecKey.getName(), ecKey.getId());
 ```
 
-### Retrieve a key
+#### Retrieve a key
 Retrieve a previously stored key by calling `getKey`.
 
 ```java readme-sample-retrieveKey
@@ -238,7 +137,7 @@ KeyVaultKey key = keyClient.getKey("<key-name>");
 System.out.printf("A key was returned with name \"%s\" and id %s%n", key.getName(), key.getId());
 ```
 
-### Update an existing key
+#### Update an existing key
 Update an existing key by calling `updateKeyProperties`.
 
 ```java readme-sample-updateKey
@@ -250,7 +149,7 @@ KeyVaultKey updatedKey = keyClient.updateKeyProperties(key.getProperties());
 System.out.printf("Key's updated expiry time: %s%n", updatedKey.getProperties().getExpiresOn());
 ```
 
-### Delete a key
+#### Delete a key
 Delete an existing key by calling `beginDeleteKey`.
 
 ```java readme-sample-deleteKey
@@ -260,14 +159,14 @@ PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
 // Deleted key is accessible as soon as polling begins.
 DeletedKey deletedKey = deletedKeyPollResponse.getValue();
-// Deletion date only works for a SoftDelete-enabled Key Vault.
+// Deletion date only works for a soft-delete enabled key vault.
 System.out.printf("Deletion date: %s%n", deletedKey.getDeletedOn());
 
-// Key is being deleted on server.
+// The key is being deleted on the server.
 deletedKeyPoller.waitForCompletion();
 ```
 
-### List keys
+#### List keys
 List the keys in the key vault by calling `listPropertiesOfKeys`.
 
 ```java readme-sample-listKeys
@@ -280,7 +179,7 @@ for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
 }
 ```
 
-### Encrypt
+#### Encrypt
 Encrypt plain text by calling `encrypt`.
 
 ```java readme-sample-encrypt
@@ -293,7 +192,7 @@ System.out.printf("Returned ciphertext size is %d bytes with algorithm \"%s\"%n"
     encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
 ```
 
-### Decrypt
+#### Decrypt
 Decrypt encrypted content by calling `decrypt`.
 
 ```java readme-sample-decrypt
@@ -318,7 +217,7 @@ The following sections provide several code snippets covering some of the most c
 
 > Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
 
-### Create a key asynchronously
+#### Create a key asynchronously
 Create a key to be stored in the Azure Key Vault.
 - `createKey` creates a new key in the key vault. If a key with the same name already exists then a new version of the key is created.
 
@@ -335,7 +234,7 @@ keyAsyncClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
         System.out.printf("Key created with name \"%s\" and id %s%n", key.getName(), key.getId()));
 ```
 
-### Retrieve a key asynchronously
+#### Retrieve a key asynchronously
 Retrieve a previously stored key by calling `getKey`.
 
 ```java readme-sample-retrieveKeyAsync
@@ -344,7 +243,7 @@ keyAsyncClient.getKey("<key-name>")
         System.out.printf("Key was returned with name \"%s\" and id %s%n", key.getName(), key.getId()));
 ```
 
-### Update an existing key asynchronously
+#### Update an existing key asynchronously
 Update an existing key by calling `updateKeyProperties`.
 
 ```java readme-sample-updateKeyAsync
@@ -357,7 +256,7 @@ keyAsyncClient.getKey("<key-name>")
         System.out.printf("Key's updated expiry time: %s%n", updatedKey.getProperties().getExpiresOn()));
 ```
 
-### Delete a key asynchronously
+#### Delete a key asynchronously
 Delete an existing key by calling `beginDeleteKey`.
 
 ```java readme-sample-deleteKeyAsync
@@ -369,7 +268,7 @@ keyAsyncClient.beginDeleteKey("<key-name>")
     });
 ```
 
-### List keys asynchronously
+#### List keys asynchronously
 List the keys in the Azure Key Vault by calling `listPropertiesOfKeys`.
 
 ```java readme-sample-listKeysAsync
@@ -381,7 +280,7 @@ keyAsyncClient.listPropertiesOfKeys()
         System.out.printf("Received key with name \"%s\" and type \"%s\"", key.getName(), key.getKeyType()));
 ```
 
-### Encrypt asynchronously
+#### Encrypt asynchronously
 Encrypt plain text by calling `encrypt`.
 
 ```java readme-sample-encryptAsync
@@ -394,7 +293,7 @@ cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext)
         encryptionResult.getCipherText().length, encryptionResult.getAlgorithm()));
 ```
 
-### Decrypt asynchronously
+#### Decrypt asynchronously
 Decrypt encrypted content by calling `decrypt`.
 
 ```java readme-sample-decryptAsync
@@ -433,7 +332,7 @@ All client libraries by default use the Netty HTTP client. Adding the above depe
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an Uber JAR containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
-Several Key Vault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
+Several Azure Key Vault Java client library samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
 
 ## Next steps samples
 Samples are explained in detail [here][samples_readme].
@@ -452,25 +351,22 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
-[maven]: https://maven.apache.org/
+[azure_identity]: https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/keys/quick-create-portal
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[rest_api]: https://docs.microsoft.com/rest/api/keyvault/
+[azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/general/quick-create-cli
+[azure_keyvault_portal]: https://docs.microsoft.com/azure/key-vault/general/quick-create-portal
+[azure_keyvault_mhsm]: https://docs.microsoft.com/azure/key-vault/managed-hsm/overview
+[azure_keyvault_mhsm_cli]: https://docs.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
+[default_azure_credential]: https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential
+[managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
-[azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
-[azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/quick-create-cli
-[azure_keyvault_cli_full]: https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
 [keys_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[azure_cloud_shell]: https://shell.azure.com/bash
 [jwk_specification]: https://tools.ietf.org/html/rfc7517
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[access_control]: https://docs.microsoft.com/azure/key-vault/managed-hsm/access-control
-[rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-keys%2FREADME.png)

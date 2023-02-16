@@ -12,6 +12,7 @@ import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
+import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
@@ -33,13 +34,10 @@ public final class VirtualMachineScaleSetInner extends Resource {
     private Sku sku;
 
     /*
-     * Specifies information about the marketplace image used to create the
-     * virtual machine. This element is only used for marketplace images.
-     * Before you can use a marketplace image from an API, you must enable the
-     * image for programmatic use.  In the Azure portal, find the marketplace
-     * image that you want to use and then click **Want to deploy
-     * programmatically, Get Started ->**. Enter any required information and
-     * then click **Save**.
+     * Specifies information about the marketplace image used to create the virtual machine. This element is only used
+     * for marketplace images. Before you can use a marketplace image from an API, you must enable the image for
+     * programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to
+     * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
     @JsonProperty(value = "plan")
     private Plan plan;
@@ -57,8 +55,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
     private VirtualMachineScaleSetIdentity identity;
 
     /*
-     * The virtual machine scale set zones. NOTE: Availability zones can only
-     * be set when you create the scale set
+     * The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -68,6 +65,10 @@ public final class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
+
+    /** Creates an instance of VirtualMachineScaleSetInner class. */
+    public VirtualMachineScaleSetInner() {
+    }
 
     /**
      * Get the sku property: The virtual machine scale set sku.
@@ -567,13 +568,61 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
+     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
+     *
+     * @return the priorityMixPolicy value.
+     */
+    public PriorityMixPolicy priorityMixPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().priorityMixPolicy();
+    }
+
+    /**
+     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
+     *
+     * @param priorityMixPolicy the priorityMixPolicy value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withPriorityMixPolicy(PriorityMixPolicy priorityMixPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetProperties();
+        }
+        this.innerProperties().withPriorityMixPolicy(priorityMixPolicy);
+        return this;
+    }
+
+    /**
      * Get the timeCreated property: Specifies the time at which the Virtual Machine Scale Set resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
         return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
+     * Get the constrainedMaximumCapacity property: Optional property which must either be set to True or omitted.
+     *
+     * @return the constrainedMaximumCapacity value.
+     */
+    public Boolean constrainedMaximumCapacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().constrainedMaximumCapacity();
+    }
+
+    /**
+     * Set the constrainedMaximumCapacity property: Optional property which must either be set to True or omitted.
+     *
+     * @param constrainedMaximumCapacity the constrainedMaximumCapacity value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withConstrainedMaximumCapacity(Boolean constrainedMaximumCapacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetProperties();
+        }
+        this.innerProperties().withConstrainedMaximumCapacity(constrainedMaximumCapacity);
+        return this;
     }
 
     /**

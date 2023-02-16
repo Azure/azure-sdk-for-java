@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseAccounts ListMetricDefinitions. */
 public final class DatabaseAccountsListMetricDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountGetMetricDefinitions.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountGetMetricDefinitions.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountGetMetricDefinitions.
@@ -23,6 +21,6 @@ public final class DatabaseAccountsListMetricDefinitionsSamples {
             .manager()
             .serviceClient()
             .getDatabaseAccounts()
-            .listMetricDefinitions("rg1", "ddb1", Context.NONE);
+            .listMetricDefinitions("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

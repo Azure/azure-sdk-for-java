@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.privatedns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A CNAME record. */
 @Fluent
 public final class CnameRecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CnameRecord.class);
-
     /*
      * The canonical name for this CNAME record.
      */

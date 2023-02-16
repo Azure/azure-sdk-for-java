@@ -24,6 +24,10 @@ public final class PrivateDnsZoneGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of PrivateDnsZoneGroupListResult class. */
+    public PrivateDnsZoneGroupListResult() {
+    }
+
     /**
      * Get the value property: A list of private dns zone group resources in a private endpoint.
      *

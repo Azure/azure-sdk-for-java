@@ -18,3 +18,8 @@ stages:
       SupportedClouds: 'Public,UsGov,China'
       EnvVars:
         AZURE_LOG_LEVEL: 2
+      AdditionalMatrixConfigs:
+        - Name: version_overrides_tests
+          Path: sdk/eventhubs/version-overrides-matrix.json
+          Selection: all
+          GenerateVMJobs: true

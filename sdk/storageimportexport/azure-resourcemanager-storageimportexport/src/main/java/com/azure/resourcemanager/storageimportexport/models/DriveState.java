@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DriveState. */
+/** The drive's current state. */
 public final class DriveState extends ExpandableStringEnum<DriveState> {
     /** Static value Specified for DriveState. */
     public static final DriveState SPECIFIED = fromString("Specified");
@@ -32,6 +32,15 @@ public final class DriveState extends ExpandableStringEnum<DriveState> {
     public static final DriveState SHIPPED_BACK = fromString("ShippedBack");
 
     /**
+     * Creates a new instance of DriveState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DriveState() {
+    }
+
+    /**
      * Creates or finds a DriveState from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class DriveState extends ExpandableStringEnum<DriveState> {
         return fromString(name, DriveState.class);
     }
 
-    /** @return known DriveState values. */
+    /**
+     * Gets known DriveState values.
+     *
+     * @return known DriveState values.
+     */
     public static Collection<DriveState> values() {
         return values(DriveState.class);
     }

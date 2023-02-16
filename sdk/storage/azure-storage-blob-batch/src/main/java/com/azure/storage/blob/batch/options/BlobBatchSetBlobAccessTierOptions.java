@@ -76,7 +76,7 @@ public class BlobBatchSetBlobAccessTierOptions {
      * @return Identifier of the blob to set its access tier.
      */
     public String getBlobIdentifier() {
-        String basePath = String.format("%s/%s", blobUrlParts.getBlobContainerName(), blobUrlParts.getBlobName());
+        String basePath = blobUrlParts.getBlobContainerName() + "/" + blobUrlParts.getBlobName();
         String snapshot = blobUrlParts.getSnapshot();
         String versionId = blobUrlParts.getVersionId();
         if (snapshot != null && versionId != null) {

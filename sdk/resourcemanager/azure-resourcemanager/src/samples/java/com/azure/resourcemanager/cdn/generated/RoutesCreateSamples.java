@@ -4,20 +4,18 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.cdn.fluent.models.RouteInner;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdQueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
+import com.azure.resourcemanager.cdn.models.CompressionSettings;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HttpsRedirect;
 import com.azure.resourcemanager.cdn.models.LinkToDefaultDomain;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import java.io.IOException;
 import java.util.Arrays;
 
 /** Samples for Routes Create. */
@@ -30,7 +28,7 @@ public final class RoutesCreateSamples {
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void routesCreate(com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
+    public static void routesCreate(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .cdnProfiles()
             .manager()
@@ -66,12 +64,9 @@ public final class RoutesCreateSamples {
                                 AfdQueryStringCachingBehavior.IGNORE_SPECIFIED_QUERY_STRINGS)
                             .withQueryParameters("querystring=test")
                             .withCompressionSettings(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize(
-                                        "{\"contentTypesToCompress\":[\"text/html\",\"application/octet-stream\"],\"isCompressionEnabled\":true}",
-                                        Object.class,
-                                        SerializerEncoding.JSON)))
+                                new CompressionSettings()
+                                    .withContentTypesToCompress(Arrays.asList("text/html", "application/octet-stream"))
+                                    .withIsCompressionEnabled(true)))
                     .withForwardingProtocol(ForwardingProtocol.MATCH_REQUEST)
                     .withLinkToDefaultDomain(LinkToDefaultDomain.ENABLED)
                     .withHttpsRedirect(HttpsRedirect.ENABLED)

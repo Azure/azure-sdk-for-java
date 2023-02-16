@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataFlowComputeType. */
+/** Compute type of the cluster which will execute data flow job. */
 public final class DataFlowComputeType extends ExpandableStringEnum<DataFlowComputeType> {
     /** Static value General for DataFlowComputeType. */
     public static final DataFlowComputeType GENERAL = fromString("General");
@@ -18,6 +18,15 @@ public final class DataFlowComputeType extends ExpandableStringEnum<DataFlowComp
 
     /** Static value ComputeOptimized for DataFlowComputeType. */
     public static final DataFlowComputeType COMPUTE_OPTIMIZED = fromString("ComputeOptimized");
+
+    /**
+     * Creates a new instance of DataFlowComputeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataFlowComputeType() {
+    }
 
     /**
      * Creates or finds a DataFlowComputeType from its string representation.

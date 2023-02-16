@@ -5,22 +5,26 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.DscNodeConfigurationAssociationProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DscNodeUpdateParametersProperties model. */
-@JsonFlatten
 @Fluent
-public class DscNodeUpdateParametersProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscNodeUpdateParametersProperties.class);
-
+public final class DscNodeUpdateParametersProperties {
     /*
-     * Gets or sets the name of the dsc node configuration.
+     * Gets or sets the configuration of the node.
      */
-    @JsonProperty(value = "nodeConfiguration.name")
-    private String name;
+    @JsonProperty(value = "nodeConfiguration")
+    private DscNodeConfigurationAssociationProperty innerNodeConfiguration;
+
+    /**
+     * Get the innerNodeConfiguration property: Gets or sets the configuration of the node.
+     *
+     * @return the innerNodeConfiguration value.
+     */
+    private DscNodeConfigurationAssociationProperty innerNodeConfiguration() {
+        return this.innerNodeConfiguration;
+    }
 
     /**
      * Get the name property: Gets or sets the name of the dsc node configuration.
@@ -28,7 +32,7 @@ public class DscNodeUpdateParametersProperties {
      * @return the name value.
      */
     public String name() {
-        return this.name;
+        return this.innerNodeConfiguration() == null ? null : this.innerNodeConfiguration().name();
     }
 
     /**
@@ -38,7 +42,10 @@ public class DscNodeUpdateParametersProperties {
      * @return the DscNodeUpdateParametersProperties object itself.
      */
     public DscNodeUpdateParametersProperties withName(String name) {
-        this.name = name;
+        if (this.innerNodeConfiguration() == null) {
+            this.innerNodeConfiguration = new DscNodeConfigurationAssociationProperty();
+        }
+        this.innerNodeConfiguration().withName(name);
         return this;
     }
 
@@ -48,5 +55,8 @@ public class DscNodeUpdateParametersProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerNodeConfiguration() != null) {
+            innerNodeConfiguration().validate();
+        }
     }
 }

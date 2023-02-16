@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class representing database principal entity. */
 @Fluent
 public final class DatabasePrincipalInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasePrincipalInner.class);
-
     /*
      * Database principal role.
      */
@@ -194,19 +191,21 @@ public final class DatabasePrincipalInner {
      */
     public void validate() {
         if (role() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property role in model DatabasePrincipalInner"));
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model DatabasePrincipalInner"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model DatabasePrincipalInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabasePrincipalInner.class);
 }

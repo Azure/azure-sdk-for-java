@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UrlPathOperator. */
+/** Describes operator to be matched. */
 public final class UrlPathOperator extends ExpandableStringEnum<UrlPathOperator> {
     /** Static value Any for UrlPathOperator. */
     public static final UrlPathOperator ANY = fromString("Any");
@@ -54,7 +54,11 @@ public final class UrlPathOperator extends ExpandableStringEnum<UrlPathOperator>
         return fromString(name, UrlPathOperator.class);
     }
 
-    /** @return known UrlPathOperator values. */
+    /**
+     * Gets known UrlPathOperator values.
+     *
+     * @return known UrlPathOperator values.
+     */
     public static Collection<UrlPathOperator> values() {
         return values(UrlPathOperator.class);
     }

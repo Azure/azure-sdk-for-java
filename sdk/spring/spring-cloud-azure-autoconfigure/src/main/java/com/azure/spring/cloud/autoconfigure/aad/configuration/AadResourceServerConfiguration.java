@@ -11,6 +11,7 @@ import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServe
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,8 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
+
 /**
  * <p>
  * The configuration will not be activated if no {@link BearerTokenAuthenticationToken} class provided.
@@ -42,11 +45,22 @@ import java.util.List;
 @Conditional(ResourceServerCondition.class)
 public class AadResourceServerConfiguration {
 
+    private final RestTemplateBuilder restTemplateBuilder;
+
+    /**
+     * Creates a new instance of {@link AadResourceServerConfiguration}.
+     *
+     * @param restTemplateBuilder the RestTemplateBuilder
+     */
+    public AadResourceServerConfiguration(RestTemplateBuilder restTemplateBuilder) {
+        this.restTemplateBuilder = restTemplateBuilder;
+    }
+
     /**
      * Use JwkKeySetUri to create JwtDecoder
      *
      * @param aadAuthenticationProperties the AAD properties
-     * @return Get the jwtDecoder instance.
+     * @return Get the jwtDecoder instance
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
@@ -54,7 +68,9 @@ public class AadResourceServerConfiguration {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(identityEndpoints.getJwkSetEndpoint()).build();
+                .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
+                .restOperations(createRestTemplate(restTemplateBuilder))
+                .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
@@ -94,7 +110,7 @@ public class AadResourceServerConfiguration {
         AadResourceServerWebSecurityConfigurerAdapter {
 
         /**
-         * configure
+         * Configure the default Resource Server for Azure AD.
          *
          * @param http the {@link HttpSecurity} to use
          * @throws Exception Configuration failed

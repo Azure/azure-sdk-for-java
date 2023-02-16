@@ -55,7 +55,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CloudServiceRolesService {
+    public interface CloudServiceRolesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
@@ -135,7 +135,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -191,7 +191,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -220,30 +220,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CloudServiceRoleInner> getAsync(String roleName, String resourceGroupName, String cloudServiceName) {
         return getWithResponseAsync(roleName, resourceGroupName, cloudServiceName)
-            .flatMap(
-                (Response<CloudServiceRoleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a role from a cloud service.
-     *
-     * @param roleName Name of the role.
-     * @param resourceGroupName Name of the resource group.
-     * @param cloudServiceName Name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role from a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudServiceRoleInner get(String roleName, String resourceGroupName, String cloudServiceName) {
-        return getAsync(roleName, resourceGroupName, cloudServiceName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -262,6 +239,22 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
     public Response<CloudServiceRoleInner> getWithResponse(
         String roleName, String resourceGroupName, String cloudServiceName, Context context) {
         return getWithResponseAsync(roleName, resourceGroupName, cloudServiceName, context).block();
+    }
+
+    /**
+     * Gets a role from a cloud service.
+     *
+     * @param roleName Name of the role.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role from a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CloudServiceRoleInner get(String roleName, String resourceGroupName, String cloudServiceName) {
+        return getWithResponse(roleName, resourceGroupName, cloudServiceName, Context.NONE).getValue();
     }
 
     /**
@@ -299,7 +292,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -361,7 +354,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -459,7 +452,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -494,7 +488,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

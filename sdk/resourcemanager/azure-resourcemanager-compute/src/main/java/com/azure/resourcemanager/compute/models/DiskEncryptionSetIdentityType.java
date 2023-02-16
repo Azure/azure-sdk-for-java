@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskEncryptionSetIdentityType. */
+/**
+ * The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported for new creations. Disk
+ * Encryption Sets can be updated with Identity type None during migration of subscription to a new Azure Active
+ * Directory tenant; it will cause the encrypted resources to lose access to the keys.
+ */
 public final class DiskEncryptionSetIdentityType extends ExpandableStringEnum<DiskEncryptionSetIdentityType> {
     /** Static value SystemAssigned for DiskEncryptionSetIdentityType. */
     public static final DiskEncryptionSetIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
@@ -22,6 +26,15 @@ public final class DiskEncryptionSetIdentityType extends ExpandableStringEnum<Di
 
     /** Static value None for DiskEncryptionSetIdentityType. */
     public static final DiskEncryptionSetIdentityType NONE = fromString("None");
+
+    /**
+     * Creates a new instance of DiskEncryptionSetIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskEncryptionSetIdentityType() {
+    }
 
     /**
      * Creates or finds a DiskEncryptionSetIdentityType from its string representation.

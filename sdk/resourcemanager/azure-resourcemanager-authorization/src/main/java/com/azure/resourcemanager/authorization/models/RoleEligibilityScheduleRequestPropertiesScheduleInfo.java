@@ -23,6 +23,10 @@ public final class RoleEligibilityScheduleRequestPropertiesScheduleInfo {
     @JsonProperty(value = "expiration")
     private RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration expiration;
 
+    /** Creates an instance of RoleEligibilityScheduleRequestPropertiesScheduleInfo class. */
+    public RoleEligibilityScheduleRequestPropertiesScheduleInfo() {
+    }
+
     /**
      * Get the startDateTime property: Start DateTime of the role eligibility schedule.
      *

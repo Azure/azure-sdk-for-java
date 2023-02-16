@@ -57,6 +57,10 @@ public final class VirtualNetworkLinkImpl
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public VirtualNetworkLinkInner innerModel() {
         return this.innerObject;
     }

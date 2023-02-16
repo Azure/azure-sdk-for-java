@@ -19,11 +19,14 @@ public final class ExclusionManagedRuleGroup {
     private String ruleGroupName;
 
     /*
-     * List of rules that will be excluded. If none specified, all rules in the
-     * group will be excluded.
+     * List of rules that will be excluded. If none specified, all rules in the group will be excluded.
      */
     @JsonProperty(value = "rules")
     private List<ExclusionManagedRule> rules;
+
+    /** Creates an instance of ExclusionManagedRuleGroup class. */
+    public ExclusionManagedRuleGroup() {
+    }
 
     /**
      * Get the ruleGroupName property: The managed rule group for exclusion.

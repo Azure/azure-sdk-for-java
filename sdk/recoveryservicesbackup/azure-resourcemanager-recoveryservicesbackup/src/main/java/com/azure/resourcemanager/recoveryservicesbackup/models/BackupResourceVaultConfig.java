@@ -24,8 +24,7 @@ public final class BackupResourceVaultConfig {
     private StorageType storageType;
 
     /*
-     * Locked or Unlocked. Once a machine is registered against a resource, the
-     * storageTypeState is always Locked.
+     * Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked.
      */
     @JsonProperty(value = "storageTypeState")
     private StorageTypeState storageTypeState;
@@ -53,6 +52,10 @@ public final class BackupResourceVaultConfig {
      */
     @JsonProperty(value = "isSoftDeleteFeatureStateEditable")
     private Boolean isSoftDeleteFeatureStateEditable;
+
+    /** Creates an instance of BackupResourceVaultConfig class. */
+    public BackupResourceVaultConfig() {
+    }
 
     /**
      * Get the storageModelType property: Storage type.

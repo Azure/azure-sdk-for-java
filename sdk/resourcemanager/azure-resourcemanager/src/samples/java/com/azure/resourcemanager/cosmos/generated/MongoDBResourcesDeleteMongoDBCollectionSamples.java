@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MongoDBResources DeleteMongoDBCollection. */
 public final class MongoDBResourcesDeleteMongoDBCollectionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBMongoDBCollectionDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBCollectionDelete.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionDelete.
@@ -22,6 +20,6 @@ public final class MongoDBResourcesDeleteMongoDBCollectionSamples {
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .deleteMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName", Context.NONE);
+            .deleteMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName", com.azure.core.util.Context.NONE);
     }
 }

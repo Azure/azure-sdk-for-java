@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MountState. */
+/** Mount state. */
 public final class MountState extends ExpandableStringEnum<MountState> {
     /** Static value MountRequested for MountState. */
     public static final MountState MOUNT_REQUESTED = fromString("MountRequested");
@@ -27,6 +27,15 @@ public final class MountState extends ExpandableStringEnum<MountState> {
 
     /** Static value Unmounted for MountState. */
     public static final MountState UNMOUNTED = fromString("Unmounted");
+
+    /**
+     * Creates a new instance of MountState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MountState() {
+    }
 
     /**
      * Creates or finds a MountState from its string representation.

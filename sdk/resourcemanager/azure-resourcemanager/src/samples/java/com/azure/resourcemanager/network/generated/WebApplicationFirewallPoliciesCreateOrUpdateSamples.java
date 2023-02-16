@@ -6,9 +6,13 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.WebApplicationFirewallPolicyInner;
+import com.azure.resourcemanager.network.models.ActionType;
 import com.azure.resourcemanager.network.models.ExclusionManagedRule;
 import com.azure.resourcemanager.network.models.ExclusionManagedRuleGroup;
 import com.azure.resourcemanager.network.models.ExclusionManagedRuleSet;
+import com.azure.resourcemanager.network.models.ManagedRuleEnabledState;
+import com.azure.resourcemanager.network.models.ManagedRuleGroupOverride;
+import com.azure.resourcemanager.network.models.ManagedRuleOverride;
 import com.azure.resourcemanager.network.models.ManagedRuleSet;
 import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.MatchCondition;
@@ -26,7 +30,7 @@ import java.util.Arrays;
 /** Samples for WebApplicationFirewallPolicies CreateOrUpdate. */
 public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/WafPolicyCreateOrUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/WafPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a WAF policy within a resource group.
@@ -149,7 +153,27 @@ public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
                                             .withSelector("test")))
                             .withManagedRuleSets(
                                 Arrays
-                                    .asList(new ManagedRuleSet().withRuleSetType("OWASP").withRuleSetVersion("3.2")))),
+                                    .asList(
+                                        new ManagedRuleSet()
+                                            .withRuleSetType("OWASP")
+                                            .withRuleSetVersion("3.2")
+                                            .withRuleGroupOverrides(
+                                                Arrays
+                                                    .asList(
+                                                        new ManagedRuleGroupOverride()
+                                                            .withRuleGroupName("REQUEST-931-APPLICATION-ATTACK-RFI")
+                                                            .withRules(
+                                                                Arrays
+                                                                    .asList(
+                                                                        new ManagedRuleOverride()
+                                                                            .withRuleId("931120")
+                                                                            .withState(ManagedRuleEnabledState.ENABLED)
+                                                                            .withAction(ActionType.LOG),
+                                                                        new ManagedRuleOverride()
+                                                                            .withRuleId("931130")
+                                                                            .withState(ManagedRuleEnabledState.DISABLED)
+                                                                            .withAction(
+                                                                                ActionType.ANOMALY_SCORING)))))))),
                 Context.NONE);
     }
 }

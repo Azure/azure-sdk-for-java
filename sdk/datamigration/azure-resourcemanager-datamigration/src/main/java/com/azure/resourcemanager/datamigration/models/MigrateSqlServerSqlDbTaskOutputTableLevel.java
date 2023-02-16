@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("TableLevelOutput")
 @Immutable
 public final class MigrateSqlServerSqlDbTaskOutputTableLevel extends MigrateSqlServerSqlDbTaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskOutputTableLevel.class);
-
     /*
      * Name of the item
      */
@@ -68,11 +64,14 @@ public final class MigrateSqlServerSqlDbTaskOutputTableLevel extends MigrateSqlS
     private String errorPrefix;
 
     /*
-     * Wildcard string prefix to use for querying all sub-tem results of the
-     * item
+     * Wildcard string prefix to use for querying all sub-tem results of the item
      */
     @JsonProperty(value = "resultPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String resultPrefix;
+
+    /** Creates an instance of MigrateSqlServerSqlDbTaskOutputTableLevel class. */
+    public MigrateSqlServerSqlDbTaskOutputTableLevel() {
+    }
 
     /**
      * Get the objectName property: Name of the item.

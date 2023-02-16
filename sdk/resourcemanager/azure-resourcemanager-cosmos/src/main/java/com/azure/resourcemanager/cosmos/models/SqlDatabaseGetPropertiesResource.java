@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource {
     /*
-     * A system generated property that specified the addressable path of the
-     * collections resource.
+     * A system generated property that specified the addressable path of the collections resource.
      */
     @JsonProperty(value = "_colls")
     private String colls;
 
     /*
-     * A system generated property that specifies the addressable path of the
-     * users resource.
+     * A system generated property that specifies the addressable path of the users resource.
      */
     @JsonProperty(value = "_users")
     private String users;
@@ -31,18 +29,20 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
     private String rid;
 
     /*
-     * A system generated property that denotes the last updated timestamp of
-     * the resource.
+     * A system generated property that denotes the last updated timestamp of the resource.
      */
     @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
-     * A system generated property representing the resource etag required for
-     * optimistic concurrency control.
+     * A system generated property representing the resource etag required for optimistic concurrency control.
      */
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of SqlDatabaseGetPropertiesResource class. */
+    public SqlDatabaseGetPropertiesResource() {
+    }
 
     /**
      * Get the colls property: A system generated property that specified the addressable path of the collections

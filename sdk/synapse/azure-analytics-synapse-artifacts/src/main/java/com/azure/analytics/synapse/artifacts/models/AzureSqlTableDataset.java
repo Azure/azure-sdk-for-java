@@ -19,25 +19,25 @@ import java.util.Map;
 @Fluent
 public class AzureSqlTableDataset extends Dataset {
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The schema name of the Azure SQL database. Type: string (or Expression
-     * with resultType string).
+     * The schema name of the Azure SQL database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
     /*
-     * The table name of the Azure SQL database. Type: string (or Expression
-     * with resultType string).
+     * The table name of the Azure SQL database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
+
+    /** Creates an instance of AzureSqlTableDataset class. */
+    public AzureSqlTableDataset() {}
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties

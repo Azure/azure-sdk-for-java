@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class HttpServerLocation extends DatasetLocation {
     /*
-     * Specify the relativeUrl of http server. Type: string (or Expression with
-     * resultType string)
+     * Specify the relativeUrl of http server. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
+
+    /** Creates an instance of HttpServerLocation class. */
+    public HttpServerLocation() {
+    }
 
     /**
      * Get the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with resultType

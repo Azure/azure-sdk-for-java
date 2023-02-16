@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SelfHostedIntegrationRuntimeNodeStatus. */
+/** Status of the integration runtime node. */
 public final class SelfHostedIntegrationRuntimeNodeStatus
     extends ExpandableStringEnum<SelfHostedIntegrationRuntimeNodeStatus> {
     /** Static value NeedRegistration for SelfHostedIntegrationRuntimeNodeStatus. */
@@ -31,6 +31,15 @@ public final class SelfHostedIntegrationRuntimeNodeStatus
 
     /** Static value InitializeFailed for SelfHostedIntegrationRuntimeNodeStatus. */
     public static final SelfHostedIntegrationRuntimeNodeStatus INITIALIZE_FAILED = fromString("InitializeFailed");
+
+    /**
+     * Creates a new instance of SelfHostedIntegrationRuntimeNodeStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SelfHostedIntegrationRuntimeNodeStatus() {
+    }
 
     /**
      * Creates or finds a SelfHostedIntegrationRuntimeNodeStatus from its string representation.

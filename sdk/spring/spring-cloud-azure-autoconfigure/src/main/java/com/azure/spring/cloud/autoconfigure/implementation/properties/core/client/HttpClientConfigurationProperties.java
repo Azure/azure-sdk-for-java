@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core.clie
 
 import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties;
-import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 import com.azure.spring.cloud.core.properties.client.HeaderProperties;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
@@ -19,19 +19,19 @@ import java.util.List;
 public class HttpClientConfigurationProperties extends ClientConfigurationProperties implements ClientOptionsProvider.HttpClientOptions {
 
     /**
-     * Amount of time each request being sent over the wire.
+     * Amount of time(Duration) each request being sent over the wire.
      */
     private Duration writeTimeout;
     /**
-     * Amount of time used when waiting for a server to reply.
+     * Amount of time(Duration) used when waiting for a server to reply.
      */
     private Duration responseTimeout;
     /**
-     * Amount of time used when reading the server response.
+     * Amount of time(Duration) used when reading the server response.
      */
     private Duration readTimeout;
     /**
-     * Amount of time the request attempts to connect to the remote host and the connection is resolved.
+     * Amount of time(Duration) the request attempts to connect to the remote host and the connection is resolved.
      */
     private Duration connectTimeout;
     /**
@@ -39,12 +39,12 @@ public class HttpClientConfigurationProperties extends ClientConfigurationProper
      */
     private Integer maximumConnectionPoolSize;
     /**
-     * Amount of time before an idle connection.
+     * Amount of time(Duration) before an idle connection.
      */
     private Duration connectionIdleTimeout;
 
     /**
-     * List of headers applied to each request sent with client.
+     * List of headers applied to each request sent with client. For instance, '"myCustomHeader", "myStaticValue"'.
      */
     private final List<HeaderProperties> headers = new ArrayList<>();
 

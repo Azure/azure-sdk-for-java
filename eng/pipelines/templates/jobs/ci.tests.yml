@@ -28,9 +28,6 @@ parameters:
   - name: UsePlatformContainer
     type: boolean
     default: false
-  - name: SkipAggregateReports
-    type: boolean
-    default: false
   - name: PreBuildSteps
     type: object
     default: []
@@ -40,9 +37,6 @@ parameters:
   - name: TestOptions
     type: string
     default: $(TestOptions)
-  - name: AdditionalBuildOptions
-    type: string
-    default: $(AdditionalBuildOptions)
   - name: TestParallelization
     type: string
     default: '1C'
@@ -91,9 +85,7 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'true'
-          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
-          AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}

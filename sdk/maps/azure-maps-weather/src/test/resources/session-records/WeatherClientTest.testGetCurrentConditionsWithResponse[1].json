@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/currentConditions/json?api-version=1.0&query=47.641268%2C-122.125679",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "1869",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: B6A4F0EF1E904B2D9E667DB8381594D1 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:50Z",
+      "Date" : "Fri, 11 Nov 2022 13:19:50 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=529",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Fri, 11 Nov 2022 13:28:39 GMT",
+      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-11T05:13:00-08:00\",\"phrase\":\"Cloudy\",\"iconCode\":7,\"hasPrecipitation\":false,\"isDayTime\":false,\"temperature\":{\"value\":1.5,\"unit\":\"C\",\"unitType\":17},\"realFeelTemperature\":{\"value\":3.8,\"unit\":\"C\",\"unitType\":17},\"realFeelTemperatureShade\":{\"value\":3.8,\"unit\":\"C\",\"unitType\":17},\"relativeHumidity\":92,\"dewPoint\":{\"value\":0.4,\"unit\":\"C\",\"unitType\":17},\"wind\":{\"direction\":{\"degrees\":23.0,\"localizedDescription\":\"NNE\"},\"speed\":{\"value\":1.0,\"unit\":\"km/h\",\"unitType\":7}},\"windGust\":{\"speed\":{\"value\":3.6,\"unit\":\"km/h\",\"unitType\":7}},\"uvIndex\":0,\"uvIndexPhrase\":\"Low\",\"visibility\":{\"value\":4.8,\"unit\":\"km\",\"unitType\":6},\"obstructionsToVisibility\":\"\",\"cloudCover\":98,\"ceiling\":{\"value\":3536.0,\"unit\":\"m\",\"unitType\":5},\"pressure\":{\"value\":1022.1,\"unit\":\"mb\",\"unitType\":14},\"pressureTendency\":{\"localizedDescription\":\"Falling\",\"code\":\"F\"},\"past24HourTemperatureDeparture\":{\"value\":0.0,\"unit\":\"C\",\"unitType\":17},\"apparentTemperature\":{\"value\":1.7,\"unit\":\"C\",\"unitType\":17},\"windChillTemperature\":{\"value\":1.7,\"unit\":\"C\",\"unitType\":17},\"wetBulbTemperature\":{\"value\":1.1,\"unit\":\"C\",\"unitType\":17},\"precipitationSummary\":{\"pastHour\":{\"value\":0.0,\"unit\":\"mm\",\"unitType\":3},\"past3Hours\":{\"value\":0.0,\"unit\":\"mm\",\"unitType\":3},\"past6Hours\":{\"value\":0.0,\"unit\":\"mm\",\"unitType\":3},\"past9Hours\":{\"value\":0.0,\"unit\":\"mm\",\"unitType\":3},\"past12Hours\":{\"value\":0.0,\"unit\":\"mm\",\"unitType\":3},\"past18Hours\":{\"value\":0.0,\"unit\":\"mm\",\"unitType\":3},\"past24Hours\":{\"value\":0.0,\"unit\":\"mm\",\"unitType\":3}},\"temperatureSummary\":{\"past6Hours\":{\"minimum\":{\"value\":0.5,\"unit\":\"C\",\"unitType\":17},\"maximum\":{\"value\":2.6,\"unit\":\"C\",\"unitType\":17}},\"past12Hours\":{\"minimum\":{\"value\":0.5,\"unit\":\"C\",\"unitType\":17},\"maximum\":{\"value\":6.4,\"unit\":\"C\",\"unitType\":17}},\"past24Hours\":{\"minimum\":{\"value\":0.5,\"unit\":\"C\",\"unitType\":17},\"maximum\":{\"value\":8.5,\"unit\":\"C\",\"unitType\":17}}}}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

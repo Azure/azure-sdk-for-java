@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 
 /** Samples for MongoDBResources RetrieveContinuousBackupInformation. */
 public final class MongoDBResourcesRetrieveContinuousBackupInformationSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBMongoDBCollectionBackupInformation.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBCollectionBackupInformation.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionBackupInformation.
@@ -30,6 +29,6 @@ public final class MongoDBResourcesRetrieveContinuousBackupInformationSamples {
                 "databaseName",
                 "collectionName",
                 new ContinuousBackupRestoreLocation().withLocation("North Europe"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

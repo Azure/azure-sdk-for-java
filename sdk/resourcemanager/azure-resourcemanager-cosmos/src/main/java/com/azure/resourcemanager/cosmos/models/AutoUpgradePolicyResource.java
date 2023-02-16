@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AutoUpgradePolicyResource {
     /*
-     * Represents throughput policy which service must adhere to for
-     * auto-upgrade
+     * Represents throughput policy which service must adhere to for auto-upgrade
      */
     @JsonProperty(value = "throughputPolicy")
     private ThroughputPolicyResource throughputPolicy;
+
+    /** Creates an instance of AutoUpgradePolicyResource class. */
+    public AutoUpgradePolicyResource() {
+    }
 
     /**
      * Get the throughputPolicy property: Represents throughput policy which service must adhere to for auto-upgrade.

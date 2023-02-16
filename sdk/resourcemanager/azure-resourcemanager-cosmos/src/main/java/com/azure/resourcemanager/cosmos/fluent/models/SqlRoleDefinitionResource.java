@@ -14,8 +14,7 @@ import java.util.List;
 @Fluent
 public final class SqlRoleDefinitionResource {
     /*
-     * A user-friendly name for the Role Definition. Must be unique for the
-     * database account.
+     * A user-friendly name for the Role Definition. Must be unique for the database account.
      */
     @JsonProperty(value = "roleName")
     private String roleName;
@@ -27,12 +26,10 @@ public final class SqlRoleDefinitionResource {
     private RoleDefinitionType type;
 
     /*
-     * A set of fully qualified Scopes at or below which Role Assignments may
-     * be created using this Role Definition. This will allow application of
-     * this Role Definition on the entire database account or any underlying
-     * Database / Collection. Must have at least one element. Scopes higher
-     * than Database account are not enforceable as assignable Scopes. Note
-     * that resources referenced in assignable Scopes need not exist.
+     * A set of fully qualified Scopes at or below which Role Assignments may be created using this Role Definition.
+     * This will allow application of this Role Definition on the entire database account or any underlying Database /
+     * Collection. Must have at least one element. Scopes higher than Database account are not enforceable as
+     * assignable Scopes. Note that resources referenced in assignable Scopes need not exist.
      */
     @JsonProperty(value = "assignableScopes")
     private List<String> assignableScopes;
@@ -42,6 +39,10 @@ public final class SqlRoleDefinitionResource {
      */
     @JsonProperty(value = "permissions")
     private List<Permission> permissions;
+
+    /** Creates an instance of SqlRoleDefinitionResource class. */
+    public SqlRoleDefinitionResource() {
+    }
 
     /**
      * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.

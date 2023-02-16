@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Disks GetByResourceGroup. */
 public final class DisksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskExamples/Disk_Get.json
      */
     /**
      * Sample code: Get information about a managed disk.
@@ -22,6 +20,6 @@ public final class DisksGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getDisks()
-            .getByResourceGroupWithResponse("myResourceGroup", "myManagedDisk", Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "myManagedDisk", com.azure.core.util.Context.NONE);
     }
 }

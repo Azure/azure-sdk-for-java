@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jackson.SerializerUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
@@ -11,17 +12,17 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.jackson.SerializerUtils.deserializeOAuth2AuthorizedClientMap;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.jackson.SerializerUtils.serializeOAuth2AuthorizedClientMap;
 
 /**
  * An implementation of an {@link OAuth2AuthorizedClientRepository} that stores {@link OAuth2AuthorizedClient}'s in the
  * {@code HttpSession}. To make it compatible with different spring versions. Refs:
- * https://github.com/spring-projects/spring-security/issues/9204
+ * <a href="https://github.com/spring-projects/spring-security/issues/9204">spring-security/issues/9204</a>
  *
  * @see OAuth2AuthorizedClientRepository
  * @see OAuth2AuthorizedClient
@@ -48,7 +49,8 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         Assert.notNull(authorizedClient, "authorizedClient cannot be null");
         Assert.notNull(request, MSG_REQUEST_CANNOT_BE_NULL);
         Assert.notNull(response, "response cannot be null");
-        Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
+        Map<String, OAuth2AuthorizedClient> authorizedClients =
+                new HashMap<>(this.getAuthorizedClients(request));
         authorizedClients.put(authorizedClient.getClientRegistration().getRegistrationId(), authorizedClient);
         request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
             serializeOAuth2AuthorizedClientMap(authorizedClients));
@@ -59,7 +61,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
                                        HttpServletRequest request, HttpServletResponse response) {
         Assert.hasText(clientRegistrationId, "clientRegistrationId cannot be empty");
         Assert.notNull(request, MSG_REQUEST_CANNOT_BE_NULL);
-        Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
+        Map<String, OAuth2AuthorizedClient> authorizedClients = new HashMap<>(this.getAuthorizedClients(request));
         if (authorizedClients.remove(clientRegistrationId) != null) {
             if (authorizedClients.isEmpty()) {
                 request.getSession().removeAttribute(AUTHORIZED_CLIENTS_ATTR_NAME);
@@ -73,12 +75,10 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
 
     private Map<String, OAuth2AuthorizedClient> getAuthorizedClients(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        String authorizedClientsString = (String) Optional.ofNullable(session)
-                                                          .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
-                                                          .orElse(null);
-        if (authorizedClientsString == null) {
-            return new HashMap<>();
-        }
-        return deserializeOAuth2AuthorizedClientMap(authorizedClientsString);
+        return Optional.ofNullable(session)
+                       .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
+                       .map(Object::toString)
+                       .map(SerializerUtils::deserializeOAuth2AuthorizedClientMap)
+                       .orElse(Collections.emptyMap());
     }
 }

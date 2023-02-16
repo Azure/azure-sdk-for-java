@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.AggregationType;
 import com.azure.resourcemanager.monitor.models.LocalizableString;
@@ -179,7 +181,7 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
             .manager()
             .serviceClient()
             .getMetrics()
-            .listAsync(
+            .listWithResponseAsync(
                 this.inner.resourceId(),
                 String
                     .format(
@@ -194,6 +196,7 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
                 this.odataFilter,
                 this.resultType,
                 this.namespaceFilter)
+            .map(Response::getValue)
             .map(MetricCollectionImpl::new);
     }
 }

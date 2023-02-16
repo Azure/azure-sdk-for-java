@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for UpgradeOperationInvoker. */
+/** Invoker of the Upgrade Operation. */
 public enum UpgradeOperationInvoker {
     /** Enum value Unknown. */
     UNKNOWN("Unknown"),
@@ -33,6 +33,9 @@ public enum UpgradeOperationInvoker {
      */
     @JsonCreator
     public static UpgradeOperationInvoker fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         UpgradeOperationInvoker[] items = UpgradeOperationInvoker.values();
         for (UpgradeOperationInvoker item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum UpgradeOperationInvoker {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

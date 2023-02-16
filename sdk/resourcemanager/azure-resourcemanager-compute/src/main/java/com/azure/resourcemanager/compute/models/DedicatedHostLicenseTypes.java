@@ -7,7 +7,11 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DedicatedHostLicenseTypes. */
+/**
+ * Specifies the software license type that will be applied to the VMs deployed on the dedicated host.
+ * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt;
+ * **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt; **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default: **None**.
+ */
 public enum DedicatedHostLicenseTypes {
     /** Enum value None. */
     NONE("None"),
@@ -33,6 +37,9 @@ public enum DedicatedHostLicenseTypes {
      */
     @JsonCreator
     public static DedicatedHostLicenseTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DedicatedHostLicenseTypes[] items = DedicatedHostLicenseTypes.values();
         for (DedicatedHostLicenseTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +49,7 @@ public enum DedicatedHostLicenseTypes {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

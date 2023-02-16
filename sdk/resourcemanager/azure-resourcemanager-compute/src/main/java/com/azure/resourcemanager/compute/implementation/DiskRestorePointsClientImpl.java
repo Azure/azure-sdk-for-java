@@ -64,7 +64,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface DiskRestorePointsService {
+    public interface DiskRestorePointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
@@ -196,7 +196,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -265,7 +265,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -301,36 +301,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         String diskRestorePointName) {
         return getWithResponseAsync(
                 resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName)
-            .flatMap(
-                (Response<DiskRestorePointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get disk restorePoint resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
-     * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
-     * @param diskRestorePointName The name of the disk restore point created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk restorePoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskRestorePointInner get(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName) {
-        return getAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName)
-            .block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -356,6 +327,29 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         return getWithResponseAsync(
                 resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, context)
             .block();
+    }
+
+    /**
+     * Get disk restorePoint resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
+     * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
+     * @param diskRestorePointName The name of the disk restore point created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk restorePoint resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DiskRestorePointInner get(
+        String resourceGroupName,
+        String restorePointCollectionName,
+        String vmRestorePointName,
+        String diskRestorePointName) {
+        return getWithResponse(
+                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -399,7 +393,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter vmRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -468,7 +462,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter vmRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -626,7 +620,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -704,7 +698,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -815,7 +809,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         String vmRestorePointName,
         String diskRestorePointName,
         GrantAccessData grantAccessData) {
-        return beginGrantAccessAsync(
+        return this
+            .beginGrantAccessAsync(
                 resourceGroupName,
                 restorePointCollectionName,
                 vmRestorePointName,
@@ -846,7 +841,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         String diskRestorePointName,
         GrantAccessData grantAccessData,
         Context context) {
-        return beginGrantAccessAsync(
+        return this
+            .beginGrantAccessAsync(
                 resourceGroupName,
                 restorePointCollectionName,
                 vmRestorePointName,
@@ -1028,7 +1024,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1097,7 +1093,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1187,7 +1183,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         String restorePointCollectionName,
         String vmRestorePointName,
         String diskRestorePointName) {
-        return beginRevokeAccessAsync(
+        return this
+            .beginRevokeAccessAsync(
                 resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName)
             .getSyncPoller();
     }
@@ -1212,7 +1209,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         String vmRestorePointName,
         String diskRestorePointName,
         Context context) {
-        return beginRevokeAccessAsync(
+        return this
+            .beginRevokeAccessAsync(
                 resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, context)
             .getSyncPoller();
     }
@@ -1315,7 +1313,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1352,7 +1351,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

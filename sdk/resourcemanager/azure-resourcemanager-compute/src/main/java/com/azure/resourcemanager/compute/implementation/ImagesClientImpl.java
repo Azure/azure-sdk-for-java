@@ -68,7 +68,7 @@ public final class ImagesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface ImagesService {
+    public interface ImagesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images"
@@ -215,7 +215,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -273,7 +273,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -348,7 +348,7 @@ public final class ImagesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
         String resourceGroupName, String imageName, ImageInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
     }
 
     /**
@@ -366,7 +366,7 @@ public final class ImagesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
         String resourceGroupName, String imageName, ImageInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -480,7 +480,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -538,7 +538,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -612,7 +612,7 @@ public final class ImagesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
         String resourceGroupName, String imageName, ImageUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
     }
 
     /**
@@ -630,7 +630,7 @@ public final class ImagesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
         String resourceGroupName, String imageName, ImageUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -735,7 +735,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -785,7 +785,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -851,7 +851,7 @@ public final class ImagesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName) {
-        return beginDeleteAsync(resourceGroupName, imageName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, imageName).getSyncPoller();
     }
 
     /**
@@ -867,7 +867,7 @@ public final class ImagesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName, Context context) {
-        return beginDeleteAsync(resourceGroupName, imageName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, imageName, context).getSyncPoller();
     }
 
     /**
@@ -965,7 +965,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1017,7 +1017,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1037,30 +1037,6 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName, String expand) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, imageName, expand)
-            .flatMap(
-                (Response<ImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an image.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1070,30 +1046,7 @@ public final class ImagesClientImpl
     public Mono<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName) {
         final String expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, imageName, expand)
-            .flatMap(
-                (Response<ImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an image.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageInner getByResourceGroup(String resourceGroupName, String imageName) {
-        final String expand = null;
-        return getByResourceGroupAsync(resourceGroupName, imageName, expand).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1112,6 +1065,22 @@ public final class ImagesClientImpl
     public Response<ImageInner> getByResourceGroupWithResponse(
         String resourceGroupName, String imageName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, imageName, expand, context).block();
+    }
+
+    /**
+     * Gets an image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an image.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImageInner getByResourceGroup(String resourceGroupName, String imageName) {
+        final String expand = null;
+        return getByResourceGroupWithResponse(resourceGroupName, imageName, expand, Context.NONE).getValue();
     }
 
     /**
@@ -1142,7 +1111,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1197,7 +1166,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1304,7 +1273,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1348,7 +1317,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1424,7 +1393,8 @@ public final class ImagesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1461,7 +1431,8 @@ public final class ImagesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1498,7 +1469,8 @@ public final class ImagesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1534,7 +1506,8 @@ public final class ImagesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of NSX Segments. */
 @Immutable
 public final class WorkloadNetworkSegmentsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkSegmentsList.class);
-
     /*
      * The items on the page
      */
@@ -27,6 +23,10 @@ public final class WorkloadNetworkSegmentsList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of WorkloadNetworkSegmentsList class. */
+    public WorkloadNetworkSegmentsList() {
+    }
 
     /**
      * Get the value property: The items on the page.

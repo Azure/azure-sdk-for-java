@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EmailServicesProvisioningState. */
+/** Provisioning state of the resource. */
 public final class EmailServicesProvisioningState extends ExpandableStringEnum<EmailServicesProvisioningState> {
     /** Static value Unknown for EmailServicesProvisioningState. */
     public static final EmailServicesProvisioningState UNKNOWN = fromString("Unknown");

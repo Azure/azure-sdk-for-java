@@ -62,6 +62,10 @@ public final class VirtualWanProperties {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of VirtualWanProperties class. */
+    public VirtualWanProperties() {
+    }
+
     /**
      * Get the disableVpnEncryption property: Vpn encryption to be disabled or not.
      *

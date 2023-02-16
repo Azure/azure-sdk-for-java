@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FirewallPolicyIdpsQuerySortOrder. */
+/** Describes if results should be in ascending/descending order. */
 public final class FirewallPolicyIdpsQuerySortOrder extends ExpandableStringEnum<FirewallPolicyIdpsQuerySortOrder> {
     /** Static value Ascending for FirewallPolicyIdpsQuerySortOrder. */
     public static final FirewallPolicyIdpsQuerySortOrder ASCENDING = fromString("Ascending");

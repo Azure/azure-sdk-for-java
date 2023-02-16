@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.DiskAccessUpdate;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for DiskAccesses Update. */
 public final class DiskAccessesUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskAccessExamples/DiskAccess_Update.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskAccessExamples/DiskAccess_Update.json
      */
     /**
      * Sample code: Update a disk access resource.
@@ -29,7 +28,7 @@ public final class DiskAccessesUpdateSamples {
                 "myResourceGroup",
                 "myDiskAccess",
                 new DiskAccessUpdate().withTags(mapOf("department", "Development", "project", "PrivateEndpoints")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

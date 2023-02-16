@@ -28,7 +28,11 @@ public final class RequestSchemeMatchConditionParametersMatchValuesItem
         return fromString(name, RequestSchemeMatchConditionParametersMatchValuesItem.class);
     }
 
-    /** @return known RequestSchemeMatchConditionParametersMatchValuesItem values. */
+    /**
+     * Gets known RequestSchemeMatchConditionParametersMatchValuesItem values.
+     *
+     * @return known RequestSchemeMatchConditionParametersMatchValuesItem values.
+     */
     public static Collection<RequestSchemeMatchConditionParametersMatchValuesItem> values() {
         return values(RequestSchemeMatchConditionParametersMatchValuesItem.class);
     }

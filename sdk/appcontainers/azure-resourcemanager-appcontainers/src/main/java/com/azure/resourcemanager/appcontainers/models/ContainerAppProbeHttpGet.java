@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class ContainerAppProbeHttpGet {
     /*
-     * Host name to connect to, defaults to the pod IP. You probably want to
-     * set "Host" in httpHeaders instead.
+     * Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.
      */
     @JsonProperty(value = "host")
     private String host;
@@ -31,8 +30,8 @@ public final class ContainerAppProbeHttpGet {
     private String path;
 
     /*
-     * Name or number of the port to access on the container. Number must be in
-     * the range 1 to 65535. Name must be an IANA_SVC_NAME.
+     * Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an
+     * IANA_SVC_NAME.
      */
     @JsonProperty(value = "port", required = true)
     private int port;
@@ -42,6 +41,10 @@ public final class ContainerAppProbeHttpGet {
      */
     @JsonProperty(value = "scheme")
     private Scheme scheme;
+
+    /** Creates an instance of ContainerAppProbeHttpGet class. */
+    public ContainerAppProbeHttpGet() {
+    }
 
     /**
      * Get the host property: Host name to connect to, defaults to the pod IP. You probably want to set "Host" in

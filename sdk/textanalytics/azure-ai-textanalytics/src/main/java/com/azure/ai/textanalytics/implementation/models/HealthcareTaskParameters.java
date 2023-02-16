@@ -11,19 +11,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
     /*
-     * The FHIR Spec version that the result will use to format the fhirBundle.
-     * For additional information see https://www.hl7.org/fhir/overview.html.
+     * The FHIR Spec version that the result will use to format the fhirBundle. For additional information see
+     * https://www.hl7.org/fhir/overview.html.
      */
     @JsonProperty(value = "fhirVersion")
     private FhirVersion fhirVersion;
 
     /*
-     * Specifies the method used to interpret string offsets.  Defaults to Text
-     * Elements (Graphemes) according to Unicode v8.0.0. For additional
-     * information see https://aka.ms/text-analytics-offsets.
+     * Document type that can be provided as input for Fhir Documents. Expect to have fhirVersion provided when used.
+     * Behavior of using None enum is the same as not using the documentType parameter.
+     */
+    @JsonProperty(value = "documentType")
+    private HealthcareDocumentType documentType;
+
+    /*
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
+     * Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
+
+    /** Creates an instance of HealthcareTaskParameters class. */
+    public HealthcareTaskParameters() {}
 
     /**
      * Get the fhirVersion property: The FHIR Spec version that the result will use to format the fhirBundle. For
@@ -48,6 +57,28 @@ public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
     }
 
     /**
+     * Get the documentType property: Document type that can be provided as input for Fhir Documents. Expect to have
+     * fhirVersion provided when used. Behavior of using None enum is the same as not using the documentType parameter.
+     *
+     * @return the documentType value.
+     */
+    public HealthcareDocumentType getDocumentType() {
+        return this.documentType;
+    }
+
+    /**
+     * Set the documentType property: Document type that can be provided as input for Fhir Documents. Expect to have
+     * fhirVersion provided when used. Behavior of using None enum is the same as not using the documentType parameter.
+     *
+     * @param documentType the documentType value to set.
+     * @return the HealthcareTaskParameters object itself.
+     */
+    public HealthcareTaskParameters setDocumentType(HealthcareDocumentType documentType) {
+        this.documentType = documentType;
+        return this;
+    }
+
+    /**
      * Get the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
      * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
      * https://aka.ms/text-analytics-offsets.
@@ -68,6 +99,20 @@ public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
      */
     public HealthcareTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareTaskParameters setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
         return this;
     }
 }

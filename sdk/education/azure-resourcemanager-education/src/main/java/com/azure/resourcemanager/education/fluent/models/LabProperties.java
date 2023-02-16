@@ -73,6 +73,10 @@ public final class LabProperties {
     @JsonProperty(value = "totalAllocatedBudget", access = JsonProperty.Access.WRITE_ONLY)
     private Amount innerTotalAllocatedBudget;
 
+    /** Creates an instance of LabProperties class. */
+    public LabProperties() {
+    }
+
     /**
      * Get the displayName property: Lab Display Name.
      *

@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.FieldDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Definition of the connection type. */
-@JsonFlatten
 @Fluent
-public class ConnectionTypeInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionTypeInner.class);
-
+public final class ConnectionTypeInner {
     /*
      * Gets the id of the resource.
      */
@@ -38,35 +32,10 @@ public class ConnectionTypeInner {
     private String type;
 
     /*
-     * Gets or sets a Boolean value to indicate if the connection type is
-     * global.
+     * Gets or sets the properties of the connection type.
      */
-    @JsonProperty(value = "properties.isGlobal")
-    private Boolean isGlobal;
-
-    /*
-     * Gets the field definitions of the connection type.
-     */
-    @JsonProperty(value = "properties.fieldDefinitions", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, FieldDefinition> fieldDefinitions;
-
-    /*
-     * Gets the creation time.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets or sets the last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime")
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Gets or sets the description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private ConnectionTypeProperties innerProperties;
 
     /**
      * Get the id property: Gets the id of the resource.
@@ -96,12 +65,21 @@ public class ConnectionTypeInner {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the connection type.
+     *
+     * @return the innerProperties value.
+     */
+    private ConnectionTypeProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
      *
      * @return the isGlobal value.
      */
     public Boolean isGlobal() {
-        return this.isGlobal;
+        return this.innerProperties() == null ? null : this.innerProperties().isGlobal();
     }
 
     /**
@@ -111,7 +89,10 @@ public class ConnectionTypeInner {
      * @return the ConnectionTypeInner object itself.
      */
     public ConnectionTypeInner withIsGlobal(Boolean isGlobal) {
-        this.isGlobal = isGlobal;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionTypeProperties();
+        }
+        this.innerProperties().withIsGlobal(isGlobal);
         return this;
     }
 
@@ -121,7 +102,7 @@ public class ConnectionTypeInner {
      * @return the fieldDefinitions value.
      */
     public Map<String, FieldDefinition> fieldDefinitions() {
-        return this.fieldDefinitions;
+        return this.innerProperties() == null ? null : this.innerProperties().fieldDefinitions();
     }
 
     /**
@@ -130,7 +111,7 @@ public class ConnectionTypeInner {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -139,7 +120,7 @@ public class ConnectionTypeInner {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -149,7 +130,10 @@ public class ConnectionTypeInner {
      * @return the ConnectionTypeInner object itself.
      */
     public ConnectionTypeInner withLastModifiedTime(OffsetDateTime lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionTypeProperties();
+        }
+        this.innerProperties().withLastModifiedTime(lastModifiedTime);
         return this;
     }
 
@@ -159,7 +143,7 @@ public class ConnectionTypeInner {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -169,7 +153,10 @@ public class ConnectionTypeInner {
      * @return the ConnectionTypeInner object itself.
      */
     public ConnectionTypeInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionTypeProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -179,15 +166,8 @@ public class ConnectionTypeInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (fieldDefinitions() != null) {
-            fieldDefinitions()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

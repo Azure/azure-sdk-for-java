@@ -3,7 +3,7 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
@@ -12,51 +12,76 @@ import java.util.List;
  * The options for creating a call.
  */
 @Fluent
-public final class CreateCallOptions {
-
+public class CreateCallOptions {
     /**
-     * The alternate caller id of the source.
+     * The source property.
      */
-    private PhoneNumberIdentifier alternateCallerId;
+    private final CommunicationIdentifier source;
 
     /**
-     * The subject.
+     * The targets of the call.
+     */
+    private final List<CommunicationIdentifier> targets;
+
+    /**
+     * The call back URI.
+     */
+    private final String callbackUrl;
+
+    /**
+     * The source caller Id that's shown to the PSTN participant being invited.
+     * Required only when inviting a PSTN participant.
+     */
+    private String sourceCallerId;
+
+    /**
+     * The subject
      */
     private String subject;
 
     /**
-     * The callback URI.
+     * Media Streaming Configuration.
      */
-    private final String callbackUri;
+    private MediaStreamingConfiguration mediaStreamingConfiguration;
 
     /**
-     * The requested media types.
-     */
-    private final List<MediaType> requestedMediaTypes;
-
-    /**
-     * The requested call events to subscribe to.
-     */
-    private final List<EventSubscriptionType> requestedCallEvents;
-
-    /**
-     * Get the alternate caller id of the source.
+     * Constructor
      *
-     * @return the alternate caller id object itself.
+     * @param source The source property.
+     * @param targets The targets of the call.
+     * @param callbackUrl The call back URI.
      */
-    public PhoneNumberIdentifier getAlternateCallerId() {
-        return alternateCallerId;
+    public CreateCallOptions(CommunicationIdentifier source, List<CommunicationIdentifier> targets, String callbackUrl) {
+        this.source = source;
+        this.targets = targets;
+        this.callbackUrl = callbackUrl;
     }
 
     /**
-     * Set the alternate caller id of the source to be used when target is phone number.
+     * Get the source.
      *
-     * @param alternateCallerId the alternate caller id value to set.
-     * @return the CreateCallOptions object itself.
+     * @return the source value.
      */
-    public CreateCallOptions setAlternateCallerId(PhoneNumberIdentifier alternateCallerId) {
-        this.alternateCallerId = alternateCallerId;
-        return this;
+    public CommunicationIdentifier getSource() {
+        return source;
+    }
+
+    /**
+     * Get the targets.
+     *
+     * @return the targets list.
+     */
+    public List<CommunicationIdentifier> getTargets() {
+        return targets;
+    }
+
+    /**
+     * Get the call back uri.
+     *
+     * @return the call back uri.
+     */
+    public String getCallbackUrl() {
+        return callbackUrl;
     }
 
     /**
@@ -66,6 +91,24 @@ public final class CreateCallOptions {
      */
     public String getSubject() {
         return subject;
+    }
+
+    /**
+     * Get the source caller Id that's shown to the PSTN participant being invited.
+     *
+     * @return the sourceCallerId value.
+     */
+    public String getSourceCallerId() {
+        return sourceCallerId;
+    }
+
+    /**
+     * Get the Media Streaming configuration.
+     *
+     * @return the mediaStreamingConfiguration.
+     */
+    public MediaStreamingConfiguration getMediaStreamingConfiguration() {
+        return mediaStreamingConfiguration;
     }
 
     /**
@@ -80,55 +123,25 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Get the subject.
+     * Set the sourceCallerId.
      *
-     * @return the subject value.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant.
+     * @return the CreateCallOptions object itself.
      */
-    public String getCallbackUri() {
-        return callbackUri;
+    public CreateCallOptions setSourceCallerId(String sourceCallerId) {
+        this.sourceCallerId = sourceCallerId;
+        return this;
     }
 
     /**
-     * Get the requested modalities.
+     * Set the media streaming configuration.
      *
-     * @return the requested modalities object itself.
+     * @param mediaStreamingConfiguration The media streaming configuration.
+     * @return the CreateCallOptions object itself.
      */
-    public List<MediaType> getRequestedMediaTypes() {
-        return requestedMediaTypes;
-    }
-
-    /**
-     * Get the requested call events to subscribe to.
-     *
-     * @return the requested call events to subscribe to object itself.
-     */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
-        return requestedCallEvents;
-    }
-
-    /**
-     * Initializes a new instance of CreateCallOptions.
-     *
-     * @param callbackUri the callback URI.
-     * @param requestedMediaTypes the requested media types.
-     * @param requestedCallEvents the requested call events to subscribe to.
-     * @throws IllegalArgumentException if any parameters are null.
-     */
-    public CreateCallOptions(
-        String callbackUri,
-        List<MediaType> requestedMediaTypes,
-        List<EventSubscriptionType> requestedCallEvents) {
-        if (callbackUri == null) {
-            throw new IllegalArgumentException("object callbackUri cannot be null");
-        }
-        if (requestedMediaTypes == null) {
-            throw new IllegalArgumentException("object requestedMediaTypes cannot be null");
-        }
-        if (requestedCallEvents == null) {
-            throw new IllegalArgumentException("object requestedCallEvents cannot be null");
-        }
-        this.callbackUri = callbackUri;
-        this.requestedMediaTypes = requestedMediaTypes;
-        this.requestedCallEvents = requestedCallEvents;
+    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingConfiguration mediaStreamingConfiguration) {
+        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
+        return this;
     }
 }

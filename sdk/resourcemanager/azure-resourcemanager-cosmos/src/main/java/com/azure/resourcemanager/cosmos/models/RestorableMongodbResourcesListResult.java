@@ -13,11 +13,14 @@ import java.util.List;
 @Immutable
 public final class RestorableMongodbResourcesListResult {
     /*
-     * List of restorable MongoDB resources, including the database and
-     * collection names.
+     * List of restorable MongoDB resources, including the database and collection names.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableMongodbResourcesGetResultInner> value;
+
+    /** Creates an instance of RestorableMongodbResourcesListResult class. */
+    public RestorableMongodbResourcesListResult() {
+    }
 
     /**
      * Get the value property: List of restorable MongoDB resources, including the database and collection names.

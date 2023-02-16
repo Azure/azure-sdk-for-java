@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UpgradeChannel. */
+/**
+ * The upgrade channel for auto upgrade. The default is 'none'.
+ *
+ * <p>For more information see [setting the AKS cluster auto-upgrade
+ * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
+ */
 public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
     /** Static value rapid for UpgradeChannel. */
     public static final UpgradeChannel RAPID = fromString("rapid");
@@ -24,6 +29,15 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
 
     /** Static value none for UpgradeChannel. */
     public static final UpgradeChannel NONE = fromString("none");
+
+    /**
+     * Creates a new instance of UpgradeChannel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UpgradeChannel() {
+    }
 
     /**
      * Creates or finds a UpgradeChannel from its string representation.

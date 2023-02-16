@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedPrivateEndpoints Get. */
 public final class ManagedPrivateEndpointsGetSamples {
     /*
@@ -25,6 +23,6 @@ public final class ManagedPrivateEndpointsGetSamples {
                 "exampleManagedVirtualNetworkName",
                 "exampleManagedPrivateEndpointName",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

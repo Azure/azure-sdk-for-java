@@ -43,48 +43,43 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /*
      * This is the complete ARM Id of the VM that will be created.
-     * For e.g.
-     * /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+     * For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
      */
     @JsonProperty(value = "targetVirtualMachineId")
     private String targetVirtualMachineId;
 
     /*
-     * This is the ARM Id of the resource group that you want to create for
-     * this Virtual machine and other artifacts.
+     * This is the ARM Id of the resource group that you want to create for this Virtual machine and other artifacts.
      * For e.g. /subscriptions/{subId}/resourcegroups/{rg}
      */
     @JsonProperty(value = "targetResourceGroupId")
     private String targetResourceGroupId;
 
     /*
-     * Fully qualified ARM ID of the storage account to which the VM has to be
-     * restored.
+     * Fully qualified ARM ID of the storage account to which the VM has to be restored.
      */
     @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
     /*
-     * This is the virtual network Id of the vnet that will be attached to the
-     * virtual machine.
+     * This is the virtual network Id of the vnet that will be attached to the virtual machine.
      * User will be validated for join action permissions in the linked access.
      */
     @JsonProperty(value = "virtualNetworkId")
     private String virtualNetworkId;
 
     /*
-     * Subnet ID, is the subnet ID associated with the to be restored VM. For
-     * Classic VMs it would be
-     * {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it
-     * would be ARM resource ID used to represent
+     * Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be
+     * {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to
+     * represent
      * the subnet.
      */
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
-     * Fully qualified ARM ID of the domain name to be associated to the VM
-     * being restored. This applies only to Classic
+     * Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to
+     * Classic
      * Virtual Machines.
      */
     @JsonProperty(value = "targetDomainNameId")
@@ -97,15 +92,13 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     private String region;
 
     /*
-     * Affinity group associated to VM to be restored. Used only for Classic
-     * Compute Virtual Machines.
+     * Affinity group associated to VM to be restored. Used only for Classic Compute Virtual Machines.
      */
     @JsonProperty(value = "affinityGroup")
     private String affinityGroup;
 
     /*
-     * Should a new cloud service be created while restoring the VM. If this is
-     * false, VM will be restored to the same
+     * Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same
      * cloud service as it was at the time of backup.
      */
     @JsonProperty(value = "createNewCloudService")
@@ -130,15 +123,14 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     private List<Integer> restoreDiskLunList;
 
     /*
-     * Flag to denote of an Unmanaged disk VM should be restored with Managed
-     * disks.
+     * Flag to denote of an Unmanaged disk VM should be restored with Managed disks.
      */
     @JsonProperty(value = "restoreWithManagedDisks")
     private Boolean restoreWithManagedDisks;
 
     /*
-     * DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest
-     * during restore with customer managed key.
+     * DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest during restore with customer managed
+     * key.
      */
     @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
@@ -150,18 +142,20 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     private List<String> zones;
 
     /*
-     * Managed Identity information required to access customer storage
-     * account.
+     * Managed Identity information required to access customer storage account.
      */
     @JsonProperty(value = "identityInfo")
     private IdentityInfo identityInfo;
 
     /*
-     * IaaS VM workload specific restore details for restores using managed
-     * identity.
+     * IaaS VM workload specific restore details for restores using managed identity.
      */
     @JsonProperty(value = "identityBasedRestoreDetails")
     private IdentityBasedRestoreDetails identityBasedRestoreDetails;
+
+    /** Creates an instance of IaasVMRestoreRequest class. */
+    public IaasVMRestoreRequest() {
+    }
 
     /**
      * Get the recoveryPointId property: ID of the backup copy to be recovered.

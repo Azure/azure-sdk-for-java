@@ -22,6 +22,10 @@ public final class AgentPoolUpgradeProfilePropertiesUpgradesItem {
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
+    /** Creates an instance of AgentPoolUpgradeProfilePropertiesUpgradesItem class. */
+    public AgentPoolUpgradeProfilePropertiesUpgradesItem() {
+    }
+
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *

@@ -44,7 +44,7 @@ public interface SoftwareUpdateConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return software update configuration properties.
+     * @return software update configuration properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SoftwareUpdateConfigurationInner> createWithResponse(
@@ -81,7 +81,7 @@ public interface SoftwareUpdateConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return a single software update configuration by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SoftwareUpdateConfigurationInner> getByNameWithResponse(
@@ -115,7 +115,7 @@ public interface SoftwareUpdateConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -149,7 +149,7 @@ public interface SoftwareUpdateConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account.
+     * @return all software update configurations for the account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SoftwareUpdateConfigurationListResultInner> listWithResponse(

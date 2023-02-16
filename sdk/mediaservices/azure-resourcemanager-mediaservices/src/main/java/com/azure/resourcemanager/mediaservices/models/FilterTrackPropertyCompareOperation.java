@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FilterTrackPropertyCompareOperation. */
+/** The track property condition operation. */
 public final class FilterTrackPropertyCompareOperation
     extends ExpandableStringEnum<FilterTrackPropertyCompareOperation> {
     /** Static value Equal for FilterTrackPropertyCompareOperation. */
@@ -16,6 +16,15 @@ public final class FilterTrackPropertyCompareOperation
 
     /** Static value NotEqual for FilterTrackPropertyCompareOperation. */
     public static final FilterTrackPropertyCompareOperation NOT_EQUAL = fromString("NotEqual");
+
+    /**
+     * Creates a new instance of FilterTrackPropertyCompareOperation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FilterTrackPropertyCompareOperation() {
+    }
 
     /**
      * Creates or finds a FilterTrackPropertyCompareOperation from its string representation.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineExtensions Delete. */
 public final class VirtualMachineExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachineExtensions_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensions_Delete_MaximumSet_Gen.
@@ -23,11 +21,11 @@ public final class VirtualMachineExtensionsDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineExtensions()
-            .delete("rgcompute", "aaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .delete("rgcompute", "aaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachineExtensions_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensions_Delete_MinimumSet_Gen.
@@ -41,6 +39,6 @@ public final class VirtualMachineExtensionsDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineExtensions()
-            .delete("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaa", "aa", Context.NONE);
+            .delete("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaa", "aa", com.azure.core.util.Context.NONE);
     }
 }

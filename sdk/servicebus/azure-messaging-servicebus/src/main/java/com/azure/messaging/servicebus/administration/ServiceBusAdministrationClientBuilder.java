@@ -5,11 +5,13 @@ package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpClient;
@@ -34,10 +36,10 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImplBuilder;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImplBuilder;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy;
 
@@ -89,6 +91,7 @@ import java.util.Objects;
     ServiceBusAdministrationAsyncClient.class})
 public final class ServiceBusAdministrationClientBuilder implements
     TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
+    AzureSasCredentialTrait<ServiceBusAdministrationClientBuilder>,
     ConnectionStringTrait<ServiceBusAdministrationClientBuilder>,
     HttpTrait<ServiceBusAdministrationClientBuilder>,
     ConfigurationTrait<ServiceBusAdministrationClientBuilder>,
@@ -146,6 +149,12 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
+        final ServiceBusManagementClientImpl client = getServiceBusManagementClient();
+
+        return new ServiceBusAdministrationAsyncClient(client, serializer);
+    }
+
+    private ServiceBusManagementClientImpl getServiceBusManagementClient() {
         if (endpoint == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
@@ -160,8 +169,7 @@ public final class ServiceBusAdministrationClientBuilder implements
             .endpoint(endpoint)
             .apiVersion(apiVersion.getVersion())
             .buildClient();
-
-        return new ServiceBusAdministrationAsyncClient(client, serializer);
+        return client;
     }
 
     /**
@@ -182,7 +190,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationClient buildClient() {
-        return new ServiceBusAdministrationClient(buildAsyncClient());
+        return new ServiceBusAdministrationClient(getServiceBusManagementClient(), serializer);
     }
 
     /**
@@ -316,6 +324,22 @@ public final class ServiceBusAdministrationClientBuilder implements
     @Override
     public ServiceBusAdministrationClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the credential with Shared Access Signature for the Service Bus resource.
+     * Refer to <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas">
+     *     Service Bus access control with Shared Access Signatures</a>.
+     *
+     * @param credential {@link AzureSasCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
+     */
+    @Override
+    public ServiceBusAdministrationClientBuilder credential(AzureSasCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.tokenCredential = new ServiceBusSharedKeyCredential(credential.getSignature());
         return this;
     }
 

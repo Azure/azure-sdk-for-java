@@ -38,6 +38,10 @@ public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphUserSettings class. */
+    public MicrosoftGraphUserSettings() {
+    }
+
     /**
      * Get the contributionToContentDiscoveryAsOrganizationDisabled property: The
      * contributionToContentDiscoveryAsOrganizationDisabled property.

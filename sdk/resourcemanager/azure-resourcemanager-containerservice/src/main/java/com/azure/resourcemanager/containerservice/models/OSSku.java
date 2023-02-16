@@ -8,13 +8,31 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OSSku. */
+/**
+ * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
+ * when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is Windows.
+ */
 public final class OSSku extends ExpandableStringEnum<OSSku> {
     /** Static value Ubuntu for OSSku. */
     public static final OSSku UBUNTU = fromString("Ubuntu");
 
     /** Static value CBLMariner for OSSku. */
     public static final OSSku CBLMARINER = fromString("CBLMariner");
+
+    /** Static value Windows2019 for OSSku. */
+    public static final OSSku WINDOWS2019 = fromString("Windows2019");
+
+    /** Static value Windows2022 for OSSku. */
+    public static final OSSku WINDOWS2022 = fromString("Windows2022");
+
+    /**
+     * Creates a new instance of OSSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OSSku() {
+    }
 
     /**
      * Creates or finds a OSSku from its string representation.

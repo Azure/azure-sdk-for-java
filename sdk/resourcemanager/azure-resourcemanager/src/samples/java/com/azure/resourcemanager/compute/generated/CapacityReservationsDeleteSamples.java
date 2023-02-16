@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CapacityReservations Delete. */
 public final class CapacityReservationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/capacityReservationExamples/CapacityReservation_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/capacityReservationExamples/CapacityReservation_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservations_Delete_MinimumSet_Gen.
@@ -22,11 +20,11 @@ public final class CapacityReservationsDeleteSamples {
             .manager()
             .serviceClient()
             .getCapacityReservations()
-            .delete("rgcompute", "aaa", "aaaaaa", Context.NONE);
+            .delete("rgcompute", "aaa", "aaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservations_Delete_MaximumSet_Gen.
@@ -39,6 +37,6 @@ public final class CapacityReservationsDeleteSamples {
             .manager()
             .serviceClient()
             .getCapacityReservations()
-            .delete("rgcompute", "aaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .delete("rgcompute", "aaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

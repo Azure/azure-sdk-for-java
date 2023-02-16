@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServices ListByResourceGroup. */
 public final class CloudServicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_List_ByResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudService_List_ByResourceGroup.json
      */
     /**
      * Sample code: List Cloud Services in a Resource Group.
@@ -22,6 +20,6 @@ public final class CloudServicesListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getCloudServices()
-            .listByResourceGroup("ConstosoRG", Context.NONE);
+            .listByResourceGroup("ConstosoRG", com.azure.core.util.Context.NONE);
     }
 }

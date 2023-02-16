@@ -116,7 +116,9 @@ public abstract class AsyncEncryptionBenchmark<T> {
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
             .consistencyLevel(cfg.getConsistencyLevel())
-            .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
+            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
+            .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
+
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
         } else {

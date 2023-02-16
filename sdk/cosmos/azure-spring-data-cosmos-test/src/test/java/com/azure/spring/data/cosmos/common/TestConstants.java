@@ -4,6 +4,8 @@ package com.azure.spring.data.cosmos.common;
 
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.domain.Address;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,10 +15,14 @@ import java.util.Map;
 public final class TestConstants {
 
     public static final String AUTOSCALE_MAX_THROUGHPUT = "4000";
+
+    public static final String MULTI_PARTITION_THROUGHPUT = "12000";
     private static final Address ADDRESS_1 = new Address("201107", "Zixing Road", "Shanghai");
     private static final Address ADDRESS_2 = new Address("200000", "Xuhui", "Shanghai");
     public static final String HOBBY1 = "photography";
+    public static final String PATCH_HOBBY1 = "shopping";
     public static final List<String> HOBBIES = Arrays.asList(HOBBY1, "fishing");
+    public static final List<String> PATCH_HOBBIES = Arrays.asList(HOBBY1, "fishing", PATCH_HOBBY1);
     public static final List<Address> ADDRESSES = Arrays.asList(ADDRESS_1, ADDRESS_2);
 
     public static final String ROLE_COLLECTION_NAME = "RoleCollectionName";
@@ -43,6 +49,7 @@ public final class TestConstants {
 
     public static final String DB_NAME = "testdb";
     public static final String FIRST_NAME = "first_name_li";
+    public static final String PATCH_FIRST_NAME = "first_name_replace";
     public static final String LAST_NAME = "last_name_p";
     public static final Integer ZIP_CODE = 12345;
     public static final String ID_1 = "id-1";
@@ -55,6 +62,7 @@ public final class TestConstants {
     public static final String UPDATED_FIRST_NAME = "updated_first_name";
     public static final String UPDATED_LAST_NAME = "updated_last_name";
     public static final String LEVEL = "B";
+    public static final String LEVEL_2 = "C";
     public static final String ROLE_NAME = "Developer";
     public static final String NOT_EXIST_ID = "non_exist_id";
 
@@ -95,10 +103,17 @@ public final class TestConstants {
     public static final String DEPARTMENT = "test-department";
 
     public static final Integer AGE = 24;
+    public static final Integer PATCH_AGE_1 = 25;
+    public static final Integer PATCH_AGE_INCREMENT = 2;
 
     public static final Map<String, String> PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
         put("United States of America", "123456789");
         put("Côte d'Ivoire", "IC1234567");
+    }};
+
+    public static final Map<String, String> NEW_PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
+        put("United Kingdom", "123456789");
+        put("Germany", "IC1234567");
     }};
 
     private TestConstants() {

@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkLinks CreateOrUpdate. */
 public final class VirtualNetworkLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/VirtualNetworkLinkPut.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone Virtual Network Link.

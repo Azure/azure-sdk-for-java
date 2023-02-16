@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.fluent.models.SBQueueInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to the List Queues operation. */
 @Fluent
 public final class SBQueueListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SBQueueListResult.class);
-
     /*
      * Result of the List Queues operation.
      */
@@ -23,8 +19,7 @@ public final class SBQueueListResult {
     private List<SBQueueInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of queues.
+     * Link to the next set of results. Not empty if Value contains incomplete list of queues.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

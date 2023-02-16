@@ -21,13 +21,16 @@ public final class SapCloudForCustomerSink extends CopySink {
     private SapCloudForCustomerSinkWriteBehavior writeBehavior;
 
     /*
-     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get
-     * a response, not the timeout to read response data. Default value:
-     * 00:05:00. Type: string (or Expression with resultType string), pattern:
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read
+     * response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
+
+    /** Creates an instance of SapCloudForCustomerSink class. */
+    public SapCloudForCustomerSink() {
+    }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation. Default is 'Insert'.

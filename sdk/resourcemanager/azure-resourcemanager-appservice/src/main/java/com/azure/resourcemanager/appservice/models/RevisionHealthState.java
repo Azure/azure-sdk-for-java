@@ -30,7 +30,11 @@ public final class RevisionHealthState extends ExpandableStringEnum<RevisionHeal
         return fromString(name, RevisionHealthState.class);
     }
 
-    /** @return known RevisionHealthState values. */
+    /**
+     * Gets known RevisionHealthState values.
+     *
+     * @return known RevisionHealthState values.
+     */
     public static Collection<RevisionHealthState> values() {
         return values(RevisionHealthState.class);
     }

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PreferredContactMethod. */
+/** Preferred contact method. */
 public final class PreferredContactMethod extends ExpandableStringEnum<PreferredContactMethod> {
     /** Static value email for PreferredContactMethod. */
     public static final PreferredContactMethod EMAIL = fromString("email");
 
     /** Static value phone for PreferredContactMethod. */
     public static final PreferredContactMethod PHONE = fromString("phone");
+
+    /**
+     * Creates a new instance of PreferredContactMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PreferredContactMethod() {
+    }
 
     /**
      * Creates or finds a PreferredContactMethod from its string representation.
@@ -27,7 +36,11 @@ public final class PreferredContactMethod extends ExpandableStringEnum<Preferred
         return fromString(name, PreferredContactMethod.class);
     }
 
-    /** @return known PreferredContactMethod values. */
+    /**
+     * Gets known PreferredContactMethod values.
+     *
+     * @return known PreferredContactMethod values.
+     */
     public static Collection<PreferredContactMethod> values() {
         return values(PreferredContactMethod.class);
     }

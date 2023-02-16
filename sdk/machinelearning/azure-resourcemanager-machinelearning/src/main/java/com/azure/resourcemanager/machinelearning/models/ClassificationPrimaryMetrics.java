@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClassificationPrimaryMetrics. */
+/** Primary metrics for classification tasks. */
 public final class ClassificationPrimaryMetrics extends ExpandableStringEnum<ClassificationPrimaryMetrics> {
     /** Static value AUCWeighted for ClassificationPrimaryMetrics. */
     public static final ClassificationPrimaryMetrics AUCWEIGHTED = fromString("AUCWeighted");
@@ -25,6 +25,15 @@ public final class ClassificationPrimaryMetrics extends ExpandableStringEnum<Cla
 
     /** Static value PrecisionScoreWeighted for ClassificationPrimaryMetrics. */
     public static final ClassificationPrimaryMetrics PRECISION_SCORE_WEIGHTED = fromString("PrecisionScoreWeighted");
+
+    /**
+     * Creates a new instance of ClassificationPrimaryMetrics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClassificationPrimaryMetrics() {
+    }
 
     /**
      * Creates or finds a ClassificationPrimaryMetrics from its string representation.

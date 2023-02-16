@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyMode. */
+/** Describes if it is in detection mode or prevention mode at policy level. */
 public final class PolicyMode extends ExpandableStringEnum<PolicyMode> {
     /** Static value Prevention for PolicyMode. */
     public static final PolicyMode PREVENTION = fromString("Prevention");
@@ -27,7 +27,11 @@ public final class PolicyMode extends ExpandableStringEnum<PolicyMode> {
         return fromString(name, PolicyMode.class);
     }
 
-    /** @return known PolicyMode values. */
+    /**
+     * Gets known PolicyMode values.
+     *
+     * @return known PolicyMode values.
+     */
     public static Collection<PolicyMode> values() {
         return values(PolicyMode.class);
     }

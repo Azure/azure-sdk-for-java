@@ -7,6 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
 import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
+import com.azure.resourcemanager.servicebus.models.CheckNameAvailability;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
@@ -39,7 +40,7 @@ public final class ServiceBusNamespacesImpl extends TopLevelModifiableResourcesI
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
-        return this.inner().checkNameAvailabilityAsync(name)
+        return this.inner().checkNameAvailabilityAsync(new CheckNameAvailability().withName(name))
             .map(inner -> new CheckNameAvailabilityResultImpl(inner));
     }
 

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Backup Instance. */
 @Fluent
-public final class BackupInstance {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupInstance.class);
-
+public class BackupInstance {
     /*
      * Gets or sets the Backup Instance friendly name.
      */
@@ -21,25 +18,33 @@ public final class BackupInstance {
     private String friendlyName;
 
     /*
-     * Datasource Gets or sets the data source information.
+     * Datasource
+     *
+     * Gets or sets the data source information.
      */
     @JsonProperty(value = "dataSourceInfo", required = true)
     private Datasource dataSourceInfo;
 
     /*
-     * DatasourceSet Gets or sets the data source set information.
+     * DatasourceSet
+     *
+     * Gets or sets the data source set information.
      */
     @JsonProperty(value = "dataSourceSetInfo")
     private DatasourceSet dataSourceSetInfo;
 
     /*
-     * PolicyInfo Gets or sets the policy information.
+     * PolicyInfo
+     *
+     * Gets or sets the policy information.
      */
     @JsonProperty(value = "policyInfo", required = true)
     private PolicyInfo policyInfo;
 
     /*
-     * ProtectionStatusDetails Specifies the protection status of the resource
+     * ProtectionStatusDetails
+     *
+     * Specifies the protection status of the resource
      */
     @JsonProperty(value = "protectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectionStatusDetails protectionStatus;
@@ -57,8 +62,7 @@ public final class BackupInstance {
     private UserFacingError protectionErrorDetails;
 
     /*
-     * Specifies the provisioning state of the resource i.e.
-     * provisioning/updating/Succeeded/Failed
+     * Specifies the provisioning state of the resource i.e. provisioning/updating/Succeeded/Failed
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -70,10 +74,21 @@ public final class BackupInstance {
     private AuthCredentials datasourceAuthCredentials;
 
     /*
+     * Specifies the type of validation. In case of DeepValidation, all validations from /validateForBackup API will
+     * run again.
+     */
+    @JsonProperty(value = "validationType")
+    private ValidationType validationType;
+
+    /*
      * The objectType property.
      */
     @JsonProperty(value = "objectType", required = true)
     private String objectType;
+
+    /** Creates an instance of BackupInstance class. */
+    public BackupInstance() {
+    }
 
     /**
      * Get the friendlyName property: Gets or sets the Backup Instance friendly name.
@@ -96,7 +111,9 @@ public final class BackupInstance {
     }
 
     /**
-     * Get the dataSourceInfo property: Datasource Gets or sets the data source information.
+     * Get the dataSourceInfo property: Datasource
+     *
+     * <p>Gets or sets the data source information.
      *
      * @return the dataSourceInfo value.
      */
@@ -105,7 +122,9 @@ public final class BackupInstance {
     }
 
     /**
-     * Set the dataSourceInfo property: Datasource Gets or sets the data source information.
+     * Set the dataSourceInfo property: Datasource
+     *
+     * <p>Gets or sets the data source information.
      *
      * @param dataSourceInfo the dataSourceInfo value to set.
      * @return the BackupInstance object itself.
@@ -116,7 +135,9 @@ public final class BackupInstance {
     }
 
     /**
-     * Get the dataSourceSetInfo property: DatasourceSet Gets or sets the data source set information.
+     * Get the dataSourceSetInfo property: DatasourceSet
+     *
+     * <p>Gets or sets the data source set information.
      *
      * @return the dataSourceSetInfo value.
      */
@@ -125,7 +146,9 @@ public final class BackupInstance {
     }
 
     /**
-     * Set the dataSourceSetInfo property: DatasourceSet Gets or sets the data source set information.
+     * Set the dataSourceSetInfo property: DatasourceSet
+     *
+     * <p>Gets or sets the data source set information.
      *
      * @param dataSourceSetInfo the dataSourceSetInfo value to set.
      * @return the BackupInstance object itself.
@@ -136,7 +159,9 @@ public final class BackupInstance {
     }
 
     /**
-     * Get the policyInfo property: PolicyInfo Gets or sets the policy information.
+     * Get the policyInfo property: PolicyInfo
+     *
+     * <p>Gets or sets the policy information.
      *
      * @return the policyInfo value.
      */
@@ -145,7 +170,9 @@ public final class BackupInstance {
     }
 
     /**
-     * Set the policyInfo property: PolicyInfo Gets or sets the policy information.
+     * Set the policyInfo property: PolicyInfo
+     *
+     * <p>Gets or sets the policy information.
      *
      * @param policyInfo the policyInfo value to set.
      * @return the BackupInstance object itself.
@@ -156,7 +183,9 @@ public final class BackupInstance {
     }
 
     /**
-     * Get the protectionStatus property: ProtectionStatusDetails Specifies the protection status of the resource.
+     * Get the protectionStatus property: ProtectionStatusDetails
+     *
+     * <p>Specifies the protection status of the resource.
      *
      * @return the protectionStatus value.
      */
@@ -213,6 +242,28 @@ public final class BackupInstance {
     }
 
     /**
+     * Get the validationType property: Specifies the type of validation. In case of DeepValidation, all validations
+     * from /validateForBackup API will run again.
+     *
+     * @return the validationType value.
+     */
+    public ValidationType validationType() {
+        return this.validationType;
+    }
+
+    /**
+     * Set the validationType property: Specifies the type of validation. In case of DeepValidation, all validations
+     * from /validateForBackup API will run again.
+     *
+     * @param validationType the validationType value to set.
+     * @return the BackupInstance object itself.
+     */
+    public BackupInstance withValidationType(ValidationType validationType) {
+        this.validationType = validationType;
+        return this;
+    }
+
+    /**
      * Get the objectType property: The objectType property.
      *
      * @return the objectType value.
@@ -239,7 +290,7 @@ public final class BackupInstance {
      */
     public void validate() {
         if (dataSourceInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataSourceInfo in model BackupInstance"));
         } else {
@@ -249,7 +300,7 @@ public final class BackupInstance {
             dataSourceSetInfo().validate();
         }
         if (policyInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property policyInfo in model BackupInstance"));
         } else {
@@ -265,9 +316,11 @@ public final class BackupInstance {
             datasourceAuthCredentials().validate();
         }
         if (objectType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property objectType in model BackupInstance"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupInstance.class);
 }

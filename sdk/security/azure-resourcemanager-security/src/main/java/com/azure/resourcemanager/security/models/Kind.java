@@ -4,47 +4,32 @@
 
 package com.azure.resourcemanager.security.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Collection;
 
-/** Describes an Azure resource with kind. */
-@Fluent
-public class Kind {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Kind.class);
-
-    /*
-     * Kind of the resource
-     */
-    @JsonProperty(value = "kind")
-    private String kind;
+/** The kind of alert simulation. */
+public final class Kind extends ExpandableStringEnum<Kind> {
+    /** Static value Bundles for Kind. */
+    public static final Kind BUNDLES = fromString("Bundles");
 
     /**
-     * Get the kind property: Kind of the resource.
+     * Creates or finds a Kind from its string representation.
      *
-     * @return the kind value.
+     * @param name a name to look for.
+     * @return the corresponding Kind.
      */
-    public String kind() {
-        return this.kind;
+    @JsonCreator
+    public static Kind fromString(String name) {
+        return fromString(name, Kind.class);
     }
 
     /**
-     * Set the kind property: Kind of the resource.
+     * Gets known Kind values.
      *
-     * @param kind the kind value to set.
-     * @return the Kind object itself.
+     * @return known Kind values.
      */
-    public Kind withKind(String kind) {
-        this.kind = kind;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
+    public static Collection<Kind> values() {
+        return values(Kind.class);
     }
 }

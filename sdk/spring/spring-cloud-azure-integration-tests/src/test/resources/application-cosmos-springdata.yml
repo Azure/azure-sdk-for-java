@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    azure:
+      cosmos:
+        endpoint: ${AZURE_COSMOS_ENDPOINT}
+        database: ${AZURE_COSMOS_SPRING_DATA_DATABASE}

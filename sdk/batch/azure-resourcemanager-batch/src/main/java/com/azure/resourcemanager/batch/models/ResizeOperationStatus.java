@@ -11,8 +11,10 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Details about the current or last completed resize operation. Describes either the current operation (if the pool
- * AllocationState is Resizing) or the previously completed operation (if the AllocationState is Steady).
+ * Details about the current or last completed resize operation.
+ *
+ * <p>Describes either the current operation (if the pool AllocationState is Resizing) or the previously completed
+ * operation (if the AllocationState is Steady).
  */
 @Fluent
 public final class ResizeOperationStatus {
@@ -29,18 +31,19 @@ public final class ResizeOperationStatus {
     private Integer targetLowPriorityNodes;
 
     /*
-     * The timeout for allocation of compute nodes to the pool or removal of
-     * compute nodes from the pool. The default value is 15 minutes. The
-     * minimum value is 5 minutes. If you specify a value less than 5 minutes,
-     * the Batch service returns an error; if you are calling the REST API
-     * directly, the HTTP status code is 400 (Bad Request).
+     * The timeout for allocation of compute nodes to the pool or removal of compute nodes from the pool.
+     *
+     * The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the
+     * Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad
+     * Request).
      */
     @JsonProperty(value = "resizeTimeout")
     private Duration resizeTimeout;
 
     /*
-     * Determines what to do with a node and its running task(s) after it has
-     * been selected for deallocation. The default value is requeue.
+     * Determines what to do with a node and its running task(s) after it has been selected for deallocation.
+     *
+     * The default value is requeue.
      */
     @JsonProperty(value = "nodeDeallocationOption")
     private ComputeNodeDeallocationOption nodeDeallocationOption;
@@ -52,12 +55,17 @@ public final class ResizeOperationStatus {
     private OffsetDateTime startTime;
 
     /*
-     * Details of any errors encountered while performing the last resize on
-     * the pool. This property is set only if an error occurred during the last
-     * pool resize, and only when the pool allocationState is Steady.
+     * Details of any errors encountered while performing the last resize on the pool.
+     *
+     * This property is set only if an error occurred during the last pool resize, and only when the pool
+     * allocationState is Steady.
      */
     @JsonProperty(value = "errors")
     private List<ResizeError> errors;
+
+    /** Creates an instance of ResizeOperationStatus class. */
+    public ResizeOperationStatus() {
+    }
 
     /**
      * Get the targetDedicatedNodes property: The desired number of dedicated compute nodes in the pool.
@@ -101,9 +109,11 @@ public final class ResizeOperationStatus {
 
     /**
      * Get the resizeTimeout property: The timeout for allocation of compute nodes to the pool or removal of compute
-     * nodes from the pool. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less
-     * than 5 minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP status
-     * code is 400 (Bad Request).
+     * nodes from the pool.
+     *
+     * <p>The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes,
+     * the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad
+     * Request).
      *
      * @return the resizeTimeout value.
      */
@@ -113,9 +123,11 @@ public final class ResizeOperationStatus {
 
     /**
      * Set the resizeTimeout property: The timeout for allocation of compute nodes to the pool or removal of compute
-     * nodes from the pool. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less
-     * than 5 minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP status
-     * code is 400 (Bad Request).
+     * nodes from the pool.
+     *
+     * <p>The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes,
+     * the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad
+     * Request).
      *
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the ResizeOperationStatus object itself.
@@ -127,7 +139,9 @@ public final class ResizeOperationStatus {
 
     /**
      * Get the nodeDeallocationOption property: Determines what to do with a node and its running task(s) after it has
-     * been selected for deallocation. The default value is requeue.
+     * been selected for deallocation.
+     *
+     * <p>The default value is requeue.
      *
      * @return the nodeDeallocationOption value.
      */
@@ -137,7 +151,9 @@ public final class ResizeOperationStatus {
 
     /**
      * Set the nodeDeallocationOption property: Determines what to do with a node and its running task(s) after it has
-     * been selected for deallocation. The default value is requeue.
+     * been selected for deallocation.
+     *
+     * <p>The default value is requeue.
      *
      * @param nodeDeallocationOption the nodeDeallocationOption value to set.
      * @return the ResizeOperationStatus object itself.
@@ -168,9 +184,10 @@ public final class ResizeOperationStatus {
     }
 
     /**
-     * Get the errors property: Details of any errors encountered while performing the last resize on the pool. This
-     * property is set only if an error occurred during the last pool resize, and only when the pool allocationState is
-     * Steady.
+     * Get the errors property: Details of any errors encountered while performing the last resize on the pool.
+     *
+     * <p>This property is set only if an error occurred during the last pool resize, and only when the pool
+     * allocationState is Steady.
      *
      * @return the errors value.
      */
@@ -179,9 +196,10 @@ public final class ResizeOperationStatus {
     }
 
     /**
-     * Set the errors property: Details of any errors encountered while performing the last resize on the pool. This
-     * property is set only if an error occurred during the last pool resize, and only when the pool allocationState is
-     * Steady.
+     * Set the errors property: Details of any errors encountered while performing the last resize on the pool.
+     *
+     * <p>This property is set only if an error occurred during the last pool resize, and only when the pool
+     * allocationState is Steady.
      *
      * @param errors the errors value to set.
      * @return the ResizeOperationStatus object itself.

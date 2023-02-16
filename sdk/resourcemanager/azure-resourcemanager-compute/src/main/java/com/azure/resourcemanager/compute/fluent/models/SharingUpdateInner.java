@@ -15,9 +15,8 @@ import java.util.List;
 @Fluent
 public final class SharingUpdateInner {
     /*
-     * This property allows you to specify the operation type of gallery
-     * sharing update. <br><br> Possible values are: <br><br> **Add** <br><br>
-     * **Remove** <br><br> **Reset**
+     * This property allows you to specify the operation type of gallery sharing update. <br><br> Possible values are:
+     * <br><br> **Add** <br><br> **Remove** <br><br> **Reset**
      */
     @JsonProperty(value = "operationType", required = true)
     private SharingUpdateOperationTypes operationType;
@@ -27,6 +26,10 @@ public final class SharingUpdateInner {
      */
     @JsonProperty(value = "groups")
     private List<SharingProfileGroup> groups;
+
+    /** Creates an instance of SharingUpdateInner class. */
+    public SharingUpdateInner() {
+    }
 
     /**
      * Get the operationType property: This property allows you to specify the operation type of gallery sharing update.

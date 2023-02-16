@@ -10,8 +10,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.dashboard.fluent.models.ManagedGrafanaInner;
 import com.azure.resourcemanager.dashboard.models.ManagedGrafana;
 import com.azure.resourcemanager.dashboard.models.ManagedGrafanaProperties;
+import com.azure.resourcemanager.dashboard.models.ManagedGrafanaPropertiesUpdateParameters;
 import com.azure.resourcemanager.dashboard.models.ManagedGrafanaUpdateParameters;
-import com.azure.resourcemanager.dashboard.models.ManagedIdentity;
+import com.azure.resourcemanager.dashboard.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.dashboard.models.ResourceSku;
 import java.util.Collections;
 import java.util.Map;
@@ -54,7 +55,7 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
         return this.innerModel().properties();
     }
 
-    public ManagedIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
     }
 
@@ -68,6 +69,10 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ManagedGrafanaInner innerModel() {
@@ -196,7 +201,7 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
         return this;
     }
 
-    public ManagedGrafanaImpl withIdentity(ManagedIdentity identity) {
+    public ManagedGrafanaImpl withIdentity(ManagedServiceIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;
@@ -204,6 +209,11 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
             this.updateRequestBodyParameters.withIdentity(identity);
             return this;
         }
+    }
+
+    public ManagedGrafanaImpl withProperties(ManagedGrafanaPropertiesUpdateParameters properties) {
+        this.updateRequestBodyParameters.withProperties(properties);
+        return this;
     }
 
     private boolean isInCreateMode() {

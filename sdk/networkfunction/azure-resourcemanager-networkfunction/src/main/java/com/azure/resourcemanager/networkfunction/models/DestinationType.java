@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DestinationType. */
+/** Emission destination type. */
 public final class DestinationType extends ExpandableStringEnum<DestinationType> {
     /** Static value AzureMonitor for DestinationType. */
     public static final DestinationType AZURE_MONITOR = fromString("AzureMonitor");

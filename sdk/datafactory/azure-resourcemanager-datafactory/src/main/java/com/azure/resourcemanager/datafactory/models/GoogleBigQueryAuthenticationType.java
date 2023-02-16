@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GoogleBigQueryAuthenticationType. */
+/**
+ * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on self-hosted
+ * IR.
+ */
 public final class GoogleBigQueryAuthenticationType extends ExpandableStringEnum<GoogleBigQueryAuthenticationType> {
     /** Static value ServiceAuthentication for GoogleBigQueryAuthenticationType. */
     public static final GoogleBigQueryAuthenticationType SERVICE_AUTHENTICATION = fromString("ServiceAuthentication");
 
     /** Static value UserAuthentication for GoogleBigQueryAuthenticationType. */
     public static final GoogleBigQueryAuthenticationType USER_AUTHENTICATION = fromString("UserAuthentication");
+
+    /**
+     * Creates a new instance of GoogleBigQueryAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GoogleBigQueryAuthenticationType() {
+    }
 
     /**
      * Creates or finds a GoogleBigQueryAuthenticationType from its string representation.

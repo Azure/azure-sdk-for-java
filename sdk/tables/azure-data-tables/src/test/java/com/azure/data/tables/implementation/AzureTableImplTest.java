@@ -16,6 +16,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,7 +30,6 @@ import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
-import com.azure.data.tables.implementation.models.TablesQueryResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -120,7 +120,7 @@ public class AzureTableImplTest extends TestBase {
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
 
         azureTable.getTables().queryWithResponseAsync(testResourceNamer.randomUuid(), null, queryOptions, Context.NONE)
-            .map(TablesQueryResponse::getValue)
+            .map(ResponseBase::getValue)
             .map(TableQueryResponse::getValue)
             .flatMapIterable(tableResponseProperties -> tableResponseProperties)
             .flatMap(tableResponseProperties ->

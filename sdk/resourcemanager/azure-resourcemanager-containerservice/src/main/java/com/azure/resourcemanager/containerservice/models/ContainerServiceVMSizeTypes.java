@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContainerServiceVMSizeTypes. */
+/** Size of agent VMs. Note: This is no longer maintained. */
 public final class ContainerServiceVMSizeTypes extends ExpandableStringEnum<ContainerServiceVMSizeTypes> {
     /** Static value Standard_A1 for ContainerServiceVMSizeTypes. */
     public static final ContainerServiceVMSizeTypes STANDARD_A1 = fromString("Standard_A1");
@@ -531,6 +531,15 @@ public final class ContainerServiceVMSizeTypes extends ExpandableStringEnum<Cont
 
     /** Static value Standard_NV6 for ContainerServiceVMSizeTypes. */
     public static final ContainerServiceVMSizeTypes STANDARD_NV6 = fromString("Standard_NV6");
+
+    /**
+     * Creates a new instance of ContainerServiceVMSizeTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContainerServiceVMSizeTypes() {
+    }
 
     /**
      * Creates or finds a ContainerServiceVMSizeTypes from its string representation.

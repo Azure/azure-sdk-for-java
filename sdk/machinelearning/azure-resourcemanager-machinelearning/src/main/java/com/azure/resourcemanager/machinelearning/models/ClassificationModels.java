@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClassificationModels. */
+/** Enum for all classification models supported by AutoML. */
 public final class ClassificationModels extends ExpandableStringEnum<ClassificationModels> {
     /** Static value LogisticRegression for ClassificationModels. */
     public static final ClassificationModels LOGISTIC_REGRESSION = fromString("LogisticRegression");
@@ -48,6 +48,15 @@ public final class ClassificationModels extends ExpandableStringEnum<Classificat
 
     /** Static value XGBoostClassifier for ClassificationModels. */
     public static final ClassificationModels XGBOOST_CLASSIFIER = fromString("XGBoostClassifier");
+
+    /**
+     * Creates a new instance of ClassificationModels value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClassificationModels() {
+    }
 
     /**
      * Creates or finds a ClassificationModels from its string representation.

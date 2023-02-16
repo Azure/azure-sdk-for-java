@@ -168,12 +168,9 @@ public class ResourceTokenAuthorizationHelper {
                     && (RequestVerb.GET == requestVerb
                             || RequestVerb.HEAD == requestVerb)) {
                 for (Map.Entry<String, List<PartitionKeyAndResourceTokenPair>> entry : resourceTokensMap.entrySet()) {
-                    ResourceId tokenRid;
                     final String key = entry.getKey();
                     Pair<Boolean, ResourceId> pair = ResourceId.tryParse(key);
                     if (pair.getLeft()) {
-                        ResourceId test1= pair.getRight().getDocumentCollectionId();
-                        boolean test = test1.equals(resourceId);
                         if (!PathsHelper.isNameBased(key) && pair.getLeft()
                             && pair.getRight().getDocumentCollectionId().equals(resourceId)) {
                             List<PartitionKeyAndResourceTokenPair> resourceTokens = entry.getValue();

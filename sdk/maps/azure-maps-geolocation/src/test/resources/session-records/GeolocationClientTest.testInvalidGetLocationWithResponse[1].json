@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/geolocation/ip/json?api-version=1.0&ip=0000000asdfsdf",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaGeolocationSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "84",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "X-MSEdge-Ref" : "Ref A: 6D29FD45E2084B45A14E6F08935293E1 Ref B: BY3EDGE0408 Ref C: 2022-09-29T21:42:06Z",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"The provided IP address is not valid\"}}",
+      "Date" : "Thu, 29 Sep 2022 21:42:06 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

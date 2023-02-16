@@ -5,74 +5,30 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the security control, its score, and the health status of the relevant resources. */
-@JsonFlatten
 @Fluent
-public class SecureScoreControlDetailsInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureScoreControlDetailsInner.class);
-
+public final class SecureScoreControlDetailsInner extends ProxyResource {
     /*
-     * User friendly display name of the control
+     * Calculation result data in control level
      */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private SecureScoreControlScoreDetailsInner innerProperties;
 
-    /*
-     * Number of healthy resources in the control
-     */
-    @JsonProperty(value = "properties.healthyResourceCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer healthyResourceCount;
+    /** Creates an instance of SecureScoreControlDetailsInner class. */
+    public SecureScoreControlDetailsInner() {
+    }
 
-    /*
-     * Number of unhealthy resources in the control
+    /**
+     * Get the innerProperties property: Calculation result data in control level.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.unhealthyResourceCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer unhealthyResourceCount;
-
-    /*
-     * Number of not applicable resources in the control
-     */
-    @JsonProperty(value = "properties.notApplicableResourceCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer notApplicableResourceCount;
-
-    /*
-     * The relative weight for this specific control in each of your
-     * subscriptions. Used when calculating an aggregated score for this
-     * control across all of your subscriptions.
-     */
-    @JsonProperty(value = "properties.weight", access = JsonProperty.Access.WRITE_ONLY)
-    private Long weight;
-
-    /*
-     * Information about the security control.
-     */
-    @JsonProperty(value = "properties.definition")
-    private SecureScoreControlDefinitionItemInner definition;
-
-    /*
-     * Maximum score available
-     */
-    @JsonProperty(value = "properties.score.max", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer max;
-
-    /*
-     * Current score
-     */
-    @JsonProperty(value = "properties.score.current", access = JsonProperty.Access.WRITE_ONLY)
-    private Double current;
-
-    /*
-     * Ratio of the current score divided by the maximum. Rounded to 4 digits
-     * after the decimal point
-     */
-    @JsonProperty(value = "properties.score.percentage", access = JsonProperty.Access.WRITE_ONLY)
-    private Double percentage;
+    private SecureScoreControlScoreDetailsInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: User friendly display name of the control.
@@ -80,7 +36,7 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -89,7 +45,7 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @return the healthyResourceCount value.
      */
     public Integer healthyResourceCount() {
-        return this.healthyResourceCount;
+        return this.innerProperties() == null ? null : this.innerProperties().healthyResourceCount();
     }
 
     /**
@@ -98,7 +54,7 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @return the unhealthyResourceCount value.
      */
     public Integer unhealthyResourceCount() {
-        return this.unhealthyResourceCount;
+        return this.innerProperties() == null ? null : this.innerProperties().unhealthyResourceCount();
     }
 
     /**
@@ -107,7 +63,7 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @return the notApplicableResourceCount value.
      */
     public Integer notApplicableResourceCount() {
-        return this.notApplicableResourceCount;
+        return this.innerProperties() == null ? null : this.innerProperties().notApplicableResourceCount();
     }
 
     /**
@@ -117,7 +73,7 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @return the weight value.
      */
     public Long weight() {
-        return this.weight;
+        return this.innerProperties() == null ? null : this.innerProperties().weight();
     }
 
     /**
@@ -126,7 +82,7 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @return the definition value.
      */
     public SecureScoreControlDefinitionItemInner definition() {
-        return this.definition;
+        return this.innerProperties() == null ? null : this.innerProperties().definition();
     }
 
     /**
@@ -136,7 +92,10 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @return the SecureScoreControlDetailsInner object itself.
      */
     public SecureScoreControlDetailsInner withDefinition(SecureScoreControlDefinitionItemInner definition) {
-        this.definition = definition;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecureScoreControlScoreDetailsInner();
+        }
+        this.innerProperties().withDefinition(definition);
         return this;
     }
 
@@ -146,7 +105,7 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @return the max value.
      */
     public Integer max() {
-        return this.max;
+        return this.innerProperties() == null ? null : this.innerProperties().max();
     }
 
     /**
@@ -155,7 +114,7 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @return the current value.
      */
     public Double current() {
-        return this.current;
+        return this.innerProperties() == null ? null : this.innerProperties().current();
     }
 
     /**
@@ -165,7 +124,7 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @return the percentage value.
      */
     public Double percentage() {
-        return this.percentage;
+        return this.innerProperties() == null ? null : this.innerProperties().percentage();
     }
 
     /**
@@ -174,8 +133,8 @@ public class SecureScoreControlDetailsInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (definition() != null) {
-            definition().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -34,6 +34,10 @@ public final class Principal {
     @JsonProperty(value = "email")
     private String email;
 
+    /** Creates an instance of Principal class. */
+    public Principal() {
+    }
+
     /**
      * Get the id property: The id of the principal made changes.
      *

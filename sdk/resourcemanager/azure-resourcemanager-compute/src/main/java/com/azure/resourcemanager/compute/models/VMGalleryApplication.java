@@ -31,25 +31,28 @@ public final class VMGalleryApplication {
     private String packageReferenceId;
 
     /*
-     * Optional, Specifies the uri to an azure blob that will replace the
-     * default configuration for the package if provided
+     * Optional, Specifies the uri to an azure blob that will replace the default configuration for the package if
+     * provided
      */
     @JsonProperty(value = "configurationReference")
     private String configurationReference;
 
     /*
-     * Optional, If true, any failure for any operation in the VmApplication
-     * will fail the deployment
+     * Optional, If true, any failure for any operation in the VmApplication will fail the deployment
      */
     @JsonProperty(value = "treatFailureAsDeploymentFailure")
     private Boolean treatFailureAsDeploymentFailure;
 
     /*
-     * If set to true, when a new Gallery Application version is available in
-     * PIR/SIG, it will be automatically updated for the VM/VMSS
+     * If set to true, when a new Gallery Application version is available in PIR/SIG, it will be automatically updated
+     * for the VM/VMSS
      */
     @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
+
+    /** Creates an instance of VMGalleryApplication class. */
+    public VMGalleryApplication() {
+    }
 
     /**
      * Get the tags property: Optional, Specifies a passthrough value for more generic context.

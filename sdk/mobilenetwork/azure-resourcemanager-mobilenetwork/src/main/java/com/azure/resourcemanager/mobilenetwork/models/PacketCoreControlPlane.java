@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of PacketCoreControlPlane. */
@@ -48,6 +49,13 @@ public interface PacketCoreControlPlane {
     Map<String, String> tags();
 
     /**
+     * Gets the identity property: The identity used to retrieve the ingress certificate from Azure key vault.
+     *
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
@@ -62,21 +70,29 @@ public interface PacketCoreControlPlane {
     ProvisioningState provisioningState();
 
     /**
-     * Gets the mobileNetwork property: Mobile network that this packet core control plane belongs to.
+     * Gets the installation property: The installation state of the packet core control plane resource.
      *
-     * @return the mobileNetwork value.
+     * @return the installation value.
      */
-    MobileNetworkResourceId mobileNetwork();
+    Installation installation();
 
     /**
-     * Gets the customLocation property: Azure ARC custom location where the packet core is deployed.
+     * Gets the sites property: Site(s) under which this packet core control plane should be deployed. The sites must be
+     * in the same location as the packet core control plane.
      *
-     * @return the customLocation value.
+     * @return the sites value.
      */
-    CustomLocationResourceId customLocation();
+    List<SiteResourceId> sites();
 
     /**
-     * Gets the coreNetworkTechnology property: The core network technology generation.
+     * Gets the platform property: The platform where the packet core is deployed.
+     *
+     * @return the platform value.
+     */
+    PlatformConfiguration platform();
+
+    /**
+     * Gets the coreNetworkTechnology property: The core network technology generation (5G core or EPC / 4G core).
      *
      * @return the coreNetworkTechnology value.
      */
@@ -90,12 +106,53 @@ public interface PacketCoreControlPlane {
     String version();
 
     /**
-     * Gets the controlPlaneAccessInterface property: The control plane interface on the access network. In 5G networks
-     * this is called as N2 interface whereas in 4G networks this is called as S1-MME interface.
+     * Gets the rollbackVersion property: The previous version of the packet core software that was deployed. Used when
+     * performing the rollback action.
+     *
+     * @return the rollbackVersion value.
+     */
+    String rollbackVersion();
+
+    /**
+     * Gets the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G
+     * networks, this is the N2 interface. For 4G networks, this is the S1-MME interface.
      *
      * @return the controlPlaneAccessInterface value.
      */
     InterfaceProperties controlPlaneAccessInterface();
+
+    /**
+     * Gets the sku property: The SKU defining the throughput and SIM allowances for this packet core control plane
+     * deployment.
+     *
+     * @return the sku value.
+     */
+    BillingSku sku();
+
+    /**
+     * Gets the ueMtu property: The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links
+     * for all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater than this
+     * value to allow for GTP encapsulation.
+     *
+     * @return the ueMtu value.
+     */
+    Integer ueMtu();
+
+    /**
+     * Gets the localDiagnosticsAccess property: The kubernetes ingress configuration to control access to packet core
+     * diagnostics over local APIs.
+     *
+     * @return the localDiagnosticsAccess value.
+     */
+    LocalDiagnosticsAccessConfiguration localDiagnosticsAccess();
+
+    /**
+     * Gets the interopSettings property: Settings to allow interoperability with third party components e.g. RANs and
+     * UEs.
+     *
+     * @return the interopSettings value.
+     */
+    Object interopSettings();
 
     /**
      * Gets the region of the resource.
@@ -112,6 +169,13 @@ public interface PacketCoreControlPlane {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneInner object.
      *
      * @return the inner object.
@@ -123,8 +187,11 @@ public interface PacketCoreControlPlane {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithMobileNetwork,
+            DefinitionStages.WithSites,
+            DefinitionStages.WithPlatform,
             DefinitionStages.WithControlPlaneAccessInterface,
+            DefinitionStages.WithSku,
+            DefinitionStages.WithLocalDiagnosticsAccess,
             DefinitionStages.WithCreate {
     }
     /** The PacketCoreControlPlane definition stages. */
@@ -158,29 +225,65 @@ public interface PacketCoreControlPlane {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithMobileNetwork withExistingResourceGroup(String resourceGroupName);
+            WithSites withExistingResourceGroup(String resourceGroupName);
         }
-        /** The stage of the PacketCoreControlPlane definition allowing to specify mobileNetwork. */
-        interface WithMobileNetwork {
+        /** The stage of the PacketCoreControlPlane definition allowing to specify sites. */
+        interface WithSites {
             /**
-             * Specifies the mobileNetwork property: Mobile network that this packet core control plane belongs to.
+             * Specifies the sites property: Site(s) under which this packet core control plane should be deployed. The
+             * sites must be in the same location as the packet core control plane..
              *
-             * @param mobileNetwork Mobile network that this packet core control plane belongs to.
+             * @param sites Site(s) under which this packet core control plane should be deployed. The sites must be in
+             *     the same location as the packet core control plane.
              * @return the next definition stage.
              */
-            WithControlPlaneAccessInterface withMobileNetwork(MobileNetworkResourceId mobileNetwork);
+            WithPlatform withSites(List<SiteResourceId> sites);
+        }
+        /** The stage of the PacketCoreControlPlane definition allowing to specify platform. */
+        interface WithPlatform {
+            /**
+             * Specifies the platform property: The platform where the packet core is deployed..
+             *
+             * @param platform The platform where the packet core is deployed.
+             * @return the next definition stage.
+             */
+            WithControlPlaneAccessInterface withPlatform(PlatformConfiguration platform);
         }
         /** The stage of the PacketCoreControlPlane definition allowing to specify controlPlaneAccessInterface. */
         interface WithControlPlaneAccessInterface {
             /**
-             * Specifies the controlPlaneAccessInterface property: The control plane interface on the access network. In
-             * 5G networks this is called as N2 interface whereas in 4G networks this is called as S1-MME interface..
+             * Specifies the controlPlaneAccessInterface property: The control plane interface on the access network.
+             * For 5G networks, this is the N2 interface. For 4G networks, this is the S1-MME interface..
              *
-             * @param controlPlaneAccessInterface The control plane interface on the access network. In 5G networks this
-             *     is called as N2 interface whereas in 4G networks this is called as S1-MME interface.
+             * @param controlPlaneAccessInterface The control plane interface on the access network. For 5G networks,
+             *     this is the N2 interface. For 4G networks, this is the S1-MME interface.
              * @return the next definition stage.
              */
-            WithCreate withControlPlaneAccessInterface(InterfaceProperties controlPlaneAccessInterface);
+            WithSku withControlPlaneAccessInterface(InterfaceProperties controlPlaneAccessInterface);
+        }
+        /** The stage of the PacketCoreControlPlane definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The SKU defining the throughput and SIM allowances for this packet core
+             * control plane deployment..
+             *
+             * @param sku The SKU defining the throughput and SIM allowances for this packet core control plane
+             *     deployment.
+             * @return the next definition stage.
+             */
+            WithLocalDiagnosticsAccess withSku(BillingSku sku);
+        }
+        /** The stage of the PacketCoreControlPlane definition allowing to specify localDiagnosticsAccess. */
+        interface WithLocalDiagnosticsAccess {
+            /**
+             * Specifies the localDiagnosticsAccess property: The kubernetes ingress configuration to control access to
+             * packet core diagnostics over local APIs..
+             *
+             * @param localDiagnosticsAccess The kubernetes ingress configuration to control access to packet core
+             *     diagnostics over local APIs.
+             * @return the next definition stage.
+             */
+            WithCreate withLocalDiagnosticsAccess(LocalDiagnosticsAccessConfiguration localDiagnosticsAccess);
         }
         /**
          * The stage of the PacketCoreControlPlane definition which contains all the minimum required properties for the
@@ -188,9 +291,11 @@ public interface PacketCoreControlPlane {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithCustomLocation,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithCoreNetworkTechnology,
-                DefinitionStages.WithVersion {
+                DefinitionStages.WithVersion,
+                DefinitionStages.WithUeMtu,
+                DefinitionStages.WithInteropSettings {
             /**
              * Executes the create request.
              *
@@ -216,22 +321,24 @@ public interface PacketCoreControlPlane {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the PacketCoreControlPlane definition allowing to specify customLocation. */
-        interface WithCustomLocation {
+        /** The stage of the PacketCoreControlPlane definition allowing to specify identity. */
+        interface WithIdentity {
             /**
-             * Specifies the customLocation property: Azure ARC custom location where the packet core is deployed..
+             * Specifies the identity property: The identity used to retrieve the ingress certificate from Azure key
+             * vault..
              *
-             * @param customLocation Azure ARC custom location where the packet core is deployed.
+             * @param identity The identity used to retrieve the ingress certificate from Azure key vault.
              * @return the next definition stage.
              */
-            WithCreate withCustomLocation(CustomLocationResourceId customLocation);
+            WithCreate withIdentity(ManagedServiceIdentity identity);
         }
         /** The stage of the PacketCoreControlPlane definition allowing to specify coreNetworkTechnology. */
         interface WithCoreNetworkTechnology {
             /**
-             * Specifies the coreNetworkTechnology property: The core network technology generation..
+             * Specifies the coreNetworkTechnology property: The core network technology generation (5G core or EPC / 4G
+             * core)..
              *
-             * @param coreNetworkTechnology The core network technology generation.
+             * @param coreNetworkTechnology The core network technology generation (5G core or EPC / 4G core).
              * @return the next definition stage.
              */
             WithCreate withCoreNetworkTechnology(CoreNetworkType coreNetworkTechnology);
@@ -245,6 +352,31 @@ public interface PacketCoreControlPlane {
              * @return the next definition stage.
              */
             WithCreate withVersion(String version);
+        }
+        /** The stage of the PacketCoreControlPlane definition allowing to specify ueMtu. */
+        interface WithUeMtu {
+            /**
+             * Specifies the ueMtu property: The MTU (in bytes) signaled to the UE. The same MTU is set on the user
+             * plane data links for all data networks. The MTU set on the user plane access link is calculated to be 60
+             * bytes greater than this value to allow for GTP encapsulation..
+             *
+             * @param ueMtu The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links for
+             *     all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater
+             *     than this value to allow for GTP encapsulation.
+             * @return the next definition stage.
+             */
+            WithCreate withUeMtu(Integer ueMtu);
+        }
+        /** The stage of the PacketCoreControlPlane definition allowing to specify interopSettings. */
+        interface WithInteropSettings {
+            /**
+             * Specifies the interopSettings property: Settings to allow interoperability with third party components
+             * e.g. RANs and UEs..
+             *
+             * @param interopSettings Settings to allow interoperability with third party components e.g. RANs and UEs.
+             * @return the next definition stage.
+             */
+            WithCreate withInteropSettings(Object interopSettings);
         }
     }
     /**
@@ -298,4 +430,74 @@ public interface PacketCoreControlPlane {
      * @return the refreshed resource.
      */
     PacketCoreControlPlane refresh(Context context);
+
+    /**
+     * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
+     * consecutive rollbacks are not possible. This action may cause a service outage.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    AsyncOperationStatus rollback();
+
+    /**
+     * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
+     * consecutive rollbacks are not possible. This action may cause a service outage.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    AsyncOperationStatus rollback(Context context);
+
+    /**
+     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
+     * core to return it to a known state. This action will cause a service outage.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    AsyncOperationStatus reinstall();
+
+    /**
+     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
+     * core to return it to a known state. This action will cause a service outage.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    AsyncOperationStatus reinstall(Context context);
+
+    /**
+     * Collect a diagnostics package for the specified packet core control plane. This action will upload the
+     * diagnostics to a storage account.
+     *
+     * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    AsyncOperationStatus collectDiagnosticsPackage(PacketCoreControlPlaneCollectDiagnosticsPackage parameters);
+
+    /**
+     * Collect a diagnostics package for the specified packet core control plane. This action will upload the
+     * diagnostics to a storage account.
+     *
+     * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    AsyncOperationStatus collectDiagnosticsPackage(
+        PacketCoreControlPlaneCollectDiagnosticsPackage parameters, Context context);
 }

@@ -14,20 +14,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UserArtifactSettings {
     /*
-     * Optional. The name to assign the downloaded package file on the VM. This
-     * is limited to 4096 characters. If not specified, the package file will
-     * be named the same as the Gallery Application name.
+     * Optional. The name to assign the downloaded package file on the VM. This is limited to 4096 characters. If not
+     * specified, the package file will be named the same as the Gallery Application name.
      */
     @JsonProperty(value = "packageFileName")
     private String packageFileName;
 
     /*
-     * Optional. The name to assign the downloaded config file on the VM. This
-     * is limited to 4096 characters. If not specified, the config file will be
-     * named the Gallery Application name appended with "_config".
+     * Optional. The name to assign the downloaded config file on the VM. This is limited to 4096 characters. If not
+     * specified, the config file will be named the Gallery Application name appended with "_config".
      */
     @JsonProperty(value = "configFileName")
     private String configFileName;
+
+    /** Creates an instance of UserArtifactSettings class. */
+    public UserArtifactSettings() {
+    }
 
     /**
      * Get the packageFileName property: Optional. The name to assign the downloaded package file on the VM. This is

@@ -5,25 +5,22 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create test job operation. */
 @Fluent
 public final class TestJobCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TestJobCreateParameters.class);
-
     /*
      * Gets or sets the parameters of the test job.
      */
     @JsonProperty(value = "parameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
-     * Gets or sets the runOn which specifies the group name where the job is
-     * to be executed.
+     * Gets or sets the runOn which specifies the group name where the job is to be executed.
      */
     @JsonProperty(value = "runOn")
     private String runOn;

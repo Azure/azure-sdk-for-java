@@ -30,6 +30,7 @@ public final class ApiErrorException extends ManagementException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public ApiError getValue() {
         return (ApiError) super.getValue();

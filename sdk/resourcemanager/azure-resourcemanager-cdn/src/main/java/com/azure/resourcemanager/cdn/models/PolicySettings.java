@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines contents of a web application firewall global configuration. */
 @Fluent
 public final class PolicySettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySettings.class);
-
     /*
      * describes if the policy is in enabled state or disabled state
      */
@@ -27,22 +23,20 @@ public final class PolicySettings {
     private PolicyMode mode;
 
     /*
-     * If action type is redirect, this field represents the default redirect
-     * URL for the client.
+     * If action type is redirect, this field represents the default redirect URL for the client.
      */
     @JsonProperty(value = "defaultRedirectUrl")
     private String defaultRedirectUrl;
 
     /*
-     * If the action type is block, this field defines the default customer
-     * overridable http response status code.
+     * If the action type is block, this field defines the default customer overridable http response status code.
      */
     @JsonProperty(value = "defaultCustomBlockResponseStatusCode")
     private PolicySettingsDefaultCustomBlockResponseStatusCode defaultCustomBlockResponseStatusCode;
 
     /*
-     * If the action type is block, customer can override the response body.
-     * The body must be specified in base64 encoding.
+     * If the action type is block, customer can override the response body. The body must be specified in base64
+     * encoding.
      */
     @JsonProperty(value = "defaultCustomBlockResponseBody")
     private String defaultCustomBlockResponseBody;

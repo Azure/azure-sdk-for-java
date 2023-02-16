@@ -69,7 +69,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.10.0</version>
+    <version>7.13.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -116,7 +116,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.3</version>
+    <version>1.5.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -205,17 +205,30 @@ sender.close();
 
 To receive messages, you will need to create a `ServiceBusProcessorClient` with callbacks for incoming messages and any error that occurs in the process. You can then start and stop the client as required.
 
-By default, the `autoComplete` feature is enabled on the processor client which means that after executing your callback for the message, the client will complete the message i.e. remove it from the queue/subscription. If your callback throws an error, then the client will abandon the message i.e. make it available to be received again. You can disable this feature when creating the processor client.
+When receiving message with [PeekLock][peek_lock_mode_docs] mode, it tells the broker that the application logic wants to settle (e.g. complete, abandon) received messages explicitly.
 
-```java readme-sample-createServiceBusProcessorClient
-// Sample code that processes a single message
-Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
-    try {
-        System.out.println(messageContext.getMessage().getMessageId());
-        // other message processing code
-        messageContext.complete();
-    } catch (Exception ex) {
-        messageContext.abandon();
+```java readme-sample-createServiceBusProcessorClientInPeekLockMode
+// Sample code that processes a single message which is received in PeekLock mode.
+Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
+    final ServiceBusReceivedMessage message = context.getMessage();
+    // Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
+    // handling message reaches desired state such that it doesn't require Service Bus to redeliver
+    // the same message, then context.complete() should be called otherwise context.abandon().
+    final boolean success = Math.random() < 0.5;
+    if (success) {
+        try {
+            context.complete();
+        } catch (Exception completionError) {
+            System.out.printf("Completion of the message %s failed\n", message.getMessageId());
+            completionError.printStackTrace();
+        }
+    } else {
+        try {
+            context.abandon();
+        } catch (Exception abandonError) {
+            System.out.printf("Abandoning of the message %s failed\n", message.getMessageId());
+            abandonError.printStackTrace();
+        }
     }
 };
 
@@ -229,10 +242,42 @@ ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
                                 .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
                                 .processor()
                                 .queueName("<< QUEUE NAME >>")
+                                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                                .disableAutoComplete() // Make sure to explicitly opt in to manual settlement (e.g. complete, abandon).
                                 .processMessage(processMessage)
                                 .processError(processError)
                                 .disableAutoComplete()
                                 .buildProcessorClient();
+
+// Starts the processor in the background and returns immediately
+processorClient.start();
+```
+
+When receiving message with [ReceiveAndDelete][receive_and_delete_mode_docs] mode, tells the broker to consider all messages it sends to the receiving client as settled when sent.
+
+```java readme-sample-createServiceBusProcessorClientInReceiveAndDeleteMode
+// Sample code that processes a single message which is received in ReceiveAndDelete mode.
+Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
+    final ServiceBusReceivedMessage message = context.getMessage();
+    System.out.printf("handler processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+        message.getSequenceNumber(), message.getBody());
+};
+
+// Sample code that gets called if there's an error
+Consumer<ServiceBusErrorContext> processError = errorContext -> {
+    System.err.println("Error occurred while receiving message: " + errorContext.getException());
+};
+
+// create the processor client via the builder and its sub-builder
+ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .processor()
+    .queueName("<< QUEUE NAME >>")
+    .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+    .processMessage(processMessage)
+    .processError(processError)
+    .disableAutoComplete()
+    .buildProcessorClient();
 
 // Starts the processor in the background and returns immediately
 processorClient.start();
@@ -378,7 +423,7 @@ The recommended way to solve the specific exception the AMQP exception represent
 
 ### Understanding the APIs behavior
 
-The document [here][sync_receivemessages_implcit_prefetch] provides insights into the expected behavior of synchronous `receiveMessages` API when using it to obtain more than one message (a.k.a. implicit prefetching).
+The document [here][sync_receivemessages_implicit_prefetch] provides insights into the expected behavior of synchronous `receiveMessages` API when using it to obtain more than one message (a.k.a. implicit prefetching).
 
 ## Next steps
 
@@ -401,7 +446,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [deadletterqueue_docs]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues
 [java_development_kit]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
 [maven]: https://maven.apache.org/
 [maven_package]: https://search.maven.org/artifact/com.azure/azure-messaging-servicebus
 [message-sessions]: https://docs.microsoft.com/azure/service-bus-messaging/message-sessions
@@ -430,5 +475,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
-[sync_receivemessages_implcit_prefetch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
+[sync_receivemessages_implicit_prefetch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
+[peek_lock_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock
+[receive_and_delete_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#receiveanddelete
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)

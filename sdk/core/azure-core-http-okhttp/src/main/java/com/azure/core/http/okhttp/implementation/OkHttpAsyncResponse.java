@@ -5,7 +5,7 @@ package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.IOUtils;
+import com.azure.core.util.io.IOUtils;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import reactor.core.publisher.Flux;
@@ -30,8 +30,8 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
 
     private final ResponseBody responseBody;
 
-    public OkHttpAsyncResponse(Response response, HttpRequest request) {
-        super(response, request);
+    public OkHttpAsyncResponse(Response response, HttpRequest request, boolean eagerlyConvertHeaders) {
+        super(response, request, eagerlyConvertHeaders);
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
         // [a]. if response is built manually with null body (e.g for mocking)

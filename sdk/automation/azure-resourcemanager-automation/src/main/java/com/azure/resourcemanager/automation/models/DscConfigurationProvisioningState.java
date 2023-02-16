@@ -7,7 +7,7 @@ package com.azure.resourcemanager.automation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DscConfigurationProvisioningState. */
+/** Gets or sets the provisioning state of the configuration. */
 public enum DscConfigurationProvisioningState {
     /** Enum value Succeeded. */
     SUCCEEDED("Succeeded");
@@ -27,6 +27,9 @@ public enum DscConfigurationProvisioningState {
      */
     @JsonCreator
     public static DscConfigurationProvisioningState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DscConfigurationProvisioningState[] items = DscConfigurationProvisioningState.values();
         for (DscConfigurationProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum DscConfigurationProvisioningState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -56,6 +56,18 @@ public final class TestConfigurations {
                             System.getenv().get("ACCOUNT_HOST")),
                             COSMOS_EMULATOR_HOST));
 
+    public final static String THROUGHPUT_CONTROL_ACCOUNT_HOST =
+            properties.getProperty("THROUGHPUT_CONTROL_ACCOUNT_HOST",
+                    StringUtils.defaultString(Strings.emptyToNull(
+                                    System.getenv().get("THROUGHPUT_CONTROL_ACCOUNT_HOST")),
+                            COSMOS_EMULATOR_HOST));
+
+    public final static String THROUGHPUT_CONTROL_MASTER_KEY =
+            properties.getProperty("THROUGHPUT_CONTROL_ACCOUNT_KEY",
+                    StringUtils.defaultString(Strings.emptyToNull(
+                                    System.getenv().get("THROUGHPUT_CONTROL_ACCOUNT_KEY")),
+                            COSMOS_EMULATOR_KEY));
+
     public final static String CONSISTENCY =
         properties.getProperty("ACCOUNT_CONSISTENCY",
                                StringUtils.defaultString(Strings.emptyToNull(

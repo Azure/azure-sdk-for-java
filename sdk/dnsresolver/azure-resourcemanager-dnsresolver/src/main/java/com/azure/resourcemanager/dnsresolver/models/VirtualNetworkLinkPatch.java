@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkLinkPatchProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a virtual network link for PATCH operation. */
 @Fluent
 public final class VirtualNetworkLinkPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkLinkPatch.class);
-
     /*
      * Updatable properties of the virtual network link.
      */

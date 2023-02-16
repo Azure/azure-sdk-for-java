@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AfdQueryStringCachingBehavior. */
+/**
+ * Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching,
+ * ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
+ */
 public final class AfdQueryStringCachingBehavior extends ExpandableStringEnum<AfdQueryStringCachingBehavior> {
     /** Static value IgnoreQueryString for AfdQueryStringCachingBehavior. */
     public static final AfdQueryStringCachingBehavior IGNORE_QUERY_STRING = fromString("IgnoreQueryString");
@@ -35,7 +38,11 @@ public final class AfdQueryStringCachingBehavior extends ExpandableStringEnum<Af
         return fromString(name, AfdQueryStringCachingBehavior.class);
     }
 
-    /** @return known AfdQueryStringCachingBehavior values. */
+    /**
+     * Gets known AfdQueryStringCachingBehavior values.
+     *
+     * @return known AfdQueryStringCachingBehavior values.
+     */
     public static Collection<AfdQueryStringCachingBehavior> values() {
         return values(AfdQueryStringCachingBehavior.class);
     }

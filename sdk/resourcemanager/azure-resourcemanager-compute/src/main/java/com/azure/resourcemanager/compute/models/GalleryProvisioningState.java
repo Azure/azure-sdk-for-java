@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GalleryProvisioningState. */
+/**
+ * The current state of the gallery or gallery artifact.
+ *
+ * <p>The provisioning state, which only appears in the response.
+ */
 public final class GalleryProvisioningState extends ExpandableStringEnum<GalleryProvisioningState> {
     /** Static value Creating for GalleryProvisioningState. */
     public static final GalleryProvisioningState CREATING = fromString("Creating");
@@ -27,6 +31,15 @@ public final class GalleryProvisioningState extends ExpandableStringEnum<Gallery
 
     /** Static value Migrating for GalleryProvisioningState. */
     public static final GalleryProvisioningState MIGRATING = fromString("Migrating");
+
+    /**
+     * Creates a new instance of GalleryProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GalleryProvisioningState() {
+    }
 
     /**
      * Creates or finds a GalleryProvisioningState from its string representation.

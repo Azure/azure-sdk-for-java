@@ -17,6 +17,10 @@ public final class DiagnoseResponseResultInner {
     @JsonProperty(value = "value")
     private DiagnoseResponseResultValue value;
 
+    /** Creates an instance of DiagnoseResponseResultInner class. */
+    public DiagnoseResponseResultInner() {
+    }
+
     /**
      * Get the value property: The value property.
      *

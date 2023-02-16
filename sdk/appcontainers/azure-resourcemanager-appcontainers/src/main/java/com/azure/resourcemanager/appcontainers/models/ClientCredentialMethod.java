@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ClientCredentialMethod. */
+/** The method that should be used to authenticate the user. */
 public enum ClientCredentialMethod {
     /** Enum value ClientSecretPost. */
     CLIENT_SECRET_POST("ClientSecretPost");
@@ -27,6 +27,9 @@ public enum ClientCredentialMethod {
      */
     @JsonCreator
     public static ClientCredentialMethod fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ClientCredentialMethod[] items = ClientCredentialMethod.values();
         for (ClientCredentialMethod item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum ClientCredentialMethod {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

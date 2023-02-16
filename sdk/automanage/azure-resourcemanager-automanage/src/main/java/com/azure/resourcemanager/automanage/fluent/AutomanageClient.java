@@ -92,4 +92,39 @@ public interface AutomanageClient {
      * @return the ReportsClient object.
      */
     ReportsClient getReports();
+
+    /**
+     * Gets the ServicePrincipalsClient object to access its operations.
+     *
+     * @return the ServicePrincipalsClient object.
+     */
+    ServicePrincipalsClient getServicePrincipals();
+
+    /**
+     * Gets the ConfigurationProfileHcrpAssignmentsClient object to access its operations.
+     *
+     * @return the ConfigurationProfileHcrpAssignmentsClient object.
+     */
+    ConfigurationProfileHcrpAssignmentsClient getConfigurationProfileHcrpAssignments();
+
+    /**
+     * Gets the HcrpReportsClient object to access its operations.
+     *
+     * @return the HcrpReportsClient object.
+     */
+    HcrpReportsClient getHcrpReports();
+
+    /**
+     * Gets the ConfigurationProfileHciAssignmentsClient object to access its operations.
+     *
+     * @return the ConfigurationProfileHciAssignmentsClient object.
+     */
+    ConfigurationProfileHciAssignmentsClient getConfigurationProfileHciAssignments();
+
+    /**
+     * Gets the HciReportsClient object to access its operations.
+     *
+     * @return the HciReportsClient object.
+     */
+    HciReportsClient getHciReports();
 }

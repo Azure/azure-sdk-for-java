@@ -24,6 +24,10 @@ public final class DrillLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private DrillLinkedServiceTypeProperties innerTypeProperties = new DrillLinkedServiceTypeProperties();
 
+    /** Creates an instance of DrillLinkedService class. */
+    public DrillLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Drill server linked service properties.
      *

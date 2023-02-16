@@ -39,32 +39,18 @@ public interface AutomationClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the RunbookDraftsClient object to access its operations.
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
      *
-     * @return the RunbookDraftsClient object.
+     * @return the PrivateEndpointConnectionsClient object.
      */
-    RunbookDraftsClient getRunbookDrafts();
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
-     * Gets the RunbooksClient object to access its operations.
+     * Gets the PrivateLinkResourcesClient object to access its operations.
      *
-     * @return the RunbooksClient object.
+     * @return the PrivateLinkResourcesClient object.
      */
-    RunbooksClient getRunbooks();
-
-    /**
-     * Gets the TestJobStreamsClient object to access its operations.
-     *
-     * @return the TestJobStreamsClient object.
-     */
-    TestJobStreamsClient getTestJobStreams();
-
-    /**
-     * Gets the TestJobsClient object to access its operations.
-     *
-     * @return the TestJobsClient object.
-     */
-    TestJobsClient getTestJobs();
+    PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
      * Gets the Python2PackagesClient object to access its operations.
@@ -95,6 +81,13 @@ public interface AutomationClient {
     NodeReportsClient getNodeReports();
 
     /**
+     * Gets the DscNodeConfigurationsClient object to access its operations.
+     *
+     * @return the DscNodeConfigurationsClient object.
+     */
+    DscNodeConfigurationsClient getDscNodeConfigurations();
+
+    /**
      * Gets the DscCompilationJobsClient object to access its operations.
      *
      * @return the DscCompilationJobsClient object.
@@ -109,32 +102,11 @@ public interface AutomationClient {
     DscCompilationJobStreamsClient getDscCompilationJobStreams();
 
     /**
-     * Gets the DscNodeConfigurationsClient object to access its operations.
-     *
-     * @return the DscNodeConfigurationsClient object.
-     */
-    DscNodeConfigurationsClient getDscNodeConfigurations();
-
-    /**
      * Gets the NodeCountInformationsClient object to access its operations.
      *
      * @return the NodeCountInformationsClient object.
      */
     NodeCountInformationsClient getNodeCountInformations();
-
-    /**
-     * Gets the SoftwareUpdateConfigurationRunsClient object to access its operations.
-     *
-     * @return the SoftwareUpdateConfigurationRunsClient object.
-     */
-    SoftwareUpdateConfigurationRunsClient getSoftwareUpdateConfigurationRuns();
-
-    /**
-     * Gets the SoftwareUpdateConfigurationMachineRunsClient object to access its operations.
-     *
-     * @return the SoftwareUpdateConfigurationMachineRunsClient object.
-     */
-    SoftwareUpdateConfigurationMachineRunsClient getSoftwareUpdateConfigurationMachineRuns();
 
     /**
      * Gets the SourceControlsClient object to access its operations.
@@ -156,20 +128,6 @@ public interface AutomationClient {
      * @return the SourceControlSyncJobStreamsClient object.
      */
     SourceControlSyncJobStreamsClient getSourceControlSyncJobStreams();
-
-    /**
-     * Gets the JobsClient object to access its operations.
-     *
-     * @return the JobsClient object.
-     */
-    JobsClient getJobs();
-
-    /**
-     * Gets the JobStreamsClient object to access its operations.
-     *
-     * @return the JobStreamsClient object.
-     */
-    JobStreamsClient getJobStreams();
 
     /**
      * Gets the AutomationAccountsClient object to access its operations.
@@ -228,27 +186,6 @@ public interface AutomationClient {
     CredentialsClient getCredentials();
 
     /**
-     * Gets the DscConfigurationsClient object to access its operations.
-     *
-     * @return the DscConfigurationsClient object.
-     */
-    DscConfigurationsClient getDscConfigurations();
-
-    /**
-     * Gets the SoftwareUpdateConfigurationsClient object to access its operations.
-     *
-     * @return the SoftwareUpdateConfigurationsClient object.
-     */
-    SoftwareUpdateConfigurationsClient getSoftwareUpdateConfigurations();
-
-    /**
-     * Gets the HybridRunbookWorkerGroupsClient object to access its operations.
-     *
-     * @return the HybridRunbookWorkerGroupsClient object.
-     */
-    HybridRunbookWorkerGroupsClient getHybridRunbookWorkerGroups();
-
-    /**
      * Gets the JobSchedulesClient object to access its operations.
      *
      * @return the JobSchedulesClient object.
@@ -291,13 +228,6 @@ public interface AutomationClient {
     FieldsClient getFields();
 
     /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
-
-    /**
      * Gets the SchedulesClient object to access its operations.
      *
      * @return the SchedulesClient object.
@@ -319,9 +249,114 @@ public interface AutomationClient {
     WatchersClient getWatchers();
 
     /**
+     * Gets the DscConfigurationsClient object to access its operations.
+     *
+     * @return the DscConfigurationsClient object.
+     */
+    DscConfigurationsClient getDscConfigurations();
+
+    /**
+     * Gets the JobsClient object to access its operations.
+     *
+     * @return the JobsClient object.
+     */
+    JobsClient getJobs();
+
+    /**
+     * Gets the JobStreamsClient object to access its operations.
+     *
+     * @return the JobStreamsClient object.
+     */
+    JobStreamsClient getJobStreams();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
+
+    /**
+     * Gets the SoftwareUpdateConfigurationsClient object to access its operations.
+     *
+     * @return the SoftwareUpdateConfigurationsClient object.
+     */
+    SoftwareUpdateConfigurationsClient getSoftwareUpdateConfigurations();
+
+    /**
+     * Gets the SoftwareUpdateConfigurationRunsClient object to access its operations.
+     *
+     * @return the SoftwareUpdateConfigurationRunsClient object.
+     */
+    SoftwareUpdateConfigurationRunsClient getSoftwareUpdateConfigurationRuns();
+
+    /**
+     * Gets the SoftwareUpdateConfigurationMachineRunsClient object to access its operations.
+     *
+     * @return the SoftwareUpdateConfigurationMachineRunsClient object.
+     */
+    SoftwareUpdateConfigurationMachineRunsClient getSoftwareUpdateConfigurationMachineRuns();
+
+    /**
+     * Gets the RunbookDraftsClient object to access its operations.
+     *
+     * @return the RunbookDraftsClient object.
+     */
+    RunbookDraftsClient getRunbookDrafts();
+
+    /**
+     * Gets the RunbooksClient object to access its operations.
+     *
+     * @return the RunbooksClient object.
+     */
+    RunbooksClient getRunbooks();
+
+    /**
+     * Gets the TestJobStreamsClient object to access its operations.
+     *
+     * @return the TestJobStreamsClient object.
+     */
+    TestJobStreamsClient getTestJobStreams();
+
+    /**
+     * Gets the TestJobsClient object to access its operations.
+     *
+     * @return the TestJobsClient object.
+     */
+    TestJobsClient getTestJobs();
+
+    /**
      * Gets the WebhooksClient object to access its operations.
      *
      * @return the WebhooksClient object.
      */
     WebhooksClient getWebhooks();
+
+    /**
+     * Gets the HybridRunbookWorkersClient object to access its operations.
+     *
+     * @return the HybridRunbookWorkersClient object.
+     */
+    HybridRunbookWorkersClient getHybridRunbookWorkers();
+
+    /**
+     * Gets the DeletedAutomationAccountsClient object to access its operations.
+     *
+     * @return the DeletedAutomationAccountsClient object.
+     */
+    DeletedAutomationAccountsClient getDeletedAutomationAccounts();
+
+    /**
+     * Gets the HybridRunbookWorkerGroupsClient object to access its operations.
+     *
+     * @return the HybridRunbookWorkerGroupsClient object.
+     */
+    HybridRunbookWorkerGroupsClient getHybridRunbookWorkerGroups();
 }

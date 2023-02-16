@@ -27,7 +27,11 @@ public final class WafRankingGroupBy extends ExpandableStringEnum<WafRankingGrou
         return fromString(name, WafRankingGroupBy.class);
     }
 
-    /** @return known WafRankingGroupBy values. */
+    /**
+     * Gets known WafRankingGroupBy values.
+     *
+     * @return known WafRankingGroupBy values.
+     */
     public static Collection<WafRankingGroupBy> values() {
         return values(WafRankingGroupBy.class);
     }

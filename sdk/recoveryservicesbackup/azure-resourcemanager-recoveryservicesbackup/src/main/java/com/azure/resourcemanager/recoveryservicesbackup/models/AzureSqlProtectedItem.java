@@ -17,8 +17,7 @@ import java.util.List;
 @Fluent
 public final class AzureSqlProtectedItem extends ProtectedItem {
     /*
-     * Internal ID of a backup item. Used by Azure SQL Backup engine to contact
-     * Recovery Services.
+     * Internal ID of a backup item. Used by Azure SQL Backup engine to contact Recovery Services.
      */
     @JsonProperty(value = "protectedItemDataId")
     private String protectedItemDataId;
@@ -34,6 +33,10 @@ public final class AzureSqlProtectedItem extends ProtectedItem {
      */
     @JsonProperty(value = "extendedInfo")
     private AzureSqlProtectedItemExtendedInfo extendedInfo;
+
+    /** Creates an instance of AzureSqlProtectedItem class. */
+    public AzureSqlProtectedItem() {
+    }
 
     /**
      * Get the protectedItemDataId property: Internal ID of a backup item. Used by Azure SQL Backup engine to contact
@@ -94,20 +97,6 @@ public final class AzureSqlProtectedItem extends ProtectedItem {
      */
     public AzureSqlProtectedItem withExtendedInfo(AzureSqlProtectedItemExtendedInfo extendedInfo) {
         this.extendedInfo = extendedInfo;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureSqlProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureSqlProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
         return this;
     }
 
@@ -206,6 +195,13 @@ public final class AzureSqlProtectedItem extends ProtectedItem {
     @Override
     public AzureSqlProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

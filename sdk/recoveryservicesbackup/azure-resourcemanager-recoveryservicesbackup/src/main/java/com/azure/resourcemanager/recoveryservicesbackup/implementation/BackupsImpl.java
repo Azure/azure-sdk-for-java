@@ -25,18 +25,6 @@ public final class BackupsImpl implements Backups {
         this.serviceManager = serviceManager;
     }
 
-    public void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        BackupRequestResource parameters) {
-        this
-            .serviceClient()
-            .trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters);
-    }
-
     public Response<Void> triggerWithResponse(
         String vaultName,
         String resourceGroupName,
@@ -49,6 +37,18 @@ public final class BackupsImpl implements Backups {
             .serviceClient()
             .triggerWithResponse(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, context);
+    }
+
+    public void trigger(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        BackupRequestResource parameters) {
+        this
+            .serviceClient()
+            .trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters);
     }
 
     private BackupsClient serviceClient() {

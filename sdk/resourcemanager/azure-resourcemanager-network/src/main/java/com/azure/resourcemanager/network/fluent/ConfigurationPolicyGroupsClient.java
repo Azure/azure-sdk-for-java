@@ -315,21 +315,6 @@ public interface ConfigurationPolicyGroupsClient {
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurationPolicyGroup Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnServerConfigurationPolicyGroupInner get(
-        String resourceGroupName, String vpnServerConfigurationName, String configurationPolicyGroupName);
-
-    /**
-     * Retrieves the details of a ConfigurationPolicyGroup.
-     *
-     * @param resourceGroupName The resource group name of the VpnServerConfiguration.
-     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
-     * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup being retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -342,6 +327,21 @@ public interface ConfigurationPolicyGroupsClient {
         String vpnServerConfigurationName,
         String configurationPolicyGroupName,
         Context context);
+
+    /**
+     * Retrieves the details of a ConfigurationPolicyGroup.
+     *
+     * @param resourceGroupName The resource group name of the VpnServerConfiguration.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
+     * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup being retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnServerConfigurationPolicyGroup Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VpnServerConfigurationPolicyGroupInner get(
+        String resourceGroupName, String vpnServerConfigurationName, String configurationPolicyGroupName);
 
     /**
      * Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.

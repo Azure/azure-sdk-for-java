@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.CertificateCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the create or update or replace certificate operation. */
-@JsonFlatten
 @Fluent
-public class CertificateCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateCreateOrUpdateParameters.class);
-
+public final class CertificateCreateOrUpdateParameters {
     /*
      * Gets or sets the name of the certificate.
      */
@@ -23,28 +19,10 @@ public class CertificateCreateOrUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the base64 encoded value of the certificate.
+     * Gets or sets the properties of the certificate.
      */
-    @JsonProperty(value = "properties.base64Value", required = true)
-    private String base64Value;
-
-    /*
-     * Gets or sets the description of the certificate.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Gets or sets the thumbprint of the certificate.
-     */
-    @JsonProperty(value = "properties.thumbprint")
-    private String thumbprint;
-
-    /*
-     * Gets or sets the is exportable flag of the certificate.
-     */
-    @JsonProperty(value = "properties.isExportable")
-    private Boolean isExportable;
+    @JsonProperty(value = "properties", required = true)
+    private CertificateCreateOrUpdateProperties innerProperties = new CertificateCreateOrUpdateProperties();
 
     /**
      * Get the name property: Gets or sets the name of the certificate.
@@ -67,12 +45,21 @@ public class CertificateCreateOrUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the certificate.
+     *
+     * @return the innerProperties value.
+     */
+    private CertificateCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the base64Value property: Gets or sets the base64 encoded value of the certificate.
      *
      * @return the base64Value value.
      */
     public String base64Value() {
-        return this.base64Value;
+        return this.innerProperties() == null ? null : this.innerProperties().base64Value();
     }
 
     /**
@@ -82,7 +69,10 @@ public class CertificateCreateOrUpdateParameters {
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
     public CertificateCreateOrUpdateParameters withBase64Value(String base64Value) {
-        this.base64Value = base64Value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withBase64Value(base64Value);
         return this;
     }
 
@@ -92,7 +82,7 @@ public class CertificateCreateOrUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -102,7 +92,10 @@ public class CertificateCreateOrUpdateParameters {
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
     public CertificateCreateOrUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -112,7 +105,7 @@ public class CertificateCreateOrUpdateParameters {
      * @return the thumbprint value.
      */
     public String thumbprint() {
-        return this.thumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
     }
 
     /**
@@ -122,7 +115,10 @@ public class CertificateCreateOrUpdateParameters {
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
     public CertificateCreateOrUpdateParameters withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withThumbprint(thumbprint);
         return this;
     }
 
@@ -132,7 +128,7 @@ public class CertificateCreateOrUpdateParameters {
      * @return the isExportable value.
      */
     public Boolean isExportable() {
-        return this.isExportable;
+        return this.innerProperties() == null ? null : this.innerProperties().isExportable();
     }
 
     /**
@@ -142,7 +138,10 @@ public class CertificateCreateOrUpdateParameters {
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
     public CertificateCreateOrUpdateParameters withIsExportable(Boolean isExportable) {
-        this.isExportable = isExportable;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withIsExportable(isExportable);
         return this;
     }
 
@@ -153,16 +152,20 @@ public class CertificateCreateOrUpdateParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model CertificateCreateOrUpdateParameters"));
         }
-        if (base64Value() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property base64Value in model CertificateCreateOrUpdateParameters"));
+                        "Missing required property innerProperties in model CertificateCreateOrUpdateParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateCreateOrUpdateParameters.class);
 }

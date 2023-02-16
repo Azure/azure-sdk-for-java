@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/map/copyright/tile/json?api-version=2.1&zoom=-100&x=9&y=22&text=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaRenderSDK/2.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "95",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "X-MSEdge-Ref" : "Ref A: 1A92658042B544BFBDB5C1895AD4C539 Ref B: PAOEDGE0611 Ref C: 2022-08-18T20:36:12Z",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"zoom value should be between 0 and 18 inclusive\"}}",
+      "Date" : "Thu, 18 Aug 2022 20:36:12 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

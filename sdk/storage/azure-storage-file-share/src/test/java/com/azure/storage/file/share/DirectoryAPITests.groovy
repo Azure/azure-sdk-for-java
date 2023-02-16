@@ -3,9 +3,12 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.http.policy.ExponentialBackoffOptions
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.util.HttpClientOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -19,6 +22,9 @@ import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import com.azure.storage.file.share.options.ShareFileRenameOptions
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions
+import com.azure.storage.file.share.sas.ShareFileSasPermission
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -715,6 +721,59 @@ class DirectoryAPITests extends APISpec {
         fileListItem.getProperties().getETag() && !fileListItem.getProperties().getETag().allWhitespace
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_12_02")
+    def "List files and directories encoded"() {
+        setup:
+        def specialCharDirectoryName = "directory\uFFFE"
+        def specialCharFileName = "file\uFFFE"
+        primaryDirectoryClient.create()
+        primaryDirectoryClient.createSubdirectory(specialCharDirectoryName)
+        primaryDirectoryClient.createFile(specialCharFileName, 1024)
+
+        when:
+        def shareFileItems = primaryDirectoryClient.listFilesAndDirectories().stream().collect(Collectors.toList())
+
+        then:
+        shareFileItems.size() == 2
+        shareFileItems[0].isDirectory()
+        shareFileItems[0].getName() == specialCharDirectoryName
+        !shareFileItems[1].isDirectory()
+        shareFileItems[1].getName() == specialCharFileName
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_12_02")
+    def "List files and directories encoded continuation token"() {
+        setup:
+        def specialCharFileName0 = "file0\uFFFE"
+        def specialCharFileName1 = "file1\uFFFE"
+        primaryDirectoryClient.create()
+        primaryDirectoryClient.createFile(specialCharFileName0, 1024)
+        primaryDirectoryClient.createFile(specialCharFileName1, 1024)
+
+        when:
+        def iterator = primaryDirectoryClient.listFilesAndDirectories().iterableByPage(1).iterator()
+
+        then:
+        iterator.next().getValue().iterator().next().getName() == specialCharFileName0
+        iterator.next().getValue().iterator().next().getName() == specialCharFileName1
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_12_02")
+    def "List files and directories encoded prefix"() {
+        setup:
+        def specialCharDirectoryName = "directory\uFFFE"
+        primaryDirectoryClient.create()
+        primaryDirectoryClient.createSubdirectory(specialCharDirectoryName)
+
+        when:
+        def shareFileItems = primaryDirectoryClient.listFilesAndDirectories().stream().collect(Collectors.toList())
+
+        then:
+        shareFileItems.size() == 1
+        shareFileItems[0].isDirectory()
+        shareFileItems[0].getName() == specialCharDirectoryName
+    }
+
     def "List max results by page"() {
         given:
         primaryDirectoryClient.create()
@@ -1038,6 +1097,33 @@ class DirectoryAPITests extends APISpec {
         where:
         leaseID        | _
         garbageLeaseID | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_02_12")
+    def "rename sas token"() {
+        setup:
+        def permissions = new ShareFileSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
+
+        def sas = shareClient.generateSas(sasValues)
+        def client = getDirectoryClient(sas, primaryDirectoryClient.getDirectoryUrl())
+        primaryDirectoryClient.create()
+
+        when:
+        def directoryName = generatePathName()
+        def destClient = client.rename(directoryName)
+
+        then:
+        notThrown(ShareStorageException)
+        destClient.getProperties()
+        destClient.getDirectoryPath() == directoryName
     }
 
     def "Create sub directory"() {
@@ -1412,6 +1498,7 @@ class DirectoryAPITests extends APISpec {
         _ | "/"
     }
 
+    @Retry(count = 5, delay = 1000)
     def "create share with small timeouts fail for service client"() {
         setup:
         def clientOptions = new HttpClientOptions()
@@ -1424,6 +1511,7 @@ class DirectoryAPITests extends APISpec {
         def clientBuilder = new ShareServiceClientBuilder()
             .endpoint(environment.primaryAccount.blobEndpoint)
             .credential(environment.primaryAccount.credential)
+            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
             .clientOptions(clientOptions)
 
         def serviceClient = clientBuilder.buildClient()

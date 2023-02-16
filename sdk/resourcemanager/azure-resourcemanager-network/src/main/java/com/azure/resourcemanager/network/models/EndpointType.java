@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EndpointType. */
+/** The endpoint type. */
 public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     /** Static value AzureVM for EndpointType. */
     public static final EndpointType AZURE_VM = fromString("AzureVM");
@@ -27,6 +27,12 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
 
     /** Static value MMAWorkspaceNetwork for EndpointType. */
     public static final EndpointType MMAWORKSPACE_NETWORK = fromString("MMAWorkspaceNetwork");
+
+    /** Static value AzureArcVM for EndpointType. */
+    public static final EndpointType AZURE_ARC_VM = fromString("AzureArcVM");
+
+    /** Static value AzureVMSS for EndpointType. */
+    public static final EndpointType AZURE_VMSS = fromString("AzureVMSS");
 
     /**
      * Creates or finds a EndpointType from its string representation.

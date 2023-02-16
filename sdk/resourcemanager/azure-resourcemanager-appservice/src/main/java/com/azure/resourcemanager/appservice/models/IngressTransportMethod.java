@@ -30,7 +30,11 @@ public final class IngressTransportMethod extends ExpandableStringEnum<IngressTr
         return fromString(name, IngressTransportMethod.class);
     }
 
-    /** @return known IngressTransportMethod values. */
+    /**
+     * Gets known IngressTransportMethod values.
+     *
+     * @return known IngressTransportMethod values.
+     */
     public static Collection<IngressTransportMethod> values() {
         return values(IngressTransportMethod.class);
     }

@@ -33,6 +33,10 @@ public final class CollectionOfServicePrincipal {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CollectionOfServicePrincipal class. */
+    public CollectionOfServicePrincipal() {
+    }
+
     /**
      * Get the value property: The value property.
      *

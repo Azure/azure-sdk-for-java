@@ -5,23 +5,17 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing Traffic Manager User Metrics. */
-@JsonFlatten
 @Fluent
-public class UserMetricsModelInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserMetricsModelInner.class);
-
+public final class UserMetricsModelInner extends ProxyResource {
     /*
-     * The key returned by the User Metrics operation.
+     * The properties of the Traffic Manager User Metrics.
      */
-    @JsonProperty(value = "properties.key")
-    private String key;
+    @JsonProperty(value = "properties")
+    private UserMetricsProperties innerProperties;
 
     /*
      * Fully qualified resource Id for the resource. Ex -
@@ -42,24 +36,17 @@ public class UserMetricsModelInner extends ProxyResource {
     @JsonProperty(value = "type")
     private String type;
 
-    /**
-     * Get the key property: The key returned by the User Metrics operation.
-     *
-     * @return the key value.
-     */
-    public String key() {
-        return this.key;
+    /** Creates an instance of UserMetricsModelInner class. */
+    public UserMetricsModelInner() {
     }
 
     /**
-     * Set the key property: The key returned by the User Metrics operation.
+     * Get the innerProperties property: The properties of the Traffic Manager User Metrics.
      *
-     * @param key the key value to set.
-     * @return the UserMetricsModelInner object itself.
+     * @return the innerProperties value.
      */
-    public UserMetricsModelInner withKey(String key) {
-        this.key = key;
-        return this;
+    private UserMetricsProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -125,10 +112,36 @@ public class UserMetricsModelInner extends ProxyResource {
     }
 
     /**
+     * Get the key property: The key returned by the User Metrics operation.
+     *
+     * @return the key value.
+     */
+    public String key() {
+        return this.innerProperties() == null ? null : this.innerProperties().key();
+    }
+
+    /**
+     * Set the key property: The key returned by the User Metrics operation.
+     *
+     * @param key the key value to set.
+     * @return the UserMetricsModelInner object itself.
+     */
+    public UserMetricsModelInner withKey(String key) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserMetricsProperties();
+        }
+        this.innerProperties().withKey(key);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

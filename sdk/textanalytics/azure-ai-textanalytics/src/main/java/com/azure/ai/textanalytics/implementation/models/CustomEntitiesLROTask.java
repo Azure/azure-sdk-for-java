@@ -23,6 +23,9 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private CustomEntitiesTaskParameters parameters;
 
+    /** Creates an instance of CustomEntitiesLROTask class. */
+    public CustomEntitiesLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for a Custom Entities task.
      *
@@ -40,6 +43,13 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
      */
     public CustomEntitiesLROTask setParameters(CustomEntitiesTaskParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
         return this;
     }
 }

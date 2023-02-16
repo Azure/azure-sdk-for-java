@@ -35,7 +35,8 @@ class AsyncLazy<TValue> {
         this.failed = false;
     }
 
-    private AsyncLazy(Mono<TValue> single) {
+    // TODO: revert back to private modifier after replica validation is changed to use nonblocking cache
+    public AsyncLazy(Mono<TValue> single) {
         logger.debug("constructor");
         this.single = single
                 .doOnSuccess(v -> this.value = v)

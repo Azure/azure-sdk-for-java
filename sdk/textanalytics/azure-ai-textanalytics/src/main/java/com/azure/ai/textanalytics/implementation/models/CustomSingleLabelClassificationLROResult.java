@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
 /** The CustomSingleLabelClassificationLROResult model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -18,14 +19,17 @@ public final class CustomSingleLabelClassificationLROResult extends AnalyzeTextL
      * The results property.
      */
     @JsonProperty(value = "results", required = true)
-    private CustomSingleLabelClassificationResult results;
+    private CustomLabelClassificationResult results;
+
+    /** Creates an instance of CustomSingleLabelClassificationLROResult class. */
+    public CustomSingleLabelClassificationLROResult() {}
 
     /**
      * Get the results property: The results property.
      *
      * @return the results value.
      */
-    public CustomSingleLabelClassificationResult getResults() {
+    public CustomLabelClassificationResult getResults() {
         return this.results;
     }
 
@@ -35,8 +39,29 @@ public final class CustomSingleLabelClassificationLROResult extends AnalyzeTextL
      * @param results the results value to set.
      * @return the CustomSingleLabelClassificationLROResult object itself.
      */
-    public CustomSingleLabelClassificationLROResult setResults(CustomSingleLabelClassificationResult results) {
+    public CustomSingleLabelClassificationLROResult setResults(CustomLabelClassificationResult results) {
         this.results = results;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationLROResult setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
+        super.setLastUpdateDateTime(lastUpdateDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationLROResult setStatus(State status) {
+        super.setStatus(status);
         return this;
     }
 }

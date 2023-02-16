@@ -5,55 +5,28 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.DscConfigurationAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Definition of the dsc node configuration. */
-@JsonFlatten
 @Fluent
-public class DscNodeConfigurationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscNodeConfigurationInner.class);
-
+public final class DscNodeConfigurationInner extends ProxyResource {
     /*
-     * Gets or sets the last modified time.
+     * Gets or sets the configuration properties.
      */
-    @JsonProperty(value = "properties.lastModifiedTime")
-    private OffsetDateTime lastModifiedTime;
+    @JsonProperty(value = "properties")
+    private DscNodeConfigurationProperties innerProperties;
 
-    /*
-     * Gets or sets creation time.
+    /**
+     * Get the innerProperties property: Gets or sets the configuration properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.creationTime")
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets or sets the configuration of the node.
-     */
-    @JsonProperty(value = "properties.configuration")
-    private DscConfigurationAssociationProperty configuration;
-
-    /*
-     * Source of node configuration.
-     */
-    @JsonProperty(value = "properties.source")
-    private String source;
-
-    /*
-     * Number of nodes with this node configuration assigned
-     */
-    @JsonProperty(value = "properties.nodeCount")
-    private Long nodeCount;
-
-    /*
-     * If a new build version of NodeConfiguration is required.
-     */
-    @JsonProperty(value = "properties.incrementNodeConfigurationBuild")
-    private Boolean incrementNodeConfigurationBuild;
+    private DscNodeConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
@@ -61,7 +34,7 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -71,7 +44,10 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the DscNodeConfigurationInner object itself.
      */
     public DscNodeConfigurationInner withLastModifiedTime(OffsetDateTime lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeConfigurationProperties();
+        }
+        this.innerProperties().withLastModifiedTime(lastModifiedTime);
         return this;
     }
 
@@ -81,7 +57,7 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -91,7 +67,10 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the DscNodeConfigurationInner object itself.
      */
     public DscNodeConfigurationInner withCreationTime(OffsetDateTime creationTime) {
-        this.creationTime = creationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeConfigurationProperties();
+        }
+        this.innerProperties().withCreationTime(creationTime);
         return this;
     }
 
@@ -101,7 +80,7 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the configuration value.
      */
     public DscConfigurationAssociationProperty configuration() {
-        return this.configuration;
+        return this.innerProperties() == null ? null : this.innerProperties().configuration();
     }
 
     /**
@@ -111,7 +90,10 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the DscNodeConfigurationInner object itself.
      */
     public DscNodeConfigurationInner withConfiguration(DscConfigurationAssociationProperty configuration) {
-        this.configuration = configuration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeConfigurationProperties();
+        }
+        this.innerProperties().withConfiguration(configuration);
         return this;
     }
 
@@ -121,7 +103,7 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the source value.
      */
     public String source() {
-        return this.source;
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
@@ -131,7 +113,10 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the DscNodeConfigurationInner object itself.
      */
     public DscNodeConfigurationInner withSource(String source) {
-        this.source = source;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeConfigurationProperties();
+        }
+        this.innerProperties().withSource(source);
         return this;
     }
 
@@ -141,7 +126,7 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the nodeCount value.
      */
     public Long nodeCount() {
-        return this.nodeCount;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeCount();
     }
 
     /**
@@ -151,7 +136,10 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the DscNodeConfigurationInner object itself.
      */
     public DscNodeConfigurationInner withNodeCount(Long nodeCount) {
-        this.nodeCount = nodeCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeConfigurationProperties();
+        }
+        this.innerProperties().withNodeCount(nodeCount);
         return this;
     }
 
@@ -161,7 +149,7 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the incrementNodeConfigurationBuild value.
      */
     public Boolean incrementNodeConfigurationBuild() {
-        return this.incrementNodeConfigurationBuild;
+        return this.innerProperties() == null ? null : this.innerProperties().incrementNodeConfigurationBuild();
     }
 
     /**
@@ -171,7 +159,10 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @return the DscNodeConfigurationInner object itself.
      */
     public DscNodeConfigurationInner withIncrementNodeConfigurationBuild(Boolean incrementNodeConfigurationBuild) {
-        this.incrementNodeConfigurationBuild = incrementNodeConfigurationBuild;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscNodeConfigurationProperties();
+        }
+        this.innerProperties().withIncrementNodeConfigurationBuild(incrementNodeConfigurationBuild);
         return this;
     }
 
@@ -181,8 +172,8 @@ public class DscNodeConfigurationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (configuration() != null) {
-            configuration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

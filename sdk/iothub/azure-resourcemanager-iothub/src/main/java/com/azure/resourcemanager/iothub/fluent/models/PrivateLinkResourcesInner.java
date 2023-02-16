@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The available private link resources for an IotHub. */
 @Fluent
 public final class PrivateLinkResourcesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesInner.class);
-
     /*
      * The list of available private link resources for an IotHub
      */

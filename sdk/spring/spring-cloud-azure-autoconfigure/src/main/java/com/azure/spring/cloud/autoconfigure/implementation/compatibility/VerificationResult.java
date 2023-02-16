@@ -3,9 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.compatibility;
 
+import org.springframework.core.style.ToStringCreator;
+
 import java.io.Serializable;
 import java.util.Objects;
-import org.springframework.core.style.ToStringCreator;
 
 final class VerificationResult implements Serializable {
     private static final long serialVersionUID = 7175132562403990299L;

@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -27,14 +28,20 @@ public class AddDatePolicy implements HttpPipelinePolicy {
     private static final HttpPipelineSyncPolicy INNER = new HttpPipelineSyncPolicy() {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            OffsetDateTime now = OffsetDateTime.now();
+            OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
             try {
-                context.getHttpRequest().getHeaders().set("Date", DateTimeRfc1123.toRfc1123String(now));
+                context.getHttpRequest().setHeader(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
             } catch (IllegalArgumentException ignored) {
-                context.getHttpRequest().getHeaders().set("Date", FORMATTER.format(now));
+                context.getHttpRequest().setHeader(HttpHeaderName.DATE, FORMATTER.format(now));
             }
         }
     };
+
+    /**
+     * Creates a new instance of {@link AddDatePolicy}.
+     */
+    public AddDatePolicy() {
+    }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {

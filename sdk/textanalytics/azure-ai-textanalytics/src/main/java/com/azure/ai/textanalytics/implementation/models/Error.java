@@ -35,15 +35,13 @@ public final class Error {
     private String target;
 
     /*
-     * An array of details about specific errors that led to this reported
-     * error.
+     * An array of details about specific errors that led to this reported error.
      */
     @JsonProperty(value = "details")
     private List<Error> details;
 
     /*
-     * An object containing more specific information than the current object
-     * about the error.
+     * An object containing more specific information than the current object about the error.
      */
     @JsonProperty(value = "innererror")
     private InnerErrorModel innererror;
@@ -52,6 +50,9 @@ public final class Error {
      * The error object.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of Error class. */
+    public Error() {}
 
     /**
      * Get the code property: One of a server-defined set of error codes.

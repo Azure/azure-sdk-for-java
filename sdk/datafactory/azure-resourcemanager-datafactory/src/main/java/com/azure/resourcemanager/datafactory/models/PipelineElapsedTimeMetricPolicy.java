@@ -16,6 +16,10 @@ public final class PipelineElapsedTimeMetricPolicy {
     @JsonProperty(value = "duration")
     private Object duration;
 
+    /** Creates an instance of PipelineElapsedTimeMetricPolicy class. */
+    public PipelineElapsedTimeMetricPolicy() {
+    }
+
     /**
      * Get the duration property: TimeSpan value, after which an Azure Monitoring Metric is fired.
      *

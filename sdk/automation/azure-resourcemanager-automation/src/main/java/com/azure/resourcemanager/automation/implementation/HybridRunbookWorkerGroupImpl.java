@@ -4,25 +4,19 @@
 
 package com.azure.resourcemanager.automation.implementation;
 
+import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.HybridRunbookWorkerGroupInner;
 import com.azure.resourcemanager.automation.models.GroupTypeEnum;
-import com.azure.resourcemanager.automation.models.HybridRunbookWorker;
 import com.azure.resourcemanager.automation.models.HybridRunbookWorkerGroup;
+import com.azure.resourcemanager.automation.models.HybridRunbookWorkerGroupCreateOrUpdateParameters;
 import com.azure.resourcemanager.automation.models.RunAsCredentialAssociationProperty;
-import java.util.Collections;
-import java.util.List;
 
-public final class HybridRunbookWorkerGroupImpl implements HybridRunbookWorkerGroup {
+public final class HybridRunbookWorkerGroupImpl
+    implements HybridRunbookWorkerGroup, HybridRunbookWorkerGroup.Definition, HybridRunbookWorkerGroup.Update {
     private HybridRunbookWorkerGroupInner innerObject;
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
-
-    HybridRunbookWorkerGroupImpl(
-        HybridRunbookWorkerGroupInner innerObject,
-        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -32,21 +26,24 @@ public final class HybridRunbookWorkerGroupImpl implements HybridRunbookWorkerGr
         return this.innerModel().name();
     }
 
-    public List<HybridRunbookWorker> hybridRunbookWorkers() {
-        List<HybridRunbookWorker> inner = this.innerModel().hybridRunbookWorkers();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public String type() {
+        return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public GroupTypeEnum groupType() {
+        return this.innerModel().groupType();
     }
 
     public RunAsCredentialAssociationProperty credential() {
         return this.innerModel().credential();
     }
 
-    public GroupTypeEnum groupType() {
-        return this.innerModel().groupType();
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public HybridRunbookWorkerGroupInner innerModel() {
@@ -55,5 +52,148 @@ public final class HybridRunbookWorkerGroupImpl implements HybridRunbookWorkerGr
 
     private com.azure.resourcemanager.automation.AutomationManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String automationAccountName;
+
+    private String hybridRunbookWorkerGroupName;
+
+    private HybridRunbookWorkerGroupCreateOrUpdateParameters createHybridRunbookWorkerGroupCreationParameters;
+
+    private HybridRunbookWorkerGroupCreateOrUpdateParameters updateHybridRunbookWorkerGroupUpdationParameters;
+
+    public HybridRunbookWorkerGroupImpl withExistingAutomationAccount(
+        String resourceGroupName, String automationAccountName) {
+        this.resourceGroupName = resourceGroupName;
+        this.automationAccountName = automationAccountName;
+        return this;
+    }
+
+    public HybridRunbookWorkerGroup create() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getHybridRunbookWorkerGroups()
+                .createWithResponse(
+                    resourceGroupName,
+                    automationAccountName,
+                    hybridRunbookWorkerGroupName,
+                    createHybridRunbookWorkerGroupCreationParameters,
+                    Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public HybridRunbookWorkerGroup create(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getHybridRunbookWorkerGroups()
+                .createWithResponse(
+                    resourceGroupName,
+                    automationAccountName,
+                    hybridRunbookWorkerGroupName,
+                    createHybridRunbookWorkerGroupCreationParameters,
+                    context)
+                .getValue();
+        return this;
+    }
+
+    HybridRunbookWorkerGroupImpl(String name, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+        this.innerObject = new HybridRunbookWorkerGroupInner();
+        this.serviceManager = serviceManager;
+        this.hybridRunbookWorkerGroupName = name;
+        this.createHybridRunbookWorkerGroupCreationParameters = new HybridRunbookWorkerGroupCreateOrUpdateParameters();
+    }
+
+    public HybridRunbookWorkerGroupImpl update() {
+        this.updateHybridRunbookWorkerGroupUpdationParameters = new HybridRunbookWorkerGroupCreateOrUpdateParameters();
+        return this;
+    }
+
+    public HybridRunbookWorkerGroup apply() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getHybridRunbookWorkerGroups()
+                .updateWithResponse(
+                    resourceGroupName,
+                    automationAccountName,
+                    hybridRunbookWorkerGroupName,
+                    updateHybridRunbookWorkerGroupUpdationParameters,
+                    Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public HybridRunbookWorkerGroup apply(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getHybridRunbookWorkerGroups()
+                .updateWithResponse(
+                    resourceGroupName,
+                    automationAccountName,
+                    hybridRunbookWorkerGroupName,
+                    updateHybridRunbookWorkerGroupUpdationParameters,
+                    context)
+                .getValue();
+        return this;
+    }
+
+    HybridRunbookWorkerGroupImpl(
+        HybridRunbookWorkerGroupInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.hybridRunbookWorkerGroupName = Utils.getValueFromIdByName(innerObject.id(), "hybridRunbookWorkerGroups");
+    }
+
+    public HybridRunbookWorkerGroup refresh() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getHybridRunbookWorkerGroups()
+                .getWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public HybridRunbookWorkerGroup refresh(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getHybridRunbookWorkerGroups()
+                .getWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, context)
+                .getValue();
+        return this;
+    }
+
+    public HybridRunbookWorkerGroupImpl withName(String name) {
+        if (isInCreateMode()) {
+            this.createHybridRunbookWorkerGroupCreationParameters.withName(name);
+            return this;
+        } else {
+            this.updateHybridRunbookWorkerGroupUpdationParameters.withName(name);
+            return this;
+        }
+    }
+
+    public HybridRunbookWorkerGroupImpl withCredential(RunAsCredentialAssociationProperty credential) {
+        if (isInCreateMode()) {
+            this.createHybridRunbookWorkerGroupCreationParameters.withCredential(credential);
+            return this;
+        } else {
+            this.updateHybridRunbookWorkerGroupUpdationParameters.withCredential(credential);
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

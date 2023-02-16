@@ -20,26 +20,30 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.SignedIdentifier;
-import com.azure.data.tables.implementation.models.SignedIdentifiersWrapper;
+import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
+import com.azure.data.tables.implementation.models.TableQueryResponse;
+import com.azure.data.tables.implementation.models.TableResponse;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
-import com.azure.data.tables.implementation.models.TablesCreateResponse;
-import com.azure.data.tables.implementation.models.TablesDeleteEntityResponse;
-import com.azure.data.tables.implementation.models.TablesDeleteResponse;
-import com.azure.data.tables.implementation.models.TablesGetAccessPolicyResponse;
-import com.azure.data.tables.implementation.models.TablesInsertEntityResponse;
-import com.azure.data.tables.implementation.models.TablesMergeEntityResponse;
-import com.azure.data.tables.implementation.models.TablesQueryEntitiesResponse;
-import com.azure.data.tables.implementation.models.TablesQueryEntityWithPartitionAndRowKeyResponse;
-import com.azure.data.tables.implementation.models.TablesQueryResponse;
-import com.azure.data.tables.implementation.models.TablesSetAccessPolicyResponse;
-import com.azure.data.tables.implementation.models.TablesUpdateEntityResponse;
+import com.azure.data.tables.implementation.models.TablesCreateHeaders;
+import com.azure.data.tables.implementation.models.TablesDeleteEntityHeaders;
+import com.azure.data.tables.implementation.models.TablesDeleteHeaders;
+import com.azure.data.tables.implementation.models.TablesGetAccessPolicyHeaders;
+import com.azure.data.tables.implementation.models.TablesInsertEntityHeaders;
+import com.azure.data.tables.implementation.models.TablesMergeEntityHeaders;
+import com.azure.data.tables.implementation.models.TablesQueryEntitiesHeaders;
+import com.azure.data.tables.implementation.models.TablesQueryEntityWithPartitionAndRowKeyHeaders;
+import com.azure.data.tables.implementation.models.TablesQueryHeaders;
+import com.azure.data.tables.implementation.models.TablesSetAccessPolicyHeaders;
+import com.azure.data.tables.implementation.models.TablesUpdateEntityHeaders;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -71,8 +75,8 @@ public final class TablesImpl {
     public interface TablesService {
         @Get("/Tables")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesQueryResponse> query(
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<ResponseBase<TablesQueryHeaders, TableQueryResponse>> query(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -88,7 +92,7 @@ public final class TablesImpl {
         @Post("/Tables")
         @ExpectedResponses({201, 204})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesCreateResponse> create(
+        Mono<ResponseBase<TablesCreateHeaders, TableResponse>> create(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -102,7 +106,7 @@ public final class TablesImpl {
         @Delete("/Tables('{table}')")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesDeleteResponse> delete(
+        Mono<ResponseBase<TablesDeleteHeaders, Void>> delete(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -113,7 +117,7 @@ public final class TablesImpl {
         @Get("/{table}()")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesQueryEntitiesResponse> queryEntities(
+        Mono<ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse>> queryEntities(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -132,25 +136,26 @@ public final class TablesImpl {
         @Get("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesQueryEntityWithPartitionAndRowKeyResponse> queryEntityWithPartitionAndRowKey(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @QueryParam("$select") String select,
-                @QueryParam("$filter") String filter,
-                @PathParam("table") String table,
-                @PathParam("partitionKey") String partitionKey,
-                @PathParam("rowKey") String rowKey,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>>>
+                queryEntityWithPartitionAndRowKey(
+                        @HostParam("url") String url,
+                        @QueryParam("timeout") Integer timeout,
+                        @HeaderParam("x-ms-version") String version,
+                        @HeaderParam("x-ms-client-request-id") String requestId,
+                        @HeaderParam("DataServiceVersion") String dataServiceVersion,
+                        @QueryParam("$format") OdataMetadataFormat format,
+                        @QueryParam("$select") String select,
+                        @QueryParam("$filter") String filter,
+                        @PathParam("table") String table,
+                        @PathParam("partitionKey") String partitionKey,
+                        @PathParam("rowKey") String rowKey,
+                        @HeaderParam("Accept") String accept,
+                        Context context);
 
         @Put("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesUpdateEntityResponse> updateEntity(
+        Mono<ResponseBase<TablesUpdateEntityHeaders, Void>> updateEntity(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -168,7 +173,7 @@ public final class TablesImpl {
         @Patch("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesMergeEntityResponse> mergeEntity(
+        Mono<ResponseBase<TablesMergeEntityHeaders, Void>> mergeEntity(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -186,7 +191,7 @@ public final class TablesImpl {
         @Delete("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesDeleteEntityResponse> deleteEntity(
+        Mono<ResponseBase<TablesDeleteEntityHeaders, Void>> deleteEntity(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -203,7 +208,7 @@ public final class TablesImpl {
         @Post("/{table}")
         @ExpectedResponses({201, 204})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesInsertEntityResponse> insertEntity(
+        Mono<ResponseBase<TablesInsertEntityHeaders, Map<String, Object>>> insertEntity(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -219,7 +224,7 @@ public final class TablesImpl {
         @Get("/{table}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesGetAccessPolicyResponse> getAccessPolicy(
+        Mono<ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>>> getAccessPolicy(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -232,14 +237,14 @@ public final class TablesImpl {
         @Put("/{table}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesSetAccessPolicyResponse> setAccessPolicy(
+        Mono<ResponseBase<TablesSetAccessPolicyHeaders, Void>> setAccessPolicy(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @PathParam("table") String table,
                 @QueryParam("comp") String comp,
-                @BodyParam("application/xml") SignedIdentifiersWrapper tableAcl,
+                @BodyParam("application/xml") List<SignedIdentifier> tableAcl,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -253,12 +258,13 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties for the table query response.
+     * @return the properties for the table query response along with {@link ResponseBase} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesQueryResponse> queryWithResponseAsync(
+    public Mono<ResponseBase<TablesQueryHeaders, TableQueryResponse>> queryWithResponseAsync(
             String requestId, String nextTableName, QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
@@ -309,10 +315,10 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a single table.
+     * @return the response for a single table along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesCreateResponse> createWithResponseAsync(
+    public Mono<ResponseBase<TablesCreateHeaders, TableResponse>> createWithResponseAsync(
             TableProperties tableProperties,
             String requestId,
             ResponseFormat responsePreference,
@@ -347,10 +353,11 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesDeleteResponse> deleteWithResponseAsync(String table, String requestId, Context context) {
+    public Mono<ResponseBase<TablesDeleteHeaders, Void>> deleteWithResponseAsync(
+            String table, String requestId, Context context) {
         final String accept = "application/json";
         return service.delete(this.client.getUrl(), this.client.getVersion(), requestId, table, accept, context);
     }
@@ -369,10 +376,11 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties for the table entity query response.
+     * @return the properties for the table entity query response along with {@link ResponseBase} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesQueryEntitiesResponse> queryEntitiesWithResponseAsync(
+    public Mono<ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse>> queryEntitiesWithResponseAsync(
             String table,
             Integer timeout,
             String requestId,
@@ -433,17 +441,19 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the other properties of the table entity.
+     * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesQueryEntityWithPartitionAndRowKeyResponse> queryEntityWithPartitionAndRowKeyWithResponseAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            QueryOptions queryOptions,
-            Context context) {
+    public Mono<ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>>>
+            queryEntityWithPartitionAndRowKeyWithResponseAsync(
+                    String table,
+                    String partitionKey,
+                    String rowKey,
+                    Integer timeout,
+                    String requestId,
+                    QueryOptions queryOptions,
+                    Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -496,10 +506,10 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesUpdateEntityResponse> updateEntityWithResponseAsync(
+    public Mono<ResponseBase<TablesUpdateEntityHeaders, Void>> updateEntityWithResponseAsync(
             String table,
             String partitionKey,
             String rowKey,
@@ -551,10 +561,10 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesMergeEntityResponse> mergeEntityWithResponseAsync(
+    public Mono<ResponseBase<TablesMergeEntityHeaders, Void>> mergeEntityWithResponseAsync(
             String table,
             String partitionKey,
             String rowKey,
@@ -603,10 +613,10 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesDeleteEntityResponse> deleteEntityWithResponseAsync(
+    public Mono<ResponseBase<TablesDeleteEntityHeaders, Void>> deleteEntityWithResponseAsync(
             String table,
             String partitionKey,
             String rowKey,
@@ -652,10 +662,11 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the other properties of the table entity.
+     * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesInsertEntityResponse> insertEntityWithResponseAsync(
+    public Mono<ResponseBase<TablesInsertEntityHeaders, Map<String, Object>>> insertEntityWithResponseAsync(
             String table,
             Integer timeout,
             String requestId,
@@ -696,10 +707,11 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of signed identifiers.
+     * @return a collection of signed identifiers along with {@link ResponseBase} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesGetAccessPolicyResponse> getAccessPolicyWithResponseAsync(
+    public Mono<ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>>> getAccessPolicyWithResponseAsync(
             String table, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
@@ -719,16 +731,13 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesSetAccessPolicyResponse> setAccessPolicyWithResponseAsync(
+    public Mono<ResponseBase<TablesSetAccessPolicyHeaders, Void>> setAccessPolicyWithResponseAsync(
             String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
-
-        SignedIdentifiersWrapper tableAclConverted = new SignedIdentifiersWrapper(tableAcl);
-
         return service.setAccessPolicy(
                 this.client.getUrl(),
                 timeout,
@@ -736,7 +745,7 @@ public final class TablesImpl {
                 requestId,
                 table,
                 comp,
-                tableAclConverted,
+                tableAcl,
                 accept,
                 context);
     }

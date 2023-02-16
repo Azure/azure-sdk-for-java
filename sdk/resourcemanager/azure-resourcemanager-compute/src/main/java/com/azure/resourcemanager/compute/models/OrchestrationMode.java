@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrchestrationMode. */
+/** Specifies the orchestration mode for the virtual machine scale set. */
 public final class OrchestrationMode extends ExpandableStringEnum<OrchestrationMode> {
     /** Static value Uniform for OrchestrationMode. */
     public static final OrchestrationMode UNIFORM = fromString("Uniform");
 
     /** Static value Flexible for OrchestrationMode. */
     public static final OrchestrationMode FLEXIBLE = fromString("Flexible");
+
+    /**
+     * Creates a new instance of OrchestrationMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrchestrationMode() {
+    }
 
     /**
      * Creates or finds a OrchestrationMode from its string representation.

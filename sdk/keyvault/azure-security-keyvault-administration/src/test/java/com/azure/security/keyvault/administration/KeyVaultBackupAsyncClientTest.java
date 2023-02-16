@@ -3,6 +3,7 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
@@ -31,11 +32,18 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     private KeyVaultBackupAsyncClient asyncClient;
 
     private void getAsyncClient(HttpClient httpClient, boolean forCleanup) {
-        asyncClient = spy(getClientBuilder(httpClient, forCleanup).buildAsyncClient());
-
+        asyncClient = spy(getClientBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+            : httpClient), forCleanup).buildAsyncClient());
         if (interceptorManager.isPlaybackMode()) {
             when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
+    }
+
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertAsync()
+            .build();
     }
 
     /**

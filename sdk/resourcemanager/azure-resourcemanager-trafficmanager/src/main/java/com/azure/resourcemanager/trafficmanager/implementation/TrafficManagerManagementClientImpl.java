@@ -7,7 +7,6 @@ package com.azure.resourcemanager.trafficmanager.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
@@ -22,8 +21,6 @@ import java.time.Duration;
 @ServiceClient(builder = TrafficManagerManagementClientBuilder.class)
 public final class TrafficManagerManagementClientImpl extends AzureServiceClient
     implements TrafficManagerManagementClient {
-    private final ClientLogger logger = new ClientLogger(TrafficManagerManagementClientImpl.class);
-
     /**
      * Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.

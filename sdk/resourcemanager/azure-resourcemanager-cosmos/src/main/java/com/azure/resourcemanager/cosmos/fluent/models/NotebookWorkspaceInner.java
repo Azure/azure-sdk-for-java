@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.cosmos.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A notebook workspace resource. */
-@Fluent
+@Immutable
 public final class NotebookWorkspaceInner extends ArmProxyResource {
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private NotebookWorkspaceProperties innerProperties;
+
+    /** Creates an instance of NotebookWorkspaceInner class. */
+    public NotebookWorkspaceInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

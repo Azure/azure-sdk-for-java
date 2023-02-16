@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RestServiceAuthenticationType. */
+/** Type of authentication used to connect to the REST service. */
 public final class RestServiceAuthenticationType extends ExpandableStringEnum<RestServiceAuthenticationType> {
     /** Static value Anonymous for RestServiceAuthenticationType. */
     public static final RestServiceAuthenticationType ANONYMOUS = fromString("Anonymous");
@@ -24,6 +24,15 @@ public final class RestServiceAuthenticationType extends ExpandableStringEnum<Re
 
     /** Static value OAuth2ClientCredential for RestServiceAuthenticationType. */
     public static final RestServiceAuthenticationType OAUTH2CLIENT_CREDENTIAL = fromString("OAuth2ClientCredential");
+
+    /**
+     * Creates a new instance of RestServiceAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestServiceAuthenticationType() {
+    }
 
     /**
      * Creates or finds a RestServiceAuthenticationType from its string representation.
