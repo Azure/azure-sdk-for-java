@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Sort options for ordering tags in a collection. */
+/** Defines values for ArtifactTagOrder. */
 public final class ArtifactTagOrder extends ExpandableStringEnum<ArtifactTagOrder> {
     /** Static value none for ArtifactTagOrder. */
     public static final ArtifactTagOrder NONE = fromString("none");
@@ -30,11 +30,7 @@ public final class ArtifactTagOrder extends ExpandableStringEnum<ArtifactTagOrde
         return fromString(name, ArtifactTagOrder.class);
     }
 
-    /**
-     * Gets known ArtifactTagOrder values.
-     *
-     * @return known ArtifactTagOrder values.
-     */
+    /** @return known ArtifactTagOrder values. */
     public static Collection<ArtifactTagOrder> values() {
         return values(ArtifactTagOrder.class);
     }

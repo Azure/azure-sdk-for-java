@@ -28,9 +28,6 @@ public final class ImageSignature {
     @JsonProperty(value = "protected")
     private String protectedProperty;
 
-    /** Creates an instance of ImageSignature class. */
-    public ImageSignature() {}
-
     /**
      * Get the headerProperty property: A JSON web signature.
      *

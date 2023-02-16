@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The artifact platform's architecture. */
+/** Defines values for ArtifactArchitecture. */
 public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArchitecture> {
     /** Static value 386 for ArtifactArchitecture. */
     public static final ArtifactArchitecture I386 = fromString("386");
@@ -60,11 +60,7 @@ public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArc
         return fromString(name, ArtifactArchitecture.class);
     }
 
-    /**
-     * Gets known ArtifactArchitecture values.
-     *
-     * @return known ArtifactArchitecture values.
-     */
+    /** @return known ArtifactArchitecture values. */
     public static Collection<ArtifactArchitecture> values() {
         return values(ArtifactArchitecture.class);
     }

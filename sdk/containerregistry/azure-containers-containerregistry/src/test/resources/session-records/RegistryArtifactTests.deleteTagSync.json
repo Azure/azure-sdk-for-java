@@ -3,21 +3,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "87bbd54b-f651-4258-b719-3754f7db415f",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "02da63f8-9084-40e6-88d6-d6fbff616dff",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "3e38e682-886e-4ea6-abfb-f4429eb3fbb1",
+      "X-Ms-Correlation-Request-Id" : "febdcbe9-eb5f-48cd-a64e-63afd6d3588c",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.5",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.65",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"refresh_token\":\"REDACTED\"}",
-      "Date" : "Fri, 01 Apr 2022 18:19:42 GMT",
+      "Date" : "Tue, 05 Oct 2021 02:07:04 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -25,21 +25,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "67763e22-3483-4b35-930c-847980548a9f",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9ef2097c-cc5f-4cea-beb1-85918712ea36",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "3b860d68-50fc-4efa-900f-8854ae0c71a1",
+      "X-Ms-Correlation-Request-Id" : "7ed58c5f-f82f-451c-b3d5-d566350771e3",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.5",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.65",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Fri, 01 Apr 2022 18:19:42 GMT",
+      "Date" : "Tue, 05 Oct 2021 02:07:07 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -47,8 +47,8 @@
     "Method" : "DELETE",
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine/_tags/v3?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "176c6e7f-f2d2-4797-9645-38ea6a4e291a"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ee06f928-1485-45cf-a95e-69820f9f8175"
     },
     "Response" : {
       "content-length" : "0",
@@ -57,14 +57,14 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Fri, 01 Apr 2022 18:19:43 GMT",
-      "X-Ms-Int-Docker-Content-Digest" : "sha256:f22945d45ee2eb4dd463ed5a431d9f04fcd80ca768bb1acf898d91ce51f7bf04",
+      "Date" : "Tue, 05 Oct 2021 02:07:07 GMT",
+      "X-Ms-Int-Docker-Content-Digest" : "sha256:e1c082e3d3c45cccac829840a25941e679c25d438cc8412c2fa221cf1a824e6a",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "be712605-6e0e-4742-9912-1c51ad5f17d9",
+      "X-Ms-Correlation-Request-Id" : "94e122c0-ccf7-475a-8773-2c28f9f2a0ea",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "176c6e7f-f2d2-4797-9645-38ea6a4e291a",
-      "X-Ms-Request-Id" : "874e573c-5e97-4a55-b61a-ea330e8ed09e",
+      "X-Ms-Client-Request-Id" : "ee06f928-1485-45cf-a95e-69820f9f8175",
+      "X-Ms-Request-Id" : "17f3afec-0d70-4dfd-8889-a0fbb2733607",
       "X-Ms-Ratelimit-Remaining-Calls-Per-Second" : "8.000000"
     },
     "Exception" : null

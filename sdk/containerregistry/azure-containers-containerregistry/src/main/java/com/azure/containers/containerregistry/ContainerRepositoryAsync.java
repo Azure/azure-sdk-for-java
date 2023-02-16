@@ -3,10 +3,11 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.ArtifactManifestPropertiesHelper;
+import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
-import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
-import com.azure.containers.containerregistry.implementation.UtilsImpl;
+import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
@@ -28,10 +29,13 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static com.azure.containers.containerregistry.Utils.CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides helper methods for operations on a given repository in Azure Container Registry.
@@ -53,13 +57,14 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
 public final class ContainerRepositoryAsync {
-    private static final ClientLogger LOGGER = new ClientLogger(ContainerRepositoryAsync.class);
     private final ContainerRegistriesImpl serviceClient;
     private final String repositoryName;
     private final String endpoint;
     private final String apiVersion;
     private final HttpPipeline httpPipeline;
     private final String registryLoginServer;
+
+    private final ClientLogger logger = new ClientLogger(ContainerRepositoryAsync.class);
 
     /**
      * Creates a ContainerRepositoryAsyncClient that sends requests to the given repository in the container registry service at {@code endpoint}.
@@ -70,9 +75,12 @@ public final class ContainerRepositoryAsync {
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
      */
     ContainerRepositoryAsync(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
-        Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null");
+        if (repositoryName == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null."));
+        }
+
         if (repositoryName.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
         }
 
         AzureContainerRegistryImpl registryImpl = new AzureContainerRegistryImplBuilder()
@@ -92,7 +100,7 @@ public final class ContainerRepositoryAsync {
             this.registryLoginServer = endpointUrl.getHost();
         } catch (MalformedURLException ex) {
             // This will not happen.
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
     }
 
@@ -139,13 +147,13 @@ public final class ContainerRepositoryAsync {
         return withContext(context -> deleteWithResponse(context));
     }
 
-    private Mono<Response<Void>> deleteWithResponse(Context context) {
+    Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
-            return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context)
-                .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
-                .onErrorMap(UtilsImpl::mapException);
+            return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+                .flatMap(Utils::deleteResponseToSuccess)
+                .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -251,33 +259,61 @@ public final class ContainerRepositoryAsync {
             (token, pageSize) -> withContext(context -> listManifestPropertiesNextSinglePageAsync(token, context)));
     }
 
-    private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrder order, Context context) {
+    PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order, Context context) {
+        return new PagedFlux<>(
+            (pageSize) -> listManifestPropertiesSinglePageAsync(pageSize, order, context),
+            (token, pageSize) -> listManifestPropertiesNextSinglePageAsync(token, context));
+    }
+
+    Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrder order, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
-                return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
+                return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
             final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
-            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderString, context)
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
-                    baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName,
-                        registryLoginServer)))
-                .onErrorMap(UtilsImpl::mapException);
+            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderString, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+                .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::mapManifestsProperties))
+                .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
+            return monoError(logger, e);
         }
     }
 
-    private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesNextSinglePageAsync(String nextLink, Context context) {
+    Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
-            return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context)
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
-                    baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName,
-                        registryLoginServer)))
-                .onErrorMap(UtilsImpl::mapException);
+            return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+                .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::mapManifestsProperties))
+                .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
+            return monoError(logger, e);
         }
+    }
+
+    private List<ArtifactManifestProperties> mapManifestsProperties(List<ManifestAttributesBase> baseArtifacts) {
+        if (baseArtifacts == null) {
+            return null;
+        }
+
+        return baseArtifacts.stream().map(value -> {
+            ArtifactManifestProperties manifestProperties = new ArtifactManifestProperties()
+                .setDeleteEnabled(value.isDeleteEnabled())
+                .setListEnabled(value.isListEnabled())
+                .setWriteEnabled(value.isWriteEnabled())
+                .setReadEnabled(value.isReadEnabled());
+
+            ArtifactManifestPropertiesHelper.setRepositoryName(manifestProperties, repositoryName);
+            ArtifactManifestPropertiesHelper.setRegistryLoginServer(manifestProperties, registryLoginServer);
+            ArtifactManifestPropertiesHelper.setDigest(manifestProperties, value.getDigest());
+            ArtifactManifestPropertiesHelper.setRelatedArtifacts(manifestProperties, value.getRelatedArtifacts());
+            ArtifactManifestPropertiesHelper.setCpuArchitecture(manifestProperties, value.getArchitecture());
+            ArtifactManifestPropertiesHelper.setOperatingSystem(manifestProperties, value.getOperatingSystem());
+            ArtifactManifestPropertiesHelper.setCreatedOn(manifestProperties, value.getCreatedOn());
+            ArtifactManifestPropertiesHelper.setlastUpdatedOn(manifestProperties, value.getLastUpdatedOn());
+            ArtifactManifestPropertiesHelper.setSizeInBytes(manifestProperties, value.getSize());
+            ArtifactManifestPropertiesHelper.setTags(manifestProperties, value.getTags());
+            return manifestProperties;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -306,12 +342,12 @@ public final class ContainerRepositoryAsync {
         return withContext(context -> this.getPropertiesWithResponse(context));
     }
 
-    private Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse(Context context) {
+    Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse(Context context) {
         try {
-            return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context)
-                .onErrorMap(UtilsImpl::mapException);
+            return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+                .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -367,10 +403,10 @@ public final class ContainerRepositoryAsync {
         return withContext(context -> this.updatePropertiesWithResponse(repositoryProperties, context));
     }
 
-    private Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
+    Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
         try {
             if (repositoryProperties == null) {
-                return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
+                return monoError(logger, new NullPointerException("'value' cannot be null."));
             }
 
             RepositoryWriteableProperties writableProperties = new RepositoryWriteableProperties()
@@ -380,10 +416,10 @@ public final class ContainerRepositoryAsync {
                 .setReadEnabled(repositoryProperties.isReadEnabled());
 //                .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
 
-            return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context)
-                .onErrorMap(UtilsImpl::mapException);
+            return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+                .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
+            return monoError(logger, e);
         }
     }
 

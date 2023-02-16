@@ -34,9 +34,6 @@ public final class TagWriteableProperties {
     @JsonProperty(value = "readEnabled")
     private Boolean readEnabled;
 
-    /** Creates an instance of TagWriteableProperties class. */
-    public TagWriteableProperties() {}
-
     /**
      * Get the deleteEnabled property: Delete enabled.
      *

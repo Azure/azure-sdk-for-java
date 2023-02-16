@@ -4,31 +4,18 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.UtilsImpl;
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
-import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
-import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
-import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.ArtifactTagOrder;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
+import com.azure.containers.containerregistry.models.ArtifactTagOrder;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-
-import java.util.Objects;
-
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
  * This class provides a helper type that contains all the operations for artifacts in a given repository.
@@ -46,20 +33,41 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  * <!-- end com.azure.containers.containerregistry.RegistryArtifact.instantiation -->
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class)
-public final class RegistryArtifact extends RegistryArtifactBase {
-    private static final ClientLogger LOGGER = new ClientLogger(RegistryArtifact.class);
+public final class RegistryArtifact {
+    private final RegistryArtifactAsync asyncClient;
 
     /**
      * Creates a RegistryArtifact type that sends requests to the given repository in the container registry service at {@code endpoint}.
      * Each service call goes through the {@code pipeline}.
-     * @param repositoryName The name of the repository on which the service operations are performed.
-     * @param tagOrDigest The tag or digest associated with the given artifact.
-     * @param endpoint The URL string for the Azure Container Registry service.
-     * @param httpPipeline HttpPipeline that the HTTP requests and responses flow through.
-     * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
+     * @param asyncClient The async client for the given repository.
      */
-    RegistryArtifact(String repositoryName, String tagOrDigest, HttpPipeline httpPipeline, String endpoint, String version) {
-        super(repositoryName, tagOrDigest, httpPipeline, endpoint, version);
+    RegistryArtifact(RegistryArtifactAsync asyncClient) {
+        this.asyncClient = asyncClient;
+    }
+
+    /**
+     * Gets the Azure Container Registry service endpoint for the current instance.
+     * @return The service endpoint for the current instance.
+     */
+    public String getRegistryEndpoint() {
+        return this.asyncClient.getRegistryEndpoint();
+    }
+
+    /**
+     * Gets the repository name for the current instance.
+     * Gets the repository name for the current instance.
+     * @return Name of the repository for the current instance.
+     * */
+    public String getRepositoryName() {
+        return this.asyncClient.getRepositoryName();
+    }
+
+    /**
+     * Gets the fully qualified reference for the current instance.
+     * @return Fully qualified reference of the current instance.
+     * */
+    public String getFullyQualifiedReference() {
+        return this.asyncClient.getFullyQualifiedReference();
     }
 
     /**
@@ -82,26 +90,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Context context) {
-        String res = this.getDigest();
-        try {
-            Response<Void> response = this.serviceClient.deleteManifestWithResponse(getRepositoryName(), res, enableSync(context));
-
-            return UtilsImpl.deleteResponseToSuccess(response);
-        } catch (AcrErrorsException exception) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
-        }
-    }
-
-    private String getDigest() {
-        if (this.digest != null) {
-            return digest;
-        }
-
-        String res = isDigest(tagOrDigest)
-            ? tagOrDigest
-            : this.getTagProperties(tagOrDigest).getDigest();
-        this.digest = res;
-        return res;
+        return this.asyncClient.deleteWithResponse(context).block();
     }
 
     /**
@@ -149,17 +138,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTagWithResponse(String tag, Context context) {
-        Objects.requireNonNull(tag, "'tag' cannot be null.");
-        if (tag.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tag' cannot be empty."));
-        }
-        try {
-            Response<Void> response = this.serviceClient.deleteTagWithResponse(getRepositoryName(), tag, enableSync(context));
-
-            return UtilsImpl.deleteResponseToSuccess(response);
-        } catch (AcrErrorsException exception) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
-        }
+        return this.asyncClient.deleteTagWithResponse(tag, context).block();
     }
 
     /**
@@ -215,12 +194,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactManifestProperties> getManifestPropertiesWithResponse(Context context) {
-        String res = this.getDigest();
-        try {
-            return this.serviceClient.getManifestPropertiesWithResponse(getRepositoryName(), res, enableSync(context));
-        } catch (HttpResponseException exception) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
-        }
+        return this.asyncClient.getManifestPropertiesWithResponse(context).block();
     }
 
     /**
@@ -276,17 +250,9 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactTagProperties> getTagPropertiesWithResponse(String tag, Context context) {
-        Objects.requireNonNull(tag, "'tag' cannot be null.");
-        if (tag.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tag' cannot be empty."));
-        }
 
-        try {
-            return this.serviceClient.getTagPropertiesWithResponse(getRepositoryName(), tag, enableSync(context));
-        } catch (AcrErrorsException exception) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
-        }
+    public Response<ArtifactTagProperties> getTagPropertiesWithResponse(String tag, Context context) {
+        return this.asyncClient.getTagPropertiesWithResponse(tag, context).block();
     }
 
     /**
@@ -413,45 +379,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrder order, Context context) {
-        return listTagPropertiesSync(order, context);
-    }
-
-    private PagedIterable<ArtifactTagProperties> listTagPropertiesSync(ArtifactTagOrder order, Context context) {
-        return new PagedIterable<>(
-            (pageSize) -> listTagPropertiesSinglePageSync(pageSize, order, context),
-            (token, pageSize) -> listTagPropertiesNextSinglePageSync(token, context));
-    }
-
-    private PagedResponse<ArtifactTagProperties> listTagPropertiesSinglePageSync(Integer pageSize, ArtifactTagOrder order, Context context) {
-        if (pageSize != null && pageSize < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
-        }
-
-        final String orderString = order.equals(ArtifactTagOrder.NONE) ? null : order.toString();
-
-        String res = this.getDigest();
-        try {
-            PagedResponse<TagAttributesBase> response =
-                this.serviceClient.getTagsSinglePage(getRepositoryName(), null, pageSize, orderString, res,
-                    enableSync(context));
-
-            return UtilsImpl.getPagedResponseWithContinuationToken(response,
-                baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName()));
-        } catch (AcrErrorsException exception) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
-        }
-    }
-
-    private PagedResponse<ArtifactTagProperties> listTagPropertiesNextSinglePageSync(String nextLink, Context context) {
-        try {
-            PagedResponse<TagAttributesBase> res = this.serviceClient.getTagsNextSinglePage(nextLink,
-                enableSync(context));
-
-            return UtilsImpl.getPagedResponseWithContinuationToken(res,
-                baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName()));
-        } catch (AcrErrorsException exception) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
-        }
+        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTagProperties(order, context));
     }
 
     /**
@@ -482,27 +410,8 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactTagProperties> updateTagPropertiesWithResponse(String tag, ArtifactTagProperties tagProperties, Context context) {
-        Objects.requireNonNull(tag, "'tag' cannot be null.");
-        Objects.requireNonNull(tagProperties, "'tagProperties' cannot be null.");
-
-        if (tag.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tag' cannot be empty."));
-        }
-
-        TagWriteableProperties writeableProperties = new TagWriteableProperties()
-            .setDeleteEnabled(tagProperties.isDeleteEnabled())
-            .setListEnabled(tagProperties.isListEnabled())
-            .setReadEnabled(tagProperties.isReadEnabled())
-            .setWriteEnabled(tagProperties.isWriteEnabled());
-
-        try {
-            return this.serviceClient.updateTagAttributesWithResponse(getRepositoryName(), tag, writeableProperties,
-                enableSync(context));
-        } catch (AcrErrorsException exception) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
-        }
+        return this.asyncClient.updateTagPropertiesWithResponse(tag, tagProperties, context).block();
     }
-
 
     /**
      * Update the properties {@link ArtifactTagProperties} of the given {@code tag}.
@@ -558,22 +467,8 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
-        Objects.requireNonNull(manifestProperties, "'manifestProperties' cannot be null.");
-
-        ManifestWriteableProperties writeableProperties = new ManifestWriteableProperties()
-            .setDeleteEnabled(manifestProperties.isDeleteEnabled())
-            .setListEnabled(manifestProperties.isListEnabled())
-            .setWriteEnabled(manifestProperties.isWriteEnabled())
-            .setReadEnabled(manifestProperties.isReadEnabled());
-
-        String res = getDigest();
-        try {
-            return this.serviceClient.updateManifestPropertiesWithResponse(getRepositoryName(), res, writeableProperties, enableSync(context));
-        } catch (AcrErrorsException exception) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
-        }
+        return this.asyncClient.updateManifestPropertiesWithResponse(manifestProperties, context).block();
     }
-
 
     /**
      * Update the writeable properties {@link ArtifactTagProperties} of the artifact with the given {@code digest}.

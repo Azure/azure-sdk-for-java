@@ -23,9 +23,6 @@ public final class DeleteRepositoryResult {
     @JsonProperty(value = "tagsDeleted", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> deletedTags;
 
-    /** Creates an instance of DeleteRepositoryResult class. */
-    public DeleteRepositoryResult() {}
-
     /**
      * Get the deletedManifests property: SHA of the deleted image.
      *
