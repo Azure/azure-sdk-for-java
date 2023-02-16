@@ -26,7 +26,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.va
 @Fluent
 public final class DownloadBlobAsyncResult {
     static {
-        ConstructorAccessors.setBlobDownloadResultAccessor(DownloadBlobAsyncResult::new);
+        ConstructorAccessors.setDownloadBlobResultAccessor(DownloadBlobAsyncResult::new);
     }
 
     private final Flux<ByteBuffer> content;

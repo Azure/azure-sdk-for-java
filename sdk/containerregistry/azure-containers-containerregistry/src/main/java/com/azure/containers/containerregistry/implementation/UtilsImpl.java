@@ -54,6 +54,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -227,7 +229,7 @@ public final class UtilsImpl {
             rawResponse.getRequest(),
             rawResponse.getStatusCode(),
             rawResponse.getHeaders(),
-            ConstructorAccessors.createManifestDownloadResult(digest, responseMediaType, rawResponse.getValue()));
+            ConstructorAccessors.createDownloadManifestResult(digest, responseMediaType, rawResponse.getValue()));
     }
 
     private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
@@ -472,5 +474,15 @@ public final class UtilsImpl {
      */
     public static boolean isDigest(String tagOrDigest) {
         return tagOrDigest.length() == 71 && tagOrDigest.startsWith("sha256:");
+    }
+
+    public static String formatFullyQualifiedReference(String endpoint, String repositoryName, String tagOrDigest) {
+        try {
+            URL endpointUrl = new URL(endpoint);
+            return endpointUrl.getHost() + "/" + repositoryName + (isDigest(tagOrDigest) ? "@" : ":") + tagOrDigest;
+        } catch (MalformedURLException ex) {
+            // This will not happen.
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+        }
     }
 }

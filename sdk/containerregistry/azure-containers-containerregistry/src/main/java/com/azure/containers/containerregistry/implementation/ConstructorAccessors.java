@@ -8,6 +8,8 @@ import com.azure.containers.containerregistry.models.DownloadBlobAsyncResult;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.core.util.BinaryData;
+import com.azure.containers.containerregistry.models.UploadBlobResult;
+import com.azure.containers.containerregistry.models.UploadManifestResult;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
@@ -15,48 +17,92 @@ import java.nio.ByteBuffer;
 
 public final class ConstructorAccessors {
     private static final ClientLogger LOGGER = new ClientLogger(ConstructorAccessors.class);
-    private static BlobDownloadAsyncResultConstructorAccessor blobDownloadAccessor;
-    private static ManifestDownloadResultConstructorAccessor manifestDownloadAccessor;
+    private static DownloadBlobAsyncResultConstructorAccessor downloadBlobAccessor;
+    private static DownloadManifestResultConstructorAccessor downloadManifestAccessor;
 
-    public interface BlobDownloadAsyncResultConstructorAccessor {
+    private static UploadBlobResultConstructorAccessor uploadBlobResultAccessor;
+    private static UploadManifestResultConstructorAccessor uploadManifestResultAccessor;
+    public interface DownloadBlobAsyncResultConstructorAccessor {
         DownloadBlobAsyncResult create(String digest, Flux<ByteBuffer> content);
     }
 
-    public interface ManifestDownloadResultConstructorAccessor {
+    public interface DownloadManifestResultConstructorAccessor {
         DownloadManifestResult create(String digest, ManifestMediaType mediaType, BinaryData rawData);
     }
 
-    public static void setBlobDownloadResultAccessor(final BlobDownloadAsyncResultConstructorAccessor accessor) {
-        blobDownloadAccessor = accessor;
+    public interface UploadManifestResultConstructorAccessor {
+        UploadManifestResult create(String digest);
     }
 
-    public static void setManifestDownloadResultAccessor(final ManifestDownloadResultConstructorAccessor accessor) {
-        manifestDownloadAccessor = accessor;
+    public interface UploadBlobResultConstructorAccessor {
+        UploadBlobResult create(String digest);
     }
 
-    public static DownloadBlobAsyncResult createBlobDownloadResult(String digest, Flux<ByteBuffer> content) {
-        if (blobDownloadAccessor == null) {
+    public static void setDownloadBlobResultAccessor(final DownloadBlobAsyncResultConstructorAccessor accessor) {
+        downloadBlobAccessor = accessor;
+    }
+
+    public static void setDownloadManifestResultAccessor(final DownloadManifestResultConstructorAccessor accessor) {
+        downloadManifestAccessor = accessor;
+    }
+
+    public static void setUploadBlobResultAccessor(final UploadBlobResultConstructorAccessor accessor) {
+        uploadBlobResultAccessor = accessor;
+    }
+
+    public static void setUploadManifestResultAccessor(final UploadManifestResultConstructorAccessor accessor) {
+        uploadManifestResultAccessor = accessor;
+    }
+
+    public static DownloadBlobAsyncResult createDownloadBlobResult(String digest, Flux<ByteBuffer> content) {
+        if (downloadBlobAccessor == null) {
             try {
                 // it's possible that nobody yet created BlobDownloadAsyncResult, so we'll need to force its static section to run and set accessor.
-                Class.forName(DownloadBlobAsyncResult.class.getName(), true, BlobDownloadAsyncResultConstructorAccessor.class.getClassLoader());
+                Class.forName(DownloadBlobAsyncResult.class.getName(), true, DownloadBlobAsyncResultConstructorAccessor.class.getClassLoader());
             } catch (ClassNotFoundException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
         }
-        assert blobDownloadAccessor != null;
-        return blobDownloadAccessor.create(digest, content);
+        assert downloadBlobAccessor != null;
+        return downloadBlobAccessor.create(digest, content);
     }
 
-    public static DownloadManifestResult createManifestDownloadResult(String digest, ManifestMediaType mediaType, BinaryData rawData) {
-        if (manifestDownloadAccessor == null) {
+    public static DownloadManifestResult createDownloadManifestResult(String digest, ManifestMediaType mediaType, BinaryData rawData) {
+        if (downloadManifestAccessor == null) {
             try {
                 // it's possible that nobody yet created DownloadBlobAsyncResult, so we'll need to force its static section to run and set accessor.
-                Class.forName(DownloadManifestResult.class.getName(), true, BlobDownloadAsyncResultConstructorAccessor.class.getClassLoader());
+                Class.forName(DownloadManifestResult.class.getName(), true, DownloadManifestResultConstructorAccessor.class.getClassLoader());
             } catch (ClassNotFoundException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
         }
-        assert manifestDownloadAccessor != null;
-        return manifestDownloadAccessor.create(digest, mediaType, rawData);
+        assert downloadManifestAccessor != null;
+        return downloadManifestAccessor.create(digest, mediaType, rawData);
+    }
+
+    public static UploadBlobResult createUploadBlobResult(String digest) {
+        if (uploadBlobResultAccessor == null) {
+            try {
+                // it's possible that nobody yet created BlobDownloadAsyncResult, so we'll need to force its static section to run and set accessor.
+                Class.forName(UploadBlobResult.class.getName(), true, UploadBlobResultConstructorAccessor.class.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+        }
+        assert uploadBlobResultAccessor != null;
+        return uploadBlobResultAccessor.create(digest);
+    }
+
+    public static UploadManifestResult createUploadManifestResult(String digest) {
+        if (uploadManifestResultAccessor == null) {
+            try {
+                // it's possible that nobody yet created BlobDownloadAsyncResult, so we'll need to force its static section to run and set accessor.
+                Class.forName(UploadManifestResult.class.getName(), true, UploadManifestResultConstructorAccessor.class.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+        }
+        assert uploadManifestResultAccessor != null;
+        return uploadManifestResultAccessor.create(digest);
     }
 }

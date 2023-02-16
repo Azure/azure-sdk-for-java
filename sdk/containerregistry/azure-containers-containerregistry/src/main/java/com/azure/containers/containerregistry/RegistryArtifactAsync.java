@@ -6,6 +6,8 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.ArtifactManifestPropertiesHelper;
 import com.azure.containers.containerregistry.implementation.ArtifactTagPropertiesHelper;
+import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
+import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
@@ -28,6 +30,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.formatFullyQualifiedReference;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.isDigest;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -52,8 +57,13 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see ContainerRegistryClientBuilder
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
-public final class RegistryArtifactAsync extends RegistryArtifactBase {
+public final class RegistryArtifactAsync {
     private static final ClientLogger LOGGER = new ClientLogger(RegistryArtifactAsync.class);
+    private final String fullyQualifiedReference;
+    private final String endpoint;
+    private final String repositoryName;
+    private final ContainerRegistriesImpl serviceClient;
+    private final Mono<String> digestMono;
 
     /**
      * Creates a RegistryArtifactAsync type that sends requests to the given repository in the container registry service at {@code endpoint}.
@@ -65,21 +75,24 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
      */
     RegistryArtifactAsync(String repositoryName, String tagOrDigest, HttpPipeline httpPipeline, String endpoint, String version) {
-        super(repositoryName, tagOrDigest, httpPipeline, endpoint, version);
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<String> getDigestMono() {
-        if (this.digest != null) {
-            return Mono.just(digest);
+        Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null.");
+        if (repositoryName.isEmpty()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty"));
         }
 
-        if (isDigest(tagOrDigest)) {
-            return Mono.just(tagOrDigest);
+        Objects.requireNonNull(tagOrDigest, "'tagOrDigest' cannot be null.");
+        if (tagOrDigest.isEmpty()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'digest' can't be empty"));
         }
 
-        return this.getTagProperties(tagOrDigest)
-            .map(a -> a.getDigest());
+        this.serviceClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version).getContainerRegistries();
+        this.fullyQualifiedReference = formatFullyQualifiedReference(endpoint, repositoryName, tagOrDigest);
+        this.endpoint = endpoint;
+        this.repositoryName = repositoryName;
+        this.digestMono = isDigest(tagOrDigest) ? Mono.just(tagOrDigest)
+            : Mono.defer(() -> getTagProperties(tagOrDigest)
+                .map(a -> a.getDigest())
+                .cache());
     }
 
     /**
@@ -101,13 +114,13 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse() {
-        return withContext(context -> this.deleteWithResponse(context));
+        return withContext(context -> deleteWithResponse(context));
     }
 
     private Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
-            return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.deleteManifestWithResponseAsync(getRepositoryName(), res, context))
+            return digestMono
+                .flatMap(res -> serviceClient.deleteManifestWithResponseAsync(getRepositoryName(), res, context))
                 .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
@@ -134,7 +147,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
-        return this.deleteWithResponse().flatMap(FluxUtil::toMono);
+        return deleteWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -160,7 +173,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTagWithResponse(String tag) {
-        return withContext(context -> this.deleteTagWithResponse(tag, context));
+        return withContext(context -> deleteTagWithResponse(tag, context));
     }
 
     private Mono<Response<Void>> deleteTagWithResponse(String tag, Context context) {
@@ -172,7 +185,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
         }
 
         try {
-            return this.serviceClient.deleteTagWithResponseAsync(getRepositoryName(), tag, context)
+            return serviceClient.deleteTagWithResponseAsync(getRepositoryName(), tag, context)
                 .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
@@ -203,7 +216,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTag(String tag) {
-        return this.deleteTagWithResponse(tag).flatMap(FluxUtil::toMono);
+        return deleteTagWithResponse(tag).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -233,13 +246,13 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse() {
-        return withContext(context -> this.getManifestPropertiesWithResponse(context));
+        return withContext(context -> getManifestPropertiesWithResponse(context));
     }
 
     private  Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse(Context context) {
         try {
-            return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.getManifestPropertiesWithResponseAsync(getRepositoryName(), res, context))
+            return digestMono
+                .flatMap(res -> serviceClient.getManifestPropertiesWithResponseAsync(getRepositoryName(), res, context))
                 .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
                     ArtifactManifestPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
@@ -274,7 +287,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArtifactManifestProperties> getManifestProperties() {
-        return this.getManifestPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        return getManifestPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -316,7 +329,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
                 return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
             }
 
-            return this.serviceClient.getTagPropertiesWithResponseAsync(getRepositoryName(), tag, context)
+            return serviceClient.getTagPropertiesWithResponseAsync(getRepositoryName(), tag, context)
                 .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
                     ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
@@ -351,7 +364,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArtifactTagProperties> getTagProperties(String tag) {
-        return this.getTagPropertiesWithResponse(tag).flatMap(FluxUtil::toMono);
+        return getTagPropertiesWithResponse(tag).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -429,9 +442,9 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
 
             final String orderString = order.equals(ArtifactTagOrder.NONE) ? null : order.toString();
 
-            return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(getRepositoryName(), null, pageSize, orderString, res, context))
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
+            return digestMono
+                .flatMap(digest -> serviceClient.getTagsSinglePageAsync(getRepositoryName(), null, pageSize, orderString, digest, context))
+                .map(digest -> UtilsImpl.getPagedResponseWithContinuationToken(digest,
                     baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
@@ -441,7 +454,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
 
     private Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
-            return this.serviceClient.getTagsNextSinglePageAsync(nextLink, context)
+            return serviceClient.getTagsNextSinglePageAsync(nextLink, context)
                 .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
                     baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())));
         } catch (RuntimeException e) {
@@ -478,7 +491,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(
             String tag, ArtifactTagProperties tagProperties) {
-        return withContext(context -> this.updateTagPropertiesWithResponse(tag, tagProperties, context));
+        return withContext(context -> updateTagPropertiesWithResponse(tag, tagProperties, context));
     }
 
     private Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(
@@ -502,7 +515,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
                 .setReadEnabled(tagProperties.isReadEnabled())
                 .setWriteEnabled(tagProperties.isWriteEnabled());
 
-            return this.serviceClient.updateTagAttributesWithResponseAsync(getRepositoryName(), tag, writeableProperties, context)
+            return serviceClient.updateTagAttributesWithResponseAsync(getRepositoryName(), tag, writeableProperties, context)
                 .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
                     ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
@@ -539,7 +552,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArtifactTagProperties> updateTagProperties(String tag, ArtifactTagProperties tagProperties) {
-        return this.updateTagPropertiesWithResponse(tag, tagProperties).flatMap(FluxUtil::toMono);
+        return updateTagPropertiesWithResponse(tag, tagProperties).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -566,7 +579,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties) {
-        return withContext(context -> this.updateManifestPropertiesWithResponse(manifestProperties, context));
+        return withContext(context -> updateManifestPropertiesWithResponse(manifestProperties, context));
     }
 
     private Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(
@@ -582,8 +595,8 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
                 .setWriteEnabled(manifestProperties.isWriteEnabled())
                 .setReadEnabled(manifestProperties.isReadEnabled());
 
-            return getDigestMono()
-                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(getRepositoryName(), res,
+            return digestMono
+                .flatMap(digest -> serviceClient.updateManifestPropertiesWithResponseAsync(getRepositoryName(), digest,
                     writeableProperties, context))
                 .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
                     ArtifactManifestPropertiesHelper.create(internalResponse.getValue())))
@@ -617,6 +630,35 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArtifactManifestProperties> updateManifestProperties(ArtifactManifestProperties manifestProperties) {
-        return this.updateManifestPropertiesWithResponse(manifestProperties).flatMap(FluxUtil::toMono);
+        return updateManifestPropertiesWithResponse(manifestProperties).flatMap(FluxUtil::toMono);
+    }
+
+
+    /**
+     * Gets the Azure Container Registry service endpoint for the current instance.
+     * @return The service endpoint for the current instance.
+     */
+    public String getRegistryEndpoint() {
+        return endpoint;
+    }
+
+    /**
+     * Gets the fully qualified reference for the current instance.
+     * The fully qualifiedName is of the form 'registryName/repositoryName@digest'
+     * or 'registryName/repositoryName:tag' based on the docker naming convention and whether
+     * tag or digest was supplied to the constructor.
+     * @return Fully qualified reference of the current instance.
+     * */
+    public String getFullyQualifiedReference() {
+        return fullyQualifiedReference;
+    }
+
+    /**
+     * Gets the repository name for the current instance.
+     * Gets the repository name for the current instance.
+     * @return Name of the repository for the current instance.
+     * */
+    public String getRepositoryName() {
+        return repositoryName;
     }
 }

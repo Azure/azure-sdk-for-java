@@ -4,6 +4,7 @@
 package com.azure.containers.containerregistry.specialized;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
+import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryBlobsImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
@@ -44,6 +45,7 @@ import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.SUPPORTED_MANIFEST_TYPES;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
@@ -64,7 +66,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.va
  * @see ContainerRegistryBlobClientBuilder
  */
 @ServiceClient(builder = ContainerRegistryBlobClientBuilder.class)
-public class ContainerRegistryBlobClient {
+public final class ContainerRegistryBlobClient {
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBlobClient.class);
 
     private final ContainerRegistryBlobsImpl blobsImpl;
@@ -112,7 +114,7 @@ public class ContainerRegistryBlobClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadManifestResult uploadManifest(OciManifest manifest) {
         Objects.requireNonNull(manifest, "'manifest' cannot be null.");
-        return uploadManifest(new UploadManifestOptions(manifest));
+        return uploadManifestWithResponse(BinaryData.fromObject(manifest), null, ManifestMediaType.OCI_MANIFEST, Context.NONE).getValue();
     }
 
     /**
@@ -131,7 +133,7 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadManifestResult uploadManifest(UploadManifestOptions options) {
-        return uploadManifestWithResponse(options, Context.NONE).getValue();
+        return uploadManifestWithResponse(options.getManifest(), options.getTag(), options.getMediaType(), Context.NONE).getValue();
     }
 
     /**
@@ -152,18 +154,25 @@ public class ContainerRegistryBlobClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UploadManifestResult> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        BinaryData data = options.getManifest().toReplayableBinaryData();
-        String tagOrDigest = options.getTag() != null ? options.getTag() : computeDigest(data.toByteBuffer());
+        return uploadManifestWithResponse(options.getManifest(), options.getTag(), options.getMediaType(), context);
+    }
+
+    private Response<UploadManifestResult> uploadManifestWithResponse(BinaryData manifestData, String tagOrDigest, ManifestMediaType manifestMediaType, Context context) {
+        BinaryData data = manifestData.toReplayableBinaryData();
+        if (tagOrDigest == null) {
+            tagOrDigest = computeDigest(data.toByteBuffer());
+        }
+
         try {
             ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> response = this.registriesImpl
                 .createManifestWithResponse(repositoryName, tagOrDigest, data, data.getLength(),
-                    ManifestMediaType.OCI_MANIFEST.toString(), enableSync(context));
+                    manifestMediaType.toString(), enableSync(context));
 
             return new ResponseBase<>(
                 response.getRequest(),
                 response.getStatusCode(),
                 response.getHeaders(),
-                new UploadManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
+                ConstructorAccessors.createUploadManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
                 response.getDeserializedHeaders());
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -225,7 +234,7 @@ public class ContainerRegistryBlobClient {
                 completeUploadResponse.getRequest(),
                 completeUploadResponse.getStatusCode(),
                 completeUploadResponse.getHeaders(),
-                new UploadBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest()),
+                ConstructorAccessors.createUploadBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest()),
                 completeUploadResponse.getDeserializedHeaders());
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));

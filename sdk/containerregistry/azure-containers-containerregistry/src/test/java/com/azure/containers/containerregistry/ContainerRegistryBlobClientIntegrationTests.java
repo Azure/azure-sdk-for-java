@@ -3,9 +3,13 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.models.ManifestList;
+import com.azure.containers.containerregistry.implementation.UtilsImpl;
+import com.azure.containers.containerregistry.implementation.models.V2Manifest;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
+import com.azure.containers.containerregistry.models.OciAnnotations;
+import com.azure.containers.containerregistry.models.OciBlobDescriptor;
 import com.azure.containers.containerregistry.models.OciManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
@@ -19,6 +23,7 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,6 +34,8 @@ import reactor.test.StepVerifier;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.channels.Channels;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.containers.containerregistry.TestUtils.CONFIG_DATA;
 import static com.azure.containers.containerregistry.TestUtils.CONFIG_DIGEST;
@@ -40,6 +47,7 @@ import static com.azure.containers.containerregistry.TestUtils.MANIFEST;
 import static com.azure.containers.containerregistry.TestUtils.MANIFEST_DIGEST;
 import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -94,6 +102,26 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
             .then();
     }
 
+    private V2Manifest createDockerV2Manifest() {
+        V2Manifest manifest = new V2Manifest()
+            .setMediaType(ManifestMediaType.DOCKER_MANIFEST.toString())
+            .setSchemaVersion(2)
+            .setConfig(new OciBlobDescriptor()
+                .setMediaType("application/vnd.docker.container.image.v1+json")
+                .setDigest(CONFIG_DIGEST)
+                .setSize(171L));
+
+        List<OciBlobDescriptor> layers = new ArrayList<>();
+
+        layers.add(new OciBlobDescriptor()
+            .setMediaType("application/vnd.docker.image.rootfs.diff.tar.gzip")
+            .setSize(28L)
+            .setDigest(LAYER_DIGEST));
+
+        manifest.setLayers(layers);
+        return manifest;
+    }
+
     private void validateManifest(OciManifest originalManifest, BinaryData returnedManifestData) {
         OciManifest returnedManifest = returnedManifestData.toObject(OciManifest.class);
         validateManifest(originalManifest, returnedManifest);
@@ -135,9 +163,10 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     public void canUploadOciManifestBinaryData(HttpClient httpClient) {
         client = getBlobClient("oci-artifact", httpClient);
         uploadManifestPrerequisites();
+
         BinaryData manifestData = BinaryData.fromObject(MANIFEST);
 
-        UploadManifestResult result = client.uploadManifest(new UploadManifestOptions(manifestData));
+        UploadManifestResult result = client.uploadManifest(new UploadManifestOptions(manifestData, ManifestMediaType.OCI_MANIFEST));
         assertNotNull(result);
         assertNotNull(result.getDigest());
 
@@ -176,8 +205,75 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
         assertEquals(MANIFEST_DIGEST, downloadManifestResult.getDigest());
         validateManifest(MANIFEST, downloadManifestResult.asOciManifest());
 
+        validateTag("oci-artifact", MANIFEST_DIGEST, tag, httpClient);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void canUploadDockerManifestWithTag(HttpClient httpClient) {
+        client = getBlobClient("oci-artifact", httpClient);
+        String tag = "v2";
+        uploadManifestPrerequisites();
+        BinaryData dockerV2Manifest = BinaryData.fromObject(createDockerV2Manifest());
+
+        UploadManifestResult result = client.uploadManifest(new UploadManifestOptions(dockerV2Manifest, ManifestMediaType.DOCKER_MANIFEST).setTag(tag));
+        assertNotNull(result);
+        assertNotNull(result.getDigest());
+
+        DownloadManifestResult downloadManifestResult = client.downloadManifest(result.getDigest());
+        assertEquals(result.getDigest(), downloadManifestResult.getDigest());
+
+        validateTag("oci-artifact", result.getDigest(), tag, httpClient);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void canUploadOciManifestAsync(HttpClient httpClient) {
+        client = getBlobClient("oci-artifact", httpClient);
+        asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
+
+        uploadManifestPrerequisites();
+
+        StepVerifier.create(asyncClient.uploadManifest(MANIFEST)
+                .flatMap(result -> {
+                    assertNotNull(result);
+                    assertNotNull(result.getDigest());
+
+                    return asyncClient.downloadManifest(MANIFEST_DIGEST);
+                }))
+            .assertNext(downloadManifestResult -> {
+                assertEquals(MANIFEST_DIGEST, downloadManifestResult.getDigest());
+                validateManifest(MANIFEST, downloadManifestResult.asOciManifest());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void canUploadDockerManifestWithTagAsync(HttpClient httpClient) {
+        client = getBlobClient("oci-artifact", httpClient);
+        asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
+        String tag = "v2";
+        uploadManifestPrerequisites();
+        BinaryData dockerV2Manifest = BinaryData.fromObject(createDockerV2Manifest());
+        String digest = computeDigest(dockerV2Manifest.toByteBuffer().asReadOnlyBuffer());
+        StepVerifier.create(asyncClient.uploadManifest(new UploadManifestOptions(dockerV2Manifest, ManifestMediaType.DOCKER_MANIFEST).setTag(tag))
+                .flatMap(result -> {
+                    assertNotNull(result);
+                    assertNotNull(result.getDigest());
+
+                    return asyncClient.downloadManifest(result.getDigest());
+                }))
+                .assertNext(downloadManifestResult -> assertEquals(digest, downloadManifestResult.getDigest()))
+                .verifyComplete();
+
+        validateTag("oci-artifact", digest, tag, httpClient);
+    }
+
+    private void validateTag(String repoName, String digest, String tag, HttpClient httpClient) {
         ContainerRegistryClient acrClient = getContainerRegistryBuilder(httpClient).buildClient();
-        RegistryArtifact artifact = acrClient.getArtifact("oci-artifact", MANIFEST_DIGEST);
+
+        RegistryArtifact artifact = acrClient.getArtifact(repoName, digest);
         PagedIterable<ArtifactTagProperties> tags = artifact.listTagProperties();
         assertEquals(1, tags.stream().count());
         assertEquals(tag, tags.stream().findFirst().get().getName());
