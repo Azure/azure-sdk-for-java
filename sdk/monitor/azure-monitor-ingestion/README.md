@@ -140,7 +140,7 @@ LogsIngestionClient client = new LogsIngestionClientBuilder()
         .buildClient();
 
 List<Object> logs = getLogs();
-UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
+LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
         .setMaxConcurrency(3);
 client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
         Context.NONE);
@@ -164,8 +164,8 @@ LogsIngestionClient client = new LogsIngestionClientBuilder()
 
 List<Object> logs = getLogs();
 
-UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
-        .setUploadLogsErrorConsumer(uploadLogsError -> {
+LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
+        .setLogsUploadErrorConsumer(uploadLogsError -> {
             System.out.println("Error message " + uploadLogsError.getResponseException().getMessage());
             System.out.println("Total logs failed to upload = " + uploadLogsError.getFailedLogs().size());
 

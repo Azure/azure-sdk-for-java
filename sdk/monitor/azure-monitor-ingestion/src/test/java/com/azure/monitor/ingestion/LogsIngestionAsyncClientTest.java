@@ -6,8 +6,8 @@ package com.azure.monitor.ingestion;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.monitor.ingestion.models.UploadLogsException;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
+import com.azure.monitor.ingestion.models.LogsUploadException;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -57,11 +57,11 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
 
         StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs))
                 .verifyErrorSatisfies(error -> {
-                    assertTrue(error instanceof UploadLogsException);
-                    if (error instanceof UploadLogsException) {
-                        UploadLogsException ex = (UploadLogsException) error;
+                    assertTrue(error instanceof LogsUploadException);
+                    if (error instanceof LogsUploadException) {
+                        LogsUploadException ex = (LogsUploadException) error;
                         assertEquals(49460, ex.getFailedLogsCount());
-                        assertEquals(5, ex.getUploadLogsErrors().size());
+                        assertEquals(5, ex.getLogsUploadErrors().size());
                     }
                 });
     }
@@ -71,8 +71,8 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         AtomicLong failedLogsCount = new AtomicLong();
-        UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
-                .setUploadLogsErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
+        LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
+                .setLogsUploadErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
 
         LogsIngestionAsyncClient client = clientBuilder
                 .addPolicy(new PartialFailurePolicy(count))
@@ -88,8 +88,8 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     public void testUploadLogsStopOnFirstError() {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
-        UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
-                .setUploadLogsErrorConsumer(error -> {
+        LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
+                .setLogsUploadErrorConsumer(error -> {
                     // throw on first error
                     throw error.getResponseException();
                 });

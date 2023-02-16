@@ -22,9 +22,9 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesAsyncClient;
 import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
 import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
-import com.azure.monitor.ingestion.models.UploadLogsError;
-import com.azure.monitor.ingestion.models.UploadLogsException;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
+import com.azure.monitor.ingestion.models.LogsUploadError;
+import com.azure.monitor.ingestion.models.LogsUploadException;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import reactor.core.publisher.Flux;
@@ -98,7 +98,7 @@ public final class LogsIngestionAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> upload(String ruleId, String streamName, Iterable<Object> logs) {
-        return upload(ruleId, streamName, logs, new UploadLogsOptions());
+        return upload(ruleId, streamName, logs, new LogsUploadOptions());
     }
 
     /**
@@ -110,7 +110,7 @@ public final class LogsIngestionAsyncClient {
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
-     * UploadLogsOptions uploadLogsOptions = new UploadLogsOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
+     * LogsUploadOptions uploadLogsOptions = new LogsUploadOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
      * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs, uploadLogsOptions&#41;
      *         .subscribe&#40;&#41;;
      * </pre>
@@ -127,7 +127,7 @@ public final class LogsIngestionAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> upload(String ruleId, String streamName,
-                                         Iterable<Object> logs, UploadLogsOptions options) {
+                                         Iterable<Object> logs, LogsUploadOptions options) {
         return withContext(context -> upload(ruleId, streamName, logs, options, context));
     }
 
@@ -183,7 +183,7 @@ public final class LogsIngestionAsyncClient {
     }
 
     Mono<Void> upload(String ruleId, String streamName,
-                      Iterable<Object> logs, UploadLogsOptions options,
+                      Iterable<Object> logs, LogsUploadOptions options,
                       Context context) {
         return Mono.defer(() -> splitAndUpload(ruleId, streamName, logs, options, context));
     }
@@ -200,7 +200,7 @@ public final class LogsIngestionAsyncClient {
      * @return the {@link Mono} that completes on completion of the upload request.
      */
     private Mono<Void> splitAndUpload(String ruleId, String streamName, Iterable<Object> logs,
-                                      UploadLogsOptions options, Context context) {
+                                      LogsUploadOptions options, Context context) {
         // set concurrency to 1 as default
         int concurrency = 1;
         ObjectSerializer objectSerializer = DEFAULT_SERIALIZER;
@@ -218,7 +218,7 @@ public final class LogsIngestionAsyncClient {
 
         return Flux.<LogsIngestionRequest>create(emitter -> createHttpRequest(serializer, iterator, emitter))
                 .flatMapSequential(request -> uploadToService(ruleId, streamName, context, request), concurrency)
-                .<UploadLogsException>handle((responseHolder, sink) -> processResponse(options, responseHolder, sink))
+                .<LogsUploadException>handle((responseHolder, sink) -> processResponse(options, responseHolder, sink))
                 .collectList()
                 .handle((result, sink) -> processExceptions(result, sink));
     }
@@ -268,33 +268,33 @@ public final class LogsIngestionAsyncClient {
         }
     }
 
-    private void processExceptions(List<UploadLogsException> result, SynchronousSink<Void> sink) {
+    private void processExceptions(List<LogsUploadException> result, SynchronousSink<Void> sink) {
         long failedLogsCount = 0L;
         List<HttpResponseException> exceptions = new ArrayList<>();
-        for (UploadLogsException exception : result) {
-            exceptions.addAll(exception.getUploadLogsErrors());
+        for (LogsUploadException exception : result) {
+            exceptions.addAll(exception.getLogsUploadErrors());
             failedLogsCount += exception.getFailedLogsCount();
         }
         if (!exceptions.isEmpty()) {
-            sink.error(new UploadLogsException(exceptions, failedLogsCount));
+            sink.error(new LogsUploadException(exceptions, failedLogsCount));
         } else {
             sink.complete();
         }
     }
 
-    private void processResponse(UploadLogsOptions options, UploadLogsResponseHolder responseHolder, SynchronousSink<UploadLogsException> sink) {
+    private void processResponse(LogsUploadOptions options, UploadLogsResponseHolder responseHolder, SynchronousSink<LogsUploadException> sink) {
         if (responseHolder.getException() != null) {
-            Consumer<UploadLogsError> uploadLogsErrorConsumer = null;
+            Consumer<LogsUploadError> uploadLogsErrorConsumer = null;
             if (options != null) {
-                uploadLogsErrorConsumer = options.getUploadLogsErrorConsumer();
+                uploadLogsErrorConsumer = options.getLogsUploadErrorConsumer();
             }
             if (uploadLogsErrorConsumer != null) {
-                uploadLogsErrorConsumer.accept(new UploadLogsError(responseHolder.getException(), responseHolder.getRequest().getLogs()));
+                uploadLogsErrorConsumer.accept(new LogsUploadError(responseHolder.getException(), responseHolder.getRequest().getLogs()));
                 return;
             }
             // emit the responseHolder without the original logs only if there's an error and there's no
             // error consumer
-            sink.next(new UploadLogsException(Collections.singletonList(responseHolder.getException()),
+            sink.next(new LogsUploadException(Collections.singletonList(responseHolder.getException()),
                     responseHolder.getRequest().getLogs().size()));
         }
     }

@@ -14,7 +14,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 
 /**
  * The synchronous client for uploading logs to Azure Monitor.
@@ -73,7 +73,7 @@ public final class LogsIngestionClient {
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
-     * UploadLogsOptions uploadLogsOptions = new UploadLogsOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
+     * LogsUploadOptions uploadLogsOptions = new LogsUploadOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
      * logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs,
      *         uploadLogsOptions, Context.NONE&#41;;
      * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
@@ -89,7 +89,7 @@ public final class LogsIngestionClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(String ruleId, String streamName,
-                                   Iterable<Object> logs, UploadLogsOptions options) {
+                                   Iterable<Object> logs, LogsUploadOptions options) {
         asyncClient.upload(ruleId, streamName, logs, options, Context.NONE).block();
     }
 
@@ -110,7 +110,7 @@ public final class LogsIngestionClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(String ruleId, String streamName,
-                                   Iterable<Object> logs, UploadLogsOptions options, Context context) {
+                       Iterable<Object> logs, LogsUploadOptions options, Context context) {
         asyncClient.upload(ruleId, streamName, logs, options, context).block();
     }
 

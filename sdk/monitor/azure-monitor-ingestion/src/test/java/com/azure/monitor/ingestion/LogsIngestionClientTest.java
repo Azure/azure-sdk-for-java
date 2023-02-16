@@ -7,8 +7,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.monitor.ingestion.models.UploadLogsException;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
+import com.azure.monitor.ingestion.models.LogsUploadException;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
         LogsIngestionClient client = clientBuilder
                 .addPolicy(new BatchCountPolicy(count))
                 .buildClient();
-        client.upload(dataCollectionRuleId, streamName, logs, new UploadLogsOptions().setMaxConcurrency(3));
+        client.upload(dataCollectionRuleId, streamName, logs, new LogsUploadOptions().setMaxConcurrency(3));
         assertEquals(2, count.get());
     }
 
@@ -63,11 +63,11 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
                 .addPolicy(new PartialFailurePolicy(count))
                 .buildClient();
 
-        UploadLogsException uploadLogsException = assertThrows(UploadLogsException.class, () -> {
+        LogsUploadException uploadLogsException = assertThrows(LogsUploadException.class, () -> {
             client.upload(dataCollectionRuleId, streamName, logs);
         });
         assertEquals(49460, uploadLogsException.getFailedLogsCount());
-        assertEquals(5, uploadLogsException.getUploadLogsErrors().size());
+        assertEquals(5, uploadLogsException.getLogsUploadErrors().size());
     }
 
     @Test
@@ -75,8 +75,8 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         AtomicLong failedLogsCount = new AtomicLong();
-        UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
-                .setUploadLogsErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
+        LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
+                .setLogsUploadErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
 
         LogsIngestionClient client = clientBuilder
                 .addPolicy(new PartialFailurePolicy(count))
@@ -91,8 +91,8 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     public void testUploadLogsStopOnFirstError() {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
-        UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
-                .setUploadLogsErrorConsumer(error -> {
+        LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
+                .setLogsUploadErrorConsumer(error -> {
                     // throw on first error
                     throw error.getResponseException();
                 });
@@ -102,7 +102,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
                 .buildClient();
 
         assertThrows(HttpResponseException.class, () -> client.upload(dataCollectionRuleId, streamName, logs,
-                uploadLogsOptions));
+                logsUploadOptions));
         assertEquals(2, count.get());
     }
 
