@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.models.{CosmosContainerProperties, ExcludedPath, FeedRange, IncludedPath, IndexingMode, IndexingPolicy, ModelBridgeInternal, PartitionKeyDefinition, PartitionKeyDefinitionVersion, SparkModelBridgeInternal, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants, Exceptions}
+import org.apache.spark.sql.connector.catalog.{NamespaceChange, TableChange}
 import reactor.core.publisher.Mono
 import reactor.core.scala.publisher.SMono.{PimpJFlux, PimpJMono}
 import reactor.core.scala.publisher.{SFlux, SMono}
@@ -365,4 +366,87 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
                 }
             })
     }
+
+    override def alterContainer
+    (
+      databaseName: String,
+      containerName: String,
+      finalThroughputProperty: TableChange.SetProperty
+    ): SMono[Boolean] = {
+
+        readContainerThroughputProperties(databaseName, containerName)
+          .flatMap(throughPutPropertiesTuple => {
+            if (throughPutPropertiesTuple._2) {
+              throw new UnsupportedOperationException(
+                "ALTER TABLE cannot be used to modify throughput of a container using shared database throughput.")
+            }
+
+            val database = cosmosAsyncClient.getDatabase(databaseName)
+            val container = database.getContainer(containerName)
+
+            val newThroughputProperties = if (CosmosThroughputProperties
+              .manualThroughputFieldName
+              .equalsIgnoreCase(finalThroughputProperty.property())) {
+
+              ThroughputProperties.createManualThroughput(finalThroughputProperty.value().toInt)
+            } else {
+              ThroughputProperties.createAutoscaledThroughput(finalThroughputProperty.value().toInt)
+            }
+
+            container.replaceThroughput(newThroughputProperties)
+              .asScala
+              .map(throughputResponse => {
+                if (!throughputResponse.isReplacePending) {
+                  logInfo(s"Updated throughput synchronously " +
+                    s"($databaseName.$containerName - ${finalThroughputProperty.property()}: ${finalThroughputProperty.value()}).")
+                  true
+                } else {
+                  logWarning(s"Throughput will be updated asynchronously " +
+                    s"($databaseName.$containerName - ${finalThroughputProperty.property()}: ${finalThroughputProperty.value()}).")
+                  false
+                }
+              })
+          })
+    }
+
+  override def alterDatabase
+  (
+    databaseName: String,
+    finalThroughputProperty:
+    NamespaceChange.SetProperty
+  ): SMono[Boolean] = {
+
+    readDatabaseThroughput(databaseName)
+      .flatMap(throughPutPropertiesMap => {
+        if (throughPutPropertiesMap.size == 0) {
+          throw new UnsupportedOperationException(
+            "ALTER NAMESPACE can only be used to modify throughput of a database with shared throughput being enabled.")
+        }
+
+        val database = cosmosAsyncClient.getDatabase(databaseName)
+
+        val newThroughputProperties = if (CosmosThroughputProperties
+          .manualThroughputFieldName
+          .equalsIgnoreCase(finalThroughputProperty.property())) {
+
+          ThroughputProperties.createManualThroughput(finalThroughputProperty.value().toInt)
+        } else {
+          ThroughputProperties.createAutoscaledThroughput(finalThroughputProperty.value().toInt)
+        }
+
+        database.replaceThroughput(newThroughputProperties)
+          .asScala
+          .map(throughputResponse => {
+            if (!throughputResponse.isReplacePending) {
+              logInfo(s"Updated throughput synchronously " +
+                s"($databaseName - ${finalThroughputProperty.property()}: ${finalThroughputProperty.value()}).")
+              true
+            } else {
+              logWarning(s"Throughput will be updated asynchronously " +
+                s"($databaseName - ${finalThroughputProperty.property()}: ${finalThroughputProperty.value()}).")
+              false
+            }
+          })
+      })
+  }
 }

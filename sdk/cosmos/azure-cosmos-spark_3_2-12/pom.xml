@@ -89,7 +89,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -474,6 +474,30 @@
                     <relocation>
                       <pattern>com.azure.resourcemanager</pattern>
                       <shadedPattern>${shadingPrefix}.com.azure.resourcemanager</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.microsoft.aad</pattern>
+                      <shadedPattern>${shadingPrefix}.com.microsoft.aad</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.nimbusds</pattern>
+                      <shadedPattern>${shadingPrefix}.com.nimbusds</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.sun.jna</pattern>
+                      <shadedPattern>${shadingPrefix}.com.sun.jna</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>net.minidev</pattern>
+                      <shadedPattern>${shadingPrefix}.net.minidev</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>org.objectweb</pattern>
+                      <shadedPattern>${shadingPrefix}.org.objectweb</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>net.jcip</pattern>
+                      <shadedPattern>${shadingPrefix}.net.jcip</shadedPattern>
                     </relocation>
                   </relocations>
                   <filters>

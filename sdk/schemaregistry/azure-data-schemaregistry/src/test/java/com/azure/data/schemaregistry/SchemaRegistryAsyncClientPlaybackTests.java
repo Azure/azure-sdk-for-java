@@ -9,6 +9,7 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -25,6 +26,7 @@ import java.time.OffsetDateTime;
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -34,6 +36,7 @@ import static org.mockito.Mockito.when;
  * reproduced with the latest client.
  */
 public class SchemaRegistryAsyncClientPlaybackTests {
+    private final TestMode testMode = TestingHelpers.getTestMode();
     private TokenCredential tokenCredential;
     private String endpoint;
     private TestContextManager testContextManager;
@@ -44,6 +47,11 @@ public class SchemaRegistryAsyncClientPlaybackTests {
         if (!testInfo.getTestMethod().isPresent()) {
             throw new IllegalStateException(
                 "Expected testInfo.getTestMethod() not be empty since we need a method for TestContextManager.");
+        }
+
+        // We only do this in playback mode since the content is static.
+        if (testMode != TestMode.PLAYBACK) {
+            return;
         }
 
         this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), TestMode.PLAYBACK);
@@ -67,7 +75,11 @@ public class SchemaRegistryAsyncClientPlaybackTests {
 
     @AfterEach
     public void teardownTest() {
-        if (testContextManager != null && testContextManager.didTestRun()) {
+        if (testMode != TestMode.PLAYBACK) {
+            return;
+        }
+
+        if (testContextManager != null && testContextManager.didTestRun() && interceptorManager != null) {
             interceptorManager.close();
         }
 
@@ -80,6 +92,8 @@ public class SchemaRegistryAsyncClientPlaybackTests {
      */
     @Test
     public void getSchemaByIdFromPortal() {
+        assumeTrue(testMode == TestMode.PLAYBACK, "Test is only run in PLAYBACK mode.");
+
         // Arrange
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace(endpoint)
@@ -104,6 +118,8 @@ public class SchemaRegistryAsyncClientPlaybackTests {
      */
     @Test
     public void getSchemaBackCompatibility() {
+        assumeTrue(testMode == TestMode.PLAYBACK, "Test is only run in PLAYBACK mode.");
+
         // Arrange
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace(endpoint)

@@ -14,6 +14,12 @@ import java.util.Objects;
 @SuppressWarnings("resource")
 public abstract class JsonWriter implements Closeable {
     /**
+     * Creates an instance of {@link JsonWriter}.
+     */
+    public JsonWriter() {
+    }
+
+    /**
      * Gets the current {@link JsonWriteContext writing context} for the JSON object.
      * <p>
      * The writing context can help determine whether a write operation would be illegal.

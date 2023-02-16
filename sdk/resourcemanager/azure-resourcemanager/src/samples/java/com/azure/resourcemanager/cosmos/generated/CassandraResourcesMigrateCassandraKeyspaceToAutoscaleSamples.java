@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CassandraResources MigrateCassandraKeyspaceToAutoscale. */
 public final class CassandraResourcesMigrateCassandraKeyspaceToAutoscaleSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBCassandraKeyspaceMigrateToAutoscale.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBCassandraKeyspaceMigrateToAutoscale.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceMigrateToAutoscale.
@@ -23,6 +21,6 @@ public final class CassandraResourcesMigrateCassandraKeyspaceToAutoscaleSamples 
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .migrateCassandraKeyspaceToAutoscale("rg1", "ddb1", "keyspaceName", Context.NONE);
+            .migrateCassandraKeyspaceToAutoscale("rg1", "ddb1", "keyspaceName", com.azure.core.util.Context.NONE);
     }
 }

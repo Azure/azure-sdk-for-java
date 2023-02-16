@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>4.0.3</version>
+    <version>4.0.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -162,7 +162,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.7.3</version>
+    <version>1.8.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -198,7 +198,7 @@ More information about analyzing documents, including supported features, locale
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
-[DocumentModelAdministrationAsyncClient][document_model_admin_sync_client] provide both synchronous and asynchronous operations
+[DocumentModelAdministrationAsyncClient][document_model_admin_async_client] provide both synchronous and asynchronous operations
 - Build custom document analysis models to analyze text content, fields, and values found in your custom documents. See example [Build a document model](#build-a-document-model).
   A `DocumentModelDetails` is returned indicating the document types that the model can analyze, along with the fields and schemas it will extract.
 - Managing models created in your account by building, listing, deleting, and see the limit of custom models your account. See example [Manage models](#manage-your-models).

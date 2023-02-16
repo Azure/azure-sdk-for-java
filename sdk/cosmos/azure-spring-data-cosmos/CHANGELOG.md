@@ -1,6 +1,8 @@
 ## Release History
 
 ### 3.32.0-beta.1 (Unreleased)
+#### Features Added
+* Added support for multi-tenancy at the Container level via `CosmosFactory` - See [PR 33400](https://github.com/Azure/azure-sdk-for-java/pull/33400)
 
 #### Features Added
 

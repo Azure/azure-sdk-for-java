@@ -26,6 +26,14 @@ public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTa
     public static final DocumentTableCellKind DESCRIPTION = fromString("description");
 
     /**
+     * Creates a new instance of DocumentTableCellKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentTableCellKind() {}
+
+    /**
      * Creates or finds a DocumentTableCellKind from its string representation.
      *
      * @param name a name to look for.

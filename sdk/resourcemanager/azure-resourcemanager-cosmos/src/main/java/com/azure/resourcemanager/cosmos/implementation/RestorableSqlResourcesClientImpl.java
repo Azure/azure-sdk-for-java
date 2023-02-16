@@ -56,7 +56,7 @@ public final class RestorableSqlResourcesClientImpl implements RestorableSqlReso
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface RestorableSqlResourcesService {
+    public interface RestorableSqlResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}"

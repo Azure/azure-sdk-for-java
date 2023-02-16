@@ -18,6 +18,10 @@ public final class DatabasePrincipalAssignmentListResult {
     @JsonProperty(value = "value")
     private List<DatabasePrincipalAssignmentInner> value;
 
+    /** Creates an instance of DatabasePrincipalAssignmentListResult class. */
+    public DatabasePrincipalAssignmentListResult() {
+    }
+
     /**
      * Get the value property: The list of Kusto database principal assignments.
      *

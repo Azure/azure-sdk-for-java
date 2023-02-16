@@ -28,6 +28,10 @@ public final class MongoDBDatabaseGetPropertiesResource extends MongoDBDatabaseR
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of MongoDBDatabaseGetPropertiesResource class. */
+    public MongoDBDatabaseGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

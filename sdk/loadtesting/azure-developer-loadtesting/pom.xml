@@ -38,7 +38,6 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.skip>false</jacoco.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -72,7 +71,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
