@@ -7,7 +7,6 @@ package com.azure.data.schemaregistry.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-
 import java.io.InputStream;
 
 /** Contains all response data for the getById operation. */
@@ -18,7 +17,7 @@ public final class SchemasGetByIdResponse extends ResponseBase<SchemasGetByIdHea
      * @param request the request which resulted in this SchemasGetByIdResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
-     * @param value the content stream.
+     * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
     public SchemasGetByIdResponse(
@@ -31,9 +30,9 @@ public final class SchemasGetByIdResponse extends ResponseBase<SchemasGetByIdHea
     }
 
     /**
-     * Gets the response content stream.
+     * Gets the deserialized response body.
      *
-     * @return the response content stream.
+     * @return the deserialized response body.
      */
     @Override
     public InputStream getValue() {

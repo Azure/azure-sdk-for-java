@@ -17,7 +17,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
-import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -167,12 +166,11 @@ public final class SchemaRegistryAsyncClient {
             groupName, name, format, schemaDefinition);
 
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
-        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
-        return restService.getSchemas().registerWithResponseAsync(groupName, name, contentType, binaryData,
-                binaryData.getLength(), context)
+        return restService.getSchemas().registerWithResponseAsync(groupName, name, binaryData, binaryData.getLength(),
+                context)
             .map(response -> {
-                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response, format);
+                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -399,14 +397,12 @@ public final class SchemaRegistryAsyncClient {
         }
 
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
-        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
         return restService.getSchemas()
-            .queryIdByContentWithResponseAsync(groupName, name, contentType, binaryData, binaryData.getLength(),
-                context)
+            .queryIdByContentWithResponseAsync(groupName, name, binaryData, binaryData.getLength(), context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response, format);
+                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
