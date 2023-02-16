@@ -4,7 +4,7 @@ FarmBeats is a B2B PaaS offering from Microsoft that makes it easy for AgriFood 
 
 Use FarmBeats client library for Python to do the following. 
 
-- Create & update farmers, farms, fields, seasonal fields and boundaries.
+- Create & update parties, farms, fields, seasonal fields and boundaries.
 - Ingest satellite and weather data for areas of interest.
 - Ingest farm operations data covering tilling, planting, harvesting and application of farm inputs.
 
