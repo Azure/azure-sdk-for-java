@@ -58,10 +58,9 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
-<!-- embedme src/samples/java/com.azure.verticals.agrifood.farming/ReadmeSamples.java#L20-L25 -->
+<!-- embedme src/samples/java/com.azure.verticals.agrifood.farming/ReadmeSamples.java#L20-L24 -->
 ```java readme-sample-createPartiesClient
-PartiesClientBuilder builder =
-new PartiesClientBuilder()
+PartiesClientBuilder builder = new PartiesClientBuilder()
     .host("https://<farmbeats-endpoint>.farmbeats.azure.net")
     .httpClient(HttpClient.createDefault());
 PartiesClient partiesClient = builder.buildClient();
