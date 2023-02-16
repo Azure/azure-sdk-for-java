@@ -218,7 +218,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
                 .build();
         try {
             createdMultiHashContainer.createItem(doc, partitionKey, new CosmosItemRequestOptions());
-        } catch (Exception e) {
+        } catch (CosmosException e) {
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.\n"));
         }
 
@@ -228,7 +228,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         wrongDoc.set("city", new TextNode("Redmond"));
         try {
             createdMultiHashContainer.createItem(wrongDoc);
-        } catch (Exception e) {
+        } catch (CosmosException e) {
             assertThat(e.getMessage().contains("PartitionKey extracted from document doesn't match the one specified in the header."));
         }
 
@@ -248,7 +248,8 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         PartitionKey partialPK = new PartitionKeyBuilder().add(doc.get("city").asText()).build();
         try {
             createdMultiHashContainer.readItem(doc.get("id").asText(), partialPK, ObjectNode.class);
-        } catch (Exception e) {
+        } catch (CosmosException e) {
+            assertThat(e.getStatusCode()).isEqualTo(400);
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.\n"));
         }
 
@@ -283,7 +284,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         try {
             readAllResults = createdMultiHashContainer.readAllItems(partialPK, ObjectNode.class);
             readAllResults.stream().toArray();
-        } catch (Exception e) {
+        } catch (CosmosException e) {
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.\n"));
         }
 
@@ -363,7 +364,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         try {
             feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
             feedResponseIterator.stream().toArray();
-        } catch (Exception e) {
+        } catch (CosmosException e) {
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.\n"));
         }
 
@@ -384,7 +385,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
                 new PartitionKeyBuilder()
                     .add(doc3.get("city").asText())
                     .build(), new CosmosItemRequestOptions());
-        } catch (Exception e) {
+        } catch (CosmosException e) {
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.\n"));
         }
 
@@ -404,7 +405,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             createdMultiHashContainer.deleteAllItemsByPartitionKey(new PartitionKeyBuilder()
                 .add(doc6.get("city").asText())
                 .build(), new CosmosItemRequestOptions());
-        } catch (Exception e) {
+        } catch (CosmosException e) {
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.\n"));
         }
     }
