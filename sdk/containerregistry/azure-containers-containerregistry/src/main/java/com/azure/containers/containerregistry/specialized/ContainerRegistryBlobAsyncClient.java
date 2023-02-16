@@ -32,20 +32,27 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.SUPPORTED_MANIFEST_TYPES;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toDownloadManifestResponse;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
+import static com.azure.core.util.CoreUtils.bytesToHexString;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -63,15 +70,16 @@ public final class ContainerRegistryBlobAsyncClient {
     private final ContainerRegistriesImpl registriesImpl;
     private final String endpoint;
     private final String repositoryName;
-
+    private final Tracer tracer;
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBlobAsyncClient.class);
 
-    ContainerRegistryBlobAsyncClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
+    ContainerRegistryBlobAsyncClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version, Tracer tracer) {
         this.repositoryName = repositoryName;
         this.endpoint = endpoint;
         AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version);
         this.blobsImpl = registryImplClient.getContainerRegistryBlobs();
         this.registriesImpl = registryImplClient.getContainerRegistries();
+        this.tracer = tracer;
     }
 
     /**
@@ -188,7 +196,11 @@ public final class ContainerRegistryBlobAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadBlobResult> uploadBlob(BinaryData data) {
-        return uploadBlobWithResponse(data).flatMap(FluxUtil::toMono);
+        if (data == null) {
+            return monoError(LOGGER, new NullPointerException("'data' can't be null."));
+        }
+
+        return uploadBlob(data.toFluxByteBuffer());
     }
 
     /**
@@ -204,26 +216,65 @@ public final class ContainerRegistryBlobAsyncClient {
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UploadBlobResult>> uploadBlobWithResponse(BinaryData data) {
-        return withContext(context -> this.uploadBlobWithResponse(data, context));
+    public Mono<UploadBlobResult> uploadBlob(Flux<ByteBuffer> data) {
+        return withContext(context -> runWithTracing(span -> uploadBlob(data, span), context));
     }
 
-    private Mono<Response<UploadBlobResult>> uploadBlobWithResponse(BinaryData data, Context context) {
+    private Mono<String> upload(Flux<ByteBuffer> data, String location, Context context) {
+        AtomicReference<String> locationRef = new AtomicReference<>(location);
+
+        return data
+            .flatMapSequential(chunk -> {
+                BinaryData chunkData = BinaryData.fromByteBuffer(chunk);
+                return blobsImpl.uploadChunkWithResponseAsync(locationRef.get(), chunkData, chunkData.getLength(), context)
+                    .map(response -> getLocation(response));
+            }, 1, 1)
+            .doOnNext(locationRef::set)
+            .last();
+    }
+
+    private Mono<UploadBlobResult> uploadBlob(Flux<ByteBuffer> data, Context context) {
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'data' can't be null."));
         }
+        MessageDigest sha256 = createSha256();
+        Flux<ByteBuffer> chunks = chunkSource(data, sha256);
 
-        String digest = computeDigest(data.toByteBuffer());
-        return blobsImpl.startUploadWithResponseAsync(repositoryName, context)
-                .flatMap(startUploadResponse -> blobsImpl.uploadChunkWithResponseAsync(trimNextLink(startUploadResponse.getDeserializedHeaders().getLocation()), data.toFluxByteBuffer(), data.getLength(), context))
-                .flatMap(uploadChunkResponse -> blobsImpl.completeUploadWithResponseAsync(digest, trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), (Flux<ByteBuffer>) null, 0L, context))
-                .map(completeUploadResponse -> (Response<UploadBlobResult>)
-                    new ResponseBase<>(completeUploadResponse.getRequest(),
-                        completeUploadResponse.getStatusCode(),
-                        completeUploadResponse.getHeaders(),
-                        ConstructorAccessors.createUploadBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest()),
-                        completeUploadResponse.getDeserializedHeaders()))
-                .onErrorMap(UtilsImpl::mapException);
+        return blobsImpl
+            .startUploadWithResponseAsync(repositoryName, context)
+            .flatMap(response -> upload(chunks, getLocation(response), context))
+            // TODO (limolkova) if we knew when's the last chunk, we could upload it in complete call instead.
+            .flatMap(location -> blobsImpl.completeUploadWithResponseAsync("sha256:" + bytesToHexString(sha256.digest()), location, (BinaryData) null, 0L, context))
+            .map(response -> ConstructorAccessors.createUploadBlobResult(response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME)))
+            .onErrorMap(UtilsImpl::mapException);
+    }
+
+    /**
+     * Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
+     * as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool buffer
+     * filling up with more data to write). We use flatMapSequential because we need to guarantee we preserve the
+     * ordering of the buffers, but we don't really care if one is split before another.
+     * @param data Data to chunk
+     * @return Chunked data
+     */
+    private static Flux<ByteBuffer> chunkSource(Flux<ByteBuffer> data, MessageDigest sha256) {
+        // TODO (limolkova) unify with storage, taken from it.
+        return data
+            .flatMapSequential(buffer -> {
+                if (buffer.remaining() <= CHUNK_SIZE) {
+                    sha256.update(buffer.asReadOnlyBuffer());
+                    return Flux.just(buffer);
+                }
+                int numSplits = (int) Math.ceil(buffer.remaining() / (double) CHUNK_SIZE);
+                return Flux.range(0, numSplits)
+                    .map(i -> {
+                        ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                        duplicate.position(i * CHUNK_SIZE);
+                        duplicate.limit(Math.min(duplicate.limit(), (i + 1) * CHUNK_SIZE));
+                        sha256.update(duplicate.asReadOnlyBuffer());
+                        return duplicate;
+                    });
+            }, 1, 1);
     }
 
     /**
@@ -389,5 +440,15 @@ public final class ContainerRegistryBlobAsyncClient {
         return this.registriesImpl.deleteManifestWithResponseAsync(repositoryName, digest, context)
             .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
             .onErrorMap(UtilsImpl::mapException);
+    }
+
+    private <T> Mono<T> runWithTracing(Function<Context, Mono<T>> uploadBlob, Context context) {
+        Context span = tracer.start("ContainerRegistryBlobAsyncClient.uploadBlob", context);
+        return uploadBlob.apply(span)
+            .doOnEach(signal -> {
+                if (signal.isOnComplete() || signal.isOnError()) {
+                    tracer.end(null, signal.getThrowable(), span);
+                }
+            });
     }
 }

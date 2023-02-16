@@ -35,13 +35,18 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.security.MessageDigest;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.SUPPORTED_MANIFEST_TYPES;
@@ -50,11 +55,12 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toDownloadManifestResponse;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
+import static com.azure.core.util.CoreUtils.bytesToHexString;
 
 /**
  * This class provides a client that exposes operations to push and pull images into container registry.
@@ -72,13 +78,15 @@ public final class ContainerRegistryBlobClient {
     private final ContainerRegistriesImpl registriesImpl;
     private final String endpoint;
     private final String repositoryName;
+    private final Tracer tracer;
 
-    ContainerRegistryBlobClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
+    ContainerRegistryBlobClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version, Tracer tracer) {
         this.repositoryName = repositoryName;
         this.endpoint = endpoint;
         AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version);
         this.blobsImpl = registryImplClient.getContainerRegistryBlobs();
         this.registriesImpl = registryImplClient.getContainerRegistries();
+        this.tracer = tracer;
     }
 
     /**
@@ -192,7 +200,17 @@ public final class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadBlobResult uploadBlob(BinaryData data) {
-        return uploadBlobWithResponse(data, Context.NONE).getValue();
+        Objects.requireNonNull(data, "'data' cannot be null.");
+        InputStream stream = data.toStream();
+        try {
+            return uploadBlob(Channels.newChannel(stream), Context.NONE);
+        } finally {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                LOGGER.warning("Failed to close the stream", e);
+            }
+        }
     }
 
     /**
@@ -203,43 +221,68 @@ public final class ContainerRegistryBlobClient {
      * We currently do not support breaking the layer into multiple chunks and uploading them one at a time
      * The service does support this via range header.
      *
-     * @param data The blob\image content that needs to be uploaded.
+     * @param stream The blob\image content that needs to be uploaded.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The rest response containing the operation result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UploadBlobResult> uploadBlobWithResponse(BinaryData data, Context context) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
-
-        context = enableSync(context);
-
-        String digest = computeDigest(data.toByteBuffer());
-        try {
-            ResponseBase<ContainerRegistryBlobsStartUploadHeaders, Void> startUploadResponse = this.blobsImpl
-                .startUploadWithResponse(repositoryName, context);
-
-            ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void> uploadChunkResponse = this.blobsImpl
-                .uploadChunkWithResponse(trimNextLink(startUploadResponse.getDeserializedHeaders().getLocation()), data,
-                    data.getLength(), context);
-
-            ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void> completeUploadResponse = this.blobsImpl
-                .completeUploadWithResponse(digest,
-                    trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), (BinaryData) null, 0L,
-                    context);
-
-            return new ResponseBase<>(
-                completeUploadResponse.getRequest(),
-                completeUploadResponse.getStatusCode(),
-                completeUploadResponse.getHeaders(),
-                ConstructorAccessors.createUploadBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest()),
-                completeUploadResponse.getDeserializedHeaders());
-        } catch (AcrErrorsException exception) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
-        }
+    public UploadBlobResult uploadBlob(ReadableByteChannel stream, Context context) {
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+        return runWithTracing((span) -> uploadBlobInternal(stream, span), enableSync(context));
     }
 
+    private UploadBlobResult uploadBlobInternal(ReadableByteChannel stream, Context context) {
+        MessageDigest sha256 = createSha256();
+        byte[] buffer = new byte[CHUNK_SIZE];
+
+        try {
+            ResponseBase<ContainerRegistryBlobsStartUploadHeaders, Void> startUploadResponse =
+                blobsImpl.startUploadWithResponse(repositoryName, context);
+            String location = getLocation(startUploadResponse);
+
+            BinaryData chunk;
+            while (true) {
+                chunk = readChunk(stream, sha256, buffer);
+                if (chunk == null || chunk.getLength() < CHUNK_SIZE) {
+                    break;
+                }
+
+                ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void> uploadChunkResponse =
+                    blobsImpl.uploadChunkWithResponse(location, chunk, chunk.getLength(), context);
+                location = getLocation(uploadChunkResponse);
+            }
+
+            String digest = "sha256:" + bytesToHexString(sha256.digest());
+
+            ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void> completeUploadResponse =
+                blobsImpl.completeUploadWithResponse(digest, location, chunk, chunk == null ? null : chunk.getLength(), context);
+
+            return ConstructorAccessors.createUploadBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest());
+        } catch (AcrErrorsException ex) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(ex));
+        }
+    }
+    private BinaryData readChunk(ReadableByteChannel stream, MessageDigest sha256, byte[] buffer) {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
+        while (byteBuffer.position() < CHUNK_SIZE) {
+            try {
+                if (stream.read(byteBuffer) < 0) {
+                    break;
+                }
+            } catch (IOException ex) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            }
+        }
+        if (byteBuffer.position() == 0) {
+            return null;
+        }
+
+        byteBuffer.flip();
+        sha256.update(byteBuffer.asReadOnlyBuffer());
+        return BinaryData.fromByteBuffer(byteBuffer);
+    }
     /**
      * Download the manifest associated with the given tag or digest.
      * We currently only support downloading OCI manifests.
@@ -425,6 +468,19 @@ public final class ContainerRegistryBlobClient {
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
+        }
+    }
+
+    private <T> T runWithTracing(Function<Context, T> uploadBlob, Context context) {
+        Context span = tracer.start("ContainerRegistryBlobClient.uploadBlob", context);
+        Exception exception = null;
+        try {
+            return uploadBlob.apply(span);
+        } catch (RuntimeException ex) {
+            exception = ex;
+            throw ex;
+        } finally {
+            tracer.end(null, exception, span);
         }
     }
 }

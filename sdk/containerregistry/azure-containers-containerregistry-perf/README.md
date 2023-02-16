@@ -36,16 +36,20 @@ mvn clean package -f sdk/containerregistry/azure-containers-containerregistry-pe
 2. Execute the corresponding perf test in the project using the command.
 ```
 java -jar <path-to-packaged-jar-with-dependencies-from-step-1> <options-for-the-test>
-java -jar sdk/containerregistry/azure-containers-containerregistry-perf/target/azure-containers-containerregistry-perf-1.0.0-beta.1-jar-with-dependencies.jar getmanifestproperties --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
-java -jar sdk/containerregistry/azure-containers-containerregistry-perf/target/azure-containers-containerregistry-perf-1.0.0-beta.1-jar-with-dependencies.jar listrepositorytests --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
+java -jar sdk/containerregistry/azure-containers-containerregistry-perf/target/azure-containers-containerregistry-perf-1.0.0-beta.1-jar-with-dependencies.jar getmanifestproperties --warmup 1 --iterations 1 --parallel 50 --duration 15
+java -jar sdk/containerregistry/azure-containers-containerregistry-perf/target/azure-containers-containerregistry-perf-1.0.0-beta.1-jar-with-dependencies.jar listrepositorytests --warmup 1 --iterations 1 --parallel 50 --duration 15
+java -jar sdk/containerregistry/azure-containers-containerregistry-perf/target/azure-containers-containerregistry-perf-1.0.0-beta.1-jar-with-dependencies.jar uploadblobtests --parallel 16 --duration 60 --size 1000000
+java -jar sdk/containerregistry/azure-containers-containerregistry-perf/target/azure-containers-containerregistry-perf-1.0.0-beta.1-jar-with-dependencies.jar downloadblobtests --parallel 16 --duration 60 --size 1000000
 ```
 
-### Common perf test command line options for Text Analytics
+### Common perf test command line options for Container Registry
 - `--duration` - Number of seconds to run the main test for. Default is 10.
 - `--iterations` - Number of iterations of main test loop.
 - `--parallel` - Number of operations to execute in parallel,
 - `--warmup` - Duration of test warmup time in seconds before the test attributes are calculated.
-
+- `--sync` - Runs sync version of test
+- `--size` - Size of payload (in bytes)
+- `--http-client` - The http client to use. Can be netty, okhttp.
 
 ## Troubleshooting
 
@@ -53,7 +57,7 @@ java -jar sdk/containerregistry/azure-containers-containerregistry-perf/target/a
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)

@@ -42,6 +42,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
@@ -64,6 +65,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static com.azure.core.util.CoreUtils.bytesToHexString;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
@@ -111,7 +114,8 @@ public final class UtilsImpl {
         List<HttpPipelinePolicy> perRetryPolicies,
         HttpClient httpClient,
         String endpoint,
-        ContainerRegistryServiceVersion serviceVersion) {
+        ContainerRegistryServiceVersion serviceVersion,
+        Tracer tracer) {
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -146,7 +150,10 @@ public final class UtilsImpl {
             audience = ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
         }
 
-        Tracer tracer = createTracer(clientOptions);
+        if (tracer == null) {
+            tracer = createTracer(clientOptions);
+        }
+
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
             credential,
             audience,
@@ -155,6 +162,7 @@ public final class UtilsImpl {
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
+                .clientOptions(clientOptions)
                 .tracer(tracer)
                 .build());
 
@@ -167,6 +175,7 @@ public final class UtilsImpl {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .clientOptions(clientOptions)
             .tracer(tracer)
             .build();
     }
@@ -176,7 +185,7 @@ public final class UtilsImpl {
         return (ArrayList<HttpPipelinePolicy>) policies.clone();
     }
 
-    private static Tracer createTracer(ClientOptions clientOptions) {
+    public static Tracer createTracer(ClientOptions clientOptions) {
         TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         return TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE, tracingOptions);
@@ -191,7 +200,7 @@ public final class UtilsImpl {
     public static String computeDigest(ByteBuffer buffer) {
         MessageDigest md = createSha256();
         md.update(buffer.asReadOnlyBuffer());
-        return "sha256:" + byteArrayToHex(md.digest());
+        return "sha256:" + bytesToHexString(md.digest());
     }
 
     public static MessageDigest createSha256() {
@@ -204,7 +213,7 @@ public final class UtilsImpl {
     }
 
     public static void validateDigest(MessageDigest messageDigest, String requestedDigest) {
-        String sha256 = byteArrayToHex(messageDigest.digest());
+        String sha256 = bytesToHexString(messageDigest.digest());
         if (isDigest(requestedDigest) && !requestedDigest.endsWith(sha256)) {
             throw LOGGER.atError()
                 .addKeyValue("requestedDigest", requestedDigest)
@@ -230,17 +239,6 @@ public final class UtilsImpl {
             rawResponse.getStatusCode(),
             rawResponse.getHeaders(),
             ConstructorAccessors.createDownloadManifestResult(digest, responseMediaType, rawResponse.getValue()));
-    }
-
-    private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
-    public static String byteArrayToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = HEX_ARRAY[v >>> 4];
-            hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
-        }
-        return new String(hexChars);
     }
 
     /**
@@ -445,7 +443,8 @@ public final class UtilsImpl {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
-    public static String trimNextLink(String locationHeader) {
+    public static <H, T> String getLocation(ResponseBase<H, T> response) {
+        String locationHeader = response.getHeaders().getValue(HttpHeaderName.LOCATION);
         // The location header returned in the nextLink for upload chunk operations starts with a '/'
         // which the service expects us to remove before calling it.
         if (locationHeader != null && locationHeader.startsWith("/")) {

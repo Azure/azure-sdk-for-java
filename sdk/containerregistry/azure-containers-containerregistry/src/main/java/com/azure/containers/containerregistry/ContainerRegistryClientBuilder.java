@@ -442,6 +442,7 @@ public final class ContainerRegistryClientBuilder implements
             this.perRetryPolicies,
             this.httpClient,
             this.endpoint,
-            this.version);
+            this.version,
+            null);
     }
 }

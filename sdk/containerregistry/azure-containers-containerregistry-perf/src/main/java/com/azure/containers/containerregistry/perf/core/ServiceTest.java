@@ -7,11 +7,19 @@ import com.azure.containers.containerregistry.ContainerRegistryAsyncClient;
 import com.azure.containers.containerregistry.ContainerRegistryClient;
 import com.azure.containers.containerregistry.ContainerRegistryClientBuilder;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
+import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
+import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
+import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
+import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
@@ -30,6 +38,7 @@ import static com.azure.containers.containerregistry.perf.core.Utils.PROPERTY_CO
 import static com.azure.containers.containerregistry.perf.core.Utils.PROPERTY_CONTAINERREGISTRY_RESOURCE_GROUP;
 import static com.azure.containers.containerregistry.perf.core.Utils.PROPERTY_CONTAINERREGISTRY_SUBSCRIPTION_ID;
 import static com.azure.containers.containerregistry.perf.core.Utils.REGISTRY_URI;
+import static com.azure.containers.containerregistry.perf.core.Utils.REPOSITORY_NAME;
 
 /**
  * Base class for Azure Container Registry performance tests.
@@ -54,6 +63,9 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      */
     protected ContainerRegistryAsyncClient containerRegistryAsyncClient;
 
+    protected ContainerRegistryBlobClient blobClient;
+    protected ContainerRegistryBlobAsyncClient blobAsyncClient;
+
     /**
      * The base class for Azure Container Registry performance tests.
      *
@@ -75,16 +87,27 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         subscriptionId = getConfigurationValue(PROPERTY_CONTAINERREGISTRY_SUBSCRIPTION_ID);
         rgName = getConfigurationValue(PROPERTY_CONTAINERREGISTRY_RESOURCE_GROUP);
 
+        HttpClientOptions httpOptions = new HttpClientOptions()
+            .setHttpClientProvider(options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP ? OkHttpAsyncClientProvider.class : NettyAsyncHttpClientProvider.class);
+
         tokenCredential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(registryEndpoint)
-            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
+            .clientOptions(httpOptions)
             .credential(tokenCredential);
 
         this.containerRegistryClient = builder.buildClient();
         this.containerRegistryAsyncClient  = builder.buildAsyncClient();
-    }
 
+        ContainerRegistryBlobClientBuilder blobClientBuilder = new ContainerRegistryBlobClientBuilder()
+            .credential(tokenCredential)
+            .clientOptions(httpOptions)
+            .endpoint(registryEndpoint)
+            .repository("oci-artifact");
+
+        this.blobClient = blobClientBuilder.buildClient();
+        this.blobAsyncClient = blobClientBuilder.buildAsyncClient();
+    }
 
     private String getConfigurationValue(String configurationName) {
         String configurationValue = CONFIGURATION.get(configurationName);
