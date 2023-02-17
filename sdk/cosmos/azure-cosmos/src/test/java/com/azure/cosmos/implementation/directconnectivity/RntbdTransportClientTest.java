@@ -1006,6 +1006,16 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
+        public int totalChannelsAcquiredMetric() {
+            return 0;
+        }
+
+        @Override
+        public int totalChannelsClosedMetric() {
+            return 0;
+        }
+
+        @Override
         public int channelsAvailableMetric() {
             return 0;
         }
