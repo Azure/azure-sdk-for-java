@@ -18,6 +18,9 @@ parameters:
 - name: PublishGitHubIo
   type: boolean
   default: true
+- name: PublishDocsMs
+  type: boolean
+  default: true
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
@@ -51,40 +54,41 @@ jobs:
             # we override the regular script path because we have cloned the build tools repo as a separate artifact.
             ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
-  - job: RetryOnDocsMs_${{artifact.safename}}
-    pool:
-      name: azsdk-pool-mms-ubuntu-2004-general
-      vmImage: MMSUbuntu20.04
-    steps:
-      # Sync docs repo onboarding files/folders
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          source: 'specific'
-          artifact: 'packages'
-          path: '$(Build.SourcesDirectory)/packages' 
-          pipeline: ${{ parameters.PipelineId }}
-          buildId: ${{ parameters.BuildId }}
-          project: 'internal'
-          RunVersion : 'specific'
-      # Pull and build the docker image.
-      - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
-        parameters:
-          PackageInfoLocations:
-            - $(Build.SourcesDirectory)/packages/PackageInfo/${{artifact.name}}.json
-          WorkingDirectory: $(System.DefaultWorkingDirectory)
-          TargetDocRepoOwner: 'Azure'
-          TargetDocRepoName: 'azure-docs-sdk-java'
-          Language: 'java'
-          SparseCheckoutPaths:
-            - docs-ref-services/
-            - metadata/
-          DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
-      - template: /eng/pipelines/templates/steps/fetch-package-list.yml
-        parameters:
-          JavaDocJarLocation: "$(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}"
-          ArtifactName: ${{artifact.name}}
-          TargetBranch: 'main'
-          DocRepoLocation: '$(DocRepoLocation)'
-          TargetDocRepoName: 'azure-docs-sdk-java'
-          TargetDocRepoOwner: 'Azure'
+  - ${{ if eq(artifact.PublishDocsMs, 'true')}}:
+    - job: RetryOnDocsMs_${{artifact.safename}}
+      pool:
+        name: azsdk-pool-mms-ubuntu-2004-general
+        vmImage: MMSUbuntu20.04
+      steps:
+        # Sync docs repo onboarding files/folders
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            source: 'specific'
+            artifact: 'packages'
+            path: '$(Build.SourcesDirectory)/packages'
+            pipeline: ${{ parameters.PipelineId }}
+            buildId: ${{ parameters.BuildId }}
+            project: 'internal'
+            RunVersion : 'specific'
+        # Pull and build the docker image.
+        - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+          parameters:
+            PackageInfoLocations:
+              - $(Build.SourcesDirectory)/packages/PackageInfo/${{artifact.name}}.json
+            WorkingDirectory: $(System.DefaultWorkingDirectory)
+            TargetDocRepoOwner: 'Azure'
+            TargetDocRepoName: 'azure-docs-sdk-java'
+            Language: 'java'
+            SparseCheckoutPaths:
+              - docs-ref-services/
+              - metadata/
+            DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
+        - template: /eng/pipelines/templates/steps/fetch-package-list.yml
+          parameters:
+            JavaDocJarLocation: "$(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}"
+            ArtifactName: ${{artifact.name}}
+            TargetBranch: 'main'
+            DocRepoLocation: '$(DocRepoLocation)'
+            TargetDocRepoName: 'azure-docs-sdk-java'
+            TargetDocRepoOwner: 'Azure'
