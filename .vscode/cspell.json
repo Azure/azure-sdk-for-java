@@ -169,6 +169,7 @@
     "sdk/purview/azure-analytics-purview-administration/**",
     "sdk/quantum/azure-quantum-jobs/**",
     "sdk/purview/azure-analytics-purview-scanning/**",
+    "sdk/purview/azure-analytics-purview-workflow/**",
     "sdk/remoterendering/TestResources/**",
     "sdk/purview/azure-analytics-purview-catalog/**",
     "sdk/schemaregistry/azure-data-schemaregistry/**",
