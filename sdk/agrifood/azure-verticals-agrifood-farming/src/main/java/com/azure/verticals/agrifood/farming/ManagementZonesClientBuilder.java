@@ -7,6 +7,7 @@ package com.azure.verticals.agrifood.farming;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -45,7 +46,8 @@ import java.util.stream.Collectors;
 public final class ManagementZonesClientBuilder
         implements HttpTrait<ManagementZonesClientBuilder>,
                 ConfigurationTrait<ManagementZonesClientBuilder>,
-                TokenCredentialTrait<ManagementZonesClientBuilder> {
+                TokenCredentialTrait<ManagementZonesClientBuilder>,
+                EndpointTrait<ManagementZonesClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -165,19 +167,15 @@ public final class ManagementZonesClientBuilder
     }
 
     /*
-     * server parameter
+     * The service endpoint
      */
-    @Generated private String host;
+    @Generated private String endpoint;
 
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the ManagementZonesClientBuilder.
-     */
+    /** {@inheritDoc}. */
     @Generated
-    public ManagementZonesClientBuilder host(String host) {
-        this.host = host;
+    @Override
+    public ManagementZonesClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -223,12 +221,11 @@ public final class ManagementZonesClientBuilder
     @Generated
     private FarmBeatsClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localHost = (host != null) ? host : "";
         FarmBeatsServiceVersion localServiceVersion =
                 (serviceVersion != null) ? serviceVersion : FarmBeatsServiceVersion.getLatest();
         FarmBeatsClientImpl client =
                 new FarmBeatsClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), localHost, localServiceVersion);
+                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
         return client;
     }
 

@@ -15,16 +15,16 @@ import com.azure.verticals.agrifood.farming.FarmBeatsServiceVersion;
 
 /** Initializes a new instance of the FarmBeatsClient type. */
 public final class FarmBeatsClientImpl {
-    /** server parameter. */
-    private final String host;
+    /** The Azure FarmBeats account endpoint. */
+    private final String endpoint;
 
     /**
-     * Gets server parameter.
+     * Gets The Azure FarmBeats account endpoint.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Service version. */
@@ -510,16 +510,16 @@ public final class FarmBeatsClientImpl {
     /**
      * Initializes an instance of FarmBeatsClient client.
      *
-     * @param host server parameter.
+     * @param endpoint The Azure FarmBeats account endpoint.
      * @param serviceVersion Service version.
      */
-    public FarmBeatsClientImpl(String host, FarmBeatsServiceVersion serviceVersion) {
+    public FarmBeatsClientImpl(String endpoint, FarmBeatsServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                host,
+                endpoint,
                 serviceVersion);
     }
 
@@ -527,11 +527,11 @@ public final class FarmBeatsClientImpl {
      * Initializes an instance of FarmBeatsClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param host server parameter.
+     * @param endpoint The Azure FarmBeats account endpoint.
      * @param serviceVersion Service version.
      */
-    public FarmBeatsClientImpl(HttpPipeline httpPipeline, String host, FarmBeatsServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, serviceVersion);
+    public FarmBeatsClientImpl(HttpPipeline httpPipeline, String endpoint, FarmBeatsServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -539,17 +539,17 @@ public final class FarmBeatsClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param host server parameter.
+     * @param endpoint The Azure FarmBeats account endpoint.
      * @param serviceVersion Service version.
      */
     public FarmBeatsClientImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
-            String host,
+            String endpoint,
             FarmBeatsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.host = host;
+        this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.applicationDatas = new ApplicationDatasImpl(this);
         this.attachments = new AttachmentsImpl(this);

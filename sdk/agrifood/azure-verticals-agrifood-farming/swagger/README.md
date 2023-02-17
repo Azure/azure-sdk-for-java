@@ -9,4 +9,24 @@ data-plane: true
 security: AADToken
 security-scopes: https://farmbeats.azure.net/.default
 title: FarmBeatsClient
+directive:
+  - from: swagger-document
+    where: $
+    transform: |
+      $["x-ms-parameterized-host"] = {
+        "hostTemplate": "{endpoint}",
+        "useSchemePrefix": false,
+        "positionInOperation": "first",
+        "parameters": [
+            {
+            "name": "endpoint",
+            "description": "The Azure FarmBeats account endpoint.",
+            "required": true,
+            "type": "string",
+            "in": "path",
+            "x-ms-skip-url-encoding": true,
+            "x-ms-parameter-location": "client"
+            }
+        ]
+        }
 ```

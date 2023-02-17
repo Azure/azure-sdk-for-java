@@ -57,7 +57,7 @@ public final class ModelInferencesImpl {
      * The interface defining all the services for FarmBeatsClientModelInferences to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientModel")
     public interface ModelInferencesService {
         @Put("/model-inference/models/microsoft-biomass/infer-data/{jobId}")
@@ -73,7 +73,7 @@ public final class ModelInferencesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createBiomassModelJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData job,
@@ -94,7 +94,7 @@ public final class ModelInferencesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getBiomassModelJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -114,7 +114,7 @@ public final class ModelInferencesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createSensorPlacementModelJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData job,
@@ -135,7 +135,7 @@ public final class ModelInferencesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSensorPlacementModelJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -155,7 +155,7 @@ public final class ModelInferencesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createSoilMoistureModelJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData job,
@@ -176,7 +176,7 @@ public final class ModelInferencesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSoilMoistureModelJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -271,7 +271,7 @@ public final class ModelInferencesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createBiomassModelJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 job,
@@ -368,7 +368,7 @@ public final class ModelInferencesImpl {
                 () -> this.createBiomassModelJobWithResponseAsync(jobId, job, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -514,7 +514,7 @@ public final class ModelInferencesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getBiomassModelJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -656,7 +656,7 @@ public final class ModelInferencesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createSensorPlacementModelJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 job,
@@ -749,7 +749,7 @@ public final class ModelInferencesImpl {
                 () -> this.createSensorPlacementModelJobWithResponseAsync(jobId, job, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -891,7 +891,7 @@ public final class ModelInferencesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getSensorPlacementModelJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1044,7 +1044,7 @@ public final class ModelInferencesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createSoilMoistureModelJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 job,
@@ -1151,7 +1151,7 @@ public final class ModelInferencesImpl {
                 () -> this.createSoilMoistureModelJobWithResponseAsync(jobId, job, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -1313,7 +1313,7 @@ public final class ModelInferencesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getSoilMoistureModelJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,

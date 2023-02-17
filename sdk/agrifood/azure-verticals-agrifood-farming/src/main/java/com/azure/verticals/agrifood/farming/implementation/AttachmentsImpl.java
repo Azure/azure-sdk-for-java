@@ -59,7 +59,7 @@ public final class AttachmentsImpl {
      * The interface defining all the services for FarmBeatsClientAttachments to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientAttac")
     public interface AttachmentsService {
         @Get("/parties/{partyId}/attachments")
@@ -75,7 +75,7 @@ public final class AttachmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByPartyId(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -95,7 +95,7 @@ public final class AttachmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("attachmentId") String attachmentId,
                 @QueryParam("api-version") String apiVersion,
@@ -117,7 +117,7 @@ public final class AttachmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("attachmentId") String attachmentId,
                 @QueryParam("api-version") String apiVersion,
@@ -138,7 +138,7 @@ public final class AttachmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("attachmentId") String attachmentId,
                 @QueryParam("api-version") String apiVersion,
@@ -159,7 +159,7 @@ public final class AttachmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> download(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("attachmentId") String attachmentId,
                 @QueryParam("api-version") String apiVersion,
@@ -181,7 +181,7 @@ public final class AttachmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByPartyIdNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -251,7 +251,7 @@ public final class AttachmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByPartyId(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         partyId,
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
@@ -440,7 +440,7 @@ public final class AttachmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.get(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 attachmentId,
                                 this.client.getServiceVersion().getVersion(),
@@ -543,7 +543,7 @@ public final class AttachmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 attachmentId,
                                 this.client.getServiceVersion().getVersion(),
@@ -626,7 +626,7 @@ public final class AttachmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.delete(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 attachmentId,
                                 this.client.getServiceVersion().getVersion(),
@@ -677,7 +677,7 @@ public final class AttachmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.download(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 attachmentId,
                                 this.client.getServiceVersion().getVersion(),
@@ -751,7 +751,7 @@ public final class AttachmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByPartyIdNext(
-                                        nextLink, this.client.getHost(), accept, requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

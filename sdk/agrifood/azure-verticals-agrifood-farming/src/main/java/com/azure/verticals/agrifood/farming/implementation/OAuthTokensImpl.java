@@ -65,7 +65,7 @@ public final class OAuthTokensImpl {
      * The interface defining all the services for FarmBeatsClientOAuthTokens to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientOAuth")
     public interface OAuthTokensService {
         @Get("/oauth/tokens")
@@ -81,7 +81,7 @@ public final class OAuthTokensImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -100,7 +100,7 @@ public final class OAuthTokensImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getOAuthConnectionLink(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData oauthConnectRequest,
                 @HeaderParam("Accept") String accept,
@@ -120,7 +120,7 @@ public final class OAuthTokensImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCascadeDeleteJobDetails(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -140,7 +140,7 @@ public final class OAuthTokensImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createCascadeDeleteJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("partyId") String partyId,
                 @QueryParam("oauthProviderId") String oauthProviderId,
@@ -163,7 +163,7 @@ public final class OAuthTokensImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -218,7 +218,7 @@ public final class OAuthTokensImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.list(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -372,7 +372,7 @@ public final class OAuthTokensImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getOAuthConnectionLink(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 oauthConnectRequest,
                                 accept,
@@ -451,7 +451,7 @@ public final class OAuthTokensImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getCascadeDeleteJobDetails(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -533,7 +533,7 @@ public final class OAuthTokensImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createCascadeDeleteJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 partyId,
                                 oauthProviderId,
@@ -583,7 +583,7 @@ public final class OAuthTokensImpl {
                 () -> this.createCascadeDeleteJobWithResponseAsync(jobId, partyId, oauthProviderId, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -660,7 +660,8 @@ public final class OAuthTokensImpl {
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))
+                        context ->
+                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

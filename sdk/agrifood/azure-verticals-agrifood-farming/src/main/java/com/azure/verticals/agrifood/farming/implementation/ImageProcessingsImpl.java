@@ -58,7 +58,7 @@ public final class ImageProcessingsImpl {
      * The interface defining all the services for FarmBeatsClientImageProcessings to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientImage")
     public interface ImageProcessingsService {
         @Put("/image-processing/rasterize/{jobId}")
@@ -74,7 +74,7 @@ public final class ImageProcessingsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createRasterizeJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData job,
@@ -95,7 +95,7 @@ public final class ImageProcessingsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getRasterizeJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -179,7 +179,7 @@ public final class ImageProcessingsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createRasterizeJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 job,
@@ -264,7 +264,7 @@ public final class ImageProcessingsImpl {
                 () -> this.createRasterizeJobWithResponseAsync(jobId, job, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -393,7 +393,7 @@ public final class ImageProcessingsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getRasterizeJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,

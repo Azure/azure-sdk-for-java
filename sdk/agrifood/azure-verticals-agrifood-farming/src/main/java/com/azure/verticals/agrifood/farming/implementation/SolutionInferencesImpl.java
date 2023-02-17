@@ -57,7 +57,7 @@ public final class SolutionInferencesImpl {
      * The interface defining all the services for FarmBeatsClientSolutionInferences to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientSolut")
     public interface SolutionInferencesService {
         @Post("/solutions/{solutionId}:cancel")
@@ -73,7 +73,7 @@ public final class SolutionInferencesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancel(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("solutionId") String solutionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData solutionInferenceRequest,
@@ -94,7 +94,7 @@ public final class SolutionInferencesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("solutionId") String solutionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData solutionInferenceRequest,
@@ -115,7 +115,7 @@ public final class SolutionInferencesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> fetch(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("solutionId") String solutionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData solutionInferenceRequest,
@@ -162,7 +162,7 @@ public final class SolutionInferencesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.cancel(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 solutionId,
                                 this.client.getServiceVersion().getVersion(),
                                 solutionInferenceRequest,
@@ -246,7 +246,7 @@ public final class SolutionInferencesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 solutionId,
                                 this.client.getServiceVersion().getVersion(),
                                 solutionInferenceRequest,
@@ -294,7 +294,7 @@ public final class SolutionInferencesImpl {
                 () -> this.createOrUpdateWithResponseAsync(solutionId, solutionInferenceRequest, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -378,7 +378,7 @@ public final class SolutionInferencesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.fetch(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 solutionId,
                                 this.client.getServiceVersion().getVersion(),
                                 solutionInferenceRequest,

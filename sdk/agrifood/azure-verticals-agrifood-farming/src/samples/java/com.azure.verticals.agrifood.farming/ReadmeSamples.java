@@ -18,7 +18,7 @@ public class ReadmeSamples {
     public void createClient() {
         // BEGIN: readme-sample-createPartiesClient
         PartiesClientBuilder builder = new PartiesClientBuilder()
-            .host("https://<farmbeats-endpoint>.farmbeats.azure.net")
+            .endpoint("https://<farmbeats-endpoint>.farmbeats.azure.net")
             .httpClient(HttpClient.createDefault());
         PartiesClient partiesClient = builder.buildClient();
         Response<BinaryData> response = partiesClient.getWithResponse("<party-id>", new RequestOptions());

@@ -49,7 +49,7 @@ public final class SensorEventsImpl {
      * The interface defining all the services for FarmBeatsClientSensorEvents to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientSenso")
     public interface SensorEventsService {
         @Get("/sensor-events")
@@ -65,7 +65,7 @@ public final class SensorEventsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("sensorId") String sensorId,
                 @QueryParam("sensorPartnerId") String sensorPartnerId,
                 @QueryParam("api-version") String apiVersion,
@@ -131,7 +131,7 @@ public final class SensorEventsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.list(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 sensorId,
                                 sensorPartnerId,
                                 this.client.getServiceVersion().getVersion(),

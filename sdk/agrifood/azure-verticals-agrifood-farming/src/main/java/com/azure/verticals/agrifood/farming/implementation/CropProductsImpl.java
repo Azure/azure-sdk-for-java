@@ -60,7 +60,7 @@ public final class CropProductsImpl {
      * The interface defining all the services for FarmBeatsClientCropProducts to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientCropP")
     public interface CropProductsService {
         @Get("/crop-products")
@@ -76,7 +76,7 @@ public final class CropProductsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -95,7 +95,7 @@ public final class CropProductsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("cropProductId") String cropProductId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -115,7 +115,7 @@ public final class CropProductsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("cropProductId") String cropProductId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") BinaryData cropProduct,
@@ -136,7 +136,7 @@ public final class CropProductsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("cropProductId") String cropProductId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -157,7 +157,7 @@ public final class CropProductsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -238,7 +238,7 @@ public final class CropProductsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.list(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -459,7 +459,7 @@ public final class CropProductsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.get(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 cropProductId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -601,7 +601,7 @@ public final class CropProductsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 cropProductId,
                                 this.client.getServiceVersion().getVersion(),
                                 cropProduct,
@@ -711,7 +711,7 @@ public final class CropProductsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.delete(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 cropProductId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -785,7 +785,8 @@ public final class CropProductsImpl {
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))
+                        context ->
+                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

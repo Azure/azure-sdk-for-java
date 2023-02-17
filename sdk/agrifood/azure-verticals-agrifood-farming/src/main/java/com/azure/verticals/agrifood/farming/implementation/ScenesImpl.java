@@ -64,7 +64,7 @@ public final class ScenesImpl {
      * The interface defining all the services for FarmBeatsClientScenes to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientScene")
     public interface ScenesService {
         @Get("/scenes")
@@ -80,7 +80,7 @@ public final class ScenesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("provider") String provider,
                 @QueryParam("partyId") String partyId,
                 @QueryParam("boundaryId") String boundaryId,
@@ -103,7 +103,7 @@ public final class ScenesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> download(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("filePath") String filePath,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -123,7 +123,7 @@ public final class ScenesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createSatelliteDataIngestionJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData job,
@@ -144,7 +144,7 @@ public final class ScenesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSatelliteDataIngestionJobDetails(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -164,7 +164,7 @@ public final class ScenesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> searchFeatures(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("collectionId") String collectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData searchFeaturesQuery,
@@ -185,7 +185,7 @@ public final class ScenesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getStacFeature(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("collectionId") String collectionId,
                 @PathParam("featureId") String featureId,
                 @QueryParam("api-version") String apiVersion,
@@ -207,7 +207,7 @@ public final class ScenesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -280,7 +280,7 @@ public final class ScenesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.list(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         provider,
                                         partyId,
                                         boundaryId,
@@ -462,7 +462,7 @@ public final class ScenesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.download(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 filePath,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -592,7 +592,7 @@ public final class ScenesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createSatelliteDataIngestionJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 job,
@@ -701,7 +701,7 @@ public final class ScenesImpl {
                 () -> this.createSatelliteDataIngestionJobWithResponseAsync(jobId, job, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -866,7 +866,7 @@ public final class ScenesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getSatelliteDataIngestionJobDetails(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1022,7 +1022,7 @@ public final class ScenesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.searchFeatures(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 collectionId,
                                 this.client.getServiceVersion().getVersion(),
                                 searchFeaturesQuery,
@@ -1179,7 +1179,7 @@ public final class ScenesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getStacFeature(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 collectionId,
                                 featureId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1288,7 +1288,8 @@ public final class ScenesImpl {
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))
+                        context ->
+                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

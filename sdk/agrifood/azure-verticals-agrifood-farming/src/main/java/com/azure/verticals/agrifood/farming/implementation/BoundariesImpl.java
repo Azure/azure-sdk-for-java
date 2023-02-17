@@ -67,7 +67,7 @@ public final class BoundariesImpl {
      * The interface defining all the services for FarmBeatsClientBoundaries to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientBound")
     public interface BoundariesService {
         @Get("/boundaries")
@@ -83,7 +83,7 @@ public final class BoundariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -102,7 +102,7 @@ public final class BoundariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> search(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData searchBoundaryQuery,
                 @HeaderParam("Accept") String accept,
@@ -122,7 +122,7 @@ public final class BoundariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createCascadeDeleteJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("partyId") String partyId,
                 @QueryParam("boundaryId") String boundaryId,
@@ -144,7 +144,7 @@ public final class BoundariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCascadeDeleteJobDetails(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -164,7 +164,7 @@ public final class BoundariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByPartyId(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -184,7 +184,7 @@ public final class BoundariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> searchByPartyId(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData searchBoundaryQuery,
@@ -205,7 +205,7 @@ public final class BoundariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("boundaryId") String boundaryId,
                 @QueryParam("api-version") String apiVersion,
@@ -227,7 +227,7 @@ public final class BoundariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("boundaryId") String boundaryId,
                 @QueryParam("api-version") String apiVersion,
@@ -248,7 +248,7 @@ public final class BoundariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("boundaryId") String boundaryId,
                 @QueryParam("api-version") String apiVersion,
@@ -269,7 +269,7 @@ public final class BoundariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getOverlap(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("boundaryId") String boundaryId,
                 @QueryParam("otherPartyId") String otherPartyId,
@@ -293,7 +293,7 @@ public final class BoundariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -312,7 +312,7 @@ public final class BoundariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> searchNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -331,7 +331,7 @@ public final class BoundariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByPartyIdNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -350,7 +350,7 @@ public final class BoundariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> searchByPartyIdNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -427,7 +427,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.list(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -671,7 +671,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.search(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         searchBoundaryQuery,
                                         accept,
@@ -892,7 +892,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createCascadeDeleteJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 partyId,
                                 boundaryId,
@@ -942,7 +942,7 @@ public final class BoundariesImpl {
                 () -> this.createCascadeDeleteJobWithResponseAsync(jobId, partyId, boundaryId, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -1027,7 +1027,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getCascadeDeleteJobDetails(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1143,7 +1143,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByPartyId(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         partyId,
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
@@ -1391,7 +1391,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.searchByPartyId(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         partyId,
                                         this.client.getServiceVersion().getVersion(),
                                         searchBoundaryQuery,
@@ -1664,7 +1664,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 boundaryId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1812,7 +1812,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.get(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 boundaryId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1890,7 +1890,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.delete(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 boundaryId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1951,7 +1951,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getOverlap(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 boundaryId,
                                 otherPartyId,
@@ -2041,7 +2041,8 @@ public final class BoundariesImpl {
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))
+                        context ->
+                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2098,7 +2099,9 @@ public final class BoundariesImpl {
     private Mono<PagedResponse<BinaryData>> searchNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.searchNext(nextLink, this.client.getHost(), accept, requestOptions, context))
+                        context ->
+                                service.searchNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2158,7 +2161,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByPartyIdNext(
-                                        nextLink, this.client.getHost(), accept, requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2218,7 +2221,7 @@ public final class BoundariesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.searchByPartyIdNext(
-                                        nextLink, this.client.getHost(), accept, requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

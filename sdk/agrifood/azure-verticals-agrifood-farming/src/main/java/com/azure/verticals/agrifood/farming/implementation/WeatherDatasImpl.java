@@ -50,7 +50,7 @@ public final class WeatherDatasImpl {
      * The interface defining all the services for FarmBeatsClientWeatherDatas to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientWeath")
     public interface WeatherDatasService {
         @Post("/weather-data/:fetch")
@@ -66,7 +66,7 @@ public final class WeatherDatasImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData weatherDataProviderRequest,
                 @HeaderParam("Accept") String accept,
@@ -221,7 +221,7 @@ public final class WeatherDatasImpl {
         return FluxUtil.withContext(
                 context ->
                         service.get(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 weatherDataProviderRequest,
                                 accept,

@@ -57,7 +57,7 @@ public final class FarmOperationsImpl {
      * The interface defining all the services for FarmBeatsClientFarmOperations to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientFarmO")
     public interface FarmOperationsService {
         @Put("/farm-operations/ingest-data/{jobId}")
@@ -73,7 +73,7 @@ public final class FarmOperationsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createDataIngestionJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData job,
@@ -94,7 +94,7 @@ public final class FarmOperationsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDataIngestionJobDetails(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -182,7 +182,7 @@ public final class FarmOperationsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createDataIngestionJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 job,
@@ -271,7 +271,7 @@ public final class FarmOperationsImpl {
                 () -> this.createDataIngestionJobWithResponseAsync(jobId, job, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -406,7 +406,7 @@ public final class FarmOperationsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getDataIngestionJobDetails(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,

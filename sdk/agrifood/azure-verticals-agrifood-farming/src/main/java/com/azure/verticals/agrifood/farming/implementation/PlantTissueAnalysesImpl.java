@@ -67,7 +67,7 @@ public final class PlantTissueAnalysesImpl {
      * The interface defining all the services for FarmBeatsClientPlantTissueAnalyses to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientPlant")
     public interface PlantTissueAnalysesService {
         @Get("/parties/{partyId}/plant-tissue-analyses")
@@ -83,7 +83,7 @@ public final class PlantTissueAnalysesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByPartyId(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -103,7 +103,7 @@ public final class PlantTissueAnalysesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("plantTissueAnalysisId") String plantTissueAnalysisId,
                 @QueryParam("api-version") String apiVersion,
@@ -124,7 +124,7 @@ public final class PlantTissueAnalysesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("plantTissueAnalysisId") String plantTissueAnalysisId,
                 @QueryParam("api-version") String apiVersion,
@@ -146,7 +146,7 @@ public final class PlantTissueAnalysesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("plantTissueAnalysisId") String plantTissueAnalysisId,
                 @QueryParam("api-version") String apiVersion,
@@ -167,7 +167,7 @@ public final class PlantTissueAnalysesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -186,7 +186,7 @@ public final class PlantTissueAnalysesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createCascadeDeleteJob(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("partyId") String partyId,
                 @QueryParam("plantTissueAnalysisId") String plantTissueAnalysisId,
@@ -208,7 +208,7 @@ public final class PlantTissueAnalysesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCascadeDeleteJobDetails(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -229,7 +229,7 @@ public final class PlantTissueAnalysesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByPartyIdNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -248,7 +248,7 @@ public final class PlantTissueAnalysesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -339,7 +339,7 @@ public final class PlantTissueAnalysesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByPartyId(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         partyId,
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
@@ -590,7 +590,7 @@ public final class PlantTissueAnalysesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.get(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 plantTissueAnalysisId,
                                 this.client.getServiceVersion().getVersion(),
@@ -764,7 +764,7 @@ public final class PlantTissueAnalysesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 plantTissueAnalysisId,
                                 this.client.getServiceVersion().getVersion(),
@@ -898,7 +898,7 @@ public final class PlantTissueAnalysesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.delete(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 plantTissueAnalysisId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1008,7 +1008,7 @@ public final class PlantTissueAnalysesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.list(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -1234,7 +1234,7 @@ public final class PlantTissueAnalysesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createCascadeDeleteJob(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 partyId,
                                 plantTissueAnalysisId,
@@ -1286,7 +1286,7 @@ public final class PlantTissueAnalysesImpl {
                                 jobId, partyId, plantTissueAnalysisId, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -1372,7 +1372,7 @@ public final class PlantTissueAnalysesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getCascadeDeleteJobDetails(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 jobId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1476,7 +1476,7 @@ public final class PlantTissueAnalysesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByPartyIdNext(
-                                        nextLink, this.client.getHost(), accept, requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1546,7 +1546,8 @@ public final class PlantTissueAnalysesImpl {
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))
+                        context ->
+                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

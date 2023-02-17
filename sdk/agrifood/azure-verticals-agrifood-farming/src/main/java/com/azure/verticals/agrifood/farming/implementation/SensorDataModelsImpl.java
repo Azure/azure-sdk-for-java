@@ -61,7 +61,7 @@ public final class SensorDataModelsImpl {
      * The interface defining all the services for FarmBeatsClientSensorDataModels to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientSenso")
     public interface SensorDataModelsService {
         @Get("/sensor-partners/{sensorPartnerId}/sensor-data-models")
@@ -77,7 +77,7 @@ public final class SensorDataModelsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("sensorPartnerId") String sensorPartnerId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -97,7 +97,7 @@ public final class SensorDataModelsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("sensorPartnerId") String sensorPartnerId,
                 @PathParam("sensorDataModelId") String sensorDataModelId,
                 @QueryParam("api-version") String apiVersion,
@@ -119,7 +119,7 @@ public final class SensorDataModelsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("sensorPartnerId") String sensorPartnerId,
                 @PathParam("sensorDataModelId") String sensorDataModelId,
                 @QueryParam("api-version") String apiVersion,
@@ -140,7 +140,7 @@ public final class SensorDataModelsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("sensorPartnerId") String sensorPartnerId,
                 @PathParam("sensorDataModelId") String sensorDataModelId,
                 @QueryParam("api-version") String apiVersion,
@@ -162,7 +162,7 @@ public final class SensorDataModelsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -241,7 +241,7 @@ public final class SensorDataModelsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.list(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         sensorPartnerId,
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
@@ -500,7 +500,7 @@ public final class SensorDataModelsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 sensorPartnerId,
                                 sensorDataModelId,
                                 this.client.getServiceVersion().getVersion(),
@@ -655,7 +655,7 @@ public final class SensorDataModelsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.get(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 sensorPartnerId,
                                 sensorDataModelId,
                                 this.client.getServiceVersion().getVersion(),
@@ -735,7 +735,7 @@ public final class SensorDataModelsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.delete(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 sensorPartnerId,
                                 sensorDataModelId,
                                 this.client.getServiceVersion().getVersion(),
@@ -813,7 +813,8 @@ public final class SensorDataModelsImpl {
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))
+                        context ->
+                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

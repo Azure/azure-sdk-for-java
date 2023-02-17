@@ -61,7 +61,7 @@ public final class InsightAttachmentsImpl {
      * The interface defining all the services for FarmBeatsClientInsightAttachments to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "FarmBeatsClientInsig")
     public interface InsightAttachmentsService {
         @Get(
@@ -78,7 +78,7 @@ public final class InsightAttachmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByPartyIdModelIdAndResource(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("modelId") String modelId,
                 @PathParam("resourceType") String resourceType,
@@ -103,7 +103,7 @@ public final class InsightAttachmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("modelId") String modelId,
                 @PathParam("resourceType") String resourceType,
@@ -129,7 +129,7 @@ public final class InsightAttachmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("modelId") String modelId,
                 @PathParam("resourceType") String resourceType,
@@ -154,7 +154,7 @@ public final class InsightAttachmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("modelId") String modelId,
                 @PathParam("resourceType") String resourceType,
@@ -179,7 +179,7 @@ public final class InsightAttachmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> download(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("partyId") String partyId,
                 @PathParam("modelId") String modelId,
                 @PathParam("resourceType") String resourceType,
@@ -204,7 +204,7 @@ public final class InsightAttachmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByPartyIdModelIdAndResourceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -277,7 +277,7 @@ public final class InsightAttachmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByPartyIdModelIdAndResource(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         partyId,
                                         modelId,
                                         resourceType,
@@ -509,7 +509,7 @@ public final class InsightAttachmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 modelId,
                                 resourceType,
@@ -644,7 +644,7 @@ public final class InsightAttachmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.get(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 modelId,
                                 resourceType,
@@ -735,7 +735,7 @@ public final class InsightAttachmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.delete(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 modelId,
                                 resourceType,
@@ -809,7 +809,7 @@ public final class InsightAttachmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.download(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 partyId,
                                 modelId,
                                 resourceType,
@@ -899,7 +899,7 @@ public final class InsightAttachmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByPartyIdModelIdAndResourceNext(
-                                        nextLink, this.client.getHost(), accept, requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
