@@ -42,13 +42,6 @@ public class AppConfigurationReplicaClientFactory {
     }
 
     /**
-     * @return the configStores
-     */
-    List<ConfigStore> getConfigStores() { // TODO (mametcal) This is never used?
-        return configStores;
-    }
-
-    /**
      * Returns the current used endpoint for a given config store.
      * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store.
      * @return ConfigurationClient for accessing App Configuration

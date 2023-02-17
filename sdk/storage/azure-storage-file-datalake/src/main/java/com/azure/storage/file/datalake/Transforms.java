@@ -459,6 +459,7 @@ class Transforms {
             .setFileContentMd5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())
             .setErrorCode(h.getErrorCode())
+            .setCreationTime(h.getCreationTime())
             .setEncryptionContext(encryptionContext);
     }
 

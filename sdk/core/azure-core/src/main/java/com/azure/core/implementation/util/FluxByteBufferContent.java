@@ -150,6 +150,11 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         return Mono.fromCallable(this::toReplayableContent);
     }
 
+    @Override
+    public BinaryDataContentType getContentType() {
+        return BinaryDataContentType.BINARY;
+    }
+
     private byte[] getBytes() {
         if (length != null && length > MAX_ARRAY_SIZE) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));

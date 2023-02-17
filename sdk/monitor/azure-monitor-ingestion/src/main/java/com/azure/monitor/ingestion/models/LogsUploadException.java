@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * An aggregate exception containing all inner exceptions that were caused from uploading logs.
  */
-public class UploadLogsException extends AzureException {
+public class LogsUploadException extends AzureException {
     /**
      * Total count of all logs that were not uploaded to Azure Monitor due to errors.
      */
@@ -19,15 +19,15 @@ public class UploadLogsException extends AzureException {
     /**
      * A list of all HTTP errors that occured when uploading logs to Azure Monitor service.
      */
-    private final List<HttpResponseException> uploadLogsErrors;
+    private final List<HttpResponseException> logsUploadErrors;
 
     /**
-     * Creates an instance of {@link UploadLogsException}.
-     * @param uploadLogsErrors list of all HTTP response exceptions.
+     * Creates an instance of {@link LogsUploadException}.
+     * @param logsUploadErrors list of all HTTP response exceptions.
      * @param failedLogsCount the total number of logs that failed to upload.
      */
-    public UploadLogsException(List<HttpResponseException> uploadLogsErrors, long failedLogsCount) {
-        this.uploadLogsErrors = uploadLogsErrors;
+    public LogsUploadException(List<HttpResponseException> logsUploadErrors, long failedLogsCount) {
+        this.logsUploadErrors = logsUploadErrors;
         this.failedLogsCount = failedLogsCount;
     }
 
@@ -35,8 +35,8 @@ public class UploadLogsException extends AzureException {
      * Returns the list of all HTTP response exceptions.
      * @return The list of all errors.
      */
-    public List<HttpResponseException> getUploadLogsErrors() {
-        return this.uploadLogsErrors;
+    public List<HttpResponseException> getLogsUploadErrors() {
+        return this.logsUploadErrors;
     }
 
     /**

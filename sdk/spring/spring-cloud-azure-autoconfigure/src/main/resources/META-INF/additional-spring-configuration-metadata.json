@@ -822,7 +822,7 @@
     {
       "name": "spring.cloud.azure.region",
       "type": "java.lang.String",
-      "description": "The region of an Azure resource. This is a legacy property.",
+      "description": "The region of an Azure resource. For instance, '\"eastus\"'. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all resource related under 'spring.cloud.azure.<azure-service>.resource' prefix."
@@ -860,7 +860,7 @@
     {
       "name": "spring.cloud.azure.servicebus.retry-options.max-delay",
       "type": "java.time.Duration",
-      "description": "Maximum permissible amount of time between retry attempts. This is a legacy property.",
+      "description": "Maximum permissible amount of time(duration) between retry attempts. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
@@ -1469,7 +1469,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].resource.region",
       "type": "java.lang.String",
-      "description": "The region of an Azure resource.",
+      "description": "The region of an Azure resource. For instance, '\"eastus\"'.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.resourcemanager.AzureResourceMetadataConfigurationProperties"
     },
     {
@@ -1493,7 +1493,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.max-delay",
       "type": "java.time.Duration",
-      "description": "Maximum permissible amount of time between retry attempts.",
+      "description": "Maximum permissible amount of time(duration) between retry attempts.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.ExponentialRetryConfigurationProperties"
     },
     {

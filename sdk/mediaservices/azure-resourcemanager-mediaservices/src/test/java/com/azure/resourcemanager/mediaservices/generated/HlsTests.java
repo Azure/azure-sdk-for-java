@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class HlsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Hls model = BinaryData.fromString("{\"fragmentsPerTsSegment\":1150856748}").toObject(Hls.class);
-        Assertions.assertEquals(1150856748, model.fragmentsPerTsSegment());
+        Hls model = BinaryData.fromString("{\"fragmentsPerTsSegment\":1526160673}").toObject(Hls.class);
+        Assertions.assertEquals(1526160673, model.fragmentsPerTsSegment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Hls model = new Hls().withFragmentsPerTsSegment(1150856748);
+        Hls model = new Hls().withFragmentsPerTsSegment(1526160673);
         model = BinaryData.fromObject(model).toObject(Hls.class);
-        Assertions.assertEquals(1150856748, model.fragmentsPerTsSegment());
+        Assertions.assertEquals(1526160673, model.fragmentsPerTsSegment());
     }
 }
