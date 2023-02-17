@@ -17,6 +17,15 @@ public final class SourceTriggerEvent extends ExpandableStringEnum<SourceTrigger
     public static final SourceTriggerEvent PULLREQUEST = fromString("pullrequest");
 
     /**
+     * Creates a new instance of SourceTriggerEvent value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SourceTriggerEvent() {
+    }
+
+    /**
      * Creates or finds a SourceTriggerEvent from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class SourceTriggerEvent extends ExpandableStringEnum<SourceTrigger
         return fromString(name, SourceTriggerEvent.class);
     }
 
-    /** @return known SourceTriggerEvent values. */
+    /**
+     * Gets known SourceTriggerEvent values.
+     *
+     * @return known SourceTriggerEvent values.
+     */
     public static Collection<SourceTriggerEvent> values() {
         return values(SourceTriggerEvent.class);
     }

@@ -20,13 +20,13 @@ import java.util.regex.Pattern;
  * @param <E> Type of element to transform.
  */
 public final class TransitiveCoreChangesTransform<E extends Element<E>> extends BaseDifferenceTransform<E> {
-    private static final Pattern CORE_ARCHIVE = Pattern.compile("com\\.azure:azure-core:.*");
+    private static final Pattern DIFFERENCE_CODE_PATTERN = Pattern.compile(".*");
     private static final String SUPPLEMENTARY = Archive.Role.SUPPLEMENTARY.toString();
 
     @Override
     public Pattern[] getDifferenceCodePatterns() {
         // This indicates to RevApi that all differences should be inspected by this transform.
-        return new Pattern[] { Pattern.compile(".*") };
+        return new Pattern[] { DIFFERENCE_CODE_PATTERN };
     }
 
     @Override
@@ -51,7 +51,7 @@ public final class TransitiveCoreChangesTransform<E extends Element<E>> extends 
             return TransformationResult.keep();
         }
 
-        if (!CORE_ARCHIVE.matcher(newArchive).matches()) {
+        if (!newArchive.startsWith("com.azure:azure-core:")) {
             // The difference isn't from the azure-core SDK, keep the current result.
             return TransformationResult.keep();
         }

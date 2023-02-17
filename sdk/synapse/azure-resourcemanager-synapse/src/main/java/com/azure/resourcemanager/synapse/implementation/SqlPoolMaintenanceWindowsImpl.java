@@ -26,17 +26,6 @@ public final class SqlPoolMaintenanceWindowsImpl implements SqlPoolMaintenanceWi
         this.serviceManager = serviceManager;
     }
 
-    public MaintenanceWindows get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
-        MaintenanceWindowsInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName);
-        if (inner != null) {
-            return new MaintenanceWindowsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MaintenanceWindows> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -58,15 +47,15 @@ public final class SqlPoolMaintenanceWindowsImpl implements SqlPoolMaintenanceWi
         }
     }
 
-    public void createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters) {
-        this
-            .serviceClient()
-            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters);
+    public MaintenanceWindows get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
+        MaintenanceWindowsInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName);
+        if (inner != null) {
+            return new MaintenanceWindowsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> createOrUpdateWithResponse(
@@ -80,6 +69,17 @@ public final class SqlPoolMaintenanceWindowsImpl implements SqlPoolMaintenanceWi
             .serviceClient()
             .createOrUpdateWithResponse(
                 resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters, context);
+    }
+
+    public void createOrUpdate(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String maintenanceWindowName,
+        MaintenanceWindowsInner parameters) {
+        this
+            .serviceClient()
+            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters);
     }
 
     private SqlPoolMaintenanceWindowsClient serviceClient() {

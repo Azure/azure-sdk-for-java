@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -15,6 +16,9 @@ import com.azure.resourcemanager.mediaservices.models.LiveEventEncoding;
 import com.azure.resourcemanager.mediaservices.models.LiveEventInput;
 import com.azure.resourcemanager.mediaservices.models.LiveEventPreview;
 import com.azure.resourcemanager.mediaservices.models.LiveEventResourceState;
+import com.azure.resourcemanager.mediaservices.models.LiveEventStatus;
+import com.azure.resourcemanager.mediaservices.models.LiveEventStreamEvent;
+import com.azure.resourcemanager.mediaservices.models.LiveEventTrackEvent;
 import com.azure.resourcemanager.mediaservices.models.LiveEventTranscription;
 import com.azure.resourcemanager.mediaservices.models.StreamOptionsFlag;
 import java.time.OffsetDateTime;
@@ -259,6 +263,32 @@ public final class LiveEventImpl implements LiveEvent, LiveEvent.Definition, Liv
 
     public void reset(Context context) {
         serviceManager.liveEvents().reset(resourceGroupName, accountName, liveEventName, context);
+    }
+
+    public PagedIterable<LiveEventStatus> listGetStatus() {
+        return serviceManager.liveEvents().listGetStatus(resourceGroupName, accountName, liveEventName);
+    }
+
+    public PagedIterable<LiveEventStatus> listGetStatus(Context context) {
+        return serviceManager.liveEvents().listGetStatus(resourceGroupName, accountName, liveEventName, context);
+    }
+
+    public PagedIterable<LiveEventStreamEvent> listGetStreamEvents() {
+        return serviceManager.liveEvents().listGetStreamEvents(resourceGroupName, accountName, liveEventName);
+    }
+
+    public PagedIterable<LiveEventStreamEvent> listGetStreamEvents(Context context) {
+        return serviceManager.liveEvents().listGetStreamEvents(resourceGroupName, accountName, liveEventName, context);
+    }
+
+    public PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats() {
+        return serviceManager.liveEvents().listGetTrackIngestHeartbeats(resourceGroupName, accountName, liveEventName);
+    }
+
+    public PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats(Context context) {
+        return serviceManager
+            .liveEvents()
+            .listGetTrackIngestHeartbeats(resourceGroupName, accountName, liveEventName, context);
     }
 
     public LiveEventImpl withRegion(Region location) {

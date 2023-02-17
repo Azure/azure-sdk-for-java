@@ -18,6 +18,10 @@ public final class TableListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<TableGetResultsInner> value;
 
+    /** Creates an instance of TableListResult class. */
+    public TableListResult() {
+    }
+
     /**
      * Get the value property: List of Table and their properties.
      *

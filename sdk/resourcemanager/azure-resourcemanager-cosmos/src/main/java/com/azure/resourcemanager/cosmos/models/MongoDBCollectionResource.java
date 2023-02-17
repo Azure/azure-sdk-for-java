@@ -39,6 +39,10 @@ public class MongoDBCollectionResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Integer analyticalStorageTtl;
 
+    /** Creates an instance of MongoDBCollectionResource class. */
+    public MongoDBCollectionResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB MongoDB collection.
      *

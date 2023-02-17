@@ -28,6 +28,9 @@ parameters:
   type: boolean
   default: true
 
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
+
 stages:
   - stage: Build
     jobs:

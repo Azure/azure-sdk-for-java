@@ -206,6 +206,11 @@ public class FileContent extends BinaryDataContent {
         return Mono.just(this);
     }
 
+    @Override
+    public BinaryDataContentType getContentType() {
+        return BinaryDataContentType.BINARY;
+    }
+
     private byte[] getBytes() {
         if (length > MAX_ARRAY_SIZE) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));

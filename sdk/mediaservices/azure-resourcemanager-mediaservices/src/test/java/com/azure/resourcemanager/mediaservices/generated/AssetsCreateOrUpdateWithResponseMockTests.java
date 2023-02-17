@@ -31,7 +31,7 @@ public final class AssetsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"assetId\":\"58749e9c-3a59-4460-8de9-041ca4765463\",\"created\":\"2021-08-25T14:28:41Z\",\"lastModified\":\"2021-09-29T05:00:08Z\",\"alternateId\":\"mocwa\",\"description\":\"qgatjeaahhvjhhn\",\"container\":\"zybbj\",\"storageAccountName\":\"dj\",\"storageEncryptionFormat\":\"None\"},\"id\":\"kyxvxevblbjedn\",\"name\":\"jlageu\",\"type\":\"ulxunsmjbnkpp\"}";
+            "{\"properties\":{\"assetId\":\"8dbd9a31-1490-47fd-9482-8680aab4cb3c\",\"created\":\"2021-07-22T09:11:26Z\",\"lastModified\":\"2021-02-07T10:50:40Z\",\"alternateId\":\"tmwwi\",\"description\":\"ehfqpofvwbc\",\"container\":\"embnkbw\",\"storageAccountName\":\"vxkdivqihebwtswb\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"m\",\"name\":\"urageg\",\"type\":\"zvcjfelisdjubggb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,17 +62,17 @@ public final class AssetsCreateOrUpdateWithResponseMockTests {
         Asset response =
             manager
                 .assets()
-                .define("qvmmbn")
-                .withExistingMediaService("oxfrkenxpmyyefr", "mpdnqqskawa")
-                .withAlternateId("zmegnitgvk")
-                .withDescription("zyqdrfegcealzx")
-                .withContainer("cansymoyqhlwigd")
-                .withStorageAccountName("bkbxgomfa")
+                .define("otqyry")
+                .withExistingMediaService("gsgzwywakoihk", "smjblmljhlnym")
+                .withAlternateId("xmvwfg")
+                .withDescription("yxonsupe")
+                .withContainer("lzqnhcvs")
+                .withStorageAccountName("tnzoibgsxgnxfy")
                 .create();
 
-        Assertions.assertEquals("mocwa", response.alternateId());
-        Assertions.assertEquals("qgatjeaahhvjhhn", response.description());
-        Assertions.assertEquals("zybbj", response.container());
-        Assertions.assertEquals("dj", response.storageAccountName());
+        Assertions.assertEquals("tmwwi", response.alternateId());
+        Assertions.assertEquals("ehfqpofvwbc", response.description());
+        Assertions.assertEquals("embnkbw", response.container());
+        Assertions.assertEquals("vxkdivqihebwtswb", response.storageAccountName());
     }
 }

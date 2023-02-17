@@ -28,17 +28,6 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
         this.serviceManager = serviceManager;
     }
 
-    public AzureADOnlyAuthentication get(
-        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName) {
-        AzureADOnlyAuthenticationInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, azureADOnlyAuthenticationName);
-        if (inner != null) {
-            return new AzureADOnlyAuthenticationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AzureADOnlyAuthentication> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -54,6 +43,17 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AzureADOnlyAuthenticationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AzureADOnlyAuthentication get(
+        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName) {
+        AzureADOnlyAuthenticationInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, azureADOnlyAuthenticationName);
+        if (inner != null) {
+            return new AzureADOnlyAuthenticationImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -88,9 +88,8 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName =
-            AzureADOnlyAuthenticationName.fromString(Utils.getValueFromIdByName(id, "azureADOnlyAuthentications"));
-        if (azureADOnlyAuthenticationName == null) {
+        String azureADOnlyAuthenticationNameLocal = Utils.getValueFromIdByName(id, "azureADOnlyAuthentications");
+        if (azureADOnlyAuthenticationNameLocal == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -99,6 +98,8 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
                                 "The resource ID '%s' is not valid. Missing path segment 'azureADOnlyAuthentications'.",
                                 id)));
         }
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName =
+            AzureADOnlyAuthenticationName.fromString(azureADOnlyAuthenticationNameLocal);
         return this
             .getWithResponse(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, Context.NONE)
             .getValue();
@@ -120,9 +121,8 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName =
-            AzureADOnlyAuthenticationName.fromString(Utils.getValueFromIdByName(id, "azureADOnlyAuthentications"));
-        if (azureADOnlyAuthenticationName == null) {
+        String azureADOnlyAuthenticationNameLocal = Utils.getValueFromIdByName(id, "azureADOnlyAuthentications");
+        if (azureADOnlyAuthenticationNameLocal == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -131,6 +131,8 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
                                 "The resource ID '%s' is not valid. Missing path segment 'azureADOnlyAuthentications'.",
                                 id)));
         }
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName =
+            AzureADOnlyAuthenticationName.fromString(azureADOnlyAuthenticationNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, context);
     }
 

@@ -58,7 +58,6 @@ public final class JobsDeleteWithResponseMockTests {
 
         manager
             .jobs()
-            .deleteWithResponse(
-                "fqsfa", "aqtferr", "wexjkmfxapjwogq", "nobpudcdabtqwpw", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("gebx", "cnwfepbnwgfmxjg", "g", "jbgdlfgtdysnaquf", com.azure.core.util.Context.NONE);
     }
 }

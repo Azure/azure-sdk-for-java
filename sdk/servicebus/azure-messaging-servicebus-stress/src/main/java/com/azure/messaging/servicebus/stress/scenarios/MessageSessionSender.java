@@ -46,7 +46,7 @@ public class MessageSessionSender extends ServiceBusScenario {
         String queueName = null;
         String topicName = null;
         if (entityType == EntityType.QUEUE) {
-            queueName = options.getServicebusQueueName();
+            queueName = options.getServicebusSessionQueueName();
         } else if (entityType == EntityType.TOPIC) {
             topicName = options.getServicebusTopicName();
         }

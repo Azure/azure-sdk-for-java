@@ -16,18 +16,16 @@ public final class InputFileTests {
         InputFile model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.InputFile\",\"filename\":\"qaatjinrv\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"}]}")
+                    "{\"@odata.type\":\"#Microsoft.Media.InputFile\",\"filename\":\"ligovibrxkpm\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"}]}")
                 .toObject(InputFile.class);
-        Assertions.assertEquals("qaatjinrv", model.filename());
+        Assertions.assertEquals("ligovibrxkpm", model.filename());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InputFile model =
-            new InputFile()
-                .withIncludedTracks(Arrays.asList(new TrackDescriptor(), new TrackDescriptor(), new TrackDescriptor()))
-                .withFilename("qaatjinrv");
+            new InputFile().withIncludedTracks(Arrays.asList(new TrackDescriptor())).withFilename("ligovibrxkpm");
         model = BinaryData.fromObject(model).toObject(InputFile.class);
-        Assertions.assertEquals("qaatjinrv", model.filename());
+        Assertions.assertEquals("ligovibrxkpm", model.filename());
     }
 }

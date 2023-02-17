@@ -52,6 +52,10 @@ public final class SsisVariable {
     @JsonProperty(value = "sensitiveValue")
     private String sensitiveValue;
 
+    /** Creates an instance of SsisVariable class. */
+    public SsisVariable() {
+    }
+
     /**
      * Get the id property: Variable id.
      *

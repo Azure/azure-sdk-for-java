@@ -1,5 +1,26 @@
 # Release History
 
+## 12.14.0-beta.2 (Unreleased)
+
+### Features Added
+- Added `FileReadHeaders.getCreationTime()` and `FileReadHeaders.setCreationTime(OffsetDateTime)` to access the x-ms-creation-time property.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.13.3 (2023-02-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-storage-blob` from `12.20.2` to version `12.20.3`.
+
 ## 12.14.0-beta.1 (2023-02-07)
 
 ### Features Added

@@ -20,22 +20,6 @@ public interface RestorableDroppedSqlPoolsClient {
      * @param workspaceName The name of the workspace.
      * @param restorableDroppedSqlPoolId The id of the deleted Sql Pool in the form of
      *     sqlPoolName,deletionTimeInFileTimeFormat.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted sql pool that can be restored.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorableDroppedSqlPoolInner get(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId);
-
-    /**
-     * Gets a deleted sql pool that can be restored.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param restorableDroppedSqlPoolId The id of the deleted Sql Pool in the form of
-     *     sqlPoolName,deletionTimeInFileTimeFormat.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,6 +29,22 @@ public interface RestorableDroppedSqlPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RestorableDroppedSqlPoolInner> getWithResponse(
         String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId, Context context);
+
+    /**
+     * Gets a deleted sql pool that can be restored.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param restorableDroppedSqlPoolId The id of the deleted Sql Pool in the form of
+     *     sqlPoolName,deletionTimeInFileTimeFormat.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deleted sql pool that can be restored.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RestorableDroppedSqlPoolInner get(
+        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId);
 
     /**
      * Gets a list of deleted Sql pools that can be restored.

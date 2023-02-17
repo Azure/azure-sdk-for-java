@@ -24,7 +24,7 @@ public final class StreamingLocatorsCreateSamples {
         manager
             .streamingLocators()
             .define("UserCreatedClearStreamingLocator")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withAssetName("ClimbingMountRainier")
             .withStreamingPolicyName("clearStreamingPolicy")
             .create();
@@ -43,11 +43,11 @@ public final class StreamingLocatorsCreateSamples {
         manager
             .streamingLocators()
             .define("UserCreatedSecureStreamingLocator")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withAssetName("ClimbingMountRainier")
             .withStartTime(OffsetDateTime.parse("2018-03-01T00:00:00Z"))
             .withEndTime(OffsetDateTime.parse("2028-12-31T23:59:59.9999999Z"))
-            .withStreamingPolicyName("secureStreamingPolicy")
+            .withStreamingPolicyName("UserCreatedSecureStreamingPolicy")
             .create();
     }
 
@@ -64,7 +64,7 @@ public final class StreamingLocatorsCreateSamples {
         manager
             .streamingLocators()
             .define("UserCreatedSecureStreamingLocatorWithUserDefinedContentKeys")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withAssetName("ClimbingMountRainier")
             .withStreamingLocatorId(UUID.fromString("90000000-0000-0000-0000-00000000000A"))
             .withStreamingPolicyName("secureStreamingPolicy")

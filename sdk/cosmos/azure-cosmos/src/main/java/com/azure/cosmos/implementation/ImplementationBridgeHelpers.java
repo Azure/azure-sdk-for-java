@@ -19,7 +19,10 @@ import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -37,6 +40,8 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -192,6 +197,9 @@ public class ImplementationBridgeHelpers {
             int getIoThreadPriority(DirectConnectionConfig config);
             DirectConnectionConfig setIoThreadPriority(
                 DirectConnectionConfig config, int ioThreadPriority);
+            DirectConnectionConfig setHealthCheckTimeoutDetectionEnabled(
+                DirectConnectionConfig directConnectionConfig, boolean timeoutDetectionEnabled);
+            boolean isHealthCheckTimeoutDetectionEnabled(DirectConnectionConfig directConnectionConfig);
         }
     }
 
@@ -1040,10 +1048,12 @@ public class ImplementationBridgeHelpers {
             Tag getClientCorrelationTag(CosmosAsyncClient client);
             String getAccountTagValue(CosmosAsyncClient client);
             EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client);
+            EnumSet<MetricCategory> getMetricCategories(CosmosAsyncClient client);
             boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client);
             boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
+            CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name);
         }
     }
 
@@ -1081,6 +1091,8 @@ public class ImplementationBridgeHelpers {
         public interface CosmosExceptionAccessor {
             CosmosException createCosmosException(int statusCode, Exception innerException);
             List<String> getReplicaStatusList(CosmosException cosmosException);
+            CosmosException setRntbdChannelStatistics(CosmosException cosmosException, RntbdChannelStatistics rntbdChannelStatistics);
+            RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException);
         }
     }
 
@@ -1124,12 +1136,15 @@ public class ImplementationBridgeHelpers {
             int getMaxConnectionPoolSize(CosmosClientTelemetryConfig config);
             Duration getIdleHttpConnectionTimeout(CosmosClientTelemetryConfig config);
             ProxyOptions getProxy(CosmosClientTelemetryConfig config);
+            EnumSet<MetricCategory> getMetricCategories(CosmosClientTelemetryConfig config);
             EnumSet<TagName> getMetricTagNames(CosmosClientTelemetryConfig config);
             String getClientCorrelationId(CosmosClientTelemetryConfig config);
             MeterRegistry getClientMetricRegistry(CosmosClientTelemetryConfig config);
             Boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
             boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config);
             void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
+            CosmosMeterOptions getMeterOptions(CosmosClientTelemetryConfig config, CosmosMetricName name);
+            CosmosMeterOptions createDisabledMeterOptions(CosmosMetricName name);
             CosmosClientTelemetryConfig createSnapshot(
                 CosmosClientTelemetryConfig config,
                 boolean effectiveIsClientTelemetryEnabled);
