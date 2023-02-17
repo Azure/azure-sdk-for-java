@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 
 import java.util.EnumSet;
@@ -15,59 +14,59 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Categories for Cosmos DB client-side metrics
  */
-public final class CosmosMetricCategory extends ExpandableStringEnum<CosmosMetricCategory> {
+public final class CosmosMetricCategory {
 
-    private EnumSet<MetricCategory> metricCategories;
+    private final String name;
+    private final EnumSet<MetricCategory> metricCategories;
 
-    /**
-     * Creates a new instance of {@link CosmosMetricCategory} without a {@link #toString()} value.
-     * <p>
-     * This constructor shouldn't be called as it will produce a {@link CosmosMetricCategory} which doesn't
-     * have a String enum value.
-     *
-     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    CosmosMetricCategory() {
+    private CosmosMetricCategory(String name, EnumSet<MetricCategory> metricCategories) {
+        checkNotNull(name, "Argument 'name' must not be null.");
+        checkNotNull(metricCategories, "Argument 'metricCategories' must not be null.");
+
+        this.name = name;
+        this.metricCategories = metricCategories;
     }
 
     /**
      * All metrics enabled
      */
-    public static final CosmosMetricCategory ALL = fromString("All", CosmosMetricCategory.class)
-        .setCategories(MetricCategory.ALL_CATEGORIES);
+    public static final CosmosMetricCategory ALL = new CosmosMetricCategory(
+        "All",
+        MetricCategory.ALL_CATEGORIES);
 
     /**
      * Default metrics (categories OperationSummary, RequestSummary, System, DirectChannels and DirectRequests) enabled.
      * These metrics provide good overview of end-to-end telemetry and help with triaging for most common issues
      */
-    public static final CosmosMetricCategory DEFAULT = fromString("Default", CosmosMetricCategory.class)
-        .setCategories(MetricCategory.DEFAULT_CATEGORIES);
+    public static final CosmosMetricCategory DEFAULT = new CosmosMetricCategory(
+        "Default",
+        MetricCategory.DEFAULT_CATEGORIES);
 
     /**
      * Minimum set of metrics (categories OperationSummary and System) enabled.
      * These metrics provide a basic overview of end-to-end telemetry but won't be sufficient for triaging
      * most issues
      */
-    public static final CosmosMetricCategory MINIMUM = fromString("Minimum", CosmosMetricCategory.class)
-        .setCategories(EnumSet.of(MetricCategory.OperationSummary, MetricCategory.System));
+    public static final CosmosMetricCategory MINIMUM = new CosmosMetricCategory(
+        "Minimum",
+        EnumSet.of(MetricCategory.OperationSummary, MetricCategory.System));
 
     /**
      * The metrics in the OperationSummary category emit most important end-to-end metrics (like latency, request rate,
      * request charge, request- and response-payload size etc.) for SDK operations
      * These metrics are intended to visualize health state and impact - but alone not sufficient for triaging issues.
      */
-    public static final CosmosMetricCategory OPERATION_SUMMARY =
-        fromString("OperationSummary", CosmosMetricCategory.class)
-            .setCategories(EnumSet.of(MetricCategory.OperationSummary));
+    public static final CosmosMetricCategory OPERATION_SUMMARY = new CosmosMetricCategory(
+        "OperationSummary",
+        EnumSet.of(MetricCategory.OperationSummary));
 
     /**
      * The metrics in the OperationDetails category emit additional end-to-end metrics (like item count) for SDK
      * operations.
      */
-    public static final CosmosMetricCategory OPERATION_DETAILS =
-        fromString("OperationDetails", CosmosMetricCategory.class)
-            .setCategories(EnumSet.of(MetricCategory.OperationDetails));
+    public static final CosmosMetricCategory OPERATION_DETAILS = new CosmosMetricCategory(
+        "OperationDetails",
+        EnumSet.of(MetricCategory.OperationDetails));
 
     /**
      * The metrics in the RequestSummary category emit most important end-to-end metrics (like latency, request rate,
@@ -76,9 +75,9 @@ public final class CosmosMetricCategory extends ExpandableStringEnum<CosmosMetri
      * can be very useful to triage whether impact (high latency, error rate) is skewed around certain client-machines
      * and/or backend service endpoints.
      */
-    public static final CosmosMetricCategory REQUEST_SUMMARY =
-        fromString("RequestSummary", CosmosMetricCategory.class)
-            .setCategories(EnumSet.of(MetricCategory.RequestSummary));
+    public static final CosmosMetricCategory REQUEST_SUMMARY = new CosmosMetricCategory(
+        "RequestSummary",
+        EnumSet.of(MetricCategory.RequestSummary));
 
     /**
      * The metrics in the RequestDetails category emit additional end-to-end metrics (like timeline metrics showing
@@ -87,9 +86,9 @@ public final class CosmosMetricCategory extends ExpandableStringEnum<CosmosMetri
      * can be very useful to triage whether impact (high latency, error rate) is skewed around certain client-machines
      * and/or backend service endpoints.
      */
-    public static final CosmosMetricCategory REQUEST_DETAILS =
-        fromString("RequestDetails", CosmosMetricCategory.class)
-            .setCategories(EnumSet.of(MetricCategory.RequestDetails));
+    public static final CosmosMetricCategory REQUEST_DETAILS = new CosmosMetricCategory(
+        "RequestDetails",
+        EnumSet.of(MetricCategory.RequestDetails));
 
     /**
      * The metrics in the AddressResolutions category emit metrics for calls made to get replica addresses for a
@@ -97,9 +96,9 @@ public final class CosmosMetricCategory extends ExpandableStringEnum<CosmosMetri
      * indicate either network/connectivity issues or the fact that at least one of the replica in this
      * partition has an issue.
      */
-    public static final CosmosMetricCategory DIRECT_ADDRESS_RESOLUTIONS =
-        fromString("DirectAddressResolutions", CosmosMetricCategory.class)
-            .setCategories(EnumSet.of(MetricCategory.AddressResolutions));
+    public static final CosmosMetricCategory DIRECT_ADDRESS_RESOLUTIONS = new CosmosMetricCategory(
+        "DirectAddressResolutions",
+        EnumSet.of(MetricCategory.AddressResolutions));
 
     /**
      * The metrics in the DirectChannels category emit metrics allowing to monitor connection handling by service
@@ -107,43 +106,43 @@ public final class CosmosMetricCategory extends ExpandableStringEnum<CosmosMetri
      * established, closed or are currently active. This information can help triaging whether there are any
      * connectivity/network issues for certain endpoints (high number of closed/re-opened connections).
      */
-    public static final CosmosMetricCategory DIRECT_CHANNELS =
-        fromString("DirectChannels", CosmosMetricCategory.class)
-            .setCategories(EnumSet.of(MetricCategory.DirectChannels));
+    public static final CosmosMetricCategory DIRECT_CHANNELS = new CosmosMetricCategory(
+        "DirectChannels",
+        EnumSet.of(MetricCategory.DirectChannels));
 
     /**
      * The metrics in the DirectEndpoints category emit metrics allowing to monitor state by service
      * endpoint. These metrics can be used to identify when a service endpoint was evicted (due to reaching
      * idle time threshold etc.). In most cases it should be sufficient to monitor DirectChannels instead.
      */
-    public static final CosmosMetricCategory DIRECT_ENDPOINTS =
-        fromString("DirectEndpoints", CosmosMetricCategory.class)
-            .setCategories(EnumSet.of(MetricCategory.DirectEndpoints));
+    public static final CosmosMetricCategory DIRECT_ENDPOINTS = new CosmosMetricCategory(
+        "DirectEndpoints",
+        EnumSet.of(MetricCategory.DirectEndpoints));
 
     /**
      * The metrics in the DirectRequests category emit metrics allowing to monitor requests by service
      * endpoint (request rate, error rate, latency etc.). These metrics can be used to triage whether high latency or
      * error rate is caused by a certain endpoint.
      */
-    public static final CosmosMetricCategory DIRECT_REQUESTS =
-        fromString("DirectRequests", CosmosMetricCategory.class)
-            .setCategories(EnumSet.of(MetricCategory.DirectRequests));
+    public static final CosmosMetricCategory DIRECT_REQUESTS = new CosmosMetricCategory(
+        "DirectRequests",
+        EnumSet.of(MetricCategory.DirectRequests));
 
     /**
      * The metrics in the system category emit metrics that reflect system-wide CPU and memory usage based on the same
      * snapshots taken and logged in request diagnostics
      */
-    public static final CosmosMetricCategory SYSTEM =
-        fromString("System", CosmosMetricCategory.class)
-            .setCategories(EnumSet.of(MetricCategory.System));
+    public static final CosmosMetricCategory SYSTEM = new CosmosMetricCategory(
+        "System",
+        EnumSet.of(MetricCategory.System));
 
     /**
      * The metrics in the Legacy category emit metrics that should not be used anymore and exist only for
      * backwards compatibility reasons.
      */
-    public static final CosmosMetricCategory LEGACY =
-        fromString("Legacy", CosmosMetricCategory.class)
-            .setCategories(EnumSet.of(MetricCategory.Legacy));
+    public static final CosmosMetricCategory LEGACY = new CosmosMetricCategory(
+        "Legacy",
+        EnumSet.of(MetricCategory.Legacy));
 
     /**
      * Gets the corresponding metric category state from its string representation.
@@ -182,17 +181,21 @@ public final class CosmosMetricCategory extends ExpandableStringEnum<CosmosMetri
     }
 
     private static String getValidValues() {
-        StringJoiner sj = new StringJoiner(", ");
-        for (CosmosMetricCategory c: CosmosMetricCategory.values(CosmosMetricCategory.class)) {
-            sj.add(c.toString());
-        }
-
-        return sj.toString();
-    }
-
-    private CosmosMetricCategory setCategories(EnumSet<MetricCategory> metricCategories) {
-        this.metricCategories = metricCategories;
-        return this;
+        return new StringJoiner(", ")
+            .add(CosmosMetricCategory.ALL.name)
+            .add(CosmosMetricCategory.DEFAULT.name)
+            .add(CosmosMetricCategory.MINIMUM.name)
+            .add(CosmosMetricCategory.OPERATION_SUMMARY.name)
+            .add(CosmosMetricCategory.OPERATION_DETAILS.name)
+            .add(CosmosMetricCategory.REQUEST_SUMMARY.name)
+            .add(CosmosMetricCategory.REQUEST_DETAILS.name)
+            .add(CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS.name)
+            .add(CosmosMetricCategory.DIRECT_CHANNELS.name)
+            .add(CosmosMetricCategory.DIRECT_ENDPOINTS.name)
+            .add(CosmosMetricCategory.DIRECT_REQUESTS.name)
+            .add(CosmosMetricCategory.LEGACY.name)
+            .add(CosmosMetricCategory.SYSTEM.name)
+            .toString();
     }
 
     EnumSet<MetricCategory> getCategories() {

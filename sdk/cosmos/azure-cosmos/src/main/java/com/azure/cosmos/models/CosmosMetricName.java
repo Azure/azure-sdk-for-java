@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -16,286 +14,282 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Names of Cosmos DB client-side meters
  */
-public final class CosmosMetricName extends ExpandableStringEnum<CosmosMetricName> {
-    private CosmosMetricCategory meterCategory;
+public final class CosmosMetricName {
+    private final static Map<String, CosmosMetricName> meters = createMeterNameMap();
+    private final String name;
+    private final CosmosMetricCategory metricCategory;
 
-    /**
-     * Creates a new instance of {@link CosmosMetricName} without a {@link #toString()} value.
-     * <p>
-     * This constructor shouldn't be called as it will produce a {@link CosmosMetricName} which doesn't
-     * have a String enum value.
-     *
-     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    CosmosMetricName() {
+    private CosmosMetricName(String name, CosmosMetricCategory metricCategory) {
+        checkNotNull(name, "Argument 'name' must not be null.");
+        checkNotNull(metricCategory, "Argument 'meterCategory' must not be null.");
+
+        this.name = name;
+        this.metricCategory = metricCategory;
     }
 
 
     /**
      * Number of operation calls (Counter)
      */
-    public static final CosmosMetricName OPERATION_SUMMARY_CALLS =
-        fromString(nameOf("op.calls"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.OPERATION_SUMMARY);
+    public static final CosmosMetricName OPERATION_SUMMARY_CALLS = new CosmosMetricName(
+        nameOf("op.calls"),
+        CosmosMetricCategory.OPERATION_SUMMARY);
 
     /**
      * Total latency (across requests including retries) of the operation (Timer)
      */
-    public static final CosmosMetricName OPERATION_SUMMARY_LATENCY =
-        fromString(nameOf("op.latency"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.OPERATION_SUMMARY);
+    public static final CosmosMetricName OPERATION_SUMMARY_LATENCY = new CosmosMetricName(
+        nameOf("op.latency"),
+        CosmosMetricCategory.OPERATION_SUMMARY);
 
     /**
      * Request charge for the operation (DistributionSummary)
      */
-    public static final CosmosMetricName OPERATION_SUMMARY_REQUEST_CHARGE =
-        fromString(nameOf("op.RUs"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.OPERATION_SUMMARY);
+    public static final CosmosMetricName OPERATION_SUMMARY_REQUEST_CHARGE = new CosmosMetricName(
+        nameOf("op.RUs"),
+        CosmosMetricCategory.OPERATION_SUMMARY);
 
     /**
      * Number of regions contacted for processing the operation (DistributionSummary)
      */
-    public static final CosmosMetricName OPERATION_DETAILS_REGIONS_CONTACTED =
-        fromString(nameOf("op.regionsContacted"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.OPERATION_DETAILS);
+    public static final CosmosMetricName OPERATION_DETAILS_REGIONS_CONTACTED = new CosmosMetricName(
+        nameOf("op.regionsContacted"),
+        CosmosMetricCategory.OPERATION_DETAILS);
 
     /**
      * Actual item count - relevant for non-point-operations - indicating the actual number of
      * docs returned in the response (DistributionSummary)
      * NOTE: No percentiles or histogram supported
      */
-    public static final CosmosMetricName OPERATION_DETAILS_ACTUAL_ITEM_COUNT =
-        fromString(nameOf("op.actualItemCount"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.OPERATION_DETAILS);
+    public static final CosmosMetricName OPERATION_DETAILS_ACTUAL_ITEM_COUNT = new CosmosMetricName(
+        nameOf("op.actualItemCount"),
+        CosmosMetricCategory.OPERATION_DETAILS);
 
     /**
      * Max. item count - relevant for non-point-operations - indicating the requested max. number of
      * docs returned in a single response (DistributionSummary)
      * NOTE: No percentiles or histogram supported
      */
-    public static final CosmosMetricName OPERATION_DETAILS_MAX_ITEM_COUNT =
-        fromString(nameOf("op.maxItemCount"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.OPERATION_DETAILS);
+    public static final CosmosMetricName OPERATION_DETAILS_MAX_ITEM_COUNT = new CosmosMetricName(
+        nameOf("op.maxItemCount"),
+        CosmosMetricCategory.OPERATION_DETAILS);
 
     /**
      * Number of requests (Counter)
      * NOTE: No percentiles or histogram supported
      */
-    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_REQUESTS =
-        fromString(nameOf("req.rntbd.requests"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_SUMMARY);
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_REQUESTS = new CosmosMetricName(
+        nameOf("req.rntbd.requests"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
      * Latency of the request (Timer)
      */
-    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_LATENCY =
-        fromString(nameOf("req.rntbd.latency"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_SUMMARY);
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_LATENCY = new CosmosMetricName(
+        nameOf("req.rntbd.latency"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
      * Backend-latency of the request (DistributionSummary)
      */
-    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY =
-        fromString(nameOf("req.rntbd.backendLatency"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_SUMMARY);
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY = new CosmosMetricName(
+        nameOf("req.rntbd.backendLatency"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
      * Request charge for a request (DistributionSummary)
      */
-    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_REQUEST_CHARGE =
-        fromString(nameOf("req.rntbd.RUs"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_SUMMARY);
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_REQUEST_CHARGE = new CosmosMetricName(
+        nameOf("req.rntbd.RUs"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
      * Number of requests (Counter)
      * NOTE: No percentiles or histogram supported
      */
-    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_REQUESTS =
-        fromString(nameOf("req.gw.requests"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_SUMMARY);
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_REQUESTS = new CosmosMetricName(
+        nameOf("req.gw.requests"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
      * Latency of the request (Timer)
      */
-    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_LATENCY =
-        fromString(nameOf("req.gw.latency"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_SUMMARY);
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_LATENCY =  new CosmosMetricName(
+        nameOf("req.gw.latency"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
      * Request charge for a request (DistributionSummary)
      */
-    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE =
-        fromString(nameOf("req.gw.RUs"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_SUMMARY);
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE = new CosmosMetricName(
+        nameOf("req.gw.RUs"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
      *  Size of the request payload (DistributionSummary)
      *  NOTE: No percentiles or histogram supported
      */
-    public static final CosmosMetricName REQUEST_SUMMARY_SIZE_REQUEST =
-        fromString(nameOf("req.reqPayloadSize"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_SUMMARY);
+    public static final CosmosMetricName REQUEST_SUMMARY_SIZE_REQUEST = new CosmosMetricName(
+        nameOf("req.reqPayloadSize"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
      *  Size of the response payload (DistributionSummary)
      *  NOTE: No percentiles or histogram supported
      */
-    public static final CosmosMetricName REQUEST_SUMMARY_SIZE_RESPONSE =
-        fromString(nameOf("req.rspPayloadSize"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_SUMMARY);
+    public static final CosmosMetricName REQUEST_SUMMARY_SIZE_RESPONSE = new CosmosMetricName(
+        nameOf("req.rspPayloadSize"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
      * Latency in different steps of the request pipeline (Timer)
      */
-    public static final CosmosMetricName REQUEST_DETAILS_DIRECT_TIMELINE =
-        fromString(nameOf("req.rntbd.timeline"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_DETAILS);
+    public static final CosmosMetricName REQUEST_DETAILS_DIRECT_TIMELINE = new CosmosMetricName(
+        nameOf("req.rntbd.timeline"),
+        CosmosMetricCategory.REQUEST_DETAILS);
 
     /**
      * Latency in different steps of the request pipeline (Timer)
      */
-    public static final CosmosMetricName REQUEST_DETAILS_GATEWAY_TIMELINE =
-        fromString(nameOf("req.gw.timeline"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.REQUEST_DETAILS);
+    public static final CosmosMetricName REQUEST_DETAILS_GATEWAY_TIMELINE = new CosmosMetricName(
+        nameOf("req.gw.timeline"),
+        CosmosMetricCategory.REQUEST_DETAILS);
 
     /**
      * Number of acquired channels (new connections) for this endpoint (FunctionCounter)
      */
-    public static final CosmosMetricName DIRECT_CHANNELS_ACQUIRED_COUNT =
-        fromString(nameOf("rntbd.channels.acquired.count"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_CHANNELS);
+    public static final CosmosMetricName DIRECT_CHANNELS_ACQUIRED_COUNT = new CosmosMetricName(
+        nameOf("rntbd.channels.acquired.count"),
+        CosmosMetricCategory.DIRECT_CHANNELS);
 
     /**
      * Number of closed channels / connections for this endpoint (FunctionCounter)
      */
-    public static final CosmosMetricName DIRECT_CHANNELS_CLOSED_COUNT =
-        fromString(nameOf("rntbd.channels.closed.count"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_CHANNELS);
+    public static final CosmosMetricName DIRECT_CHANNELS_CLOSED_COUNT = new CosmosMetricName(
+        nameOf("rntbd.channels.closed.count"),
+        CosmosMetricCategory.DIRECT_CHANNELS);
 
     /**
      * Snapshot of the number of available channels (active connections) for this endpoint (Gauge)
      */
-    public static final CosmosMetricName DIRECT_CHANNELS_AVAILABLE_COUNT =
-        fromString(nameOf("rntbd.channels.available.count"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_CHANNELS);
+    public static final CosmosMetricName DIRECT_CHANNELS_AVAILABLE_COUNT = new CosmosMetricName(
+        nameOf("rntbd.channels.available.count"),
+        CosmosMetricCategory.DIRECT_CHANNELS);
 
     /**
      * Snapshot of the number of endpoints (Gauge)
      */
-    public static final CosmosMetricName DIRECT_ENDPOINTS_COUNT =
-        fromString(nameOf("rntbd.endpoints.count"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_ENDPOINTS);
+    public static final CosmosMetricName DIRECT_ENDPOINTS_COUNT = new CosmosMetricName(
+        nameOf("rntbd.endpoints.count"),
+        CosmosMetricCategory.DIRECT_ENDPOINTS);
 
     /**
      * Number of evicted/closed endpoints (FunctionCounter)
      */
-    public static final CosmosMetricName DIRECT_ENDPOINTS_EVICTED =
-        fromString(nameOf("rntbd.endpoints.evicted"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_ENDPOINTS);
+    public static final CosmosMetricName DIRECT_ENDPOINTS_EVICTED = new CosmosMetricName(
+        nameOf("rntbd.endpoints.evicted"),
+        CosmosMetricCategory.DIRECT_ENDPOINTS);
 
     /**
      * Number of RNTBD address resolution requests (Counter)
      */
-    public static final CosmosMetricName DIRECT_ADDRESS_RESOLUTION_REQUESTS =
-        fromString(nameOf("rntbd.addressResolution.requests"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS);
+    public static final CosmosMetricName DIRECT_ADDRESS_RESOLUTION_REQUESTS = new CosmosMetricName(
+        nameOf("rntbd.addressResolution.requests"),
+        CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS);
 
     /**
      * Latency of the RNTBD address resolution request (Timer)
      */
-    public static final CosmosMetricName DIRECT_ADDRESS_RESOLUTION_LATENCY =
-        fromString(nameOf("rntbd.addressResolution.latency"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS);
+    public static final CosmosMetricName DIRECT_ADDRESS_RESOLUTION_LATENCY = new CosmosMetricName(
+        nameOf("rntbd.addressResolution.latency"),
+        CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS);
 
     /**
      * Latency of RNTBD requests for this endpoint (Timer)
      */
-    public static final CosmosMetricName DIRECT_REQUEST_LATENCY =
-        fromString(nameOf("rntbd.requests.latency"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_REQUESTS);
+    public static final CosmosMetricName DIRECT_REQUEST_LATENCY = new CosmosMetricName(
+        nameOf("rntbd.requests.latency"),
+        CosmosMetricCategory.DIRECT_REQUESTS);
 
     /**
      * Latency of failed RNTBD requests for this endpoint (Timer)
      */
-    public static final CosmosMetricName DIRECT_REQUEST_LATENCY_FAILED =
-        fromString(nameOf("rntbd.requests.failed.latency"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_REQUESTS);
+    public static final CosmosMetricName DIRECT_REQUEST_LATENCY_FAILED = new CosmosMetricName(
+        nameOf("rntbd.requests.failed.latency"),
+        CosmosMetricCategory.DIRECT_REQUESTS);
 
     /**
      * Latency of successful RNTBD requests for this endpoint (Timer)
      */
-    public static final CosmosMetricName DIRECT_REQUEST_LATENCY_SUCCESS =
-        fromString(nameOf("rntbd.requests.successful.latency"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_REQUESTS);
+    public static final CosmosMetricName DIRECT_REQUEST_LATENCY_SUCCESS = new CosmosMetricName(
+        nameOf("rntbd.requests.successful.latency"),
+        CosmosMetricCategory.DIRECT_REQUESTS);
 
     /**
      * Snapshot of number of concurrent RNTBD requests for this endpoint (Gauge)
      */
-    public static final CosmosMetricName DIRECT_REQUEST_CONCURRENT_COUNT =
-        fromString(nameOf("rntbd.requests.concurrent.count"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_REQUESTS);
+    public static final CosmosMetricName DIRECT_REQUEST_CONCURRENT_COUNT =  new CosmosMetricName(
+        nameOf("rntbd.requests.concurrent.count"),
+        CosmosMetricCategory.DIRECT_REQUESTS);
 
     /**
      * Snapshot of number of queued RNTBD requests for this endpoint (Gauge)
      */
-    public static final CosmosMetricName DIRECT_REQUEST_QUEUED_COUNT =
-        fromString(nameOf("rntbd.requests.queued.count"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_REQUESTS);
+    public static final CosmosMetricName DIRECT_REQUEST_QUEUED_COUNT = new CosmosMetricName(
+        nameOf("rntbd.requests.queued.count"),
+        CosmosMetricCategory.DIRECT_REQUESTS);
 
     /**
      * Size of the request payload (DistributionSummary)
      */
-    public static final CosmosMetricName DIRECT_REQUEST_SIZE_REQUEST =
-        fromString(nameOf("rntbd.req.reqSize"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_REQUESTS);
+    public static final CosmosMetricName DIRECT_REQUEST_SIZE_REQUEST = new CosmosMetricName(
+        nameOf("rntbd.req.reqSize"),
+        CosmosMetricCategory.DIRECT_REQUESTS);
 
     /**
      * Size of the response payload (DistributionSummary)
      */
-    public static final CosmosMetricName DIRECT_REQUEST_SIZE_RESPONSE =
-        fromString(nameOf("rntbd.req.rspSize"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.DIRECT_REQUESTS);
+    public static final CosmosMetricName DIRECT_REQUEST_SIZE_RESPONSE = new CosmosMetricName(
+        nameOf("rntbd.req.rspSize"),
+        CosmosMetricCategory.DIRECT_REQUESTS);
 
     /**
      * Avg. system-wide CPU load (DistributionSummary)
      */
-    public static final CosmosMetricName SYSTEM_CPU =
-        fromString(nameOf("system.avgCpuLoad"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.SYSTEM);
+    public static final CosmosMetricName SYSTEM_CPU = new CosmosMetricName(
+        nameOf("system.avgCpuLoad"),
+        CosmosMetricCategory.SYSTEM);
 
     /**
      * JVM's Free available memory (DistributionSummary)
      */
-    public static final CosmosMetricName SYSTEM_MEMORY_FREE =
-        fromString(nameOf("system.freeMemoryAvailable"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.SYSTEM);
+    public static final CosmosMetricName SYSTEM_MEMORY_FREE = new CosmosMetricName(
+        nameOf("system.freeMemoryAvailable"),
+        CosmosMetricCategory.SYSTEM);
 
     /**
      * Distribution summary over snapshot of acquired channels for the endpoint at time
      * of a request (DistributionSummary)
      */
-    public static final CosmosMetricName LEGACY_DIRECT_ENDPOINT_STATISTICS_ACQUIRED =
-        fromString(nameOf("req.rntbd.stats.endpoint.acquiredChannels"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.LEGACY);
+    public static final CosmosMetricName LEGACY_DIRECT_ENDPOINT_STATISTICS_ACQUIRED = new CosmosMetricName(
+        nameOf("req.rntbd.stats.endpoint.acquiredChannels"),
+        CosmosMetricCategory.LEGACY);
 
     /**
      * Distribution summary over snapshot of available channels for the endpoint at time
      * of a request (DistributionSummary)
      */
-    public static final CosmosMetricName LEGACY_DIRECT_ENDPOINT_STATISTICS_AVAILABLE =
-        fromString(nameOf("req.rntbd.stats.endpoint.availableChannels"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.LEGACY);
+    public static final CosmosMetricName LEGACY_DIRECT_ENDPOINT_STATISTICS_AVAILABLE = new CosmosMetricName(
+        nameOf("req.rntbd.stats.endpoint.availableChannels"),
+        CosmosMetricCategory.LEGACY);
 
     /**
      * Distribution summary over snapshot of inflight channels for the endpoint at time
      * of a request (DistributionSummary)
      */
-    public static final CosmosMetricName LEGACY_DIRECT_ENDPOINT_STATISTICS_INFLIGHT =
-        fromString(nameOf("req.rntbd.stats.endpoint.inflightRequests"), CosmosMetricName.class)
-            .setCategory(CosmosMetricCategory.LEGACY);
-
-    private final static Map<String, CosmosMetricName> meters = createMeterNameMap();
+    public static final CosmosMetricName LEGACY_DIRECT_ENDPOINT_STATISTICS_INFLIGHT = new CosmosMetricName(
+        nameOf("req.rntbd.stats.endpoint.inflightRequests"),
+        CosmosMetricCategory.LEGACY);
 
     /**
      * Gets the corresponding metric category state from its string representation.
@@ -327,7 +321,7 @@ public final class CosmosMetricName extends ExpandableStringEnum<CosmosMetricNam
      * @return the category of the meter
      */
     public CosmosMetricCategory getCategory() {
-        return this.meterCategory;
+        return this.metricCategory;
     }
 
     private static Map<String, CosmosMetricName> createMeterNameMap() {
@@ -380,16 +374,11 @@ public final class CosmosMetricName extends ExpandableStringEnum<CosmosMetricNam
 
     private static String getValidValues() {
         StringJoiner sj = new StringJoiner(", ");
-        for (CosmosMetricName c: CosmosMetricName.values(CosmosMetricName.class)) {
-            sj.add(c.toString());
+        for (CosmosMetricName metric: meters.values()) {
+            sj.add(metric.name);
         }
 
         return sj.toString();
-    }
-
-    private CosmosMetricName setCategory(CosmosMetricCategory meterCategory) {
-        this.meterCategory = meterCategory;
-        return this;
     }
 
     private static String nameOf(final String member) {

@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 
 import java.util.EnumSet;
@@ -17,145 +16,145 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * this identifier can be used to tune which tags to use for individual meters or also define the default tags that
  * should be used when no meter-specific suppression exists.
  */
-public final class CosmosMetricTagName extends ExpandableStringEnum<CosmosMetricTagName> {
+public final class CosmosMetricTagName {
 
-    private EnumSet<TagName> tagNames;
+    private final String name;
+    private final EnumSet<TagName> tagNames;
 
-    /**
-     * Creates a new instance of {@link CosmosMetricTagName} without a {@link #toString()} value.
-     * <p>
-     * This constructor shouldn't be called as it will produce a {@link CosmosMetricTagName} which doesn't
-     * have a String enum value.
-     *
-     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    CosmosMetricTagName() {
+    private CosmosMetricTagName(String name, EnumSet<TagName> tagNames) {
+        checkNotNull(name, "Argument 'name' must not be null.");
+        checkNotNull(tagNames, "Argument 'tagNames' must not be null.");
+
+        this.name = name;
+        this.tagNames = tagNames;
     }
 
     /**
      * All possible tags
      */
-    public static final CosmosMetricTagName ALL = fromString("All", CosmosMetricTagName.class)
-        .setTagNames(TagName.ALL_TAGS);
+    public static final CosmosMetricTagName ALL = new CosmosMetricTagName(
+        "All",
+        TagName.ALL_TAGS);
 
     /**
      * Default tags
      */
-    public static final CosmosMetricTagName DEFAULT = fromString("Default", CosmosMetricTagName.class)
-        .setTagNames(TagName.DEFAULT_TAGS);
+    public static final CosmosMetricTagName DEFAULT =  new CosmosMetricTagName(
+        "Default",
+        TagName.DEFAULT_TAGS);
 
     /**
      * Minimum tags that are required and cannot be disabled
      */
-    public static final CosmosMetricTagName MINIMUM = fromString("Minimum", CosmosMetricTagName.class)
-        .setTagNames(TagName.MINIMUM_TAGS);
+    public static final CosmosMetricTagName MINIMUM = new CosmosMetricTagName(
+        "Minimum",
+        TagName.MINIMUM_TAGS);
 
     /**
      * Effective Consistency model
      * Applicable to operations and requests
      */
-    public static final CosmosMetricTagName CONSISTENCY_LEVEL =
-        fromString("ConsistencyLevel", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.ConsistencyLevel));
+    public static final CosmosMetricTagName CONSISTENCY_LEVEL =new CosmosMetricTagName(
+        "ConsistencyLevel",
+        EnumSet.of(TagName.ConsistencyLevel));
 
     /**
      * Container identifier
      * applicable to operations and requests
      */
-    public static final CosmosMetricTagName CONTAINER =
-        fromString("Container", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.Container));
+    public static final CosmosMetricTagName CONTAINER =new CosmosMetricTagName(
+        "Container",
+        EnumSet.of(TagName.Container));
 
     /**
      * The service endpoint (hostname + port)
      * Applicable to requests, direct channel, direct endpoint and direct requests
      */
-    public static final CosmosMetricTagName SERVICE_ENDPOINT =
-        fromString("ServiceEndpoint", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.ServiceEndpoint));
+    public static final CosmosMetricTagName SERVICE_ENDPOINT = new CosmosMetricTagName(
+        "ServiceEndpoint",
+        EnumSet.of(TagName.ServiceEndpoint));
 
     /**
      * The service endpoint (hostname + port, partitionId, replicaId)
      * Applicable to requests
      */
-    public static final CosmosMetricTagName SERVICE_ADDRESS=
-        fromString("ServiceAddress", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.ServiceAddress));
+    public static final CosmosMetricTagName SERVICE_ADDRESS = new CosmosMetricTagName(
+        "ServiceAddress",
+        EnumSet.of(TagName.ServiceAddress));
 
     /**
      * The region names of the regions handling the operation/request
      * Applicable to requests and operations
      */
-    public static final CosmosMetricTagName REGION_NAME =
-        fromString("RegionName", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.RegionName));
+    public static final CosmosMetricTagName REGION_NAME = new CosmosMetricTagName(
+        "RegionName",
+        EnumSet.of(TagName.RegionName));
 
     /**
      * Operation status code.
      * Applicable to operations
      */
-    public static final CosmosMetricTagName OPERATION_STATUS_CODE =
-        fromString("OperationStatusCode", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.OperationStatusCode));
+    public static final CosmosMetricTagName OPERATION_STATUS_CODE = new CosmosMetricTagName(
+        "OperationStatusCode",
+        EnumSet.of(TagName.OperationStatusCode));
 
     /**
      * Operation type
      * Applicable to operations
      */
-    public static final CosmosMetricTagName OPERATION =
-        fromString("Operation", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.Operation));
+    public static final CosmosMetricTagName OPERATION = new CosmosMetricTagName(
+        "Operation",
+        EnumSet.of(TagName.Operation));
 
 
     /**
      * Request status code
      * Applicable to requests
      */
-    public static final CosmosMetricTagName REQUEST_STATUS_CODE =
-        fromString("RequestStatusCode", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.RequestStatusCode));
+    public static final CosmosMetricTagName REQUEST_STATUS_CODE = new CosmosMetricTagName(
+        "RequestStatusCode",
+        EnumSet.of(TagName.RequestStatusCode));
 
     /**
      * Request operation type
      * Applicable to requests
      */
-    public static final CosmosMetricTagName REQUEST_OPERATION_TYPE =
-        fromString("RequestOperationType", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.RequestOperationType));
+    public static final CosmosMetricTagName REQUEST_OPERATION_TYPE = new CosmosMetricTagName(
+        "RequestOperationType",
+        EnumSet.of(TagName.RequestOperationType));
 
     /**
      * An identifier for the instance of the Cosmos client
      * Applicable to all meters
      */
-    public static final CosmosMetricTagName CLIENT_CORRELATION_ID =
-        fromString("ClientCorrelationId", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.ClientCorrelationId));
+    public static final CosmosMetricTagName CLIENT_CORRELATION_ID = new CosmosMetricTagName(
+        "ClientCorrelationId",
+        EnumSet.of(TagName.ClientCorrelationId));
 
     /**
      * An indicator whether an address resolution refresh requested a cache refresh
      * Applicable to address resolutions
      */
-    public static final CosmosMetricTagName ADDRESS_RESOLUTION_FORCED_REFRESH =
-        fromString("IsForceRefresh", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.IsForceRefresh));
+    public static final CosmosMetricTagName ADDRESS_RESOLUTION_FORCED_REFRESH = new CosmosMetricTagName(
+        "IsForceRefresh",
+        EnumSet.of(TagName.IsForceRefresh));
 
     /**
      * An indicator whether an address resolution refresh requested a collection routing map
      * cache refresh
      * Applicable to address resolutions
      */
-    public static final CosmosMetricTagName ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH =
-        fromString("IsForceCollectionRoutingMapRefresh", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.IsForceCollectionRoutingMapRefresh));
+    public static final CosmosMetricTagName ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH = new CosmosMetricTagName(
+        "IsForceCollectionRoutingMapRefresh",
+        EnumSet.of(TagName.IsForceCollectionRoutingMapRefresh));
 
     /**
      * A numeric identifier for a physical partition
      * Applicable to operations and requests
      */
-    public static final CosmosMetricTagName PARTITION_KEY_RANGE_ID =
-        fromString("PartitionKeyRangeId", CosmosMetricTagName.class)
-            .setTagNames(EnumSet.of(TagName.PartitionKeyRangeId));
+    public static final CosmosMetricTagName PARTITION_KEY_RANGE_ID = new CosmosMetricTagName(
+        "PartitionKeyRangeId",
+        EnumSet.of(TagName.PartitionKeyRangeId));
 
     /**
      * Gets the corresponding metric category state from its string representation.
@@ -198,17 +197,24 @@ public final class CosmosMetricTagName extends ExpandableStringEnum<CosmosMetric
     }
 
     private static String getValidValues() {
-        StringJoiner sj = new StringJoiner(", ");
-        for (CosmosMetricTagName t: CosmosMetricTagName.values(CosmosMetricTagName.class)) {
-            sj.add(t.toString());
-        }
-
-        return sj.toString();
-    }
-
-    private CosmosMetricTagName setTagNames(EnumSet<TagName> tagNames) {
-        this.tagNames = tagNames;
-        return this;
+        return new StringJoiner(", ")
+            .add(CosmosMetricTagName.ALL.name)
+            .add(CosmosMetricTagName.DEFAULT.name)
+            .add(CosmosMetricTagName.MINIMUM.name)
+            .add(CosmosMetricTagName.CONSISTENCY_LEVEL.name)
+            .add(CosmosMetricTagName.CONTAINER.name)
+            .add(CosmosMetricTagName.SERVICE_ADDRESS.name)
+            .add(CosmosMetricTagName.SERVICE_ENDPOINT.name)
+            .add(CosmosMetricTagName.REGION_NAME.name)
+            .add(CosmosMetricTagName.OPERATION_STATUS_CODE.name)
+            .add(CosmosMetricTagName.OPERATION.name)
+            .add(CosmosMetricTagName.REQUEST_STATUS_CODE.name)
+            .add(CosmosMetricTagName.REQUEST_OPERATION_TYPE.name)
+            .add(CosmosMetricTagName.CLIENT_CORRELATION_ID.name)
+            .add(CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH.name)
+            .add(CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH.name)
+            .add(CosmosMetricTagName.PARTITION_KEY_RANGE_ID.name)
+            .toString();
     }
 
     EnumSet<TagName> getTagNames() {
