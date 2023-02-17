@@ -1101,7 +1101,7 @@ public class DataLakeFileClient extends DataLakePathClient {
         BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
         BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions);
         return new InternalDataLakeFileOpenInputStreamResult(inputStream,
-            Transforms.toPathProperties(inputStream.getProperties(), null));
+            Transforms.toPathProperties(inputStream.getProperties()));
     }
 
     /**
@@ -1221,7 +1221,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
                     .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
                 context);
-            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), Transforms.getEncryptionContext(response)));
+            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
         }, LOGGER);
     }
 

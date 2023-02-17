@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
@@ -116,6 +117,8 @@ class Transforms {
         FileQueryParquetSerialization.class.getSimpleName());
 
     private static final long EPOCH_CONVERSION;
+
+    public static final HttpHeaderName X_MS_ENCRYPTION_CONTEXT = HttpHeaderName.fromString("x-ms-encryption-context");
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
@@ -300,6 +303,10 @@ class Transforms {
             .setMaxRetryRequests(dataLakeOptions.getMaxRetryRequests());
     }
 
+    static PathProperties toPathProperties(BlobProperties properties) {
+        return toPathProperties(properties, null);
+    }
+
     static PathProperties toPathProperties(BlobProperties properties, String encryptionContext) {
         if (properties == null) {
             return null;
@@ -325,7 +332,7 @@ class Transforms {
         if (r == null) {
             return null;
         }
-        return r.getHeaders().getValue(Constants.HeaderConstants.X_MS_ENCRYPTION_CONTEXT);
+        return r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT);
     }
 
 
