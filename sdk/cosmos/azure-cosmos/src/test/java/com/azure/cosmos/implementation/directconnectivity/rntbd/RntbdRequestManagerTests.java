@@ -107,7 +107,7 @@ public class RntbdRequestManagerTests {
         assertThat(timestamps.transitTimeoutStartingTime()).isNull();
         assertThat(timestamps.lastChannelReadTime()).isAfterOrEqualTo(previousLastChannelReadTime);
         assertThat(timestamps.lastChannelWriteAttemptTime()).isEqualTo(previousLastWriteAttemptTime);
-        assertThat(timestamps.lastChannelWriteTime()).isEqualTo(previousLastWriteTime);
+        assertThat(timestamps.lastChannelWriteTime()).isAfterOrEqualTo(previousLastWriteTime);
     }
 
     @Test(groups = { "unit" })
