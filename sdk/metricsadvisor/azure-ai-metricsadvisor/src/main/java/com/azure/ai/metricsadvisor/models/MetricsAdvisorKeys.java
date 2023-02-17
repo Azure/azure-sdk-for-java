@@ -12,6 +12,7 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class MetricsAdvisorKeys {
+
     private final String subscriptionKey;
     private final String apiKey;
 

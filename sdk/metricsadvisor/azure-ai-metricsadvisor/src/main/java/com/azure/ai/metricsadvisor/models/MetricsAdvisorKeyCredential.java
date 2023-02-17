@@ -4,14 +4,14 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.credential.AzureKeyCredential;
 
 /**
  * The MetricsAdvisorKeyCredential class.
  */
 @Fluent
 public final class MetricsAdvisorKeyCredential {
-    private volatile MetricsAdvisorKeys keys;
-    private final Object updateLock = new Object();
+    private final AzureKeyCredential credential;
 
     /**
      * Creates a MetricsAdvisorKeyCredential credential that authorizes request with the given keys.
@@ -20,7 +20,7 @@ public final class MetricsAdvisorKeyCredential {
      * @param apiKey the api key used to authorize requests
      */
     public MetricsAdvisorKeyCredential(String subscriptionKey, String apiKey) {
-        this.keys = new MetricsAdvisorKeys(subscriptionKey, apiKey);
+        this.credential = new AzureKeyCredential(subscriptionKey, apiKey);
     }
 
     /**
@@ -30,7 +30,17 @@ public final class MetricsAdvisorKeyCredential {
      * @return The {@link MetricsAdvisorKeys} containing the subscription key and api key.
      */
     public MetricsAdvisorKeys getKeys() {
-        return this.keys;
+        String[] keys = credential.getKeys();
+        return new MetricsAdvisorKeys(keys[0], keys[1]);
+    }
+
+    /**
+     * This would be a package-private method made accessible through internal code, but this is a prototype PR.
+     *
+     * @return The {@link AzureKeyCredential} backing the {@link MetricsAdvisorKeyCredential}.
+     */
+    public AzureKeyCredential getCredential() {
+        return credential;
     }
 
     /**
@@ -44,9 +54,7 @@ public final class MetricsAdvisorKeyCredential {
      * @return The updated {@code MetricsAdvisorKeyCredential} object.
      */
     public MetricsAdvisorKeyCredential updateKey(String subscriptionKey, String apiKey) {
-        synchronized (this.updateLock) {
-            this.keys = new MetricsAdvisorKeys(subscriptionKey, apiKey);
-        }
+        credential.update(subscriptionKey, apiKey);
         return this;
     }
 }
