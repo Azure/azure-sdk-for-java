@@ -35,6 +35,8 @@ jobs:
       steps:
         # Sync docs repo onboarding files/folders
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths: sdk/**/*.md
         - task: DownloadPipelineArtifact@2
           inputs:
             source: 'specific'
@@ -62,6 +64,8 @@ jobs:
       steps:
         # Sync docs repo onboarding files/folders
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths: sdk/**/*.md
         - task: DownloadPipelineArtifact@2
           inputs:
             source: 'specific'
@@ -88,7 +92,7 @@ jobs:
           parameters:
             JavaDocJarLocation: "$(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}"
             ArtifactName: ${{artifact.name}}
-            TargetBranch: 'main'
+            TargetBranch: '${{ parameters.DocsRepoTargetBranch }}'
             DocRepoLocation: '$(DocRepoLocation)'
             TargetDocRepoName: 'azure-docs-sdk-java'
             TargetDocRepoOwner: 'Azure'
