@@ -15,7 +15,7 @@ public final class PrivateEndpointConnectionListResultInnerTests {
         PrivateEndpointConnectionListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\"},\"id\":\"jmflbvvnch\",\"name\":\"kcciwwzjuqkhr\",\"type\":\"ajiwkuo\"},{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"hsauuimjmvxied\",\"name\":\"ugidyjrr\",\"type\":\"byao\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"sonpclhocohs\",\"name\":\"kevle\",\"type\":\"gz\"},{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"mvfaxkffeiith\",\"name\":\"vmezy\",\"type\":\"shxmzsbbzoggigrx\"}]}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\"},\"id\":\"ohslkevlegg\",\"name\":\"fbuhfmvfaxkffe\",\"type\":\"ithlvmezyvshxm\"},{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"oggigrxwburv\",\"name\":\"xxjnspydptk\",\"type\":\"enkouknvudw\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"ldngkpoci\",\"name\":\"azyxoegukg\",\"type\":\"npiucgygevqznty\"}]}")
                 .toObject(PrivateEndpointConnectionListResultInner.class);
     }
 
@@ -26,7 +26,6 @@ public final class PrivateEndpointConnectionListResultInnerTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new PrivateEndpointConnectionInner(),
                             new PrivateEndpointConnectionInner(),
                             new PrivateEndpointConnectionInner(),
                             new PrivateEndpointConnectionInner()));

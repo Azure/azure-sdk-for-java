@@ -31,7 +31,7 @@ public final class TransformsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"created\":\"2021-06-03T02:15:35Z\",\"description\":\"omfgbeglqgleohib\",\"lastModified\":\"2021-03-25T13:06:51Z\",\"outputs\":[]},\"id\":\"ankrrfxee\",\"name\":\"btijvacvbm\",\"type\":\"z\"}";
+            "{\"properties\":{\"created\":\"2021-04-07T10:16:52Z\",\"description\":\"swvxwlmzqwmv\",\"lastModified\":\"2021-09-11T23:15:01Z\",\"outputs\":[]},\"id\":\"xmcuqud\",\"name\":\"cvclxynpdk\",\"type\":\"gfabuiyjibuzphdu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class TransformsGetWithResponseMockTests {
         Transform response =
             manager
                 .transforms()
-                .getWithResponse("mfp", "hojeevy", "yhsgz", com.azure.core.util.Context.NONE)
+                .getWithResponse("mmkjsvthnwpztek", "vmribiat", "gplucfotangcfhny", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("omfgbeglqgleohib", response.description());
+        Assertions.assertEquals("swvxwlmzqwmv", response.description());
     }
 }

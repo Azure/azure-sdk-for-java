@@ -58,6 +58,6 @@ public final class JobsCancelJobWithResponseMockTests {
 
         manager
             .jobs()
-            .cancelJobWithResponse("awbzasqb", "clj", "kyexaoguyaipi", "sdaultxij", com.azure.core.util.Context.NONE);
+            .cancelJobWithResponse("qbctqha", "zjrwdkqze", "yjleziunjx", "fza", com.azure.core.util.Context.NONE);
     }
 }

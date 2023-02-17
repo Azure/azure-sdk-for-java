@@ -19,7 +19,7 @@ public final class OperationResultsGetSamples {
         manager
             .operationResults()
             .getWithResponse(
-                "contoso",
+                "contosorg",
                 "contosomedia",
                 "ClimbingMountRainer",
                 "text1",
