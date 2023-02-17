@@ -205,7 +205,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Test
     public void sendBuffered() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
-        EventHubBufferedProducerAsyncClient bufferedProducer =  new EventHubBufferedProducerClientBuilder()
+        EventHubBufferedProducerAsyncClient bufferedProducer = new EventHubBufferedProducerClientBuilder()
             .connectionString(getConnectionString())
             .onSendBatchFailed(failed -> {
                 fail("Exception occurred while sending messages." + failed.getThrowable());
@@ -222,15 +222,15 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 bufferedProducer
                     .getPartitionIds().take(1)
                     .map(partitionId -> new SendOptions().setPartitionId(partitionId))
-                        .flatMap(sendOpts ->
-                            bufferedProducer.enqueueEvent(event1, sendOpts)
+                    .flatMap(sendOpts ->
+                        bufferedProducer.enqueueEvent(event1, sendOpts)
                             .then(bufferedProducer.enqueueEvent(event2, sendOpts))))
             .expectNextCount(1)
             .verifyComplete();
 
         StepVerifier.create(consumer
-            .receive()
-            .take(2))
+                .receive()
+                .take(2))
             .expectNextCount(2)
             .verifyComplete();
 
@@ -257,7 +257,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     b.tryAdd(new EventData(CONTENTS_BYTES));
                     return b;
                 })
-            .flatMap(b -> producer.send(b)))
+                .flatMap(b -> producer.send(b)))
             .verifyComplete();
 
         List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID, 2, EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(10))
@@ -519,14 +519,15 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         private final String entityName;
         private final String namespace;
 
-        private AtomicReference<Consumer<ReadableSpan>> notifier = new AtomicReference<>();
+        private final AtomicReference<Consumer<ReadableSpan>> notifier = new AtomicReference<>();
 
         TestSpanProcessor(String namespace, String entityName) {
             this.namespace = namespace;
             this.entityName = entityName;
         }
+
         public List<ReadableSpan> getEndedSpans() {
-            return spans.stream().collect(Collectors.toList());
+            return new ArrayList<>(spans);
         }
 
         @Override
@@ -540,9 +541,12 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         @Override
         public void onEnd(ReadableSpan readableSpan) {
+            // Various attribute keys can be found in:
+            // sdk/core/azure-core-metrics-opentelemetry/src/main/java/com/azure/core/metrics/opentelemetry/OpenTelemetryAttributes.java
+            // sdk/core/azure-core-tracing-opentelemetry/src/main/java/com/azure/core/tracing/opentelemetry/OpenTelemetryUtils.java
             assertEquals("Microsoft.EventHub", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
-            assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("message_bus.destination")));
-            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("peer.address")));
+            assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
+            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.address")));
 
             Consumer<ReadableSpan> filter = notifier.get();
             if (filter != null) {

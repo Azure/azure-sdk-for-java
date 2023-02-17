@@ -27,7 +27,8 @@ class OpenTelemetryUtils {
 
     private static Map<String, String> getMappingsV1200() {
         Map<String, String> mappings = new HashMap<>(8);
-        // messaging mapping, attributes are defined in com.azure.core.amqp.implementation.ClientConstants
+        // Corresponding integration test is in:
+        // azure-messaging-eventhubs/src/test/java/com/azure/messaging/eventhubs/TracingIntegrationTests.java
         mappings.put(ENTITY_PATH_KEY, "messaging.destination.name");
         mappings.put(HOST_NAME_KEY, "net.peer.name");
         mappings.put(CLIENT_REQUEST_ID_ATTRIBUTE, "az.client_request_id");

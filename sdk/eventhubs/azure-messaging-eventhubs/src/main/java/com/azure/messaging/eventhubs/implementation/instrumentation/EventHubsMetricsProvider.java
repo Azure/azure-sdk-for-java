@@ -21,6 +21,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
 
 public class EventHubsMetricsProvider {
     private static final String GENERIC_STATUS_KEY = "status";
+
     private final Meter meter;
     private final boolean isEnabled;
 
