@@ -27,17 +27,6 @@ public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
         this.serviceManager = serviceManager;
     }
 
-    public WorkloadGroup get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
-        WorkloadGroupInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName);
-        if (inner != null) {
-            return new WorkloadGroupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WorkloadGroup> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
         Response<WorkloadGroupInner> inner =
@@ -50,6 +39,17 @@ public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WorkloadGroupImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WorkloadGroup get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+        WorkloadGroupInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName);
+        if (inner != null) {
+            return new WorkloadGroupImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -18,6 +18,10 @@ public final class RestorableSqlResourcesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableSqlResourcesGetResultInner> value;
 
+    /** Creates an instance of RestorableSqlResourcesListResult class. */
+    public RestorableSqlResourcesListResult() {
+    }
+
     /**
      * Get the value property: List of restorable SQL resources, including the database and collection names.
      *

@@ -17,6 +17,6 @@ public final class TracksDeleteSamples {
     public static void deleteATrack(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .tracks()
-            .delete("contoso", "contosomedia", "ClimbingMountRainer", "text2", com.azure.core.util.Context.NONE);
+            .delete("contosorg", "contosomedia", "ClimbingMountRainer", "text2", com.azure.core.util.Context.NONE);
     }
 }

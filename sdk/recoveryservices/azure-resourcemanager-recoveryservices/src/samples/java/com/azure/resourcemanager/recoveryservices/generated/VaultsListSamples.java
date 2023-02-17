@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Vaults List. */
 public final class VaultsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ListBySubscriptionIds.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ListBySubscriptionIds.json
      */
     /**
      * Sample code: List of Recovery Services Resources in SubscriptionId.
@@ -18,6 +16,6 @@ public final class VaultsListSamples {
      */
     public static void listOfRecoveryServicesResourcesInSubscriptionId(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager.vaults().list(Context.NONE);
+        manager.vaults().list(com.azure.core.util.Context.NONE);
     }
 }

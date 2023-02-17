@@ -18,6 +18,10 @@ public final class LocationGetResultInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private LocationProperties properties;
 
+    /** Creates an instance of LocationGetResultInner class. */
+    public LocationGetResultInner() {
+    }
+
     /**
      * Get the properties property: Cosmos DB location metadata.
      *

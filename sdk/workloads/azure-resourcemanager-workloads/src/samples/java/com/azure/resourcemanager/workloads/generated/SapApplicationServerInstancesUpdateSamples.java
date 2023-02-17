@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloads.models.SapApplicationServerInstance;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for SapApplicationServerInstances Update. */
 public final class SapApplicationServerInstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPApplicationServerInstances_Update.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPApplicationServerInstances_Update.json
      */
     /**
      * Sample code: SAPApplicationServerInstances_Update.
@@ -22,7 +21,10 @@ public final class SapApplicationServerInstancesUpdateSamples {
     public static void sAPApplicationServerInstancesUpdate(
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
         SapApplicationServerInstance resource =
-            manager.sapApplicationServerInstances().getWithResponse("test-rg", "X00", "app01", Context.NONE).getValue();
+            manager
+                .sapApplicationServerInstances()
+                .getWithResponse("test-rg", "X00", "app01", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("tag1", "value1")).apply();
     }
 

@@ -38,7 +38,7 @@ public final class StreamingPoliciesCreateSamples {
         manager
             .streamingPolicies()
             .define("UserCreatedSecureStreamingPolicy")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDefaultContentKeyPolicyName("PolicyWithMultipleOptions")
             .withEnvelopeEncryption(
                 new EnvelopeEncryption()
@@ -116,7 +116,7 @@ public final class StreamingPoliciesCreateSamples {
         manager
             .streamingPolicies()
             .define("UserCreatedSecureStreamingPolicyWithCommonEncryptionCencOnly")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDefaultContentKeyPolicyName("PolicyWithPlayReadyOptionAndOpenRestriction")
             .withCommonEncryptionCenc(
                 new CommonEncryptionCenc()
@@ -158,7 +158,7 @@ public final class StreamingPoliciesCreateSamples {
         manager
             .streamingPolicies()
             .define("UserCreatedSecureStreamingPolicyWithCommonEncryptionCencOnly")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDefaultContentKeyPolicyName("PolicyWithPlayReadyOptionAndOpenRestriction")
             .withCommonEncryptionCenc(
                 new CommonEncryptionCenc()
@@ -208,7 +208,7 @@ public final class StreamingPoliciesCreateSamples {
         manager
             .streamingPolicies()
             .define("UserCreatedSecureStreamingPolicyWithCommonEncryptionCbcsOnly")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDefaultContentKeyPolicyName("PolicyWithMultipleOptions")
             .withCommonEncryptionCbcs(
                 new CommonEncryptionCbcs()
@@ -243,7 +243,7 @@ public final class StreamingPoliciesCreateSamples {
         manager
             .streamingPolicies()
             .define("UserCreatedSecureStreamingPolicyWithCommonEncryptionCbcsOnly")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDefaultContentKeyPolicyName("PolicyWithMultipleOptions")
             .withCommonEncryptionCbcs(
                 new CommonEncryptionCbcs()
@@ -273,8 +273,8 @@ public final class StreamingPoliciesCreateSamples {
         com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .streamingPolicies()
-            .define("UserCreatedClearStreamingPolicy")
-            .withExistingMediaService("contoso", "contosomedia")
+            .define("clearStreamingPolicy")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withNoEncryption(
                 new NoEncryption()
                     .withEnabledProtocols(
@@ -299,7 +299,7 @@ public final class StreamingPoliciesCreateSamples {
         manager
             .streamingPolicies()
             .define("UserCreatedSecureStreamingPolicyWithEnvelopeEncryptionOnly")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDefaultContentKeyPolicyName("PolicyWithClearKeyOptionAndTokenRestriction")
             .withEnvelopeEncryption(
                 new EnvelopeEncryption()

@@ -27,17 +27,6 @@ public final class SqlPoolMaintenanceWindowOptionsImpl implements SqlPoolMainten
         this.serviceManager = serviceManager;
     }
 
-    public MaintenanceWindowOptions get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowOptionsName) {
-        MaintenanceWindowOptionsInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName);
-        if (inner != null) {
-            return new MaintenanceWindowOptionsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MaintenanceWindowOptions> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -54,6 +43,17 @@ public final class SqlPoolMaintenanceWindowOptionsImpl implements SqlPoolMainten
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new MaintenanceWindowOptionsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MaintenanceWindowOptions get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowOptionsName) {
+        MaintenanceWindowOptionsInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName);
+        if (inner != null) {
+            return new MaintenanceWindowOptionsImpl(inner, this.manager());
         } else {
             return null;
         }

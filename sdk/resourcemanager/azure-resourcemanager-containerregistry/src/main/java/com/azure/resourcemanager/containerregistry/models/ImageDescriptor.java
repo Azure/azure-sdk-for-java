@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for a registry image. */
 @Fluent
 public final class ImageDescriptor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDescriptor.class);
-
     /*
      * The registry login server.
      */
@@ -37,6 +33,10 @@ public final class ImageDescriptor {
      */
     @JsonProperty(value = "digest")
     private String digest;
+
+    /** Creates an instance of ImageDescriptor class. */
+    public ImageDescriptor() {
+    }
 
     /**
      * Get the registry property: The registry login server.

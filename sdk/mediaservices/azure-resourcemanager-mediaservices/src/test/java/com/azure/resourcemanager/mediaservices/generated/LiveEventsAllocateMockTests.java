@@ -56,6 +56,6 @@ public final class LiveEventsAllocateMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.liveEvents().allocate("gnoxuztrksx", "pndfcpfnznt", "jtwkjaos", com.azure.core.util.Context.NONE);
+        manager.liveEvents().allocate("pjrtws", "hv", "uic", com.azure.core.util.Context.NONE);
     }
 }

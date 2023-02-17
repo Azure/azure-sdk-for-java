@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.ConflictResolutionMode;
 import com.azure.resourcemanager.cosmos.models.ConflictResolutionPolicy;
 import com.azure.resourcemanager.cosmos.models.ContainerPartitionKey;
@@ -27,7 +26,7 @@ import java.util.Map;
 /** Samples for GremlinResources CreateUpdateGremlinGraph. */
 public final class GremlinResourcesCreateUpdateGremlinGraphSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinGraphCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBGremlinGraphCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphCreateUpdate.
@@ -86,7 +85,7 @@ public final class GremlinResourcesCreateUpdateGremlinGraphSamples {
                                     .withMode(ConflictResolutionMode.LAST_WRITER_WINS)
                                     .withConflictResolutionPath("/path")))
                     .withOptions(new CreateUpdateOptions()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

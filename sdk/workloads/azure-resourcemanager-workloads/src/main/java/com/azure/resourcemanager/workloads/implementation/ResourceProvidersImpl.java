@@ -36,15 +36,6 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         this.serviceManager = serviceManager;
     }
 
-    public SapSizingRecommendationResult sapSizingRecommendations(String location) {
-        SapSizingRecommendationResultInner inner = this.serviceClient().sapSizingRecommendations(location);
-        if (inner != null) {
-            return new SapSizingRecommendationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SapSizingRecommendationResult> sapSizingRecommendationsWithResponse(
         String location, SapSizingRecommendationRequest sapSizingRecommendation, Context context) {
         Response<SapSizingRecommendationResultInner> inner =
@@ -60,10 +51,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public SapSupportedResourceSkusResult sapSupportedSku(String location) {
-        SapSupportedResourceSkusResultInner inner = this.serviceClient().sapSupportedSku(location);
+    public SapSizingRecommendationResult sapSizingRecommendations(String location) {
+        SapSizingRecommendationResultInner inner = this.serviceClient().sapSizingRecommendations(location);
         if (inner != null) {
-            return new SapSupportedResourceSkusResultImpl(inner, this.manager());
+            return new SapSizingRecommendationResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -84,10 +75,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public SapDiskConfigurationsResult sapDiskConfigurations(String location) {
-        SapDiskConfigurationsResultInner inner = this.serviceClient().sapDiskConfigurations(location);
+    public SapSupportedResourceSkusResult sapSupportedSku(String location) {
+        SapSupportedResourceSkusResultInner inner = this.serviceClient().sapSupportedSku(location);
         if (inner != null) {
-            return new SapDiskConfigurationsResultImpl(inner, this.manager());
+            return new SapSupportedResourceSkusResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -108,10 +99,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public SapAvailabilityZoneDetailsResult sapAvailabilityZoneDetails(String location) {
-        SapAvailabilityZoneDetailsResultInner inner = this.serviceClient().sapAvailabilityZoneDetails(location);
+    public SapDiskConfigurationsResult sapDiskConfigurations(String location) {
+        SapDiskConfigurationsResultInner inner = this.serviceClient().sapDiskConfigurations(location);
         if (inner != null) {
-            return new SapAvailabilityZoneDetailsResultImpl(inner, this.manager());
+            return new SapDiskConfigurationsResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -127,6 +118,15 @@ public final class ResourceProvidersImpl implements ResourceProviders {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SapAvailabilityZoneDetailsResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SapAvailabilityZoneDetailsResult sapAvailabilityZoneDetails(String location) {
+        SapAvailabilityZoneDetailsResultInner inner = this.serviceClient().sapAvailabilityZoneDetails(location);
+        if (inner != null) {
+            return new SapAvailabilityZoneDetailsResultImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -17,6 +17,10 @@ public final class MongoIndexKeys {
     @JsonProperty(value = "keys")
     private List<String> keys;
 
+    /** Creates an instance of MongoIndexKeys class. */
+    public MongoIndexKeys() {
+    }
+
     /**
      * Get the keys property: List of keys for each MongoDB collection in the Azure Cosmos DB service.
      *

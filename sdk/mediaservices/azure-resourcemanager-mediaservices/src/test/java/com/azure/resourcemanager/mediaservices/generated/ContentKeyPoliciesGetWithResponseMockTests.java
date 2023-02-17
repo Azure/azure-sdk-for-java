@@ -31,7 +31,7 @@ public final class ContentKeyPoliciesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"policyId\":\"b75f0ef0-9bda-45ee-b10a-0663f09875a7\",\"created\":\"2021-06-27T17:17:24Z\",\"lastModified\":\"2021-05-09T02:00:20Z\",\"description\":\"tvuqjctzenkeifzz\",\"options\":[]},\"id\":\"dasvfl\",\"name\":\"hbxcu\",\"type\":\"chxgs\"}";
+            "{\"properties\":{\"policyId\":\"81cfcc82-40c3-4a4b-8e16-12cf9a6416de\",\"created\":\"2021-03-20T14:50:38Z\",\"lastModified\":\"2021-11-17T11:32:04Z\",\"description\":\"smfcttuxuuyilfl\",\"options\":[]},\"id\":\"quvre\",\"name\":\"mrnjh\",\"type\":\"sujz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class ContentKeyPoliciesGetWithResponseMockTests {
         ContentKeyPolicy response =
             manager
                 .contentKeyPolicies()
-                .getWithResponse("lvidizozs", "bccxjmonfdgn", "n", com.azure.core.util.Context.NONE)
+                .getWithResponse("rgxffmshkw", "bkgozxwopdbydpi", "qaclnapxbiy", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("tvuqjctzenkeifzz", response.description());
+        Assertions.assertEquals("smfcttuxuuyilfl", response.description());
     }
 }

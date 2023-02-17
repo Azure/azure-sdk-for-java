@@ -17,6 +17,15 @@ public final class CrossRegionRestore extends ExpandableStringEnum<CrossRegionRe
     public static final CrossRegionRestore DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of CrossRegionRestore value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CrossRegionRestore() {
+    }
+
+    /**
      * Creates or finds a CrossRegionRestore from its string representation.
      *
      * @param name a name to look for.

@@ -162,6 +162,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withSourceAddressPrefix(cidr);
         this.innerModel().withSourceAddressPrefixes(null);
         this.innerModel().withSourceApplicationSecurityGroups(null);
+        if (this.sourceAsgs != null) {
+            this.sourceAsgs.clear();
+        }
         return this;
     }
 
@@ -170,6 +173,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withSourceAddressPrefix("*");
         this.innerModel().withSourceAddressPrefixes(null);
         this.innerModel().withSourceApplicationSecurityGroups(null);
+        if (this.sourceAsgs != null) {
+            this.sourceAsgs.clear();
+        }
         return this;
     }
 
@@ -178,6 +184,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withSourceAddressPrefixes(Arrays.asList(addresses));
         this.innerModel().withSourceAddressPrefix(null);
         this.innerModel().withSourceApplicationSecurityGroups(null);
+        if (this.sourceAsgs != null) {
+            this.sourceAsgs.clear();
+        }
         return this;
     }
 
@@ -214,6 +223,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withDestinationAddressPrefix(cidr);
         this.innerModel().withDestinationAddressPrefixes(null);
         this.innerModel().withDestinationApplicationSecurityGroups(null);
+        if (this.destinationAsgs != null) {
+            this.destinationAsgs.clear();
+        }
         return this;
     }
 
@@ -222,6 +234,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withDestinationAddressPrefixes(Arrays.asList(addresses));
         this.innerModel().withDestinationAddressPrefix(null);
         this.innerModel().withDestinationApplicationSecurityGroups(null);
+        if (this.destinationAsgs != null) {
+            this.destinationAsgs.clear();
+        }
         return this;
     }
 
@@ -230,6 +245,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withDestinationAddressPrefix("*");
         this.innerModel().withDestinationAddressPrefixes(null);
         this.innerModel().withDestinationApplicationSecurityGroups(null);
+        if (this.destinationAsgs != null) {
+            this.destinationAsgs.clear();
+        }
         return this;
     }
 

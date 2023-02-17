@@ -9,10 +9,13 @@ The Cosmos DB SDK for Java allows enabling micrometer.io metrics to track latenc
 To enable client metrics a `io.micrometer.core.instrument.MeterRegistry` needs to be passed to the `CosmosClientBuilder` when creating the singleton Cosmos client.
 
 ```java
+CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+    .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(createConsoleLoggingMeterRegistry()));
+
 this.client = new CosmosClientBuilder()
     .endpoint("<Endpint>")
     .key("<Key>")
-    .clientTelemetryConfig().clientMetrics(createConsoleLoggingMeterRegistry())
+    .clientTelemetryConfig(telemetryConfig)
     .buildClient();
 ```
 

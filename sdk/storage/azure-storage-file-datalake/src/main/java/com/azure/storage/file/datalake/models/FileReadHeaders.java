@@ -44,6 +44,7 @@ public final class FileReadHeaders {
     private byte[] fileContentMD5;
     private byte[] contentCrc64;
     private String errorCode;
+    private OffsetDateTime creationTime;
 
     /**
      * Get the lastModified property: Returns the date and time the container
@@ -809,6 +810,26 @@ public final class FileReadHeaders {
      */
     public FileReadHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: The x-ms-creation-time property.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime getCreationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Set the creationTime property: The x-ms-creation-time property.
+     *
+     * @param creationTime the creation time value to set.
+     * @return the FileReadHeaders object itself.
+     */
+    public FileReadHeaders setCreationTime(OffsetDateTime creationTime) {
+        this.creationTime = creationTime;
         return this;
     }
 }

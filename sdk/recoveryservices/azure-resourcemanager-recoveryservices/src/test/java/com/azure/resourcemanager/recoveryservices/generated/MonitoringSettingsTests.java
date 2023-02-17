@@ -10,11 +10,10 @@ import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettin
 import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MonitoringSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MonitoringSettings model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class MonitoringSettingsTests {
         Assertions.assertEquals(AlertsState.DISABLED, model.classicAlertSettings().alertsForCriticalOperations());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MonitoringSettings model =
             new MonitoringSettings()
                 .withAzureMonitorAlertSettings(

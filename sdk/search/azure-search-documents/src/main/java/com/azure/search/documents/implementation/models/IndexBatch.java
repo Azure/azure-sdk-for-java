@@ -6,13 +6,13 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contains a batch of document write actions to send to the index. */
-@Fluent
+@Immutable
 public final class IndexBatch {
     /*
      * The actions in the batch.

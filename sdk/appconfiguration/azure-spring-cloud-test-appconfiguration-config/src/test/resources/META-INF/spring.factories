@@ -1,3 +1,0 @@
-org.springframework.cloud.bootstrap.BootstrapConfiguration=\
-com.azure.spring.cloud.config.AppConfiguration
-

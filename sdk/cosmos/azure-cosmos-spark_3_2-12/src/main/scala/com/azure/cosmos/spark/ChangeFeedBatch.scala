@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
@@ -86,10 +87,21 @@ private class ChangeFeedBatch
           if (offsetIsValid) {
             changeFeedStateBase64
           } else {
+            SparkBridgeInternal.clearCollectionCache(
+              container,
+              SparkBridgeImplementationInternal.extractCollectionRid(changeFeedStateBase64))
+
             val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
               container, changeFeedConfig, partitioningConfig, None)
-            log.logWarning(s"Invalid Start offset retrieved from file location '$startOffsetLocation' " +
-              s"for batchId: $batchId -> New offset retrieved from service: '$newOffsetJson'.")
+            log.logWarning(s"Invalid Start offset '$offsetJson' retrieved from file location " +
+              s"'$startOffsetLocation' for batchId: $batchId -> New offset retrieved from " +
+              s"service: '$newOffsetJson'.")
+
+            SparkBridgeImplementationInternal.validateCollectionRidOfChangeFeedState(
+              newOffsetJson,
+              expectedContainerResourceId,
+              false
+            )
 
             newOffsetJson
           }

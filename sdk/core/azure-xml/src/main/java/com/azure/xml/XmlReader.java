@@ -14,6 +14,12 @@ import java.util.Objects;
  */
 public abstract class XmlReader implements AutoCloseable {
     /**
+     * Creates an instance of {@link XmlReader}.
+     */
+    public XmlReader() {
+    }
+
+    /**
      * Gets the {@link XmlToken} that the reader points to currently.
      * <p>
      * Returns {@link XmlToken#START_DOCUMENT} if the reader hasn't begun reading the XML stream. Returns

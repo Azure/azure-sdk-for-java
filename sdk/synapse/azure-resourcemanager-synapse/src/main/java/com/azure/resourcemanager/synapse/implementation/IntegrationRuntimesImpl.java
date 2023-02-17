@@ -31,17 +31,6 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         this.serviceManager = serviceManager;
     }
 
-    public IntegrationRuntimeResource get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeResourceInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeResource> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -63,6 +52,17 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
     }
 
+    public IntegrationRuntimeResource get(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeResourceInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         this.serviceClient().delete(resourceGroupName, workspaceName, integrationRuntimeName);
     }
@@ -71,15 +71,15 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         this.serviceClient().delete(resourceGroupName, workspaceName, integrationRuntimeName, context);
     }
 
-    public void upgrade(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        this.serviceClient().upgrade(resourceGroupName, workspaceName, integrationRuntimeName);
-    }
-
     public Response<Void> upgradeWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return this
             .serviceClient()
             .upgradeWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
+    }
+
+    public void upgrade(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        this.serviceClient().upgrade(resourceGroupName, workspaceName, integrationRuntimeName);
     }
 
     public PagedIterable<IntegrationRuntimeResource> listByWorkspace(String resourceGroupName, String workspaceName) {
@@ -125,19 +125,6 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         this.serviceClient().stop(resourceGroupName, workspaceName, integrationRuntimeName, context);
     }
 
-    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner inner =
-            this
-                .serviceClient()
-                .listOutboundNetworkDependenciesEndpoints(resourceGroupName, workspaceName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse>
         listOutboundNetworkDependenciesEndpointsWithResponse(
             String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
@@ -153,6 +140,19 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
                 inner.getHeaders(),
                 new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(
                     inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner inner =
+            this
+                .serviceClient()
+                .listOutboundNetworkDependenciesEndpoints(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -878,12 +878,11 @@
               </revapi.reporter.json>
             </analysisConfiguration>
             <pipelineConfiguration>
-              <transformationBlocks>
-                <block>
-                  <item>revapi.differences</item>
-                  <item>transitive-core-changes</item>
-                </block>
-              </transformationBlocks>
+              <filters>
+                <include>
+                  <item>azure-sdk-tree-provider</item>
+                </include>
+              </filters>
             </pipelineConfiguration>
           </configuration>
           <dependencies>

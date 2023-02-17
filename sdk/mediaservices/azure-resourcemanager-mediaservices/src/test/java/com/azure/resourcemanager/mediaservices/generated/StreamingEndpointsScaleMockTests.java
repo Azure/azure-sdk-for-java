@@ -60,10 +60,10 @@ public final class StreamingEndpointsScaleMockTests {
         manager
             .streamingEndpoints()
             .scale(
-                "punj",
-                "ikczvvitacgxmf",
-                "sserxhtvsoxhlwn",
-                new StreamingEntityScaleUnit().withScaleUnit(166425776),
+                "ypobkdqzr",
+                "zsylollgt",
+                "czzydmxzjij",
+                new StreamingEntityScaleUnit().withScaleUnit(294173170),
                 com.azure.core.util.Context.NONE);
     }
 }

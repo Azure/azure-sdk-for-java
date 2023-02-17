@@ -36,6 +36,10 @@ public final class RecommendedSensitivityLabelUpdateProperties {
     @JsonProperty(value = "column", required = true)
     private String column;
 
+    /** Creates an instance of RecommendedSensitivityLabelUpdateProperties class. */
+    public RecommendedSensitivityLabelUpdateProperties() {
+    }
+
     /**
      * Get the op property: The op property.
      *

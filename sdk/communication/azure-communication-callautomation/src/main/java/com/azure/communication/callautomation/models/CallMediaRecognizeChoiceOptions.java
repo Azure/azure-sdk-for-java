@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.models.RecognizeChoice;
 import com.azure.communication.common.CommunicationIdentifier;
 
 import java.util.List;
