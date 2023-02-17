@@ -23,7 +23,7 @@ created, a [`SelectableChannel`][SelectableChannel] is associated with this `Rea
 basis.  [`ReactorExecutor`][ReactorExecutor] holds onto the `Reactor` instance and continuously processes to work
 SelectableChannel.
 
-![azure-core-amqp integration with Proton-J][AzureCoreAmpqArchitecture]
+![azure-core-amqp integration with Proton-J][AzureCoreAmqpArchitecture]
 
 ## Prefetch and AMQP Link Credits
 
@@ -50,7 +50,7 @@ The diagram below illustrates how it happens. Things to note:
 [BaseHandler]: https://github.com/apache/qpid-proton-j/blob/main/proton-j/src/main/java/org/apache/qpid/proton/engine/BaseHandler.java
 [EventHubConsumerAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubConsumerAsyncClient.java#L334
 [EventProcessorClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventProcessorClient.java
-[AzureCoreAmpqArchitecture]: ./architecture-uml.jpeg
+[AzureCoreAmqpArchitecture]: ./architecture-uml.jpeg
 [Handlers]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/implementation/handler
 [ReceiveFlowDiagram]: ./receive-flow.jpeg
 [PartitionPumpManager]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/main/java/com/azure/messaging/eventhubs/PartitionPumpManager.java#L228

@@ -12,10 +12,10 @@ import java.util.function.Consumer;
  * The options model to configure the request to upload logs to Azure Monitor.
  */
 @Fluent
-public final class UploadLogsOptions {
+public final class LogsUploadOptions {
     private ObjectSerializer objectSerializer;
     private Integer maxConcurrency;
-    private Consumer<UploadLogsError> uploadLogsErrorConsumer;
+    private Consumer<LogsUploadError> logsUploadErrorConsumer;
 
     /**
      * Returns the serializer to use to convert the log objects to JSON.
@@ -28,9 +28,9 @@ public final class UploadLogsOptions {
     /**
      * Sets the serializer to use to convert the log objects to JSON.
      * @param objectSerializer the serializer to use to convert the log objects to JSON.
-     * @return the updated {@link UploadLogsOptions} instance.
+     * @return the updated {@link LogsUploadOptions} instance.
      */
-    public UploadLogsOptions setObjectSerializer(ObjectSerializer objectSerializer) {
+    public LogsUploadOptions setObjectSerializer(ObjectSerializer objectSerializer) {
         this.objectSerializer = objectSerializer;
         return this;
     }
@@ -46,9 +46,9 @@ public final class UploadLogsOptions {
     /**
      * Sets the max concurrent requests to send to the Azure Monitor service when uploading logs.
      * @param maxConcurrency the max concurrent requests to send to the Azure Monitor service when uploading logs.
-     * @return the updated {@link UploadLogsOptions} instance.
+     * @return the updated {@link LogsUploadOptions} instance.
      */
-    public UploadLogsOptions setMaxConcurrency(Integer maxConcurrency) {
+    public LogsUploadOptions setMaxConcurrency(Integer maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
         return this;
     }
@@ -57,17 +57,17 @@ public final class UploadLogsOptions {
      * Returns the error handler that is called when a request to the Azure Monitor service to upload logs fails.
      * @return the error handler that is called when a request to the Azure Monitor service to upload logs fails.
      */
-    public Consumer<UploadLogsError> getUploadLogsErrorConsumer() {
-        return uploadLogsErrorConsumer;
+    public Consumer<LogsUploadError> getLogsUploadErrorConsumer() {
+        return logsUploadErrorConsumer;
     }
 
     /**
      * Sets  the error handler that is called when a request to the Azure Monitor service to upload logs fails.
-     * @param uploadLogsErrorConsumer the error handler that is called when a request to the Azure Monitor service to upload logs fails.
-     * @return the updated {@link UploadLogsOptions} instance.
+     * @param logsUploadErrorConsumer the error handler that is called when a request to the Azure Monitor service to upload logs fails.
+     * @return the updated {@link LogsUploadOptions} instance.
      */
-    public UploadLogsOptions setUploadLogsErrorConsumer(Consumer<UploadLogsError> uploadLogsErrorConsumer) {
-        this.uploadLogsErrorConsumer = uploadLogsErrorConsumer;
+    public LogsUploadOptions setLogsUploadErrorConsumer(Consumer<LogsUploadError> logsUploadErrorConsumer) {
+        this.logsUploadErrorConsumer = logsUploadErrorConsumer;
         return this;
     }
 }

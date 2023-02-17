@@ -88,6 +88,11 @@ public final class SerializableContent extends BinaryDataContent {
         return Mono.just(this);
     }
 
+    @Override
+    public BinaryDataContentType getContentType() {
+        return BinaryDataContentType.OBJECT;
+    }
+
     private byte[] getBytes() {
         return serializer.serializeToBytes(content);
     }

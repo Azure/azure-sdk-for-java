@@ -20,7 +20,7 @@ public class AppConfigurationConstants {
     /**
      * Feature Management Key Prefix
      */
-    public static final String FEATURE_MANAGEMENT_KEY = "feature-management.featureManagement.";
+    public static final String FEATURE_MANAGEMENT_KEY = "feature-management.";
 
     /**
      * Feature Flag Prefix
