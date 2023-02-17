@@ -46,6 +46,10 @@ public final class CommonExportPropertiesImpl implements CommonExportProperties 
         }
     }
 
+    public Boolean partitionData() {
+        return this.innerModel().partitionData();
+    }
+
     public OffsetDateTime nextRunTimeEstimate() {
         return this.innerModel().nextRunTimeEstimate();
     }

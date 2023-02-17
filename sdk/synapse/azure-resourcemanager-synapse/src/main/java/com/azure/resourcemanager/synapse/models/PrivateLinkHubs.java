@@ -38,18 +38,6 @@ public interface PrivateLinkHubs {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a privateLinkHub.
-     */
-    PrivateLinkHub getByResourceGroup(String resourceGroupName, String privateLinkHubName);
-
-    /**
-     * Gets a privateLinkHub.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,6 +46,18 @@ public interface PrivateLinkHubs {
      */
     Response<PrivateLinkHub> getByResourceGroupWithResponse(
         String resourceGroupName, String privateLinkHubName, Context context);
+
+    /**
+     * Gets a privateLinkHub.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateLinkHubName Name of the privateLinkHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a privateLinkHub.
+     */
+    PrivateLinkHub getByResourceGroup(String resourceGroupName, String privateLinkHubName);
 
     /**
      * Deletes a privateLinkHub.

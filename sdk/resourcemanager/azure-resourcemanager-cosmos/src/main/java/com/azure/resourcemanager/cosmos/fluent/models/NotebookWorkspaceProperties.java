@@ -22,6 +22,10 @@ public final class NotebookWorkspaceProperties {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
+    /** Creates an instance of NotebookWorkspaceProperties class. */
+    public NotebookWorkspaceProperties() {
+    }
+
     /**
      * Get the notebookServerEndpoint property: Specifies the endpoint of Notebook server.
      *

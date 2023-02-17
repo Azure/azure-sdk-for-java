@@ -11,6 +11,9 @@ parameters:
   - name: Artifacts
     type: object
     default: []
+  - name: ReleaseArtifacts
+    type: object
+    default: []
   - name: AdditionalModules
     type: object
     default: []
@@ -54,9 +57,10 @@ jobs:
   - job: 'Build'
 
     variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
-      - name: ArtifactName
-        value: 'packages'
+      ArtifactName: 'packages'
+      Codeql.Enabled: true
+      Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
+      Codeql.SkipTaskAutoInjection: false
 
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
@@ -186,11 +190,12 @@ jobs:
           arguments: >
             -SourceDirectory $(System.DefaultWorkingDirectory)/build
             -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
-          Artifacts: ${{parameters.Artifacts}}
+          Artifacts: ${{parameters.ReleaseArtifacts}}
 
       - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
         parameters:
@@ -217,9 +222,6 @@ jobs:
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
-
-    variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
 
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general

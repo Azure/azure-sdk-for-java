@@ -32,10 +32,10 @@ public final class ListOperations {
 
     public static void listTests() {
         // BEGIN: java-listOperations-sample-listTests
-        LoadTestAdministrationClient client = new LoadTestingClientBuilder()
+        LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestAdministrationClient();
+                .buildClient();
 
         RequestOptions reqOpts = new RequestOptions()
                 .addQueryParam("orderBy", "lastModifiedDateTime")
@@ -58,10 +58,10 @@ public final class ListOperations {
 
     public static void listTestRuns() {
         // BEGIN: java-listOperations-sample-listTestRuns
-        LoadTestRunClient client = new LoadTestingClientBuilder()
+        LoadTestRunClient client = new LoadTestRunClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestRunClient();
+                .buildClient();
 
         RequestOptions reqOpts = new RequestOptions()
                 .addQueryParam("search", "scenario1")
@@ -87,10 +87,10 @@ public final class ListOperations {
 
     public static void listTestFiles() {
         // BEGIN: java-listOperations-sample-listTestFiles
-        LoadTestAdministrationClient client = new LoadTestingClientBuilder()
+        LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestAdministrationClient();
+                .buildClient();
 
         String inputTestId = "12345678-1234-1234-1234-123456789abc";
 

@@ -22,6 +22,10 @@ public final class MetricAvailability {
     @JsonProperty(value = "retention", access = JsonProperty.Access.WRITE_ONLY)
     private String retention;
 
+    /** Creates an instance of MetricAvailability class. */
+    public MetricAvailability() {
+    }
+
     /**
      * Get the timeGrain property: The time grain to be used to summarize the metric values.
      *

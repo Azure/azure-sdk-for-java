@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.TableCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.TableResource;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for TableResources CreateUpdateTable. */
 public final class TableResourcesCreateUpdateTableSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBTableCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBTableCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBTableReplace.
@@ -36,7 +35,7 @@ public final class TableResourcesCreateUpdateTableSamples {
                     .withTags(mapOf())
                     .withResource(new TableResource().withId("tableName"))
                     .withOptions(new CreateUpdateOptions()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

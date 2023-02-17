@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuTier. */
+/** The SKU tier based on the SKU name. */
 public final class SkuTier extends ExpandableStringEnum<SkuTier> {
     /** Static value Classic for SkuTier. */
     public static final SkuTier CLASSIC = fromString("Classic");
@@ -23,6 +23,15 @@ public final class SkuTier extends ExpandableStringEnum<SkuTier> {
     public static final SkuTier PREMIUM = fromString("Premium");
 
     /**
+     * Creates a new instance of SkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuTier() {
+    }
+
+    /**
      * Creates or finds a SkuTier from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class SkuTier extends ExpandableStringEnum<SkuTier> {
         return fromString(name, SkuTier.class);
     }
 
-    /** @return known SkuTier values. */
+    /**
+     * Gets known SkuTier values.
+     *
+     * @return known SkuTier values.
+     */
     public static Collection<SkuTier> values() {
         return values(SkuTier.class);
     }

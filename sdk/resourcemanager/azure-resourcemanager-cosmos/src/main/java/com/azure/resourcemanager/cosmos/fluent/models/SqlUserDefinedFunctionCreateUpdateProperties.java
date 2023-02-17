@@ -26,6 +26,10 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of SqlUserDefinedFunctionCreateUpdateProperties class. */
+    public SqlUserDefinedFunctionCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a userDefinedFunction.
      *

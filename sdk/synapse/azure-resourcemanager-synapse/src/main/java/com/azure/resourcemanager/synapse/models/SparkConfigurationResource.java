@@ -82,6 +82,13 @@ public interface SparkConfigurationResource {
     OffsetDateTime created();
 
     /**
+     * Gets the configMergeRule property: SparkConfiguration merge configs.
+     *
+     * @return the configMergeRule value.
+     */
+    Map<String, String> configMergeRule();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.SparkConfigurationResourceInner object.
      *
      * @return the inner object.

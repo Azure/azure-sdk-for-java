@@ -19,6 +19,6 @@ public final class AssetsGetEncryptionKeySamples {
         manager
             .assets()
             .getEncryptionKeyWithResponse(
-                "contoso", "contosomedia", "ClimbingMountSaintHelens", com.azure.core.util.Context.NONE);
+                "contosorg", "contosomedia", "ClimbingMountSaintHelens", com.azure.core.util.Context.NONE);
     }
 }

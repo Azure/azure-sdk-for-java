@@ -18,6 +18,6 @@ public final class AssetsListStreamingLocatorsSamples {
         manager
             .assets()
             .listStreamingLocatorsWithResponse(
-                "contoso", "contosomedia", "ClimbingMountSaintHelens", com.azure.core.util.Context.NONE);
+                "contosorg", "contosomedia", "ClimbingMountSaintHelens", com.azure.core.util.Context.NONE);
     }
 }

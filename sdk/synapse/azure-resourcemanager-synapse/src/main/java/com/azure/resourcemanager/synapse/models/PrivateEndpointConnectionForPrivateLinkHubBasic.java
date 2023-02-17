@@ -23,6 +23,10 @@ public final class PrivateEndpointConnectionForPrivateLinkHubBasic {
     @JsonProperty(value = "properties")
     private PrivateEndpointConnectionProperties innerProperties;
 
+    /** Creates an instance of PrivateEndpointConnectionForPrivateLinkHubBasic class. */
+    public PrivateEndpointConnectionForPrivateLinkHubBasic() {
+    }
+
     /**
      * Get the id property: identifier.
      *

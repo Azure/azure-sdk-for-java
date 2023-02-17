@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TableResources MigrateTableToManualThroughput. */
 public final class TableResourcesMigrateTableToManualThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBTableMigrateToManualThroughput.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBTableMigrateToManualThroughput.json
      */
     /**
      * Sample code: CosmosDBTableMigrateToManualThroughput.
@@ -22,6 +20,6 @@ public final class TableResourcesMigrateTableToManualThroughputSamples {
             .manager()
             .serviceClient()
             .getTableResources()
-            .migrateTableToManualThroughput("rg1", "ddb1", "tableName", Context.NONE);
+            .migrateTableToManualThroughput("rg1", "ddb1", "tableName", com.azure.core.util.Context.NONE);
     }
 }

@@ -3,17 +3,21 @@
 ### 4.41.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added ability to configure proactive connection management via `CosmosClientBuilder.openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig)`. - See [PR 33267](https://github.com/Azure/azure-sdk-for-java/pull/33267)
 * Added internal merge handling - See [PR 31428](https://github.com/Azure/azure-sdk-for-java/pull/31428). See [PR 32097](https://github.com/Azure/azure-sdk-for-java/pull/32097). See [PR 32078](https://github.com/Azure/azure-sdk-for-java/pull/32078). See [PR 32165](https://github.com/Azure/azure-sdk-for-java/pull/32165). See [32259](https://github.com/Azure/azure-sdk-for-java/pull/32259). See [32496](https://github.com/Azure/azure-sdk-for-java/pull/32496)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Change feed pull API is using an incorrect key value for collection lookup, which can result in using the old collection in collection recreate scenarios. - See [PR 33178](https://github.com/Azure/azure-sdk-for-java/pull/33178)
+* Added improvement in `RntbdClientChannelHealthChecker` for detecting transit timeout. - See [PR 33464](https://github.com/Azure/azure-sdk-for-java/pull/33464)
 
 #### Other Changes
+* Give a meaningful name to the GlobalEndpointManager worker thread - See [PR 33507](https://github.com/Azure/azure-sdk-for-java/pull/33507)
 
 ### 4.40.0 (2023-01-13)
 #### Features Added
-* Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
+* Added `retryAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
 * Added `CosmosDiagnostics` to `readMany` API - See [PR 32290](https://github.com/Azure/azure-sdk-for-java/pull/32290)
 
 #### Bugs Fixed

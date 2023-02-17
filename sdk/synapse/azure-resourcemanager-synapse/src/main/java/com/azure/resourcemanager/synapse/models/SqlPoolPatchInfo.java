@@ -11,7 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** SQL pool patch info A SQL Analytics pool patch info. */
+/**
+ * SQL pool patch info
+ *
+ * <p>A SQL Analytics pool patch info.
+ */
 @Fluent
 public final class SqlPoolPatchInfo {
     /*
@@ -28,7 +32,9 @@ public final class SqlPoolPatchInfo {
     private String location;
 
     /*
-     * Sku SQL pool SKU
+     * Sku
+     *
+     * SQL pool SKU
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -38,6 +44,10 @@ public final class SqlPoolPatchInfo {
      */
     @JsonProperty(value = "properties")
     private SqlPoolResourceProperties innerProperties;
+
+    /** Creates an instance of SqlPoolPatchInfo class. */
+    public SqlPoolPatchInfo() {
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -80,7 +90,9 @@ public final class SqlPoolPatchInfo {
     }
 
     /**
-     * Get the sku property: Sku SQL pool SKU.
+     * Get the sku property: Sku
+     *
+     * <p>SQL pool SKU.
      *
      * @return the sku value.
      */
@@ -89,7 +101,9 @@ public final class SqlPoolPatchInfo {
     }
 
     /**
-     * Set the sku property: Sku SQL pool SKU.
+     * Set the sku property: Sku
+     *
+     * <p>SQL pool SKU.
      *
      * @param sku the sku value to set.
      * @return the SqlPoolPatchInfo object itself.

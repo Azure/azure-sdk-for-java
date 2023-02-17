@@ -13,7 +13,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -21,15 +20,17 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesAsyncClient;
+import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
 import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
-import com.azure.monitor.ingestion.models.UploadLogsError;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
-import com.azure.monitor.ingestion.models.UploadLogsResult;
-import com.azure.monitor.ingestion.models.UploadLogsStatus;
+import com.azure.monitor.ingestion.models.LogsUploadError;
+import com.azure.monitor.ingestion.models.LogsUploadException;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SynchronousSink;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,13 +39,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
 
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
@@ -84,7 +84,7 @@ public final class LogsIngestionAsyncClient {
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
      * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;
-     *         .subscribe&#40;result -&gt; System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;&#41;;
+     *         .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload -->
      *
@@ -92,13 +92,13 @@ public final class LogsIngestionAsyncClient {
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
-     * @return the result of the logs upload request.
+     * @return the {@link Mono} that completes on completion of the upload request.
      * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadLogsResult> upload(String ruleId, String streamName, List<Object> logs) {
-        return upload(ruleId, streamName, logs, new UploadLogsOptions());
+    public Mono<Void> upload(String ruleId, String streamName, Iterable<Object> logs) {
+        return upload(ruleId, streamName, logs, new LogsUploadOptions());
     }
 
     /**
@@ -110,9 +110,9 @@ public final class LogsIngestionAsyncClient {
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
-     * UploadLogsOptions uploadLogsOptions = new UploadLogsOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
-     * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs, uploadLogsOptions&#41;
-     *         .subscribe&#40;result -&gt; System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;&#41;;
+     * LogsUploadOptions logsUploadOptions = new LogsUploadOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
+     * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs, logsUploadOptions&#41;
+     *         .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
      *
@@ -121,13 +121,13 @@ public final class LogsIngestionAsyncClient {
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
      * @param options the options to configure the upload request.
-     * @return the result of the logs upload request.
+     * @return the {@link Mono} that completes on completion of the upload request.
      * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadLogsResult> upload(String ruleId, String streamName,
-                                         List<Object> logs, UploadLogsOptions options) {
+    public Mono<Void> upload(String ruleId, String streamName,
+                                         Iterable<Object> logs, LogsUploadOptions options) {
         return withContext(context -> upload(ruleId, streamName, logs, options, context));
     }
 
@@ -182,157 +182,134 @@ public final class LogsIngestionAsyncClient {
         return service.uploadWithResponse(ruleId, streamName, logs, requestOptions);
     }
 
-    Mono<UploadLogsResult> upload(String ruleId, String streamName,
-                                  List<Object> logs, UploadLogsOptions options,
-                                  Context context) {
+    Mono<Void> upload(String ruleId, String streamName,
+                      Iterable<Object> logs, LogsUploadOptions options,
+                      Context context) {
         return Mono.defer(() -> splitAndUpload(ruleId, streamName, logs, options, context));
     }
 
-    private Mono<UploadLogsResult> splitAndUpload(String ruleId, String streamName, List<Object> logs, UploadLogsOptions options, Context context) {
-        try {
-            Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
-            Objects.requireNonNull(streamName, "'streamName' cannot be null.");
-            Objects.requireNonNull(logs, "'logs' cannot be null.");
 
-            if (logs.isEmpty()) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'logs' cannot be empty."));
+    /**
+     * This method splits the input logs into < 1MB HTTP requests and uploads to the Azure Monitor service.
+     * @param ruleId The data collection rule id.
+     * @param streamName The stream name configured in the data collection rule.
+     * @param logs The input logs to upload.
+     * @param options The options to configure the upload request.
+     * @param context additional context that is passed through the Http pipeline during the service call. If no
+     *     additional context is required, pass {@link Context#NONE} instead.
+     * @return the {@link Mono} that completes on completion of the upload request.
+     */
+    private Mono<Void> splitAndUpload(String ruleId, String streamName, Iterable<Object> logs,
+                                      LogsUploadOptions options, Context context) {
+        // set concurrency to 1 as default
+        int concurrency = 1;
+        ObjectSerializer objectSerializer = DEFAULT_SERIALIZER;
+        if (options != null) {
+            if (options.getObjectSerializer() != null) {
+                objectSerializer = options.getObjectSerializer();
             }
-
-            ObjectSerializer serializer = DEFAULT_SERIALIZER;
-
-            // set concurrency to 1 as default
-            int concurrency = 1;
-            if (options != null) {
-                if (options.getObjectSerializer() != null) {
-                    serializer = options.getObjectSerializer();
-                }
-                if (options.getMaxConcurrency() != null) {
-                    concurrency = options.getMaxConcurrency();
-                }
+            if (options.getMaxConcurrency() != null) {
+                concurrency = options.getMaxConcurrency();
             }
-
-            List<List<Object>> logBatches = new ArrayList<>();
-            // TODO (srnagar): can improve memory usage by creating these request payloads right before sending the
-            //  request if the allowed concurrency is lower than the number of requests.
-            List<byte[]> requests = createGzipRequests(logs, serializer, logBatches);
-            RequestOptions requestOptions = new RequestOptions()
-                    .addHeader(CONTENT_ENCODING, GZIP)
-                    .setContext(context);
-
-            Iterator<List<Object>> logBatchesIterator = logBatches.iterator();
-            return Flux.fromIterable(requests)
-                    .flatMapSequential(bytes ->
-                            uploadToService(ruleId, streamName, requestOptions, bytes), concurrency)
-                    .map(responseHolder -> mapResult(logBatchesIterator, responseHolder))
-                    .collectList()
-                    .map(this::createResponse);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
         }
-    }
 
-    private UploadLogsResult mapResult(Iterator<List<Object>> logBatchesIterator, UploadLogsResponseHolder responseHolder) {
-        List<Object> logsBatch = logBatchesIterator.next();
-        if (responseHolder.getStatus() == UploadLogsStatus.FAILURE) {
-            return new UploadLogsResult(responseHolder.getStatus(),
-                    Collections.singletonList(new UploadLogsError(responseHolder.getResponseError(), logsBatch)));
-        }
-        return new UploadLogsResult(UploadLogsStatus.SUCCESS, null);
-    }
+        ObjectSerializer serializer = objectSerializer;
+        Iterator<Object> iterator = logs.iterator();
 
-    private Mono<UploadLogsResponseHolder> uploadToService(String ruleId, String streamName, RequestOptions requestOptions, byte[] bytes) {
-        return service.uploadWithResponse(ruleId, streamName,
-                        BinaryData.fromBytes(bytes), requestOptions)
-                .map(response -> new UploadLogsResponseHolder(UploadLogsStatus.SUCCESS, null))
-                .onErrorResume(HttpResponseException.class,
-                        ex -> Mono.fromSupplier(() -> new UploadLogsResponseHolder(UploadLogsStatus.FAILURE,
-                                mapToResponseError(ex))));
+        return Flux.<LogsIngestionRequest>create(emitter -> createHttpRequest(serializer, iterator, emitter))
+                .flatMapSequential(request -> uploadToService(ruleId, streamName, context, request), concurrency)
+                .<LogsUploadException>handle((responseHolder, sink) -> processResponse(options, responseHolder, sink))
+                .collectList()
+                .handle((result, sink) -> processExceptions(result, sink));
     }
 
     /**
-     * Method to map the exception to {@link ResponseError}.
-     * @param ex the {@link HttpResponseException}.
-     * @return the mapped {@link ResponseError}.
+     * This method converts raw {@link Object} logs into serialized and gzipped byte array that forms the request
+     * body of the service call.
+     * @param serializer The serializer used to serialize logs.
+     * @param iterator The input logs interator.
+     * @param emitter The Flux emitter to which the HTTP request is emitted.
      */
-    private ResponseError mapToResponseError(HttpResponseException ex) {
-        ResponseError responseError = null;
-        // with DPG clients, the error object is just a LinkedHashMap and should map to the standard error
-        // response structure
-        // https://github.com/Azure/azure-rest-api-specs/blob/main/specification/common-types/data-plane/v1/types.json#L46
-        if (ex.getValue() instanceof LinkedHashMap<?, ?>) {
-            @SuppressWarnings("unchecked")
-            LinkedHashMap<String, Object> errorMap = (LinkedHashMap<String, Object>) ex.getValue();
-            if (errorMap.containsKey("error")) {
-                Object error = errorMap.get("error");
-                if (error instanceof LinkedHashMap<?, ?>) {
-                    @SuppressWarnings("unchecked")
-                    LinkedHashMap<String, String> errorDetails = (LinkedHashMap<String, String>) error;
-                    if (errorDetails.containsKey("code") && errorDetails.containsKey("message")) {
-                        responseError = new ResponseError(errorDetails.get("code"), errorDetails.get("message"));
-                    }
-                }
-            }
-        }
-        return responseError;
-    }
-
-    private UploadLogsResult createResponse(List<UploadLogsResult> results) {
-        int failureCount = 0;
-        List<UploadLogsError> errors =  new ArrayList<>();
-        for (UploadLogsResult result : results) {
-            if (result.getStatus() != UploadLogsStatus.SUCCESS) {
-                failureCount++;
-                errors.addAll(result.getErrors());
-            }
-        }
-        if (failureCount == 0) {
-            return new UploadLogsResult(UploadLogsStatus.SUCCESS, errors);
-        }
-        if (failureCount < results.size()) {
-            return new UploadLogsResult(UploadLogsStatus.PARTIAL_FAILURE, errors);
-        }
-        return new UploadLogsResult(UploadLogsStatus.FAILURE, errors);
-    }
-
-    private List<byte[]> createGzipRequests(List<Object> logs, ObjectSerializer serializer,
-                                            List<List<Object>> logBatches) {
+    private void createHttpRequest(ObjectSerializer serializer, Iterator<Object> iterator, FluxSink<LogsIngestionRequest> emitter) {
         try {
-            List<byte[]> requests = new ArrayList<>();
             long currentBatchSize = 0;
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
             JsonGenerator generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
             generator.writeStartArray();
             List<String> serializedLogs = new ArrayList<>();
-
-            int currentBatchStart = 0;
-            for (int i = 0; i < logs.size(); i++) {
-                byte[] bytes = serializer.serializeToBytes(logs.get(i));
+            List<Object> originalLogsRequest = new ArrayList<>();
+            while (iterator.hasNext()) {
+                Object currentLog = iterator.next();
+                byte[] bytes = serializer.serializeToBytes(currentLog);
                 int currentLogSize = bytes.length;
                 currentBatchSize += currentLogSize;
                 if (currentBatchSize > MAX_REQUEST_PAYLOAD_SIZE) {
                     writeLogsAndCloseJsonGenerator(generator, serializedLogs);
-                    requests.add(gzipRequest(byteArrayOutputStream.toByteArray()));
-
+                    byte[] zippedRequestBody = gzipRequest(byteArrayOutputStream.toByteArray());
+                    emitter.next(new LogsIngestionRequest(originalLogsRequest, zippedRequestBody));
                     byteArrayOutputStream = new ByteArrayOutputStream();
                     generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
                     generator.writeStartArray();
                     currentBatchSize = currentLogSize;
+                    originalLogsRequest = new ArrayList<>();
                     serializedLogs.clear();
-                    logBatches.add(logs.subList(currentBatchStart, i));
-                    currentBatchStart = i;
                 }
                 serializedLogs.add(new String(bytes, StandardCharsets.UTF_8));
+                originalLogsRequest.add(currentLog);
             }
             if (currentBatchSize > 0) {
                 writeLogsAndCloseJsonGenerator(generator, serializedLogs);
-                requests.add(gzipRequest(byteArrayOutputStream.toByteArray()));
-                logBatches.add(logs.subList(currentBatchStart, logs.size()));
+                byte[] zippedRequestBody = gzipRequest(byteArrayOutputStream.toByteArray());
+                emitter.next(new LogsIngestionRequest(originalLogsRequest, zippedRequestBody));
             }
-            return requests;
-        } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+            emitter.complete();
+        } catch (IOException e) {
+            emitter.error(e);
         }
+    }
+
+    private void processExceptions(List<LogsUploadException> result, SynchronousSink<Void> sink) {
+        long failedLogsCount = 0L;
+        List<HttpResponseException> exceptions = new ArrayList<>();
+        for (LogsUploadException exception : result) {
+            exceptions.addAll(exception.getLogsUploadErrors());
+            failedLogsCount += exception.getFailedLogsCount();
+        }
+        if (!exceptions.isEmpty()) {
+            sink.error(new LogsUploadException(exceptions, failedLogsCount));
+        } else {
+            sink.complete();
+        }
+    }
+
+    private void processResponse(LogsUploadOptions options, UploadLogsResponseHolder responseHolder, SynchronousSink<LogsUploadException> sink) {
+        if (responseHolder.getException() != null) {
+            Consumer<LogsUploadError> uploadLogsErrorConsumer = null;
+            if (options != null) {
+                uploadLogsErrorConsumer = options.getLogsUploadErrorConsumer();
+            }
+            if (uploadLogsErrorConsumer != null) {
+                uploadLogsErrorConsumer.accept(new LogsUploadError(responseHolder.getException(), responseHolder.getRequest().getLogs()));
+                return;
+            }
+            // emit the responseHolder without the original logs only if there's an error and there's no
+            // error consumer
+            sink.next(new LogsUploadException(Collections.singletonList(responseHolder.getException()),
+                    responseHolder.getRequest().getLogs().size()));
+        }
+    }
+
+    private Mono<UploadLogsResponseHolder> uploadToService(String ruleId, String streamName,
+                                                           Context context,
+                                                           LogsIngestionRequest request) {
+        RequestOptions requestOptions = new RequestOptions()
+                .addHeader(CONTENT_ENCODING, GZIP)
+                .setContext(context);
+        return service.uploadWithResponse(ruleId, streamName,
+                        BinaryData.fromBytes(request.getRequestBody()), requestOptions)
+                .map(response -> new UploadLogsResponseHolder(null, null))
+                .onErrorResume(HttpResponseException.class,
+                        ex -> Mono.fromSupplier(() -> new UploadLogsResponseHolder(request, ex)));
     }
 
     private void writeLogsAndCloseJsonGenerator(JsonGenerator generator, List<String> serializedLogs) throws IOException {

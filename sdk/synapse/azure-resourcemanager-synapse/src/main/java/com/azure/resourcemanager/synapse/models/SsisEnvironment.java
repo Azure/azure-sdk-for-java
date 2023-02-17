@@ -27,6 +27,10 @@ public final class SsisEnvironment extends SsisObjectMetadata {
     @JsonProperty(value = "variables")
     private List<SsisVariable> variables;
 
+    /** Creates an instance of SsisEnvironment class. */
+    public SsisEnvironment() {
+    }
+
     /**
      * Get the folderId property: Folder id which contains environment.
      *
