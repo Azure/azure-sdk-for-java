@@ -1,9 +1,9 @@
 ## Release History
 
 ### 3.32.0 (2023-02-17)
-* Added support for multi-tenancy at the Container level via `CosmosFactory` - See [PR 33400](https://github.com/Azure/azure-sdk-for-java/pull/33400)
 
 #### Features Added
+* Added support for multi-tenancy at the Container level via `CosmosFactory` - See [PR 33400](https://github.com/Azure/azure-sdk-for-java/pull/33400)
 
 #### Other Changes
 * Updated `azure-cosmos` to version `4.41.0`.
