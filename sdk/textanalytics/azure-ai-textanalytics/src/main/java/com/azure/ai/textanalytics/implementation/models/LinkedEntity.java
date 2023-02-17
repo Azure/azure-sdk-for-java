@@ -53,9 +53,6 @@ public final class LinkedEntity {
     @JsonProperty(value = "bingId")
     private String bingId;
 
-    /** Creates an instance of LinkedEntity class. */
-    public LinkedEntity() {}
-
     /**
      * Get the name property: Entity Linking formal name.
      *

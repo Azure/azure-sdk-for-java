@@ -1,32 +1,24 @@
 # Release History
 
-## 4.6.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 4.5.4 (2023-02-16)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
 
 ## 4.5.3 (2023-01-09)
 
 ### Other Changes
 
 #### Dependency Updates
+
 - Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
 - Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 
-## 4.6.0-beta.1 (2022-11-11)
-
-### Features Added
-- Added `CreateOkpKeyOptions` to pass key options when creating an Octet Key Pair (OKP) on Managed HSM.
-- Added `createOkpKey()` and `createOkpKeyWithResponse()` to `KeyClient` and `KeyAsyncClient` to create an Octet Key Pair (OKP) on Managed HSM.
-- Added `OKP` and `OKP_HSM` to `KeyType`.
-- Added `Ed25519` to `KeyCurveName` to create an Octet Key Pair (OKP) using the Ed25519 curve.
-- Added `EDDSA` to `SignatureAlgorithm` to support signing and verifying using an Edwards Curve Digital Signature Algorithm (EdDSA) on Managed HSM.
-- Added support for service version `7.4-preview.1`.
 
 ## 4.5.2 (2022-11-10)
 

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Error code. */
+/** Defines values for WarningCodeValue. */
 public final class WarningCodeValue extends ExpandableStringEnum<WarningCodeValue> {
     /** Static value LongWordsInDocument for WarningCodeValue. */
     public static final WarningCodeValue LONG_WORDS_IN_DOCUMENT = fromString("LongWordsInDocument");

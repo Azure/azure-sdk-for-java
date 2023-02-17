@@ -7,7 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Predicted sentiment for document (Negative, Neutral, Positive, or Mixed). */
+/** Defines values for DocumentSentimentValue. */
 public enum DocumentSentimentValue {
     /** Enum value positive. */
     POSITIVE("positive"),
@@ -48,7 +48,6 @@ public enum DocumentSentimentValue {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

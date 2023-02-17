@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdministrationClientTestBase {
     protected final String servicePrincipalId =
-        Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "aed295e0-2ae7-4c2a-9abc-813f0ca233d3");
+        Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "49acc88b-8f9e-4619-9856-16691db66767");
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientTestBase.class);
 
     protected KeyVaultAccessControlClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {

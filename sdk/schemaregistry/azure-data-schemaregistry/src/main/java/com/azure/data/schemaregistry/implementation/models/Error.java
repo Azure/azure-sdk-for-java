@@ -16,9 +16,6 @@ public final class Error {
     @JsonProperty(value = "error", required = true)
     private ErrorDetail error;
 
-    /** Creates an instance of Error class. */
-    public Error() {}
-
     /**
      * Get the error property: Error response returned from Azure Schema Registry service.
      *

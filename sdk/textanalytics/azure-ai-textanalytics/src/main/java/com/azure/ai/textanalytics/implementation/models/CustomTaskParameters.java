@@ -22,9 +22,6 @@ public class CustomTaskParameters extends TaskParameters {
     @JsonProperty(value = "deploymentName", required = true)
     private String deploymentName;
 
-    /** Creates an instance of CustomTaskParameters class. */
-    public CustomTaskParameters() {}
-
     /**
      * Get the projectName property: This field indicates the project name for the model.
      *

@@ -40,9 +40,6 @@ public final class JWKHeader {
     @JsonProperty(value = "y")
     private String y;
 
-    /** Creates an instance of JWKHeader class. */
-    public JWKHeader() {}
-
     /**
      * Get the crv property: crv value.
      *

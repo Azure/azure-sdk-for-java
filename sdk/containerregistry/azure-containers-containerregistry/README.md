@@ -56,7 +56,7 @@ and then include the direct dependency in the dependencies section without the v
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.0.11</version>
+  <version>1.0.12</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -134,11 +134,19 @@ For more information please see [Container Registry Concepts](https://docs.micro
 
 ### Sync examples
 
-- [List repository names](#list-repository-names)
-- [List tags with anonymous access](#list-tags-with-anonymous-access)
-- [Set artifact properties](#set-artifact-properties)
-- [Delete images](#delete-images)
-- [Delete repository with anonymous access throws](#delete-a-repository-with-anonymous-access-throws)
+- [List repository names](#samples)
+- [List tags with anonymous access](#samples)
+- [Set artifact properties](#samples)
+- [Delete images](#samples)
+- [Delete repository with anonymous access throws](#samples)
+
+### Async examples
+
+- [List repository names asynchronously](#samples)
+- [List tags with anonymous access asynchronously](#samples)
+- [Set artifact properties asynchronously](#samples)
+- [Delete images asynchronously](#samples)
+- [Delete repository with anonymous access asynchronously throws](#samples)
 
 ### List repository names
 
@@ -248,7 +256,23 @@ try {
 
 ## Troubleshooting
 
-See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/containerregistry/azure-containers-containerregistry/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
+All container registry service operations will throw a
+[HttpResponseException][HttpResponseException] on failure.
+
+```java readme-sample-getProperties
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
+    .endpoint(endpoint)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
+    .credential(credential)
+    .buildClient()
+    .getRepository(repositoryName);
+try {
+    containerRepository.getProperties();
+} catch (HttpResponseException exception) {
+    // Do something with the exception.
+}
+```
 
 ## Next steps
 

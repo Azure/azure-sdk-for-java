@@ -51,7 +51,7 @@ public final class SchemasGetByIdHeaders {
      * The Content-Type property.
      */
     @JsonProperty(value = "Content-Type")
-    private SchemaFormatImpl contentType;
+    private String contentType;
 
     // HttpHeaders containing the raw property values.
     /**
@@ -66,10 +66,7 @@ public final class SchemasGetByIdHeaders {
         this.schemaName = rawHeaders.getValue("Schema-Name");
         this.schemaIdLocation = rawHeaders.getValue("Schema-Id-Location");
         this.location = rawHeaders.getValue("Location");
-        String contentType = rawHeaders.getValue("Content-Type");
-        if (contentType != null) {
-            this.contentType = SchemaFormatImpl.fromString(contentType);
-        }
+        this.contentType = rawHeaders.getValue("Content-Type");
     }
 
     /**
@@ -197,7 +194,7 @@ public final class SchemasGetByIdHeaders {
      *
      * @return the contentType value.
      */
-    public SchemaFormatImpl getContentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -207,7 +204,7 @@ public final class SchemasGetByIdHeaders {
      * @param contentType the contentType value to set.
      * @return the SchemasGetByIdHeaders object itself.
      */
-    public SchemasGetByIdHeaders setContentType(SchemaFormatImpl contentType) {
+    public SchemasGetByIdHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }

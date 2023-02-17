@@ -3,9 +3,7 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.BaseResolution;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.core.util.IterableStream;
 
 /**
  * The helper class to set the non-public properties of an {@link CategorizedEntity} instance.
@@ -21,7 +19,6 @@ public final class CategorizedEntityPropertiesHelper {
     public interface CategorizedEntityAccessor {
         void setLength(CategorizedEntity entity, int length);
         void setOffset(CategorizedEntity entity, int offset);
-        void setResolutions(CategorizedEntity entity, IterableStream<BaseResolution> resolutions);
     }
 
     /**
@@ -39,9 +36,5 @@ public final class CategorizedEntityPropertiesHelper {
 
     public static void setOffset(CategorizedEntity entity, int offset) {
         accessor.setOffset(entity, offset);
-    }
-
-    public static void setResolutions(CategorizedEntity entity, IterableStream<BaseResolution> resolutions) {
-        accessor.setResolutions(entity, resolutions);
     }
 }

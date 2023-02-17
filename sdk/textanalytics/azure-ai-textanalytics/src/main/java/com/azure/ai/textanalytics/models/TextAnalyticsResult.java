@@ -13,7 +13,7 @@ import java.util.Locale;
 @Immutable
 public class TextAnalyticsResult {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsResult.class);
-    
+
     private final String id;
     private final TextDocumentStatistics textDocumentStatistics;
     private final TextAnalyticsError error;

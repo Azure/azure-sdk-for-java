@@ -21,9 +21,6 @@ public final class HealthcareLROResult extends AnalyzeTextLROResult {
     @JsonProperty(value = "results", required = true)
     private HealthcareResult results;
 
-    /** Creates an instance of HealthcareLROResult class. */
-    public HealthcareLROResult() {}
-
     /**
      * Get the results property: The results property.
      *

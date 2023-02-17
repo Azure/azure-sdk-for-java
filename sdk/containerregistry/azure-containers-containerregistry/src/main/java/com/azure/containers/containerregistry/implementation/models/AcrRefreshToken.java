@@ -16,9 +16,6 @@ public final class AcrRefreshToken {
     @JsonProperty(value = "refresh_token")
     private String refreshToken;
 
-    /** Creates an instance of AcrRefreshToken class. */
-    public AcrRefreshToken() {}
-
     /**
      * Get the refreshToken property: The refresh token to be used for generating access tokens.
      *

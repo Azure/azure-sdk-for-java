@@ -48,7 +48,7 @@ public class RecognizeEntitiesBatchStringDocumentsAsync {
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResultCollection.getStatistics();
-                System.out.printf("Documents statistics: document count = %d, erroneous document count = %d, transaction count = %d, valid document count = %d.%n",
+                System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 for (RecognizeEntitiesResult entitiesResult : recognizeEntitiesResultCollection) {

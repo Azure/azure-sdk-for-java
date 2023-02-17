@@ -1,27 +1,30 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/non-existing/?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/non-existing/?api-version=7.3",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "300",
+      "x-ms-keyvault-rbac-assignment-id" : "f4e2dde1-5ff5-56c6-8923-012f34e01597",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 11 Nov 2022 22:30:03 GMT",
+      "Date" : "Tue, 29 Mar 2022 03:03:35 GMT",
+      "x-ms-keyvault-rbac-cache" : "ra_age=4560;da_age=4560;rd_age=4560;brd_age=9636;ra_notif_age=7341;dec_lev=2;",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "870d5f90-1a37-4b1c-bb75-d6630bcb8e4c",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
+      "x-ms-request-id" : "c1c926f0-96e7-4676-8d24-2d3f393f9e06",
+      "x-ms-keyvault-service-version" : "1.9.331.5",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) non-existing was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   } ],

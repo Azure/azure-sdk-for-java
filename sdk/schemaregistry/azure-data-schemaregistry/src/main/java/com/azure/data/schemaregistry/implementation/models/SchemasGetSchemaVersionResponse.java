@@ -7,7 +7,6 @@ package com.azure.data.schemaregistry.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-
 import java.io.InputStream;
 
 /** Contains all response data for the getSchemaVersion operation. */
@@ -31,9 +30,9 @@ public final class SchemasGetSchemaVersionResponse extends ResponseBase<SchemasG
     }
 
     /**
-     * Gets the response content stream.
+     * Gets the deserialized response body.
      *
-     * @return the response content stream.
+     * @return the deserialized response body.
      */
     @Override
     public InputStream getValue() {

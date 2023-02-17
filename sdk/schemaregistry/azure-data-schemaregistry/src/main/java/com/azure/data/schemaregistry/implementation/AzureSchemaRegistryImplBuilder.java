@@ -216,7 +216,7 @@ public final class AzureSchemaRegistryImplBuilder
     @Generated
     public AzureSchemaRegistryImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2022-10";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2021-10";
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureSchemaRegistryImpl client =

@@ -9,8 +9,6 @@ import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
@@ -194,37 +192,6 @@ public class ReadmeSamples {
         // END: readme-sample-anonymousClientThrows
     }
 
-    public void anonymousAsyncClientThrows() {
-        final String endpoint = getEndpoint();
-        final String repositoryName = getRepositoryName();
-
-        ContainerRegistryAsyncClient anonymousClient = new ContainerRegistryClientBuilder()
-            .endpoint(endpoint)
-            .buildAsyncClient();
-
-        // BEGIN: readme-sample-anonymousAsyncClientThrows
-        anonymousClient.deleteRepository(repositoryName)
-            .doOnSuccess(
-                ignored -> System.out.println("Unexpected Success: Delete is not allowed on anonymous access!"))
-            .doOnError(
-                error -> error instanceof ClientAuthenticationException,
-                error -> System.out.println("Expected exception: Delete is not allowed on anonymous access"));
-        // END: readme-sample-anonymousAsyncClientThrows
-    }
-
-    public void enableHttpLogging() {
-        final String endpoint = getEndpoint();
-        final String repositoryName = getRepositoryName();
-
-        final TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-        // BEGIN: readme-sample-enablehttplogging
-        ContainerRegistryClient client = new ContainerRegistryClientBuilder()
-            .endpoint(endpoint)
-            .credential(defaultCredential)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
-        // END: readme-sample-enablehttplogging
-    }
     private static String getEndpoint() {
         return null;
     }

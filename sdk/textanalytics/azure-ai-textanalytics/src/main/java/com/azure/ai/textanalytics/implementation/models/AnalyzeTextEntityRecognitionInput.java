@@ -26,9 +26,6 @@ public final class AnalyzeTextEntityRecognitionInput extends AnalyzeTextTask {
     @JsonProperty(value = "parameters")
     private EntitiesTaskParameters parameters;
 
-    /** Creates an instance of AnalyzeTextEntityRecognitionInput class. */
-    public AnalyzeTextEntityRecognitionInput() {}
-
     /**
      * Get the analysisInput property: The analysisInput property.
      *

@@ -26,9 +26,6 @@ public final class AnalyzeTextEntityLinkingInput extends AnalyzeTextTask {
     @JsonProperty(value = "parameters")
     private EntityLinkingTaskParameters parameters;
 
-    /** Creates an instance of AnalyzeTextEntityLinkingInput class. */
-    public AnalyzeTextEntityLinkingInput() {}
-
     /**
      * Get the analysisInput property: The analysisInput property.
      *

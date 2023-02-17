@@ -17,9 +17,6 @@ public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
-    /** Creates an instance of EntitiesTaskParameters class. */
-    public EntitiesTaskParameters() {}
-
     /**
      * Get the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
      * Elements (Graphemes) according to Unicode v8.0.0. For additional information see

@@ -25,11 +25,6 @@ public final class HealthcareEntityRelation {
      */
     private IterableStream<HealthcareEntityRelationRole> roles;
 
-    /*
-     * Confidence score between 0 and 1 of the extracted relation.
-     */
-    private double confidenceScore;
-
     static {
         HealthcareEntityRelationPropertiesHelper.setAccessor(
             new HealthcareEntityRelationPropertiesHelper.HealthcareEntityRelationAccessor() {
@@ -43,12 +38,6 @@ public final class HealthcareEntityRelation {
                 public void setRoles(HealthcareEntityRelation healthcareEntityRelation,
                     IterableStream<HealthcareEntityRelationRole> roles) {
                     healthcareEntityRelation.setRoles(roles);
-                }
-
-                @Override
-                public void setConfidenceScore(HealthcareEntityRelation healthcareEntityRelation,
-                    double confidenceScore) {
-                    healthcareEntityRelation.setConfidenceScore(confidenceScore);
                 }
             });
     }
@@ -72,24 +61,11 @@ public final class HealthcareEntityRelation {
         return this.roles;
     }
 
-    /**
-     * Get the confidenceScore property: Confidence score between 0 and 1 of the extracted relation.
-     *
-     * @return the confidenceScore value.
-     */
-    public double getConfidenceScore() {
-        return this.confidenceScore;
-    }
-
     private void setRelationType(HealthcareEntityRelationType relationType) {
         this.relationType = relationType;
     }
 
     private void setRoles(IterableStream<HealthcareEntityRelationRole> roles) {
         this.roles = roles;
-    }
-
-    private void setConfidenceScore(double confidenceScore) {
-        this.confidenceScore = confidenceScore;
     }
 }

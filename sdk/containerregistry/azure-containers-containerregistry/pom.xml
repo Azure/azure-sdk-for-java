@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
+  <version>1.0.12</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
 
   <name>Microsoft Azure SDK for Container Registry</name>
   <description>This package contains Microsoft Azure SDK for Container Registry.</description>
@@ -28,16 +28,21 @@
   </scm>
 
   <properties>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry=ALL-UNNAMED
       --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.models=ALL-UNNAMED
       --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.implementation=ALL-UNNAMED
       --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.implementation.models=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-reads com.azure.core=ALL-UNNAMED
+      --add-reads com.azure.core.test=ALL-UNNAMED
+      --add-reads com.azure.core.http.netty=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -52,6 +57,7 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>

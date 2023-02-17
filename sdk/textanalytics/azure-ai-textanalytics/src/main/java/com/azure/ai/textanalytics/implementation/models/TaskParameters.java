@@ -16,9 +16,6 @@ public class TaskParameters {
     @JsonProperty(value = "loggingOptOut")
     private Boolean loggingOptOut;
 
-    /** Creates an instance of TaskParameters class. */
-    public TaskParameters() {}
-
     /**
      * Get the loggingOptOut property: The loggingOptOut property.
      *

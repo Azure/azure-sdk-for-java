@@ -20,9 +20,6 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private ExtractiveSummarizationTaskParameters parameters;
 
-    /** Creates an instance of ExtractiveSummarizationLROTask class. */
-    public ExtractiveSummarizationLROTask() {}
-
     /**
      * Get the parameters property: Supported parameters for an Extractive Summarization task.
      *

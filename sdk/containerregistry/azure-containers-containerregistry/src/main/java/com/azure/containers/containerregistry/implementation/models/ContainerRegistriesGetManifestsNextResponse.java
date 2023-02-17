@@ -29,11 +29,7 @@ public final class ContainerRegistriesGetManifestsNextResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * Gets the deserialized response body.
-     *
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public AcrManifests getValue() {
         return super.getValue();

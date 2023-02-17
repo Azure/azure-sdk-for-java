@@ -1,9 +1,9 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions/b4407cdb-2880-48dd-9499-46d7fb3dfad5?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions/ff91120a-d63e-470c-98e8-b85a06efdc43?api-version=7.3",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -11,23 +11,23 @@
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-server-latency" : "44",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "37",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
-      "x-ms-keyvault-region" : "northus",
       "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "028a2dd6-61f6-11ed-9532-000d3a602e9a",
-      "Body" : "{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/b4407cdb-2880-48dd-9499-46d7fb3dfad5\",\"name\":\"b4407cdb-2880-48dd-9499-46d7fb3dfad5\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[],\"roleName\":\"b4407cdb-2880-48dd-9499-46d7fb3dfad5\",\"type\":\"CustomRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"}"
+      "x-ms-request-id" : "b7d39762-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/ff91120a-d63e-470c-98e8-b85a06efdc43\",\"name\":\"ff91120a-d63e-470c-98e8-b85a06efdc43\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[],\"roleName\":\"ff91120a-d63e-470c-98e8-b85a06efdc43\",\"type\":\"CustomRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"}"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/b8cee17d-ff02-40fe-9883-13064ae88379?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/bed707ed-3eff-4761-8eaa-7646c31caf10?api-version=7.3",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -35,23 +35,23 @@
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-server-latency" : "40",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "40",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
-      "x-ms-keyvault-region" : "northus",
       "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "02b1551e-61f6-11ed-9532-000d3a602e9a",
-      "Body" : "{\"id\":\"/providers/Microsoft.Authorization/roleAssignments/b8cee17d-ff02-40fe-9883-13064ae88379\",\"name\":\"b8cee17d-ff02-40fe-9883-13064ae88379\",\"properties\":{\"principalId\":\"aed295e0-2ae7-4c2a-9abc-813f0ca233d3\",\"roleDefinitionId\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/b4407cdb-2880-48dd-9499-46d7fb3dfad5\",\"scope\":\"/\"},\"type\":\"Microsoft.Authorization/roleAssignments\"}"
+      "x-ms-request-id" : "b7da8e6e-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"id\":\"/providers/Microsoft.Authorization/roleAssignments/bed707ed-3eff-4761-8eaa-7646c31caf10\",\"name\":\"bed707ed-3eff-4761-8eaa-7646c31caf10\",\"properties\":{\"principalId\":\"49acc88b-8f9e-4619-9856-16691db66767\",\"roleDefinitionId\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/ff91120a-d63e-470c-98e8-b85a06efdc43\",\"scope\":\"/\"},\"type\":\"Microsoft.Authorization/roleAssignments\"}"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/b8cee17d-ff02-40fe-9883-13064ae88379?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/bed707ed-3eff-4761-8eaa-7646c31caf10?api-version=7.3",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -63,12 +63,12 @@
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "StatusCode" : "400",
-      "x-ms-request-id" : "02c553b6-61f6-11ed-9532-000d3a602e9a",
-      "Body" : "{\"error\":{\"code\":\"RoleAssignmentExists\",\"message\":\"The role assignment already exists. (Activity ID: 02c553b6-61f6-11ed-9532-000d3a602e9a)\"}}",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "1"
+      "x-ms-request-id" : "b7e1fef6-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"error\":{\"code\":\"RoleAssignmentExists\",\"message\":\"The role assignment already exists. (Activity ID: b7e1fef6-af00-11ec-99c9-002248787e69)\"}}",
+      "x-ms-server-latency" : "1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
     },
     "Exception" : null
   } ],
-  "variables" : [ "b4407cdb-2880-48dd-9499-46d7fb3dfad5", "b8cee17d-ff02-40fe-9883-13064ae88379" ]
+  "variables" : [ "ff91120a-d63e-470c-98e8-b85a06efdc43", "bed707ed-3eff-4761-8eaa-7646c31caf10" ]
 }

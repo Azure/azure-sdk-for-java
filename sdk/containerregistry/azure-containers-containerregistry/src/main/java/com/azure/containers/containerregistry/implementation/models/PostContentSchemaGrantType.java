@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Can take a value of access_token_refresh_token, or access_token, or refresh_token. */
+/** Defines values for PostContentSchemaGrantType. */
 public final class PostContentSchemaGrantType extends ExpandableStringEnum<PostContentSchemaGrantType> {
     /** Static value access_token_refresh_token for PostContentSchemaGrantType. */
     public static final PostContentSchemaGrantType ACCESS_TOKEN_REFRESH_TOKEN =
@@ -31,11 +31,7 @@ public final class PostContentSchemaGrantType extends ExpandableStringEnum<PostC
         return fromString(name, PostContentSchemaGrantType.class);
     }
 
-    /**
-     * Gets known PostContentSchemaGrantType values.
-     *
-     * @return known PostContentSchemaGrantType values.
-     */
+    /** @return known PostContentSchemaGrantType values. */
     public static Collection<PostContentSchemaGrantType> values() {
         return values(PostContentSchemaGrantType.class);
     }

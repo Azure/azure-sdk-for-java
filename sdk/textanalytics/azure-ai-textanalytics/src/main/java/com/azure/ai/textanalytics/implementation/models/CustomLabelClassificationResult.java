@@ -17,9 +17,6 @@ public final class CustomLabelClassificationResult extends CustomResult {
     @JsonProperty(value = "documents", required = true)
     private List<CustomLabelClassificationResultDocumentsItem> documents;
 
-    /** Creates an instance of CustomLabelClassificationResult class. */
-    public CustomLabelClassificationResult() {}
-
     /**
      * Get the documents property: Response by document.
      *

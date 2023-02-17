@@ -8,7 +8,6 @@ import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.api.Assumptions;
@@ -29,7 +28,6 @@ import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_1;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
-import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
@@ -44,25 +42,12 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     private ContainerRegistryAsyncClient registryAsyncClient;
     private ContainerRegistryClient registryClient;
 
-    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
-            .assertAsync()
-            .build();
-    }
-
-    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
-            .assertSync()
-            .build();
-    }
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)).buildAsyncClient();
+        return getContainerRegistryBuilder(httpClient).buildAsyncClient();
     }
 
     private ContainerRegistryClient getContainerRegistryClient(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
+        return getContainerRegistryBuilder(httpClient).buildClient();
     }
 
     @BeforeEach

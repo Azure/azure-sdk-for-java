@@ -1,31 +1,21 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.12 (2023-02-16)
 
 ### Other Changes
-- `ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_GERMANY` is deprecated following [Azure Germany cloud deprecation](https://learn.microsoft.com/azure/cloud-adoption-framework/migrate/azure-best-practices/multiple-regions)
-
-## 1.1.0-beta.2 (2023-01-11)
-
-### Other Changes
-- Refactored sync APIs to leverage sync stack improvements in core and HTTP clients.
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.27.0` to version `1.35.0`.
-- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.8`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
 
 ## 1.0.11 (2023-01-09)
 
 ### Other Changes
 
 #### Dependency Updates
+
 - Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
 - Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 
@@ -92,13 +82,6 @@
 - Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
 - Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
 
-## 1.1.0-beta.1 (2022-04-08)
-
-### Features Added
-
-- Added interfaces from `com.azure.core.client.traits` to `ContainerRegistryClientBuilder`.
-- Added support for `ContainerRegistryBlobAsyncClient`.
-
 ## 1.0.3 (2022-04-06)
 
 ### Other Changes
@@ -142,6 +125,7 @@
 ### New features
 - Enabled support for the stable `2021-07-01` swagger api-version.
 - Removed `getTeleportEnabled` and `setTeleportEnabled` field from `RepositoryProperties`.
+
 
 ## 1.0.0-beta.4 (2021-08-20)
 ### Breaking Changes

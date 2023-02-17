@@ -22,11 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "KeyPhraseExtraction", value = AnalyzeTextKeyPhraseExtractionInput.class),
     @JsonSubTypes.Type(name = "PiiEntityRecognition", value = AnalyzeTextPiiEntitiesRecognitionInput.class),
     @JsonSubTypes.Type(name = "LanguageDetection", value = AnalyzeTextLanguageDetectionInput.class),
-    @JsonSubTypes.Type(name = "SentimentAnalysis", value = AnalyzeTextSentimentAnalysisInput.class),
-    @JsonSubTypes.Type(name = "DynamicClassification", value = AnalyzeTextDynamicClassificationInput.class)
+    @JsonSubTypes.Type(name = "SentimentAnalysis", value = AnalyzeTextSentimentAnalysisInput.class)
 })
 @Immutable
-public class AnalyzeTextTask {
-    /** Creates an instance of AnalyzeTextTask class. */
-    public AnalyzeTextTask() {}
-}
+public class AnalyzeTextTask {}
