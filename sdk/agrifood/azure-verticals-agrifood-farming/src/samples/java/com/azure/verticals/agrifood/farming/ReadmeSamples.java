@@ -3,7 +3,6 @@
 
 package com.azure.verticals.agrifood.farming;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;

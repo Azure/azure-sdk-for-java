@@ -4,7 +4,6 @@
 package com.azure.verticals.agrifood.farming;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
