@@ -35,8 +35,6 @@ jobs:
       steps:
         # Sync docs repo onboarding files/folders
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            Paths: sdk/**/*.md
         - task: DownloadPipelineArtifact@2
           inputs:
             source: 'specific'
@@ -65,7 +63,12 @@ jobs:
         # Sync docs repo onboarding files/folders
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
-            Paths: sdk/**/*.md
+            Paths:
+              - sdk
+              - common/perf-test-core
+              - .github/CODEOWNERS
+              - '!sdk/**/test-recordings'
+              - '!sdk/**/session-records'
         - task: DownloadPipelineArtifact@2
           inputs:
             source: 'specific'
