@@ -546,7 +546,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             // sdk/core/azure-core-tracing-opentelemetry/src/main/java/com/azure/core/tracing/opentelemetry/OpenTelemetryUtils.java
             assertEquals("Microsoft.EventHub", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
             assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
-            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.address")));
+            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.name")));
 
             Consumer<ReadableSpan> filter = notifier.get();
             if (filter != null) {

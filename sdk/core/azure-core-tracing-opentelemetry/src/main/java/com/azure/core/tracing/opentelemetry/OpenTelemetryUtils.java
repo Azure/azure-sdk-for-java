@@ -27,7 +27,7 @@ class OpenTelemetryUtils {
 
     private static Map<String, String> getMappingsV1200() {
         Map<String, String> mappings = new HashMap<>(8);
-        // Corresponding integration test is in:
+        // If updating any of the keys below, the corresponding integration test for these keys is:
         // azure-messaging-eventhubs/src/test/java/com/azure/messaging/eventhubs/TracingIntegrationTests.java
         mappings.put(ENTITY_PATH_KEY, "messaging.destination.name");
         mappings.put(HOST_NAME_KEY, "net.peer.name");
