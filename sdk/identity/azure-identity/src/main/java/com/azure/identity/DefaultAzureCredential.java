@@ -10,10 +10,12 @@ import java.util.List;
 
 /**
  *
- * The DefaultAzureCredential is appropriate for most scenarios where the application ultimately runs in the Azure Cloud.
+ * <p>The DefaultAzureCredential is appropriate for most scenarios where the application ultimately runs in the Azure Cloud.
  * DefaultAzureCredential combines credentials that are commonly used to authenticate when deployed,
  * with credentials that are used to authenticate in a development environment. The DefaultAzureCredential will
- * attempt to authenticate via the following mechanisms in order.
+ * attempt to authenticate via the following mechanisms in order.</p>
+ *
+ * <p><img src="doc-files/DefaultAzureCredentialAuthFlow.svg" alt=""></p>
  *
  * <ol>
  * <li>{@link EnvironmentCredential} - The DefaultAzureCredential will read account information specified via environment variables and use it to authenticate.</li>
@@ -24,10 +26,10 @@ import java.util.List;
  * <li>Fails if none of the credentials above could be created.</li>
  * </ol>
  *
- * For more information refer to the <a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs"> conceptual knowledge and configuration details </a>.
+ * <p>For more information refer to the <a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs">conceptual knowledge and configuration details</a>.</p>
  *
- * <H2>Configure DefaultAzureCredential</H2>
- * DefaultAzureCredential supports a set of configurations through setters on the DefaultAzureCredentialBuilder or environment variables.
+ * <h2>Configure DefaultAzureCredential</h2>
+ * <p>DefaultAzureCredential supports a set of configurations through setters on the DefaultAzureCredentialBuilder or environment variables.</p>
  * <ol>
  *     <li>Setting the environment variables AZURE_CLIENT_ID, AZURE_CLIENT_SECRET/AZURE_CLIENT_CERTIFICATE_PATH, and AZURE_TENANT_ID configures the DefaultAzureCredential to authenticate as the service principal specified by the values.</li>
  *     <li>Setting {@link DefaultAzureCredentialBuilder#managedIdentityClientId(String)} on the builder or the environment variable AZURE_CLIENT_ID configures the DefaultAzureCredential to authenticate as a user-defined managed identity, while leaving them empty configures it to authenticate as a system-assigned managed identity.</li>
@@ -51,8 +53,8 @@ import java.util.List;
  * </pre>
  * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  *
- * The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication. The TokenCredential instantiated
- * above can be passed into most of the Azure SDK client builders to for AAD authentication.
+ * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication. The TokenCredential instantiated
+ * above can be passed into most of the Azure SDK client builders to for AAD authentication.</p>
  *
  * @see com.azure.identity
  * @see com.azure.identity.ManagedIdentityCredential
