@@ -9,7 +9,6 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Updated `azure-cosmos` to version `4.41.0`.
 
 ### 1.10.0 (2023-01-13)
 #### Other Changes
