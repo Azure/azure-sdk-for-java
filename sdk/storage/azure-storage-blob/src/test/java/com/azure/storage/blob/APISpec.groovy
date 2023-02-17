@@ -130,6 +130,16 @@ class APISpec extends StorageSpec {
         }
     }
 
+    def getNonRecordingContainerLeaseClient(String containerName, String leaseId) {
+        def nonRecordingServiceClient = new BlobServiceClientBuilder()
+            .httpClient(getHttpClient())
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .buildClient()
+
+        return createLeaseClient(nonRecordingServiceClient.getBlobContainerClient(containerName), leaseId)
+    }
+
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }

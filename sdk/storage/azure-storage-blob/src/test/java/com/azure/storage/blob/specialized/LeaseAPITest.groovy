@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized
 
+import com.azure.core.test.TestMode
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.models.BlobLeaseRequestConditions
@@ -826,7 +827,10 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(breakLeaseResponse.getHeaders())
 
         when:
-        leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+        if (environment.testMode != TestMode.PLAYBACK) {
+            getNonRecordingContainerLeaseClient(containerName, leaseClient.getLeaseId())
+                .breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ZERO), null, null)
+        }
 
         then:
         notThrown(BlobStorageException)
