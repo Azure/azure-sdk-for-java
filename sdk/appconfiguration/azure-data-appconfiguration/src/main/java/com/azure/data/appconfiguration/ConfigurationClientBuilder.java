@@ -37,8 +37,9 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImplBuilder;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
-import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer;
@@ -142,7 +143,6 @@ public final class ConfigurationClientBuilder implements
         SERIALIZER_ADAPTER = jacksonAdapter;
     }
 
-
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -214,17 +214,18 @@ public final class ConfigurationClientBuilder implements
      *
      * @return an instance of ConfigurationClientImpl.
      */
-    private ConfigurationClientImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
+    private AzureAppConfigurationImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
         // Service version
         ConfigurationServiceVersion serviceVersion = (version != null)
             ? version
             : ConfigurationServiceVersion.getLatest();
         // Don't share the default auto-created pipeline between App Configuration client instances.
-        return new ConfigurationClientImpl(
-            pipeline == null ? createHttpPipeline(syncTokenPolicy) : pipeline,
-            SERIALIZER_ADAPTER,
-            endpoint,
-            serviceVersion.getVersion());
+        return new AzureAppConfigurationImplBuilder()
+                   .pipeline(pipeline == null ? createHttpPipeline(syncTokenPolicy) : pipeline)
+                   .apiVersion(serviceVersion.getVersion())
+                   .endpoint(endpoint)
+                   .serializerAdapter(SERIALIZER_ADAPTER)
+                   .buildClient();
     }
 
     private HttpPipeline createHttpPipeline(SyncTokenPolicy syncTokenPolicy) {

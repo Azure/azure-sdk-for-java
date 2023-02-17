@@ -15,12 +15,12 @@ npm install -g autorest
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest
+autorest --java --use:@autorest/java@4.1.9 README.md
 ```
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.2'
+use: '@autorest/java@4.1.9'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3751704f5318f1175875c94b66af769db917f2d3/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
 java: true
 output-folder: ..\
@@ -35,4 +35,5 @@ custom-types-subpackage: models
 context-client-method-parameter: true
 service-interface-as-public: true
 generic-response-type: true
+default-http-exception-type: com.azure.core.exception.HttpResponseException
 ```

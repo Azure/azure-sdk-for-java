@@ -10,22 +10,48 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
+import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
+import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
+import com.azure.data.appconfiguration.implementation.models.Snapshot;
+import com.azure.data.appconfiguration.implementation.models.SnapshotStatus;
+import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotFilter;
+import com.azure.data.appconfiguration.models.SnapshotSelector;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.data.appconfiguration.implementation.Utility.APP_CONFIG_TRACING_NAMESPACE_VALUE;
+import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
+import static com.azure.data.appconfiguration.implementation.Utility.getIfMatchETag;
+import static com.azure.data.appconfiguration.implementation.Utility.getIfMatchETagSnapshot;
+import static com.azure.data.appconfiguration.implementation.Utility.getIfNoneMatchETag;
+import static com.azure.data.appconfiguration.implementation.Utility.getIfNoneMatchETagSnapshot;
+import static com.azure.data.appconfiguration.implementation.Utility.toConfigurationSetting;
+import static com.azure.data.appconfiguration.implementation.Utility.toConfigurationSettingSnapshot;
+import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
+import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
+import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFilter;
+import static com.azure.data.appconfiguration.implementation.Utility.toSnapshotFilters;
+import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -48,21 +74,21 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see ConfigurationClientBuilder
  */
 @ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true,
-    serviceInterfaces = ConfigurationClientImpl.ConfigurationService.class)
+    serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)
 public final class ConfigurationAsyncClient {
-    private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
-    private final ConfigurationClientImpl serviceClient;
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationAsyncClient.class);
+    private final AzureAppConfigurationImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
 
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
      *
-     * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
+     * @param serviceClient The {@link AzureAppConfigurationImpl} that the client routes its request through.
      * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
      * service requests receive up-to-date values.
      */
-    ConfigurationAsyncClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
+    ConfigurationAsyncClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
     }
@@ -102,13 +128,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> addConfigurationSetting(String key, String label, String value) {
-        try {
-            return withContext(context -> serviceClient.addConfigurationSettingWithResponseAsync(
-                new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), context))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return addConfigurationSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value));
     }
 
     /**
@@ -180,9 +200,15 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addConfigurationSettingWithResponse(ConfigurationSetting setting) {
         try {
-            return withContext(context -> serviceClient.addConfigurationSettingWithResponseAsync(setting, context));
+            // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
+            validateSetting(setting);
+            return withContext(
+                context -> serviceClient.putKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
+                    null, null, toKeyValue(setting),
+                    addTracingNamespace(context))
+            .map(response -> new SimpleResponse<>(response, toConfigurationSetting(response.getValue()))));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -217,13 +243,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setConfigurationSetting(String key, String label, String value) {
-        try {
-            return withContext(context -> serviceClient.setConfigurationSettingWithResponseAsync(
-                new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), false, context))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setConfigurationSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value));
     }
 
     /**
@@ -319,9 +339,16 @@ public final class ConfigurationAsyncClient {
     public Mono<Response<ConfigurationSetting>> setConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged) {
         try {
-            return withContext(context -> serviceClient.setConfigurationSettingWithResponseAsync(setting, ifUnchanged, context));
+            // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
+            validateSetting(setting);
+            return withContext(
+                context -> serviceClient.putKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
+                    getIfMatchETag(ifUnchanged, setting), null, toKeyValue(setting),
+                    addTracingNamespace(context))
+                               .map(response -> new SimpleResponse<>(response,
+                                   toConfigurationSetting(response.getValue()))));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -350,11 +377,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getConfigurationSetting(String key, String label) {
-        try {
-            return getConfigurationSetting(key, label, null);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getConfigurationSetting(key, label, null);
     }
 
     /**
@@ -386,13 +409,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getConfigurationSetting(String key, String label, OffsetDateTime acceptDateTime) {
-        try {
-            return withContext(context -> serviceClient.getConfigurationSettingWithResponseAsync(
-                new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime, false, context))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getConfigurationSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label),
+            acceptDateTime, false).map(Response::getValue);
     }
 
     /**
@@ -468,10 +486,17 @@ public final class ConfigurationAsyncClient {
     public Mono<Response<ConfigurationSetting>> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged) {
         try {
-            return withContext(context
-                -> serviceClient.getConfigurationSettingWithResponseAsync(setting, acceptDateTime, ifChanged, context));
+            // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
+            validateSetting(setting);
+            return withContext(
+                context -> serviceClient.getKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
+                    acceptDateTime == null ? null : acceptDateTime.toString(), null,
+                    getIfNoneMatchETag(ifChanged, setting), null,
+                    addTracingNamespace(context))
+                               .map(response -> new SimpleResponse<>(
+                                   response, toConfigurationSetting(response.getValue()))));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -500,13 +525,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> deleteConfigurationSetting(String key, String label) {
-        try {
-            return withContext(context -> serviceClient.deleteConfigurationSettingWithResponseAsync(
-                new ConfigurationSetting().setKey(key).setLabel(label), false, context))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteConfigurationSetting(new ConfigurationSetting().setKey(key).setLabel(label));
     }
 
     /**
@@ -594,10 +613,16 @@ public final class ConfigurationAsyncClient {
     public Mono<Response<ConfigurationSetting>> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged) {
         try {
-            return withContext(context ->
-                serviceClient.deleteConfigurationSettingWithResponseAsync(setting, ifUnchanged, context));
+            // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
+            validateSetting(setting);
+            return withContext(
+                context -> serviceClient.deleteKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
+                    getIfMatchETag(ifUnchanged, setting),
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                               .map(response -> new SimpleResponse<>(response,
+                                   toConfigurationSetting(response.getValue()))));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -638,13 +663,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setReadOnly(String key, String label, boolean isReadOnly) {
-        try {
-            return withContext(context -> serviceClient.setReadOnlyWithResponseAsync(
-                new ConfigurationSetting().setKey(key).setLabel(label), isReadOnly, context))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setReadOnly(new ConfigurationSetting().setKey(key).setLabel(label), isReadOnly);
     }
 
     /**
@@ -737,9 +756,21 @@ public final class ConfigurationAsyncClient {
     public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponse(ConfigurationSetting setting,
         boolean isReadOnly) {
         try {
-            return withContext(context -> serviceClient.setReadOnlyWithResponseAsync(setting, isReadOnly, context));
+            // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
+            validateSetting(setting);
+            return withContext(
+                context -> {
+                    final String key = setting.getKey();
+                    final String label = setting.getLabel();
+                    context = addTracingNamespace(context);
+                    return (isReadOnly
+                                ? serviceClient.putLockWithResponseAsync(key, label, null, null, context)
+                                : serviceClient.deleteLockWithResponseAsync(key, label, null, null, context))
+                               .map(response -> new SimpleResponse<>(response,
+                                   toConfigurationSetting(response.getValue())));
+                });
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -767,7 +798,50 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listConfigurationSettings(SettingSelector selector) {
-        return serviceClient.listConfigurationSettingsAsync(selector);
+        try {
+            final String keyFilter = selector == null ? null : selector.getKeyFilter();
+            final String labelFilter = selector == null ? null : selector.getLabelFilter();
+            final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+            final List<KeyValueFields> keyValueFields = selector == null ? null
+                                                            : toKeyValueFieldsList(selector.getFields());
+            return new PagedFlux<>(
+                () -> withContext(
+                    context -> serviceClient.getKeyValuesSinglePageAsync(
+                        keyFilter,
+                        labelFilter,
+                        null,
+                        acceptDateTime,
+                        keyValueFields,
+                        null,
+                        addTracingNamespace(context))
+                                   .map(pagedResponse -> new PagedResponseBase<>(
+                                       pagedResponse.getRequest(),
+                                       pagedResponse.getStatusCode(),
+                                       pagedResponse.getHeaders(),
+                                       pagedResponse.getValue()
+                                           .stream()
+                                           .map(keyValue -> toConfigurationSetting(keyValue))
+                                           .collect(Collectors.toList()),
+                                       pagedResponse.getContinuationToken(),
+                                       null))),
+                nextLink -> withContext(
+                    context -> serviceClient.getKeyValuesNextSinglePageAsync(
+                        nextLink,
+                        acceptDateTime,
+                        addTracingNamespace(context))
+                                   .map(pagedResponse -> new PagedResponseBase<>(
+                                       pagedResponse.getRequest(),
+                                       pagedResponse.getStatusCode(),
+                                       pagedResponse.getHeaders(),
+                                       pagedResponse.getValue()
+                                           .stream()
+                                           .map(keyValue -> toConfigurationSetting(keyValue)).collect(Collectors.toList()),
+                                       pagedResponse.getContinuationToken(),
+                                       null)))
+            );
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(LOGGER, ex));
+        }
     }
 
     /**
@@ -798,7 +872,214 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listRevisions(SettingSelector selector) {
-        return serviceClient.listRevisionsAsync(selector);
+        try {
+            final String keyFilter = selector == null ? null : selector.getKeyFilter();
+            final String labelFilter = selector == null ? null : selector.getLabelFilter();
+            final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+            final List<KeyValueFields> keyValueFields = selector == null ? null
+                                                            : toKeyValueFieldsList(selector.getFields());
+            return new PagedFlux<>(
+                () -> withContext(
+                    context -> serviceClient.getRevisionsSinglePageAsync(
+                        keyFilter,
+                        labelFilter,
+                        null,
+                        acceptDateTime,
+                        keyValueFields,
+                        addTracingNamespace(context))
+                                   .map(pagedResponse -> new PagedResponseBase<>(
+                                       pagedResponse.getRequest(),
+                                       pagedResponse.getStatusCode(),
+                                       pagedResponse.getHeaders(),
+                                       pagedResponse.getValue()
+                                           .stream()
+                                           .map(keyValue -> toConfigurationSetting(keyValue))
+                                           .collect(Collectors.toList()),
+                                       pagedResponse.getContinuationToken(),
+                                       null))),
+                nextLink -> withContext(
+                    context ->
+                        serviceClient.getRevisionsNextSinglePageAsync(nextLink, acceptDateTime,
+                            addTracingNamespace(context))
+                            .map(pagedResponse -> new PagedResponseBase<>(
+                                pagedResponse.getRequest(),
+                                pagedResponse.getStatusCode(),
+                                pagedResponse.getHeaders(),
+                                pagedResponse.getValue()
+                                    .stream()
+                                    .map(keyValue -> toConfigurationSetting(keyValue)).collect(Collectors.toList()),
+                                pagedResponse.getContinuationToken(), null))));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(LOGGER, ex));
+        }
+    }
+
+    /**
+     * Create snapshots
+     *
+     * @param name name of snapshots
+     * @param filters
+     * @return snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSettingSnapshot> createSnapShot(String name, Iterable<SnapshotFilter> filters) {
+        return createSnapShotWithResponse(name, new ConfigurationSettingSnapshot(filters)).map(Response::getValue);
+    }
+
+    /**
+     * Create snapshots
+     *
+     * @param name name of snapshots
+     * @param snapshot snapshot
+     * @return snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSettingSnapshot>> createSnapShotWithResponse(String name,
+        ConfigurationSettingSnapshot snapshot) {
+        return serviceClient.createSnapshotWithResponseAsync(name,
+            new Snapshot()
+                .setFilters(toKeyValueFilter(snapshot.getFilters()))
+                .setTags(snapshot.getTags()),
+            null)
+                   .map(response -> new SimpleResponse<>(response,
+                       toConfigurationSettingSnapshot(response.getValue())));
+    }
+
+
+    /**
+     * Gets snapshot
+     *
+     * @param name snapshots
+     * @return snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSettingSnapshot> getSnapshot(String name) {
+        return getSnapshotWithResponse(name, null, false).map(Response::getValue);
+    }
+
+    /**
+     * Gets snapshot
+     *
+     * @param name name of snapshot
+     * @param snapshot snapshots
+     * @param ifChanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
+     * used as a If-None-Match header.
+     * @return snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSettingSnapshot>> getSnapshotWithResponse(String name,
+        ConfigurationSettingSnapshot snapshot, boolean ifChanged) {
+        return serviceClient.getSnapshotWithResponseAsync(name == null ? snapshot.getName() : name,
+            null, getIfNoneMatchETagSnapshot(ifChanged, snapshot),
+            null, Context.NONE)
+                   .map(response -> new SimpleResponse<>(response,
+                       toConfigurationSettingSnapshot(response.getValue())));
+
+    }
+
+    /**
+     * Archiving snapshot from Ready status.
+     *
+     * @param name name of snapshots
+     * @return snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSettingSnapshot> archiveSnapshot(String name) {
+        return archiveSnapshotWithResponse(name, null, false).map(Response::getValue);
+    }
+
+    /**
+     * Archiving snapshot from Ready status.
+     *
+     * @param name name of snapshot
+     * @param snapshot snapshots
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
+     * used as a IF-MATCH header.
+     * @return snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSettingSnapshot>> archiveSnapshotWithResponse(String name,
+        ConfigurationSettingSnapshot snapshot, boolean ifUnchanged) {
+        // validate name and snapshot.getName can be null. Has to be one of
+        return serviceClient.updateSnapshotWithResponseAsync(name == null ? snapshot.getName() : name,
+            new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
+            getIfMatchETagSnapshot(ifUnchanged, snapshot), null)
+                   .map(response -> new SimpleResponse<>(response,
+                       toConfigurationSettingSnapshot(response.getValue())));
+    }
+
+    /**
+     * recovering snapshot from archived status.
+     *
+     * @param name name of snapshots
+     * @return snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSettingSnapshot> recoverSnapshot(String name) {
+        return recoverSnapshotWithResponse(name, null, false).map(Response::getValue);
+    }
+
+    /**
+     * recovering snapshot from archived status.
+     *
+     * @param name name of snapshot
+     * @param snapshot snapshots
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
+     * used as a IF-MATCH header.
+     * @return snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSettingSnapshot>> recoverSnapshotWithResponse(String name,
+        ConfigurationSettingSnapshot snapshot, boolean ifUnchanged) {
+        return serviceClient.updateSnapshotWithResponseAsync(name == null ? snapshot.getName() : name,
+            new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
+            getIfMatchETagSnapshot(ifUnchanged, snapshot), null)
+                   .map(response -> new SimpleResponse<>(response,
+                       toConfigurationSettingSnapshot(response.getValue())));
+    }
+
+    /**
+     * Listing snapshots
+     *
+     * @param selector SnapshotSelector
+     * @return snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ConfigurationSettingSnapshot> listSnapshots(SnapshotSelector selector) {
+        try {
+            return new PagedFlux<>(
+                () -> withContext(
+                    context -> serviceClient.getSnapshotsSinglePageAsync(
+                        selector.getName(),
+                        null,
+                        null,
+                        SnapshotStatus.fromString(selector.getSnapshotStatus().toString()),
+                        addTracingNamespace(context))
+                                   .map(pagedResponse -> new PagedResponseBase<>(
+                                       pagedResponse.getRequest(),
+                                       pagedResponse.getStatusCode(),
+                                       pagedResponse.getHeaders(),
+                                       pagedResponse.getValue()
+                                           .stream()
+                                           .map(snapshot -> toConfigurationSettingSnapshot(snapshot))
+                                           .collect(Collectors.toList()),
+                                       pagedResponse.getContinuationToken(),
+                                       null))),
+                nextLink -> withContext(
+                    context ->
+                        serviceClient.getSnapshotsNextSinglePageAsync(nextLink, addTracingNamespace(context))
+                            .map(pagedResponse -> new PagedResponseBase<>(
+                                pagedResponse.getRequest(),
+                                pagedResponse.getStatusCode(),
+                                pagedResponse.getHeaders(),
+                                pagedResponse.getValue()
+                                    .stream()
+                                    .map(snapshot -> toConfigurationSettingSnapshot(snapshot))
+                                    .collect(Collectors.toList()),
+                                pagedResponse.getContinuationToken(), null))));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(LOGGER, ex));
+        }
     }
 
     /**
