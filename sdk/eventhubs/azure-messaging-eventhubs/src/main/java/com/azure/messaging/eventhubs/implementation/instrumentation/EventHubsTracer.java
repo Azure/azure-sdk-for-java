@@ -142,7 +142,7 @@ public class EventHubsTracer {
     }
 
     private boolean canModifyApplicationProperties(Map<String, Object> applicationProperties) {
-        return applicationProperties.getClass().getSimpleName().equals("UnmodifiableMap");
+        return !applicationProperties.getClass().getSimpleName().equals("UnmodifiableMap");
     }
 
     public Context getBuilder(String spanName, Context context) {

@@ -30,6 +30,7 @@ import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.Proton;
@@ -85,6 +86,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.TRACEPARENT_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -399,11 +401,15 @@ class EventHubProducerAsyncClientTest {
             .start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, times(1))
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(1)).end(isNull(), isNull(), any());
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
         verify(tracer1, times(1)).getSharedSpanBuilder(eq("EventHubs.send"), any());
         verify(tracer1, times(1)).addLink(any());
 
         verifyNoInteractions(onClientClosed);
+        assertEquals(2, testData.blockFirst().getProperties().size());
+        assertEquals("diag-id", testData.blockFirst().getProperties().get(DIAGNOSTIC_ID_KEY));
+        assertEquals("diag-id", testData.blockFirst().getProperties().get(TRACEPARENT_KEY));
     }
 
     /**
@@ -452,12 +458,13 @@ class EventHubProducerAsyncClientTest {
             .start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, times(1))
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(1)).end(isNull(), isNotNull(), any());
+        verify(tracer1, times(1)).end(isNull(), isNull(), any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
         verify(tracer1, times(1)).getSharedSpanBuilder(eq("EventHubs.send"), any());
         verify(tracer1, times(1)).addLink(any());
 
         verifyNoInteractions(onClientClosed);
+        assertEquals(1, testData.blockFirst().getProperties().size());
     }
 
     /**
@@ -736,7 +743,8 @@ class EventHubProducerAsyncClientTest {
         verify(tracer1, times(2)).addLink(any());
         verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, times(2)).start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(3)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(2)).end(isNull(), isNull(), any());
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
 
         verifyNoInteractions(onClientClosed);
     }
