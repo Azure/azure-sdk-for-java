@@ -101,8 +101,7 @@ public final class ContainerRegistriesImpl {
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
-                @HeaderParam("accept") String accept,
-                @HeaderParam("Accept") String acceptParam,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/v2/{name}/manifests/{reference}")
@@ -112,8 +111,7 @@ public final class ContainerRegistriesImpl {
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
-                @HeaderParam("accept") String accept,
-                @HeaderParam("Accept") String acceptParam,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/v2/{name}/manifests/{reference}")
@@ -577,9 +575,8 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManifestWrapper>> getManifestWithResponseAsync(String name, String reference, String accept) {
-        final String acceptParam = "application/json";
         return FluxUtil.withContext(
-                context -> service.getManifest(this.client.getUrl(), name, reference, accept, acceptParam, context));
+                context -> service.getManifest(this.client.getUrl(), name, reference, accept, context));
     }
 
     /**
@@ -599,8 +596,7 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManifestWrapper>> getManifestWithResponseAsync(
             String name, String reference, String accept, Context context) {
-        final String acceptParam = "application/json";
-        return service.getManifest(this.client.getUrl(), name, reference, accept, acceptParam, context);
+        return service.getManifest(this.client.getUrl(), name, reference, accept, context);
     }
 
     /**
@@ -658,8 +654,7 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManifestWrapper> getManifestWithResponse(
             String name, String reference, String accept, Context context) {
-        final String acceptParam = "application/json";
-        return service.getManifestSync(this.client.getUrl(), name, reference, accept, acceptParam, context);
+        return service.getManifestSync(this.client.getUrl(), name, reference, accept, context);
     }
 
     /**

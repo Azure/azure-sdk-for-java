@@ -174,6 +174,15 @@ directive:
         delete $.responses["201"].schema;
 ```
 
+# Rename accept parameter
+```yaml
+directive:
+    from: swagger-document
+    where: $.paths["/v2/{name}/manifests/{reference}"].get
+    transform: >
+        $.parameters[2].name = "Accept";
+```
+
 # Change NextLink client name to nextLink
 ```yaml
 directive:
