@@ -5,7 +5,8 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.SpanKind;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsMetricsProvider;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
@@ -52,13 +53,13 @@ class EventHubsProducerInstrumentation {
     }
 
     private Context startSpanWithLinks(String name, EventDataBatch batch, Context context) {
-        Context spanBuilder = tracer.getBuilder(name, context);
+        StartSpanOptions startOptions = tracer.createStartOption(SpanKind.CLIENT);
         if (batch != null) {
             for (EventData event : batch.getEvents()) {
-                tracer.addLink(event.getProperties(), null, spanBuilder, event.getContext());
+                startOptions.addLink(tracer.createLink(event.getProperties(), null, event.getContext()));
             }
         }
 
-        return tracer.startSpan(name, spanBuilder, ProcessKind.SEND);
+        return tracer.startSpan(name, startOptions, context);
     }
 }

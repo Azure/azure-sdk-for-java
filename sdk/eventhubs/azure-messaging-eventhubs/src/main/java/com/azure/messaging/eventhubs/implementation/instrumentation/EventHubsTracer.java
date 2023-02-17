@@ -7,18 +7,19 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.SpanKind;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracingLink;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
-import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,6 @@ import java.util.ServiceLoader;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 
 public class EventHubsTracer {
     private static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> {
@@ -59,8 +59,8 @@ public class EventHubsTracer {
         return tracer != null;
     }
 
-    public Context startSpan(String spanName, Context context, ProcessKind kind) {
-        return tracer == null ? context : tracer.start(spanName, context, kind);
+    public Context startSpan(String spanName, StartSpanOptions startOptions, Context context) {
+        return tracer == null ? context : tracer.start(spanName, startOptions, context);
     }
 
     public <T> Mono<T> traceMono(Mono<T> publisher, String spanName) {
@@ -73,7 +73,7 @@ public class EventHubsTracer {
                     }
                 })
                 .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY,
-                    tracer.start(spanName, setAttributes(Context.NONE), ProcessKind.SEND)));
+                    tracer.start(spanName, createStartOption(SpanKind.CLIENT), Context.NONE)));
         }
 
         return publisher;
@@ -115,17 +115,20 @@ public class EventHubsTracer {
         }
 
         // Starting the span makes the sampling decision (nothing is logged at this time)
-        Context newMessageContext = setAttributes(eventContext);
+        StartSpanOptions startOptions = createStartOption(SpanKind.PRODUCER);
 
-        Context eventSpanContext = tracer.start("EventHubs.message", newMessageContext, ProcessKind.MESSAGE);
-        Optional<Object> traceparentOpt = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+        Context eventSpanContext = tracer.start("EventHubs.message", startOptions, eventContext);
 
         Exception exception = null;
         String error = null;
-        if (traceparentOpt.isPresent() && canModifyApplicationProperties(eventData.getProperties())) {
+        if (canModifyApplicationProperties(eventData.getProperties())) {
             try {
-                eventData.getProperties().put(DIAGNOSTIC_ID_KEY, traceparentOpt.get().toString());
-                eventData.getProperties().put(TRACEPARENT_KEY, traceparentOpt.get().toString());
+                tracer.injectContext((key, value) -> {
+                    eventData.getProperties().put(key, value);
+                    if (TRACEPARENT_KEY.equals(key)) {
+                        eventData.getProperties().put(DIAGNOSTIC_ID_KEY, value);
+                    }
+                }, eventSpanContext);
             } catch (RuntimeException ex) {
                 // it might happen that unmodifiable map is something that we
                 // didn't account for in canModifyApplicationProperties method
@@ -148,74 +151,65 @@ public class EventHubsTracer {
         return !applicationProperties.getClass().getSimpleName().equals("UnmodifiableMap");
     }
 
-    public Context getBuilder(String spanName, Context context) {
-        return tracer == null ? context : setAttributes(tracer.getSharedSpanBuilder(spanName, context));
+    public TracingLink createLink(Map<String, Object> applicationProperties, Instant enqueuedTime, Context eventContext) {
+        Context link;
+        Optional<Object> linkContext = eventContext.getData(SPAN_CONTEXT_KEY);
+        if (linkContext.isPresent()) {
+            link = linkContext.get() instanceof Context ? (Context) linkContext.get() : Context.NONE;
+        } else {
+            link = extractContext(applicationProperties);
+        }
+
+        Map<String, Object> linkAttributes = null;
+        if (enqueuedTime != null) {
+            linkAttributes = Collections.singletonMap(MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
+        }
+
+        return new TracingLink(link, linkAttributes);
     }
 
-    public void addLink(Map<String, Object> applicationProperties, Instant enqueuedTime, Context spanBuilder, Context eventContext) {
-        if (tracer != null) {
-            Optional<Object> linkContext = eventContext.getData(SPAN_CONTEXT_KEY);
-            if (!linkContext.isPresent()) {
-                String traceparent = getTraceparent(applicationProperties);
-                Context link = traceparent == null ? Context.NONE : tracer.extractContext(traceparent, Context.NONE);
-                linkContext = link.getData(SPAN_CONTEXT_KEY);
+    public Context extractContext(Map<String, Object> applicationProperties) {
+        return tracer.extractContext(key ->  {
+            if (TRACEPARENT_KEY.equals(key)) {
+                return getTraceparent(applicationProperties);
+            } else {
+                Object value = applicationProperties.get(key);
+                if (value != null) {
+                    return value.toString();
+                }
             }
-
-            if (enqueuedTime != null) {
-                spanBuilder = spanBuilder.addData(MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
-            }
-
-            if (linkContext.isPresent()) {
-                tracer.addLink(spanBuilder.addData(SPAN_CONTEXT_KEY, linkContext.get()));
-            }
-        }
+            return null;
+        });
     }
 
     public AutoCloseable makeSpanCurrent(Context context) {
         return tracer == null ? NOOP_AUTOCLOSEABLE : tracer.makeSpanCurrent(context);
     }
 
-    public Context setParentAndAttributes(Message message, Instant enqueuedTime, Context context) {
-        if (tracer != null) {
-            if (enqueuedTime != null) {
-                context = context.addData(MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
-            }
-
-            if (message.getApplicationProperties() != null) {
-                context = getParent(message.getApplicationProperties().getValue(), context);
-            }
-            return setAttributes(context);
-        }
-
-        return context;
-    }
-
     public Context startProcessSpan(String name, EventData event, Context parent) {
         if (tracer != null) {
-            Context context = parent;
+            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER)
+                .setRemoteParent(extractContext(event.getProperties()));
+
             Instant enqueuedTime = event.getEnqueuedTime();
             if (enqueuedTime != null) {
-                context = parent.addData(MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
+                startOptions.setAttribute(MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
             }
 
-            context = getParent(event.getProperties(), context);
-            return tracer.start(name, setAttributes(context), ProcessKind.PROCESS);
+            return tracer.start(name, startOptions, parent);
         }
 
         return parent;
     }
 
     public Context startProcessSpan(String name, List<EventData> events, Context parent) {
-        if (tracer != null) {
-            Context context = parent.addData("span-kind", SpanKind.CONSUMER);
-            Context spanBuilder = getBuilder(name, setAttributes(context));
-            if (events != null) {
-                for (EventData event : events) {
-                    addLink(event.getProperties(), event.getEnqueuedTime(), spanBuilder, Context.NONE);
-                }
+        if (tracer != null && events != null) {
+            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER);
+            for (EventData event : events) {
+                startOptions.addLink(createLink(event.getProperties(), event.getEnqueuedTime(), Context.NONE));
             }
 
-            return tracer.start(name, spanBuilder, ProcessKind.PROCESS);
+            return tracer.start(name, startOptions, parent);
         }
 
         return parent;
@@ -227,15 +221,15 @@ public class EventHubsTracer {
             return events.doOnEach(signal -> {
                 if (signal.isOnNext()) {
                     eventsList.add(signal.get());
-                } else if (signal.isOnComplete()) {
-                    Context spanBuilder = getBuilder(name, setAttributes(parent.addData("span-start-time", startTime)));
+                } else if (signal.isOnComplete() || signal.isOnError()) {
+                    StartSpanOptions startSpanOptions = createStartOption(SpanKind.CLIENT)
+                        .setStartTimestamp(startTime);
                     for (PartitionEvent event : eventsList) {
-                        addLink(event.getData().getProperties(), event.getData().getEnqueuedTime(), spanBuilder, Context.NONE);
+                        startSpanOptions.addLink(createLink(event.getData().getProperties(), event.getData().getEnqueuedTime(), Context.NONE));
                     }
 
-                    // TODO (lmolkova) refactor tracing - ProcessKind.SEND is just a client span
-                    Context span = tracer.start(name, spanBuilder, ProcessKind.SEND);
-                    endSpan(null, span, null);
+                    Context span = tracer.start(name, startSpanOptions, parent);
+                    tracer.end(null, signal.getThrowable(), span);
                 }
             });
         }
@@ -252,19 +246,10 @@ public class EventHubsTracer {
         return diagnosticId == null ? null : diagnosticId.toString();
     }
 
-    private Context getParent(Map<String, Object> properties, Context context) {
-        if (properties == null) {
-            return context;
-        }
-
-        String traceparent = getTraceparent(properties);
-        return traceparent == null ? context : tracer.extractContext(traceparent, context);
-    }
-
-    private Context setAttributes(Context context) {
-        return context
-            .addData(Tracer.ENTITY_PATH_KEY, entityName)
-            .addData(Tracer.HOST_NAME_KEY, fullyQualifiedName)
-            .addData(Tracer.AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+    public StartSpanOptions createStartOption(SpanKind kind) {
+        return new StartSpanOptions(kind)
+            .setAttribute("messaging.system", "eventhubs")
+            .setAttribute(Tracer.ENTITY_PATH_KEY, entityName)
+            .setAttribute(Tracer.HOST_NAME_KEY, fullyQualifiedName);
     }
 }
