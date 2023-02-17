@@ -57,6 +57,9 @@ public class RntbdConnectionStateListener {
             } else {
                 this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_FAILURE, exception));
             }
+        } else if (exception instanceof RntbdRequestManager.UnhealthyChannelException) {
+            // A channel is closed due to Rntbd health check
+            this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_FAILURE, exception));
         } else {
             if (logger.isDebugEnabled()) {
                 logger.debug("Will not raise the connection state change event for error", exception);

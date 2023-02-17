@@ -658,20 +658,6 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
-            ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor();
-
-        Boolean explicitlySetInConfig = accessor.isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
-
-        if (explicitlySetInConfig != null) {
-            CosmosClientTelemetryConfig newTelemetryConfig = accessor
-                .createSnapshot(this.clientTelemetryConfig, clientTelemetryEnabled);
-            accessor.resetIsSendClientTelemetryToServiceEnabled(newTelemetryConfig);
-            this.clientTelemetryConfig = newTelemetryConfig;
-        }
-
         this.clientTelemetryEnabledOverride = clientTelemetryEnabled;
         return this;
     }
@@ -795,8 +781,6 @@ public class CosmosClientBuilder implements
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor()
             .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
-
-        assert(this.clientTelemetryEnabledOverride == null || explicitlySetInConfig == null);
 
         if (this.clientTelemetryEnabledOverride != null) {
             return this.clientTelemetryEnabledOverride;

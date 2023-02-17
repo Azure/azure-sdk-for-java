@@ -3,6 +3,7 @@
 ## 12.21.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `BlobDownloadHeaders.getCreationTime()` and `BlobDownloadHeaders.setCreationTime(OffsetDateTime)` to access the x-ms-creation-time property.
 
 ### Breaking Changes
 
