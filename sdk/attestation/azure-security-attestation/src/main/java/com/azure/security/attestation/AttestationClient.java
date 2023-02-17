@@ -11,14 +11,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.security.attestation.models.AttestationData;
-import com.azure.security.attestation.models.AttestationOpenIdMetadata;
-import com.azure.security.attestation.models.AttestationOptions;
-import com.azure.security.attestation.models.AttestationResponse;
-import com.azure.security.attestation.models.AttestationResult;
-import com.azure.security.attestation.models.AttestationSigner;
-import com.azure.security.attestation.models.AttestationSignerCollection;
-import com.azure.security.attestation.models.AttestationToken;
+import com.azure.security.attestation.models.*;
 
 /**
  * The AttestationClient implements the functionality required by the "Attest" family of APIs.
@@ -438,8 +431,9 @@ public final class AttestationClient {
         return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }
 
-    /** Performs TPM attestation.
-     *
+    /**
+     * Performs TPM attestation.
+     * <p>
      * Processes attestation evidence from a VBS enclave, producing an attestation result.
      * <p>The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
      * <p>Unlike OpenEnclave reports and SGX enclave quotes, TPM attestation is implemented using JSON encoded
@@ -458,13 +452,13 @@ public final class AttestationClient {
      * <!-- end com.azure.security.attestation.AttestationClient.attestTpm -->
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException    thrown if the request is rejected by server.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String attestTpm(byte[] request) {
+    public TpmAttestationResult attestTpm(BinaryData request) {
         return asyncClient.attestTpm(request).block();
     }
 
@@ -495,7 +489,7 @@ public final class AttestationClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> attestTpmWithResponse(byte[] request, Context context) {
+    public Response<TpmAttestationResult> attestTpmWithResponse(BinaryData request, Context context) {
         return asyncClient.attestTpmWithResponse(request, context).block();
     }
 }

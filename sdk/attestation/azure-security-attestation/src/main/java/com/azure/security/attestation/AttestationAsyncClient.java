@@ -22,15 +22,7 @@ import com.azure.security.attestation.implementation.models.AttestationResultImp
 import com.azure.security.attestation.implementation.models.AttestationSignerCollectionImpl;
 import com.azure.security.attestation.implementation.models.AttestationSignerImpl;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
-import com.azure.security.attestation.models.AttestationData;
-import com.azure.security.attestation.models.AttestationOpenIdMetadata;
-import com.azure.security.attestation.models.AttestationOptions;
-import com.azure.security.attestation.models.AttestationResponse;
-import com.azure.security.attestation.models.AttestationResult;
-import com.azure.security.attestation.models.AttestationSigner;
-import com.azure.security.attestation.models.AttestationSignerCollection;
-import com.azure.security.attestation.models.AttestationToken;
-import com.azure.security.attestation.models.AttestationTokenValidationOptions;
+import com.azure.security.attestation.models.*;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -560,7 +552,7 @@ public final class AttestationAsyncClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> attestTpmWithResponse(byte[] request) {
+    public Mono<Response<TpmAttestationResult>> attestTpmWithResponse(BinaryData request) {
         return withContext(context -> this.attestTpmWithResponse(request, context));
     }
 
@@ -590,15 +582,15 @@ public final class AttestationAsyncClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> attestTpm(byte[] request) {
+    public Mono<TpmAttestationResult> attestTpm(BinaryData request) {
         return attestTpmWithResponse(request)
             .onErrorMap(Utilities::mapException)
             .flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<String>> attestTpmWithResponse(byte[] request, Context context) {
+    Mono<Response<TpmAttestationResult>> attestTpmWithResponse(BinaryData request, Context context) {
         Objects.requireNonNull(request);
-        return this.attestImpl.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request), context)
-            .map(response -> Utilities.generateResponseFromModelType(response, new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8)));
+        return this.attestImpl.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.toBytes()), context)
+            .map(response -> Utilities.generateResponseFromModelType(response, new TpmAttestationResult(new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8))));
     }
 }
