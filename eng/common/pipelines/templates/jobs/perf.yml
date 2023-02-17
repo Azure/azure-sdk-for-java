@@ -10,7 +10,7 @@ parameters:
   default: 'MMSUbuntu20.04'
 - name: WindowsPool
   type: string
-  default: 'azsdk-pool-mms-win-2022-perf'
+  default: 'azsdk-pool-mms-win-2019-perf'
 - name: WindowsVmImage
   type: string
   default: 'MMS2022Compliant'
