@@ -19,8 +19,8 @@ steps:
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
           -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter ${{ parameters.GroupID }}
-          -ArtifactIDFilter ${{ parameters.ArtifactID }}
+          -GroupIDFilter "${{ parameters.GroupID }}"
+          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
           -RepositoryUrl https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-$(Build.BuildID)/maven/v1
           -RepositoryUsername nobody
           -RepositoryPassword $(System.AccessToken)
@@ -37,8 +37,8 @@ steps:
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
           -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter ${{ parameters.GroupID }}
-          -ArtifactIDFilter ${{ parameters.ArtifactID }}
+          -GroupIDFilter "${{ parameters.GroupID }}"
+          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
           -RepositoryUrl ${{ parameters.RepositoryUrl }}
           -RepositoryUsername nobody
           -RepositoryPassword $(System.AccessToken)
@@ -55,8 +55,8 @@ steps:
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
           -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter ${{ parameters.GroupID }}
-          -ArtifactIDFilter ${{ parameters.ArtifactID }}
+          -GroupIDFilter "${{ parameters.GroupID }}"
+          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
           -RepositoryUrl https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-android/maven/v1
           -RepositoryUsername nobody
           -RepositoryPassword $(System.AccessToken)
