@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mediaservices.generated;
 /** Samples for MediaServicesOperationStatuses Get. */
 public final class MediaServicesOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2021-11-01/examples/media-service-operation-status-by-id-non-terminal-state-failed.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/media-service-operation-status-by-id-non-terminal-state-failed.json
      */
     /**
      * Sample code: Get status of asynchronous operation when it is completed with error.
@@ -22,7 +22,7 @@ public final class MediaServicesOperationStatusesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2021-11-01/examples/media-service-operation-status-by-id-terminal-state.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/media-service-operation-status-by-id-terminal-state.json
      */
     /**
      * Sample code: Get status of asynchronous operation when it is completed.
@@ -37,7 +37,7 @@ public final class MediaServicesOperationStatusesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2021-11-01/examples/media-service-operation-status-by-id-non-terminal-state.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/media-service-operation-status-by-id-non-terminal-state.json
      */
     /**
      * Sample code: Get status of asynchronous operation when it is ongoing.

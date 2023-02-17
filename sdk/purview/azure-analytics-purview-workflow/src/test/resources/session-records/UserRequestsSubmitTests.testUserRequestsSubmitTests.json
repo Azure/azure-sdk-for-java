@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.purview.azure.com/workflow/userrequests?api-version=2022-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5788179d-d2fb-40b2-9641-0bd9db6fd469",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "386",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "MicrosoftPurview",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "ec459adf-0120-42bc-b1f5-6d59ee06c6e7",
+      "Body" : "{\"requestId\":\"41b1feae-1f90-4b35-835f-037f39d8ef67\",\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"operations\":[{\"type\":\"CreateTerm\",\"payload\":{\"glossaryTerm\":{\"name\":\"term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"nickName\":\"term\",\"status\":\"Approved\"}},\"workflowRunIds\":[\"41b1feae-1f90-4b35-835f-037f39d8ef67\"]}],\"comment\":\"Thanks!\",\"status\":\"InProgress\"}",
+      "Date" : "Fri, 03 Feb 2023 10:07:02 GMT",
+      "x-ms-client-request-id" : "5788179d-d2fb-40b2-9641-0bd9db6fd469",
+      "x-ms-correlation-request-id" : "35e71059-89ae-4be2-b8ae-98fcaaea8746",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

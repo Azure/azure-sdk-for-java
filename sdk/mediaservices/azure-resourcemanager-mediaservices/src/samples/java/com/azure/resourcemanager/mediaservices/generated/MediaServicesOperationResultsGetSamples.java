@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mediaservices.generated;
 /** Samples for MediaServicesOperationResults Get. */
 public final class MediaServicesOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2021-11-01/examples/media-service-operation-result-by-id.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/media-service-operation-result-by-id.json
      */
     /**
      * Sample code: Get status of asynchronous operation.
