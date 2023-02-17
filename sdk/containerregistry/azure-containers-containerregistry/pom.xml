@@ -35,6 +35,7 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry=ALL-UNNAMED
       --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.models=ALL-UNNAMED
       --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.implementation=ALL-UNNAMED

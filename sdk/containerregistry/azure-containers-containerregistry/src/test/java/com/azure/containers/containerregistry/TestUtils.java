@@ -82,7 +82,7 @@ public class TestUtils {
         TAG_TO_DELETE = "v4";
         TAG_TO_UPDATE = "test-update-properties";
         TAG_UNKNOWN = "unknowntag";
-        DIGEST_UNKNOWN = "unknown:digest";
+        DIGEST_UNKNOWN = "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
         PAGESIZE_2 = 2;
         PAGESIZE_1 = 1;
         ARM64_ARCHITECTURE = "arm64";
