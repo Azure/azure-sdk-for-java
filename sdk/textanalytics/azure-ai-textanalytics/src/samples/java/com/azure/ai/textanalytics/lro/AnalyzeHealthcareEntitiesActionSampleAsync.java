@@ -20,7 +20,6 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
 import java.util.List;
