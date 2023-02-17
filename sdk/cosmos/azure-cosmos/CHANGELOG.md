@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.41.0-beta.1 (Unreleased)
+### 4.41.0 (2023-02-17)
 
 #### Features Added
 * Added ability to configure proactive connection management via `CosmosClientBuilder.openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig)`. - See [PR 33267](https://github.com/Azure/azure-sdk-for-java/pull/33267)
