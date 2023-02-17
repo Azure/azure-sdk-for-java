@@ -19,8 +19,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Names of Cosmos DB client-side meters
  */
 public final class CosmosMetricName {
-    private static Object lockObject = new Object();
-    private static Map<String, CosmosMetricName> meters = null;
     private final String name;
     private final CosmosMetricCategory metricCategory;
 
@@ -296,6 +294,11 @@ public final class CosmosMetricName {
         nameOf("req.rntbd.stats.endpoint.inflightRequests"),
         CosmosMetricCategory.LEGACY);
 
+    // NOTE - it is important to declare this field after all the Factory properties above
+    // In java static fields are first set to default value - then in the order of the
+    // declarations the assignment/initialization is executed.
+    private final static Map<String, CosmosMetricName> meters = createMeterNameMap();
+
     /**
      * Gets the corresponding metric category state from its string representation.
      *
@@ -305,14 +308,6 @@ public final class CosmosMetricName {
      */
     public static CosmosMetricName fromString(String name) {
         checkNotNull(name, "Argument 'name' must not be null.");
-
-        if (meters == null) {
-            synchronized (lockObject) {
-                if (meters == null) {
-                    meters = createMeterNameMap();
-                }
-            }
-        }
 
         String normalizedName = name.trim().toLowerCase(Locale.ROOT);
         CosmosMetricName meterName = meters.getOrDefault(normalizedName, null);
