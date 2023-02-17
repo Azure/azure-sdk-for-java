@@ -121,6 +121,7 @@ public class EventHubsTracer {
         Optional<Object> traceparentOpt = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
 
         Exception exception = null;
+        String error = null;
         if (traceparentOpt.isPresent() && canModifyApplicationProperties(eventData.getProperties())) {
             try {
                 eventData.getProperties().put(DIAGNOSTIC_ID_KEY, traceparentOpt.get().toString());
@@ -132,8 +133,10 @@ public class EventHubsTracer {
                 LOGGER.logExceptionAsWarning(ex);
                 exception = ex;
             }
+        } else {
+            error = "failed to inject context into EventData";
         }
-        tracer.end(null, exception, eventSpanContext);
+        tracer.end(error, exception, eventSpanContext);
 
         Optional<Object> spanContext = eventSpanContext.getData(SPAN_CONTEXT_KEY);
         if (spanContext.isPresent()) {
