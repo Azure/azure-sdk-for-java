@@ -12,38 +12,46 @@ parameters:
   type: number
 - name: PipelineId
   type: number
+- name: DocsRepoTargetBranch
+  type: string
+  default: docs-retry
+- name: PublishGitHubIo
+  type: boolean
+  default: true
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
+
 jobs:
 - ${{ each artifact in parameters.PackageIds }}:
-  - job: RetryOnGithubIo${{artifact.safename}}
-    pool:
-      name: azsdk-pool-mms-win-2019-general
-      vmImage: MMS2019
-    steps:
-      # Sync docs repo onboarding files/folders
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          source: 'specific'
-          artifact: 'packages'
-          path: '$(Build.SourcesDirectory)/packages' 
-          pipeline: ${{ parameters.PipelineId }}
-          buildId: ${{ parameters.BuildId }}
-          project: 'internal'
-          RunVersion : 'specific'
-      - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
-        parameters:
-          FolderForUpload: '$(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}'
-          BlobSASKey: '$(azure-sdk-docs-prod-sas)'
-          BlobName: '$(azure-sdk-docs-prod-blob-name)'
-          TargetLanguage: 'java'
-          ArtifactLocation: $(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}
-          # we override the regular script path because we have cloned the build tools repo as a separate artifact.
-          ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
+  - ${{ if eq(artifact.PublishGitHubIo, 'true')}}:
+    - job: RetryOnGithubIo_${{artifact.safename}}
+      pool:
+        name: azsdk-pool-mms-win-2019-general
+        vmImage: MMS2019
+      steps:
+        # Sync docs repo onboarding files/folders
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            source: 'specific'
+            artifact: 'packages'
+            path: '$(Build.SourcesDirectory)/packages'
+            pipeline: ${{ parameters.PipelineId }}
+            buildId: ${{ parameters.BuildId }}
+            project: 'internal'
+            RunVersion : 'specific'
+        - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
+          parameters:
+            FolderForUpload: '$(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}'
+            BlobSASKey: '$(azure-sdk-docs-prod-sas)'
+            BlobName: '$(azure-sdk-docs-prod-blob-name)'
+            TargetLanguage: 'java'
+            ArtifactLocation: $(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}
+            # we override the regular script path because we have cloned the build tools repo as a separate artifact.
+            ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
-  - job: RetryOnDocsMs${{artifact.safename}}
+  - job: RetryOnDocsMs_${{artifact.safename}}
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
       vmImage: MMSUbuntu20.04
