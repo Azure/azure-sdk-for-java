@@ -4,14 +4,15 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.credential.AzureKeyCredential;
 
 /**
  * The MetricsAdvisorKeyCredential class.
  */
 @Fluent
 public final class MetricsAdvisorKeyCredential {
-    private volatile MetricsAdvisorKeys keys;
-    private final Object updateLock = new Object();
+    private final AzureKeyCredential subscriptionKeyCredential;
+    private final AzureKeyCredential apiKeyCredential;
 
     /**
      * Creates a MetricsAdvisorKeyCredential credential that authorizes request with the given keys.
@@ -20,7 +21,8 @@ public final class MetricsAdvisorKeyCredential {
      * @param apiKey the api key used to authorize requests
      */
     public MetricsAdvisorKeyCredential(String subscriptionKey, String apiKey) {
-        this.keys = new MetricsAdvisorKeys(subscriptionKey, apiKey);
+        this.subscriptionKeyCredential = new AzureKeyCredential(subscriptionKey);
+        this.apiKeyCredential = new AzureKeyCredential(apiKey);
     }
 
     /**
@@ -30,7 +32,25 @@ public final class MetricsAdvisorKeyCredential {
      * @return The {@link MetricsAdvisorKeys} containing the subscription key and api key.
      */
     public MetricsAdvisorKeys getKeys() {
-        return this.keys;
+        return new MetricsAdvisorKeys(subscriptionKeyCredential.getKey(), apiKeyCredential.getKey());
+    }
+
+    /**
+     * This would be made accessible through internal code but this is a prototype.
+     *
+     * @return The {@link AzureKeyCredential} for the subscription key.
+     */
+    public AzureKeyCredential getSubscriptionKeyCredential() {
+        return subscriptionKeyCredential;
+    }
+
+    /**
+     * This would be made accessible through internal code but this is a prototype.
+     *
+     * @return The {@link AzureKeyCredential} for the API key.
+     */
+    public AzureKeyCredential getApiKeyCredential() {
+        return apiKeyCredential;
     }
 
     /**
@@ -44,9 +64,9 @@ public final class MetricsAdvisorKeyCredential {
      * @return The updated {@code MetricsAdvisorKeyCredential} object.
      */
     public MetricsAdvisorKeyCredential updateKey(String subscriptionKey, String apiKey) {
-        synchronized (this.updateLock) {
-            this.keys = new MetricsAdvisorKeys(subscriptionKey, apiKey);
-        }
+        subscriptionKeyCredential.update(subscriptionKey);
+        apiKeyCredential.update(apiKey);
+
         return this;
     }
 }

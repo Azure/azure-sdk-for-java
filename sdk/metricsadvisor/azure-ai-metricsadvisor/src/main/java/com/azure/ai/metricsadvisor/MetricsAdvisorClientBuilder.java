@@ -19,6 +19,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -234,8 +235,12 @@ public final class MetricsAdvisorClientBuilder implements
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
         } else if (!CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getKeys().getSubscriptionKey())
             || !CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getKeys().getApiKey())) {
-            headers.set(OCP_APIM_SUBSCRIPTION_KEY, metricsAdvisorKeyCredential.getKeys().getSubscriptionKey());
-            headers.set(API_KEY, metricsAdvisorKeyCredential.getKeys().getApiKey());
+            // TODO (alzimmer): Still a bug
+            //headers.set(OCP_APIM_SUBSCRIPTION_KEY, metricsAdvisorKeyCredential.getKeys().getSubscriptionKey());
+            //headers.set(API_KEY, metricsAdvisorKeyCredential.getKeys().getApiKey());
+            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY,
+                metricsAdvisorKeyCredential.getSubscriptionKeyCredential()));
+            policies.add(new AzureKeyCredentialPolicy(API_KEY, metricsAdvisorKeyCredential.getApiKeyCredential()));
         } else {
             // Throw exception that credential cannot be null
             throw logger.logExceptionAsError(
