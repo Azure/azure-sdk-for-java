@@ -29,7 +29,6 @@
 	"resources": [{
 		"name": "[parameters('ledgerName')]",
 		"type": "Microsoft.ConfidentialLedger/ledgers",
-		"ledgerUri": "[concat('https://', parameters('ledgerName'), '.confidential-ledger.azure.com')]",
 		"apiVersion": "2020-12-01-preview",
 		"location": "[parameters('location')]",
 		"properties": {
@@ -47,7 +46,7 @@
         },
 		"LEDGER_URI": {
 			"type": "string",
-			"value": "[resources[0]('ledgerUri')]"
+			"value": "[concat('https://', parameters('ledgerName'), '.confidential-ledger.azure.com')]"
 		},
 		"USER_AAD": {
 			"type": "string",
