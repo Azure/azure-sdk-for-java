@@ -1,20 +1,20 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/thisIsNotAValidModelId?includeModelDefinition=true&api-version=2022-05-31",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/thisIsNotAValidModelId?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0 (12.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "60ce3900-a63c-446c-832e-f6552baf0227"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "1c622258-cbdd-4340-814c-3a7e8064c00e"
     },
     "Response" : {
-      "content-length" : "199",
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-9ae2415c1fcc5394ab850c4195e37300-0039875dbbec7712-01",
-      "mise-correlation-id" : "589782f6-d5a5-402f-8614-91b0155b72df",
+      "traceresponse" : "00-b42268e0c67f957bd570031cdea74a44-551b6f3df9f8b363-01",
+      "mise-correlation-id" : "6d94aae6-3ffe-493c-bea9-12d2e15b3c85",
       "retry-after" : "0",
+      "Content-Length" : "199",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidArgument\",\"message\":\"The format of the Model ID thisIsNotAValidModelId provided is not supported. See model documentation(https://aka.ms/ADTv2Models) for supported format.\"}}",
-      "Date" : "Wed, 29 Jun 2022 13:43:44 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:58:17 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

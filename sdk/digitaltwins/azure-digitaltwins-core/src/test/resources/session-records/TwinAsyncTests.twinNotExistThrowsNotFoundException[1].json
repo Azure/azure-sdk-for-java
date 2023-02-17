@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/digitaltwins/0866739c-98dc-4779-8694-ac168ae23f53?api-version=2022-05-31",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/digitaltwins/60c7475c-9123-4ea6-b2c3-1929044f0db0?api-version=2023-02-27-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0 (12.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fdee89b1-3a3c-4a5e-9078-0f01aef05196"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5d247b02-ec17-460b-ad7a-b747b4a4a78c"
     },
     "Response" : {
-      "content-length" : "290",
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-2a48845080baef29a59d919a1893d1c7-b1ee11a92dc0068c-01",
-      "mise-correlation-id" : "81cd2299-b36b-407c-8738-9ef011cc218b",
+      "traceresponse" : "00-53f092196510844f28abf956bede0eb9-389d9d9bd3cb92a2-01",
+      "mise-correlation-id" : "b6f4c7f2-eb09-45de-a97c-68d415a4da83",
       "retry-after" : "0",
+      "Content-Length" : "290",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID 0866739c-98dc-4779-8694-ac168ae23f53. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins https://aka.ms/adtv2query.\"}}",
-      "Date" : "Wed, 29 Jun 2022 13:44:08 GMT",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID 60c7475c-9123-4ea6-b2c3-1929044f0db0. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins https://aka.ms/adtv2query.\"}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:39 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "0866739c-98dc-4779-8694-ac168ae23f53" ]
+  "variables" : [ "60c7475c-9123-4ea6-b2c3-1929044f0db0" ]
 }

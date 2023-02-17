@@ -110,6 +110,18 @@ public final class AzureDigitalTwinsAPIImpl {
         return this.eventRoutes;
     }
 
+    /** The ImportJobsImpl object to access its operations. */
+    private final ImportJobsImpl importJobs;
+
+    /**
+     * Gets the ImportJobsImpl object to access its operations.
+     *
+     * @return the ImportJobsImpl object.
+     */
+    public ImportJobsImpl getImportJobs() {
+        return this.importJobs;
+    }
+
     /**
      * Initializes an instance of AzureDigitalTwinsAPI client.
      *
@@ -145,10 +157,11 @@ public final class AzureDigitalTwinsAPIImpl {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.host = host;
-        this.apiVersion = "2022-05-31";
+        this.apiVersion = "2023-02-27-preview";
         this.digitalTwinModels = new DigitalTwinModelsImpl(this);
         this.queries = new QueriesImpl(this);
         this.digitalTwins = new DigitalTwinsImpl(this);
         this.eventRoutes = new EventRoutesImpl(this);
+        this.importJobs = new ImportJobsImpl(this);
     }
 }

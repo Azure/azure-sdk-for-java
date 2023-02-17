@@ -20,18 +20,22 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.implementation.converters.ImportJobConverter;
 import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDataConverter;
 import com.azure.digitaltwins.core.implementation.converters.EventRouteConverter;
 import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshipConverter;
 import com.azure.digitaltwins.core.implementation.converters.OptionsConverter;
+import com.azure.digitaltwins.core.implementation.models.ImportJob;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
+import com.azure.digitaltwins.core.models.ImportJobDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsImportJob;
 import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
@@ -2412,4 +2416,377 @@ public final class DigitalTwinsAsyncClient {
     }
 
     //endregion Telemetry APIs
+
+
+    //region Import APIs
+
+    /**
+     * Create an import job. If the provided id is already in use, then this will return a conflict error response that
+     * existing import job id already exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.createImportJob#String-DigitalTwinsImportJob -->
+     * <pre>
+     * DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob&#40;&quot;inputBlobUri&quot;, &quot;outputBlobUri&quot;&#41;;
+     * digitalTwinsAsyncClient.createImportJob&#40;
+     *         &quot;myImportId&quot;,
+     *         digitalTwinsImportJob&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.println&#40;&quot;Created an import job with Id: &quot; + response.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.createImportJob#String-DigitalTwinsImportJob -->
+     *
+     * @param id The id of the import job to create.
+     * @param importJob The import job to create.
+     * @return DigitalTwinsImportJob object containing details of the created Import Job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsImportJob> createImportJob(String id, DigitalTwinsImportJob importJob) {
+        return createImportJobWithResponse(id, importJob).map(Response::getValue);
+    }
+
+
+    /**
+     * Create an import job. If the provided id is already in use, then this will return a conflict error response that
+     * existing import job id already exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.createImportJobWithResponse#String-DigitalTwinsImportJob -->
+     * <pre>
+     *
+     * DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob&#40;&quot;inputBlobUri&quot;, &quot;outputBlobUri&quot;&#41;;
+     * digitalTwinsAsyncClient.createImportJobWithResponse&#40;
+     *         &quot;myImportId&quot;,
+     *         digitalTwinsImportJob&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.println&#40;&quot;Created an import job with HTTP status code: &quot; + response.getStatusCode&#40;&#41;&#41;&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.createImportJobWithResponse#String-DigitalTwinsImportJob -->
+     *
+     * @param id The id of the import job to create.
+     * @param importJob The import job to create.
+     * @return A {@link Response} containing DigitalTwinsImportJob mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DigitalTwinsImportJob>> createImportJobWithResponse(String id, DigitalTwinsImportJob importJob) {
+        return withContext(context -> createImportJobWithResponse(id, importJob, context));
+    }
+
+    Mono<Response<DigitalTwinsImportJob>> createImportJobWithResponse(String id, DigitalTwinsImportJob importJob, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+        return protocolLayer
+            .getImportJobs()
+            .addWithResponseAsync(
+                id,
+                ImportJobConverter.map(importJob),
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
+            .map(importJobResponse -> new SimpleResponse<>(
+                importJobResponse.getRequest(),
+                importJobResponse.getStatusCode(),
+                importJobResponse.getHeaders(),
+                ImportJobConverter.map(importJobResponse.getValue())));
+    }
+
+    /**
+     * Delete an import job.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.deleteImportJob#String -->
+     * <pre>
+     * digitalTwinsAsyncClient.deleteImportJob&#40;
+     *         &quot;myImportJobId&quot;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.deleteImportJob#String -->
+     *
+     * @param id The id of the import job to delete.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteImportJob(String id) {
+        return deleteImportJobWithResponse(id).flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Delete an import job.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.deleteImportJobWithResponse#String -->
+     * <pre>
+     * digitalTwinsAsyncClient.deleteImportJobWithResponse&#40;
+     *         &quot;myImportJobId&quot;&#41;
+     *     .subscribe&#40;deleteResponse -&gt;
+     *         System.out.println&#40;
+     *             &quot;Received delete import job operation response with HTTP status code: &quot;
+     *                 + deleteResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.deleteImportJobWithResponse#String -->
+     *
+     * @param id The id of the import job to delete.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteImportJobWithResponse(String id) {
+        return withContext(context -> deleteImportJobWithResponse(id, context));
+    }
+
+    Mono<Response<Void>> deleteImportJobWithResponse(String id, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
+        return protocolLayer
+            .getImportJobs()
+            .deleteWithResponseAsync(
+                id,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
+    }
+
+    /**
+     * Cancel an import job.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.cancelImportJob#String -->
+     * <pre>
+     * digitalTwinsAsyncClient.cancelImportJob&#40;
+     *         &quot;myImportJobId&quot;&#41;
+     *     .subscribe&#40;cancelResponse -&gt;
+     *         System.out.println&#40;
+     *             &quot;Received cancel import job operation response for the id: &quot;
+     *                 + cancelResponse.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.cancelImportJob#String -->
+     *
+     * @param id The id of the import job to cancel.
+     * @return A DigitalTwinsImportJob mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsImportJob> cancelImportJob(String id) {
+        Mono<Response<DigitalTwinsImportJob>> responseMono = cancelImportJobWithResponse(id);
+        return responseMono.map(Response::getValue);
+    }
+
+    /**
+     * Cancel an import job.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.cancelImportJobWithResponse#String -->
+     * <pre>
+     * digitalTwinsAsyncClient.cancelImportJobWithResponse&#40;
+     *         &quot;myImportJobId&quot;&#41;
+     *     .subscribe&#40;cancelResponse -&gt;
+     *         System.out.println&#40;
+     *             &quot;Received cancel import job operation response with HTTP status code: &quot;
+     *                 + cancelResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.cancelImportJobWithResponse#String -->
+     *
+     * @param id The id of the import job to cancel.
+     * @return A {@link Response} containing an DigitalTwinsImportJob mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DigitalTwinsImportJob>> cancelImportJobWithResponse(String id) {
+        return withContext(context -> cancelImportJobWithResponse(id, context));
+    }
+
+    Mono<Response<DigitalTwinsImportJob>> cancelImportJobWithResponse(String id, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
+        return protocolLayer
+            .getImportJobs()
+            .cancelWithResponseAsync(
+                id,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
+            .map(importJobResponse -> new SimpleResponse<>(
+                importJobResponse.getRequest(),
+                importJobResponse.getStatusCode(),
+                importJobResponse.getHeaders(),
+                ImportJobConverter.map(importJobResponse.getValue())));
+    }
+
+    /**
+     * Get import job details.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.getImportJob#String -->
+     * <pre>
+     * digitalTwinsAsyncClient.getImportJob&#40;
+     *         &quot;myImportJobId&quot;&#41;
+     *     .subscribe&#40;importJobDetailsWithResponse -&gt; System.out.println&#40;
+     *         &quot;Retrieved import job with Id: &quot;
+     *             + importJobDetailsWithResponse.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.getImportJob#String -->
+     *
+     * @param id The id of the import job to get.
+     * @return A DigitalTwinsImportJob mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsImportJob> getImportJob(String id) {
+        return getImportJobWithResponse(id).map(Response::getValue);
+    }
+
+    /**
+     * Get import job details.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.getImportJobWithResponse#String -->
+     * <pre>
+     * digitalTwinsAsyncClient.getImportJobWithResponse&#40;
+     *         &quot;myImportJobId&quot;&#41;
+     *     .subscribe&#40;importJobDetailsWithResponse -&gt; &#123;
+     *         System.out.println&#40;
+     *             &quot;Received get import job details operation response with HTTP status code: &quot;
+     *                 + importJobDetailsWithResponse.getStatusCode&#40;&#41;&#41;;
+     *         System.out.println&#40;
+     *             &quot;Retrieved import job with Id: &quot;
+     *                 + importJobDetailsWithResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.getImportJobWithResponse#String -->
+     *
+     * @param id The id of the import job to get.
+     * @return A {@link Response} containing the retrieved import Job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DigitalTwinsImportJob>> getImportJobWithResponse(String id) {
+        return withContext(context -> getImportJobWithResponse(id, context));
+    }
+
+    Mono<Response<DigitalTwinsImportJob>> getImportJobWithResponse(String id, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
+        return protocolLayer
+            .getImportJobs()
+            .getByIdWithResponseAsync(
+                id,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
+            .map(importJobResponse -> new SimpleResponse<>(
+                importJobResponse.getRequest(),
+                importJobResponse.getStatusCode(),
+                importJobResponse.getHeaders(),
+                ImportJobConverter.map(importJobResponse.getValue())));
+    }
+
+    /**
+     * List all the import jobs that exist in your digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs -->
+     * <pre>
+     *
+     * digitalTwinsAsyncClient.listImportJobs&#40;&#41;
+     *     .doOnNext&#40;importJob -&gt; System.out.println&#40;&quot;Retrieved import job with Id: &quot; + importJob.getId&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs -->
+     *
+     * @return A {@link PagedFlux} that contains all the import job objects that exist in your digital twins instance.
+     * This PagedFlux may take multiple service requests to iterate over all jobs.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DigitalTwinsImportJob> listImportJobs() {
+        return listImportJobs(null);
+    }
+
+    /**
+     * List all the import jobs that exist in your digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs#ImportJobDigitalTwinOptions -->
+     * <pre>
+     * digitalTwinsAsyncClient.listImportJobs&#40;new ImportJobDigitalTwinOptions&#40;&#41;.setMaxItemsPerPage&#40;5&#41;&#41;
+     *     .doOnNext&#40;importJob -&gt; System.out.println&#40;&quot;Retrieved event route with Id: &quot; + importJob.getId&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs#ImportJobDigitalTwinOptions -->
+     *
+     * @param options The optional parameters to use when listing import jobs. See {@link ImportJobDigitalTwinOptions} for more details
+     * on what optional parameters can be set.
+     * @return A {@link PagedFlux} that contains all the import job objects that exist in your digital twins instance.
+     * This PagedFlux may take multiple service requests to iterate over all jobs.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DigitalTwinsImportJob> listImportJobs(ImportJobDigitalTwinOptions options) {
+        return new PagedFlux<>(
+            () -> withContext(context -> listImportFirstPage(options, context)),
+            nextLink -> withContext(context -> listImportNextPage(nextLink, options, context)));
+    }
+
+    PagedFlux<DigitalTwinsImportJob> listImportJobs(ImportJobDigitalTwinOptions options, Context context) {
+        return new PagedFlux<>(
+            () -> listImportFirstPage(options, context != null ? context : Context.NONE),
+            nextLink -> listImportNextPage(nextLink, options, context != null ? context : Context.NONE));
+    }
+
+    Mono<PagedResponse<DigitalTwinsImportJob>> listImportFirstPage(ImportJobDigitalTwinOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+        if (options == null) {
+            options = new ImportJobDigitalTwinOptions();
+        }
+
+        return protocolLayer
+            .getImportJobs()
+            .listSinglePageAsync(
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
+            .map(pagedImportJobFunction);
+    }
+
+    Mono<PagedResponse<DigitalTwinsImportJob>> listImportNextPage(String nextLink, ImportJobDigitalTwinOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+        if (options == null) {
+            options = new ImportJobDigitalTwinOptions();
+        }
+
+        return protocolLayer
+            .getImportJobs()
+            .listNextSinglePageAsync(
+                nextLink,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
+            .map(pagedImportJobFunction);
+    }
+
+    private final Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.ImportJob>, PagedResponse<DigitalTwinsImportJob>> pagedImportJobFunction = (pagedImportResponse) -> {
+        List<DigitalTwinsImportJob> convertedList = pagedImportResponse.getValue().stream()
+            .map(ImportJobConverter::map)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+
+        return new PagedResponseBase<>(
+            pagedImportResponse.getRequest(),
+            pagedImportResponse.getStatusCode(),
+            pagedImportResponse.getHeaders(),
+            convertedList,
+            pagedImportResponse.getContinuationToken(),
+            ((PagedResponseBase) pagedImportResponse).getDeserializedHeaders());
+    };
+
+    //endregion Import APIs
 }

@@ -14,6 +14,8 @@ import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
 import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
+import com.azure.digitaltwins.core.models.DigitalTwinsImportJob;
+import com.azure.digitaltwins.core.models.ImportJobDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
 import com.azure.digitaltwins.core.models.ListModelsOptions;
 import com.azure.digitaltwins.core.models.PublishComponentTelemetryOptions;
@@ -1044,6 +1046,160 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
                     + responseObject.getStatusCode()));
         // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options#Object
     }
-
     //endregion TelemetrySnippets
+
+    //region Import APIs
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#createImportJob(String, DigitalTwinsImportJob)}
+     */
+    @Override
+    public void createImportJob() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.createImportJob#String-DigitalTwinsImportJob
+        DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob("inputBlobUri", "outputBlobUri");
+        digitalTwinsAsyncClient.createImportJob(
+                "myImportId",
+                digitalTwinsImportJob)
+            .subscribe(response ->
+                System.out.println("Created an import job with Id: " + response.getId()));
+        // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.createImportJob#String-DigitalTwinsImportJob
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#createImportJobWithResponse(String, DigitalTwinsImportJob)}
+     */
+    @Override
+    public void createImportJobWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.createImportJobWithResponse#String-DigitalTwinsImportJob
+
+        DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob("inputBlobUri", "outputBlobUri");
+        digitalTwinsAsyncClient.createImportJobWithResponse(
+                "myImportId",
+                digitalTwinsImportJob)
+            .subscribe(response ->
+                System.out.println("Created an import job with HTTP status code: " + response.getStatusCode()));
+
+        // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.createImportJobWithResponse#String-DigitalTwinsImportJob
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#deleteImportJob(String)}
+     */
+    @Override
+    public void deleteImportJob() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.deleteImportJob#String
+        digitalTwinsAsyncClient.deleteImportJob(
+                "myImportJobId")
+            .subscribe();
+        // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.deleteImportJob#String
+
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#deleteImportJobWithResponse(String)}
+     */
+    @Override
+    public void deleteImportJobWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.deleteImportJobWithResponse#String
+        digitalTwinsAsyncClient.deleteImportJobWithResponse(
+                "myImportJobId")
+            .subscribe(deleteResponse ->
+                System.out.println(
+                    "Received delete import job operation response with HTTP status code: "
+                        + deleteResponse.getStatusCode()));
+        // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.deleteImportJobWithResponse#String
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#cancelImportJob(String)}
+     */
+    @Override
+    public void cancelImportJob() {
+
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.cancelImportJob#String
+        digitalTwinsAsyncClient.cancelImportJob(
+                "myImportJobId")
+            .subscribe(cancelResponse ->
+                System.out.println(
+                    "Received cancel import job operation response for the id: "
+                        + cancelResponse.getId()));
+        // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.cancelImportJob#String
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#cancelImportJobWithResponse(String)}
+     */
+    @Override
+    public void cancelImportJobWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.cancelImportJobWithResponse#String
+        digitalTwinsAsyncClient.cancelImportJobWithResponse(
+                "myImportJobId")
+            .subscribe(cancelResponse ->
+                System.out.println(
+                    "Received cancel import job operation response with HTTP status code: "
+                        + cancelResponse.getStatusCode()));
+        // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.cancelImportJobWithResponse#String
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#getImportJob(String)}
+     */
+    @Override
+    public void getImportJob() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.getImportJob#String
+        digitalTwinsAsyncClient.getImportJob(
+                "myImportJobId")
+            .subscribe(importJobDetailsWithResponse -> System.out.println(
+                "Retrieved import job with Id: "
+                    + importJobDetailsWithResponse.getId()));
+        // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.getImportJob#String
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#getImportJobWithResponse(String)}
+     */
+    @Override
+    public void getImportJobWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.getImportJobWithResponse#String
+        digitalTwinsAsyncClient.getImportJobWithResponse(
+                "myImportJobId")
+            .subscribe(importJobDetailsWithResponse -> {
+                System.out.println(
+                    "Received get import job details operation response with HTTP status code: "
+                        + importJobDetailsWithResponse.getStatusCode());
+                System.out.println(
+                    "Retrieved import job with Id: "
+                        + importJobDetailsWithResponse.getValue().getId());
+            });
+        // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.getImportJobWithResponse#String
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#listImportJobs()}
+     */
+    @Override
+    public void listImportJobs() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs
+
+        digitalTwinsAsyncClient.listImportJobs()
+            .doOnNext(importJob -> System.out.println("Retrieved import job with Id: " + importJob.getId()))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs
+
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs#ImportJobDigitalTwinOptions
+        digitalTwinsAsyncClient.listImportJobs(new ImportJobDigitalTwinOptions().setMaxItemsPerPage(5))
+            .doOnNext(importJob -> System.out.println("Retrieved event route with Id: " + importJob.getId()))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs#ImportJobDigitalTwinOptions
+    }
+    //endregion Import APIs
+
 }
