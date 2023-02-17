@@ -13,18 +13,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /** The AddParticipantSucceeded model. */
 @Immutable
 public final class AddParticipantSucceeded extends CallAutomationEventBase {
     /*
-     * Participants added
+     * Participant added
      */
     @JsonIgnore
-    private final List<CommunicationIdentifier> participants;
+    private final CommunicationIdentifier participant;
 
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
@@ -33,26 +31,20 @@ public final class AddParticipantSucceeded extends CallAutomationEventBase {
     private final ResultInformation resultInformation;
 
     @JsonCreator
-    private AddParticipantSucceeded(@JsonProperty("participants") List<Map<String, Object>> participants) {
+    private AddParticipantSucceeded(@JsonProperty("participant") Map<String, Object> participant) {
         this.resultInformation = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        this.participants = participants
-            .stream()
-            .map(item -> mapper.convertValue(item, CommunicationIdentifierModel.class))
-            .collect(Collectors.toList())
-            .stream()
-            .map(CommunicationIdentifierConverter::convert)
-            .collect(Collectors.toList());
+        this.participant = CommunicationIdentifierConverter.convert(mapper.convertValue(participant, CommunicationIdentifierModel.class));
     }
 
     /**
-     * Get the participants property: Participants added.
+     * Get the participant property: Participant added.
      *
-     * @return the participants value.
+     * @return the participant value.
      */
-    public List<CommunicationIdentifier> getParticipants() {
-        return this.participants;
+    public CommunicationIdentifier getParticipant() {
+        return this.participant;
     }
 
     /**
