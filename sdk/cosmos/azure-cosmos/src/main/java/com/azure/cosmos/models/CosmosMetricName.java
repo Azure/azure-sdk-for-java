@@ -3,10 +3,14 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -15,7 +19,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Names of Cosmos DB client-side meters
  */
 public final class CosmosMetricName {
-    private final static Map<String, CosmosMetricName> meters = createMeterNameMap();
+    private static Object lockObject = new Object();
+    private static Map<String, CosmosMetricName> meters = null;
     private final String name;
     private final CosmosMetricCategory metricCategory;
 
@@ -301,6 +306,14 @@ public final class CosmosMetricName {
     public static CosmosMetricName fromString(String name) {
         checkNotNull(name, "Argument 'name' must not be null.");
 
+        if (meters == null) {
+            synchronized (lockObject) {
+                if (meters == null) {
+                    meters = createMeterNameMap();
+                }
+            }
+        }
+
         String normalizedName = name.trim().toLowerCase(Locale.ROOT);
         CosmosMetricName meterName = meters.getOrDefault(normalizedName, null);
 
@@ -322,6 +335,33 @@ public final class CosmosMetricName {
      */
     public CosmosMetricCategory getCategory() {
         return this.metricCategory;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return this.name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(CosmosMetricName.class, this.name);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (!CosmosMetricName.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        } else if (obj == this) {
+            return true;
+        } else if (this.name == null) {
+            return ((CosmosMetricName) obj).name == null;
+        } else {
+            return this.name.equals(((CosmosMetricName) obj).name);
+        }
     }
 
     private static Map<String, CosmosMetricName> createMeterNameMap() {

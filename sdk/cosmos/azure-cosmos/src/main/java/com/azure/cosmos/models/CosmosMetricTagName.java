@@ -4,9 +4,11 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.EnumSet;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -193,6 +195,33 @@ public final class CosmosMetricTagName {
                     getValidValues());
 
                 throw new IllegalArgumentException(errorMessage);
+        }
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return this.name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(CosmosMetricTagName.class, this.name);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (!CosmosMetricTagName.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        } else if (obj == this) {
+            return true;
+        } else if (this.name == null) {
+            return ((CosmosMetricTagName) obj).name == null;
+        } else {
+            return this.name.equals(((CosmosMetricTagName) obj).name);
         }
     }
 
