@@ -17,6 +17,14 @@ public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSi
     public static final DocumentSignatureType UNSIGNED = fromString("unsigned");
 
     /**
+     * Creates a new instance of DocumentSignatureType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentSignatureType() {}
+
+    /**
      * Creates or finds a DocumentSignatureType from its string representation.
      *
      * @param name a name to look for.

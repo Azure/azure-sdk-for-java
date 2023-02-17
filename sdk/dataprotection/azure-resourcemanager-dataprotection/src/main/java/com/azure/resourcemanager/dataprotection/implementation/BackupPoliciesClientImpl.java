@@ -31,6 +31,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dataprotection.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.BaseBackupPolicyResourceInner;
 import com.azure.resourcemanager.dataprotection.models.BaseBackupPolicyResourceList;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupPoliciesClient. */
@@ -68,7 +69,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         Mono<Response<BaseBackupPolicyResourceList>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @HeaderParam("Accept") String accept,
@@ -83,7 +84,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         Mono<Response<BaseBackupPolicyResourceInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupPolicyName") String backupPolicyName,
@@ -99,7 +100,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         Mono<Response<BaseBackupPolicyResourceInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupPolicyName") String backupPolicyName,
@@ -116,7 +117,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupPolicyName") String backupPolicyName,
@@ -137,7 +138,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -194,7 +195,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,7 +250,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -265,7 +266,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,7 +285,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -299,7 +300,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,7 +317,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -371,7 +372,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
@@ -424,7 +425,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -442,7 +443,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
@@ -460,7 +461,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -476,7 +477,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Creates or Updates a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName Name of the policy.
      * @param parameters Request body for operation.
@@ -537,7 +538,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Creates or Updates a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName Name of the policy.
      * @param parameters Request body for operation.
@@ -600,7 +601,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Creates or Updates a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName Name of the policy.
      * @param parameters Request body for operation.
@@ -619,7 +620,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Creates or Updates a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName Name of the policy.
      * @param parameters Request body for operation.
@@ -643,7 +644,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Creates or Updates a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName Name of the policy.
      * @param parameters Request body for operation.
@@ -662,7 +663,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -716,7 +717,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
@@ -768,7 +769,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -784,7 +785,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
@@ -802,7 +803,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

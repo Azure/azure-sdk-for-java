@@ -18,7 +18,7 @@ public interface DeletedBackupInstancesClient {
     /**
      * Gets deleted backup instances belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,7 +31,7 @@ public interface DeletedBackupInstancesClient {
     /**
      * Gets deleted backup instances belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +45,7 @@ public interface DeletedBackupInstancesClient {
     /**
      * Gets a deleted backup instance with name in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
      * @param context The context to associate with this operation.
@@ -61,7 +61,7 @@ public interface DeletedBackupInstancesClient {
     /**
      * Gets a deleted backup instance with name in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -75,7 +75,7 @@ public interface DeletedBackupInstancesClient {
     /**
      * The undelete operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +90,7 @@ public interface DeletedBackupInstancesClient {
     /**
      * The undelete operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
      * @param context The context to associate with this operation.
@@ -106,7 +106,7 @@ public interface DeletedBackupInstancesClient {
     /**
      * The undelete operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +119,7 @@ public interface DeletedBackupInstancesClient {
     /**
      * The undelete operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
      * @param context The context to associate with this operation.

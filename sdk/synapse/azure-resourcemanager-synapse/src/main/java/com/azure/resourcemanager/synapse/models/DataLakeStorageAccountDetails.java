@@ -34,6 +34,10 @@ public final class DataLakeStorageAccountDetails {
     @JsonProperty(value = "createManagedPrivateEndpoint")
     private Boolean createManagedPrivateEndpoint;
 
+    /** Creates an instance of DataLakeStorageAccountDetails class. */
+    public DataLakeStorageAccountDetails() {
+    }
+
     /**
      * Get the accountUrl property: Account URL.
      *

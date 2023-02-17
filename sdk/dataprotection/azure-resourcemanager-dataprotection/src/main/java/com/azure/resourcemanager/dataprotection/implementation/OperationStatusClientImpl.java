@@ -23,6 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dataprotection.fluent.OperationStatusClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationResourceInner;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationStatusClient. */
@@ -60,7 +61,7 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
         Mono<Response<OperationResourceInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("location") String location,
             @PathParam("operationId") String operationId,
             @HeaderParam("Accept") String accept,

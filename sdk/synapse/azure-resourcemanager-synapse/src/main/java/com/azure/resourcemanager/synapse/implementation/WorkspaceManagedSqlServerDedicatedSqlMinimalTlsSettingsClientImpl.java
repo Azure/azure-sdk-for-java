@@ -72,7 +72,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsService {
+    public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -134,7 +134,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -202,7 +204,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -269,7 +273,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -300,7 +306,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -335,7 +343,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -352,12 +362,15 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
         String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
         DedicatedSQLminimalTlsSettingsInner parameters) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -376,13 +389,15 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
         DedicatedSQLminimalTlsSettingsInner parameters,
         Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -405,7 +420,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -431,7 +448,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -452,7 +471,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -476,7 +497,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Get workspace managed sql server's minimal tls settings.
+     * Get server's minimal tls settings.
+     *
+     * <p>Get workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -534,7 +557,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Get workspace managed sql server's minimal tls settings.
+     * Get server's minimal tls settings.
+     *
+     * <p>Get workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -590,7 +615,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * Get workspace managed sql server's minimal tls settings.
+     * Get server's minimal tls settings.
+     *
+     * <p>Get workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -604,35 +631,13 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     private Mono<DedicatedSQLminimalTlsSettingsInner> getAsync(
         String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName)
-            .flatMap(
-                (Response<DedicatedSQLminimalTlsSettingsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get workspace managed sql server's minimal tls settings.
+     * Get server's minimal tls settings.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's minimal tls settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedSQLminimalTlsSettingsInner get(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName) {
-        return getAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName).block();
-    }
-
-    /**
-     * Get workspace managed sql server's minimal tls settings.
+     * <p>Get workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -651,7 +656,29 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * List workspace managed sql server's minimal tls settings.
+     * Get server's minimal tls settings.
+     *
+     * <p>Get workspace managed sql server's minimal tls settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workspace managed sql server's minimal tls settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DedicatedSQLminimalTlsSettingsInner get(
+        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName) {
+        return getWithResponse(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * List workspace server's minimal tls settings.
+     *
+     * <p>List workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -710,7 +737,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * List workspace managed sql server's minimal tls settings.
+     * List workspace server's minimal tls settings.
+     *
+     * <p>List workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -767,7 +796,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * List workspace managed sql server's minimal tls settings.
+     * List workspace server's minimal tls settings.
+     *
+     * <p>List workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -783,7 +814,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * List workspace managed sql server's minimal tls settings.
+     * List workspace server's minimal tls settings.
+     *
+     * <p>List workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -802,7 +835,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * List workspace managed sql server's minimal tls settings.
+     * List workspace server's minimal tls settings.
+     *
+     * <p>List workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -818,7 +853,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     }
 
     /**
-     * List workspace managed sql server's minimal tls settings.
+     * List workspace server's minimal tls settings.
+     *
+     * <p>List workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -838,7 +875,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -874,7 +912,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

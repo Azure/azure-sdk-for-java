@@ -42,6 +42,10 @@ public final class AvailableRpOperationInner {
     @JsonProperty(value = "origin")
     private String origin;
 
+    /** Creates an instance of AvailableRpOperationInner class. */
+    public AvailableRpOperationInner() {
+    }
+
     /**
      * Get the display property: Display properties of the operation.
      *

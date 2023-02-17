@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSensitivityLabels Delete. */
 public final class SqlPoolSensitivityLabelsDeleteSamples {
     /*
@@ -20,6 +18,7 @@ public final class SqlPoolSensitivityLabelsDeleteSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolSensitivityLabels()
-            .deleteWithResponse("myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", Context.NONE);
+            .deleteWithResponse(
+                "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", com.azure.core.util.Context.NONE);
     }
 }

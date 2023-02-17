@@ -31,15 +31,24 @@ public interface CommonExportProperties {
     ExportDefinition definition();
 
     /**
-     * Gets the runHistory property: If requested, has the most recent execution history for the export.
+     * Gets the runHistory property: If requested, has the most recent run history for the export.
      *
      * @return the runHistory value.
      */
     ExportExecutionListResult runHistory();
 
     /**
-     * Gets the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next
-     * execution time.
+     * Gets the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
+     * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
+     * Agreement commerce scopes.
+     *
+     * @return the partitionData value.
+     */
+    Boolean partitionData();
+
+    /**
+     * Gets the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next run
+     * time.
      *
      * @return the nextRunTimeEstimate value.
      */
