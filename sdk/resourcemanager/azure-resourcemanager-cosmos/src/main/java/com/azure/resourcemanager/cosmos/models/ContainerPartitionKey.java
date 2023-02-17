@@ -36,6 +36,10 @@ public final class ContainerPartitionKey {
     @JsonProperty(value = "systemKey", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean systemKey;
 
+    /** Creates an instance of ContainerPartitionKey class. */
+    public ContainerPartitionKey() {
+    }
+
     /**
      * Get the paths property: List of paths using which data within the container can be partitioned.
      *

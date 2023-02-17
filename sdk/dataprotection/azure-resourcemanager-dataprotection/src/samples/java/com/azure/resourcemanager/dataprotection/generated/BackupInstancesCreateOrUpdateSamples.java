@@ -22,7 +22,7 @@ import java.util.Map;
 /** Samples for BackupInstances CreateOrUpdate. */
 public final class BackupInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/BackupInstanceOperations/PutBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/BackupInstanceOperations/PutBackupInstance.json
      */
     /**
      * Sample code: Create BackupInstance.

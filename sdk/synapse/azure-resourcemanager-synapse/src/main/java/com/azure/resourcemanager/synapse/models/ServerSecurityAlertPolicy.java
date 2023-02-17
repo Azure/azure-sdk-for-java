@@ -93,6 +93,13 @@ public interface ServerSecurityAlertPolicy {
     OffsetDateTime creationTime();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.ServerSecurityAlertPolicyInner object.
      *
      * @return the inner object.
@@ -237,14 +244,7 @@ public interface ServerSecurityAlertPolicy {
     ServerSecurityAlertPolicy.Update update();
 
     /** The template for ServerSecurityAlertPolicy update. */
-    interface Update
-        extends UpdateStages.WithState,
-            UpdateStages.WithDisabledAlerts,
-            UpdateStages.WithEmailAddresses,
-            UpdateStages.WithEmailAccountAdmins,
-            UpdateStages.WithStorageEndpoint,
-            UpdateStages.WithStorageAccountAccessKey,
-            UpdateStages.WithRetentionDays {
+    interface Update extends UpdateStages.WithState, UpdateStages.WithStorageAccountAccessKey {
         /**
          * Executes the update request.
          *
@@ -274,53 +274,6 @@ public interface ServerSecurityAlertPolicy {
              */
             Update withState(SecurityAlertPolicyState state);
         }
-        /** The stage of the ServerSecurityAlertPolicy update allowing to specify disabledAlerts. */
-        interface WithDisabledAlerts {
-            /**
-             * Specifies the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values
-             * are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action.
-             *
-             * @param disabledAlerts Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection,
-             *     Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action.
-             * @return the next definition stage.
-             */
-            Update withDisabledAlerts(List<String> disabledAlerts);
-        }
-        /** The stage of the ServerSecurityAlertPolicy update allowing to specify emailAddresses. */
-        interface WithEmailAddresses {
-            /**
-             * Specifies the emailAddresses property: Specifies an array of e-mail addresses to which the alert is
-             * sent..
-             *
-             * @param emailAddresses Specifies an array of e-mail addresses to which the alert is sent.
-             * @return the next definition stage.
-             */
-            Update withEmailAddresses(List<String> emailAddresses);
-        }
-        /** The stage of the ServerSecurityAlertPolicy update allowing to specify emailAccountAdmins. */
-        interface WithEmailAccountAdmins {
-            /**
-             * Specifies the emailAccountAdmins property: Specifies that the alert is sent to the account
-             * administrators..
-             *
-             * @param emailAccountAdmins Specifies that the alert is sent to the account administrators.
-             * @return the next definition stage.
-             */
-            Update withEmailAccountAdmins(Boolean emailAccountAdmins);
-        }
-        /** The stage of the ServerSecurityAlertPolicy update allowing to specify storageEndpoint. */
-        interface WithStorageEndpoint {
-            /**
-             * Specifies the storageEndpoint property: Specifies the blob storage endpoint (e.g.
-             * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs..
-             *
-             * @param storageEndpoint Specifies the blob storage endpoint (e.g.
-             *     https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit
-             *     logs.
-             * @return the next definition stage.
-             */
-            Update withStorageEndpoint(String storageEndpoint);
-        }
         /** The stage of the ServerSecurityAlertPolicy update allowing to specify storageAccountAccessKey. */
         interface WithStorageAccountAccessKey {
             /**
@@ -332,17 +285,6 @@ public interface ServerSecurityAlertPolicy {
              * @return the next definition stage.
              */
             Update withStorageAccountAccessKey(String storageAccountAccessKey);
-        }
-        /** The stage of the ServerSecurityAlertPolicy update allowing to specify retentionDays. */
-        interface WithRetentionDays {
-            /**
-             * Specifies the retentionDays property: Specifies the number of days to keep in the Threat Detection audit
-             * logs..
-             *
-             * @param retentionDays Specifies the number of days to keep in the Threat Detection audit logs.
-             * @return the next definition stage.
-             */
-            Update withRetentionDays(Integer retentionDays);
         }
     }
     /**

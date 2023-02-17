@@ -7,7 +7,7 @@ package com.azure.resourcemanager.costmanagement.generated;
 /** Samples for Views ListByScope. */
 public final class ViewsListByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ViewListByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ViewListByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupViewList.

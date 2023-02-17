@@ -14,8 +14,7 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class ReplicationLinkProperties {
     /*
-     * Legacy value indicating whether termination is allowed.  Currently
-     * always returns true.
+     * Legacy value indicating whether termination is allowed.  Currently always returns true.
      */
     @JsonProperty(value = "isTerminationAllowed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isTerminationAllowed;
@@ -73,6 +72,10 @@ public final class ReplicationLinkProperties {
      */
     @JsonProperty(value = "replicationState", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationState replicationState;
+
+    /** Creates an instance of ReplicationLinkProperties class. */
+    public ReplicationLinkProperties() {
+    }
 
     /**
      * Get the isTerminationAllowed property: Legacy value indicating whether termination is allowed. Currently always

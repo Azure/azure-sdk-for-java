@@ -18,6 +18,10 @@ public final class DatabaseAccountListConnectionStringsResultInner {
     @JsonProperty(value = "connectionStrings")
     private List<DatabaseAccountConnectionString> connectionStrings;
 
+    /** Creates an instance of DatabaseAccountListConnectionStringsResultInner class. */
+    public DatabaseAccountListConnectionStringsResultInner() {
+    }
+
     /**
      * Get the connectionStrings property: An array that contains the connection strings for the Cosmos DB account.
      *

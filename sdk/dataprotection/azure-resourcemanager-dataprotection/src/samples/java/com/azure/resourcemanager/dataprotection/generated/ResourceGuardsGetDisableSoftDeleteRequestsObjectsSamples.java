@@ -7,7 +7,7 @@ package com.azure.resourcemanager.dataprotection.generated;
 /** Samples for ResourceGuards GetDisableSoftDeleteRequestsObjects. */
 public final class ResourceGuardsGetDisableSoftDeleteRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.

@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.util;
 
+import com.azure.ai.textanalytics.implementation.ExtractSummaryResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
@@ -14,22 +15,34 @@ import com.azure.core.util.IterableStream;
  */
 @Immutable
 public final class ExtractSummaryResultCollection extends IterableStream<ExtractSummaryResult> {
-    private final String modelVersion;
-    private final TextDocumentBatchStatistics statistics;
+    private String modelVersion;
+    private TextDocumentBatchStatistics statistics;
+
+    static {
+        ExtractSummaryResultCollectionPropertiesHelper.setAccessor(
+            new ExtractSummaryResultCollectionPropertiesHelper.ExtractSummaryResultCollectionAccessor() {
+                @Override
+                public void setModelVersion(ExtractSummaryResultCollection resultCollection,
+                    String modelVersion) {
+                    resultCollection.setModelVersion(modelVersion);
+                }
+
+                @Override
+                public void setStatistics(ExtractSummaryResultCollection resultCollection,
+                    TextDocumentBatchStatistics statistics) {
+                    resultCollection.setStatistics(statistics);
+                }
+            });
+    }
 
     /**
      * Create a {@link ExtractSummaryResultCollection} model that maintains a list of
      * {@link ExtractSummaryResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link ExtractSummaryResult}.
-     * @param modelVersion The model version trained in service for the request.
-     * @param statistics The batch statistics of response.
      */
-    public ExtractSummaryResultCollection(Iterable<ExtractSummaryResult> documentResults,
-                                          String modelVersion, TextDocumentBatchStatistics statistics) {
+    public ExtractSummaryResultCollection(Iterable<ExtractSummaryResult> documentResults) {
         super(documentResults);
-        this.modelVersion = modelVersion;
-        this.statistics = statistics;
     }
 
     /**
@@ -48,5 +61,13 @@ public final class ExtractSummaryResultCollection extends IterableStream<Extract
      */
     public TextDocumentBatchStatistics getStatistics() {
         return statistics;
+    }
+
+    private void setModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
+    }
+
+    private void setStatistics(TextDocumentBatchStatistics statistics) {
+        this.statistics = statistics;
     }
 }

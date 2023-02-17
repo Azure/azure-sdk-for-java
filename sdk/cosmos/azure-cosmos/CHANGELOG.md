@@ -15,7 +15,7 @@
 
 ### 4.40.0 (2023-01-13)
 #### Features Added
-* Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
+* Added `retryAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
 * Added `CosmosDiagnostics` to `readMany` API - See [PR 32290](https://github.com/Azure/azure-sdk-for-java/pull/32290)
 
 #### Bugs Fixed

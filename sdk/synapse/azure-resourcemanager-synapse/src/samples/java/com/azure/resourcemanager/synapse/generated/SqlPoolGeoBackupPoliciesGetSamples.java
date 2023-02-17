@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicyName;
 
 /** Samples for SqlPoolGeoBackupPolicies Get. */
@@ -21,6 +20,10 @@ public final class SqlPoolGeoBackupPoliciesGetSamples {
         manager
             .sqlPoolGeoBackupPolicies()
             .getWithResponse(
-                "sqlcrudtest-4799", "sqlcrudtest-5961", "testdw", GeoBackupPolicyName.DEFAULT, Context.NONE);
+                "sqlcrudtest-4799",
+                "sqlcrudtest-5961",
+                "testdw",
+                GeoBackupPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -28,6 +28,10 @@ public final class DynamicExecutorAllocation {
     @JsonProperty(value = "maxExecutors")
     private Integer maxExecutors;
 
+    /** Creates an instance of DynamicExecutorAllocation class. */
+    public DynamicExecutorAllocation() {
+    }
+
     /**
      * Get the enabled property: Indicates whether Dynamic Executor Allocation is enabled or not.
      *

@@ -20,6 +20,15 @@ public final class IndexKind extends ExpandableStringEnum<IndexKind> {
     public static final IndexKind SPATIAL = fromString("Spatial");
 
     /**
+     * Creates a new instance of IndexKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IndexKind() {
+    }
+
+    /**
      * Creates or finds a IndexKind from its string representation.
      *
      * @param name a name to look for.

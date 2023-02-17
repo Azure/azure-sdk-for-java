@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.JobsSummary;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JobsSummaryTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         JobsSummary model =
             BinaryData
                 .fromString("{\"failedJobs\":2127551556,\"suspendedJobs\":2032289729,\"inProgressJobs\":1093088045}")
@@ -21,8 +20,8 @@ public final class JobsSummaryTests {
         Assertions.assertEquals(1093088045, model.inProgressJobs());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         JobsSummary model =
             new JobsSummary().withFailedJobs(2127551556).withSuspendedJobs(2032289729).withInProgressJobs(1093088045);
         model = BinaryData.fromObject(model).toObject(JobsSummary.class);
