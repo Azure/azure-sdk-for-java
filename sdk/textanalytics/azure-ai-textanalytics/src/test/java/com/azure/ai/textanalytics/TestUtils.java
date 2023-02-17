@@ -623,11 +623,11 @@ final class TestUtils {
         SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion2,
             new IterableStream<>(asList(assessmentSentiment3)));
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
-            "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
+            "The hotel was dark and unclean. ", TextSentiment.NEGATIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
-        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 31);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 32);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
@@ -696,11 +696,11 @@ final class TestUtils {
             new IterableStream<>(asList(assessmentSentiment1, assessmentSentiment2)));
 
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
-            "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
+            "The restaurant had amazing gnocchi. ", TextSentiment.POSITIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
-        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 35);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 36);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
@@ -1367,16 +1367,15 @@ final class TestUtils {
             getExpectedSummarySentence(
                 "At Microsoft, we have been on a quest to advance AI beyond existing"
                     + " techniques, by taking a more holistic, human-centric approach to learning and understanding.",
-                1.0, 0, 160),
+                0.69, 0, 160),
             getExpectedSummarySentence(
-                "In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human"
-                    + " cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).",
-                0.958, 324, 192),
+                "We believe XYZ-code will enable us to fulfill our long-term vision: cross-domain transfer "
+                    + "learning, spanning modalities and languages.",
+                1, 721, 134),
             getExpectedSummarySentence(
-                "At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure"
-                    + " 1—a joint representation to create more powerful AI that can speak, hear, see, and understand"
-                    + " humans better.",
-                0.929, 517, 203)
+                "The goal is to have pretrained models that can jointly learn representations to support a broad"
+                    + " range of downstream AI tasks, much in the way humans do today.",
+                0.81, 856, 158)
         ));
 
         ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentences);

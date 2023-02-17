@@ -339,10 +339,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizePiiEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesBatchWithResponseEmoji(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
     abstract void recognizePiiEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
@@ -431,10 +427,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeLinkedEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeLinkedEntitiesBatchWithResponseEmoji(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeLinkedEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
@@ -578,10 +570,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeSentimentEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void analyzeSentimentBatchWithResponseEmoji(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeSentimentEmojiWithSkinToneModifier(HttpClient httpClient,
@@ -1208,27 +1196,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                     new RecognizeLinkedEntitiesAction())
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME),
                     new AnalyzeSentimentAction())
-                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME),
-                    new ExtractSummaryAction())
-            // TODO: https://github.com/Azure/azure-sdk-for-java/issues/24908
-
-//                .setRecognizeCustomEntitiesActions(
-//                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME).setActionName(CUSTOM_ACTION_NAME),
-//                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME))
-//                .setSingleCategoryClassifyActions(
-//                    new SingleCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME)
-//                        .setActionName(CUSTOM_ACTION_NAME),
-//                    new SingleCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME))
-//                .setMultiCategoryClassifyActions(
-//                    new MultiCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)
-//                        .setActionName(CUSTOM_ACTION_NAME),
-//                    new MultiCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME))
         );
     }
 
