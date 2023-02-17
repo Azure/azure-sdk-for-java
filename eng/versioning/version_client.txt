@@ -178,11 +178,11 @@ com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-developer-loadtesting;1.0.0-beta.2;1.0.0
 com.azure:azure-identity-extensions;1.1.1;1.2.0-beta.2
-com.azure.spring:spring-cloud-azure-appconfiguration-config-web;2.11.0;4.0.0-beta.1
-com.azure.spring:spring-cloud-azure-appconfiguration-config;2.11.0;4.0.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management-web;2.10.0;4.0.0-beta.3
-com.azure.spring:spring-cloud-azure-feature-management;2.10.0;4.0.0-beta.3
-com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;2.11.0;4.0.0-beta.1
+com.azure.spring:spring-cloud-azure-appconfiguration-config-web;2.11.0;4.0.0-beta.2
+com.azure.spring:spring-cloud-azure-appconfiguration-config;2.11.0;4.0.0-beta.2
+com.azure.spring:spring-cloud-azure-feature-management-web;2.10.0;4.0.0-beta.4
+com.azure.spring:spring-cloud-azure-feature-management;2.10.0;4.0.0-beta.4
+com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;2.11.0;4.0.0-beta.2
 com.azure.spring:spring-cloud-azure-dependencies;4.6.0;4.7.0-beta.1
 com.azure.spring:spring-messaging-azure;4.6.0;4.7.0-beta.1
 com.azure.spring:spring-messaging-azure-eventhubs;4.6.0;4.7.0-beta.1
