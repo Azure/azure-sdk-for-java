@@ -33,8 +33,7 @@ public final class CoreUtils {
     // CoreUtils is a commonly used utility, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
 
-    private static final char[] LOWERCASE_HEX = "0123456789abcdef".toCharArray();
-    private static final char[] UPPERCASE_HEX = "0123456789ABCDEF".toCharArray();
+    private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
 
 
     private CoreUtils() {
@@ -412,18 +411,17 @@ public final class CoreUtils {
 
     /**
      * Converts a byte array into a hex string.
-     * <p>
-     * If {@code uppercase} is true {@code ABCDEF} will be used, if false {@code abcdef} will be used. No matter the
-     * value of {@code uppercase} characters {@code 0123456789} remain consistent.
-     * <p>
-     * If {@code bytes} is null, null will be returned. If {@code bytes} was an empty array an empty string is
-     * returned.
+     *
+     * <p>The hex string returned uses characters {@code 0123456789abcdef}, if uppercase {@code ABCDEF} is required the
+     * returned string will need to be {@link String#toUpperCase() uppercased}.</p>
+     *
+     * <p>If {@code bytes} is null, null will be returned. If {@code bytes} was an empty array an empty string is
+     * returned.</p>
      *
      * @param bytes The byte array to convert into a hex string.
-     * @param uppercase Whether {@code abcdef} or {@code ABCDEF} are used for the hex string.
      * @return A hex string representing the {@code bytes} that were passed, or null if {@code bytes} were null.
      */
-    public static String bytesToHexString(byte[] bytes, boolean uppercase) {
+    public static String bytesToHexString(byte[] bytes) {
         if (bytes == null) {
             return null;
         }
@@ -434,17 +432,16 @@ public final class CoreUtils {
 
         // Hex uses 4 bits, converting a byte to hex will double its size.
         char[] hexString = new char[bytes.length * 2];
-        char[] hexCharacters = uppercase ? UPPERCASE_HEX : LOWERCASE_HEX;
 
         for (int i = 0; i < bytes.length; i++) {
             // Convert the byte into an integer, masking all but the last 8 bits (the byte).
             int b = bytes[i] & 0xFF;
 
             // Shift 4 times to the right to get the leading 4 bits and get the corresponding hex character.
-            hexString[i * 2] = hexCharacters[b >>> 4];
+            hexString[i * 2] = LOWERCASE_HEX_CHARACTERS[b >>> 4];
 
             // Mask all but the last 4 bits and get the corresponding hex character.
-            hexString[i * 2 + 1] = hexCharacters[b & 0x0F];
+            hexString[i * 2 + 1] = LOWERCASE_HEX_CHARACTERS[b & 0x0F];
         }
 
         return new String(hexString);
@@ -464,12 +461,12 @@ public final class CoreUtils {
      * If the {@code <size>} is represented by &#42; this method will return -1.
      * <p>
      * If {@code contentRange} is null a {@link NullPointerException} will be thrown, if it doesn't contain a size
-     * segment ({@code /<size>} or /&#42;) -2 will be returned.
+     * segment ({@code /<size>} or /&#42;) an {@link IllegalArgumentException} will be thrown.
      *
      * @param contentRange The {@code Content-Range} header to extract the size from.
-     * @return The size contained in the {@code Content-Range}, -1 if the size was &#42;, -2 if there was no size
-     * segment.
+     * @return The size contained in the {@code Content-Range}, or -1 if the size was &#42;.
      * @throws NullPointerException If {@code contentRange} is null.
+     * @throws IllegalArgumentException If {@code contentRange} doesn't contain a {@code <size>} segment.
      * @throws NumberFormatException If the {@code <size>} segment of the {@code contentRange} isn't a valid number.
      */
     public static long extractSizeFromContentRange(String contentRange) {
@@ -478,7 +475,8 @@ public final class CoreUtils {
 
         if (index == -1) {
             // No size segment.
-            return -2;
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Content-Range header wasn't properly "
+                + "formatted and didn't contain a '/size' segment. The 'contentRange' was: " + contentRange));
         }
 
         String sizeString = contentRange.substring(index + 1).trim();
