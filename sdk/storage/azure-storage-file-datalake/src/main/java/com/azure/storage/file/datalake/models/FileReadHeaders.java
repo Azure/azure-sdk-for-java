@@ -44,8 +44,8 @@ public final class FileReadHeaders {
     private byte[] fileContentMD5;
     private byte[] contentCrc64;
     private String errorCode;
-    private String encryptionContext;
     private OffsetDateTime creationTime;
+    private String encryptionContext;
 
     /**
      * Get the lastModified property: Returns the date and time the container
