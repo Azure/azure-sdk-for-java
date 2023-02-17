@@ -21,4 +21,5 @@ param(
             'eng/code-quality-reports/src/main/resources/revapi/revapi.json', `
             'sdk/parents/azure-client-sdk-parent/pom.xml', `
             'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml', `
+            '.vscode/cspell.json', `
             'pom.xml')
