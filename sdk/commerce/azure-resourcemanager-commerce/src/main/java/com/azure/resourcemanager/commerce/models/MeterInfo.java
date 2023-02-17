@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.commerce.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +15,6 @@ import java.util.UUID;
 /** Detailed information about the meter. */
 @Fluent
 public final class MeterInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MeterInfo.class);
-
     /*
      * The unique identifier of the resource.
      */
@@ -37,22 +34,19 @@ public final class MeterInfo {
     private String meterCategory;
 
     /*
-     * The subcategory of the meter, e.g., 'A6 Cloud services', 'ExpressRoute
-     * (IXP)', etc..
+     * The subcategory of the meter, e.g., 'A6 Cloud services', 'ExpressRoute (IXP)', etc..
      */
     @JsonProperty(value = "MeterSubCategory")
     private String meterSubCategory;
 
     /*
-     * The unit in which the meter consumption is charged, e.g., 'Hours', 'GB',
-     * etc.
+     * The unit in which the meter consumption is charged, e.g., 'Hours', 'GB', etc.
      */
     @JsonProperty(value = "Unit")
     private String unit;
 
     /*
-     * Provides additional meter data. 'Third Party' indicates a meter with no
-     * discount. Blanks indicate First Party.
+     * Provides additional meter data. 'Third Party' indicates a meter with no discount. Blanks indicate First Party.
      */
     @JsonProperty(value = "MeterTags")
     private List<String> meterTags;
@@ -64,11 +58,11 @@ public final class MeterInfo {
     private String meterRegion;
 
     /*
-     * The list of key/value pairs for the meter rates, in the format
-     * 'key':'value' where key = the meter quantity, and value = the
-     * corresponding price
+     * The list of key/value pairs for the meter rates, in the format 'key':'value' where key = the meter quantity, and
+     * value = the corresponding price
      */
     @JsonProperty(value = "MeterRates")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Float> meterRates;
 
     /*
@@ -78,11 +72,15 @@ public final class MeterInfo {
     private OffsetDateTime effectiveDate;
 
     /*
-     * The resource quantity that is included in the offer at no cost.
-     * Consumption beyond this quantity will be charged.
+     * The resource quantity that is included in the offer at no cost. Consumption beyond this quantity will be
+     * charged.
      */
     @JsonProperty(value = "IncludedQuantity")
     private Float includedQuantity;
+
+    /** Creates an instance of MeterInfo class. */
+    public MeterInfo() {
+    }
 
     /**
      * Get the meterId property: The unique identifier of the resource.

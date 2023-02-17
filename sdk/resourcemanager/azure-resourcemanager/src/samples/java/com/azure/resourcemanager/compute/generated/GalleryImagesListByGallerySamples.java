@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GalleryImages ListByGallery. */
 public final class GalleryImagesListByGallerySamples {
     /*
@@ -22,6 +20,6 @@ public final class GalleryImagesListByGallerySamples {
             .manager()
             .serviceClient()
             .getGalleryImages()
-            .listByGallery("myResourceGroup", "myGalleryName", Context.NONE);
+            .listByGallery("myResourceGroup", "myGalleryName", com.azure.core.util.Context.NONE);
     }
 }

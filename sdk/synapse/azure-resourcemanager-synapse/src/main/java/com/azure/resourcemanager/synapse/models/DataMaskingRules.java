@@ -17,20 +17,6 @@ public interface DataMaskingRules {
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @param dataMaskingRuleName The name of the data masking rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule.
-     */
-    DataMaskingRule get(String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName);
-
-    /**
-     * Gets the specific Sql pool data masking rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param dataMaskingRuleName The name of the data masking rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,6 +29,20 @@ public interface DataMaskingRules {
         String sqlPoolName,
         String dataMaskingRuleName,
         Context context);
+
+    /**
+     * Gets the specific Sql pool data masking rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param dataMaskingRuleName The name of the data masking rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specific Sql pool data masking rule.
+     */
+    DataMaskingRule get(String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName);
 
     /**
      * Gets a list of Sql pool data masking rules.

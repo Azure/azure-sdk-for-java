@@ -39,6 +39,12 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
     @JsonProperty(value = "recoveryPointSizeInGB")
     private Integer recoveryPointSizeInGB;
 
+    /*
+     * Properties of Recovery Point
+     */
+    @JsonProperty(value = "recoveryPointProperties")
+    private RecoveryPointProperties recoveryPointProperties;
+
     /** Creates an instance of AzureFileShareRecoveryPoint class. */
     public AzureFileShareRecoveryPoint() {
     }
@@ -126,6 +132,26 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
     }
 
     /**
+     * Get the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @return the recoveryPointProperties value.
+     */
+    public RecoveryPointProperties recoveryPointProperties() {
+        return this.recoveryPointProperties;
+    }
+
+    /**
+     * Set the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @param recoveryPointProperties the recoveryPointProperties value to set.
+     * @return the AzureFileShareRecoveryPoint object itself.
+     */
+    public AzureFileShareRecoveryPoint withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
+        this.recoveryPointProperties = recoveryPointProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -133,5 +159,8 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
     @Override
     public void validate() {
         super.validate();
+        if (recoveryPointProperties() != null) {
+            recoveryPointProperties().validate();
+        }
     }
 }

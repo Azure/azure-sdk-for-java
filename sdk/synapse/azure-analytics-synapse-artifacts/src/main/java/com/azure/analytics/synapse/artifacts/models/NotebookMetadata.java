@@ -32,6 +32,9 @@ public final class NotebookMetadata {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of NotebookMetadata class. */
+    public NotebookMetadata() {}
+
     /**
      * Get the kernelspec property: Kernel information.
      *

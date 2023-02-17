@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,324 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2023-02-10)
+
+- Azure Resource Manager Synapse client library for Java. This package contains Microsoft Azure SDK for Synapse Management SDK. Azure Synapse Analytics Management Client. Package tag package-composite-v2. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState` was removed
+
+* `models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState` was removed
+
+#### `models.ServerBlobAuditingPolicy$Update` was modified
+
+* `withStorageAccountSubscriptionId(java.util.UUID)` was removed
+* `withAuditActionsAndGroups(java.util.List)` was removed
+* `withRetentionDays(java.lang.Integer)` was removed
+
+#### `models.ServerVulnerabilityAssessment$Definition` was modified
+
+* `withRecurringScans(models.VulnerabilityAssessmentRecurringScansProperties)` was removed
+
+#### `models.SqlPoolOperationResults` was modified
+
+* `java.lang.Object getLocationHeaderResult(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.SqlPool getLocationHeaderResult(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
+* `getLocationHeaderResultWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.SqlPoolSecurityAlertPolicy$Update` was modified
+
+* `withEmailAddresses(java.util.List)` was removed
+* `withDisabledAlerts(java.util.List)` was removed
+
+#### `models.KustoPool$Update` was modified
+
+* `withWorkspaceUid(java.lang.String)` was removed
+
+#### `models.ServerVulnerabilityAssessment$Update` was modified
+
+* `withRecurringScans(models.VulnerabilityAssessmentRecurringScansProperties)` was removed
+* `withStorageContainerPath(java.lang.String)` was removed
+
+#### `models.IpFirewallRules` was modified
+
+* `java.lang.Object deleteById(java.lang.String)` -> `models.IpFirewallRuleInfo deleteById(java.lang.String)`
+* `java.lang.Object delete(java.lang.String,java.lang.String,java.lang.String)` -> `models.IpFirewallRuleInfo delete(java.lang.String,java.lang.String,java.lang.String)`
+* `java.lang.Object deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.IpFirewallRuleInfo deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `java.lang.Object delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.IpFirewallRuleInfo delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.BigDataPools` was modified
+
+* `java.lang.Object delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.BigDataPoolResourceInfo delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `java.lang.Object deleteById(java.lang.String)` -> `models.BigDataPoolResourceInfo deleteById(java.lang.String)`
+* `java.lang.Object deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.BigDataPoolResourceInfo deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `java.lang.Object delete(java.lang.String,java.lang.String,java.lang.String)` -> `models.BigDataPoolResourceInfo delete(java.lang.String,java.lang.String,java.lang.String)`
+
+#### `models.ExtendedServerBlobAuditingPolicy$Update` was modified
+
+* `withRetentionDays(java.lang.Integer)` was removed
+* `withStorageAccountSubscriptionId(java.util.UUID)` was removed
+
+#### `models.ServerSecurityAlertPolicy$Update` was modified
+
+* `withEmailAccountAdmins(java.lang.Boolean)` was removed
+* `withStorageEndpoint(java.lang.String)` was removed
+* `withEmailAddresses(java.util.List)` was removed
+* `withDisabledAlerts(java.util.List)` was removed
+* `withRetentionDays(java.lang.Integer)` was removed
+
+#### `models.SqlPoolBlobAuditingPolicy$Update` was modified
+
+* `withStorageAccountSubscriptionId(java.util.UUID)` was removed
+* `withRetentionDays(java.lang.Integer)` was removed
+
+#### `models.Workspaces` was modified
+
+* `java.lang.Object deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.Workspace deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `java.lang.Object delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.Workspace delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `java.lang.Object deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.Workspace deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `java.lang.Object deleteById(java.lang.String)` -> `models.Workspace deleteById(java.lang.String)`
+
+#### `models.BigDataPoolResourceInfo$Definition` was modified
+
+* `withCacheSize(java.lang.Integer)` was removed
+
+#### `models.Workspace` was modified
+
+* `java.util.Map extraProperties()` -> `java.lang.Object extraProperties()`
+
+#### `models.SqlPool` was modified
+
+* `java.lang.Object pause()` -> `models.SqlPool pause()`
+* `java.lang.Object resume()` -> `models.SqlPool resume()`
+* `java.lang.Object pause(com.azure.core.util.Context)` -> `models.SqlPool pause(com.azure.core.util.Context)`
+* `java.lang.Object resume(com.azure.core.util.Context)` -> `models.SqlPool resume(com.azure.core.util.Context)`
+
+#### `models.Key$Update` was modified
+
+* `withKeyVaultUrl(java.lang.String)` was removed
+
+#### `models.SqlPool$Update` was modified
+
+* `withRestorePointInTime(java.time.OffsetDateTime)` was removed
+* `withCollation(java.lang.String)` was removed
+
+#### `models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity` was modified
+
+* `models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState actualState()` -> `models.ActualState actualState()`
+* `withDesiredState(models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState)` was removed
+* `models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState desiredState()` -> `models.DesiredState desiredState()`
+
+#### `models.ServerVulnerabilityAssessment` was modified
+
+* `models.VulnerabilityAssessmentRecurringScansProperties recurringScans()` -> `models.VulnerabilityAssessmentRecurringScansPropertiesAutoGenerated recurringScans()`
+
+#### `models.PrivateLinkResources` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `get(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `list(java.lang.String,java.lang.String)` was removed
+
+#### `SynapseManager` was modified
+
+* `privateLinkResources()` was removed
+
+#### `models.SqlPools` was modified
+
+* `java.lang.Object pause(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.SqlPool pause(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `java.lang.Object delete(java.lang.String,java.lang.String,java.lang.String)` -> `models.SqlPool delete(java.lang.String,java.lang.String,java.lang.String)`
+* `java.lang.Object pause(java.lang.String,java.lang.String,java.lang.String)` -> `models.SqlPool pause(java.lang.String,java.lang.String,java.lang.String)`
+* `java.lang.Object resume(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.SqlPool resume(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `java.lang.Object deleteById(java.lang.String)` -> `models.SqlPool deleteById(java.lang.String)`
+* `java.lang.Object deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.SqlPool deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `java.lang.Object delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.SqlPool delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `java.lang.Object resume(java.lang.String,java.lang.String,java.lang.String)` -> `models.SqlPool resume(java.lang.String,java.lang.String,java.lang.String)`
+
+#### `models.Workspace$Definition` was modified
+
+* `withConnectivityEndpoints(java.util.Map)` was removed
+
+### Features Added
+
+* `models.VulnerabilityAssessmentRecurringScansPropertiesAutoGenerated` was added
+
+* `models.WorkspaceStatus` was added
+
+* `models.Gets` was added
+
+* `models.IntegrationRuntimeStopOperationStatus` was added
+
+* `models.IntegrationRuntimeOperationStatus` was added
+
+* `models.KustoPoolPrivateLinkResources` was added
+
+* `models.ActualState` was added
+
+* `models.IntegrationRuntimeEnableinteractivequery` was added
+
+* `models.KustoPoolPrivateLinkResourcesOperations` was added
+
+* `models.PrivateLinkResourcesOperations` was added
+
+* `models.DesiredState` was added
+
+#### `models.ServerBlobAuditingPolicy` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.AttachedDatabaseConfiguration` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ServerVulnerabilityAssessment$Definition` was modified
+
+* `withRecurringScans(models.VulnerabilityAssessmentRecurringScansPropertiesAutoGenerated)` was added
+
+#### `models.ExtendedSqlPoolBlobAuditingPolicy` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.EncryptionProtector` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SqlPoolOperationResults` was modified
+
+* `getLocationHeaderResult(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.DataMaskingRule` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SelfHostedIntegrationRuntimeStatus` was modified
+
+* `targetFramework()` was added
+* `osType()` was added
+
+#### `models.ServerVulnerabilityAssessment$Update` was modified
+
+* `withRecurringScans(models.VulnerabilityAssessmentRecurringScansPropertiesAutoGenerated)` was added
+
+#### `models.GeoBackupPolicy` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SqlPoolBlobAuditingPolicy` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.IpFirewallRuleInfo` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.TransparentDataEncryption` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.WorkloadClassifier` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Key` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.WorkloadGroup` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.DatabasePrincipalAssignment` was modified
+
+* `resourceGroupName()` was added
+* `aadObjectId()` was added
+
+#### `models.SqlPoolVulnerabilityAssessment` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.BigDataPoolResourceInfo` was modified
+
+* `resourceGroupName()` was added
+* `isAutotuneEnabled()` was added
+
+#### `models.BigDataPoolResourceInfo$Definition` was modified
+
+* `withIsAutotuneEnabled(java.lang.Boolean)` was added
+
+#### `models.Workspace` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SqlPool` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ExtendedServerBlobAuditingPolicy` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity` was modified
+
+* `withDesiredState(models.DesiredState)` was added
+
+#### `models.ClusterPrincipalAssignment` was modified
+
+* `resourceGroupName()` was added
+* `aadObjectId()` was added
+
+#### `models.PrivateLinkHub` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SparkConfigurationResource` was modified
+
+* `configMergeRule()` was added
+
+#### `models.ServerVulnerabilityAssessment` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ServerSecurityAlertPolicy` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PrivateLinkResources` was modified
+
+* `value()` was added
+* `validate()` was added
+* `withValue(java.util.List)` was added
+
+#### `SynapseManager` was modified
+
+* `kustoPoolPrivateLinkResourcesOperations()` was added
+* `gets()` was added
+* `privateLinkResourcesOperations()` was added
+
+#### `models.SqlPoolVulnerabilityAssessmentRuleBaseline` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.IntegrationRuntimeResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SqlPoolSecurityAlertPolicy` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SensitivityLabel` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.DataMaskingPolicy` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.KustoPool` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.6 (2022-04-25)
 

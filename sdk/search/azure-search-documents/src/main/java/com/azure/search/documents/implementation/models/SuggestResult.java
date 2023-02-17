@@ -9,7 +9,6 @@ package com.azure.search.documents.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
@@ -29,17 +28,8 @@ public final class SuggestResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of SuggestResult class.
-     *
-     * @param text the text value to set.
-     */
-    @JsonCreator
-    public SuggestResult(
-            @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    String text) {
-        this.text = text;
-    }
+    /** Creates an instance of SuggestResult class. */
+    public SuggestResult() {}
 
     /**
      * Get the text property: The text of the suggestion result.

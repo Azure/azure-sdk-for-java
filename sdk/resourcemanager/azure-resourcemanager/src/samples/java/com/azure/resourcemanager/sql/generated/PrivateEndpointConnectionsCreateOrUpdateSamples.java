@@ -7,11 +7,12 @@ package com.azure.resourcemanager.sql.generated;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.sql.models.PrivateLinkServiceConnectionStateProperty;
+import com.azure.resourcemanager.sql.models.PrivateLinkServiceConnectionStateStatus;
 
 /** Samples for PrivateEndpointConnections CreateOrUpdate. */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/PrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/PrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.
@@ -32,7 +33,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
                 new PrivateEndpointConnectionInner()
                     .withPrivateLinkServiceConnectionState(
                         new PrivateLinkServiceConnectionStateProperty()
-                            .withStatus("Approved")
+                            .withStatus(PrivateLinkServiceConnectionStateStatus.APPROVED)
                             .withDescription("Approved by johndoe@contoso.com")),
                 Context.NONE);
     }

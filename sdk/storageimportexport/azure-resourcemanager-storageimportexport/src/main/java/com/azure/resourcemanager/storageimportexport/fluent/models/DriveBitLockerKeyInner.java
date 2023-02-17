@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storageimportexport.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** BitLocker recovery key or password to the specified drive. */
 @Fluent
 public final class DriveBitLockerKeyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DriveBitLockerKeyInner.class);
-
     /*
      * BitLocker recovery key or password
      */
@@ -25,6 +21,10 @@ public final class DriveBitLockerKeyInner {
      */
     @JsonProperty(value = "driveId")
     private String driveId;
+
+    /** Creates an instance of DriveBitLockerKeyInner class. */
+    public DriveBitLockerKeyInner() {
+    }
 
     /**
      * Get the bitLockerKey property: BitLocker recovery key or password.

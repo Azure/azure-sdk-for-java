@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network properties of a server. */
 @Fluent
 public final class Network {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Network.class);
-
     /*
      * public network access is enabled or not
      */
@@ -31,6 +27,10 @@ public final class Network {
      */
     @JsonProperty(value = "privateDnsZoneArmResourceId")
     private String privateDnsZoneArmResourceId;
+
+    /** Creates an instance of Network class. */
+    public Network() {
+    }
 
     /**
      * Get the publicNetworkAccess property: public network access is enabled or not.

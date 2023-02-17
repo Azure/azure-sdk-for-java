@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentContainer;
 import java.nio.ByteBuffer;
@@ -61,7 +60,10 @@ public final class EnvironmentContainersGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         EnvironmentContainer response =
-            manager.environmentContainers().getWithResponse("gdirda", "m", "zjgcfjfx", Context.NONE).getValue();
+            manager
+                .environmentContainers()
+                .getWithResponse("gdirda", "m", "zjgcfjfx", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals("wxmdaj", response.properties().description());
         Assertions.assertEquals("g", response.properties().properties().get("gsevmdm"));

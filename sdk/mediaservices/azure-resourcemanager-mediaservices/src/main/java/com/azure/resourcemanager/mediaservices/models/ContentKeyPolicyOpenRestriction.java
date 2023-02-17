@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyOpenRestriction")
 @Immutable
 public final class ContentKeyPolicyOpenRestriction extends ContentKeyPolicyRestriction {
+    /** Creates an instance of ContentKeyPolicyOpenRestriction class. */
+    public ContentKeyPolicyOpenRestriction() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -17,6 +17,15 @@ public final class SapHanaAuthenticationType extends ExpandableStringEnum<SapHan
     public static final SapHanaAuthenticationType WINDOWS = fromString("Windows");
 
     /**
+     * Creates a new instance of SapHanaAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapHanaAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a SapHanaAuthenticationType from its string representation.
      *
      * @param name a name to look for.

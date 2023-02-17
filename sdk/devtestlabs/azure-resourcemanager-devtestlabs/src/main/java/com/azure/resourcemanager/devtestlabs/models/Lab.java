@@ -213,6 +213,13 @@ public interface Lab {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.LabInner object.
      *
      * @return the inner object.
@@ -508,25 +515,25 @@ public interface Lab {
      * Generate a URI for uploading custom disk images to a Lab.
      *
      * @param generateUploadUriParameter Properties for generating an upload URI.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for generating an upload URI along with {@link Response}.
+     */
+    Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
+        GenerateUploadUriParameter generateUploadUriParameter, Context context);
+
+    /**
+     * Generate a URI for uploading custom disk images to a Lab.
+     *
+     * @param generateUploadUriParameter Properties for generating an upload URI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for generating an upload URI.
      */
     GenerateUploadUriResponse generateUploadUri(GenerateUploadUriParameter generateUploadUriParameter);
-
-    /**
-     * Generate a URI for uploading custom disk images to a Lab.
-     *
-     * @param generateUploadUriParameter Properties for generating an upload URI.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for generating an upload URI.
-     */
-    Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
-        GenerateUploadUriParameter generateUploadUriParameter, Context context);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
@@ -556,7 +563,7 @@ public interface Lab {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabVhd> listVhds();
 
@@ -567,7 +574,7 @@ public interface Lab {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabVhd> listVhds(Context context);
 }

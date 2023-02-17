@@ -52,7 +52,7 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesLo")
-    private interface LocationsService {
+    public interface LocationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}/checkNameAvailability")
@@ -104,7 +104,7 @@ public final class LocationsClientImpl implements LocationsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -158,7 +158,7 @@ public final class LocationsClientImpl implements LocationsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -198,24 +198,6 @@ public final class LocationsClientImpl implements LocationsClient {
      *
      * @param locationName Location name.
      * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityNameAvailabilityCheckOutputInner checkNameAvailability(
-        String locationName, CheckNameAvailabilityInput parameters) {
-        return checkNameAvailabilityAsync(locationName, parameters).block();
-    }
-
-    /**
-     * Check Name Availability
-     *
-     * <p>Checks whether the Media Service resource name is available.
-     *
-     * @param locationName Location name.
-     * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -226,5 +208,23 @@ public final class LocationsClientImpl implements LocationsClient {
     public Response<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityWithResponse(
         String locationName, CheckNameAvailabilityInput parameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters, context).block();
+    }
+
+    /**
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
+     *
+     * @param locationName Location name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EntityNameAvailabilityCheckOutputInner checkNameAvailability(
+        String locationName, CheckNameAvailabilityInput parameters) {
+        return checkNameAvailabilityWithResponse(locationName, parameters, Context.NONE).getValue();
     }
 }

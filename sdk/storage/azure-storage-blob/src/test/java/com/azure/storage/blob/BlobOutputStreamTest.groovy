@@ -218,6 +218,61 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
     }
 
+    @LiveOnly
+    def "AppendBlob output stream overwrite"() {
+        setup:
+        def data = getRandomByteArray(FOUR_MB)
+        def appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+        appendBlobClient.create()
+
+        when:
+        def outputStream = appendBlobClient.getBlobOutputStream()
+        outputStream.write(data)
+        outputStream.close()
+
+        then:
+        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
+
+        when:
+        def data2 = getRandomByteArray(FOUR_MB)
+
+        def outputStream2 = appendBlobClient.getBlobOutputStream(true)
+        outputStream2.write(data2)
+        outputStream2.close()
+
+        then:
+        appendBlobClient.getProperties().getBlobSize() == data2.length
+        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data2
+    }
+
+    @LiveOnly
+    def "AppendBlob output stream overwrite false"() {
+        setup:
+        def data = getRandomByteArray(Constants.MB)
+        def appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+        appendBlobClient.create()
+
+        when:
+        def outputStream = appendBlobClient.getBlobOutputStream()
+        outputStream.write(data)
+        outputStream.close()
+
+        then:
+        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
+
+        when:
+        def data2 = getRandomByteArray(Constants.MB)
+        outputStream = appendBlobClient.getBlobOutputStream(false)
+        outputStream.write(data2)
+        outputStream.close()
+
+        then:
+        def finalData = new byte[2 * Constants.MB]
+        System.arraycopy(data, 0, finalData, 0, data.length)
+        System.arraycopy(data2, 0, finalData, data.length, data2.length)
+        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == finalData
+    }
+
     def convertInputStreamToByteArray(InputStream inputStream) {
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()

@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
-@Fluent
 @JacksonXmlRootElement(localName = "share-file-http-headers")
+@Fluent
 public final class ShareFileHttpHeaders {
 
     /*

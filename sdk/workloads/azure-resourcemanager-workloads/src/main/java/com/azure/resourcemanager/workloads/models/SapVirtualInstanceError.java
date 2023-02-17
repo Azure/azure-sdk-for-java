@@ -16,6 +16,10 @@ public final class SapVirtualInstanceError {
     @JsonProperty(value = "properties")
     private ErrorDefinition properties;
 
+    /** Creates an instance of SapVirtualInstanceError class. */
+    public SapVirtualInstanceError() {
+    }
+
     /**
      * Get the properties property: The Virtual Instance for SAP error body.
      *

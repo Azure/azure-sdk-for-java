@@ -5,47 +5,30 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CDN peering prefix. */
-@JsonFlatten
 @Immutable
-public class CdnPeeringPrefixInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CdnPeeringPrefixInner.class);
-
+public final class CdnPeeringPrefixInner extends ProxyResource {
     /*
-     * The prefix.
+     * The properties that define a cdn peering prefix.
      */
-    @JsonProperty(value = "properties.prefix", access = JsonProperty.Access.WRITE_ONLY)
-    private String prefix;
+    @JsonProperty(value = "properties")
+    private CdnPeeringPrefixProperties innerProperties;
 
-    /*
-     * The Azure region.
-     */
-    @JsonProperty(value = "properties.azureRegion", access = JsonProperty.Access.WRITE_ONLY)
-    private String azureRegion;
+    /** Creates an instance of CdnPeeringPrefixInner class. */
+    public CdnPeeringPrefixInner() {
+    }
 
-    /*
-     * The Azure service.
+    /**
+     * Get the innerProperties property: The properties that define a cdn peering prefix.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.azureService", access = JsonProperty.Access.WRITE_ONLY)
-    private String azureService;
-
-    /*
-     * The flag that indicates whether or not this is the primary region.
-     */
-    @JsonProperty(value = "properties.isPrimaryRegion", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isPrimaryRegion;
-
-    /*
-     * The BGP Community
-     */
-    @JsonProperty(value = "properties.bgpCommunity", access = JsonProperty.Access.WRITE_ONLY)
-    private String bgpCommunity;
+    private CdnPeeringPrefixProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the prefix property: The prefix.
@@ -53,7 +36,7 @@ public class CdnPeeringPrefixInner extends ProxyResource {
      * @return the prefix value.
      */
     public String prefix() {
-        return this.prefix;
+        return this.innerProperties() == null ? null : this.innerProperties().prefix();
     }
 
     /**
@@ -62,7 +45,7 @@ public class CdnPeeringPrefixInner extends ProxyResource {
      * @return the azureRegion value.
      */
     public String azureRegion() {
-        return this.azureRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().azureRegion();
     }
 
     /**
@@ -71,7 +54,7 @@ public class CdnPeeringPrefixInner extends ProxyResource {
      * @return the azureService value.
      */
     public String azureService() {
-        return this.azureService;
+        return this.innerProperties() == null ? null : this.innerProperties().azureService();
     }
 
     /**
@@ -80,7 +63,7 @@ public class CdnPeeringPrefixInner extends ProxyResource {
      * @return the isPrimaryRegion value.
      */
     public Boolean isPrimaryRegion() {
-        return this.isPrimaryRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().isPrimaryRegion();
     }
 
     /**
@@ -89,7 +72,7 @@ public class CdnPeeringPrefixInner extends ProxyResource {
      * @return the bgpCommunity value.
      */
     public String bgpCommunity() {
-        return this.bgpCommunity;
+        return this.innerProperties() == null ? null : this.innerProperties().bgpCommunity();
     }
 
     /**
@@ -98,5 +81,8 @@ public class CdnPeeringPrefixInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

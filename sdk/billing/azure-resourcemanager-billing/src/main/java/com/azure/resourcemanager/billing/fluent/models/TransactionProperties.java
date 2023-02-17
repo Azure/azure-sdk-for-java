@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.ReservationType;
 import com.azure.resourcemanager.billing.models.TransactionTypeKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of a transaction. */
 @Fluent
 public final class TransactionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransactionProperties.class);
-
     /*
      * The kind of transaction. Options are all or reservation.
      */
@@ -31,29 +27,26 @@ public final class TransactionProperties {
     private OffsetDateTime date;
 
     /*
-     * Invoice on which the transaction was billed or 'pending' if the
-     * transaction is not billed.
+     * Invoice on which the transaction was billed or 'pending' if the transaction is not billed.
      */
     @JsonProperty(value = "invoice", access = JsonProperty.Access.WRITE_ONLY)
     private String invoice;
 
     /*
-     * The ID of the invoice on which the transaction was billed. This field is
-     * only applicable for transactions which are billed.
+     * The ID of the invoice on which the transaction was billed. This field is only applicable for transactions which
+     * are billed.
      */
     @JsonProperty(value = "invoiceId", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceId;
 
     /*
-     * The order ID of the reservation. The field is only applicable for
-     * transaction of kind reservation.
+     * The order ID of the reservation. The field is only applicable for transaction of kind reservation.
      */
     @JsonProperty(value = "orderId", access = JsonProperty.Access.WRITE_ONLY)
     private String orderId;
 
     /*
-     * The name of the reservation order. The field is only applicable for
-     * transactions of kind reservation.
+     * The name of the reservation order. The field is only applicable for transactions of kind reservation.
      */
     @JsonProperty(value = "orderName", access = JsonProperty.Access.WRITE_ONLY)
     private String orderName;
@@ -107,8 +100,7 @@ public final class TransactionProperties {
     private String invoiceSectionId;
 
     /*
-     * The name of the invoice section which will be billed for the
-     * transaction.
+     * The name of the invoice section which will be billed for the transaction.
      */
     @JsonProperty(value = "invoiceSectionDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceSectionDisplayName;
@@ -120,50 +112,47 @@ public final class TransactionProperties {
     private String billingProfileId;
 
     /*
-     * The name of the billing profile which will be billed for the
-     * transaction.
+     * The name of the billing profile which will be billed for the transaction.
      */
     @JsonProperty(value = "billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileDisplayName;
 
     /*
-     * The ID of the customer for which the transaction took place. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
+     * The ID of the customer for which the transaction took place. The field is applicable only for Microsoft Partner
+     * Agreement billing account.
      */
     @JsonProperty(value = "customerId", access = JsonProperty.Access.WRITE_ONLY)
     private String customerId;
 
     /*
-     * The name of the customer for which the transaction took place. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
+     * The name of the customer for which the transaction took place. The field is applicable only for Microsoft
+     * Partner Agreement billing account.
      */
     @JsonProperty(value = "customerDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String customerDisplayName;
 
     /*
-     * The ID of the subscription that was used for the transaction. The field
-     * is only applicable for transaction of kind reservation.
+     * The ID of the subscription that was used for the transaction. The field is only applicable for transaction of
+     * kind reservation.
      */
     @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
-     * The name of the subscription that was used for the transaction. The
-     * field is only applicable for transaction of kind reservation.
+     * The name of the subscription that was used for the transaction. The field is only applicable for transaction of
+     * kind reservation.
      */
     @JsonProperty(value = "subscriptionName", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionName;
 
     /*
-     * The type of azure plan of the subscription that was used for the
-     * transaction.
+     * The type of azure plan of the subscription that was used for the transaction.
      */
     @JsonProperty(value = "azurePlan", access = JsonProperty.Access.WRITE_ONLY)
     private String azurePlan;
 
     /*
-     * The amount of any Azure credits automatically applied to this
-     * transaction.
+     * The amount of any Azure credits automatically applied to this transaction.
      */
     @JsonProperty(value = "azureCreditApplied", access = JsonProperty.Access.WRITE_ONLY)
     private Amount azureCreditApplied;
@@ -187,8 +176,7 @@ public final class TransactionProperties {
     private Amount effectivePrice;
 
     /*
-     * The exchange rate used to convert charged amount to billing currency, if
-     * applicable.
+     * The exchange rate used to convert charged amount to billing currency, if applicable.
      */
     @JsonProperty(value = "exchangeRate", access = JsonProperty.Access.WRITE_ONLY)
     private Float exchangeRate;
@@ -206,15 +194,13 @@ public final class TransactionProperties {
     private String pricingCurrency;
 
     /*
-     * The date of the purchase of the product, or the start date of the month
-     * in which usage started.
+     * The date of the purchase of the product, or the start date of the month in which usage started.
      */
     @JsonProperty(value = "servicePeriodStartDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime servicePeriodStartDate;
 
     /*
-     * The end date of the product term, or the end date of the month in which
-     * usage ended.
+     * The end date of the product term, or the end date of the month in which usage ended.
      */
     @JsonProperty(value = "servicePeriodEndDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime servicePeriodEndDate;
@@ -232,8 +218,7 @@ public final class TransactionProperties {
     private Amount tax;
 
     /*
-     * The unit of measure used to bill for the product. For example, compute
-     * services are billed per hour.
+     * The unit of measure used to bill for the product. For example, compute services are billed per hour.
      */
     @JsonProperty(value = "unitOfMeasure", access = JsonProperty.Access.WRITE_ONLY)
     private String unitOfMeasure;
@@ -249,6 +234,10 @@ public final class TransactionProperties {
      */
     @JsonProperty(value = "unitType", access = JsonProperty.Access.WRITE_ONLY)
     private String unitType;
+
+    /** Creates an instance of TransactionProperties class. */
+    public TransactionProperties() {
+    }
 
     /**
      * Get the kind property: The kind of transaction. Options are all or reservation.

@@ -4,24 +4,18 @@
 
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data Lake Store trusted identity provider information. */
-@JsonFlatten
-@Immutable
-public class TrustedIdProviderInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrustedIdProviderInner.class);
-
+@Fluent
+public final class TrustedIdProviderInner extends SubResource {
     /*
-     * The URL of this trusted identity provider.
+     * The trusted identity provider properties.
      */
-    @JsonProperty(value = "properties.idProvider", access = JsonProperty.Access.WRITE_ONLY)
-    private String idProvider;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private TrustedIdProviderProperties innerProperties;
 
     /*
      * The resource name.
@@ -35,13 +29,17 @@ public class TrustedIdProviderInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of TrustedIdProviderInner class. */
+    public TrustedIdProviderInner() {
+    }
+
     /**
-     * Get the idProvider property: The URL of this trusted identity provider.
+     * Get the innerProperties property: The trusted identity provider properties.
      *
-     * @return the idProvider value.
+     * @return the innerProperties value.
      */
-    public String idProvider() {
-        return this.idProvider;
+    private TrustedIdProviderProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -70,10 +68,22 @@ public class TrustedIdProviderInner extends SubResource {
     }
 
     /**
+     * Get the idProvider property: The URL of this trusted identity provider.
+     *
+     * @return the idProvider value.
+     */
+    public String idProvider() {
+        return this.innerProperties() == null ? null : this.innerProperties().idProvider();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

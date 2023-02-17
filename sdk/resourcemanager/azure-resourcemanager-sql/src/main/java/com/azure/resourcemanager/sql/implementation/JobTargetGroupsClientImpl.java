@@ -58,7 +58,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
-    private interface JobTargetGroupsService {
+    public interface JobTargetGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
@@ -174,7 +174,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -186,7 +185,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                             serverName,
                             jobAgentName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<JobTargetGroupInner>>map(
@@ -239,7 +238,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -249,7 +247,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 serverName,
                 jobAgentName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -383,7 +381,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -396,7 +393,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                             jobAgentName,
                             targetGroupName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -445,7 +442,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -456,7 +452,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 jobAgentName,
                 targetGroupName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -489,25 +485,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a target group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobTargetGroupInner get(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
-        return getAsync(resourceGroupName, serverName, jobAgentName, targetGroupName).block();
-    }
-
-    /**
-     * Gets a target group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param targetGroupName The name of the target group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -518,6 +495,25 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
     public Response<JobTargetGroupInner> getWithResponse(
         String resourceGroupName, String serverName, String jobAgentName, String targetGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, context).block();
+    }
+
+    /**
+     * Gets a target group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param targetGroupName The name of the target group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a target group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobTargetGroupInner get(
+        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
+        return getWithResponse(resourceGroupName, serverName, jobAgentName, targetGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -572,7 +568,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -585,7 +580,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                             jobAgentName,
                             targetGroupName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -646,7 +641,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -657,7 +651,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 jobAgentName,
                 targetGroupName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -697,30 +691,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
      * @param parameters The requested state of the target group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a group of job targets.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobTargetGroupInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String targetGroupName,
-        JobTargetGroupInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a target group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param targetGroupName The name of the target group.
-     * @param parameters The requested state of the target group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -738,6 +708,32 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, serverName, jobAgentName, targetGroupName, parameters, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a target group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param targetGroupName The name of the target group.
+     * @param parameters The requested state of the target group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a group of job targets.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobTargetGroupInner createOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String targetGroupName,
+        JobTargetGroupInner parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, serverName, jobAgentName, targetGroupName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -782,7 +778,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -794,7 +789,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                             jobAgentName,
                             targetGroupName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -842,7 +837,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -852,7 +846,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 jobAgentName,
                 targetGroupName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -884,23 +878,6 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
-        deleteAsync(resourceGroupName, serverName, jobAgentName, targetGroupName).block();
-    }
-
-    /**
-     * Deletes a target group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param targetGroupName The name of the target group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -914,9 +891,27 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
     }
 
     /**
+     * Deletes a target group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param targetGroupName The name of the target group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
+        deleteWithResponse(resourceGroupName, serverName, jobAgentName, targetGroupName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -951,7 +946,8 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

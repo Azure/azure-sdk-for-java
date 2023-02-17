@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of orchestrator. */
 @Fluent
 public final class SubnetDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetDetails.class);
-
     /*
      * subnet arm resource id
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of SubnetDetails class. */
+    public SubnetDetails() {
+    }
 
     /**
      * Get the id property: subnet arm resource id.

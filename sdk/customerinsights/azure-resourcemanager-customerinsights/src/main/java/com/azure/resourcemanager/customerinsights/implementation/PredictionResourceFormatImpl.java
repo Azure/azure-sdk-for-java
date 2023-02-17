@@ -110,7 +110,7 @@ public final class PredictionResourceFormatImpl
         return this.innerModel().tenantId();
     }
 
-    public Boolean autoAnalyze() {
+    public boolean autoAnalyze() {
         return this.innerModel().autoAnalyze();
     }
 
@@ -133,6 +133,10 @@ public final class PredictionResourceFormatImpl
 
     public PredictionSystemGeneratedEntities systemGeneratedEntities() {
         return this.innerModel().systemGeneratedEntities();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public PredictionResourceFormatInner innerModel() {
@@ -232,18 +236,14 @@ public final class PredictionResourceFormatImpl
         return this;
     }
 
-    public PredictionTrainingResults getTrainingResults() {
-        return serviceManager.predictions().getTrainingResults(resourceGroupName, hubName, predictionName);
-    }
-
     public Response<PredictionTrainingResults> getTrainingResultsWithResponse(Context context) {
         return serviceManager
             .predictions()
             .getTrainingResultsWithResponse(resourceGroupName, hubName, predictionName, context);
     }
 
-    public PredictionModelStatus getModelStatus() {
-        return serviceManager.predictions().getModelStatus(resourceGroupName, hubName, predictionName);
+    public PredictionTrainingResults getTrainingResults() {
+        return serviceManager.predictions().getTrainingResults(resourceGroupName, hubName, predictionName);
     }
 
     public Response<PredictionModelStatus> getModelStatusWithResponse(Context context) {
@@ -252,14 +252,18 @@ public final class PredictionResourceFormatImpl
             .getModelStatusWithResponse(resourceGroupName, hubName, predictionName, context);
     }
 
-    public void modelStatus(PredictionModelStatusInner parameters) {
-        serviceManager.predictions().modelStatus(resourceGroupName, hubName, predictionName, parameters);
+    public PredictionModelStatus getModelStatus() {
+        return serviceManager.predictions().getModelStatus(resourceGroupName, hubName, predictionName);
     }
 
     public Response<Void> modelStatusWithResponse(PredictionModelStatusInner parameters, Context context) {
         return serviceManager
             .predictions()
             .modelStatusWithResponse(resourceGroupName, hubName, predictionName, parameters, context);
+    }
+
+    public void modelStatus(PredictionModelStatusInner parameters) {
+        serviceManager.predictions().modelStatus(resourceGroupName, hubName, predictionName, parameters);
     }
 
     public PredictionResourceFormatImpl withDescription(Map<String, String> description) {
@@ -312,7 +316,7 @@ public final class PredictionResourceFormatImpl
         return this;
     }
 
-    public PredictionResourceFormatImpl withAutoAnalyze(Boolean autoAnalyze) {
+    public PredictionResourceFormatImpl withAutoAnalyze(boolean autoAnalyze) {
         this.innerModel().withAutoAnalyze(autoAnalyze);
         return this;
     }

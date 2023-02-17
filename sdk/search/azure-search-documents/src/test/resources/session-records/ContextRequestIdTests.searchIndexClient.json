@@ -3,29 +3,28 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.search.windows.net/indexes('index')?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9be1e331-7425-48ae-9a1f-7cf00ed0e3c4"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6639e361-ce60-497d-b436-a3c3f600608a"
     },
     "Response" : {
-      "content-length" : "106",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "9be1e331-7425-48ae-9a1f-7cf00ed0e3c4",
+      "request-id" : "6639e361-ce60-497d-b436-a3c3f600608a",
       "StatusCode" : "404",
-      "Date" : "Tue, 13 Jul 2021 19:14:37 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:21:15 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "9be1e331-7425-48ae-9a1f-7cf00ed0e3c4",
-      "elapsed-time" : "18",
-      "OData-Version" : "4.0",
+      "client-request-id" : "6639e361-ce60-497d-b436-a3c3f600608a",
+      "elapsed-time" : "25",
       "Expires" : "-1",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'index' was found in the service 'alzimmer-test'.\"}}",
-      "Content-Language" : "en",
-      "x-ms-client-request-id" : "9be1e331-7425-48ae-9a1f-7cf00ed0e3c4",
+      "Content-Length" : "107",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'index' was found in the service 'alzimmer-basic'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+      "x-ms-client-request-id" : "6639e361-ce60-497d-b436-a3c3f600608a",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "9be1e331-7425-48ae-9a1f-7cf00ed0e3c4" ]
+  "variables" : [ "6639e361-ce60-497d-b436-a3c3f600608a" ]
 }

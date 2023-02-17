@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskAccesses Delete. */
 public final class DiskAccessesDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class DiskAccessesDeleteSamples {
             .manager()
             .serviceClient()
             .getDiskAccesses()
-            .delete("myResourceGroup", "myDiskAccess", Context.NONE);
+            .delete("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

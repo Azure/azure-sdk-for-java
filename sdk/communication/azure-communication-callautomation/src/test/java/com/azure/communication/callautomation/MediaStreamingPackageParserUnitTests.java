@@ -14,7 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MediaStreamingPackageParserUnitTests {
     @Test
@@ -31,6 +33,20 @@ public class MediaStreamingPackageParserUnitTests {
         MediaStreamingAudioData mediaStreamingAudioData = (MediaStreamingAudioData) MediaStreamingPackageParser.parse(audioJson);
         assertNotNull(mediaStreamingAudioData);
         checkAudioData(mediaStreamingAudioData);
+    }
+
+    @Test
+    public void parseAudioDataNoParticipantNoSilent() {
+        String audioJson = "{"
+            + "\"kind\": \"AudioData\","
+            + "\"audioData\": {"
+            + "\"timestamp\": \"2022-10-03T19:16:12.925Z\","
+            + "\"data\": \"AQIDBAU=\""
+            + "}"
+            + "}";
+        MediaStreamingAudioData mediaStreamingAudioData = (MediaStreamingAudioData) MediaStreamingPackageParser.parse(audioJson);
+        assertNotNull(mediaStreamingAudioData);
+        checkAudioDataNoParticipant(mediaStreamingAudioData);
     }
 
     @Test
@@ -82,7 +98,14 @@ public class MediaStreamingPackageParserUnitTests {
         assertEquals(OffsetDateTime.parse("2022-10-03T19:16:12.925Z"), mediaStreamingAudio.getTimestamp());
         assertEquals("participantId", mediaStreamingAudio.getParticipant().getRawId());
         assertEquals("AQIDBAU=", mediaStreamingAudio.getData());
-        assertEquals(false, mediaStreamingAudio.isSilent());
+        assertFalse(mediaStreamingAudio.isSilent());
+    }
+
+    private void checkAudioDataNoParticipant(MediaStreamingAudioData mediaStreamingAudio) {
+        assertEquals(OffsetDateTime.parse("2022-10-03T19:16:12.925Z"), mediaStreamingAudio.getTimestamp());
+        assertNull(mediaStreamingAudio.getParticipant());
+        assertEquals("AQIDBAU=", mediaStreamingAudio.getData());
+        assertFalse(mediaStreamingAudio.isSilent());
     }
 
     private void checkAudioMetadata(MediaStreamingMetadata mediaStreamingMetadata) {

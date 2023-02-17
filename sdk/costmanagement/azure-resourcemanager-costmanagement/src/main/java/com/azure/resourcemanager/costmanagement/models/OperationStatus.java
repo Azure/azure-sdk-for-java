@@ -14,14 +14,15 @@ public interface OperationStatus {
      *
      * @return the status value.
      */
-    Status status();
+    OperationStatusType status();
 
     /**
-     * Gets the reportUrl property: The URL to download the generated report.
+     * Gets the reportUrl property: The CSV file from the reportUrl blob link consists of reservation usage data with
+     * the following schema at daily granularity.
      *
      * @return the reportUrl value.
      */
-    String reportUrl();
+    ReservationReportSchema reportUrl();
 
     /**
      * Gets the validUntil property: The time at which report URL becomes invalid.

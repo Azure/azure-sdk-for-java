@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for ResourceGuards Patch. */
 public final class ResourceGuardsPatchSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/PatchResourceGuard.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/PatchResourceGuard.json
      */
     /**
      * Sample code: Patch ResourceGuard.
@@ -23,7 +22,8 @@ public final class ResourceGuardsPatchSamples {
         ResourceGuardResource resource =
             manager
                 .resourceGuards()
-                .getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("newKey", "newVal")).apply();
     }

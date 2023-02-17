@@ -56,7 +56,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectableContainersService {
+    public interface ProtectableContainersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

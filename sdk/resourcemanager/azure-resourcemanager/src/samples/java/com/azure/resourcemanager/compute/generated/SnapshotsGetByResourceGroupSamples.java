@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Snapshots GetByResourceGroup. */
 public final class SnapshotsGetByResourceGroupSamples {
     /*
@@ -22,7 +20,8 @@ public final class SnapshotsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getSnapshots()
-            .getByResourceGroupWithResponse("myResourceGroup", "myIncrementalSnapshot", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myIncrementalSnapshot", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,6 +38,6 @@ public final class SnapshotsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getSnapshots()
-            .getByResourceGroupWithResponse("myResourceGroup", "mySnapshot", Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "mySnapshot", com.azure.core.util.Context.NONE);
     }
 }

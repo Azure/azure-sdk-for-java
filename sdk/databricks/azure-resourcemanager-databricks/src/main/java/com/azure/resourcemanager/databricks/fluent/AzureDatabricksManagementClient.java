@@ -24,6 +24,13 @@ public interface AzureDatabricksManagementClient {
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -64,6 +71,13 @@ public interface AzureDatabricksManagementClient {
      * @return the PrivateEndpointConnectionsClient object.
      */
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the OutboundNetworkDependenciesEndpointsClient object to access its operations.
+     *
+     * @return the OutboundNetworkDependenciesEndpointsClient object.
+     */
+    OutboundNetworkDependenciesEndpointsClient getOutboundNetworkDependenciesEndpoints();
 
     /**
      * Gets the VNetPeeringsClient object to access its operations.

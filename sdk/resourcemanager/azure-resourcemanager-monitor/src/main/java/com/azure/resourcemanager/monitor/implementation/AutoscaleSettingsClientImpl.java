@@ -67,7 +67,7 @@ public final class AutoscaleSettingsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientAutosca")
-    private interface AutoscaleSettingsService {
+    public interface AutoscaleSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
@@ -484,23 +484,6 @@ public final class AutoscaleSettingsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param autoscaleSettingName The autoscale setting name.
      * @param parameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the autoscale setting resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoscaleSettingResourceInner createOrUpdate(
-        String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourceInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, autoscaleSettingName, parameters).block();
-    }
-
-    /**
-     * Creates or updates an autoscale setting.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autoscaleSettingName The autoscale setting name.
-     * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -514,6 +497,23 @@ public final class AutoscaleSettingsClientImpl
         AutoscaleSettingResourceInner parameters,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, autoscaleSettingName, parameters, context).block();
+    }
+
+    /**
+     * Creates or updates an autoscale setting.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autoscaleSettingName The autoscale setting name.
+     * @param parameters Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the autoscale setting resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutoscaleSettingResourceInner createOrUpdate(
+        String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourceInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, autoscaleSettingName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -633,20 +633,6 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param autoscaleSettingName The autoscale setting name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String autoscaleSettingName) {
-        deleteAsync(resourceGroupName, autoscaleSettingName).block();
-    }
-
-    /**
-     * Deletes and autoscale setting.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autoscaleSettingName The autoscale setting name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -656,6 +642,20 @@ public final class AutoscaleSettingsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String autoscaleSettingName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, autoscaleSettingName, context).block();
+    }
+
+    /**
+     * Deletes and autoscale setting.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autoscaleSettingName The autoscale setting name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String autoscaleSettingName) {
+        deleteWithResponse(resourceGroupName, autoscaleSettingName, Context.NONE);
     }
 
     /**
@@ -778,21 +778,6 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param autoscaleSettingName The autoscale setting name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an autoscale setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoscaleSettingResourceInner getByResourceGroup(String resourceGroupName, String autoscaleSettingName) {
-        return getByResourceGroupAsync(resourceGroupName, autoscaleSettingName).block();
-    }
-
-    /**
-     * Gets an autoscale setting.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autoscaleSettingName The autoscale setting name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -803,6 +788,21 @@ public final class AutoscaleSettingsClientImpl
     public Response<AutoscaleSettingResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String autoscaleSettingName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, autoscaleSettingName, context).block();
+    }
+
+    /**
+     * Gets an autoscale setting.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autoscaleSettingName The autoscale setting name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an autoscale setting.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutoscaleSettingResourceInner getByResourceGroup(String resourceGroupName, String autoscaleSettingName) {
+        return getByResourceGroupWithResponse(resourceGroupName, autoscaleSettingName, Context.NONE).getValue();
     }
 
     /**
@@ -948,23 +948,6 @@ public final class AutoscaleSettingsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param autoscaleSettingName The autoscale setting name.
      * @param autoscaleSettingResource Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the autoscale setting resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoscaleSettingResourceInner update(
-        String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourcePatch autoscaleSettingResource) {
-        return updateAsync(resourceGroupName, autoscaleSettingName, autoscaleSettingResource).block();
-    }
-
-    /**
-     * Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param autoscaleSettingName The autoscale setting name.
-     * @param autoscaleSettingResource Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -979,6 +962,24 @@ public final class AutoscaleSettingsClientImpl
         Context context) {
         return updateWithResponseAsync(resourceGroupName, autoscaleSettingName, autoscaleSettingResource, context)
             .block();
+    }
+
+    /**
+     * Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autoscaleSettingName The autoscale setting name.
+     * @param autoscaleSettingResource Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the autoscale setting resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutoscaleSettingResourceInner update(
+        String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourcePatch autoscaleSettingResource) {
+        return updateWithResponse(resourceGroupName, autoscaleSettingName, autoscaleSettingResource, Context.NONE)
+            .getValue();
     }
 
     /**

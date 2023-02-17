@@ -31,6 +31,9 @@ public class DataworldLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of DataworldLinkedService class. */
+    public DataworldLinkedService() {}
+
     /**
      * Get the apiToken property: The api token for the Dataworld source.
      *

@@ -21,7 +21,8 @@ public interface NetworkExperimentProfilesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles under a subscription.
+     * @return a list of Network Experiment Profiles under a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProfileInner> list();
@@ -33,7 +34,8 @@ public interface NetworkExperimentProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles under a subscription.
+     * @return a list of Network Experiment Profiles under a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProfileInner> list(Context context);
@@ -45,7 +47,8 @@ public interface NetworkExperimentProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles within a resource group under a subscription.
+     * @return a list of Network Experiment Profiles within a resource group under a subscription as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName);
@@ -58,10 +61,26 @@ public interface NetworkExperimentProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles within a resource group under a subscription.
+     * @return a list of Network Experiment Profiles within a resource group under a subscription as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets an NetworkExperiment Profile by ProfileName.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName The Profile identifier associated with the Tenant and Partner.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an NetworkExperiment Profile by ProfileName along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ProfileInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String profileName, Context context);
 
     /**
      * Gets an NetworkExperiment Profile by ProfileName.
@@ -77,21 +96,6 @@ public interface NetworkExperimentProfilesClient {
     ProfileInner getByResourceGroup(String resourceGroupName, String profileName);
 
     /**
-     * Gets an NetworkExperiment Profile by ProfileName.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an NetworkExperiment Profile by ProfileName.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String profileName, Context context);
-
-    /**
      * Creates an NetworkExperiment Profile.
      *
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -100,9 +104,9 @@ public interface NetworkExperimentProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines an Network Experiment Profile and lists of Experiments.
+     * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdate(
         String profileName, String resourceGroupName, ProfileInner parameters);
 
@@ -116,9 +120,9 @@ public interface NetworkExperimentProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines an Network Experiment Profile and lists of Experiments.
+     * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdate(
         String profileName, String resourceGroupName, ProfileInner parameters, Context context);
 
@@ -152,7 +156,9 @@ public interface NetworkExperimentProfilesClient {
     ProfileInner createOrUpdate(String profileName, String resourceGroupName, ProfileInner parameters, Context context);
 
     /**
-     * Updates an NetworkExperimentProfiles.
+     * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
+     *
+     * <p>Updates an NetworkExperimentProfiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -160,14 +166,16 @@ public interface NetworkExperimentProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines an Network Experiment Profile and lists of Experiments.
+     * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(
         String resourceGroupName, String profileName, ProfileUpdateModel parameters);
 
     /**
-     * Updates an NetworkExperimentProfiles.
+     * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
+     *
+     * <p>Updates an NetworkExperimentProfiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -176,14 +184,16 @@ public interface NetworkExperimentProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines an Network Experiment Profile and lists of Experiments.
+     * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(
         String resourceGroupName, String profileName, ProfileUpdateModel parameters, Context context);
 
     /**
-     * Updates an NetworkExperimentProfiles.
+     * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
+     *
+     * <p>Updates an NetworkExperimentProfiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -197,7 +207,9 @@ public interface NetworkExperimentProfilesClient {
     ProfileInner update(String resourceGroupName, String profileName, ProfileUpdateModel parameters);
 
     /**
-     * Updates an NetworkExperimentProfiles.
+     * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
+     *
+     * <p>Updates an NetworkExperimentProfiles.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -219,9 +231,9 @@ public interface NetworkExperimentProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName);
 
     /**
@@ -233,9 +245,9 @@ public interface NetworkExperimentProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName, Context context);
 
     /**

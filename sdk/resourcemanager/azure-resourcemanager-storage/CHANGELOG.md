@@ -1,6 +1,25 @@
 # Release History
 
-## 2.22.0-beta.1 (Unreleased)
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.23.0 (2023-01-27)
+
+### Features Added
+
+- Supported enabling last access time tracking policy for `BlobServiceProperties`.
+
+### Bugs Fixed
+
+- Fixed a bug that `StorageAccount.infrastructureEncryptionEnabled()` always returns `false`.
+- Fixed a bug that `PolicyRule`s returned by `ManagementPolicy::rules()` don't support all base blob actions.
+
+## 2.22.0 (2022-12-23)
 
 ### Other Changes
 

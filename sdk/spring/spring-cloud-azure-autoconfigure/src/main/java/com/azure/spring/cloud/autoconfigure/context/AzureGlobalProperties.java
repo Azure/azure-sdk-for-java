@@ -148,7 +148,7 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
     public static final class GlobalAmqpRetryConfigurationProperties {
 
         /**
-         * How long to wait until a timeout.
+         * Amount of time(Duration) to wait until timeout.
          */
         private Duration tryTimeout;
 
@@ -207,7 +207,7 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
     public static final class GlobalAmqpProxyConfigurationProperties {
 
         /**
-         * Authentication type used against the proxy.
+         * Authentication type used against the proxy. For instance, 'none', 'basic', 'digest'. The default value is `'none'`.
          */
         private String authenticationType;
 
@@ -235,19 +235,19 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
      */
     public static final class GlobalHttpClientConfigurationProperties {
         /**
-         * Amount of time each request being sent over the wire.
+         * Amount of time(Duration) each request being sent over the wire.
          */
         private Duration writeTimeout;
         /**
-         * Amount of time used when waiting for a server to reply.
+         * Amount of time(Duration) used when waiting for a server to reply.
          */
         private Duration responseTimeout;
         /**
-         * Amount of time used when reading the server response.
+         * Amount of time(Duration) used when reading the server response.
          */
         private Duration readTimeout;
         /**
-         * Amount of time the request attempts to connect to the remote host and the connection is resolved.
+         * Amount of time(Duration) the request attempts to connect to the remote host and the connection is resolved.
          */
         private Duration connectTimeout;
         /**
@@ -255,12 +255,12 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
          */
         private Integer maximumConnectionPoolSize;
         /**
-         * Amount of time before an idle connection.
+         * Amount of time(Duration) before an idle connection.
          */
         private Duration connectionIdleTimeout;
 
         /**
-         * List of headers applied to each request sent with client.
+         * List of headers applied to each request sent with client. For instance, '"myCustomHeader", "myStaticValue"'.
          */
         private final List<HeaderProperties> headers = new ArrayList<>();
 
@@ -400,9 +400,9 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
     public static final class GlobalAmqpClientConfigurationProperties {
 
         /**
-         * Transport type for AMQP-based client.
+         * Transport type for AMQP-based client. Supported types are: AMQP, AMQP_WEB_SOCKETS.
          */
-        private AmqpTransportType transportType = AmqpTransportType.AMQP;
+        private AmqpTransportType transportType;
 
         /**
          * Gets the AMQP transport type.

@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HealthcareDocumentType. */
+/**
+ * Document type that can be provided as input for Fhir Documents. Expect to have fhirVersion provided when used.
+ * Behavior of using None enum is the same as not using the documentType parameter.
+ */
 public final class HealthcareDocumentType extends ExpandableStringEnum<HealthcareDocumentType> {
     /** Static value None for HealthcareDocumentType. */
     public static final HealthcareDocumentType NONE = fromString("None");

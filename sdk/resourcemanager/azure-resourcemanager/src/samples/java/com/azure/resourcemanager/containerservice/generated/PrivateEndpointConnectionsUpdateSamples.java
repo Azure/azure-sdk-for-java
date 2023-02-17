@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.containerservice.models.ConnectionStatus;
 import com.azure.resourcemanager.containerservice.models.PrivateLinkServiceConnectionState;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.containerservice.models.PrivateLinkServiceConne
 /** Samples for PrivateEndpointConnections Update. */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/PrivateEndpointConnectionsUpdate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/PrivateEndpointConnectionsUpdate.json
      */
     /**
      * Sample code: Update Private Endpoint Connection.
@@ -32,6 +31,6 @@ public final class PrivateEndpointConnectionsUpdateSamples {
                 new PrivateEndpointConnectionInner()
                     .withPrivateLinkServiceConnectionState(
                         new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.APPROVED)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

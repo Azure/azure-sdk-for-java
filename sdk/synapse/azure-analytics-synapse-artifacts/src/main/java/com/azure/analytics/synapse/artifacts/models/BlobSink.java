@@ -38,6 +38,9 @@ public final class BlobSink extends CopySink {
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
 
+    /** Creates an instance of BlobSink class. */
+    public BlobSink() {}
+
     /**
      * Get the blobWriterOverwriteFiles property: Blob writer overwrite files. Type: boolean (or Expression with
      * resultType boolean).

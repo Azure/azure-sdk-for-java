@@ -22,6 +22,15 @@ public final class StretchMode extends ExpandableStringEnum<StretchMode> {
     public static final StretchMode AUTO_FIT = fromString("AutoFit");
 
     /**
+     * Creates a new instance of StretchMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StretchMode() {
+    }
+
+    /**
      * Creates or finds a StretchMode from its string representation.
      *
      * @param name a name to look for.

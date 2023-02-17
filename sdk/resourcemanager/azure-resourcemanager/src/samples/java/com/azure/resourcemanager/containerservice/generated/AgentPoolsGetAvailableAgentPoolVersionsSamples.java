@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AgentPools GetAvailableAgentPoolVersions. */
 public final class AgentPoolsGetAvailableAgentPoolVersionsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/AgentPoolsGetAgentPoolAvailableVersions.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsGetAgentPoolAvailableVersions.json
      */
     /**
      * Sample code: Get available versions for agent pool.
@@ -22,6 +20,6 @@ public final class AgentPoolsGetAvailableAgentPoolVersionsSamples {
             .manager()
             .serviceClient()
             .getAgentPools()
-            .getAvailableAgentPoolVersionsWithResponse("rg1", "clustername1", Context.NONE);
+            .getAvailableAgentPoolVersionsWithResponse("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

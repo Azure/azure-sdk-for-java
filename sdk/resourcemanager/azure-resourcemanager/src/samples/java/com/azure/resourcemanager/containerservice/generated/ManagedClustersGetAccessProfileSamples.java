@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedClusters GetAccessProfile. */
 public final class ManagedClustersGetAccessProfileSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/ManagedClustersGetAccessProfile.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/ManagedClustersGetAccessProfile.json
      */
     /**
      * Sample code: Get Managed Cluster.
@@ -22,6 +20,6 @@ public final class ManagedClustersGetAccessProfileSamples {
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .getAccessProfileWithResponse("rg1", "clustername1", "clusterUser", Context.NONE);
+            .getAccessProfileWithResponse("rg1", "clustername1", "clusterUser", com.azure.core.util.Context.NONE);
     }
 }

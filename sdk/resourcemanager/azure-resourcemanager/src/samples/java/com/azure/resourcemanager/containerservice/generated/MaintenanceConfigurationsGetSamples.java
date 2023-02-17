@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MaintenanceConfigurations Get. */
 public final class MaintenanceConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/MaintenanceConfigurationsGet.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/MaintenanceConfigurationsGet.json
      */
     /**
      * Sample code: Get Maintenance Configuration.
@@ -22,6 +20,6 @@ public final class MaintenanceConfigurationsGetSamples {
             .manager()
             .serviceClient()
             .getMaintenanceConfigurations()
-            .getWithResponse("rg1", "clustername1", "default", Context.NONE);
+            .getWithResponse("rg1", "clustername1", "default", com.azure.core.util.Context.NONE);
     }
 }

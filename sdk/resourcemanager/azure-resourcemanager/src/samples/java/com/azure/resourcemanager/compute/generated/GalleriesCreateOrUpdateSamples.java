@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.GalleryInner;
 import com.azure.resourcemanager.compute.models.CommunityGalleryInfo;
 import com.azure.resourcemanager.compute.models.GallerySharingPermissionTypes;
@@ -42,7 +41,7 @@ public final class GalleriesCreateOrUpdateSamples {
                                     .withPublisherContact("pir@microsoft.com")
                                     .withEula("eula")
                                     .withPublicNamePrefix("PirPublic"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -67,7 +66,7 @@ public final class GalleriesCreateOrUpdateSamples {
                     .withLocation("West US")
                     .withDescription("This is the gallery description.")
                     .withSharingProfile(new SharingProfile().withPermissions(GallerySharingPermissionTypes.GROUPS)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -88,7 +87,7 @@ public final class GalleriesCreateOrUpdateSamples {
                 "myResourceGroup",
                 "myGalleryName",
                 new GalleryInner().withLocation("West US").withDescription("This is the gallery description."),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -113,6 +112,6 @@ public final class GalleriesCreateOrUpdateSamples {
                     .withLocation("West US")
                     .withDescription("This is the gallery description.")
                     .withSoftDeletePolicy(new SoftDeletePolicy().withIsSoftDeleteEnabled(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

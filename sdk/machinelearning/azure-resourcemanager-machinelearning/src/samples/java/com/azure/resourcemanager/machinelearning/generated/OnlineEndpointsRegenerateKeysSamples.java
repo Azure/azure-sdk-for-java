@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.KeyType;
 import com.azure.resourcemanager.machinelearning.models.RegenerateEndpointKeysRequest;
 
@@ -27,6 +26,6 @@ public final class OnlineEndpointsRegenerateKeysSamples {
                 "my-aml-workspace",
                 "testEndpointName",
                 new RegenerateEndpointKeysRequest().withKeyType(KeyType.PRIMARY).withKeyValue("fakeTokenPlaceholder"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

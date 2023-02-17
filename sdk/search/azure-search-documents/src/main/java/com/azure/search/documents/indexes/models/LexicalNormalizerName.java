@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LexicalNormalizerName. */
+/** Defines the names of all text normalizers supported by Azure Cognitive Search. */
 public final class LexicalNormalizerName extends ExpandableStringEnum<LexicalNormalizerName> {
     /** Static value asciifolding for LexicalNormalizerName. */
     public static final LexicalNormalizerName ASCII_FOLDING = fromString("asciifolding");

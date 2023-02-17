@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CredentialOperations Delete. */
 public final class CredentialOperationsDeleteSamples {
     /*
@@ -19,6 +17,7 @@ public final class CredentialOperationsDeleteSamples {
     public static void credentialsDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .credentialOperations()
-            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleCredential", Context.NONE);
+            .deleteWithResponse(
+                "exampleResourceGroup", "exampleFactoryName", "exampleCredential", com.azure.core.util.Context.NONE);
     }
 }

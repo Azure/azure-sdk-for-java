@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationServiceEnvironmentSkuName. */
+/** The integration service environment sku name. */
 public final class IntegrationServiceEnvironmentSkuName
     extends ExpandableStringEnum<IntegrationServiceEnvironmentSkuName> {
     /** Static value NotSpecified for IntegrationServiceEnvironmentSkuName. */
@@ -21,6 +21,15 @@ public final class IntegrationServiceEnvironmentSkuName
     public static final IntegrationServiceEnvironmentSkuName DEVELOPER = fromString("Developer");
 
     /**
+     * Creates a new instance of IntegrationServiceEnvironmentSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationServiceEnvironmentSkuName() {
+    }
+
+    /**
      * Creates or finds a IntegrationServiceEnvironmentSkuName from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class IntegrationServiceEnvironmentSkuName
         return fromString(name, IntegrationServiceEnvironmentSkuName.class);
     }
 
-    /** @return known IntegrationServiceEnvironmentSkuName values. */
+    /**
+     * Gets known IntegrationServiceEnvironmentSkuName values.
+     *
+     * @return known IntegrationServiceEnvironmentSkuName values.
+     */
     public static Collection<IntegrationServiceEnvironmentSkuName> values() {
         return values(IntegrationServiceEnvironmentSkuName.class);
     }

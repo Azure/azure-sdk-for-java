@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.CalculationWindowTypes;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
 import com.azure.resourcemanager.customerinsights.models.KpiAlias;
@@ -17,130 +15,31 @@ import com.azure.resourcemanager.customerinsights.models.KpiGroupByMetadata;
 import com.azure.resourcemanager.customerinsights.models.KpiParticipantProfilesMetadata;
 import com.azure.resourcemanager.customerinsights.models.KpiThresholds;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The KPI resource format. */
-@JsonFlatten
 @Fluent
-public class KpiResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpiResourceFormatInner.class);
-
+public final class KpiResourceFormatInner extends ProxyResource {
     /*
-     * The mapping entity type.
+     * Defines the KPI Threshold limits.
      */
-    @JsonProperty(value = "properties.entityType")
-    private EntityTypes entityType;
+    @JsonProperty(value = "properties")
+    private KpiDefinitionInner innerProperties;
 
-    /*
-     * The mapping entity name.
-     */
-    @JsonProperty(value = "properties.entityTypeName")
-    private String entityTypeName;
+    /** Creates an instance of KpiResourceFormatInner class. */
+    public KpiResourceFormatInner() {
+    }
 
-    /*
-     * The hub name.
+    /**
+     * Get the innerProperties property: Defines the KPI Threshold limits.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
-
-    /*
-     * The KPI name.
-     */
-    @JsonProperty(value = "properties.kpiName", access = JsonProperty.Access.WRITE_ONLY)
-    private String kpiName;
-
-    /*
-     * Localized display name for the KPI.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
-
-    /*
-     * Localized description for the KPI.
-     */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
-
-    /*
-     * The calculation window.
-     */
-    @JsonProperty(value = "properties.calculationWindow")
-    private CalculationWindowTypes calculationWindow;
-
-    /*
-     * Name of calculation window field.
-     */
-    @JsonProperty(value = "properties.calculationWindowFieldName")
-    private String calculationWindowFieldName;
-
-    /*
-     * The computation function for the KPI.
-     */
-    @JsonProperty(value = "properties.function")
-    private KpiFunctions function;
-
-    /*
-     * The computation expression for the KPI.
-     */
-    @JsonProperty(value = "properties.expression")
-    private String expression;
-
-    /*
-     * The unit of measurement for the KPI.
-     */
-    @JsonProperty(value = "properties.unit")
-    private String unit;
-
-    /*
-     * The filter expression for the KPI.
-     */
-    @JsonProperty(value = "properties.filter")
-    private String filter;
-
-    /*
-     * the group by properties for the KPI.
-     */
-    @JsonProperty(value = "properties.groupBy")
-    private List<String> groupBy;
-
-    /*
-     * The KPI GroupByMetadata.
-     */
-    @JsonProperty(value = "properties.groupByMetadata", access = JsonProperty.Access.WRITE_ONLY)
-    private List<KpiGroupByMetadata> groupByMetadata;
-
-    /*
-     * The participant profiles.
-     */
-    @JsonProperty(value = "properties.participantProfilesMetadata", access = JsonProperty.Access.WRITE_ONLY)
-    private List<KpiParticipantProfilesMetadata> participantProfilesMetadata;
-
-    /*
-     * Provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
-
-    /*
-     * The KPI thresholds.
-     */
-    @JsonProperty(value = "properties.thresHolds")
-    private KpiThresholds thresHolds;
-
-    /*
-     * The aliases.
-     */
-    @JsonProperty(value = "properties.aliases")
-    private List<KpiAlias> aliases;
-
-    /*
-     * The KPI extracts.
-     */
-    @JsonProperty(value = "properties.extracts")
-    private List<KpiExtract> extracts;
+    private KpiDefinitionInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the entityType property: The mapping entity type.
@@ -148,7 +47,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the entityType value.
      */
     public EntityTypes entityType() {
-        return this.entityType;
+        return this.innerProperties() == null ? null : this.innerProperties().entityType();
     }
 
     /**
@@ -158,7 +57,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withEntityType(EntityTypes entityType) {
-        this.entityType = entityType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withEntityType(entityType);
         return this;
     }
 
@@ -168,7 +70,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the entityTypeName value.
      */
     public String entityTypeName() {
-        return this.entityTypeName;
+        return this.innerProperties() == null ? null : this.innerProperties().entityTypeName();
     }
 
     /**
@@ -178,7 +80,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withEntityTypeName(String entityTypeName) {
-        this.entityTypeName = entityTypeName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withEntityTypeName(entityTypeName);
         return this;
     }
 
@@ -188,7 +93,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -197,7 +102,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the kpiName value.
      */
     public String kpiName() {
-        return this.kpiName;
+        return this.innerProperties() == null ? null : this.innerProperties().kpiName();
     }
 
     /**
@@ -206,7 +111,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -216,7 +121,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -226,7 +134,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the description value.
      */
     public Map<String, String> description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -236,7 +144,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -246,7 +157,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the calculationWindow value.
      */
     public CalculationWindowTypes calculationWindow() {
-        return this.calculationWindow;
+        return this.innerProperties() == null ? null : this.innerProperties().calculationWindow();
     }
 
     /**
@@ -256,7 +167,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withCalculationWindow(CalculationWindowTypes calculationWindow) {
-        this.calculationWindow = calculationWindow;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withCalculationWindow(calculationWindow);
         return this;
     }
 
@@ -266,7 +180,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the calculationWindowFieldName value.
      */
     public String calculationWindowFieldName() {
-        return this.calculationWindowFieldName;
+        return this.innerProperties() == null ? null : this.innerProperties().calculationWindowFieldName();
     }
 
     /**
@@ -276,7 +190,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withCalculationWindowFieldName(String calculationWindowFieldName) {
-        this.calculationWindowFieldName = calculationWindowFieldName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withCalculationWindowFieldName(calculationWindowFieldName);
         return this;
     }
 
@@ -286,7 +203,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the function value.
      */
     public KpiFunctions function() {
-        return this.function;
+        return this.innerProperties() == null ? null : this.innerProperties().function();
     }
 
     /**
@@ -296,7 +213,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withFunction(KpiFunctions function) {
-        this.function = function;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withFunction(function);
         return this;
     }
 
@@ -306,7 +226,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the expression value.
      */
     public String expression() {
-        return this.expression;
+        return this.innerProperties() == null ? null : this.innerProperties().expression();
     }
 
     /**
@@ -316,7 +236,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withExpression(String expression) {
-        this.expression = expression;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withExpression(expression);
         return this;
     }
 
@@ -326,7 +249,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the unit value.
      */
     public String unit() {
-        return this.unit;
+        return this.innerProperties() == null ? null : this.innerProperties().unit();
     }
 
     /**
@@ -336,7 +259,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withUnit(String unit) {
-        this.unit = unit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withUnit(unit);
         return this;
     }
 
@@ -346,7 +272,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the filter value.
      */
     public String filter() {
-        return this.filter;
+        return this.innerProperties() == null ? null : this.innerProperties().filter();
     }
 
     /**
@@ -356,7 +282,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withFilter(String filter) {
-        this.filter = filter;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withFilter(filter);
         return this;
     }
 
@@ -366,7 +295,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the groupBy value.
      */
     public List<String> groupBy() {
-        return this.groupBy;
+        return this.innerProperties() == null ? null : this.innerProperties().groupBy();
     }
 
     /**
@@ -376,7 +305,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withGroupBy(List<String> groupBy) {
-        this.groupBy = groupBy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withGroupBy(groupBy);
         return this;
     }
 
@@ -386,7 +318,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the groupByMetadata value.
      */
     public List<KpiGroupByMetadata> groupByMetadata() {
-        return this.groupByMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().groupByMetadata();
     }
 
     /**
@@ -395,7 +327,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the participantProfilesMetadata value.
      */
     public List<KpiParticipantProfilesMetadata> participantProfilesMetadata() {
-        return this.participantProfilesMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().participantProfilesMetadata();
     }
 
     /**
@@ -404,7 +336,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -413,7 +345,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the thresHolds value.
      */
     public KpiThresholds thresHolds() {
-        return this.thresHolds;
+        return this.innerProperties() == null ? null : this.innerProperties().thresHolds();
     }
 
     /**
@@ -423,7 +355,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withThresHolds(KpiThresholds thresHolds) {
-        this.thresHolds = thresHolds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withThresHolds(thresHolds);
         return this;
     }
 
@@ -433,7 +368,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the aliases value.
      */
     public List<KpiAlias> aliases() {
-        return this.aliases;
+        return this.innerProperties() == null ? null : this.innerProperties().aliases();
     }
 
     /**
@@ -443,7 +378,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withAliases(List<KpiAlias> aliases) {
-        this.aliases = aliases;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withAliases(aliases);
         return this;
     }
 
@@ -453,7 +391,7 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the extracts value.
      */
     public List<KpiExtract> extracts() {
-        return this.extracts;
+        return this.innerProperties() == null ? null : this.innerProperties().extracts();
     }
 
     /**
@@ -463,7 +401,10 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withExtracts(List<KpiExtract> extracts) {
-        this.extracts = extracts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withExtracts(extracts);
         return this;
     }
 
@@ -473,20 +414,8 @@ public class KpiResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (groupByMetadata() != null) {
-            groupByMetadata().forEach(e -> e.validate());
-        }
-        if (participantProfilesMetadata() != null) {
-            participantProfilesMetadata().forEach(e -> e.validate());
-        }
-        if (thresHolds() != null) {
-            thresHolds().validate();
-        }
-        if (aliases() != null) {
-            aliases().forEach(e -> e.validate());
-        }
-        if (extracts() != null) {
-            extracts().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -14,6 +14,15 @@ public final class WebhookActivityMethod extends ExpandableStringEnum<WebhookAct
     public static final WebhookActivityMethod POST = fromString("POST");
 
     /**
+     * Creates a new instance of WebhookActivityMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebhookActivityMethod() {
+    }
+
+    /**
      * Creates or finds a WebhookActivityMethod from its string representation.
      *
      * @param name a name to look for.

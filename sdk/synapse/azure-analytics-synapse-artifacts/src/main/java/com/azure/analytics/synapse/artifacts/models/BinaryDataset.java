@@ -30,6 +30,9 @@ public class BinaryDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of BinaryDataset class. */
+    public BinaryDataset() {}
+
     /**
      * Get the location property: The location of the Binary storage.
      *

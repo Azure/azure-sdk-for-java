@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AttachedDataNetworks Delete. */
 public final class AttachedDataNetworksDeleteSamples {
     /*
@@ -20,6 +18,11 @@ public final class AttachedDataNetworksDeleteSamples {
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager
             .attachedDataNetworks()
-            .delete("rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork", Context.NONE);
+            .delete(
+                "rg1",
+                "TestPacketCoreCP",
+                "TestPacketCoreDP",
+                "TestAttachedDataNetwork",
+                com.azure.core.util.Context.NONE);
     }
 }

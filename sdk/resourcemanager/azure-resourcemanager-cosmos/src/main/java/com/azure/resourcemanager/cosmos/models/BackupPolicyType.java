@@ -17,6 +17,15 @@ public final class BackupPolicyType extends ExpandableStringEnum<BackupPolicyTyp
     public static final BackupPolicyType CONTINUOUS = fromString("Continuous");
 
     /**
+     * Creates a new instance of BackupPolicyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupPolicyType() {
+    }
+
+    /**
      * Creates or finds a BackupPolicyType from its string representation.
      *
      * @param name a name to look for.

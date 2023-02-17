@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedClusters ListClusterMonitoringUserCredentials. */
 public final class ManagedClustersListClusterMonitoringUserCredentialsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/ManagedClustersListClusterMonitoringUserCredentials.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/ManagedClustersListClusterMonitoringUserCredentials.json
      */
     /**
      * Sample code: Get Managed Cluster.
@@ -22,6 +20,7 @@ public final class ManagedClustersListClusterMonitoringUserCredentialsSamples {
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .listClusterMonitoringUserCredentialsWithResponse("rg1", "clustername1", null, Context.NONE);
+            .listClusterMonitoringUserCredentialsWithResponse(
+                "rg1", "clustername1", null, com.azure.core.util.Context.NONE);
     }
 }

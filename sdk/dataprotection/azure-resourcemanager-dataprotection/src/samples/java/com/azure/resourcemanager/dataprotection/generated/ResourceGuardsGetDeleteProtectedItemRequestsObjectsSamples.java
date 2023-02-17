@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuards GetDeleteProtectedItemRequestsObjects. */
 public final class ResourceGuardsGetDeleteProtectedItemRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
@@ -20,6 +18,7 @@ public final class ResourceGuardsGetDeleteProtectedItemRequestsObjectsSamples {
         com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager
             .resourceGuards()
-            .getDeleteProtectedItemRequestsObjects("SampleResourceGroup", "swaggerExample", Context.NONE);
+            .getDeleteProtectedItemRequestsObjects(
+                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }

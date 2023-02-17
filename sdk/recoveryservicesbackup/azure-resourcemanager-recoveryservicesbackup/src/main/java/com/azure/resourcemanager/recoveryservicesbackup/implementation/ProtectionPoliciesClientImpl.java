@@ -58,7 +58,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectionPoliciesService {
+    public interface ProtectionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
@@ -625,7 +625,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String vaultName, String resourceGroupName, String policyName) {
-        return beginDeleteAsync(vaultName, resourceGroupName, policyName).getSyncPoller();
+        return this.beginDeleteAsync(vaultName, resourceGroupName, policyName).getSyncPoller();
     }
 
     /**
@@ -644,7 +644,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String vaultName, String resourceGroupName, String policyName, Context context) {
-        return beginDeleteAsync(vaultName, resourceGroupName, policyName, context).getSyncPoller();
+        return this.beginDeleteAsync(vaultName, resourceGroupName, policyName, context).getSyncPoller();
     }
 
     /**

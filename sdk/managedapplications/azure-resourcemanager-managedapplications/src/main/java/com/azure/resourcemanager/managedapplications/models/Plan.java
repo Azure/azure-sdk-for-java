@@ -6,14 +6,11 @@ package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Plan for the managed application. */
 @Fluent
 public final class Plan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Plan.class);
-
     /*
      * The plan name.
      */
@@ -43,6 +40,10 @@ public final class Plan {
      */
     @JsonProperty(value = "version", required = true)
     private String version;
+
+    /** Creates an instance of Plan class. */
+    public Plan() {
+    }
 
     /**
      * Get the name property: The plan name.
@@ -151,20 +152,22 @@ public final class Plan {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Plan"));
         }
         if (publisher() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property publisher in model Plan"));
         }
         if (product() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property product in model Plan"));
         }
         if (version() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property version in model Plan"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Plan.class);
 }

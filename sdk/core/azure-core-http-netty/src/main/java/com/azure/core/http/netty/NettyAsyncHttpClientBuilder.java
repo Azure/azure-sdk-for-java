@@ -3,10 +3,12 @@
 
 package com.azure.core.http.netty;
 
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.ChannelOption;
@@ -35,6 +37,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
+ * Please be aware that client built from this builder can support synchronously and asynchronously call of sending
+ * request. Use {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request
+ * synchronously with contextual information.
  *
  * <p><strong>Building a new HttpClient instance</strong></p>
  *
@@ -117,7 +122,10 @@ public class NettyAsyncHttpClientBuilder {
 
     /**
      * Creates a new Netty-backed {@link com.azure.core.http.HttpClient} instance on every call, using the configuration
-     * set in the builder at the time of the build method call.
+     * set in the builder at the time of the build method call. Please be aware that client built from this builder can
+     * support synchronously and asynchronously call of sending request. Use
+     * {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request synchronously
+     * with contextual information.
      *
      * @return A new Netty-backed {@link com.azure.core.http.HttpClient} instance.
      * @throws IllegalStateException If the builder is configured to use an unknown proxy type.
@@ -233,6 +241,18 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder connectionProvider(ConnectionProvider connectionProvider) {
         // Enables overriding the default reactor-netty connection/channel pool.
+        if (connectionProvider != null) {
+            LOGGER.verbose("Setting ConnectionProvider for the Reactor Netty HttpClient. Please be aware of the "
+                + "differences in runtime behavior when creating a default Reactor Netty HttpClient vs an HttpClient"
+                + "with a specified ConnectionProvider. For more details see "
+                + "https://aka.ms/azsdk/java/docs/configure-httpclient.");
+        }
+
+        this.connectionProvider = connectionProvider;
+        return this;
+    }
+
+    NettyAsyncHttpClientBuilder connectionProviderInternal(ConnectionProvider connectionProvider) {
         this.connectionProvider = connectionProvider;
         return this;
     }

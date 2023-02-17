@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageimportexport.fluent.models.JobResponseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List jobs response. */
 @Fluent
 public final class ListJobsResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListJobsResponse.class);
-
     /*
      * link to next batch of jobs
      */
@@ -27,6 +23,10 @@ public final class ListJobsResponse {
      */
     @JsonProperty(value = "value")
     private List<JobResponseInner> value;
+
+    /** Creates an instance of ListJobsResponse class. */
+    public ListJobsResponse() {
+    }
 
     /**
      * Get the nextLink property: link to next batch of jobs.

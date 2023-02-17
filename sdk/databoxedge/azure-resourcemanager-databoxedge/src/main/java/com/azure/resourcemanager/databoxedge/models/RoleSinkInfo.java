@@ -6,19 +6,20 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Compute role against which events will be raised. */
 @Fluent
 public final class RoleSinkInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleSinkInfo.class);
-
     /*
      * Compute role ID.
      */
     @JsonProperty(value = "roleId", required = true)
     private String roleId;
+
+    /** Creates an instance of RoleSinkInfo class. */
+    public RoleSinkInfo() {
+    }
 
     /**
      * Get the roleId property: Compute role ID.
@@ -47,9 +48,11 @@ public final class RoleSinkInfo {
      */
     public void validate() {
         if (roleId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property roleId in model RoleSinkInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoleSinkInfo.class);
 }

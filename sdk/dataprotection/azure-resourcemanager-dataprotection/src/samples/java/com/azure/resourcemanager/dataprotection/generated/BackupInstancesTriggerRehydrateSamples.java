@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRehydrationRequest;
 import com.azure.resourcemanager.dataprotection.models.RehydrationPriority;
 
 /** Samples for BackupInstances TriggerRehydrate. */
 public final class BackupInstancesTriggerRehydrateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/TriggerRehydrate.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/BackupInstanceOperations/TriggerRehydrate.json
      */
     /**
      * Sample code: Trigger Rehydrate.
@@ -29,6 +28,6 @@ public final class BackupInstancesTriggerRehydrateSamples {
                     .withRecoveryPointId("hardcodedRP")
                     .withRehydrationPriority(RehydrationPriority.HIGH)
                     .withRehydrationRetentionDuration("7D"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

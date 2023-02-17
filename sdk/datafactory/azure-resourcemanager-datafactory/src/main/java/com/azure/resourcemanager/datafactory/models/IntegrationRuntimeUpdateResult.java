@@ -20,6 +20,15 @@ public final class IntegrationRuntimeUpdateResult extends ExpandableStringEnum<I
     public static final IntegrationRuntimeUpdateResult FAIL = fromString("Fail");
 
     /**
+     * Creates a new instance of IntegrationRuntimeUpdateResult value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeUpdateResult() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeUpdateResult from its string representation.
      *
      * @param name a name to look for.

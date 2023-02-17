@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the virtual network subnets resource settings. */
 @Fluent
 public final class SubnetResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetResourceSettings.class);
-
     /*
      * Gets or sets the Subnet name.
      */
@@ -31,6 +27,10 @@ public final class SubnetResourceSettings {
      */
     @JsonProperty(value = "networkSecurityGroup")
     private NsgReference networkSecurityGroup;
+
+    /** Creates an instance of SubnetResourceSettings class. */
+    public SubnetResourceSettings() {
+    }
 
     /**
      * Get the name property: Gets or sets the Subnet name.

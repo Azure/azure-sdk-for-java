@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redis.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DayOfWeek. */
+/** Day of the week when a cache can be patched. */
 public enum DayOfWeek {
     /** Enum value Monday. */
     MONDAY("Monday"),
@@ -51,6 +51,9 @@ public enum DayOfWeek {
      */
     @JsonCreator
     public static DayOfWeek fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DayOfWeek[] items = DayOfWeek.values();
         for (DayOfWeek item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -60,6 +63,7 @@ public enum DayOfWeek {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

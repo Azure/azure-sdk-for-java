@@ -230,12 +230,10 @@
 ### BackupEngines_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupEngines Get. */
 public final class BackupEnginesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Dpm/BackupEngines_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Dpm/BackupEngines_Get.json
      */
     /**
      * Sample code: Get Dpm/AzureBackupServer/Lajolla Backup Engine Details.
@@ -244,7 +242,9 @@ public final class BackupEnginesGetSamples {
      */
     public static void getDpmAzureBackupServerLajollaBackupEngineDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupEngines().getWithResponse("testVault", "testRG", "testServer", null, null, Context.NONE);
+        manager
+            .backupEngines()
+            .getWithResponse("testVault", "testRG", "testServer", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -252,12 +252,10 @@ public final class BackupEnginesGetSamples {
 ### BackupEngines_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupEngines List. */
 public final class BackupEnginesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Dpm/BackupEngines_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Dpm/BackupEngines_List.json
      */
     /**
      * Sample code: List Dpm/AzureBackupServer/Lajolla Backup Engines.
@@ -266,7 +264,7 @@ public final class BackupEnginesListSamples {
      */
     public static void listDpmAzureBackupServerLajollaBackupEngines(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupEngines().list("testVault", "testRG", null, null, Context.NONE);
+        manager.backupEngines().list("testVault", "testRG", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -274,12 +272,10 @@ public final class BackupEnginesListSamples {
 ### BackupJobs_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupJobs List. */
 public final class BackupJobsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobs.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ListJobs.json
      */
     /**
      * Sample code: List All Jobs.
@@ -288,11 +284,11 @@ public final class BackupJobsListSamples {
      */
     public static void listAllJobs(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupJobs().list("NetSDKTestRsVault", "SwaggerTestRg", null, null, Context.NONE);
+        manager.backupJobs().list("NetSDKTestRsVault", "SwaggerTestRg", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobsWithAllSupportedFilters.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ListJobsWithAllSupportedFilters.json
      */
     /**
      * Sample code: List Jobs With Filters.
@@ -309,11 +305,11 @@ public final class BackupJobsListSamples {
                 "startTime eq '2016-01-01 00:00:00 AM' and endTime eq '2017-11-29 00:00:00 AM' and operation eq"
                     + " 'Backup' and backupManagementType eq 'AzureIaasVM' and status eq 'InProgress'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobsWithStartTimeAndEndTimeFilters.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ListJobsWithStartTimeAndEndTimeFilters.json
      */
     /**
      * Sample code: List Jobs With Time Filter.
@@ -329,7 +325,7 @@ public final class BackupJobsListSamples {
                 "SwaggerTestRg",
                 "startTime eq '2016-01-01 00:00:00 AM' and endTime eq '2017-11-29 00:00:00 AM'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -337,12 +333,10 @@ public final class BackupJobsListSamples {
 ### BackupOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupOperationResults Get. */
 public final class BackupOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ProtectedItem_Delete_OperationResult.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ProtectedItem_Delete_OperationResult.json
      */
     /**
      * Sample code: Get Result for Protected Item Delete Operation.
@@ -357,7 +351,7 @@ public final class BackupOperationResultsGetSamples {
                 "PySDKBackupTestRsVault",
                 "PythonSDKBackupTestRg",
                 "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -365,12 +359,10 @@ public final class BackupOperationResultsGetSamples {
 ### BackupOperationStatuses_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupOperationStatuses Get. */
 public final class BackupOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ProtectedItem_Delete_OperationStatus.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ProtectedItem_Delete_OperationStatus.json
      */
     /**
      * Sample code: Get Protected Item Delete Operation Status.
@@ -385,7 +377,7 @@ public final class BackupOperationStatusesGetSamples {
                 "PySDKBackupTestRsVault",
                 "PythonSDKBackupTestRg",
                 "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -393,12 +385,10 @@ public final class BackupOperationStatusesGetSamples {
 ### BackupPolicies_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupPolicies List. */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupPolicies_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/BackupPolicies_List.json
      */
     /**
      * Sample code: List protection policies with backupManagementType filter as AzureWorkload.
@@ -409,11 +399,15 @@ public final class BackupPoliciesListSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .backupPolicies()
-            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureWorkload'", Context.NONE);
+            .list(
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "backupManagementType eq 'AzureWorkload'",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/V2Policy/v2-List-Policies.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/V2Policy/v2-List-Policies.json
      */
     /**
      * Sample code: List protection policies with backupManagementType filter as AzureIaasVm with both V1 and V2
@@ -425,11 +419,15 @@ public final class BackupPoliciesListSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .backupPolicies()
-            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureIaasVM'", Context.NONE);
+            .list(
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "backupManagementType eq 'AzureIaasVM'",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/BackupPolicies_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/BackupPolicies_List.json
      */
     /**
      * Sample code: List protection policies with backupManagementType filter as AzureIaasVm.
@@ -440,7 +438,11 @@ public final class BackupPoliciesListSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .backupPolicies()
-            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureIaasVM'", Context.NONE);
+            .list(
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "backupManagementType eq 'AzureIaasVM'",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -448,12 +450,10 @@ public final class BackupPoliciesListSamples {
 ### BackupProtectableItems_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupProtectableItems List. */
 public final class BackupProtectableItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/BackupProtectableItems_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/BackupProtectableItems_List.json
      */
     /**
      * Sample code: List protectable items with backupManagementType filter as AzureIaasVm.
@@ -464,7 +464,12 @@ public final class BackupProtectableItemsListSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .backupProtectableItems()
-            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureIaasVM'", null, Context.NONE);
+            .list(
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "backupManagementType eq 'AzureIaasVM'",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -472,12 +477,10 @@ public final class BackupProtectableItemsListSamples {
 ### BackupProtectedItems_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupProtectedItems List. */
 public final class BackupProtectedItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/BackupProtectedItems_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/BackupProtectedItems_List.json
      */
     /**
      * Sample code: List protected items with backupManagementType filter as AzureIaasVm.
@@ -493,7 +496,7 @@ public final class BackupProtectedItemsListSamples {
                 "SwaggerTestRg",
                 "backupManagementType eq 'AzureIaasVM' and itemType eq 'VM'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -501,12 +504,10 @@ public final class BackupProtectedItemsListSamples {
 ### BackupProtectionContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupProtectionContainers List. */
 public final class BackupProtectionContainersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionContainers_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureStorage/ProtectionContainers_List.json
      */
     /**
      * Sample code: List Backup Protection Containers.
@@ -517,7 +518,7 @@ public final class BackupProtectionContainersListSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .backupProtectionContainers()
-            .list("testVault", "testRg", "backupManagementType eq 'AzureWorkload'", Context.NONE);
+            .list("testVault", "testRg", "backupManagementType eq 'AzureWorkload'", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -525,12 +526,10 @@ public final class BackupProtectionContainersListSamples {
 ### BackupProtectionIntent_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupProtectionIntent List. */
 public final class BackupProtectionIntentListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupProtectionIntent_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/BackupProtectionIntent_List.json
      */
     /**
      * Sample code: List protection intent with backupManagementType filter.
@@ -539,7 +538,7 @@ public final class BackupProtectionIntentListSamples {
      */
     public static void listProtectionIntentWithBackupManagementTypeFilter(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupProtectionIntents().list("myVault", "myRG", null, null, Context.NONE);
+        manager.backupProtectionIntents().list("myVault", "myRG", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -547,12 +546,10 @@ public final class BackupProtectionIntentListSamples {
 ### BackupResourceEncryptionConfigs_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupResourceEncryptionConfigs Get. */
 public final class BackupResourceEncryptionConfigsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupResourceEncryptionConfig_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupResourceEncryptionConfig_Get.json
      */
     /**
      * Sample code: Get Vault Encryption Configuration.
@@ -561,7 +558,9 @@ public final class BackupResourceEncryptionConfigsGetSamples {
      */
     public static void getVaultEncryptionConfiguration(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupResourceEncryptionConfigs().getWithResponse("rishTestVault", "rishgrp", Context.NONE);
+        manager
+            .backupResourceEncryptionConfigs()
+            .getWithResponse("rishTestVault", "rishgrp", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -569,7 +568,6 @@ public final class BackupResourceEncryptionConfigsGetSamples {
 ### BackupResourceEncryptionConfigs_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionAtRestType;
@@ -578,7 +576,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.InfrastructureEnc
 /** Samples for BackupResourceEncryptionConfigs Update. */
 public final class BackupResourceEncryptionConfigsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupResourceEncryptionConfig_Put.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupResourceEncryptionConfig_Put.json
      */
     /**
      * Sample code: Update Vault Encryption Configuration.
@@ -596,10 +594,10 @@ public final class BackupResourceEncryptionConfigsUpdateSamples {
                     .withProperties(
                         new BackupResourceEncryptionConfig()
                             .withEncryptionAtRestType(EncryptionAtRestType.CUSTOMER_MANAGED)
-                            .withKeyUri("https://gktestkv1.vault.azure.net/keys/Test1/ed2e8cdc7f86477ebf0c6462b504a9ed")
+                            .withKeyUri("fakeTokenPlaceholder")
                             .withSubscriptionId("1a2311d9-66f5-47d3-a9fb-7a37da63934b")
                             .withInfrastructureEncryptionState(InfrastructureEncryptionState.fromString("true"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -607,12 +605,10 @@ public final class BackupResourceEncryptionConfigsUpdateSamples {
 ### BackupResourceStorageConfigsNonCrr_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupResourceStorageConfigsNonCrr Get. */
 public final class BackupResourceStorageConfigsNonCrrGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupStorageConfig_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupStorageConfig_Get.json
      */
     /**
      * Sample code: Get Vault Storage Configuration.
@@ -623,7 +619,7 @@ public final class BackupResourceStorageConfigsNonCrrGetSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .backupResourceStorageConfigsNonCrrs()
-            .getWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", Context.NONE);
+            .getWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -631,7 +627,6 @@ public final class BackupResourceStorageConfigsNonCrrGetSamples {
 ### BackupResourceStorageConfigsNonCrr_Patch
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.StorageType;
@@ -640,7 +635,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.StorageTypeState;
 /** Samples for BackupResourceStorageConfigsNonCrr Patch. */
 public final class BackupResourceStorageConfigsNonCrrPatchSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupStorageConfig_Patch.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupStorageConfig_Patch.json
      */
     /**
      * Sample code: Update Vault Storage Configuration.
@@ -659,7 +654,7 @@ public final class BackupResourceStorageConfigsNonCrrPatchSamples {
                         new BackupResourceConfig()
                             .withStorageType(StorageType.LOCALLY_REDUNDANT)
                             .withStorageTypeState(StorageTypeState.UNLOCKED)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -667,7 +662,6 @@ public final class BackupResourceStorageConfigsNonCrrPatchSamples {
 ### BackupResourceStorageConfigsNonCrr_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.StorageType;
@@ -676,7 +670,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.StorageTypeState;
 /** Samples for BackupResourceStorageConfigsNonCrr Update. */
 public final class BackupResourceStorageConfigsNonCrrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupStorageConfig_Put.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupStorageConfig_Put.json
      */
     /**
      * Sample code: Update Vault Storage Configuration.
@@ -695,7 +689,7 @@ public final class BackupResourceStorageConfigsNonCrrUpdateSamples {
                         new BackupResourceConfig()
                             .withStorageType(StorageType.LOCALLY_REDUNDANT)
                             .withStorageTypeState(StorageTypeState.UNLOCKED)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -703,12 +697,10 @@ public final class BackupResourceStorageConfigsNonCrrUpdateSamples {
 ### BackupResourceVaultConfigs_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupResourceVaultConfigs Get. */
 public final class BackupResourceVaultConfigsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupResourceVaultConfigs_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupResourceVaultConfigs_Get.json
      */
     /**
      * Sample code: Get Vault Security Config.
@@ -717,7 +709,9 @@ public final class BackupResourceVaultConfigsGetSamples {
      */
     public static void getVaultSecurityConfig(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupResourceVaultConfigs().getWithResponse("SwaggerTest", "SwaggerTestRg", Context.NONE);
+        manager
+            .backupResourceVaultConfigs()
+            .getWithResponse("SwaggerTest", "SwaggerTestRg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -725,7 +719,6 @@ public final class BackupResourceVaultConfigsGetSamples {
 ### BackupResourceVaultConfigs_Put
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EnhancedSecurityState;
@@ -734,7 +727,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.SoftDeleteFeature
 /** Samples for BackupResourceVaultConfigs Put. */
 public final class BackupResourceVaultConfigsPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupResourceVaultConfigs_Put.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupResourceVaultConfigs_Put.json
      */
     /**
      * Sample code: Update Vault Security Config.
@@ -753,7 +746,7 @@ public final class BackupResourceVaultConfigsPutSamples {
                         new BackupResourceVaultConfig()
                             .withEnhancedSecurityState(EnhancedSecurityState.ENABLED)
                             .withSoftDeleteFeatureState(SoftDeleteFeatureState.ENABLED)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -761,7 +754,6 @@ public final class BackupResourceVaultConfigsPutSamples {
 ### BackupResourceVaultConfigs_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EnhancedSecurityState;
@@ -769,7 +761,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.EnhancedSecurityS
 /** Samples for BackupResourceVaultConfigs Update. */
 public final class BackupResourceVaultConfigsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupResourceVaultConfigs_Patch.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupResourceVaultConfigs_Patch.json
      */
     /**
      * Sample code: Update Vault Security Config.
@@ -786,7 +778,7 @@ public final class BackupResourceVaultConfigsUpdateSamples {
                 new BackupResourceVaultConfigResourceInner()
                     .withProperties(
                         new BackupResourceVaultConfig().withEnhancedSecurityState(EnhancedSecurityState.ENABLED)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -794,14 +786,13 @@ public final class BackupResourceVaultConfigsUpdateSamples {
 ### BackupStatus_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataSourceType;
 
 /** Samples for BackupStatus Get. */
 public final class BackupStatusGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/GetBackupStatus.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/GetBackupStatus.json
      */
     /**
      * Sample code: Get Azure Virtual Machine Backup Status.
@@ -818,7 +809,7 @@ public final class BackupStatusGetSamples {
                     .withResourceType(DataSourceType.VM)
                     .withResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Compute/VirtualMachines/testVm"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -826,12 +817,10 @@ public final class BackupStatusGetSamples {
 ### BackupUsageSummaries_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupUsageSummaries List. */
 public final class BackupUsageSummariesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupProtectedItem_UsageSummary_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupProtectedItem_UsageSummary_Get.json
      */
     /**
      * Sample code: Get Protected Items Usages Summary.
@@ -842,11 +831,16 @@ public final class BackupUsageSummariesListSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .backupUsageSummaries()
-            .list("testVault", "testRG", "type eq 'BackupProtectedItemCountSummary'", null, Context.NONE);
+            .list(
+                "testVault",
+                "testRG",
+                "type eq 'BackupProtectedItemCountSummary'",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupProtectionContainers_UsageSummary_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupProtectionContainers_UsageSummary_Get.json
      */
     /**
      * Sample code: Get Protected Containers Usages Summary.
@@ -857,7 +851,12 @@ public final class BackupUsageSummariesListSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .backupUsageSummaries()
-            .list("testVault", "testRG", "type eq 'BackupProtectionContainerCountSummary'", null, Context.NONE);
+            .list(
+                "testVault",
+                "testRG",
+                "type eq 'BackupProtectionContainerCountSummary'",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -865,12 +864,10 @@ public final class BackupUsageSummariesListSamples {
 ### BackupWorkloadItems_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BackupWorkloadItems List. */
 public final class BackupWorkloadItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupWorkloadItems_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/BackupWorkloadItems_List.json
      */
     /**
      * Sample code: List Workload Items in Container.
@@ -888,7 +885,7 @@ public final class BackupWorkloadItemsListSamples {
                 "VMAppContainer;Compute;bvtdtestag;sqlserver-1",
                 "backupManagementType eq 'AzureWorkload'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -896,14 +893,13 @@ public final class BackupWorkloadItemsListSamples {
 ### Backups_Trigger
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMBackupRequest;
 
 /** Samples for Backups Trigger. */
 public final class BackupsTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/TriggerBackup_Post.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/TriggerBackup_Post.json
      */
     /**
      * Sample code: Trigger Backup.
@@ -921,7 +917,7 @@ public final class BackupsTriggerSamples {
                 "IaasVMContainer;iaasvmcontainerv2;testrg;v1win2012r",
                 "VM;iaasvmcontainerv2;testrg;v1win2012r",
                 new BackupRequestResource().withProperties(new IaasVMBackupRequest()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -929,12 +925,10 @@ public final class BackupsTriggerSamples {
 ### BmsPrepareDataMoveOperationResult_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BmsPrepareDataMoveOperationResult Get. */
 public final class BmsPrepareDataMoveOperationResultGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupDataMove/PrepareDataMoveOperationResult_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupDataMove/PrepareDataMoveOperationResult_Get.json
      */
     /**
      * Sample code: Get operation result for PrepareDataMove.
@@ -945,7 +939,8 @@ public final class BmsPrepareDataMoveOperationResultGetSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .bmsPrepareDataMoveOperationResults()
-            .getWithResponse("source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", Context.NONE);
+            .getWithResponse(
+                "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -953,12 +948,10 @@ public final class BmsPrepareDataMoveOperationResultGetSamples {
 ### DeletedProtectionContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DeletedProtectionContainers List. */
 public final class DeletedProtectionContainersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/SoftDeletedContainers_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureStorage/SoftDeletedContainers_List.json
      */
     /**
      * Sample code: List Backup Protection Containers.
@@ -969,7 +962,7 @@ public final class DeletedProtectionContainersListSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .deletedProtectionContainers()
-            .list("testRg", "testVault", "backupManagementType eq 'AzureWorkload'", Context.NONE);
+            .list("testRg", "testVault", "backupManagementType eq 'AzureWorkload'", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -977,12 +970,10 @@ public final class DeletedProtectionContainersListSamples {
 ### ExportJobsOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ExportJobsOperationResults Get. */
 public final class ExportJobsOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ExportJobsOperationResult.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ExportJobsOperationResult.json
      */
     /**
      * Sample code: Export Jobs Operation Results.
@@ -994,7 +985,10 @@ public final class ExportJobsOperationResultsGetSamples {
         manager
             .exportJobsOperationResults()
             .getWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1002,13 +996,12 @@ public final class ExportJobsOperationResultsGetSamples {
 ### FeatureSupport_Validate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVMResourceFeatureSupportRequest;
 
 /** Samples for FeatureSupport Validate. */
 public final class FeatureSupportValidateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/BackupFeature_Validate.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/BackupFeature_Validate.json
      */
     /**
      * Sample code: Check Azure Vm Backup Feature Support.
@@ -1022,7 +1015,7 @@ public final class FeatureSupportValidateSamples {
             .validateWithResponse(
                 "southeastasia",
                 new AzureVMResourceFeatureSupportRequest().withVmSize("Basic_A0").withVmSku("Premium"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1030,14 +1023,13 @@ public final class FeatureSupportValidateSamples {
 ### ItemLevelRecoveryConnections_Provision
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVmilrRegistrationRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
 
 /** Samples for ItemLevelRecoveryConnections Provision. */
 public final class ItemLevelRecoveryConnectionsProvisionSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/Provision_Ilr.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/Provision_Ilr.json
      */
     /**
      * Sample code: Provision Instant Item Level Recovery for Azure Vm.
@@ -1063,7 +1055,7 @@ public final class ItemLevelRecoveryConnectionsProvisionSamples {
                                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pysdktestrg/providers/Microsoft.Compute/virtualMachines/pysdktestv2vm1")
                             .withInitiatorName("Hello World")
                             .withRenewExistingRegistration(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1071,12 +1063,10 @@ public final class ItemLevelRecoveryConnectionsProvisionSamples {
 ### ItemLevelRecoveryConnections_Revoke
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ItemLevelRecoveryConnections Revoke. */
 public final class ItemLevelRecoveryConnectionsRevokeSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/Revoke_Ilr.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/Revoke_Ilr.json
      */
     /**
      * Sample code: Revoke Instant Item Level Recovery for Azure Vm.
@@ -1094,7 +1084,7 @@ public final class ItemLevelRecoveryConnectionsRevokeSamples {
                 "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
                 "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
                 "1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1102,12 +1092,10 @@ public final class ItemLevelRecoveryConnectionsRevokeSamples {
 ### JobCancellations_Trigger
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for JobCancellations Trigger. */
 public final class JobCancellationsTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/TriggerCancelJob.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/TriggerCancelJob.json
      */
     /**
      * Sample code: Cancel Job.
@@ -1119,7 +1107,10 @@ public final class JobCancellationsTriggerSamples {
         manager
             .jobCancellations()
             .triggerWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1127,12 +1118,10 @@ public final class JobCancellationsTriggerSamples {
 ### JobDetails_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for JobDetails Get. */
 public final class JobDetailsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/GetJobDetails.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/GetJobDetails.json
      */
     /**
      * Sample code: Get Job Details.
@@ -1144,7 +1133,10 @@ public final class JobDetailsGetSamples {
         manager
             .jobDetails()
             .getWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1152,12 +1144,10 @@ public final class JobDetailsGetSamples {
 ### JobOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for JobOperationResults Get. */
 public final class JobOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/CancelJobOperationResult.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/CancelJobOperationResult.json
      */
     /**
      * Sample code: Cancel Job Operation Result.
@@ -1173,7 +1163,7 @@ public final class JobOperationResultsGetSamples {
                 "SwaggerTestRg",
                 "00000000-0000-0000-0000-000000000000",
                 "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1181,12 +1171,10 @@ public final class JobOperationResultsGetSamples {
 ### Jobs_Export
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Jobs Export. */
 public final class JobsExportSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/TriggerExportJobs.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/TriggerExportJobs.json
      */
     /**
      * Sample code: Export Jobs.
@@ -1195,7 +1183,7 @@ public final class JobsExportSamples {
      */
     public static void exportJobs(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.jobs().exportWithResponse("NetSDKTestRsVault", "SwaggerTestRg", null, Context.NONE);
+        manager.jobs().exportWithResponse("NetSDKTestRsVault", "SwaggerTestRg", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1203,7 +1191,6 @@ public final class JobsExportSamples {
 ### OperationOperation_Validate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityBasedRestoreDetails;
@@ -1214,7 +1201,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateIaasVMRes
 /** Samples for OperationOperation Validate. */
 public final class OperationOperationValidateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperation_RestoreDisk.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ValidateOperation_RestoreDisk.json
      */
     /**
      * Sample code: Validate Operation.
@@ -1246,11 +1233,11 @@ public final class OperationOperationValidateSamples {
                                     .withIsSystemAssignedIdentity(false)
                                     .withManagedIdentityResourceId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperation_RestoreDisk_IdentityBasedRestoreDetails.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ValidateOperation_RestoreDisk_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Validate Operation with identityBasedRestoreDetails.
@@ -1284,7 +1271,7 @@ public final class OperationOperationValidateSamples {
                                 new IdentityBasedRestoreDetails()
                                     .withTargetStorageAccountId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1292,12 +1279,10 @@ public final class OperationOperationValidateSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ListOperations.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ListOperations.json
      */
     /**
      * Sample code: ListOperations.
@@ -1306,7 +1291,7 @@ public final class OperationsListSamples {
      */
     public static void listOperations(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1314,12 +1299,10 @@ public final class OperationsListSamples {
 ### PrivateEndpoint_GetOperationStatus
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpoint GetOperationStatus. */
 public final class PrivateEndpointGetOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
      */
     /**
      * Sample code: Get OperationStatus.
@@ -1335,7 +1318,7 @@ public final class PrivateEndpointGetOperationStatusSamples {
                 "gaallaRG",
                 "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
                 "0f48183b-0a44-4dca-aec1-bba5daab888a",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1343,12 +1326,10 @@ public final class PrivateEndpointGetOperationStatusSamples {
 ### PrivateEndpointConnection_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnection Delete. */
 public final class PrivateEndpointConnectionDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/DeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/PrivateEndpointConnection/DeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: Delete PrivateEndpointConnection.
@@ -1360,7 +1341,10 @@ public final class PrivateEndpointConnectionDeleteSamples {
         manager
             .privateEndpointConnections()
             .delete(
-                "gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", Context.NONE);
+                "gaallavaultbvtd2msi",
+                "gaallaRG",
+                "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1368,12 +1352,10 @@ public final class PrivateEndpointConnectionDeleteSamples {
 ### PrivateEndpointConnection_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnection Get. */
 public final class PrivateEndpointConnectionGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/GetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/PrivateEndpointConnection/GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: Get PrivateEndpointConnection.
@@ -1385,7 +1367,10 @@ public final class PrivateEndpointConnectionGetSamples {
         manager
             .privateEndpointConnections()
             .getWithResponse(
-                "gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", Context.NONE);
+                "gaallavaultbvtd2msi",
+                "gaallaRG",
+                "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1393,7 +1378,6 @@ public final class PrivateEndpointConnectionGetSamples {
 ### PrivateEndpointConnection_Put
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpoint;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnectionResource;
@@ -1404,7 +1388,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProvisioningState
 /** Samples for PrivateEndpointConnection Put. */
 public final class PrivateEndpointConnectionPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/PutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/PrivateEndpointConnection/PutPrivateEndpointConnection.json
      */
     /**
      * Sample code: Update PrivateEndpointConnection.
@@ -1420,7 +1404,7 @@ public final class PrivateEndpointConnectionPutSamples {
                     "gaallavaultbvtd2msi",
                     "gaallaRG",
                     "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -1443,12 +1427,10 @@ public final class PrivateEndpointConnectionPutSamples {
 ### ProtectableContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectableContainers List. */
 public final class ProtectableContainersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectableContainers_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureStorage/ProtectableContainers_List.json
      */
     /**
      * Sample code: List protectable items with backupManagementType filter as AzureStorage.
@@ -1464,7 +1446,7 @@ public final class ProtectableContainersListSamples {
                 "testRg",
                 "Azure",
                 "backupManagementType eq 'AzureStorage' and workloadType eq 'AzureFileShare'",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1472,12 +1454,10 @@ public final class ProtectableContainersListSamples {
 ### ProtectedItemOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectedItemOperationResults Get. */
 public final class ProtectedItemOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectedItemOperationResults.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectedItemOperationResults.json
      */
     /**
      * Sample code: Get Operation Results of Protected Vm.
@@ -1495,7 +1475,7 @@ public final class ProtectedItemOperationResultsGetSamples {
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
                 "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
                 "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1503,12 +1483,10 @@ public final class ProtectedItemOperationResultsGetSamples {
 ### ProtectedItemOperationStatuses_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectedItemOperationStatuses Get. */
 public final class ProtectedItemOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectedItemOperationStatus.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectedItemOperationStatus.json
      */
     /**
      * Sample code: Get Operation Status of Protected Vm.
@@ -1526,7 +1504,7 @@ public final class ProtectedItemOperationStatusesGetSamples {
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
                 "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
                 "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1540,7 +1518,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionState;
 /** Samples for ProtectedItems CreateOrUpdate. */
 public final class ProtectedItemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/StopProtection.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/StopProtection.json
      */
     /**
      * Sample code: Stop Protection with retain data on Azure IaasVm.
@@ -1567,7 +1545,7 @@ public final class ProtectedItemsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ConfigureProtection.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ConfigureProtection.json
      */
     /**
      * Sample code: Enable Protection on Azure IaasVm.
@@ -1599,12 +1577,10 @@ public final class ProtectedItemsCreateOrUpdateSamples {
 ### ProtectedItems_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectedItems Delete. */
 public final class ProtectedItemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ProtectedItem_Delete.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ProtectedItem_Delete.json
      */
     /**
      * Sample code: Delete Protection from Azure Virtual Machine.
@@ -1621,7 +1597,7 @@ public final class ProtectedItemsDeleteSamples {
                 "Azure",
                 "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
                 "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1629,12 +1605,10 @@ public final class ProtectedItemsDeleteSamples {
 ### ProtectedItems_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectedItems Get. */
 public final class ProtectedItemsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
      */
     /**
      * Sample code: Get Protected Classic Virtual Machine Details.
@@ -1652,11 +1626,11 @@ public final class ProtectedItemsGetSamples {
                 "iaasvmcontainer;iaasvmcontainer;iaasvm-rg;iaasvm-1",
                 "vm;iaasvmcontainer;iaasvm-rg;iaasvm-1",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/Compute_ProtectedItem_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/Compute_ProtectedItem_Get.json
      */
     /**
      * Sample code: Get Protected Virtual Machine Details.
@@ -1674,7 +1648,7 @@ public final class ProtectedItemsGetSamples {
                 "iaasvmcontainer;iaasvmcontainerv2;iaasvm-rg;iaasvm-1",
                 "vm;iaasvmcontainerv2;iaasvm-rg;iaasvm-1",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1682,12 +1656,10 @@ public final class ProtectedItemsGetSamples {
 ### ProtectionContainerOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionContainerOperationResults Get. */
 public final class ProtectionContainerOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionContainers_Inquire_Result.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureStorage/ProtectionContainers_Inquire_Result.json
      */
     /**
      * Sample code: Get Azure Storage Protection Container Operation Result.
@@ -1704,7 +1676,7 @@ public final class ProtectionContainerOperationResultsGetSamples {
                 "Azure",
                 "VMAppContainer;Compute;testRG;testSQL",
                 "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1712,12 +1684,10 @@ public final class ProtectionContainerOperationResultsGetSamples {
 ### ProtectionContainerRefreshOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionContainerRefreshOperationResults Get. */
 public final class ProtectionContainerRefreshOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/RefreshContainers_OperationResults.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/RefreshContainers_OperationResults.json
      */
     /**
      * Sample code: Azure Vm Discovery Operation Result.
@@ -1729,7 +1699,11 @@ public final class ProtectionContainerRefreshOperationResultsGetSamples {
         manager
             .protectionContainerRefreshOperationResults()
             .getWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "Azure", "00000000-0000-0000-0000-000000000000", Context.NONE);
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "Azure",
+                "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1737,12 +1711,10 @@ public final class ProtectionContainerRefreshOperationResultsGetSamples {
 ### ProtectionContainers_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionContainers Get. */
 public final class ProtectionContainersGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/ProtectionContainers_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/ProtectionContainers_Get.json
      */
     /**
      * Sample code: Get Protection Container Details.
@@ -1753,7 +1725,12 @@ public final class ProtectionContainersGetSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .protectionContainers()
-            .getWithResponse("testVault", "testRg", "Azure", "VMAppContainer;Compute;testRG;testSQL", Context.NONE);
+            .getWithResponse(
+                "testVault",
+                "testRg",
+                "Azure",
+                "VMAppContainer;Compute;testRG;testSQL",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1761,12 +1738,10 @@ public final class ProtectionContainersGetSamples {
 ### ProtectionContainers_Inquire
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionContainers Inquire. */
 public final class ProtectionContainersInquireSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionContainers_Inquire.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureStorage/ProtectionContainers_Inquire.json
      */
     /**
      * Sample code: Inquire Azure Storage Protection Containers.
@@ -1778,7 +1753,12 @@ public final class ProtectionContainersInquireSamples {
         manager
             .protectionContainers()
             .inquireWithResponse(
-                "testvault", "test-rg", "Azure", "storagecontainer;Storage;test-rg;teststorage", null, Context.NONE);
+                "testvault",
+                "test-rg",
+                "Azure",
+                "storagecontainer;Storage;test-rg;teststorage",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1786,12 +1766,10 @@ public final class ProtectionContainersInquireSamples {
 ### ProtectionContainers_Refresh
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionContainers Refresh. */
 public final class ProtectionContainersRefreshSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/RefreshContainers.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/RefreshContainers.json
      */
     /**
      * Sample code: Trigger Azure Vm Discovery.
@@ -1802,7 +1780,7 @@ public final class ProtectionContainersRefreshSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .protectionContainers()
-            .refreshWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "Azure", null, Context.NONE);
+            .refreshWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "Azure", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1817,7 +1795,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementT
 /** Samples for ProtectionContainers Register. */
 public final class ProtectionContainersRegisterSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionContainers_Register.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureStorage/ProtectionContainers_Register.json
      */
     /**
      * Sample code: RegisterAzure Storage ProtectionContainers.
@@ -1846,12 +1824,10 @@ public final class ProtectionContainersRegisterSamples {
 ### ProtectionContainers_Unregister
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionContainers Unregister. */
 public final class ProtectionContainersUnregisterSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/ProtectionContainers_Unregister.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/ProtectionContainers_Unregister.json
      */
     /**
      * Sample code: Unregister Protection Container.
@@ -1863,7 +1839,11 @@ public final class ProtectionContainersUnregisterSamples {
         manager
             .protectionContainers()
             .unregisterWithResponse(
-                "testVault", "testRg", "Azure", "storagecontainer;Storage;test-rg;teststorage", Context.NONE);
+                "testVault",
+                "testRg",
+                "Azure",
+                "storagecontainer;Storage;test-rg;teststorage",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1876,7 +1856,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureResourceProt
 /** Samples for ProtectionIntent CreateOrUpdate. */
 public final class ProtectionIntentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Azure Vm Protection Intent.
@@ -1904,12 +1884,10 @@ public final class ProtectionIntentCreateOrUpdateSamples {
 ### ProtectionIntent_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionIntent Delete. */
 public final class ProtectionIntentDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupProtectionIntent_Delete.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/BackupProtectionIntent_Delete.json
      */
     /**
      * Sample code: Delete Protection intent from item.
@@ -1920,7 +1898,8 @@ public final class ProtectionIntentDeleteSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .protectionIntents()
-            .deleteWithResponse("myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E", Context.NONE);
+            .deleteWithResponse(
+                "myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1928,12 +1907,10 @@ public final class ProtectionIntentDeleteSamples {
 ### ProtectionIntent_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionIntent Get. */
 public final class ProtectionIntentGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupProtectionIntent_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/BackupProtectionIntent_Get.json
      */
     /**
      * Sample code: Get ProtectionIntent for an item.
@@ -1944,7 +1921,8 @@ public final class ProtectionIntentGetSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .protectionIntents()
-            .getWithResponse("myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E", Context.NONE);
+            .getWithResponse(
+                "myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1952,14 +1930,13 @@ public final class ProtectionIntentGetSamples {
 ### ProtectionIntent_Validate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataSourceType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PreValidateEnableBackupRequest;
 
 /** Samples for ProtectionIntent Validate. */
 public final class ProtectionIntentValidateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionIntent_Validate.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectionIntent_Validate.json
      */
     /**
      * Sample code: Validate Enable Protection on Azure Vm.
@@ -1979,7 +1956,7 @@ public final class ProtectionIntentValidateSamples {
                     .withVaultId(
                         "/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.RecoveryServices/Vaults/myVault")
                     .withProperties(""),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2020,7 +1997,7 @@ import java.util.Arrays;
 /** Samples for ProtectionPolicies CreateOrUpdate. */
 public final class ProtectionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Create or Update Full Azure Workload Protection Policy.
@@ -2120,7 +2097,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: Create or Update Simple Azure Vm Protection Policy.
@@ -2154,7 +2131,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
      */
     /**
      * Sample code: Create or Update Daily Azure Storage Protection Policy.
@@ -2222,7 +2199,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
      */
     /**
      * Sample code: Create or Update Hourly Azure Storage Protection Policy.
@@ -2290,7 +2267,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Create or Update Full Azure Vm Protection Policy.
@@ -2353,7 +2330,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
      */
     /**
      * Sample code: Create or Update Enhanced Azure Vm Protection Policy with Hourly backup.
@@ -2430,7 +2407,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/V2Policy/IaaS_v2_daily.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/V2Policy/IaaS_v2_daily.json
      */
     /**
      * Sample code: Create or Update Enhanced Azure Vm Protection Policy with daily backup.
@@ -2509,12 +2486,10 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 ### ProtectionPolicies_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionPolicies Delete. */
 public final class ProtectionPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicies_Delete.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectionPolicies_Delete.json
      */
     /**
      * Sample code: Delete Azure Vm Protection Policy.
@@ -2523,7 +2498,9 @@ public final class ProtectionPoliciesDeleteSamples {
      */
     public static void deleteAzureVmProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionPolicies().delete("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", Context.NONE);
+        manager
+            .protectionPolicies()
+            .delete("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2531,12 +2508,10 @@ public final class ProtectionPoliciesDeleteSamples {
 ### ProtectionPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionPolicies Get. */
 public final class ProtectionPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicies_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectionPolicies_Get.json
      */
     /**
      * Sample code: Get Azure IaasVm Protection Policy Details.
@@ -2545,11 +2520,13 @@ public final class ProtectionPoliciesGetSamples {
      */
     public static void getAzureIaasVmProtectionPolicyDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionPolicies().getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", Context.NONE);
+        manager
+            .protectionPolicies()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/V2Policy/v2-Get-Policy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/V2Policy/v2-Get-Policy.json
      */
     /**
      * Sample code: Get Azure IaasVm Enhanced Protection Policy Details.
@@ -2560,7 +2537,7 @@ public final class ProtectionPoliciesGetSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .protectionPolicies()
-            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", Context.NONE);
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2568,12 +2545,10 @@ public final class ProtectionPoliciesGetSamples {
 ### ProtectionPolicyOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionPolicyOperationResults Get. */
 public final class ProtectionPolicyOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicyOperationResults_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectionPolicyOperationResults_Get.json
      */
     /**
      * Sample code: Get Protection Policy Operation Results.
@@ -2589,7 +2564,7 @@ public final class ProtectionPolicyOperationResultsGetSamples {
                 "SwaggerTestRg",
                 "testPolicy1",
                 "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2597,12 +2572,10 @@ public final class ProtectionPolicyOperationResultsGetSamples {
 ### ProtectionPolicyOperationStatuses_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionPolicyOperationStatuses Get. */
 public final class ProtectionPolicyOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicyOperationStatuses_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectionPolicyOperationStatuses_Get.json
      */
     /**
      * Sample code: Get Protection Policy Operation Status.
@@ -2618,7 +2591,7 @@ public final class ProtectionPolicyOperationStatusesGetSamples {
                 "SwaggerTestRg",
                 "testPolicy1",
                 "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2626,12 +2599,10 @@ public final class ProtectionPolicyOperationStatusesGetSamples {
 ### RecoveryPoints_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for RecoveryPoints Get. */
 public final class RecoveryPointsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/RecoveryPoints_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/RecoveryPoints_Get.json
      */
     /**
      * Sample code: Get Azure Vm Recovery Point Details.
@@ -2649,7 +2620,7 @@ public final class RecoveryPointsGetSamples {
                 "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
                 "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
                 "26083826328862",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2657,12 +2628,10 @@ public final class RecoveryPointsGetSamples {
 ### RecoveryPoints_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for RecoveryPoints List. */
 public final class RecoveryPointsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/RecoveryPoints_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/RecoveryPoints_List.json
      */
     /**
      * Sample code: Get Protected Azure Vm Recovery Points.
@@ -2680,7 +2649,7 @@ public final class RecoveryPointsListSamples {
                 "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
                 "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2688,14 +2657,13 @@ public final class RecoveryPointsListSamples {
 ### RecoveryPointsRecommendedForMove_List
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ListRecoveryPointsRecommendedForMoveRequest;
 import java.util.Arrays;
 
 /** Samples for RecoveryPointsRecommendedForMove List. */
 public final class RecoveryPointsRecommendedForMoveListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
      */
     /**
      * Sample code: Get Protected Azure Vm Recovery Points Recommended for Move.
@@ -2715,7 +2683,7 @@ public final class RecoveryPointsRecommendedForMoveListSamples {
                 new ListRecoveryPointsRecommendedForMoveRequest()
                     .withObjectType("ListRecoveryPointsRecommendedForMoveRequest")
                     .withExcludedRPList(Arrays.asList("348916168024334", "348916168024335")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2723,12 +2691,10 @@ public final class RecoveryPointsRecommendedForMoveListSamples {
 ### ResourceGuardProxies_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuardProxies Get. */
 public final class ResourceGuardProxiesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
      */
     /**
      * Sample code: Get VaultGuardProxies.
@@ -2737,7 +2703,7 @@ public final class ResourceGuardProxiesGetSamples {
      */
     public static void getVaultGuardProxies(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.resourceGuardProxies().get("sampleVault", "SampleResourceGroup", Context.NONE);
+        manager.resourceGuardProxies().get("sampleVault", "SampleResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2745,12 +2711,10 @@ public final class ResourceGuardProxiesGetSamples {
 ### ResourceGuardProxyOperation_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuardProxyOperation Delete. */
 public final class ResourceGuardProxyOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
      */
     /**
      * Sample code: Delete ResourceGuardProxy.
@@ -2761,7 +2725,8 @@ public final class ResourceGuardProxyOperationDeleteSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .resourceGuardProxyOperations()
-            .deleteWithResponse("sampleVault", "SampleResourceGroup", "swaggerExample", Context.NONE);
+            .deleteWithResponse(
+                "sampleVault", "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2769,12 +2734,10 @@ public final class ResourceGuardProxyOperationDeleteSamples {
 ### ResourceGuardProxyOperation_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuardProxyOperation Get. */
 public final class ResourceGuardProxyOperationGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
      */
     /**
      * Sample code: Get ResourceGuardProxy.
@@ -2785,7 +2748,7 @@ public final class ResourceGuardProxyOperationGetSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .resourceGuardProxyOperations()
-            .getWithResponse("sampleVault", "SampleResourceGroup", "swaggerExample", Context.NONE);
+            .getWithResponse("sampleVault", "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2798,7 +2761,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProx
 /** Samples for ResourceGuardProxyOperation Put. */
 public final class ResourceGuardProxyOperationPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
      */
     /**
      * Sample code: Create ResourceGuardProxy.
@@ -2824,14 +2787,13 @@ public final class ResourceGuardProxyOperationPutSamples {
 ### ResourceGuardProxyOperation_UnlockDelete
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UnlockDeleteRequest;
 import java.util.Arrays;
 
 /** Samples for ResourceGuardProxyOperation UnlockDelete. */
 public final class ResourceGuardProxyOperationUnlockDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
      */
     /**
      * Sample code: UnlockDelete ResourceGuardProxy.
@@ -2853,7 +2815,7 @@ public final class ResourceGuardProxyOperationUnlockDeleteSamples {
                                 "/subscriptions/c999d45b-944f-418c-a0d8-c3fcfd1802c8/resourceGroups/vaultguardRGNew/providers/Microsoft.DataProtection/resourceGuards/VaultGuardTestNew/deleteProtectedItemRequests/default"))
                     .withResourceToBeDeleted(
                         "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/gaallarg/providers/Microsoft.RecoveryServices/vaults/MercuryCrrVault/backupFabrics/Azure/protectionContainers/VMAppContainer;compute;crrtestrg;crrtestvm/protectedItems/SQLDataBase;mssqlserver;testdb"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2861,14 +2823,13 @@ public final class ResourceGuardProxyOperationUnlockDeleteSamples {
 ### ResourceProvider_BmsPrepareDataMove
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataMoveLevel;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRequest;
 
 /** Samples for ResourceProvider BmsPrepareDataMove. */
 public final class ResourceProviderBmsPrepareDataMoveSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupDataMove/PrepareDataMove_Post.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupDataMove/PrepareDataMove_Post.json
      */
     /**
      * Sample code: Prepare Data Move.
@@ -2887,7 +2848,7 @@ public final class ResourceProviderBmsPrepareDataMoveSamples {
                         "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/targetRG/providers/Microsoft.RecoveryServices/vaults/target-rsv")
                     .withTargetRegion("USGov Virginia")
                     .withDataMoveLevel(DataMoveLevel.VAULT),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2895,14 +2856,13 @@ public final class ResourceProviderBmsPrepareDataMoveSamples {
 ### ResourceProvider_BmsTriggerDataMove
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataMoveLevel;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TriggerDataMoveRequest;
 
 /** Samples for ResourceProvider BmsTriggerDataMove. */
 public final class ResourceProviderBmsTriggerDataMoveSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupDataMove/TriggerDataMove_Post.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupDataMove/TriggerDataMove_Post.json
      */
     /**
      * Sample code: Trigger Data Move.
@@ -2922,7 +2882,7 @@ public final class ResourceProviderBmsTriggerDataMoveSamples {
                     .withSourceRegion("USGov Iowa")
                     .withDataMoveLevel(DataMoveLevel.VAULT)
                     .withCorrelationId("MTg2OTcyMzM4NzYyMjc1NDY3Nzs1YmUzYmVmNi04YjJiLTRhOTItOTllYi01NTM0MDllYjk2NjE="),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2930,12 +2890,10 @@ public final class ResourceProviderBmsTriggerDataMoveSamples {
 ### ResourceProvider_GetOperationStatus
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ResourceProvider GetOperationStatus. */
 public final class ResourceProviderGetOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
      */
     /**
      * Sample code: Get OperationStatus.
@@ -2947,7 +2905,7 @@ public final class ResourceProviderGetOperationStatusSamples {
         manager
             .resourceProviders()
             .getOperationStatusWithResponse(
-                "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", Context.NONE);
+                "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2955,14 +2913,13 @@ public final class ResourceProviderGetOperationStatusSamples {
 ### ResourceProvider_MoveRecoveryPoint
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.MoveRPAcrossTiersRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierType;
 
 /** Samples for ResourceProvider MoveRecoveryPoint. */
 public final class ResourceProviderMoveRecoveryPointSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/TriggerRecoveryPointMove_Post.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/TriggerRecoveryPointMove_Post.json
      */
     /**
      * Sample code: Trigger RP Move Operation.
@@ -2984,7 +2941,7 @@ public final class ResourceProviderMoveRecoveryPointSamples {
                     .withObjectType("MoveRPAcrossTiersRequest")
                     .withSourceTierType(RecoveryPointTierType.HARDENED_RP)
                     .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2992,7 +2949,6 @@ public final class ResourceProviderMoveRecoveryPointSamples {
 ### Restores_Trigger
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreWithRehydrationRequest;
@@ -3006,7 +2962,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestRes
 /** Samples for Restores Trigger. */
 public final class RestoresTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreWithRehydrationRequest.
@@ -3049,11 +3005,11 @@ public final class RestoresTriggerSamples {
                                 new RecoveryPointRehydrationInfo()
                                     .withRehydrationRetentionDuration("P7D")
                                     .withRehydrationPriority(RehydrationPriority.HIGH))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest.
@@ -3093,11 +3049,11 @@ public final class RestoresTriggerSamples {
                             .withOriginalStorageAccountOption(false)
                             .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
                             .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreWithRehydrationRequest.
@@ -3132,11 +3088,11 @@ public final class RestoresTriggerSamples {
                                 new RecoveryPointRehydrationInfo()
                                     .withRehydrationRetentionDuration("P7D")
                                     .withRehydrationPriority(RehydrationPriority.STANDARD))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest with identityBasedRestoreDetails.
@@ -3178,11 +3134,11 @@ public final class RestoresTriggerSamples {
                                 new IdentityBasedRestoreDetails()
                                     .withTargetStorageAccountId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreRequest.
@@ -3218,11 +3174,11 @@ public final class RestoresTriggerSamples {
                                     .withIsSystemAssignedIdentity(false)
                                     .withManagedIdentityResourceId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreRequest with IdentityBasedRestoreDetails.
@@ -3260,7 +3216,7 @@ public final class RestoresTriggerSamples {
                                 new IdentityBasedRestoreDetails()
                                     .withTargetStorageAccountId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3268,12 +3224,10 @@ public final class RestoresTriggerSamples {
 ### SecurityPINs_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SecurityPINs Get. */
 public final class SecurityPINsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupSecurityPin_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupSecurityPin_Get.json
      */
     /**
      * Sample code: Get Vault Security Pin.
@@ -3282,7 +3236,7 @@ public final class SecurityPINsGetSamples {
      */
     public static void getVaultSecurityPin(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.securityPINs().getWithResponse("SwaggerTest", "SwaggerTestRg", null, Context.NONE);
+        manager.securityPINs().getWithResponse("SwaggerTest", "SwaggerTestRg", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3290,7 +3244,6 @@ public final class SecurityPINsGetSamples {
 ### ValidateOperation_Trigger
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityInfo;
@@ -3300,7 +3253,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateIaasVMRes
 /** Samples for ValidateOperation Trigger. */
 public final class ValidateOperationTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
      */
     /**
      * Sample code: Trigger Validate Operation.
@@ -3332,7 +3285,7 @@ public final class ValidateOperationTriggerSamples {
                                     .withIsSystemAssignedIdentity(false)
                                     .withManagedIdentityResourceId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3340,12 +3293,10 @@ public final class ValidateOperationTriggerSamples {
 ### ValidateOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ValidateOperationResults Get. */
 public final class ValidateOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperationResults.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ValidateOperationResults.json
      */
     /**
      * Sample code: Get Operation Results of Validate Operation.
@@ -3357,7 +3308,10 @@ public final class ValidateOperationResultsGetSamples {
         manager
             .validateOperationResults()
             .getWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3365,12 +3319,10 @@ public final class ValidateOperationResultsGetSamples {
 ### ValidateOperationStatuses_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ValidateOperationStatuses Get. */
 public final class ValidateOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperationStatus.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ValidateOperationStatus.json
      */
     /**
      * Sample code: Get Operation Status of Validate Operation.
@@ -3382,7 +3334,10 @@ public final class ValidateOperationStatusesGetSamples {
         manager
             .validateOperationStatuses()
             .getWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

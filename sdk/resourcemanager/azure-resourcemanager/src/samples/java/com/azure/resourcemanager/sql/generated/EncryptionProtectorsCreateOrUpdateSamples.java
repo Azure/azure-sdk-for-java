@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 /** Samples for EncryptionProtectors CreateOrUpdate. */
 public final class EncryptionProtectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/EncryptionProtectorCreateOrUpdateKeyVault.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/EncryptionProtectorCreateOrUpdateKeyVault.json
      */
     /**
      * Sample code: Update the encryption protector to key vault.
@@ -30,13 +30,14 @@ public final class EncryptionProtectorsCreateOrUpdateSamples {
                 "sqlcrudtest-4645",
                 EncryptionProtectorName.CURRENT,
                 new EncryptionProtectorInner()
-                    .withServerKeyName("someVault_someKey_01234567890123456789012345678901")
-                    .withServerKeyType(ServerKeyType.AZURE_KEY_VAULT),
+                    .withServerKeyName("fakeTokenPlaceholder")
+                    .withServerKeyType(ServerKeyType.AZURE_KEY_VAULT)
+                    .withAutoRotationEnabled(false),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/EncryptionProtectorCreateOrUpdateServiceManaged.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/EncryptionProtectorCreateOrUpdateServiceManaged.json
      */
     /**
      * Sample code: Update the encryption protector to service managed.
@@ -55,7 +56,7 @@ public final class EncryptionProtectorsCreateOrUpdateSamples {
                 "sqlcrudtest-4645",
                 EncryptionProtectorName.CURRENT,
                 new EncryptionProtectorInner()
-                    .withServerKeyName("ServiceManaged")
+                    .withServerKeyName("fakeTokenPlaceholder")
                     .withServerKeyType(ServerKeyType.SERVICE_MANAGED),
                 Context.NONE);
     }

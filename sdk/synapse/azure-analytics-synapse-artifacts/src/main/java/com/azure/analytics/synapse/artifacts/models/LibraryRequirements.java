@@ -33,6 +33,9 @@ public final class LibraryRequirements {
     @JsonProperty(value = "filename")
     private String filename;
 
+    /** Creates an instance of LibraryRequirements class. */
+    public LibraryRequirements() {}
+
     /**
      * Get the time property: The last update time of the library requirements file.
      *

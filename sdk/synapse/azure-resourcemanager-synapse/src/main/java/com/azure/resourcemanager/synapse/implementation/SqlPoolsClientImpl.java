@@ -66,7 +66,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolsService {
+    public interface SqlPoolsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -89,7 +89,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
                 + "/{workspaceName}/sqlPools/{sqlPoolName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlPoolInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -104,7 +104,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
                 + "/{workspaceName}/sqlPools/{sqlPoolName}")
-        @ExpectedResponses({200, 202, 404})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
@@ -208,7 +208,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Get SQL pool properties.
+     * Get SQL pool
+     *
+     * <p>Get SQL pool properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -262,7 +264,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Get SQL pool properties.
+     * Get SQL pool
+     *
+     * <p>Get SQL pool properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -314,7 +318,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Get SQL pool properties.
+     * Get SQL pool
+     *
+     * <p>Get SQL pool properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -327,34 +333,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName)
-            .flatMap(
-                (Response<SqlPoolInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get SQL pool properties.
+     * Get SQL pool
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolInner get(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName).block();
-    }
-
-    /**
-     * Get SQL pool properties.
+     * <p>Get SQL pool properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -372,7 +357,27 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Apply a partial update to a SQL pool.
+     * Get SQL pool
+     *
+     * <p>Get SQL pool properties.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sQL pool properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlPoolInner get(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE).getValue();
+    }
+
+    /**
+     * Update SQL pool
+     *
+     * <p>Apply a partial update to a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -384,7 +389,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlPoolInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -433,7 +438,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Apply a partial update to a SQL pool.
+     * Update SQL pool
+     *
+     * <p>Apply a partial update to a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -446,7 +453,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlPoolInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String workspaceName,
         String sqlPoolName,
@@ -496,7 +503,112 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Apply a partial update to a SQL pool.
+     * Update SQL pool
+     *
+     * <p>Apply a partial update to a SQL pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param sqlPoolInfo The updated SQL pool properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of sQL pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdateAsync(
+        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo);
+        return this
+            .client
+            .<SqlPoolInner, SqlPoolInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
+    }
+
+    /**
+     * Update SQL pool
+     *
+     * <p>Apply a partial update to a SQL pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param sqlPoolInfo The updated SQL pool properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of sQL pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdateAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        SqlPoolPatchInfo sqlPoolInfo,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context);
+        return this
+            .client
+            .<SqlPoolInner, SqlPoolInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, context);
+    }
+
+    /**
+     * Update SQL pool
+     *
+     * <p>Apply a partial update to a SQL pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param sqlPoolInfo The updated SQL pool properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of sQL pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdate(
+        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo).getSyncPoller();
+    }
+
+    /**
+     * Update SQL pool
+     *
+     * <p>Apply a partial update to a SQL pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param sqlPoolInfo The updated SQL pool properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of sQL pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdate(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        SqlPoolPatchInfo sqlPoolInfo,
+        Context context) {
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update SQL pool
+     *
+     * <p>Apply a partial update to a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -510,19 +622,42 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolInner> updateAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
-        return updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo)
-            .flatMap(
-                (Response<SqlPoolInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Apply a partial update to a SQL pool.
+     * Update SQL pool
+     *
+     * <p>Apply a partial update to a SQL pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param sqlPoolInfo The updated SQL pool properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sQL pool on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SqlPoolInner> updateAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        SqlPoolPatchInfo sqlPoolInfo,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update SQL pool
+     *
+     * <p>Apply a partial update to a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -540,7 +675,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Apply a partial update to a SQL pool.
+     * Update SQL pool
+     *
+     * <p>Apply a partial update to a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -550,20 +687,22 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool along with {@link Response}.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlPoolInner> updateWithResponse(
+    public SqlPoolInner update(
         String resourceGroupName,
         String workspaceName,
         String sqlPoolName,
         SqlPoolPatchInfo sqlPoolInfo,
         Context context) {
-        return updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context).block();
+        return updateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context).block();
     }
 
     /**
-     * Create a SQL pool.
+     * Create SQL pool
+     *
+     * <p>Create a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -624,7 +763,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Create a SQL pool.
+     * Create SQL pool
+     *
+     * <p>Create a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -683,7 +824,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Create a SQL pool.
+     * Create SQL pool
+     *
+     * <p>Create a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -706,7 +849,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Create a SQL pool.
+     * Create SQL pool
+     *
+     * <p>Create a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -731,7 +876,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Create a SQL pool.
+     * Create SQL pool
+     *
+     * <p>Create a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -745,11 +892,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo) {
-        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo).getSyncPoller();
     }
 
     /**
-     * Create a SQL pool.
+     * Create SQL pool
+     *
+     * <p>Create a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -764,11 +913,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
-        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context)
+            .getSyncPoller();
     }
 
     /**
-     * Create a SQL pool.
+     * Create SQL pool
+     *
+     * <p>Create a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -788,7 +941,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Create a SQL pool.
+     * Create SQL pool
+     *
+     * <p>Create a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -809,7 +964,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Create a SQL pool.
+     * Create SQL pool
+     *
+     * <p>Create a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -827,7 +984,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Create a SQL pool.
+     * Create SQL pool
+     *
+     * <p>Create a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -846,7 +1005,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Delete a SQL pool.
+     * Delete SQL pool
+     *
+     * <p>Delete a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -854,7 +1015,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -900,7 +1061,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Delete a SQL pool.
+     * Delete SQL pool
+     *
+     * <p>Delete a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -909,7 +1072,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -952,7 +1115,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Delete a SQL pool.
+     * Delete SQL pool
+     *
+     * <p>Delete a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -960,20 +1125,22 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of any object.
+     * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Object>, Object> beginDeleteAsync(
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName);
         return this
             .client
-            .<Object, Object>getLroResult(
-                mono, this.client.getHttpPipeline(), Object.class, Object.class, this.client.getContext());
+            .<SqlPoolInner, SqlPoolInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
     }
 
     /**
-     * Delete a SQL pool.
+     * Delete SQL pool
+     *
+     * <p>Delete a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -982,21 +1149,24 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of any object.
+     * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Object>, Object> beginDeleteAsync(
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context);
         return this
             .client
-            .<Object, Object>getLroResult(mono, this.client.getHttpPipeline(), Object.class, Object.class, context);
+            .<SqlPoolInner, SqlPoolInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, context);
     }
 
     /**
-     * Delete a SQL pool.
+     * Delete SQL pool
+     *
+     * <p>Delete a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1004,16 +1174,18 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of any object.
+     * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Object>, Object> beginDelete(
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
     }
 
     /**
-     * Delete a SQL pool.
+     * Delete SQL pool
+     *
+     * <p>Delete a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1022,16 +1194,18 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of any object.
+     * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Object>, Object> beginDelete(
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
     }
 
     /**
-     * Delete a SQL pool.
+     * Delete SQL pool
+     *
+     * <p>Delete a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1039,17 +1213,19 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Object> deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<SqlPoolInner> deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
         return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Delete a SQL pool.
+     * Delete SQL pool
+     *
+     * <p>Delete a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1058,10 +1234,10 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Object> deleteAsync(
+    private Mono<SqlPoolInner> deleteAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, context)
             .last()
@@ -1069,7 +1245,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Delete a SQL pool.
+     * Delete SQL pool
+     *
+     * <p>Delete a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1077,15 +1255,17 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object delete(String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public SqlPoolInner delete(String resourceGroupName, String workspaceName, String sqlPoolName) {
         return deleteAsync(resourceGroupName, workspaceName, sqlPoolName).block();
     }
 
     /**
-     * Delete a SQL pool.
+     * Delete SQL pool
+     *
+     * <p>Delete a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1094,15 +1274,17 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object delete(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public SqlPoolInner delete(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return deleteAsync(resourceGroupName, workspaceName, sqlPoolName, context).block();
     }
 
     /**
-     * List all SQL pools.
+     * List SQL pools
+     *
+     * <p>List all SQL pools.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1160,7 +1342,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * List all SQL pools.
+     * List SQL pools
+     *
+     * <p>List all SQL pools.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1216,7 +1400,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * List all SQL pools.
+     * List SQL pools
+     *
+     * <p>List all SQL pools.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1233,7 +1419,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * List all SQL pools.
+     * List SQL pools
+     *
+     * <p>List all SQL pools.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1252,7 +1440,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * List all SQL pools.
+     * List SQL pools
+     *
+     * <p>List all SQL pools.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1267,7 +1457,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * List all SQL pools.
+     * List SQL pools
+     *
+     * <p>List all SQL pools.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1284,7 +1476,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Pause a SQL pool.
+     * Pause SQL pool
+     *
+     * <p>Pause a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1292,7 +1486,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(
@@ -1338,7 +1532,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Pause a SQL pool.
+     * Pause SQL pool
+     *
+     * <p>Pause a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1347,7 +1543,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(
@@ -1390,7 +1586,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Pause a SQL pool.
+     * Pause SQL pool
+     *
+     * <p>Pause a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1398,20 +1596,22 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of any object.
+     * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Object>, Object> beginPauseAsync(
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginPauseAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = pauseWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName);
         return this
             .client
-            .<Object, Object>getLroResult(
-                mono, this.client.getHttpPipeline(), Object.class, Object.class, this.client.getContext());
+            .<SqlPoolInner, SqlPoolInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
     }
 
     /**
-     * Pause a SQL pool.
+     * Pause SQL pool
+     *
+     * <p>Pause a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1420,21 +1620,24 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of any object.
+     * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Object>, Object> beginPauseAsync(
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginPauseAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             pauseWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context);
         return this
             .client
-            .<Object, Object>getLroResult(mono, this.client.getHttpPipeline(), Object.class, Object.class, context);
+            .<SqlPoolInner, SqlPoolInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, context);
     }
 
     /**
-     * Pause a SQL pool.
+     * Pause SQL pool
+     *
+     * <p>Pause a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1442,16 +1645,18 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of any object.
+     * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Object>, Object> beginPause(
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginPause(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
+        return this.beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
     }
 
     /**
-     * Pause a SQL pool.
+     * Pause SQL pool
+     *
+     * <p>Pause a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1460,16 +1665,18 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of any object.
+     * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Object>, Object> beginPause(
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginPause(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        return beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
+        return this.beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
     }
 
     /**
-     * Pause a SQL pool.
+     * Pause SQL pool
+     *
+     * <p>Pause a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1477,17 +1684,19 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Object> pauseAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<SqlPoolInner> pauseAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
         return beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Pause a SQL pool.
+     * Pause SQL pool
+     *
+     * <p>Pause a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1496,10 +1705,10 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Object> pauseAsync(
+    private Mono<SqlPoolInner> pauseAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName, context)
             .last()
@@ -1507,7 +1716,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Pause a SQL pool.
+     * Pause SQL pool
+     *
+     * <p>Pause a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1515,15 +1726,17 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object pause(String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public SqlPoolInner pause(String resourceGroupName, String workspaceName, String sqlPoolName) {
         return pauseAsync(resourceGroupName, workspaceName, sqlPoolName).block();
     }
 
     /**
-     * Pause a SQL pool.
+     * Pause SQL pool
+     *
+     * <p>Pause a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1532,15 +1745,17 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object pause(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public SqlPoolInner pause(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return pauseAsync(resourceGroupName, workspaceName, sqlPoolName, context).block();
     }
 
     /**
-     * Resume a SQL pool.
+     * Resume SQL pool
+     *
+     * <p>Resume a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1548,7 +1763,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
@@ -1594,7 +1809,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Resume a SQL pool.
+     * Resume SQL pool
+     *
+     * <p>Resume a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1603,7 +1820,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
@@ -1646,7 +1863,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Resume a SQL pool.
+     * Resume SQL pool
+     *
+     * <p>Resume a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1654,20 +1873,22 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of any object.
+     * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Object>, Object> beginResumeAsync(
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginResumeAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resumeWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName);
         return this
             .client
-            .<Object, Object>getLroResult(
-                mono, this.client.getHttpPipeline(), Object.class, Object.class, this.client.getContext());
+            .<SqlPoolInner, SqlPoolInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
     }
 
     /**
-     * Resume a SQL pool.
+     * Resume SQL pool
+     *
+     * <p>Resume a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1676,21 +1897,24 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of any object.
+     * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Object>, Object> beginResumeAsync(
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginResumeAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             resumeWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context);
         return this
             .client
-            .<Object, Object>getLroResult(mono, this.client.getHttpPipeline(), Object.class, Object.class, context);
+            .<SqlPoolInner, SqlPoolInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, context);
     }
 
     /**
-     * Resume a SQL pool.
+     * Resume SQL pool
+     *
+     * <p>Resume a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1698,16 +1922,18 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of any object.
+     * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Object>, Object> beginResume(
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginResume(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
     }
 
     /**
-     * Resume a SQL pool.
+     * Resume SQL pool
+     *
+     * <p>Resume a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1716,16 +1942,18 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of any object.
+     * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Object>, Object> beginResume(
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginResume(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        return beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
     }
 
     /**
-     * Resume a SQL pool.
+     * Resume SQL pool
+     *
+     * <p>Resume a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1733,17 +1961,19 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Object> resumeAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<SqlPoolInner> resumeAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
         return beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Resume a SQL pool.
+     * Resume SQL pool
+     *
+     * <p>Resume a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1752,10 +1982,10 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Object> resumeAsync(
+    private Mono<SqlPoolInner> resumeAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName, context)
             .last()
@@ -1763,7 +1993,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Resume a SQL pool.
+     * Resume SQL pool
+     *
+     * <p>Resume a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1771,15 +2003,17 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object resume(String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public SqlPoolInner resume(String resourceGroupName, String workspaceName, String sqlPoolName) {
         return resumeAsync(resourceGroupName, workspaceName, sqlPoolName).block();
     }
 
     /**
-     * Resume a SQL pool.
+     * Resume SQL pool
+     *
+     * <p>Resume a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1788,15 +2022,17 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object resume(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public SqlPoolInner resume(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return resumeAsync(resourceGroupName, workspaceName, sqlPoolName, context).block();
     }
 
     /**
-     * Rename a SQL pool.
+     * Rename a SQL pool
+     *
+     * <p>Rename a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1855,7 +2091,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Rename a SQL pool.
+     * Rename a SQL pool
+     *
+     * <p>Rename a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1916,7 +2154,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
-     * Rename a SQL pool.
+     * Rename a SQL pool
+     *
+     * <p>Rename a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1931,28 +2171,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     private Mono<Void> renameAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, ResourceMoveDefinition parameters) {
         return renameWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Rename a SQL pool.
+     * Rename a SQL pool
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param parameters The resource move definition for renaming this Sql pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rename(
-        String resourceGroupName, String workspaceName, String sqlPoolName, ResourceMoveDefinition parameters) {
-        renameAsync(resourceGroupName, workspaceName, sqlPoolName, parameters).block();
-    }
-
-    /**
-     * Rename a SQL pool.
+     * <p>Rename a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1975,9 +2200,29 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     }
 
     /**
+     * Rename a SQL pool
+     *
+     * <p>Rename a SQL pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param parameters The resource move definition for renaming this Sql pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rename(
+        String resourceGroupName, String workspaceName, String sqlPoolName, ResourceMoveDefinition parameters) {
+        renameWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2012,7 +2257,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

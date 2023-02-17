@@ -46,6 +46,10 @@ public class Video extends Codec {
     @JsonProperty(value = "syncMode")
     private VideoSyncMode syncMode;
 
+    /** Creates an instance of Video class. */
+    public Video() {
+    }
+
     /**
      * Get the keyFrameInterval property: The distance between two key frames. The value should be non-zero in the range
      * [0.5, 20] seconds, specified in ISO 8601 format. The default is 2 seconds(PT2S). Note that this setting is

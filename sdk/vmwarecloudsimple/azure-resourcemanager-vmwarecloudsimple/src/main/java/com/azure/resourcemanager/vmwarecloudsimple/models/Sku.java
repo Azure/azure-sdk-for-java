@@ -6,14 +6,11 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The purchase SKU for CloudSimple paid resources. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
      * The capacity of the SKU
      */
@@ -21,16 +18,14 @@ public final class Sku {
     private String capacity;
 
     /*
-     * dedicatedCloudNode example: 8 x Ten-Core Intel® Xeon® Processor E5-2640
-     * v4 2.40GHz 25MB Cache (90W); 12 x 64GB PC4-19200 2400MHz DDR4 ECC
-     * Registered DIMM, ...
+     * dedicatedCloudNode example: 8 x Ten-Core Intel® Xeon® Processor E5-2640 v4 2.40GHz 25MB Cache (90W); 12 x 64GB
+     * PC4-19200 2400MHz DDR4 ECC Registered DIMM, ...
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * If the service has different generations of hardware, for the same SKU,
-     * then that can be captured here
+     * If the service has different generations of hardware, for the same SKU, then that can be captured here
      */
     @JsonProperty(value = "family")
     private String family;
@@ -46,6 +41,10 @@ public final class Sku {
      */
     @JsonProperty(value = "tier")
     private String tier;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the capacity property: The capacity of the SKU.
@@ -158,8 +157,10 @@ public final class Sku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
 }

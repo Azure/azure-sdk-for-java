@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SubAccount Get. */
 public final class SubAccountGetSamples {
     /*
@@ -17,6 +15,8 @@ public final class SubAccountGetSamples {
      * @param manager Entry point to LogzManager.
      */
     public static void subAccountGet(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager.subAccounts().getWithResponse("myResourceGroup", "myMonitor", "SubAccount1", Context.NONE);
+        manager
+            .subAccounts()
+            .getWithResponse("myResourceGroup", "myMonitor", "SubAccount1", com.azure.core.util.Context.NONE);
     }
 }

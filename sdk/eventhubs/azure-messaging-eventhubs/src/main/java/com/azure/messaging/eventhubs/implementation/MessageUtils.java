@@ -202,7 +202,13 @@ public final class MessageUtils {
             //TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
             if (body instanceof Data) {
                 final Binary messageData = ((Data) body).getValue();
-                bytes = messageData.getArray();
+
+                if (messageData == null) {
+                    LOGGER.verbose("Binary data message is null.");
+                    bytes = EMPTY_BYTE_ARRAY;
+                } else {
+                    bytes = messageData.getArray();
+                }
             } else {
                 LOGGER.warning("Message not of type Data. Actual: {}",
                     body.getType());

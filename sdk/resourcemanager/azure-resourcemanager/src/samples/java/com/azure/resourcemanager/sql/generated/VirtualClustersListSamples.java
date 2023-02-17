@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualClusters List. */
 public final class VirtualClustersListSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/VirtualClusterList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/VirtualClusterList.json
      */
     /**
      * Sample code: List virtualClusters.

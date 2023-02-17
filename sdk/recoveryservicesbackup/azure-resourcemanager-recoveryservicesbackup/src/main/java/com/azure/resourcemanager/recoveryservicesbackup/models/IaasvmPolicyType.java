@@ -20,6 +20,15 @@ public final class IaasvmPolicyType extends ExpandableStringEnum<IaasvmPolicyTyp
     public static final IaasvmPolicyType V2 = fromString("V2");
 
     /**
+     * Creates a new instance of IaasvmPolicyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IaasvmPolicyType() {
+    }
+
+    /**
      * Creates or finds a IaasvmPolicyType from its string representation.
      *
      * @param name a name to look for.

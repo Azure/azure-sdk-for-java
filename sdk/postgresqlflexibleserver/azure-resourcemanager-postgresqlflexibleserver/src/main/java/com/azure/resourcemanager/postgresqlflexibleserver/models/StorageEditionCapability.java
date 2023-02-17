@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** storage edition capability. */
 @Immutable
 public final class StorageEditionCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageEditionCapability.class);
-
     /*
      * storage edition name
      */
@@ -32,6 +28,10 @@ public final class StorageEditionCapability {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
+
+    /** Creates an instance of StorageEditionCapability class. */
+    public StorageEditionCapability() {
+    }
 
     /**
      * Get the name property: storage edition name.

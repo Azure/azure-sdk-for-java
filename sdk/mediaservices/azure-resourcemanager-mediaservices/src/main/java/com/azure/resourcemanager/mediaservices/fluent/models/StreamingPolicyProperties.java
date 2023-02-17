@@ -51,6 +51,10 @@ public final class StreamingPolicyProperties {
     @JsonProperty(value = "noEncryption")
     private NoEncryption noEncryption;
 
+    /** Creates an instance of StreamingPolicyProperties class. */
+    public StreamingPolicyProperties() {
+    }
+
     /**
      * Get the created property: Creation time of Streaming Policy.
      *

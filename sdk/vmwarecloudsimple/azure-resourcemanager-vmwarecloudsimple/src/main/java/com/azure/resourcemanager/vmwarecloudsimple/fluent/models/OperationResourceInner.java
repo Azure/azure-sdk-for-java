@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OperationError;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Operation status response. */
 @Fluent
 public final class OperationResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResourceInner.class);
-
     /*
      * End time of the operation
      */
@@ -51,6 +47,10 @@ public final class OperationResourceInner {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
+
+    /** Creates an instance of OperationResourceInner class. */
+    public OperationResourceInner() {
+    }
 
     /**
      * Get the endTime property: End time of the operation.

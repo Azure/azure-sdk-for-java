@@ -21,6 +21,50 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in ServerBlobAuditingPoliciesClient. */
 public interface ServerBlobAuditingPoliciesClient {
     /**
+     * Lists auditing settings of a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server auditing settings as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ServerBlobAuditingPolicyInner> listByServerAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Lists auditing settings of a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server auditing settings as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerBlobAuditingPolicyInner> listByServer(String resourceGroupName, String serverName);
+
+    /**
+     * Lists auditing settings of a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server auditing settings as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerBlobAuditingPolicyInner> listByServer(
+        String resourceGroupName, String serverName, Context context);
+
+    /**
      * Gets a server's blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -54,20 +98,6 @@ public interface ServerBlobAuditingPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerBlobAuditingPolicyInner get(String resourceGroupName, String serverName);
-
-    /**
-     * Gets a server's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,6 +107,20 @@ public interface ServerBlobAuditingPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerBlobAuditingPolicyInner> getWithResponse(
         String resourceGroupName, String serverName, Context context);
+
+    /**
+     * Gets a server's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server's blob auditing policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServerBlobAuditingPolicyInner get(String resourceGroupName, String serverName);
 
     /**
      * Creates or updates a server's blob auditing policy.
@@ -191,48 +235,4 @@ public interface ServerBlobAuditingPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ServerBlobAuditingPolicyInner createOrUpdate(
         String resourceGroupName, String serverName, ServerBlobAuditingPolicyInner parameters, Context context);
-
-    /**
-     * Lists auditing settings of a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ServerBlobAuditingPolicyInner> listByServerAsync(String resourceGroupName, String serverName);
-
-    /**
-     * Lists auditing settings of a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerBlobAuditingPolicyInner> listByServer(String resourceGroupName, String serverName);
-
-    /**
-     * Lists auditing settings of a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerBlobAuditingPolicyInner> listByServer(
-        String resourceGroupName, String serverName, Context context);
 }

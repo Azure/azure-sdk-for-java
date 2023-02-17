@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.sql.models.DiffBackupIntervalInHours;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A short term retention policy. */
@@ -16,6 +17,10 @@ public final class BackupShortTermRetentionPolicyInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private BackupShortTermRetentionPolicyProperties innerProperties;
+
+    /** Creates an instance of BackupShortTermRetentionPolicyInner class. */
+    public BackupShortTermRetentionPolicyInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -48,6 +53,34 @@ public final class BackupShortTermRetentionPolicyInner extends ProxyResource {
             this.innerProperties = new BackupShortTermRetentionPolicyProperties();
         }
         this.innerProperties().withRetentionDays(retentionDays);
+        return this;
+    }
+
+    /**
+     * Get the diffBackupIntervalInHours property: The differential backup interval in hours. This is how many interval
+     * hours between each differential backup will be supported. This is only applicable to live databases but not
+     * dropped databases.
+     *
+     * @return the diffBackupIntervalInHours value.
+     */
+    public DiffBackupIntervalInHours diffBackupIntervalInHours() {
+        return this.innerProperties() == null ? null : this.innerProperties().diffBackupIntervalInHours();
+    }
+
+    /**
+     * Set the diffBackupIntervalInHours property: The differential backup interval in hours. This is how many interval
+     * hours between each differential backup will be supported. This is only applicable to live databases but not
+     * dropped databases.
+     *
+     * @param diffBackupIntervalInHours the diffBackupIntervalInHours value to set.
+     * @return the BackupShortTermRetentionPolicyInner object itself.
+     */
+    public BackupShortTermRetentionPolicyInner withDiffBackupIntervalInHours(
+        DiffBackupIntervalInHours diffBackupIntervalInHours) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupShortTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withDiffBackupIntervalInHours(diffBackupIntervalInHours);
         return this;
     }
 

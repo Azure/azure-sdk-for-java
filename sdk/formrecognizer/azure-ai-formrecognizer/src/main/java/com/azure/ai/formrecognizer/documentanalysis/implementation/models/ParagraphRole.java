@@ -29,6 +29,14 @@ public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
     public static final ParagraphRole FOOTNOTE = fromString("footnote");
 
     /**
+     * Creates a new instance of ParagraphRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ParagraphRole() {}
+
+    /**
      * Creates or finds a ParagraphRole from its string representation.
      *
      * @param name a name to look for.

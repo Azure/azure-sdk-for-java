@@ -34,6 +34,7 @@
     <module>sdk/batch</module>
     <module>sdk/batchai</module>
     <module>sdk/billing</module>
+    <module>sdk/billingbenefits</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/changeanalysis</module>
@@ -98,7 +99,7 @@
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
-    <module>sdk/loadtestservice</module>
+    <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
     <module>sdk/logic</module>
     <module>sdk/logz</module>
@@ -131,14 +132,17 @@
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
+    <module>sdk/providerhub</module>
     <module>sdk/purview</module>
     <module>sdk/quantum</module>
     <module>sdk/quota</module>
     <module>sdk/recoveryservices</module>
     <module>sdk/recoveryservicesbackup</module>
+    <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>
+    <module>sdk/reservations</module>
     <module>sdk/resourceconnector</module>
     <module>sdk/resourcegraph</module>
     <module>sdk/resourcehealth</module>
@@ -153,6 +157,7 @@
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>
     <module>sdk/servicelinker</module>
+    <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>
@@ -160,6 +165,7 @@
     <module>sdk/storage</module>
     <module>sdk/storagecache</module>
     <module>sdk/storageimportexport</module>
+    <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>
     <module>sdk/subscription</module>

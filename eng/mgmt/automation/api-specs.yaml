@@ -47,6 +47,8 @@ hybridaks:
   service: hybridcontainerservice
 keyvault:
   suffix: generated
+loadtestservice:
+  service: loadtesting
 machinelearningservices:
   service: machinelearning
 monitor:

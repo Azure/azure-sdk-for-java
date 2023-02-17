@@ -6,14 +6,11 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Exclude variables from managed rule evaluation. */
 @Fluent
 public final class ManagedRuleExclusion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleExclusion.class);
-
     /*
      * The variable type to be excluded.
      */
@@ -21,18 +18,21 @@ public final class ManagedRuleExclusion {
     private ManagedRuleExclusionMatchVariable matchVariable;
 
     /*
-     * Comparison operator to apply to the selector when specifying which
-     * elements in the collection this exclusion applies to.
+     * Comparison operator to apply to the selector when specifying which elements in the collection this exclusion
+     * applies to.
      */
     @JsonProperty(value = "selectorMatchOperator", required = true)
     private ManagedRuleExclusionSelectorMatchOperator selectorMatchOperator;
 
     /*
-     * Selector value for which elements in the collection this exclusion
-     * applies to.
+     * Selector value for which elements in the collection this exclusion applies to.
      */
     @JsonProperty(value = "selector", required = true)
     private String selector;
+
+    /** Creates an instance of ManagedRuleExclusion class. */
+    public ManagedRuleExclusion() {
+    }
 
     /**
      * Get the matchVariable property: The variable type to be excluded.
@@ -104,21 +104,23 @@ public final class ManagedRuleExclusion {
      */
     public void validate() {
         if (matchVariable() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property matchVariable in model ManagedRuleExclusion"));
         }
         if (selectorMatchOperator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectorMatchOperator in model ManagedRuleExclusion"));
         }
         if (selector() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property selector in model ManagedRuleExclusion"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedRuleExclusion.class);
 }

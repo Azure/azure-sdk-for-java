@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionState. */
+/** The state of the connection. */
 public final class ConnectionState extends ExpandableStringEnum<ConnectionState> {
     /** Static value None for ConnectionState. */
     public static final ConnectionState NONE = fromString("None");
@@ -35,6 +35,15 @@ public final class ConnectionState extends ExpandableStringEnum<ConnectionState>
     public static final ConnectionState ACTIVE = fromString("Active");
 
     /**
+     * Creates a new instance of ConnectionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionState() {
+    }
+
+    /**
      * Creates or finds a ConnectionState from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class ConnectionState extends ExpandableStringEnum<ConnectionState>
         return fromString(name, ConnectionState.class);
     }
 
-    /** @return known ConnectionState values. */
+    /**
+     * Gets known ConnectionState values.
+     *
+     * @return known ConnectionState values.
+     */
     public static Collection<ConnectionState> values() {
         return values(ConnectionState.class);
     }

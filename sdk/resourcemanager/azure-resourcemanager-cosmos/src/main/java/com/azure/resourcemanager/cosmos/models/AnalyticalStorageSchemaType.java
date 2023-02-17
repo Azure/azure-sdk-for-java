@@ -17,6 +17,15 @@ public final class AnalyticalStorageSchemaType extends ExpandableStringEnum<Anal
     public static final AnalyticalStorageSchemaType FULL_FIDELITY = fromString("FullFidelity");
 
     /**
+     * Creates a new instance of AnalyticalStorageSchemaType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnalyticalStorageSchemaType() {
+    }
+
+    /**
      * Creates or finds a AnalyticalStorageSchemaType from its string representation.
      *
      * @param name a name to look for.

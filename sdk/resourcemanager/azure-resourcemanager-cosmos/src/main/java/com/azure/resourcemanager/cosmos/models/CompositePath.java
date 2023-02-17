@@ -23,6 +23,10 @@ public final class CompositePath {
     @JsonProperty(value = "order")
     private CompositePathSortOrder order;
 
+    /** Creates an instance of CompositePath class. */
+    public CompositePath() {
+    }
+
     /**
      * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root
      * and end with wildcard (/path/*).

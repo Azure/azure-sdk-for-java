@@ -15,6 +15,15 @@ public final class CapacityReservationGroupInstanceViewTypes
     public static final CapacityReservationGroupInstanceViewTypes INSTANCE_VIEW = fromString("instanceView");
 
     /**
+     * Creates a new instance of CapacityReservationGroupInstanceViewTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CapacityReservationGroupInstanceViewTypes() {
+    }
+
+    /**
      * Creates or finds a CapacityReservationGroupInstanceViewTypes from its string representation.
      *
      * @param name a name to look for.

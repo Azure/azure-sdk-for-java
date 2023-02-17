@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuards GetBackupSecurityPinRequestsObjects. */
 public final class ResourceGuardsGetBackupSecurityPinRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
@@ -20,6 +18,7 @@ public final class ResourceGuardsGetBackupSecurityPinRequestsObjectsSamples {
         com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager
             .resourceGuards()
-            .getBackupSecurityPinRequestsObjects("SampleResourceGroup", "swaggerExample", Context.NONE);
+            .getBackupSecurityPinRequestsObjects(
+                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }

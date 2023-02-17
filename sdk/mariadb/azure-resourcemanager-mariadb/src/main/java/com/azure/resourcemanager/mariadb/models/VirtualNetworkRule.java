@@ -53,6 +53,13 @@ public interface VirtualNetworkRule {
     VirtualNetworkRuleState state();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mariadb.fluent.models.VirtualNetworkRuleInner object.
      *
      * @return the inner object.

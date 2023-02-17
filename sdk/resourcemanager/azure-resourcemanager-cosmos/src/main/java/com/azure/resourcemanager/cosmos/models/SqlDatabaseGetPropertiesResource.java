@@ -40,6 +40,10 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of SqlDatabaseGetPropertiesResource class. */
+    public SqlDatabaseGetPropertiesResource() {
+    }
+
     /**
      * Get the colls property: A system generated property that specified the addressable path of the collections
      * resource.
