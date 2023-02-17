@@ -1,42 +1,42 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/eventroutes?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/eventroutes?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "54719235-3717-4045-a16d-e0cddd188b66"
+      "x-ms-client-request-id" : "b0ab105f-7120-4a57-b7cb-65a9faa1c8ed"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-e4d256d06cc9ea75345e6aa2c6e166c6-cc3ee576efa8f16b-01",
-      "mise-correlation-id" : "cdfbf6a7-1931-4601-8544-2fce54b02104",
+      "traceresponse" : "00-5dc62b9b7771e20ae259fe3d20c83180-40171fd9f3792c58-01",
+      "mise-correlation-id" : "33bca3cc-d104-449f-9000-178c43c44b46",
       "retry-after" : "0",
       "Content-Length" : "28",
       "StatusCode" : "200",
       "Body" : "{\"value\":[],\"nextLink\":null}",
-      "Date" : "Wed, 15 Feb 2023 20:28:25 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:55:26 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/eventroutes/273f6c97-7c6f-4599-81f3-e7d9bcd4b198?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/eventroutes/63661dd5-9ba9-4311-ab20-b360cf72c22e?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "cceef061-30b1-409c-b073-5896618a5147"
+      "x-ms-client-request-id" : "5ff22b25-3045-411e-b973-216d71f6b58d"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-8059b6e42e4eb3f3cc974c9d2703a9f6-f10df6aaded764db-01",
-      "mise-correlation-id" : "3218b367-4234-49f3-94b0-15d12cb403bf",
+      "traceresponse" : "00-f3b8018115f97cbfcdfc9ac9d94cc4c2-1c8230be5babf049-01",
+      "mise-correlation-id" : "4539034d-e4c2-4db5-96a6-70514adbe48d",
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
       "Body" : "{\"error\":{\"code\":\"EventRouteNotFound\",\"message\":\"There is no route available that matches the provided input. Check for all valid event routes by calling EventRoute_List. See Swagger example (https://aka.ms/RouteSwSmpl).\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:28:25 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:55:27 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "273f6c97-7c6f-4599-81f3-e7d9bcd4b198" ]
+  "variables" : [ "63661dd5-9ba9-4311-ab20-b360cf72c22e" ]
 }

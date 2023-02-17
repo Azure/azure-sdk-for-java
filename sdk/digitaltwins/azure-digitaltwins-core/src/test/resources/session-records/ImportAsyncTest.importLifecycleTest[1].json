@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/924448?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/243270?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "3f1a8c7f-4a83-4c3c-9dd4-f3fab3a6657e",
+      "x-ms-client-request-id" : "4c98a05d-ad09-4a6d-89b6-d28810857bb4",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,203 +12,187 @@
       "Content-Length" : "167",
       "StatusCode" : "429",
       "Body" : "{ \"error\": { \"statusCode\": 429, \"message\": \"Maximum request rate limit reached. For Azure Digital Twins rate limiting details please see http://aka.ms/dtv2limits.\" } }",
-      "Date" : "Wed, 15 Feb 2023 20:28:35 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:55:35 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/924448?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/243270?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "3f1a8c7f-4a83-4c3c-9dd4-f3fab3a6657e",
+      "x-ms-client-request-id" : "4c98a05d-ad09-4a6d-89b6-d28810857bb4",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-587ae4997d1e30f22f8011b5775faf96-94f4303c62cae26b-01",
-      "mise-correlation-id" : "74920c2d-4416-418b-8b68-be64e947b564",
+      "traceresponse" : "00-bec22fcdd2c656bac728f5b685042f53-2e4b6a3ff434b235-01",
+      "mise-correlation-id" : "356dae1f-9f4d-458e-9592-2e40785a94aa",
       "retry-after" : "0",
-      "Content-Length" : "389",
+      "Content-Length" : "417",
       "StatusCode" : "201",
-      "Body" : "{\"id\":\"924448\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-924448.ndjson\",\"createdDateTime\":\"2023-02-15T20:28:48.0101653Z\",\"lastActionDateTime\":\"2023-02-15T20:28:48.0101654Z\",\"purgeDateTime\":\"2023-03-17T20:28:48.0101654Z\",\"status\":\"notstarted\"}",
-      "Date" : "Wed, 15 Feb 2023 20:28:47 GMT",
+      "Body" : "{\"id\":\"243270\",\"inputBlobUri\":\"https://sanraviadtsdkjavatest.blob.core.windows.net/sanraviadtsdkjavatest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanraviadtsdkjavatest.blob.core.windows.net/sanraviadtsdkjavatest/output-243270.ndjson\",\"createdDateTime\":\"2023-02-17T21:55:50.2489377Z\",\"lastActionDateTime\":\"2023-02-17T21:55:50.2489378Z\",\"purgeDateTime\":\"2023-03-19T21:55:50.2489378Z\",\"status\":\"notstarted\"}",
+      "Date" : "Fri, 17 Feb 2023 21:55:50 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "d5901c18-8d0b-4fe2-bf6f-261ec4a10f36"
+      "x-ms-client-request-id" : "a6bf98c8-070f-4100-9fa0-99dd32c5dfd8"
     },
     "Response" : {
       "Retry-After" : "0",
       "Content-Length" : "167",
       "StatusCode" : "429",
       "Body" : "{ \"error\": { \"statusCode\": 429, \"message\": \"Maximum request rate limit reached. For Azure Digital Twins rate limiting details please see http://aka.ms/dtv2limits.\" } }",
-      "Date" : "Wed, 15 Feb 2023 20:28:47 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:55:49 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "d5901c18-8d0b-4fe2-bf6f-261ec4a10f36"
+      "x-ms-client-request-id" : "a6bf98c8-070f-4100-9fa0-99dd32c5dfd8"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-eb4ede20f252113256b7c345563b18df-52b782ea10bcc799-01",
-      "mise-correlation-id" : "d3aa8e5e-23f5-40db-97c8-00b615af1236",
+      "traceresponse" : "00-b407e5f671ac0ea706084a67782e6a34-58df0c0442de000b-01",
+      "mise-correlation-id" : "702f2d7a-6678-4d5d-a459-9ed6b1102831",
       "retry-after" : "0",
-      "Content-Length" : "31248",
+      "Content-Length" : "492",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"id\":\"492105\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-492105.ndjson\",\"createdDateTime\":\"2023-02-07T17:32:34.0511376Z\",\"lastActionDateTime\":\"2023-02-07T17:33:04.0204878Z\",\"finishedDateTime\":\"2023-02-07T17:33:04.0204878Z\",\"purgeDateTime\":\"2023-03-09T17:32:34.0511377Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"619754\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-619754.ndjson\",\"createdDateTime\":\"2023-02-07T17:43:14.2104839Z\",\"lastActionDateTime\":\"2023-02-07T17:43:41.1260524Z\",\"finishedDateTime\":\"2023-02-07T17:43:41.1260524Z\",\"purgeDateTime\":\"2023-03-09T17:43:14.210484Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"761685\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-761685.ndjson\",\"createdDateTime\":\"2023-02-07T17:44:31.0517923Z\",\"lastActionDateTime\":\"2023-02-07T17:45:04.041372Z\",\"finishedDateTime\":\"2023-02-07T17:45:04.041372Z\",\"purgeDateTime\":\"2023-03-09T17:44:31.0517924Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"561360\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-561360.ndjson\",\"createdDateTime\":\"2023-02-07T17:46:03.0014899Z\",\"lastActionDateTime\":\"2023-02-07T17:46:31.6383306Z\",\"finishedDateTime\":\"2023-02-07T17:46:31.6383306Z\",\"purgeDateTime\":\"2023-03-09T17:46:03.00149Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"407052\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-407052.ndjson\",\"createdDateTime\":\"2023-02-07T17:47:37.668221Z\",\"lastActionDateTime\":\"2023-02-07T17:48:17.1214648Z\",\"finishedDateTime\":\"2023-02-07T17:48:17.1214648Z\",\"purgeDateTime\":\"2023-03-09T17:47:37.668221Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"798698\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-798698.ndjson\",\"createdDateTime\":\"2023-02-07T17:54:53.7375144Z\",\"lastActionDateTime\":\"2023-02-07T17:55:24.6502946Z\",\"finishedDateTime\":\"2023-02-07T17:55:24.6502946Z\",\"purgeDateTime\":\"2023-03-09T17:54:53.7375145Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"280131\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-280131.ndjson\",\"createdDateTime\":\"2023-02-07T17:58:52.7510065Z\",\"lastActionDateTime\":\"2023-02-07T17:59:25.9922803Z\",\"finishedDateTime\":\"2023-02-07T17:59:25.9922803Z\",\"purgeDateTime\":\"2023-03-09T17:58:52.7510067Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"296769\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-296769.ndjson\",\"createdDateTime\":\"2023-02-07T18:06:55.8616713Z\",\"lastActionDateTime\":\"2023-02-07T18:07:27.0743022Z\",\"finishedDateTime\":\"2023-02-07T18:07:27.0743022Z\",\"purgeDateTime\":\"2023-03-09T18:06:55.8616715Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"608009\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-608009.ndjson\",\"createdDateTime\":\"2023-02-07T18:14:45.989009Z\",\"lastActionDateTime\":\"2023-02-07T18:15:20.2200737Z\",\"finishedDateTime\":\"2023-02-07T18:15:20.2200737Z\",\"purgeDateTime\":\"2023-03-09T18:14:45.9890093Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"445377\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-445377.ndjson\",\"createdDateTime\":\"2023-02-07T18:18:15.9464798Z\",\"lastActionDateTime\":\"2023-02-07T18:18:59.170043Z\",\"finishedDateTime\":\"2023-02-07T18:18:59.170043Z\",\"purgeDateTime\":\"2023-03-09T18:18:15.9464799Z\",\"status\":\"cancelled\"},{\"id\":\"406547\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-406547.ndjson\",\"createdDateTime\":\"2023-02-07T18:24:10.1413972Z\",\"lastActionDateTime\":\"2023-02-07T18:24:49.1482874Z\",\"finishedDateTime\":\"2023-02-07T18:24:49.1482874Z\",\"purgeDateTime\":\"2023-03-09T18:24:10.1413973Z\",\"status\":\"cancelled\"},{\"id\":\"169996\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-169996.ndjson\",\"createdDateTime\":\"2023-02-07T18:31:04.7122702Z\",\"lastActionDateTime\":\"2023-02-07T18:31:31.0599992Z\",\"finishedDateTime\":\"2023-02-07T18:31:31.0599992Z\",\"purgeDateTime\":\"2023-03-09T18:31:04.7122703Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"392912\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-392912.ndjson\",\"createdDateTime\":\"2023-02-07T18:34:31.3513334Z\",\"lastActionDateTime\":\"2023-02-07T18:35:02.3965954Z\",\"finishedDateTime\":\"2023-02-07T18:35:02.3965954Z\",\"purgeDateTime\":\"2023-03-09T18:34:31.3513335Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"258201\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-258201.ndjson\",\"createdDateTime\":\"2023-02-07T18:59:35.9657491Z\",\"lastActionDateTime\":\"2023-02-07T19:00:05.6946403Z\",\"finishedDateTime\":\"2023-02-07T19:00:05.6946403Z\",\"purgeDateTime\":\"2023-03-09T18:59:35.9657492Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"006968\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-006968.ndjson\",\"createdDateTime\":\"2023-02-07T19:01:40.7231706Z\",\"lastActionDateTime\":\"2023-02-07T19:02:21.146641Z\",\"finishedDateTime\":\"2023-02-07T19:02:21.146641Z\",\"purgeDateTime\":\"2023-03-09T19:01:40.7231707Z\",\"status\":\"cancelled\"},{\"id\":\"503379\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-503379.ndjson\",\"createdDateTime\":\"2023-02-07T20:23:06.0116048Z\",\"lastActionDateTime\":\"2023-02-07T20:23:35.8473498Z\",\"finishedDateTime\":\"2023-02-07T20:23:35.8473498Z\",\"purgeDateTime\":\"2023-03-09T20:23:06.011605Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"961843\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-961843.ndjson\",\"createdDateTime\":\"2023-02-07T20:24:35.81718Z\",\"lastActionDateTime\":\"2023-02-07T20:25:17.5862298Z\",\"finishedDateTime\":\"2023-02-07T20:25:17.5862298Z\",\"purgeDateTime\":\"2023-03-09T20:24:35.8171802Z\",\"status\":\"cancelled\"},{\"id\":\"353879\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-353879.ndjson\",\"createdDateTime\":\"2023-02-07T20:27:06.8756337Z\",\"lastActionDateTime\":\"2023-02-07T20:27:34.8804552Z\",\"finishedDateTime\":\"2023-02-07T20:27:34.8804552Z\",\"purgeDateTime\":\"2023-03-09T20:27:06.8756339Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"018681\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-018681.ndjson\",\"createdDateTime\":\"2023-02-07T20:29:21.6203564Z\",\"lastActionDateTime\":\"2023-02-07T20:29:52.6633976Z\",\"finishedDateTime\":\"2023-02-07T20:29:52.6633976Z\",\"purgeDateTime\":\"2023-03-09T20:29:21.6203569Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"892130\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-892130.ndjson\",\"createdDateTime\":\"2023-02-07T20:32:33.2194283Z\",\"lastActionDateTime\":\"2023-02-07T20:33:07.8579805Z\",\"finishedDateTime\":\"2023-02-07T20:33:07.8579805Z\",\"purgeDateTime\":\"2023-03-09T20:32:33.2194285Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"986348\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-986348.ndjson\",\"createdDateTime\":\"2023-02-07T20:34:44.7592175Z\",\"lastActionDateTime\":\"2023-02-07T20:35:29.4794965Z\",\"finishedDateTime\":\"2023-02-07T20:35:29.4794965Z\",\"purgeDateTime\":\"2023-03-09T20:34:44.7592177Z\",\"status\":\"cancelled\"},{\"id\":\"938196\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-938196.ndjson\",\"createdDateTime\":\"2023-02-07T20:37:11.0284455Z\",\"lastActionDateTime\":\"2023-02-07T20:37:55.5153223Z\",\"finishedDateTime\":\"2023-02-07T20:37:55.5153223Z\",\"purgeDateTime\":\"2023-03-09T20:37:11.0284459Z\",\"status\":\"cancelled\"},{\"id\":\"669863\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-669863.ndjson\",\"createdDateTime\":\"2023-02-07T21:08:18.5677321Z\",\"lastActionDateTime\":\"2023-02-07T21:08:53.2084786Z\",\"finishedDateTime\":\"2023-02-07T21:08:53.2084786Z\",\"purgeDateTime\":\"2023-03-09T21:08:18.5677358Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"676219\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-676219.ndjson\",\"createdDateTime\":\"2023-02-07T21:19:41.4306154Z\",\"lastActionDateTime\":\"2023-02-07T21:20:15.0776578Z\",\"finishedDateTime\":\"2023-02-07T21:20:15.0776578Z\",\"purgeDateTime\":\"2023-03-09T21:19:41.4306195Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"012644\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-012644.ndjson\",\"createdDateTime\":\"2023-02-07T21:21:46.6154393Z\",\"lastActionDateTime\":\"2023-02-07T21:22:14.6553259Z\",\"finishedDateTime\":\"2023-02-07T21:22:14.6553259Z\",\"purgeDateTime\":\"2023-03-09T21:21:46.6154395Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"967927\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-967927.ndjson\",\"createdDateTime\":\"2023-02-07T21:23:18.1291571Z\",\"lastActionDateTime\":\"2023-02-07T21:23:47.0147621Z\",\"finishedDateTime\":\"2023-02-07T21:23:47.0147621Z\",\"purgeDateTime\":\"2023-03-09T21:23:18.1291575Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"490958\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-490958.ndjson\",\"createdDateTime\":\"2023-02-07T21:32:31.3756566Z\",\"lastActionDateTime\":\"2023-02-07T21:33:04.531413Z\",\"finishedDateTime\":\"2023-02-07T21:33:04.531413Z\",\"purgeDateTime\":\"2023-03-09T21:32:31.3756571Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"489513\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-489513.ndjson\",\"createdDateTime\":\"2023-02-08T14:42:38.9601365Z\",\"lastActionDateTime\":\"2023-02-08T14:43:15.4845773Z\",\"finishedDateTime\":\"2023-02-08T14:43:15.4845773Z\",\"purgeDateTime\":\"2023-03-10T14:42:38.9601366Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"955145\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-955145.ndjson\",\"createdDateTime\":\"2023-02-08T15:54:40.2607485Z\",\"lastActionDateTime\":\"2023-02-08T15:55:09.8084291Z\",\"finishedDateTime\":\"2023-02-08T15:55:09.8084291Z\",\"purgeDateTime\":\"2023-03-10T15:54:40.2607486Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"332363\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-332363.ndjson\",\"createdDateTime\":\"2023-02-08T15:56:22.4082287Z\",\"lastActionDateTime\":\"2023-02-08T15:56:55.6215061Z\",\"finishedDateTime\":\"2023-02-08T15:56:55.6215061Z\",\"purgeDateTime\":\"2023-03-10T15:56:22.4082287Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"051846\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-051846.ndjson\",\"createdDateTime\":\"2023-02-09T15:23:51.5023276Z\",\"lastActionDateTime\":\"2023-02-09T15:24:37.7414873Z\",\"finishedDateTime\":\"2023-02-09T15:24:37.7414873Z\",\"purgeDateTime\":\"2023-03-11T15:23:51.5023276Z\",\"status\":\"cancelled\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"277481\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-277481.ndjson\",\"createdDateTime\":\"2023-02-09T15:24:37.2398389Z\",\"lastActionDateTime\":\"2023-02-09T15:25:13.4525628Z\",\"finishedDateTime\":\"2023-02-09T15:25:13.4525628Z\",\"purgeDateTime\":\"2023-03-11T15:24:37.239839Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"575163\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-575163.ndjson\",\"createdDateTime\":\"2023-02-09T15:26:26.7593195Z\",\"lastActionDateTime\":\"2023-02-09T15:26:58.7078409Z\",\"finishedDateTime\":\"2023-02-09T15:26:58.7078409Z\",\"purgeDateTime\":\"2023-03-11T15:26:26.7593195Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"481432\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-481432.ndjson\",\"createdDateTime\":\"2023-02-09T15:28:43.5442483Z\",\"lastActionDateTime\":\"2023-02-09T15:29:12.6371819Z\",\"finishedDateTime\":\"2023-02-09T15:29:12.6371819Z\",\"purgeDateTime\":\"2023-03-11T15:28:43.5442484Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"508819\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-508819.ndjson\",\"createdDateTime\":\"2023-02-09T15:29:24.108397Z\",\"lastActionDateTime\":\"2023-02-09T15:29:57.3994968Z\",\"finishedDateTime\":\"2023-02-09T15:29:57.3994968Z\",\"purgeDateTime\":\"2023-03-11T15:29:24.1083971Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"660039\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-660039.ndjson\",\"createdDateTime\":\"2023-02-09T15:38:30.3258378Z\",\"lastActionDateTime\":\"2023-02-09T15:39:05.001806Z\",\"finishedDateTime\":\"2023-02-09T15:39:05.001806Z\",\"purgeDateTime\":\"2023-03-11T15:38:30.3258379Z\",\"status\":\"cancelled\"},{\"id\":\"536375\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-536375.ndjson\",\"createdDateTime\":\"2023-02-09T15:39:20.1727306Z\",\"lastActionDateTime\":\"2023-02-09T15:39:57.4877644Z\",\"finishedDateTime\":\"2023-02-09T15:39:57.4877644Z\",\"purgeDateTime\":\"2023-03-11T15:39:20.1727306Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"529345\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-529345.ndjson\",\"createdDateTime\":\"2023-02-09T15:43:17.8184728Z\",\"lastActionDateTime\":\"2023-02-09T15:43:44.090488Z\",\"finishedDateTime\":\"2023-02-09T15:43:44.090488Z\",\"purgeDateTime\":\"2023-03-11T15:43:17.8184729Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"374288\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-374288.ndjson\",\"createdDateTime\":\"2023-02-09T15:44:26.1784037Z\",\"lastActionDateTime\":\"2023-02-09T15:44:54.1762933Z\",\"finishedDateTime\":\"2023-02-09T15:44:54.1762933Z\",\"purgeDateTime\":\"2023-03-11T15:44:26.1784038Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"107005\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-107005.ndjson\",\"createdDateTime\":\"2023-02-09T15:47:50.5118397Z\",\"lastActionDateTime\":\"2023-02-09T15:48:22.8188411Z\",\"finishedDateTime\":\"2023-02-09T15:48:22.8188411Z\",\"purgeDateTime\":\"2023-03-11T15:47:50.5118398Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"350487\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-350487.ndjson\",\"createdDateTime\":\"2023-02-09T15:49:18.1666881Z\",\"lastActionDateTime\":\"2023-02-09T15:49:49.7905302Z\",\"finishedDateTime\":\"2023-02-09T15:49:49.7905302Z\",\"purgeDateTime\":\"2023-03-11T15:49:18.1666882Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"301658\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-301658.ndjson\",\"createdDateTime\":\"2023-02-09T15:52:05.5507194Z\",\"lastActionDateTime\":\"2023-02-09T15:52:37.1585386Z\",\"finishedDateTime\":\"2023-02-09T15:52:37.1585386Z\",\"purgeDateTime\":\"2023-03-11T15:52:05.5507195Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"062137\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-062137.ndjson\",\"createdDateTime\":\"2023-02-09T15:53:36.4159475Z\",\"lastActionDateTime\":\"2023-02-09T15:54:12.0037208Z\",\"finishedDateTime\":\"2023-02-09T15:54:12.0037208Z\",\"purgeDateTime\":\"2023-03-11T15:53:36.4159475Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"779432\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-779432.ndjson\",\"createdDateTime\":\"2023-02-09T15:54:12.0772781Z\",\"lastActionDateTime\":\"2023-02-09T15:54:37.1461358Z\",\"finishedDateTime\":\"2023-02-09T15:54:37.1461358Z\",\"purgeDateTime\":\"2023-03-11T15:54:12.0772782Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"504717\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-504717.ndjson\",\"createdDateTime\":\"2023-02-09T15:55:32.162835Z\",\"lastActionDateTime\":\"2023-02-09T15:56:09.3650181Z\",\"finishedDateTime\":\"2023-02-09T15:56:09.3650181Z\",\"purgeDateTime\":\"2023-03-11T15:55:32.162835Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"053170\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-053170.ndjson\",\"createdDateTime\":\"2023-02-09T15:58:44.2072786Z\",\"lastActionDateTime\":\"2023-02-09T15:59:09.3499368Z\",\"finishedDateTime\":\"2023-02-09T15:59:09.3499368Z\",\"purgeDateTime\":\"2023-03-11T15:58:44.2072786Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"828045\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-828045.ndjson\",\"createdDateTime\":\"2023-02-09T16:02:25.9302632Z\",\"lastActionDateTime\":\"2023-02-09T16:02:57.4097606Z\",\"finishedDateTime\":\"2023-02-09T16:02:57.4097606Z\",\"purgeDateTime\":\"2023-03-11T16:02:25.9302633Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"164421\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-164421.ndjson\",\"createdDateTime\":\"2023-02-09T16:03:59.6518422Z\",\"lastActionDateTime\":\"2023-02-09T16:04:28.776527Z\",\"finishedDateTime\":\"2023-02-09T16:04:28.776527Z\",\"purgeDateTime\":\"2023-03-11T16:03:59.6518423Z\",\"status\":\"failed\",\"error\":{\"code\":\"UnableToReadInputBlob\",\"message\":\"Unable to read input blob because input container/blob does not exist.\"}},{\"id\":\"722561\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-722561.ndjson\",\"createdDateTime\":\"2023-02-13T14:35:55.9735852Z\",\"lastActionDateTime\":\"2023-02-13T14:36:06.3329523Z\",\"finishedDateTime\":\"2023-02-13T14:36:06.3329523Z\",\"purgeDateTime\":\"2023-03-15T14:35:55.9735852Z\",\"status\":\"succeeded\"},{\"id\":\"104928\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-104928.ndjson\",\"createdDateTime\":\"2023-02-13T14:36:37.4848005Z\",\"lastActionDateTime\":\"2023-02-13T14:36:45.3299526Z\",\"finishedDateTime\":\"2023-02-13T14:36:45.3299526Z\",\"purgeDateTime\":\"2023-03-15T14:36:37.4848006Z\",\"status\":\"succeeded\"},{\"id\":\"500012\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-500012.ndjson\",\"createdDateTime\":\"2023-02-13T14:41:14.984075Z\",\"lastActionDateTime\":\"2023-02-13T14:41:21.9944211Z\",\"finishedDateTime\":\"2023-02-13T14:41:21.9944211Z\",\"purgeDateTime\":\"2023-03-15T14:41:14.9840751Z\",\"status\":\"succeeded\"},{\"id\":\"862399\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-862399.ndjson\",\"createdDateTime\":\"2023-02-13T14:43:32.3311006Z\",\"lastActionDateTime\":\"2023-02-13T14:43:39.6608675Z\",\"finishedDateTime\":\"2023-02-13T14:43:39.6608675Z\",\"purgeDateTime\":\"2023-03-15T14:43:32.3311007Z\",\"status\":\"succeeded\"},{\"id\":\"529211\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-529211.ndjson\",\"createdDateTime\":\"2023-02-13T14:45:40.095847Z\",\"lastActionDateTime\":\"2023-02-13T14:45:47.7193111Z\",\"finishedDateTime\":\"2023-02-13T14:45:47.7193111Z\",\"purgeDateTime\":\"2023-03-15T14:45:40.0958471Z\",\"status\":\"succeeded\"},{\"id\":\"128471\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-128471.ndjson\",\"createdDateTime\":\"2023-02-13T14:49:31.9693003Z\",\"lastActionDateTime\":\"2023-02-13T14:49:38.9362197Z\",\"finishedDateTime\":\"2023-02-13T14:49:38.9362197Z\",\"purgeDateTime\":\"2023-03-15T14:49:31.9693004Z\",\"status\":\"succeeded\"},{\"id\":\"393118\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-393118.ndjson\",\"createdDateTime\":\"2023-02-13T14:51:16.3996328Z\",\"lastActionDateTime\":\"2023-02-13T14:51:23.0204308Z\",\"finishedDateTime\":\"2023-02-13T14:51:23.0204308Z\",\"purgeDateTime\":\"2023-03-15T14:51:16.3996329Z\",\"status\":\"succeeded\"},{\"id\":\"791632\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-791632.ndjson\",\"createdDateTime\":\"2023-02-13T14:58:15.6549749Z\",\"lastActionDateTime\":\"2023-02-13T14:58:22.4543106Z\",\"finishedDateTime\":\"2023-02-13T14:58:22.4543106Z\",\"purgeDateTime\":\"2023-03-15T14:58:15.654975Z\",\"status\":\"succeeded\"},{\"id\":\"864338\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-864338.ndjson\",\"createdDateTime\":\"2023-02-13T14:59:58.1858925Z\",\"lastActionDateTime\":\"2023-02-13T15:00:05.2135514Z\",\"finishedDateTime\":\"2023-02-13T15:00:05.2135514Z\",\"purgeDateTime\":\"2023-03-15T14:59:58.1858925Z\",\"status\":\"succeeded\"},{\"id\":\"317635\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-317635.ndjson\",\"createdDateTime\":\"2023-02-15T20:20:51.0844159Z\",\"lastActionDateTime\":\"2023-02-15T20:20:57.8794537Z\",\"finishedDateTime\":\"2023-02-15T20:20:57.8794537Z\",\"purgeDateTime\":\"2023-03-17T20:20:51.084416Z\",\"status\":\"succeeded\"},{\"id\":\"499539\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-499539.ndjson\",\"createdDateTime\":\"2023-02-15T20:22:32.5233417Z\",\"lastActionDateTime\":\"2023-02-15T20:22:39.2637908Z\",\"finishedDateTime\":\"2023-02-15T20:22:39.2637908Z\",\"purgeDateTime\":\"2023-03-17T20:22:32.5233418Z\",\"status\":\"succeeded\"},{\"id\":\"924448\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-924448.ndjson\",\"createdDateTime\":\"2023-02-15T20:28:48.0101653Z\",\"lastActionDateTime\":\"2023-02-15T20:28:48.8888717Z\",\"purgeDateTime\":\"2023-03-17T20:28:48.0101654Z\",\"status\":\"running\"}],\"nextLink\":null}",
-      "Date" : "Wed, 15 Feb 2023 20:28:52 GMT",
+      "Body" : "{\"value\":[{\"id\":\"243270\",\"inputBlobUri\":\"https://sanraviadtsdkjavatest.blob.core.windows.net/sanraviadtsdkjavatest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanraviadtsdkjavatest.blob.core.windows.net/sanraviadtsdkjavatest/output-243270.ndjson\",\"createdDateTime\":\"2023-02-17T21:55:50.2489377Z\",\"lastActionDateTime\":\"2023-02-17T21:55:58.013528Z\",\"finishedDateTime\":\"2023-02-17T21:55:58.013528Z\",\"purgeDateTime\":\"2023-03-19T21:55:50.2489378Z\",\"status\":\"succeeded\"}],\"nextLink\":null}",
+      "Date" : "Fri, 17 Feb 2023 21:56:02 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/924448?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/243270?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "cc17aea5-618b-42ce-97ce-76a966f97420"
+      "x-ms-client-request-id" : "c28c9202-c5c1-4cb1-b601-d8fced0b2c2a"
     },
     "Response" : {
       "Retry-After" : "0",
       "Content-Length" : "167",
       "StatusCode" : "429",
       "Body" : "{ \"error\": { \"statusCode\": 429, \"message\": \"Maximum request rate limit reached. For Azure Digital Twins rate limiting details please see http://aka.ms/dtv2limits.\" } }",
-      "Date" : "Wed, 15 Feb 2023 20:28:52 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:56:02 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/924448?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/243270?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "cc17aea5-618b-42ce-97ce-76a966f97420"
+      "x-ms-client-request-id" : "c28c9202-c5c1-4cb1-b601-d8fced0b2c2a"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-cc7b0821e79f210b47a20b5b13663964-255832b981f3ab66-01",
-      "mise-correlation-id" : "73bd1e71-fc78-4575-ac26-3fb9e7a46c85",
+      "traceresponse" : "00-86965ba04718b6575ac98d710327cf99-083357edbad64781-01",
+      "mise-correlation-id" : "9288610f-5945-4425-b064-03e969e9b946",
       "retry-after" : "0",
-      "Content-Length" : "438",
+      "Content-Length" : "464",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"924448\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-924448.ndjson\",\"createdDateTime\":\"2023-02-15T20:28:48.0101653Z\",\"lastActionDateTime\":\"2023-02-15T20:28:55.4156733Z\",\"finishedDateTime\":\"2023-02-15T20:28:55.4156733Z\",\"purgeDateTime\":\"2023-03-17T20:28:48.0101654Z\",\"status\":\"succeeded\"}",
-      "Date" : "Wed, 15 Feb 2023 20:29:05 GMT",
+      "Body" : "{\"id\":\"243270\",\"inputBlobUri\":\"https://sanraviadtsdkjavatest.blob.core.windows.net/sanraviadtsdkjavatest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanraviadtsdkjavatest.blob.core.windows.net/sanraviadtsdkjavatest/output-243270.ndjson\",\"createdDateTime\":\"2023-02-17T21:55:50.2489377Z\",\"lastActionDateTime\":\"2023-02-17T21:55:58.013528Z\",\"finishedDateTime\":\"2023-02-17T21:55:58.013528Z\",\"purgeDateTime\":\"2023-03-19T21:55:50.2489378Z\",\"status\":\"succeeded\"}",
+      "Date" : "Fri, 17 Feb 2023 21:56:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/924448/cancel?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/243270/cancel?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f9df2ab2-392a-497d-92b6-3935bcbe2334"
+      "x-ms-client-request-id" : "a53b8c0c-8ae3-4e45-ba87-5345c5c80c53"
     },
     "Response" : {
       "Retry-After" : "0",
       "Content-Length" : "167",
       "StatusCode" : "429",
       "Body" : "{ \"error\": { \"statusCode\": 429, \"message\": \"Maximum request rate limit reached. For Azure Digital Twins rate limiting details please see http://aka.ms/dtv2limits.\" } }",
-      "Date" : "Wed, 15 Feb 2023 20:29:05 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:56:11 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/924448/cancel?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/243270/cancel?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f9df2ab2-392a-497d-92b6-3935bcbe2334"
+      "x-ms-client-request-id" : "a53b8c0c-8ae3-4e45-ba87-5345c5c80c53"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-1dc13cc3062c1489ab795470c36464fe-62fc3e3b7fa9af24-01",
-      "mise-correlation-id" : "fbab9aaa-6175-4c97-9b2b-0d3bdcbc1dd1",
+      "traceresponse" : "00-484d8c1d762a0a89be2f54920ac757e1-447f433ae6880e56-01",
+      "mise-correlation-id" : "577cdb4c-b5cc-4011-9cf2-12908c8f6c23",
       "retry-after" : "0",
-      "Content-Length" : "438",
+      "Content-Length" : "464",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"924448\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-924448.ndjson\",\"createdDateTime\":\"2023-02-15T20:28:48.0101653Z\",\"lastActionDateTime\":\"2023-02-15T20:28:55.4156733Z\",\"finishedDateTime\":\"2023-02-15T20:28:55.4156733Z\",\"purgeDateTime\":\"2023-03-17T20:28:48.0101654Z\",\"status\":\"succeeded\"}",
-      "Date" : "Wed, 15 Feb 2023 20:29:18 GMT",
+      "Body" : "{\"id\":\"243270\",\"inputBlobUri\":\"https://sanraviadtsdkjavatest.blob.core.windows.net/sanraviadtsdkjavatest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanraviadtsdkjavatest.blob.core.windows.net/sanraviadtsdkjavatest/output-243270.ndjson\",\"createdDateTime\":\"2023-02-17T21:55:50.2489377Z\",\"lastActionDateTime\":\"2023-02-17T21:55:58.013528Z\",\"finishedDateTime\":\"2023-02-17T21:55:58.013528Z\",\"purgeDateTime\":\"2023-03-19T21:55:50.2489378Z\",\"status\":\"succeeded\"}",
+      "Date" : "Fri, 17 Feb 2023 21:56:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/924448?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/243270?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "fb8654be-44b5-46eb-aa8e-c8aa9ee4e325"
-    },
-    "Response" : {
-      "Retry-After" : "0",
-      "Content-Length" : "167",
-      "StatusCode" : "429",
-      "Body" : "{ \"error\": { \"statusCode\": 429, \"message\": \"Maximum request rate limit reached. For Azure Digital Twins rate limiting details please see http://aka.ms/dtv2limits.\" } }",
-      "Date" : "Wed, 15 Feb 2023 20:29:18 GMT",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/924448?api-version=2023-02-27-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "fb8654be-44b5-46eb-aa8e-c8aa9ee4e325"
+      "x-ms-client-request-id" : "4809b3ac-2ea2-4274-9f88-1d5ea3524b78"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-7a194a03fb4e31398f96c51e202baf47-89b410deecbc0bb8-01",
-      "mise-correlation-id" : "ebe3a62f-5d40-47fc-bf68-adb5d54e2211",
+      "traceresponse" : "00-903805cb551dd02a8fe0a580405633c5-aa23603bbdc45262-01",
+      "mise-correlation-id" : "25f02588-8a2f-4e28-9d61-b0c89d448b14",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 15 Feb 2023 20:29:29 GMT"
+      "Date" : "Fri, 17 Feb 2023 21:56:22 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/924448?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/243270?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a38c55b5-1aa3-4e4b-91c6-1019dcaf681e"
+      "x-ms-client-request-id" : "b5d31bf5-a427-40fe-bf91-5f1c5adeda19"
     },
     "Response" : {
       "Retry-After" : "0",
       "Content-Length" : "167",
       "StatusCode" : "429",
       "Body" : "{ \"error\": { \"statusCode\": 429, \"message\": \"Maximum request rate limit reached. For Azure Digital Twins rate limiting details please see http://aka.ms/dtv2limits.\" } }",
-      "Date" : "Wed, 15 Feb 2023 20:29:29 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:56:22 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/924448?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/243270?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a38c55b5-1aa3-4e4b-91c6-1019dcaf681e"
+      "x-ms-client-request-id" : "b5d31bf5-a427-40fe-bf91-5f1c5adeda19"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-c3a31f113ac800ad9538ddc87cc3ceb0-30e52bd45a114bab-01",
-      "mise-correlation-id" : "97912c4b-0bb8-45b7-b2ef-2fdd59400f77",
+      "traceresponse" : "00-85a3a32c6a69506635b66ff6651b9902-b6b2406eb5fae999-01",
+      "mise-correlation-id" : "8cbfc7ab-1935-445f-82c8-232d73ad15c5",
       "retry-after" : "0",
       "Content-Length" : "178",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"JobNotFound\",\"message\":\"There is no job available that matches the provided id 924448. Check that the Job ID provided is valid by doing a Jobs_List API call.\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:29:39 GMT",
+      "Body" : "{\"error\":{\"code\":\"JobNotFound\",\"message\":\"There is no job available that matches the provided id 243270. Check that the Job ID provided is valid by doing a Jobs_List API call.\"}}",
+      "Date" : "Fri, 17 Feb 2023 21:56:31 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "14666b" ]
+  "variables" : [ "465492" ]
 }

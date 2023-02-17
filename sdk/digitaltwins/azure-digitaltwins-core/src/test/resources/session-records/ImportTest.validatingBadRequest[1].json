@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/769395?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/062691?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c1d9d376-9cf4-4f5c-8eaf-8809a0779767",
+      "x-ms-client-request-id" : "9ce36720-9c02-49dd-881c-5f0be6144e07",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,31 +12,31 @@
       "Content-Length" : "167",
       "StatusCode" : "429",
       "Body" : "{ \"error\": { \"statusCode\": 429, \"message\": \"Maximum request rate limit reached. For Azure Digital Twins rate limiting details please see http://aka.ms/dtv2limits.\" } }",
-      "Date" : "Wed, 15 Feb 2023 20:30:02 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:56:46 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/769395?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/jobs/imports/062691?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c1d9d376-9cf4-4f5c-8eaf-8809a0779767",
+      "x-ms-client-request-id" : "9ce36720-9c02-49dd-881c-5f0be6144e07",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-61fc0b65b18e3fee4247c4f7bb7844e5-9cf2a0b3801e3295-01",
+      "traceresponse" : "00-bcddeb6953cadb950e06699d34323196-b15ed0b6871315e0-01",
       "x-ms-error-code" : "InvalidArgument",
-      "mise-correlation-id" : "50206095-2f7c-43ad-a0d6-91b12b576bbc",
+      "mise-correlation-id" : "24480b29-3c30-47b0-ba07-b1a5ef6982fc",
       "retry-after" : "0",
       "Content-Length" : "290",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Azure Storage Blob URI 'invalidUri' failed validation. Invalid URI: The format of the URI could not be determined. Please check: https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:30:16 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:56:57 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "981517" ]
+  "variables" : [ "284813" ]
 }

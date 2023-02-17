@@ -1,319 +1,319 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Building;1640408?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Building;1006712?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "10a64ce6-230d-403f-a50f-9c505c45c3d5"
+      "x-ms-client-request-id" : "ba427596-06d1-4232-8103-cb74571ceda5"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-62f395c4eb9a7d6e59ec77e87dff5a3c-d6ac589a97a43c93-01",
-      "mise-correlation-id" : "d5366455-91b9-4ccf-8112-49b104c7fe31",
+      "traceresponse" : "00-f3f186de59bdb195558a3af74bcf93e6-024afd843b431cf5-01",
+      "mise-correlation-id" : "2b1013fb-ff78-4104-9775-86a124f3850c",
       "retry-after" : "0",
       "Content-Length" : "214",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Building;1640408. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:55 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Building;1006712. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Floor;1248545?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Floor;1097406?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "06d98741-68fc-4e69-9aab-033716a4e7fa"
+      "x-ms-client-request-id" : "f85766e2-cd05-48d0-82ef-05a4de97b5df"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-3bcf56a17f313adfaf4bb129d6187794-6e58350a8dcd43ab-01",
-      "mise-correlation-id" : "6a014a72-473a-427b-8c98-317ad781af33",
+      "traceresponse" : "00-98cf86890db2fa0c6d0e888f19e06f9f-e1ad76cb459c8272-01",
+      "mise-correlation-id" : "be211bd0-a61c-4f16-b749-bd2e782dfb4b",
       "retry-after" : "0",
       "Content-Length" : "211",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Floor;1248545. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:55 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Floor;1097406. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Hvac;1171918?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Hvac;1737218?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "38dd7059-9f07-47ad-8d5f-fa6861c5aa88"
+      "x-ms-client-request-id" : "3530d6d5-deed-46ca-95dd-638ddb5e03c6"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-cb8ebfff195c30b9a692443de9871353-d5a93b9d863ba2b1-01",
-      "mise-correlation-id" : "4988c442-7510-4a39-9c13-d9c52223130f",
+      "traceresponse" : "00-8db106a311937ba25e9bd09eeeb30981-34308998a043f890-01",
+      "mise-correlation-id" : "6498ac86-fe5c-445a-bbec-22c741c27e88",
       "retry-after" : "0",
       "Content-Length" : "210",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Hvac;1171918. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:55 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Hvac;1737218. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Ward;1778211?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Ward;1216443?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "4a7aff1b-dcae-46a6-be99-57fdbddad5a6"
+      "x-ms-client-request-id" : "dc553962-57c9-417e-894f-ff1fa8adf9e3"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-8e48607018930c8455033800e81d694f-b4244f977ce08e95-01",
-      "mise-correlation-id" : "290d92bd-adbf-4334-9db4-b82a9d11f796",
+      "traceresponse" : "00-bacaad0adb22b77f0adaba7a1b129d2b-0900a1a987e673b3-01",
+      "mise-correlation-id" : "51489087-a937-4a84-8bd4-2a4d2da614be",
       "retry-after" : "0",
       "Content-Length" : "210",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Ward;1778211. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:55 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Ward;1216443. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "fe312bfe-69f3-49dd-8c47-cdc0d9fe06f0",
+      "x-ms-client-request-id" : "88fc420a-87d3-43a0-aa7f-791428316df3",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-b303c43e66a7fa1a3a4e5606d98002ee-3947d4686023c803-01",
-      "mise-correlation-id" : "075f98be-f117-41a1-a844-05a3c0593ae2",
+      "traceresponse" : "00-e1d39de43510ce316245e7002ecccf04-d705ac16a1adc5ff-01",
+      "mise-correlation-id" : "656b55e3-8e66-49d0-be7e-387505855175",
       "retry-after" : "0",
       "Content-Length" : "607",
       "StatusCode" : "201",
-      "Body" : "[{\"id\":\"dtmi:example:Building;1640408\",\"description\":{\"en\":\"Afree-standingstructure.\"},\"displayName\":{\"en\":\"Building\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-15T20:31:56.3568417+00:00\"},{\"id\":\"dtmi:example:Hvac;1171918\",\"description\":{\"en\":\"Aheating,ventilation,andairconditioningunit.\"},\"displayName\":{\"en\":\"HVAC\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-15T20:31:56.3568652+00:00\"},{\"id\":\"dtmi:example:Ward;1778211\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-15T20:31:56.3568801+00:00\"}]",
-      "Date" : "Wed, 15 Feb 2023 20:31:56 GMT",
+      "Body" : "[{\"id\":\"dtmi:example:Building;1006712\",\"description\":{\"en\":\"Afree-standingstructure.\"},\"displayName\":{\"en\":\"Building\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-17T21:58:19.3657273+00:00\"},{\"id\":\"dtmi:example:Hvac;1737218\",\"description\":{\"en\":\"Aheating,ventilation,andairconditioningunit.\"},\"displayName\":{\"en\":\"HVAC\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-17T21:58:19.3657636+00:00\"},{\"id\":\"dtmi:example:Ward;1216443\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-17T21:58:19.3657794+00:00\"}]",
+      "Date" : "Fri, 17 Feb 2023 21:58:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Building;1640408?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Building;1006712?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "83bf5f8f-ee4e-4454-8e75-fbf936ecebe2"
+      "x-ms-client-request-id" : "1d4698ea-9d86-43c1-8894-831cbb759a2b"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-a6ddb19aad4dd470f36fc2a97de7163c-dd4061b6a2c881aa-01",
-      "mise-correlation-id" : "6e344a53-c09b-479f-8854-96f7de80f5a8",
+      "traceresponse" : "00-fd139ce87641ae6bc75a5feef486cd66-d0a41d51cbcbc22d-01",
+      "mise-correlation-id" : "7ebca6aa-24f1-47cc-953e-ce9292937254",
       "retry-after" : "0",
       "Content-Length" : "601",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"dtmi:example:Building;1640408\",\"description\":{\"en\":\"Afree-standingstructure.\"},\"displayName\":{\"en\":\"Building\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-15T20:31:56.3568417+00:00\",\"model\":{\"@id\":\"dtmi:example:Building;1640408\",\"@type\":\"Interface\",\"displayName\":\"Building\",\"description\":\"Afree-standingstructure.\",\"contents\":[{\"@type\":\"Relationship\",\"name\":\"has\",\"target\":\"dtmi:example:Floor;1248545\"},{\"@type\":\"Relationship\",\"name\":\"isEquippedWith\",\"target\":\"dtmi:example:Hvac;1171918\"},{\"@type\":\"Property\",\"name\":\"AverageTemperature\",\"schema\":\"double\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:55 GMT",
+      "Body" : "{\"id\":\"dtmi:example:Building;1006712\",\"description\":{\"en\":\"Afree-standingstructure.\"},\"displayName\":{\"en\":\"Building\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-17T21:58:19.3657273+00:00\",\"model\":{\"@id\":\"dtmi:example:Building;1006712\",\"@type\":\"Interface\",\"displayName\":\"Building\",\"description\":\"Afree-standingstructure.\",\"contents\":[{\"@type\":\"Relationship\",\"name\":\"has\",\"target\":\"dtmi:example:Floor;1097406\"},{\"@type\":\"Relationship\",\"name\":\"isEquippedWith\",\"target\":\"dtmi:example:Hvac;1737218\"},{\"@type\":\"Property\",\"name\":\"AverageTemperature\",\"schema\":\"double\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Building;1640408?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Building;1006712?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "525a5ff5-b8a8-4f95-9433-79d58e613d2c",
+      "x-ms-client-request-id" : "45538a78-ab69-4fe3-a645-842c3afa5a6e",
       "Content-Type" : "application/json-patch+json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-b0764856603ea27d84ca5b890e7b0fb6-c8af34a8ebf42897-01",
-      "mise-correlation-id" : "eba0d760-e0d3-4d67-9711-92551b29b2e9",
+      "traceresponse" : "00-7b4b37aa7a6d486f1248bb80e940e7d9-8e091493ae90b8b8-01",
+      "mise-correlation-id" : "a6bb9e66-4752-4de1-8f4c-9bb2cfd487df",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 15 Feb 2023 20:31:56 GMT"
+      "Date" : "Fri, 17 Feb 2023 21:58:18 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Building;1640408?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Building;1006712?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "76172769-5e28-4f83-a7f8-de7e5681895b"
+      "x-ms-client-request-id" : "6da2304d-2a6a-43c0-bb45-ca15dd2295d4"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-92f54279fdc95638744844788ca9a318-f576054278f31681-01",
-      "mise-correlation-id" : "a4ef272d-6670-4a4f-bcbf-eee0a91636f3",
+      "traceresponse" : "00-f9c513a194523ef5afa61c0943ecaaf7-34e97e2e7a77e78a-01",
+      "mise-correlation-id" : "c051f297-b90d-418b-8daf-77fcf0f2674f",
       "retry-after" : "0",
       "Content-Length" : "600",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"dtmi:example:Building;1640408\",\"description\":{\"en\":\"Afree-standingstructure.\"},\"displayName\":{\"en\":\"Building\"},\"decommissioned\":true,\"uploadTime\":\"2023-02-15T20:31:56.3568417+00:00\",\"model\":{\"@id\":\"dtmi:example:Building;1640408\",\"@type\":\"Interface\",\"displayName\":\"Building\",\"description\":\"Afree-standingstructure.\",\"contents\":[{\"@type\":\"Relationship\",\"name\":\"has\",\"target\":\"dtmi:example:Floor;1248545\"},{\"@type\":\"Relationship\",\"name\":\"isEquippedWith\",\"target\":\"dtmi:example:Hvac;1171918\"},{\"@type\":\"Property\",\"name\":\"AverageTemperature\",\"schema\":\"double\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:56 GMT",
+      "Body" : "{\"id\":\"dtmi:example:Building;1006712\",\"description\":{\"en\":\"Afree-standingstructure.\"},\"displayName\":{\"en\":\"Building\"},\"decommissioned\":true,\"uploadTime\":\"2023-02-17T21:58:19.3657273+00:00\",\"model\":{\"@id\":\"dtmi:example:Building;1006712\",\"@type\":\"Interface\",\"displayName\":\"Building\",\"description\":\"Afree-standingstructure.\",\"contents\":[{\"@type\":\"Relationship\",\"name\":\"has\",\"target\":\"dtmi:example:Floor;1097406\"},{\"@type\":\"Relationship\",\"name\":\"isEquippedWith\",\"target\":\"dtmi:example:Hvac;1737218\"},{\"@type\":\"Property\",\"name\":\"AverageTemperature\",\"schema\":\"double\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:19 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Building;1640408?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Building;1006712?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5caa8d11-1d66-428a-937e-d38828e9abac"
+      "x-ms-client-request-id" : "85ac9d7e-62df-4e0f-b1d4-d946205dc7a8"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-286e03ad92932e09df8d5ee4766e6bd0-fb0d13eccb0c7106-01",
-      "mise-correlation-id" : "ff0b3261-2a31-4329-a97c-9d162833854a",
+      "traceresponse" : "00-49e66ea04eea28c50a0d5e8dcd73d71e-53239312f9a1f8d9-01",
+      "mise-correlation-id" : "41ec2033-345a-48d7-8c1c-2bc98a7ad471",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 15 Feb 2023 20:31:56 GMT"
+      "Date" : "Fri, 17 Feb 2023 21:58:19 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Hvac;1171918?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Hvac;1737218?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "7ec7e84b-7fa3-4531-b4b2-0829e1325945"
+      "x-ms-client-request-id" : "431a7a97-b020-4cc1-a5db-89c15e6672bb"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-556aba888f1d42b8143b619197533dd5-85961ea123b1908f-01",
-      "mise-correlation-id" : "7740d214-2d19-4c20-b158-9f5ccefb431a",
+      "traceresponse" : "00-7bf5dd79ad1e3ea3b7bb409b96846be6-1484e5f6509ac795-01",
+      "mise-correlation-id" : "fd9305f7-18ca-4e03-b28b-b25bb42c24d8",
       "retry-after" : "0",
       "Content-Length" : "662",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"dtmi:example:Hvac;1171918\",\"description\":{\"en\":\"Aheating,ventilation,andairconditioningunit.\"},\"displayName\":{\"en\":\"HVAC\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-15T20:31:56.3568652+00:00\",\"model\":{\"@id\":\"dtmi:example:Hvac;1171918\",\"@type\":\"Interface\",\"displayName\":\"HVAC\",\"description\":\"Aheating,ventilation,andairconditioningunit.\",\"contents\":[{\"@type\":\"Property\",\"name\":\"Efficiency\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"TargetTemperature\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"TargetHumidity\",\"schema\":\"double\"},{\"@type\":\"Relationship\",\"name\":\"cools\",\"target\":\"dtmi:example:Floor;1248545\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:56 GMT",
+      "Body" : "{\"id\":\"dtmi:example:Hvac;1737218\",\"description\":{\"en\":\"Aheating,ventilation,andairconditioningunit.\"},\"displayName\":{\"en\":\"HVAC\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-17T21:58:19.3657636+00:00\",\"model\":{\"@id\":\"dtmi:example:Hvac;1737218\",\"@type\":\"Interface\",\"displayName\":\"HVAC\",\"description\":\"Aheating,ventilation,andairconditioningunit.\",\"contents\":[{\"@type\":\"Property\",\"name\":\"Efficiency\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"TargetTemperature\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"TargetHumidity\",\"schema\":\"double\"},{\"@type\":\"Relationship\",\"name\":\"cools\",\"target\":\"dtmi:example:Floor;1097406\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:19 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Hvac;1171918?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Hvac;1737218?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "26ada2b4-97dc-4b4f-87fc-a95ce50ecd6d",
+      "x-ms-client-request-id" : "480c2dce-9546-4ce3-bdd9-5d9f55af2f0c",
       "Content-Type" : "application/json-patch+json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-4f02001f5f333a451685c5ea30c53ec8-074875b0012be667-01",
-      "mise-correlation-id" : "c0801cb2-7620-4060-bc2c-c16829cb750b",
+      "traceresponse" : "00-1527d683c21f4cafa21ea153472c8203-576352a46f80395d-01",
+      "mise-correlation-id" : "2ae82335-b836-4dc1-ba6e-a64867947af4",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 15 Feb 2023 20:31:56 GMT"
+      "Date" : "Fri, 17 Feb 2023 21:58:19 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Hvac;1171918?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Hvac;1737218?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "1af23dac-1921-469c-a4bd-4abbebe9d773"
+      "x-ms-client-request-id" : "3bfd2617-7f27-488b-9c23-e1217ff87f52"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-02bee1fc255176a545bb82f061ff8396-d2a628ac5b9fe700-01",
-      "mise-correlation-id" : "48a769c0-2dc8-48b1-8c80-646cb2db8f9a",
+      "traceresponse" : "00-50a8b9243835ce9967c62deefa38034d-5824a0918e076c3c-01",
+      "mise-correlation-id" : "1adba84e-1ea8-4aba-94f6-11e5ecfe041b",
       "retry-after" : "0",
       "Content-Length" : "661",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"dtmi:example:Hvac;1171918\",\"description\":{\"en\":\"Aheating,ventilation,andairconditioningunit.\"},\"displayName\":{\"en\":\"HVAC\"},\"decommissioned\":true,\"uploadTime\":\"2023-02-15T20:31:56.3568652+00:00\",\"model\":{\"@id\":\"dtmi:example:Hvac;1171918\",\"@type\":\"Interface\",\"displayName\":\"HVAC\",\"description\":\"Aheating,ventilation,andairconditioningunit.\",\"contents\":[{\"@type\":\"Property\",\"name\":\"Efficiency\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"TargetTemperature\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"TargetHumidity\",\"schema\":\"double\"},{\"@type\":\"Relationship\",\"name\":\"cools\",\"target\":\"dtmi:example:Floor;1248545\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:56 GMT",
+      "Body" : "{\"id\":\"dtmi:example:Hvac;1737218\",\"description\":{\"en\":\"Aheating,ventilation,andairconditioningunit.\"},\"displayName\":{\"en\":\"HVAC\"},\"decommissioned\":true,\"uploadTime\":\"2023-02-17T21:58:19.3657636+00:00\",\"model\":{\"@id\":\"dtmi:example:Hvac;1737218\",\"@type\":\"Interface\",\"displayName\":\"HVAC\",\"description\":\"Aheating,ventilation,andairconditioningunit.\",\"contents\":[{\"@type\":\"Property\",\"name\":\"Efficiency\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"TargetTemperature\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"TargetHumidity\",\"schema\":\"double\"},{\"@type\":\"Relationship\",\"name\":\"cools\",\"target\":\"dtmi:example:Floor;1097406\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:19 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Hvac;1171918?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Hvac;1737218?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "6020236f-6fd9-460f-96d4-5f20fcff9e4a"
+      "x-ms-client-request-id" : "de36f52c-02d5-45fa-8ee4-a6312e632cd3"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-c64cc06c02aa8a431a9f9490abd9e53a-6f39e546df7aec64-01",
-      "mise-correlation-id" : "c8ba5963-dbde-4852-a50a-52bf5d2602f5",
+      "traceresponse" : "00-520cc062d1b45f9b6dc6c66c7343b66e-3a6f234f03468673-01",
+      "mise-correlation-id" : "96729d0d-2b24-427d-be48-15d4013096d9",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 15 Feb 2023 20:31:57 GMT"
+      "Date" : "Fri, 17 Feb 2023 21:58:19 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Ward;1778211?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Ward;1216443?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "4fc430a0-55af-45fa-b248-fa518d3a389d"
+      "x-ms-client-request-id" : "b3d65a66-f2eb-458e-bf3c-02d09a0ffae2"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-51110d761463f94c85468bc7815cada2-8669d1739035c944-01",
-      "mise-correlation-id" : "ed0653b8-66dd-4b4e-bd33-02969e1d415b",
+      "traceresponse" : "00-8416fa19080a27a5a971b8bd18647a03-a7ad429385defe00-01",
+      "mise-correlation-id" : "dc8a728c-e291-4be4-9b00-692bd1f68ad3",
       "retry-after" : "0",
       "Content-Length" : "589",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"dtmi:example:Ward;1778211\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-15T20:31:56.3568801+00:00\",\"model\":{\"@id\":\"dtmi:example:Ward;1778211\",\"@type\":\"Interface\",\"displayName\":\"Ward\",\"description\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\",\"contents\":[{\"@type\":\"Property\",\"name\":\"VisitorCount\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"HandWashPercentage\",\"schema\":\"double\"},{\"@type\":\"Relationship\",\"name\":\"managedRooms\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:56 GMT",
+      "Body" : "{\"id\":\"dtmi:example:Ward;1216443\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-17T21:58:19.3657794+00:00\",\"model\":{\"@id\":\"dtmi:example:Ward;1216443\",\"@type\":\"Interface\",\"displayName\":\"Ward\",\"description\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\",\"contents\":[{\"@type\":\"Property\",\"name\":\"VisitorCount\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"HandWashPercentage\",\"schema\":\"double\"},{\"@type\":\"Relationship\",\"name\":\"managedRooms\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:19 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Ward;1778211?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Ward;1216443?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "7f3a32f3-3b21-4be6-b87e-7a663c6e9497",
+      "x-ms-client-request-id" : "8f58236d-c5c9-4f9c-847e-938aae74dff6",
       "Content-Type" : "application/json-patch+json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-2e0ab7bb4b8698458d5b7aad094ed85a-847559917c3c89c0-01",
-      "mise-correlation-id" : "4266a57d-0ad9-4eb8-a0f1-b67c567ec8b6",
+      "traceresponse" : "00-b71565c067458eff1e3fb7d339da6f58-2a014770ba6ba2e7-01",
+      "mise-correlation-id" : "daeef96c-7cdb-45fe-9039-8220fbf91fc4",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 15 Feb 2023 20:31:57 GMT"
+      "Date" : "Fri, 17 Feb 2023 21:58:19 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Ward;1778211?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Ward;1216443?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "b7355f07-8e2d-4fe8-9360-99e6055bf8cb"
+      "x-ms-client-request-id" : "d494fad9-f83b-4217-b10a-73dbcc23608e"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-85f401b92aba95e3c9e15489d7cb3e65-c0d893fc9f3dc2a5-01",
-      "mise-correlation-id" : "24d54067-be7d-4a78-9a93-3a09622e0e51",
+      "traceresponse" : "00-c0017cae0f791f48be050a4224a3e19a-1ce559267454f586-01",
+      "mise-correlation-id" : "b59c4639-c80a-431c-8cb3-4a395d3a6b03",
       "retry-after" : "0",
       "Content-Length" : "588",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"dtmi:example:Ward;1778211\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":true,\"uploadTime\":\"2023-02-15T20:31:56.3568801+00:00\",\"model\":{\"@id\":\"dtmi:example:Ward;1778211\",\"@type\":\"Interface\",\"displayName\":\"Ward\",\"description\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\",\"contents\":[{\"@type\":\"Property\",\"name\":\"VisitorCount\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"HandWashPercentage\",\"schema\":\"double\"},{\"@type\":\"Relationship\",\"name\":\"managedRooms\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:56 GMT",
+      "Body" : "{\"id\":\"dtmi:example:Ward;1216443\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":true,\"uploadTime\":\"2023-02-17T21:58:19.3657794+00:00\",\"model\":{\"@id\":\"dtmi:example:Ward;1216443\",\"@type\":\"Interface\",\"displayName\":\"Ward\",\"description\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\",\"contents\":[{\"@type\":\"Property\",\"name\":\"VisitorCount\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"HandWashPercentage\",\"schema\":\"double\"},{\"@type\":\"Relationship\",\"name\":\"managedRooms\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:19 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Ward;1778211?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Ward;1216443?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "0fc22ed4-c8f4-4385-9407-e8ff405bd253"
+      "x-ms-client-request-id" : "9ff9661d-78b1-4bfc-b819-c6c69a84cbd6"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-b21983af3a84f7191a2e53e68f693432-71f3b8b8a85fa0d1-01",
-      "mise-correlation-id" : "171e8f2b-a407-4aa8-8c1d-e0f30cb66ea9",
+      "traceresponse" : "00-e907f7217c84435fa3cc5ddd8e5726e2-79ebc37765ec563e-01",
+      "mise-correlation-id" : "a3b6aa77-43eb-4b04-8dc7-517d2153e4e4",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 15 Feb 2023 20:31:57 GMT"
+      "Date" : "Fri, 17 Feb 2023 21:58:19 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "862620", "460767", "39313b", "99043e" ]
+  "variables" : [ "228934", "219628", "959430", "438665" ]
 }

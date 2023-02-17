@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/digitaltwins/fa5edb66-b5c4-41ce-ba62-c86e394e37b2?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/digitaltwins/60c7475c-9123-4ea6-b2c3-1929044f0db0?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a64a21d6-3cfc-431d-852b-1e1625fdcb8a"
+      "x-ms-client-request-id" : "5d247b02-ec17-460b-ad7a-b747b4a4a78c"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-ba702d45bd98134d174812a07fd5c377-cb684994d491990e-01",
-      "mise-correlation-id" : "c35aaf9e-b634-460d-8aa5-31c6b1f115ec",
+      "traceresponse" : "00-53f092196510844f28abf956bede0eb9-389d9d9bd3cb92a2-01",
+      "mise-correlation-id" : "b6f4c7f2-eb09-45de-a97c-68d415a4da83",
       "retry-after" : "0",
       "Content-Length" : "290",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID fa5edb66-b5c4-41ce-ba62-c86e394e37b2. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins https://aka.ms/adtv2query.\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:32:29 GMT",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID 60c7475c-9123-4ea6-b2c3-1929044f0db0. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins https://aka.ms/adtv2query.\"}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:39 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fa5edb66-b5c4-41ce-ba62-c86e394e37b2" ]
+  "variables" : [ "60c7475c-9123-4ea6-b2c3-1929044f0db0" ]
 }

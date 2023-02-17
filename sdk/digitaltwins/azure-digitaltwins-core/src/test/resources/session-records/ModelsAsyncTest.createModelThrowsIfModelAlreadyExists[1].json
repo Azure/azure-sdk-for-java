@@ -1,63 +1,63 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:example:Ward;1115709?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:example:Ward;1420457?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "128986fe-5ce8-47b0-8100-ae58ed44b8c0"
+      "x-ms-client-request-id" : "fd77190a-d181-4b48-8c98-08e715223034"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-86158faae9491bf1d9a2cfa86f96ec41-0bc6b696874ad742-01",
-      "mise-correlation-id" : "a432af28-bde5-4e96-9445-7d0808fd71d1",
+      "traceresponse" : "00-5ce89660cbc0cfa5cfe14b2d0e0151ac-09a00a9991eabab8-01",
+      "mise-correlation-id" : "afb8e1d8-7d6d-4ed0-91a5-844eca5eb1ac",
       "retry-after" : "0",
       "Content-Length" : "210",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Ward;1115709. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:54 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Ward;1420457. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "7206ffad-3098-4f40-b46b-39039711fe5f",
+      "x-ms-client-request-id" : "d910a2de-c76a-4280-b959-7b5faa34a06b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-eaff477542d29b12c928f95a706eb52e-c8aaccfd1637eee1-01",
-      "mise-correlation-id" : "a58cad2f-e2c8-4f8a-9e38-ee3c5bee0bed",
+      "traceresponse" : "00-aeb58ccf517c0be0010a660ff285d7cb-8c0135818037ba0d-01",
+      "mise-correlation-id" : "3a015b21-9349-4fdd-a3a5-4359e169e722",
       "retry-after" : "0",
       "Content-Length" : "213",
       "StatusCode" : "201",
-      "Body" : "[{\"id\":\"dtmi:example:Ward;1115709\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-15T20:31:55.1794119+00:00\"}]",
-      "Date" : "Wed, 15 Feb 2023 20:31:55 GMT",
+      "Body" : "[{\"id\":\"dtmi:example:Ward;1420457\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":false,\"uploadTime\":\"2023-02-17T21:58:18.7146331+00:00\"}]",
+      "Date" : "Fri, 17 Feb 2023 21:58:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models?api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models?api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "75a50a10-6d7e-4adc-a784-daea6a8075f9",
+      "x-ms-client-request-id" : "ca83eec5-2238-4157-8276-4463921fc05f",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-8d277f773d98c1a4467a3c89aa3e3bf6-caa2ddebf2c2be53-01",
-      "mise-correlation-id" : "75433c4d-e02a-4cc8-9b54-c9c9ff53a0f1",
+      "traceresponse" : "00-e2cd74d8e45b150a26c3c4902a1f8ca0-896f1bea133e3537-01",
+      "mise-correlation-id" : "8d72fd1b-6861-48c5-a130-04e216efe0b2",
       "retry-after" : "0",
       "Content-Length" : "229",
       "StatusCode" : "409",
-      "Body" : "{\"error\":{\"code\":\"ModelIdAlreadyExists\",\"message\":\"Some of the model ids already exist: dtmi:example:Ward;1115709. Use Model_List API to view models that already exist. See the Swagger example (https://aka.ms/ModelListSwSmpl).\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:31:54 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelIdAlreadyExists\",\"message\":\"Some of the model ids already exist: dtmi:example:Ward;1420457. Use Model_List API to view models that already exist. See the Swagger example (https://aka.ms/ModelListSwSmpl).\"}}",
+      "Date" : "Fri, 17 Feb 2023 21:58:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "33792c" ]
+  "variables" : [ "64267a" ]
 }

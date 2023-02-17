@@ -1,20 +1,20 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/models/dtmi:doesnotexist:fakemodel;1000?includeModelDefinition=true&api-version=2023-02-27-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:doesnotexist:fakemodel;1000?includeModelDefinition=true&api-version=2023-02-27-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "88c0594a-8680-4b51-adbb-c052cce34d08"
+      "x-ms-client-request-id" : "ff5c4e87-b928-4ca0-9c76-ca0aabd4e1a1"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-a8316de099f3c342649c02bfa89fb03b-2e302e8854ef911a-01",
-      "mise-correlation-id" : "910bbe30-4acf-4e42-976c-4f5423f2da41",
+      "traceresponse" : "00-ceeca36c2e44a2b1ef40190759bc7892-d36a28cf8545c709-01",
+      "mise-correlation-id" : "885f1abe-89b6-4e92-ad9a-48dd4103d226",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
       "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:doesnotexist:fakemodel;1000. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Wed, 15 Feb 2023 20:32:07 GMT",
+      "Date" : "Fri, 17 Feb 2023 21:58:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
