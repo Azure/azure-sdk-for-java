@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.redis;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
@@ -20,9 +21,6 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
-import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreTargetNonNull;
-
 final class AzureJedisPasswordlessUtil {
 
     private static final int AZURE_REDIS_PORT = 6380;
@@ -33,19 +31,10 @@ final class AzureJedisPasswordlessUtil {
     }
 
     static AzureRedisPasswordlessProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties, AzureRedisPasswordlessProperties redisPasswordlessProperties) {
-        AzureRedisPasswordlessProperties target = new AzureRedisPasswordlessProperties();
-        copyPropertiesIgnoreNull(redisPasswordlessProperties.getScopes(), target.getScopes());
-        copyPropertiesIgnoreNull(redisPasswordlessProperties.getCredential(), target.getCredential());
-        copyPropertiesIgnoreNull(redisPasswordlessProperties.getProfile(), target.getProfile());
-        copyPropertiesIgnoreNull(redisPasswordlessProperties.getClient(), target.getClient());
-        copyPropertiesIgnoreNull(redisPasswordlessProperties.getProxy(), target.getProxy());
-
-        if (azureGlobalProperties != null) {
-            copyPropertiesIgnoreTargetNonNull(azureGlobalProperties.getProfile(), target.getProfile());
-            copyPropertiesIgnoreTargetNonNull(azureGlobalProperties.getCredential(), target.getCredential());
-        }
-
-        return redisPasswordlessProperties;
+        AzureRedisPasswordlessProperties mergedProperties = new AzureRedisPasswordlessProperties();
+        AzurePropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, redisPasswordlessProperties, mergedProperties);
+        mergedProperties.setScopes(redisPasswordlessProperties.getScopes());
+        return mergedProperties;
     }
 
     static JedisClientConfiguration getJedisClientConfiguration(RedisProperties redisProperties) {

@@ -28,6 +28,10 @@ public class ManagedCassandraManagedServiceIdentity {
     @JsonProperty(value = "type")
     private ManagedCassandraResourceIdentityType type;
 
+    /** Creates an instance of ManagedCassandraManagedServiceIdentity class. */
+    public ManagedCassandraManagedServiceIdentity() {
+    }
+
     /**
      * Get the principalId property: The object id of the identity resource.
      *

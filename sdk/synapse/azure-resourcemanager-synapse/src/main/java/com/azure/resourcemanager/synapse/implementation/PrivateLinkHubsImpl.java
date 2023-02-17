@@ -37,15 +37,6 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
         return Utils.mapPage(inner, inner1 -> new PrivateLinkHubImpl(inner1, this.manager()));
     }
 
-    public PrivateLinkHub getByResourceGroup(String resourceGroupName, String privateLinkHubName) {
-        PrivateLinkHubInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, privateLinkHubName);
-        if (inner != null) {
-            return new PrivateLinkHubImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateLinkHub> getByResourceGroupWithResponse(
         String resourceGroupName, String privateLinkHubName, Context context) {
         Response<PrivateLinkHubInner> inner =
@@ -56,6 +47,15 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateLinkHubImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateLinkHub getByResourceGroup(String resourceGroupName, String privateLinkHubName) {
+        PrivateLinkHubInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, privateLinkHubName);
+        if (inner != null) {
+            return new PrivateLinkHubImpl(inner, this.manager());
         } else {
             return null;
         }

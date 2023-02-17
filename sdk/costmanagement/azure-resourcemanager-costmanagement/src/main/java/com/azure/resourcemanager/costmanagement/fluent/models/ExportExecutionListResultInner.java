@@ -8,25 +8,25 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of listing the execution history of an export. */
+/** Result of listing the run history of an export. */
 @Immutable
 public final class ExportExecutionListResultInner {
     /*
-     * A list of export executions.
+     * A list of export runs.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ExportExecutionInner> value;
+    private List<ExportRunInner> value;
 
     /** Creates an instance of ExportExecutionListResultInner class. */
     public ExportExecutionListResultInner() {
     }
 
     /**
-     * Get the value property: A list of export executions.
+     * Get the value property: A list of export runs.
      *
      * @return the value value.
      */
-    public List<ExportExecutionInner> value() {
+    public List<ExportRunInner> value() {
         return this.value;
     }
 

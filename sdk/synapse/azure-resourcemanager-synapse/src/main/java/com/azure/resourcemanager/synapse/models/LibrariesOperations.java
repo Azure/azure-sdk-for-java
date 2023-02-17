@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of LibrariesOperations. */
 public interface LibrariesOperations {
     /**
-     * List libraries in a workspace.
+     * List the libraries in a workspace.
+     *
+     * <p>List libraries in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -22,7 +24,9 @@ public interface LibrariesOperations {
     PagedIterable<LibraryResource> listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
-     * List libraries in a workspace.
+     * List the libraries in a workspace.
+     *
+     * <p>List libraries in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

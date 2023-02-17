@@ -22,6 +22,10 @@ public final class DatabaseAccountConnectionString {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
+    /** Creates an instance of DatabaseAccountConnectionString class. */
+    public DatabaseAccountConnectionString() {
+    }
+
     /**
      * Get the connectionString property: Value of the connection string.
      *

@@ -55,7 +55,7 @@ public final class QueriesClientImpl implements QueriesClient {
     public interface QueriesService {
         @Headers({"Content-Type: application/json"})
         @Post("/{scope}/providers/Microsoft.CostManagement/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QueryResultInner>> usage(
             @HostParam("$host") String endpoint,

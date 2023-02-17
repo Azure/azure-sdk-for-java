@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceAadAdmins Get. */
 public final class WorkspaceAadAdminsGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkspaceAadAdminsGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getWorkspaceActiveDirectoryAdmin(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceAadAdmins().getWithResponse("resourceGroup1", "workspace1", Context.NONE);
+        manager.workspaceAadAdmins().getWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }

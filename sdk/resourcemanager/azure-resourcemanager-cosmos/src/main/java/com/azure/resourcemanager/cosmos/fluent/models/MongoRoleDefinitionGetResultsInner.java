@@ -21,6 +21,10 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private MongoRoleDefinitionResource innerProperties;
 
+    /** Creates an instance of MongoRoleDefinitionGetResultsInner class. */
+    public MongoRoleDefinitionGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties related to the Mongo Role Definition.
      *

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The QueueStatus of Agent Pool. */
 @Fluent
 public final class AgentPoolQueueStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolQueueStatusInner.class);
-
     /*
      * The number of pending runs in the queue
      */
     @JsonProperty(value = "count")
     private Integer count;
+
+    /** Creates an instance of AgentPoolQueueStatusInner class. */
+    public AgentPoolQueueStatusInner() {
+    }
 
     /**
      * Get the count property: The number of pending runs in the queue.

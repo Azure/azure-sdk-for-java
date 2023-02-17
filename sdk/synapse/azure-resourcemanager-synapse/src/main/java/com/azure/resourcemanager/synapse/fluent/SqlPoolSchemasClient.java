@@ -14,7 +14,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SqlPoolSchemaInner;
 /** An instance of this class provides access to all the operations defined in SqlPoolSchemasClient. */
 public interface SqlPoolSchemasClient {
     /**
-     * Gets schemas of a given SQL pool.
+     * Gets schemas of a given SQL pool
+     *
+     * <p>Gets schemas of a given SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -28,7 +30,9 @@ public interface SqlPoolSchemasClient {
     PagedIterable<SqlPoolSchemaInner> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
-     * Gets schemas of a given SQL pool.
+     * Gets schemas of a given SQL pool
+     *
+     * <p>Gets schemas of a given SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -51,21 +55,6 @@ public interface SqlPoolSchemasClient {
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @param schemaName The name of the schema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolSchemaInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName);
-
-    /**
-     * Get Sql Pool schema.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param schemaName The name of the schema.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,4 +64,19 @@ public interface SqlPoolSchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SqlPoolSchemaInner> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, Context context);
+
+    /**
+     * Get Sql Pool schema.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param schemaName The name of the schema.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql Pool schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SqlPoolSchemaInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName);
 }

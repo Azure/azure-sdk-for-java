@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CassandraClusters ListByResourceGroup. */
 public final class CassandraClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBManagedCassandraClusterListByResourceGroup.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraClusterListByResourceGroup.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterListByResourceGroup.
@@ -23,6 +21,6 @@ public final class CassandraClustersListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getCassandraClusters()
-            .listByResourceGroup("cassandra-prod-rg", Context.NONE);
+            .listByResourceGroup("cassandra-prod-rg", com.azure.core.util.Context.NONE);
     }
 }

@@ -149,7 +149,7 @@ public final class ExportsClientImpl implements ExportsClient {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last execution of each export.
+     *     will return information for the last run of each export.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -193,7 +193,7 @@ public final class ExportsClientImpl implements ExportsClient {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last execution of each export.
+     *     will return information for the last run of each export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -262,7 +262,7 @@ public final class ExportsClientImpl implements ExportsClient {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last execution of each export.
+     *     will return information for the last run of each export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -321,7 +321,7 @@ public final class ExportsClientImpl implements ExportsClient {
      *     partners.
      * @param exportName Export Name.
      * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last 10 executions of the export.
+     *     will return information for the last 10 runs of the export.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -376,7 +376,7 @@ public final class ExportsClientImpl implements ExportsClient {
      *     partners.
      * @param exportName Export Name.
      * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last 10 executions of the export.
+     *     will return information for the last 10 runs of the export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -452,7 +452,7 @@ public final class ExportsClientImpl implements ExportsClient {
      *     partners.
      * @param exportName Export Name.
      * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last 10 executions of the export.
+     *     will return information for the last 10 runs of the export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -876,7 +876,7 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to execute an export.
+     * The operation to run an export.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -923,7 +923,7 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to execute an export.
+     * The operation to run an export.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -967,7 +967,7 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to execute an export.
+     * The operation to run an export.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -995,7 +995,7 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to execute an export.
+     * The operation to run an export.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -1024,7 +1024,7 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to execute an export.
+     * The operation to run an export.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -1051,7 +1051,7 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the run history of an export for the defined scope and export name.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -1071,8 +1071,8 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return result of listing the run history of an export along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExportExecutionListResultInner>> getExecutionHistoryWithResponseAsync(
@@ -1100,7 +1100,7 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the run history of an export for the defined scope and export name.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -1121,8 +1121,8 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return result of listing the run history of an export along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExportExecutionListResultInner>> getExecutionHistoryWithResponseAsync(
@@ -1147,7 +1147,7 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the run history of an export for the defined scope and export name.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -1167,7 +1167,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export on successful completion of {@link Mono}.
+     * @return result of listing the run history of an export on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExportExecutionListResultInner> getExecutionHistoryAsync(String scope, String exportName) {
@@ -1175,7 +1175,7 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the run history of an export for the defined scope and export name.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -1196,7 +1196,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export along with {@link Response}.
+     * @return result of listing the run history of an export along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExportExecutionListResultInner> getExecutionHistoryWithResponse(
@@ -1205,7 +1205,7 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the run history of an export for the defined scope and export name.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -1225,7 +1225,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export.
+     * @return result of listing the run history of an export.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExportExecutionListResultInner getExecutionHistory(String scope, String exportName) {

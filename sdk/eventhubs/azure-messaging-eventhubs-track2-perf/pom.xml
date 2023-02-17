@@ -29,7 +29,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-jedis</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-jedis;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-jedis;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
