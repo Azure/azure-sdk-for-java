@@ -11,6 +11,9 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.41.0`.
+* Updated `Spring Boot` to version `2.7.8`.
+* Updated `Spring Data Commons` to version `2.7.7`.
 
 ### 3.31.0 (2023-01-13)
 #### Features Added
