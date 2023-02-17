@@ -14,6 +14,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestCounter;
@@ -31,6 +32,12 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
@@ -58,13 +65,18 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
@@ -83,6 +95,7 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -387,6 +400,60 @@ class EventHubProducerAsyncClientTest {
         verify(tracer1, times(1))
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(1)).getSharedSpanBuilder(eq("EventHubs.send"), any());
+        verify(tracer1, times(1)).addLink(any());
+
+        verifyNoInteractions(onClientClosed);
+    }
+
+    /**
+     * Does not attempt to modify unmodifiable properties
+     */
+    @Test
+    void sendSingleWithUnmodifiableProperties() {
+        final Flux<EventData> testData = Flux.just(fakeReceivedMessage());
+
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
+            invocation -> invocation.getArgument(1, Context.class)
+                .addData(PARENT_TRACE_CONTEXT_KEY, "value"));
+        when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "value")
+                    .addData(DIAGNOSTIC_ID_KEY, "diag-id")
+                    .addData(SPAN_CONTEXT_KEY, "span-context");
+            });
+        when(tracer1.getSharedSpanBuilder(eq("EventHubs.send"), any())).thenAnswer(
+            invocation -> invocation.getArgument(1, Context.class)
+                    .addData(SPAN_BUILDER_KEY, "span-builder"));
+
+        doAnswer(invocation -> null).when(tracer1).addLink(any());
+
+        // Act
+        StepVerifier.create(asyncProducer.send(testData))
+            .verifyComplete();
+
+        //Assert
+        verify(tracer1, times(1))
+            .start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
+        verify(tracer1, times(1))
+            .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
+        verify(tracer1, times(1)).end(isNull(), isNotNull(), any());
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
         verify(tracer1, times(1)).getSharedSpanBuilder(eq("EventHubs.send"), any());
         verify(tracer1, times(1)).addLink(any());
 
@@ -1429,6 +1496,21 @@ class EventHubProducerAsyncClientTest {
         assertEquals(entityName, attributes.get("entityName"));
         assertEquals(entityPath, attributes.get("partitionId"));
         assertEquals(status, attributes.get("status"));
+    }
+
+    private EventData fakeReceivedMessage() {
+        Message receivedMessage = Proton.message();
+        receivedMessage.setApplicationProperties(new ApplicationProperties(Collections.singletonMap("foo", "bar")));
+
+        Map<Symbol, Object> annotations = new HashMap<>();
+        annotations.put(Symbol.getSymbol(OFFSET_ANNOTATION_NAME.getValue()), Instant.now().toEpochMilli());
+        annotations.put(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Instant.now());
+        annotations.put(Symbol.getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), 100L);
+        receivedMessage.setMessageAnnotations(new MessageAnnotations(annotations));
+        receivedMessage.setBody(new Data(new Binary(new byte [5])));
+
+        EventHubMessageSerializer serializer = new EventHubMessageSerializer();
+        return serializer.deserialize(receivedMessage, EventData.class);
     }
 
     private static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec "
