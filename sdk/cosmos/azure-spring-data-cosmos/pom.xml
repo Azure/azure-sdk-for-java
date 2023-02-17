@@ -93,12 +93,12 @@
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-parameter-names</artifactId>
-      <version>2.13.4</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
+      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jdk8</artifactId>
-      <version>2.13.4</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.javatuples</groupId>
@@ -191,8 +191,8 @@
                 <include>org.springframework:spring-context:[5.3.25]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
                 <include>org.springframework.data:spring-data-commons:[2.7.7]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
                 <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;org.javatuples:javatuples;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.13.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-parameter-names:[2.13.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-parameter-names:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
                 <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
                 <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
