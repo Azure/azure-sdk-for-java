@@ -3,7 +3,8 @@ pr: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
-    artifacts:
+    TestPipeline: true
+    Artifacts:
     - name: azure-sdk-template
       groupId: com.azure
       safeName: azuresdktemplate
