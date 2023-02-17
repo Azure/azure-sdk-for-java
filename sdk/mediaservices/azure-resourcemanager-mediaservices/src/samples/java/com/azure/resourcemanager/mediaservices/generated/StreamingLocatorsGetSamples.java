@@ -18,6 +18,6 @@ public final class StreamingLocatorsGetSamples {
         com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .streamingLocators()
-            .getWithResponse("contoso", "contosomedia", "clearStreamingLocator", com.azure.core.util.Context.NONE);
+            .getWithResponse("contosorg", "contosomedia", "clearStreamingLocator", com.azure.core.util.Context.NONE);
     }
 }

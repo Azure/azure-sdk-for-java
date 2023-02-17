@@ -33,7 +33,7 @@ public final class StreamingLocatorsListPathsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"streamingPaths\":[{\"streamingProtocol\":\"Dash\",\"encryptionScheme\":\"NoEncryption\",\"paths\":[\"cb\"]},{\"streamingProtocol\":\"Hls\",\"encryptionScheme\":\"NoEncryption\",\"paths\":[\"uwc\",\"b\",\"egstmninwjizci\",\"nghgshej\"]}],\"downloadPaths\":[\"xqmul\",\"xlxqzvn\"]}";
+            "{\"streamingPaths\":[{\"streamingProtocol\":\"Dash\",\"encryptionScheme\":\"NoEncryption\",\"paths\":[\"mmoiroqboshbra\",\"apyyrmfsvbpavbo\",\"fppdbwnu\",\"gahxkumasjcaa\"]}],\"downloadPaths\":[\"mmcpug\",\"ehqepvufhbzehe\",\"hoqhnl\",\"qnbldxe\"]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,13 @@ public final class StreamingLocatorsListPathsWithResponseMockTests {
         ListPathsResponse response =
             manager
                 .streamingLocators()
-                .listPathsWithResponse("xokffqyin", "jqepqwhi", "monstshiyxgve", com.azure.core.util.Context.NONE)
+                .listPathsWithResponse("u", "apckccrrvw", "yoxoy", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions
             .assertEquals(StreamingPolicyStreamingProtocol.DASH, response.streamingPaths().get(0).streamingProtocol());
         Assertions.assertEquals(EncryptionScheme.NO_ENCRYPTION, response.streamingPaths().get(0).encryptionScheme());
-        Assertions.assertEquals("cb", response.streamingPaths().get(0).paths().get(0));
-        Assertions.assertEquals("xqmul", response.downloadPaths().get(0));
+        Assertions.assertEquals("mmoiroqboshbra", response.streamingPaths().get(0).paths().get(0));
+        Assertions.assertEquals("mmcpug", response.downloadPaths().get(0));
     }
 }
