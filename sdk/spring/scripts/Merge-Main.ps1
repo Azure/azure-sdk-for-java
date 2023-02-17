@@ -21,5 +21,4 @@ param(
             'eng/code-quality-reports/src/main/resources/revapi/revapi.json', `
             'sdk/parents/azure-client-sdk-parent/pom.xml', `
             'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml', `
-            'sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml',
             'pom.xml')
