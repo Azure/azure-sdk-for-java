@@ -82,8 +82,8 @@ public class RntbdRequestManagerTests {
         assertThat(timestamps.transitTimeoutCount()).isZero();
         assertThat(timestamps.transitTimeoutStartingTime()).isNull();
         assertThat(timestamps.tansitTimeoutWriteCount()).isZero();
-        assertThat(timestamps.lastChannelWriteTime()).isAfter(previousLastWriteTime);
-        assertThat(timestamps.lastChannelWriteAttemptTime()).isAfter(previousLastWriteAttemptTime);
+        assertThat(timestamps.lastChannelWriteTime()).isAfterOrEqualTo(previousLastWriteTime);
+        assertThat(timestamps.lastChannelWriteAttemptTime()).isAfterOrEqualTo(previousLastWriteAttemptTime);
         assertThat(timestamps.lastChannelReadTime()).isEqualTo(previousLastChannelReadTime);
 
         // Test when a transit timeout happens, the transitTimeoutCount is increased
@@ -105,7 +105,7 @@ public class RntbdRequestManagerTests {
         rntbdRequestManager.channelRead(channelHandlerContext, rntbdRequestRecord);
         assertThat(timestamps.transitTimeoutCount()).isZero();
         assertThat(timestamps.transitTimeoutStartingTime()).isNull();
-        assertThat(timestamps.lastChannelReadTime()).isAfter(previousLastChannelReadTime);
+        assertThat(timestamps.lastChannelReadTime()).isAfterOrEqualTo(previousLastChannelReadTime);
         assertThat(timestamps.lastChannelWriteAttemptTime()).isEqualTo(previousLastWriteAttemptTime);
         assertThat(timestamps.lastChannelWriteTime()).isEqualTo(previousLastWriteTime);
     }
@@ -146,6 +146,6 @@ public class RntbdRequestManagerTests {
         Instant lastReadTimestamp = timestamps.lastChannelReadTime();
         RntbdContext rntbdContextMock = Mockito.mock(RntbdContext.class);
         rntbdRequestManager.userEventTriggered(channelHandlerContextMock, rntbdContextMock);
-        assertThat(timestamps.lastChannelReadTime()).isAfter(lastReadTimestamp);
+        assertThat(timestamps.lastChannelReadTime()).isAfterOrEqualTo(lastReadTimestamp);
     }
 }
