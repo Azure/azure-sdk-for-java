@@ -576,6 +576,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             || value instanceof Boolean
             || value instanceof Character
             || value instanceof ExpandableStringEnum<?>
+            || value instanceof Enum<?>
             || value instanceof DateTimeRfc1123) {
             return String.valueOf(value);
         } else if (value instanceof OffsetDateTime) {
