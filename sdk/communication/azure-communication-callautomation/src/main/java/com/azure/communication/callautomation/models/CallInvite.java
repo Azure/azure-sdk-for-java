@@ -5,6 +5,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.azure.communication.common.CommunicationIdentifier;
@@ -30,7 +31,7 @@ public class CallInvite {
     public CallInvite(PhoneNumberIdentifier targetPhoneNumberIdentity, PhoneNumberIdentifier callerIdNumber) {
         target = targetPhoneNumberIdentity;
         sourceCallIdNumber = callerIdNumber;
-        sipHeaders = null;
+        sipHeaders = new HashMap<String, String>();
         voipHeaders = null;
     }
 
@@ -55,7 +56,7 @@ public class CallInvite {
         this.target = targetIdentity;
         this.sourceCallIdNumber = null;
         this.sipHeaders = null;
-        this.voipHeaders = null;
+        this.voipHeaders = new HashMap<String, String>();
     }
 
     /**
@@ -78,7 +79,7 @@ public class CallInvite {
         this.target = targetIdentity;
         this.sourceCallIdNumber = null;
         this.sipHeaders = null;
-        this.voipHeaders = null;
+        this.voipHeaders = new HashMap<String, String>();
     }
 
     /**
