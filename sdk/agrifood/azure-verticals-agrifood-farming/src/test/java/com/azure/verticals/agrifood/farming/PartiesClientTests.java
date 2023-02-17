@@ -28,7 +28,6 @@ public class PartiesClientTests extends TestBase {
         PartiesClientBuilder builder =
             new PartiesClientBuilder()
                 .endpoint(Configuration.getGlobalConfiguration().get("FARMBEATS_ENDPOINT", defaultEndpoint))
-                .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.httpClient(interceptorManager.getPlaybackClient())
