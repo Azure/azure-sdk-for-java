@@ -248,7 +248,7 @@ stages:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
             name: azsdk-pool-mms-win-2022-general
-            vmImage: MMS2022
+            vmImage: windows-2022
           strategy:
             runOnce:
               deploy:
@@ -357,7 +357,7 @@ stages:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
             name: azsdk-pool-mms-win-2022-general
-            vmImage: MMS2022
+            vmImage: windows-2022
           strategy:
             runOnce:
               deploy:
