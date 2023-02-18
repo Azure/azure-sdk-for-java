@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
@@ -100,7 +101,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final EventLoopGroup group,
         final RntbdRequestTimer timer,
         final URI physicalAddress,
-        final ClientTelemetry clientTelemetry) {
+        final ClientTelemetry clientTelemetry,
+        final RntbdOpenConnectionsHandler openConnectionsHandler) {
 
         this.serverKey = RntbdUtils.getServerKey(physicalAddress);
 
@@ -129,7 +131,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
 
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
-            ? new RntbdConnectionStateListener(this) : null;
+            ? new RntbdConnectionStateListener(this, openConnectionsHandler) : null;
 
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config, clientTelemetry, this.connectionStateListener);
 
@@ -596,6 +598,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final RntbdTransportClient transportClient;
         private final IAddressResolver addressResolver;
         private final ClientTelemetry clientTelemetry;
+        private final RntbdOpenConnectionsHandler openConnectionHandler;
 
         public Provider(
             final RntbdTransportClient transportClient,
@@ -629,6 +632,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
             this.clientTelemetry = clientTelemetry;
+            this.openConnectionHandler = new RntbdOpenConnectionsHandler(this);
             this.monitoring = new RntbdEndpointMonitoringProvider(this);
             this.monitoring.init();
         }
@@ -698,7 +702,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 this.eventLoopGroup,
                 this.requestTimer,
                 physicalAddress,
-                this.clientTelemetry));
+                this.clientTelemetry,
+                this.openConnectionHandler));
         }
 
         @Override
@@ -709,6 +714,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         @Override
         public Stream<RntbdEndpoint> list() {
             return this.endpoints.values().stream();
+        }
+
+        @Override
+        public IOpenConnectionsHandler getOpenConnectionHandler() {
+            return this.openConnectionHandler;
         }
 
         private void evict(final RntbdEndpoint endpoint) {

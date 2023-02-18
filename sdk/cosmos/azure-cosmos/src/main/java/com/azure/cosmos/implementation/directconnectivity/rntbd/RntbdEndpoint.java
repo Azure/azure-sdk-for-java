@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -113,6 +114,8 @@ public interface RntbdEndpoint extends AutoCloseable {
         IAddressResolver getAddressResolver();
 
         Stream<RntbdEndpoint> list();
+
+        IOpenConnectionsHandler getOpenConnectionHandler();
     }
 
     final class Config {

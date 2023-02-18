@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -21,15 +23,21 @@ public class RntbdConnectionStateListener {
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListener.class);
 
     private final RntbdEndpoint endpoint;
+    private final RntbdOpenConnectionsHandler openConnectionsHandler;
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
+    private final AtomicBoolean openConnectionInProgress = new AtomicBoolean(false);
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final RntbdEndpoint endpoint) {
+    public RntbdConnectionStateListener(
+        final RntbdEndpoint endpoint,
+        final RntbdOpenConnectionsHandler openConnectionsHandler) {
+
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
+        this.openConnectionsHandler = checkNotNull(openConnectionsHandler, "expected non-null openConnectionsHandler");
         this.metrics = new RntbdConnectionStateListenerMetrics();
         this.addressUris = ConcurrentHashMap.newKeySet();
     }
@@ -65,10 +73,31 @@ public class RntbdConnectionStateListener {
                 logger.debug("Will not raise the connection state change event for error", exception);
             }
         }
+
+        openConnectionIfNeeded();
     }
 
     public RntbdConnectionStateListenerMetrics getMetrics() {
         return this.metrics;
+    }
+
+    private void openConnectionIfNeeded() {
+        if (this.endpoint.isClosed()) {
+            return;
+        }
+
+        // If there are still channels opened, do nothing
+        if (this.endpoint.channelsMetrics() > 0) {
+            return;
+        }
+
+        // All channels are closed, try to open a new one
+        if (this.openConnectionInProgress.compareAndSet(false, true)) {
+            this.openConnectionsHandler.openConnection(this.addressUris.stream().findFirst().get())
+                .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .doOnTerminate(() -> this.openConnectionInProgress.set(false))
+                .subscribe();
+        }
     }
 
     // endregion

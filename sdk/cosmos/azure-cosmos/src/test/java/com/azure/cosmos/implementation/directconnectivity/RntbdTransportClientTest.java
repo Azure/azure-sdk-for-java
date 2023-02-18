@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.LockedException;
@@ -1175,6 +1176,11 @@ public final class RntbdTransportClientTest {
             @Override
             public Stream<RntbdEndpoint> list() {
                 return Stream.empty();
+            }
+
+            @Override
+            public IOpenConnectionsHandler getOpenConnectionHandler() {
+                throw new NotImplementedException("getOpenConnectionHandler is not supported in FakeEndpoint.Provider");
             }
         }
 

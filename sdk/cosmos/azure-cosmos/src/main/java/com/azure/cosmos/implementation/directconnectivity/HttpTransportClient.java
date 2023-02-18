@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.LockedException;
@@ -236,7 +237,7 @@ public class HttpTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
+    public IOpenConnectionsHandler getOpenConnectionsHandler() {
         throw new NotImplementedException("openConnection is not supported in httpTransportClient");
     }
 

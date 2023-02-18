@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServe
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListener;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListenerMetrics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.ssl.SslContext;
@@ -137,10 +138,12 @@ public class ConnectionStateListenerTest {
     @Test(groups = { "unit" }, dataProvider = "connectionStateListenerExceptionProvider")
     public void connectionStateListenerOnException(Exception exception, boolean canHandle) {
         RntbdEndpoint endpointMock = Mockito.mock(RntbdEndpoint.class);
+        RntbdOpenConnectionsHandler openConnectionsHandler = Mockito.mock(RntbdOpenConnectionsHandler.class);
 
         Uri testRequestUri = new Uri("http://127.0.0.1:1");
         testRequestUri.setConnected();
-        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock);
+        RntbdConnectionStateListener connectionStateListener =
+            new RntbdConnectionStateListener(endpointMock, openConnectionsHandler);
         connectionStateListener.onBeforeSendRequest(testRequestUri);
         connectionStateListener.onException(exception);
         RntbdConnectionStateListenerMetrics metrics = connectionStateListener.getMetrics();

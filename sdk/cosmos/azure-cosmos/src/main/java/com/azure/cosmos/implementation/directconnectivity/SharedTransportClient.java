@@ -7,11 +7,11 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -93,8 +93,8 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
-        return this.transportClient.openConnection(addressUri);
+    public IOpenConnectionsHandler getOpenConnectionsHandler() {
+        return transportClient.getOpenConnectionsHandler();
     }
 
     public int getReferenceCounter() {
