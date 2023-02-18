@@ -26,6 +26,10 @@ public final class CassandraTableCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of CassandraTableCreateUpdateProperties class. */
+    public CassandraTableCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a Cassandra table.
      *

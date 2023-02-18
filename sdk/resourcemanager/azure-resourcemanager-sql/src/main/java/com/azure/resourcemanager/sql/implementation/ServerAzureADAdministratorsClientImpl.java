@@ -66,7 +66,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerAzureADAdministratorsService {
+    public interface ServerAzureADAdministratorsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

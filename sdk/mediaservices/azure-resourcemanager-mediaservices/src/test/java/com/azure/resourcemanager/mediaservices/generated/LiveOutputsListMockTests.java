@@ -33,7 +33,7 @@ public final class LiveOutputsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"wfbkgozxwo\",\"assetName\":\"dby\",\"archiveWindowLength\":\"PT53H25M23S\",\"rewindWindowLength\":\"PT8H18M32S\",\"manifestName\":\"aclnapxbiygnugj\",\"hls\":{\"fragmentsPerTsSegment\":1701530674},\"outputSnapTime\":4670031312582327027,\"created\":\"2021-11-18T08:04:29Z\",\"lastModified\":\"2021-07-24T11:33:54Z\",\"provisioningState\":\"uyilflqoiquvrehm\",\"resourceState\":\"Creating\"},\"id\":\"vsujztczytqjtwh\",\"name\":\"uunfprnjletlxsm\",\"type\":\"pddouifamowaziyn\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"ujr\",\"assetName\":\"lfojuidjp\",\"archiveWindowLength\":\"PT202H7M42S\",\"rewindWindowLength\":\"PT131H6M38S\",\"manifestName\":\"c\",\"hls\":{\"fragmentsPerTsSegment\":1596965336},\"outputSnapTime\":2515376851931822820,\"created\":\"2021-11-04T10:37:28Z\",\"lastModified\":\"2021-07-05T01:59:03Z\",\"provisioningState\":\"ejetjklntik\",\"resourceState\":\"Creating\"},\"id\":\"k\",\"name\":\"bqzolxr\",\"type\":\"vhqjwtrhtgvg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,16 +62,14 @@ public final class LiveOutputsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LiveOutput> response =
-            manager
-                .liveOutputs()
-                .list("viirhgfgrws", "pgratzvzbglbyvi", "tctbrxkjzwrgxffm", com.azure.core.util.Context.NONE);
+            manager.liveOutputs().list("gbwidqlvh", "koveof", "zrvjfnmjmvlwyzgi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wfbkgozxwo", response.iterator().next().description());
-        Assertions.assertEquals("dby", response.iterator().next().assetName());
-        Assertions.assertEquals(Duration.parse("PT53H25M23S"), response.iterator().next().archiveWindowLength());
-        Assertions.assertEquals(Duration.parse("PT8H18M32S"), response.iterator().next().rewindWindowLength());
-        Assertions.assertEquals("aclnapxbiygnugj", response.iterator().next().manifestName());
-        Assertions.assertEquals(1701530674, response.iterator().next().hls().fragmentsPerTsSegment());
-        Assertions.assertEquals(4670031312582327027L, response.iterator().next().outputSnapTime());
+        Assertions.assertEquals("ujr", response.iterator().next().description());
+        Assertions.assertEquals("lfojuidjp", response.iterator().next().assetName());
+        Assertions.assertEquals(Duration.parse("PT202H7M42S"), response.iterator().next().archiveWindowLength());
+        Assertions.assertEquals(Duration.parse("PT131H6M38S"), response.iterator().next().rewindWindowLength());
+        Assertions.assertEquals("c", response.iterator().next().manifestName());
+        Assertions.assertEquals(1596965336, response.iterator().next().hls().fragmentsPerTsSegment());
+        Assertions.assertEquals(2515376851931822820L, response.iterator().next().outputSnapTime());
     }
 }

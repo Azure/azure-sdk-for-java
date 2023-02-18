@@ -41,6 +41,10 @@ public final class RestorableSqlResourcesGetResultInner {
     @JsonProperty(value = "collectionNames")
     private List<String> collectionNames;
 
+    /** Creates an instance of RestorableSqlResourcesGetResultInner class. */
+    public RestorableSqlResourcesGetResultInner() {
+    }
+
     /**
      * Get the id property: The unique resource identifier of the ARM resource.
      *

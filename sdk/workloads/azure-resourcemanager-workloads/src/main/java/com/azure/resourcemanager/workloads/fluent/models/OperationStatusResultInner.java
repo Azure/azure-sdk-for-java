@@ -62,6 +62,10 @@ public final class OperationStatusResultInner {
     @JsonProperty(value = "error")
     private ManagementError error;
 
+    /** Creates an instance of OperationStatusResultInner class. */
+    public OperationStatusResultInner() {
+    }
+
     /**
      * Get the id property: Fully qualified ID for the async operation.
      *

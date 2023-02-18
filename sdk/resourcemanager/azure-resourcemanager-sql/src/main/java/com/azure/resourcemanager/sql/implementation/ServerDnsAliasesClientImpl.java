@@ -65,7 +65,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerDnsAliasesService {
+    public interface ServerDnsAliasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

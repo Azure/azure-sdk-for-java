@@ -18,6 +18,10 @@ public final class PercentileMetricListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PercentileMetricInner> value;
 
+    /** Creates an instance of PercentileMetricListResult class. */
+    public PercentileMetricListResult() {
+    }
+
     /**
      * Get the value property: The list of percentile metrics for the account.
      *

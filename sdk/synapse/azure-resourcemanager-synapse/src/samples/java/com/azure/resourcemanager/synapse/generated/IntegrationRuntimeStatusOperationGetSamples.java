@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeStatusOperation Get. */
 public final class IntegrationRuntimeStatusOperationGetSamples {
     /*
@@ -19,6 +17,10 @@ public final class IntegrationRuntimeStatusOperationGetSamples {
     public static void getStatus(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimeStatusOperations()
-            .getWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+            .getWithResponse(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

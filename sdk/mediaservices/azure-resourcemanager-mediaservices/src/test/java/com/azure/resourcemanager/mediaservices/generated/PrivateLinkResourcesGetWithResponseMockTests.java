@@ -31,7 +31,7 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupId\":\"zq\",\"requiredMembers\":[\"dgkynscliqhzvhxn\"],\"requiredZoneNames\":[\"tkubotppn\"]},\"id\":\"dxzxhi\",\"name\":\"frbbc\",\"type\":\"vqagtltdhlf\"}";
+            "{\"properties\":{\"groupId\":\"nrkcxkj\",\"requiredMembers\":[\"xmysuxswqrntv\"],\"requiredZoneNames\":[\"jpsttexoq\",\"pwcyyufmhr\"]},\"id\":\"nc\",\"name\":\"wmqs\",\"type\":\"kcdqzhlct\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         PrivateLinkResource response =
             manager
                 .privateLinkResources()
-                .getWithResponse("y", "vpo", "krsgsgb", com.azure.core.util.Context.NONE)
+                .getWithResponse("srzpgepqtybbww", "gdakchz", "vl", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("tkubotppn", response.requiredZoneNames().get(0));
+        Assertions.assertEquals("jpsttexoq", response.requiredZoneNames().get(0));
     }
 }

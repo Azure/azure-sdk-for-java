@@ -58,6 +58,12 @@ public final class BackupVault {
     @JsonProperty(value = "isVaultProtectedByResourceGuard", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isVaultProtectedByResourceGuard;
 
+    /*
+     * Feature Settings
+     */
+    @JsonProperty(value = "featureSettings")
+    private FeatureSettings featureSettings;
+
     /** Creates an instance of BackupVault class. */
     public BackupVault() {
     }
@@ -159,6 +165,26 @@ public final class BackupVault {
     }
 
     /**
+     * Get the featureSettings property: Feature Settings.
+     *
+     * @return the featureSettings value.
+     */
+    public FeatureSettings featureSettings() {
+        return this.featureSettings;
+    }
+
+    /**
+     * Set the featureSettings property: Feature Settings.
+     *
+     * @param featureSettings the featureSettings value to set.
+     * @return the BackupVault object itself.
+     */
+    public BackupVault withFeatureSettings(FeatureSettings featureSettings) {
+        this.featureSettings = featureSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -179,6 +205,9 @@ public final class BackupVault {
                     new IllegalArgumentException("Missing required property storageSettings in model BackupVault"));
         } else {
             storageSettings().forEach(e -> e.validate());
+        }
+        if (featureSettings() != null) {
+            featureSettings().validate();
         }
     }
 

@@ -65,7 +65,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientL")
-    private interface LongTermRetentionPoliciesService {
+    public interface LongTermRetentionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

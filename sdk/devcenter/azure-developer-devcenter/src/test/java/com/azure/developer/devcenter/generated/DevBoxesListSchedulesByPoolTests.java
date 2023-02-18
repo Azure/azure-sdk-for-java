@@ -20,7 +20,7 @@ public final class DevBoxesListSchedulesByPoolTests extends DevCenterClientTestB
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"name\":\"autoShutDown\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"17:30\",\"timeZone\":\"America/Los_Angeles\"}")
+                                "{\"name\":\"default\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"17:30\",\"timeZone\":\"America/Los_Angeles\"}")
                         .toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }

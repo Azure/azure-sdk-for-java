@@ -17,24 +17,24 @@ public final class AudioAnalyzerPresetTests {
         AudioAnalyzerPreset model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.AudioAnalyzerPreset\",\"audioLanguage\":\"zfbn\",\"mode\":\"Basic\",\"experimentalOptions\":{\"dn\":\"l\",\"ijejvegrhbpn\":\"itvgbmhrixkwm\"}}")
+                    "{\"@odata.type\":\"#Microsoft.Media.AudioAnalyzerPreset\",\"audioLanguage\":\"udtjuewbc\",\"mode\":\"Standard\",\"experimentalOptions\":{\"bvpa\":\"whcjyxcc\",\"px\":\"akkud\",\"stcyohpfkyrkdbd\":\"wjplma\"}}")
                 .toObject(AudioAnalyzerPreset.class);
-        Assertions.assertEquals("zfbn", model.audioLanguage());
-        Assertions.assertEquals(AudioAnalysisMode.BASIC, model.mode());
-        Assertions.assertEquals("l", model.experimentalOptions().get("dn"));
+        Assertions.assertEquals("udtjuewbc", model.audioLanguage());
+        Assertions.assertEquals(AudioAnalysisMode.STANDARD, model.mode());
+        Assertions.assertEquals("whcjyxcc", model.experimentalOptions().get("bvpa"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AudioAnalyzerPreset model =
             new AudioAnalyzerPreset()
-                .withAudioLanguage("zfbn")
-                .withMode(AudioAnalysisMode.BASIC)
-                .withExperimentalOptions(mapOf("dn", "l", "ijejvegrhbpn", "itvgbmhrixkwm"));
+                .withAudioLanguage("udtjuewbc")
+                .withMode(AudioAnalysisMode.STANDARD)
+                .withExperimentalOptions(mapOf("bvpa", "whcjyxcc", "px", "akkud", "stcyohpfkyrkdbd", "wjplma"));
         model = BinaryData.fromObject(model).toObject(AudioAnalyzerPreset.class);
-        Assertions.assertEquals("zfbn", model.audioLanguage());
-        Assertions.assertEquals(AudioAnalysisMode.BASIC, model.mode());
-        Assertions.assertEquals("l", model.experimentalOptions().get("dn"));
+        Assertions.assertEquals("udtjuewbc", model.audioLanguage());
+        Assertions.assertEquals(AudioAnalysisMode.STANDARD, model.mode());
+        Assertions.assertEquals("whcjyxcc", model.experimentalOptions().get("bvpa"));
     }
 
     @SuppressWarnings("unchecked")

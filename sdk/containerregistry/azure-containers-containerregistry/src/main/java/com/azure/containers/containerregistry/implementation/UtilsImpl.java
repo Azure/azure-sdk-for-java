@@ -17,7 +17,10 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -40,9 +43,12 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
@@ -52,43 +58,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
  */
 public final class UtilsImpl {
-    private static final String CLIENT_NAME;
-    private static final String CLIENT_VERSION;
-    private static final int HTTP_STATUS_CODE_NOT_FOUND;
-    private static final int HTTP_STATUS_CODE_ACCEPTED;
-    private static final String CONTINUATION_LINK_HEADER_NAME;
-    private static final Pattern CONTINUATION_LINK_PATTERN;
-    private static final ClientLogger LOGGER;
+    private static final ClientLogger LOGGER = new ClientLogger(UtilsImpl.class);
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-containers-containerregistry.properties");
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
+    private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
+    private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
+    private static final HttpHeaderName CONTINUATION_LINK_HEADER_NAME = HttpHeaderName.fromString("Link");
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
-    public static final String DOCKER_DIGEST_HEADER_NAME;
-    public static final String OCI_MANIFEST_MEDIA_TYPE;
-    public static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
+    public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
+    public static final String OCI_MANIFEST_MEDIA_TYPE = "application/vnd.oci.image.manifest.v1+json";
 
-    static {
-        LOGGER = new ClientLogger(UtilsImpl.class);
-        Map<String, String> properties = CoreUtils.getProperties("azure-containers-containerregistry.properties");
-        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
-        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-        HTTP_STATUS_CODE_NOT_FOUND = 404;
-        HTTP_STATUS_CODE_ACCEPTED = 202;
-        OCI_MANIFEST_MEDIA_TYPE = "application/vnd.oci.image.manifest.v1+json";
-        DOCKER_DIGEST_HEADER_NAME = "docker-content-digest";
-        CONTINUATION_LINK_HEADER_NAME = "Link";
-        CONTINUATION_LINK_PATTERN = Pattern.compile("<(.+)>;.*");
-        CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
-    }
-
+    private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
+    private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    public static final int CHUNK_SIZE = 4 * 1024 * 1024;
     private UtilsImpl() { }
 
     /**
@@ -118,8 +108,7 @@ public final class UtilsImpl {
         List<HttpPipelinePolicy> perRetryPolicies,
         HttpClient httpClient,
         String endpoint,
-        ContainerRegistryServiceVersion serviceVersion,
-        ClientLogger logger) {
+        ContainerRegistryServiceVersion serviceVersion) {
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -136,24 +125,25 @@ public final class UtilsImpl {
         policies.add(new ContainerRegistryRedirectPolicy());
 
         policies.addAll(perRetryPolicies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
 
         // We generally put credential policy between BeforeRetry and AfterRetry policies and put Logging policy in the end.
         // However since ACR uses the rest endpoints of the service in the credential policy,
         // we want to be able to use the same pipeline (minus the credential policy) to have uniformity in the policy
         // pipelines across all ACR endpoints.
         if (credential == null) {
-            logger.verbose("Credentials are null, enabling anonymous access");
+            LOGGER.verbose("Credentials are null, enabling anonymous access");
         }
 
+        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
         ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);
+        HttpPolicyProviders.addAfterRetryPolicies(credentialPolicies);
         credentialPolicies.add(loggingPolicy);
 
         if (audience == null)  {
             audience = ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
         }
 
+        Tracer tracer = createTracer(clientOptions);
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
             credential,
             audience,
@@ -162,17 +152,21 @@ public final class UtilsImpl {
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
+                .tracer(tracer)
                 .build(),
             JacksonAdapter.createDefaultSerializerAdapter());
 
         ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
-        policies.add(credentialsPolicy);
 
+        policies.add(credentialsPolicy);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(loggingPolicy);
+
         HttpPipeline httpPipeline =
             new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
+                .tracer(tracer)
                 .build();
         return httpPipeline;
     }
@@ -180,6 +174,12 @@ public final class UtilsImpl {
     @SuppressWarnings("unchecked")
     private static ArrayList<HttpPipelinePolicy> clone(ArrayList<HttpPipelinePolicy> policies) {
         return (ArrayList<HttpPipelinePolicy>) policies.clone();
+    }
+
+    private static Tracer createTracer(ClientOptions clientOptions) {
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        return TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE, tracingOptions);
     }
 
     /**
@@ -197,13 +197,33 @@ public final class UtilsImpl {
             return "sha256:" + byteArrayToHex(digest);
 
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("SHA-256 conversion failed with" + e);
-            throw new RuntimeException(e);
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    public static MessageDigest createSha256() {
+        try {
+            return MessageDigest.getInstance("SHA-256");
+
+        } catch (NoSuchAlgorithmException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    public static void validateDigest(MessageDigest messageDigest, String requestedDigest) {
+        String sha256 = byteArrayToHex(messageDigest.digest());
+        if (requestedDigest.length() != 71
+            || !requestedDigest.startsWith("sha256:")
+            || !requestedDigest.endsWith(sha256)) {
+            throw LOGGER.atError()
+                .addKeyValue("requestedDigest", requestedDigest)
+                .addKeyValue("actualDigest", () -> "sha256:" + sha256)
+                .log(new ServiceResponseException("The digest in the response does not match the expected digest."));
         }
     }
 
     private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
-    private static String byteArrayToHex(byte[] bytes) {
+    public static String byteArrayToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;
@@ -317,21 +337,7 @@ public final class UtilsImpl {
     public static <T, R> PagedResponse<T> getPagedResponseWithContinuationToken(PagedResponse<R> listResponse, Function<List<R>, List<T>> mapperFunction) {
         Objects.requireNonNull(mapperFunction);
 
-        String continuationLink = null;
-        HttpHeaders headers = listResponse.getHeaders();
-
-        if (headers != null) {
-            String continuationLinkHeader = headers.getValue(CONTINUATION_LINK_HEADER_NAME);
-            if (!CoreUtils.isNullOrEmpty(continuationLinkHeader)) {
-                Matcher matcher = CONTINUATION_LINK_PATTERN.matcher(continuationLinkHeader);
-                if (matcher.matches()) {
-                    if (matcher.groupCount() == 1) {
-                        continuationLink = matcher.group(1);
-                    }
-                }
-            }
-        }
-
+        String continuationLink = getContinuationLink(listResponse.getHeaders());
         List<T> values = mapperFunction.apply(listResponse.getValue());
 
         return new PagedResponseBase<String, T>(
@@ -342,6 +348,19 @@ public final class UtilsImpl {
             continuationLink,
             null
         );
+    }
+
+    private static String getContinuationLink(HttpHeaders headers) {
+        String continuationLinkHeader = headers.getValue(CONTINUATION_LINK_HEADER_NAME);
+        if (!CoreUtils.isNullOrEmpty(continuationLinkHeader) && continuationLinkHeader.charAt(0) == '<') {
+            int endIndex = continuationLinkHeader.indexOf(">;");
+            if (endIndex < 2) {
+                LOGGER.warning("unexpected 'Link' header value - '{}'", continuationLinkHeader);
+            }
+            return continuationLinkHeader.substring(1, endIndex);
+        }
+
+        return null;
     }
 
     public static List<ArtifactManifestProperties> mapManifestsProperties(List<ManifestAttributesBase> baseArtifacts,
@@ -392,20 +411,22 @@ public final class UtilsImpl {
         }).collect(Collectors.toList());
     }
 
-    /**
-     * Get the digest from the response header if available.
-     * @param headers The headers to parse.
-     * @return The digest value.
-     */
-    public static <T> String getDigestFromHeader(HttpHeaders headers) {
-        return headers.getValue(DOCKER_DIGEST_HEADER_NAME);
+    public static void validateResponseHeaderDigest(String requestedDigest, HttpHeaders headers) {
+        String responseHeaderDigest = headers.getValue(DOCKER_DIGEST_HEADER_NAME);
+        if (!requestedDigest.equals(responseHeaderDigest)) {
+            throw LOGGER.atError()
+                .addKeyValue("requestedDigest", requestedDigest)
+                .addKeyValue("responseDigest", responseHeaderDigest)
+                .log(new ServiceResponseException("The digest in the response header does not match the expected digest."));
+        }
     }
 
-    public static Context enableSync(Context tracingContext) {
-        return tracingContext.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-    }
-    public static Context getTracingContext(Context context) {
-        return context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE);
+    public static Context enableSync(Context context) {
+        if (context == Context.NONE) {
+            return CONTEXT_WITH_SYNC;
+        }
+
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     public static String trimNextLink(String locationHeader) {
@@ -417,7 +438,15 @@ public final class UtilsImpl {
 
         return locationHeader;
     }
-    public static boolean isDigest(String tagOrDigest) {
-        return tagOrDigest.contains(":");
+
+    public static long getBlobSize(HttpHeader contentRangeHeader) {
+        if (contentRangeHeader != null) {
+            int slashInd = contentRangeHeader.getValue().indexOf('/');
+            if (slashInd > 0) {
+                return Long.parseLong(contentRangeHeader.getValue().substring(slashInd + 1));
+            }
+        }
+
+        throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid content-range header in response -" + contentRangeHeader));
     }
 }

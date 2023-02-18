@@ -13,7 +13,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-json-reflect</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json-reflect;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json-reflect;current} -->
 
   <name>Microsoft Azure Java JSON Reflect Library</name>
   <description>This package reflectively looks for a valid JSON library and provides an abstraction.</description>
@@ -63,14 +63,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-json;current} -->
     </dependency>
 
     <!-- Test Dependencies -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.9.1</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.10</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-json;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

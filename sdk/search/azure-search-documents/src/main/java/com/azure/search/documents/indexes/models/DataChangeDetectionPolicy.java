@@ -27,4 +27,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             value = SqlIntegratedChangeTrackingPolicy.class)
 })
 @Immutable
-public abstract class DataChangeDetectionPolicy {}
+public abstract class DataChangeDetectionPolicy {
+
+    /** Creates an instance of DataChangeDetectionPolicy class. */
+    public DataChangeDetectionPolicy() {}
+}

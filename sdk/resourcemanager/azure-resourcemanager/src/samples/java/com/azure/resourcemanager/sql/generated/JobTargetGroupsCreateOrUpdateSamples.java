@@ -70,22 +70,19 @@ public final class JobTargetGroupsCreateOrUpdateSamples {
                                     .withMembershipType(JobTargetGroupMembershipType.INCLUDE)
                                     .withType(JobTargetType.SQL_SERVER)
                                     .withServerName("server1")
-                                    .withRefreshCredential(
-                                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential"),
+                                    .withRefreshCredential("fakeTokenPlaceholder"),
                                 new JobTarget()
                                     .withMembershipType(JobTargetGroupMembershipType.INCLUDE)
                                     .withType(JobTargetType.SQL_ELASTIC_POOL)
                                     .withServerName("server2")
                                     .withElasticPoolName("pool1")
-                                    .withRefreshCredential(
-                                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential"),
+                                    .withRefreshCredential("fakeTokenPlaceholder"),
                                 new JobTarget()
                                     .withMembershipType(JobTargetGroupMembershipType.INCLUDE)
                                     .withType(JobTargetType.SQL_SHARD_MAP)
                                     .withServerName("server3")
                                     .withShardMapName("shardMap1")
-                                    .withRefreshCredential(
-                                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential"))),
+                                    .withRefreshCredential("fakeTokenPlaceholder"))),
                 Context.NONE);
     }
 }

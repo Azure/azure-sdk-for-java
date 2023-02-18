@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-experimental</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.36</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+  <version>1.0.0-beta.37</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
 
   <name>Microsoft Azure Java Core Experimental Library</name>
   <description>This package contains experimental core types for Azure Java clients.</description>
@@ -57,7 +57,9 @@
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-    <javadoc.excludePackageNames/>
+     <javadoc.excludePackageNames>com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
+      com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
+      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
   </properties>
 
   <developers>
@@ -71,13 +73,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.36.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.37.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-json;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>

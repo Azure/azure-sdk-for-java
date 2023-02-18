@@ -20,6 +20,14 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
     public static final StringIndexType UTF16CODE_UNIT = fromString("utf16CodeUnit");
 
     /**
+     * Creates a new instance of StringIndexType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StringIndexType() {}
+
+    /**
      * Creates or finds a StringIndexType from its string representation.
      *
      * @param name a name to look for.

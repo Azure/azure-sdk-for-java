@@ -53,7 +53,7 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface IntegrationRuntimeCredentialsService {
+    public interface IntegrationRuntimeCredentialsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -72,10 +72,12 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
     }
 
     /**
-     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
-     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
-     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
-     * node than using this API directly.
+     * Sync integration runtime credentials
+     *
+     * <p>Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
+     * override the credentials across all worker nodes with those available on the dispatcher node. If you already have
+     * the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
+     * runtime node than using this API directly.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -131,10 +133,12 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
     }
 
     /**
-     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
-     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
-     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
-     * node than using this API directly.
+     * Sync integration runtime credentials
+     *
+     * <p>Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
+     * override the credentials across all worker nodes with those available on the dispatcher node. If you already have
+     * the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
+     * runtime node than using this API directly.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -188,10 +192,12 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
     }
 
     /**
-     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
-     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
-     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
-     * node than using this API directly.
+     * Sync integration runtime credentials
+     *
+     * <p>Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
+     * override the credentials across all worker nodes with those available on the dispatcher node. If you already have
+     * the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
+     * runtime node than using this API directly.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -204,32 +210,16 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> syncAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return syncWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
-     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
-     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
-     * node than using this API directly.
+     * Sync integration runtime credentials
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        syncAsync(resourceGroupName, workspaceName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
-     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
-     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
-     * node than using this API directly.
+     * <p>Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
+     * override the credentials across all worker nodes with those available on the dispatcher node. If you already have
+     * the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
+     * runtime node than using this API directly.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -244,5 +234,25 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
     public Response<Void> syncWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return syncWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).block();
+    }
+
+    /**
+     * Sync integration runtime credentials
+     *
+     * <p>Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
+     * override the credentials across all worker nodes with those available on the dispatcher node. If you already have
+     * the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
+     * runtime node than using this API directly.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void sync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        syncWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, Context.NONE);
     }
 }

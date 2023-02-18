@@ -54,20 +54,20 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.20.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.20.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

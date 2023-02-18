@@ -48,6 +48,9 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     @JsonProperty(value = "b")
     private Double b;
 
+    /** Creates an instance of BM25SimilarityAlgorithm class. */
+    public BM25SimilarityAlgorithm() {}
+
     /**
      * Get the k1 property: This property controls the scaling function between the term frequency of each matching
      * terms and the final relevance score of a document-query pair. By default, a value of 1.2 is used. A value of 0.0

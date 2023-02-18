@@ -51,6 +51,10 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
     @JsonProperty(value = "highAvailabilitySoftwareConfiguration")
     private HighAvailabilitySoftwareConfiguration highAvailabilitySoftwareConfiguration;
 
+    /** Creates an instance of ServiceInitiatedSoftwareConfiguration class. */
+    public ServiceInitiatedSoftwareConfiguration() {
+    }
+
     /**
      * Get the bomUrl property: The URL to the SAP Build of Materials(BOM) file.
      *

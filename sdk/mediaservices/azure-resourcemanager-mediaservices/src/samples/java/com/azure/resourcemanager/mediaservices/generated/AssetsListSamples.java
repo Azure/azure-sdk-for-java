@@ -17,7 +17,7 @@ public final class AssetsListSamples {
     public static void listAssetOrderedByDate(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .assets()
-            .list("contoso", "contosomedia", null, null, "properties/created", com.azure.core.util.Context.NONE);
+            .list("contosorg", "contosomedia", null, null, "properties/created", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -33,7 +33,7 @@ public final class AssetsListSamples {
         manager
             .assets()
             .list(
-                "contoso",
+                "contosorg",
                 "contosomedia",
                 "properties/created gt 2012-06-01 and properties/created lt 2013-07-01",
                 null,
@@ -50,6 +50,6 @@ public final class AssetsListSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void listAllAssets(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.assets().list("contoso", "contosomedia", null, null, null, com.azure.core.util.Context.NONE);
+        manager.assets().list("contosorg", "contosomedia", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

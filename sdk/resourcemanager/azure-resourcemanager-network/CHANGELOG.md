@@ -1,14 +1,18 @@
 # Release History
 
-## 2.23.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.24.0 (2023-02-17)
 
 ### Bugs Fixed
 
+- Fixed a bug that updating source/destination of `NetworkSecurityGroup` rules would fail when from application security group to ip addresses/service tags.
+
+## 2.23.0 (2023-01-27)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.22.0 (2022-12-23)
 

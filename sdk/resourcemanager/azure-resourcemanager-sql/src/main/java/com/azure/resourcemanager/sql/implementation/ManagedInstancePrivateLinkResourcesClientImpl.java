@@ -61,7 +61,7 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstancePrivateLinkResourcesService {
+    public interface ManagedInstancePrivateLinkResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

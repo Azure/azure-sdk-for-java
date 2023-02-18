@@ -46,6 +46,10 @@ public final class RestorableSqlContainerPropertiesResource {
     @JsonProperty(value = "container")
     private RestorableSqlContainerPropertiesResourceContainer container;
 
+    /** Creates an instance of RestorableSqlContainerPropertiesResource class. */
+    public RestorableSqlContainerPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

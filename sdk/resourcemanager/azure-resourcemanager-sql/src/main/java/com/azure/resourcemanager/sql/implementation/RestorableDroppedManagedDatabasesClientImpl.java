@@ -61,7 +61,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
-    private interface RestorableDroppedManagedDatabasesService {
+    public interface RestorableDroppedManagedDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

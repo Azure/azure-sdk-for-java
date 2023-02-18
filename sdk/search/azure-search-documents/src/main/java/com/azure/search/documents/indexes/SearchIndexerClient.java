@@ -10,6 +10,18 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.implementation.converters.SearchIndexerConverter;
+import com.azure.search.documents.implementation.converters.SearchIndexerDataSourceConverter;
+import com.azure.search.documents.implementation.util.MappingUtils;
+import com.azure.search.documents.implementation.util.Utility;
+import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
+import com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds;
+import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
+import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
+import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
+import com.azure.search.documents.indexes.implementation.models.SkillNames;
 import com.azure.search.documents.indexes.models.CreateOrUpdateDataSourceConnectionOptions;
 import com.azure.search.documents.indexes.models.CreateOrUpdateIndexerOptions;
 import com.azure.search.documents.indexes.models.CreateOrUpdateSkillsetOptions;
@@ -29,10 +41,33 @@ import java.util.Objects;
  */
 @ServiceClient(builder = SearchIndexerClientBuilder.class)
 public class SearchIndexerClient {
-    private final SearchIndexerAsyncClient asyncClient;
+    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerClient.class);
 
-    SearchIndexerClient(SearchIndexerAsyncClient searchIndexerAsyncClient) {
-        this.asyncClient = searchIndexerAsyncClient;
+    /**
+     * Search REST API Version
+     */
+    private final SearchServiceVersion serviceVersion;
+
+    /**
+     * The endpoint for the Azure Cognitive Search service.
+     */
+    private final String endpoint;
+
+    /**
+     * The underlying AutoRest client used to interact with the Search service
+     */
+    private final SearchServiceClientImpl restClient;
+
+    /**
+     * The pipeline that powers this client.
+     */
+    private final HttpPipeline httpPipeline;
+
+    SearchIndexerClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.httpPipeline = httpPipeline;
+        this.restClient = new SearchServiceClientImpl(httpPipeline, endpoint, serviceVersion.getVersion());
     }
 
     /**
@@ -41,7 +76,7 @@ public class SearchIndexerClient {
      * @return the pipeline.
      */
     HttpPipeline getHttpPipeline() {
-        return this.asyncClient.getHttpPipeline();
+        return this.httpPipeline;
     }
 
     /**
@@ -50,7 +85,7 @@ public class SearchIndexerClient {
      * @return the endpoint value.
      */
     public String getEndpoint() {
-        return this.asyncClient.getEndpoint();
+        return this.endpoint;
     }
 
     /**
@@ -110,8 +145,23 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSourceConnection, boolean onlyIfUnchanged, Context context) {
-        return asyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged, null,
-            context).block();
+        return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged, null,
+            context);
+    }
+
+    Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
+        SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, Boolean ignoreResetRequirements,
+        Context context) {
+        if (dataSource == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'dataSource' cannot be null."));
+        }
+        String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
+        if (dataSource.getConnectionString() == null) {
+            dataSource.setConnectionString("<unchanged>");
+        }
+        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalDataSource(restClient.getDataSources()
+                .createOrUpdateWithResponse(dataSource.getName(), SearchIndexerDataSourceConverter.map(dataSource),
+                    ifMatch, null, ignoreResetRequirements, null, Utility.enableSyncRestProxy(context))));
     }
 
     /**
@@ -148,9 +198,8 @@ public class SearchIndexerClient {
         CreateOrUpdateDataSourceConnectionOptions options, Context context) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        return asyncClient.createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
-            options.isOnlyIfUnchanged(), options.isCacheResetRequirementsIgnored(), context)
-            .block();
+        return createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
+            options.isOnlyIfUnchanged(), options.isCacheResetRequirementsIgnored(), context);
     }
 
     /**
@@ -208,8 +257,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSourceConnection, Context context) {
-        return asyncClient.createDataSourceConnectionWithResponse(dataSourceConnection, context)
-            .block();
+        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalDataSource(restClient.getDataSources()
+            .createWithResponse(SearchIndexerDataSourceConverter.map(dataSourceConnection), null, Utility.enableSyncRestProxy(context))));
     }
 
     /**
@@ -261,8 +310,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> getDataSourceConnectionWithResponse(
         String dataSourceConnectionName, Context context) {
-        return asyncClient.getDataSourceConnectionWithResponse(dataSourceConnectionName, context)
-            .block();
+        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalDataSource(restClient.getDataSources()
+            .getWithResponse(dataSourceConnectionName, null, Utility.enableSyncRestProxy(context))));
     }
 
     /**
@@ -315,7 +364,17 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexerDataSourceConnection> listDataSourceConnections(Context context) {
-        return new PagedIterable<>(asyncClient.listDataSourceConnections(context));
+        try {
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingDataSource(listDataSourceConnectionsWithResponse(null, context)));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
+    }
+
+    private Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(String select,
+                                                                                        Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
+            .listWithResponse(select, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -364,7 +423,11 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listDataSourceConnectionNames(Context context) {
-        return new PagedIterable<>(asyncClient.listDataSourceConnectionNames(context));
+        try {
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingDataSourceNames(this.listDataSourceConnectionsWithResponse("name", context)));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -415,8 +478,8 @@ public class SearchIndexerClient {
     public Response<Void> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSourceConnection,
         boolean onlyIfUnchanged, Context context) {
         String eTag = onlyIfUnchanged ? dataSourceConnection.getETag() : null;
-        return asyncClient.deleteDataSourceConnectionWithResponse(dataSourceConnection.getName(), eTag, context)
-            .block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
+            .deleteWithResponse(dataSourceConnection.getName(), eTag, null, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -469,7 +532,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, Context context) {
-        return asyncClient.createIndexerWithResponse(indexer, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalSearchIndexer(restClient.getIndexers()
+            .createWithResponse(SearchIndexerConverter.map(indexer), null, Utility.enableSyncRestProxy(context))));
     }
 
     /**
@@ -528,7 +592,19 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         Context context) {
-        return asyncClient.createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, null, null, context).block();
+        return createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, null, null, context);
+    }
+
+    Response<SearchIndexer> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
+                                                                    Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements, Context context) {
+        if (indexer == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'indexer' cannot be null."));
+        }
+        String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
+        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalSearchIndexer(restClient.getIndexers()
+            .createOrUpdateWithResponse(indexer.getName(), SearchIndexerConverter.map(indexer), ifMatch, null,
+                disableCacheReprocessingChangeDetection, ignoreResetRequirements, null, Utility.enableSyncRestProxy(context))));
+
     }
 
     /**
@@ -565,9 +641,8 @@ public class SearchIndexerClient {
     public Response<SearchIndexer> createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions options,
         Context context) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        return asyncClient.createOrUpdateIndexerWithResponse(options.getIndexer(), options.isOnlyIfUnchanged(),
-            options.isCacheReprocessingChangeDetectionDisabled(), options.isCacheResetRequirementsIgnored(), context)
-            .block();
+        return createOrUpdateIndexerWithResponse(options.getIndexer(), options.isOnlyIfUnchanged(),
+            options.isCacheReprocessingChangeDetectionDisabled(), options.isCacheResetRequirementsIgnored(), context);
     }
 
     /**
@@ -618,7 +693,16 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexer> listIndexers(Context context) {
-        return new PagedIterable<>(asyncClient.listIndexers(context));
+        try {
+            return new PagedIterable<SearchIndexer>(() -> MappingUtils.mappingPagingSearchIndexer(listIndexersWithResponse(null, context)));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
+    }
+
+    private Response<ListIndexersResult> listIndexersWithResponse(String select, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
+            .listWithResponse(select, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -667,7 +751,11 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listIndexerNames(Context context) {
-        return new PagedIterable<>(asyncClient.listIndexerNames(context));
+        try {
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingSearchIndexerNames(this.listIndexersWithResponse("name", context)));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -717,7 +805,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> getIndexerWithResponse(String indexerName, Context context) {
-        return asyncClient.getIndexerWithResponse(indexerName, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalSearchIndexer(restClient.getIndexers()
+                .getWithResponse(indexerName, null, Utility.enableSyncRestProxy(context))));
     }
 
     /**
@@ -765,7 +854,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged, Context context) {
         String eTag = onlyIfUnchanged ? indexer.getETag() : null;
-        return asyncClient.deleteIndexerWithResponse(indexer.getName(), eTag, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
+            .deleteWithResponse(indexer.getName(), eTag, null, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -809,7 +899,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetIndexerWithResponse(String indexerName, Context context) {
-        return asyncClient.resetIndexerWithResponse(indexerName, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
+            .resetWithResponse(indexerName, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -853,7 +944,7 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runIndexerWithResponse(String indexerName, Context context) {
-        return asyncClient.runIndexerWithResponse(indexerName, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers().runWithResponse(indexerName, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -900,7 +991,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String indexerName, Context context) {
-        return asyncClient.getIndexerStatusWithResponse(indexerName, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
+            .getStatusWithResponse(indexerName, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -962,10 +1054,16 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetDocumentsWithResponse(SearchIndexer indexer, Boolean overwrite,
         List<String> documentKeys, List<String> datasourceDocumentIds, Context context) {
-        return asyncClient.resetDocumentsWithResponse(indexer.getName(), overwrite, documentKeys, datasourceDocumentIds,
-            context).block();
+        try {
+            DocumentKeysOrIds documentKeysOrIds = new DocumentKeysOrIds()
+                .setDocumentKeys(documentKeys)
+                .setDatasourceDocumentIds(datasourceDocumentIds);
+            return restClient.getIndexers()
+                .resetDocsWithResponse(indexer.getName(), overwrite, documentKeysOrIds, null, Utility.enableSyncRestProxy(context));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
-
 
     /**
      * Creates a new skillset in an Azure Cognitive Search service.
@@ -1048,7 +1146,11 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerSkillset> createSkillsetWithResponse(SearchIndexerSkillset skillset, Context context) {
-        return asyncClient.createSkillsetWithResponse(skillset, context).block();
+        if (skillset == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'skillset' cannot be null."));
+        }
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
+            .createWithResponse(skillset, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -1098,7 +1200,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerSkillset> getSkillsetWithResponse(String skillsetName, Context context) {
-        return asyncClient.getSkillsetWithResponse(skillsetName, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
+            .getWithResponse(skillsetName, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -1150,7 +1253,16 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexerSkillset> listSkillsets(Context context) {
-        return new PagedIterable<>(asyncClient.listSkillsets(context));
+        try {
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingSkillset(listSkillsetsWithResponse(null, context)));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
+    }
+
+    private Response<ListSkillsetsResult> listSkillsetsWithResponse(String select, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> this.restClient.getSkillsets()
+            .listWithResponse(select, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -1199,7 +1311,11 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSkillsetNames(Context context) {
-        return new PagedIterable<>(asyncClient.listSkillsetNames(context));
+        try {
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingSkillsetNames(listSkillsetsWithResponse("name", context)));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -1256,8 +1372,19 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged, Context context) {
-        return asyncClient.createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, null, null, context)
-            .block();
+        return createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, null, null, context);
+    }
+
+    Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
+                                                                             boolean onlyIfUnchanged, Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements,
+                                                                             Context context) {
+        if (skillset == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'skillset' cannot be null."));
+        }
+        String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
+            .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null,
+                disableCacheReprocessingChangeDetection, ignoreResetRequirements, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -1293,10 +1420,8 @@ public class SearchIndexerClient {
     public Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions options,
         Context context) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-
-        return asyncClient.createOrUpdateSkillsetWithResponse(options.getSkillset(), options.isOnlyIfUnchanged(),
-            options.isCacheReprocessingChangeDetectionDisabled(), options.isCacheResetRequirementsIgnored(), context)
-            .block();
+        return createOrUpdateSkillsetWithResponse(options.getSkillset(), options.isOnlyIfUnchanged(),
+            options.isCacheReprocessingChangeDetectionDisabled(), options.isCacheResetRequirementsIgnored(), context);
     }
 
     /**
@@ -1345,7 +1470,8 @@ public class SearchIndexerClient {
     public Response<Void> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged,
         Context context) {
         String eTag = onlyIfUnchanged ? skillset.getETag() : null;
-        return asyncClient.deleteSkillsetWithResponse(skillset.getName(), eTag, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
+            .deleteWithResponse(skillset.getName(), eTag, null, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -1389,6 +1515,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetSkillsWithResponse(SearchIndexerSkillset skillset, List<String> skillNames,
         Context context) {
-        return asyncClient.resetSkillsWithResponse(skillset.getName(), skillNames, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
+            .resetSkillsWithResponse(skillset.getName(), new SkillNames().setSkillNames(skillNames), null, Utility.enableSyncRestProxy(context)));
     }
 }

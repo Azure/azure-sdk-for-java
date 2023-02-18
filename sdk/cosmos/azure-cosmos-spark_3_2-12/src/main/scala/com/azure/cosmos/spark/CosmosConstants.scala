@@ -45,6 +45,7 @@ private object CosmosConstants {
     val Timeout = HttpConstants.StatusCodes.REQUEST_TIMEOUT
     val PreconditionFailed = HttpConstants.StatusCodes.PRECONDITION_FAILED
     val NotFound = HttpConstants.StatusCodes.NOTFOUND
+    val BadRequest = HttpConstants.StatusCodes.BADREQUEST
   }
 
   object SystemProperties {
