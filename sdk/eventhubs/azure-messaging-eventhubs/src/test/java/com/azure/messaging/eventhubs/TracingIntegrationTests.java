@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -42,10 +44,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -76,25 +79,37 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     .build())
             .buildAndRegisterGlobal();
 
+        createClients(null);
+
+        testStartTime = Instant.now().minusSeconds(1);
+        data = new EventData(CONTENTS_BYTES);
+    }
+
+    private void createClients(OpenTelemetrySdk otel) {
+        ClientOptions options = new ClientOptions();
+        if (otel != null) {
+            options.setTracingOptions(new OpenTelemetryTracingOptions().setProvider(otel.getTracerProvider()));
+        }
+
         producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .eventHubName(getEventHubName())
+            .clientOptions(options)
             .buildAsyncProducerClient();
 
         consumer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .eventHubName(getEventHubName())
+            .clientOptions(options)
             .consumerGroup("$Default")
             .buildAsyncConsumerClient();
 
         consumerSync = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .eventHubName(getEventHubName())
+            .clientOptions(options)
             .consumerGroup("$Default")
             .buildConsumerClient();
-
-        testStartTime = Instant.now().minusSeconds(1);
-        data = new EventData(CONTENTS_BYTES);
     }
 
     @Override
@@ -137,7 +152,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertSendSpan(send.get(0), Collections.singletonList(data), "EventHubs.send");
 
         List<ReadableSpan> received = findSpans(spans, "EventHubs.consume").stream()
-            .filter(s -> s == receivedSpan.get()).collect(Collectors.toList());
+            .filter(s -> s == receivedSpan.get()).collect(toList());
         assertConsumerSpan(received.get(0), receivedMessage.get(), "EventHubs.consume");
     }
 
@@ -169,7 +184,47 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertSendSpan(send.get(0), Collections.singletonList(data), "EventHubs.send");
 
         List<ReadableSpan> received = findSpans(spans, "EventHubs.consume").stream()
-            .filter(s -> s == receivedSpan.get()).collect(Collectors.toList());
+            .filter(s -> s == receivedSpan.get()).collect(toList());
+        assertConsumerSpan(received.get(0), receivedMessage.get(), "EventHubs.consume");
+    }
+
+    @Test
+    public void sendAndReceiveCustomProvider() throws InterruptedException {
+        AtomicReference<EventData> receivedMessage = new AtomicReference<>();
+        AtomicReference<Span> receivedSpan = new AtomicReference<>();
+
+        TestSpanProcessor customSpanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName());
+        OpenTelemetrySdk otel = OpenTelemetrySdk.builder()
+            .setTracerProvider(SdkTracerProvider.builder()
+                    .addSpanProcessor(customSpanProcessor)
+                    .build())
+            .build();
+
+        createClients(otel);
+
+        CountDownLatch latch = new CountDownLatch(2);
+        customSpanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || span.getName().equals("EventHubs.send"));
+
+        consumer.receive()
+            .take(1)
+            .subscribe(pe -> {
+                receivedMessage.set(pe.getData());
+                receivedSpan.set(Span.current());
+            });
+
+        StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
+
+        assertTrue(latch.await(10, TimeUnit.SECONDS));
+
+        List<ReadableSpan> spans = customSpanProcessor.getEndedSpans();
+
+        List<ReadableSpan> message = findSpans(spans, "EventHubs.message");
+        assertMessageSpan(message.get(0), data);
+        List<ReadableSpan> send = findSpans(spans, "EventHubs.send");
+        assertSendSpan(send.get(0), Collections.singletonList(data), "EventHubs.send");
+
+        List<ReadableSpan> received = findSpans(spans, "EventHubs.consume").stream()
+            .filter(s -> s == receivedSpan.get()).collect(toList());
         assertConsumerSpan(received.get(0), receivedMessage.get(), "EventHubs.consume");
     }
 
@@ -207,9 +262,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch latch = new CountDownLatch(1);
         EventHubBufferedProducerAsyncClient bufferedProducer =  new EventHubBufferedProducerClientBuilder()
             .connectionString(getConnectionString())
-            .onSendBatchFailed(failed -> {
-                fail("Exception occurred while sending messages." + failed.getThrowable());
-            })
+            .onSendBatchFailed(failed -> fail("Exception occurred while sending messages." + failed.getThrowable()))
             .onSendBatchSucceeded(succeeded -> latch.countDown())
             .maxEventBufferLengthPerPartition(5)
             .maxWaitTime(Duration.ofSeconds(5))
@@ -261,7 +314,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .verifyComplete();
 
         List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID, 2, EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(10))
-            .stream().collect(Collectors.toList());
+            .stream().collect(toList());
 
         assertEquals(2, receivedMessages.size());
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -284,7 +337,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID, 2,
                 EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(10), new ReceiveOptions())
-            .stream().collect(Collectors.toList());
+            .stream().collect(toList());
 
         assertEquals(2, receivedMessages.size());
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -298,14 +351,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     public void syncReceiveTimeout() {
         List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID, 2,
                 EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(1))
-            .stream().collect(Collectors.toList());
+            .stream().collect(toList());
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
         assertEquals(0, findSpans(spans, "EventHubs.process").size());
 
         List<ReadableSpan> received = findSpans(spans, "EventHubs.receiveFromPartition");
         assertSyncConsumerSpan(received.get(0), receivedMessages, "EventHubs.receiveFromPartition");
-        assertEquals(StatusCode.OK, received.get(0).toSpanData().getStatus().getStatusCode());
+        assertEquals(StatusCode.UNSET, received.get(0).toSpanData().getStatus().getStatusCode());
     }
 
     @Test
@@ -347,7 +400,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertSendSpan(send.get(0), Collections.singletonList(data), "EventHubs.send");
 
         List<ReadableSpan> processed = findSpans(spans, "EventHubs.process")
-            .stream().filter(p -> p == currentInProcess.get()).collect(Collectors.toList());
+            .stream().filter(p -> p == currentInProcess.get()).collect(toList());
         assertEquals(1, processed.size());
         assertConsumerSpan(processed.get(0), receivedMessage.get(), "EventHubs.process");
     }
@@ -395,7 +448,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertSendSpan(send.get(0), Arrays.asList(message1, message2), "EventHubs.send");
 
         List<ReadableSpan> processed = findSpans(spans, "EventHubs.process")
-            .stream().filter(p -> p == currentInProcess.get()).collect(Collectors.toList());
+            .stream().filter(p -> p == currentInProcess.get()).collect(toList());
         assertEquals(1, processed.size());
         assertConsumerSpan(processed.get(0), received, "EventHubs.process");
     }
@@ -436,7 +489,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
         List<ReadableSpan> processed = findSpans(spans, "EventHubs.process")
             .stream().filter(p -> p == currentInProcess.get())
-            .collect(Collectors.toList());
+            .collect(toList());
         assertEquals(1, processed.size());
         assertConsumerSpan(processed.get(0), received, "EventHubs.process");
     }
@@ -466,15 +519,15 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(spanName, actual.getName());
         assertEquals(SpanKind.CLIENT, actual.getKind());
         List<LinkData> links = actual.toSpanData().getLinks();
-        /* TODO (lmolkova) uncomment after azure-core-tracing-opentelemetry 1.0.0-beat.31 ships
+
         assertEquals(messages.size(), links.size());
         for (int i = 0; i < links.size(); i++) {
             String messageTraceparent = (String) messages.get(i).getData().getProperties().get("traceparent");
             SpanContext linkContext = links.get(i).getSpanContext();
             String linkTraceparent = "00-" + linkContext.getTraceId() + "-" + linkContext.getSpanId() + "-01";
             assertEquals(messageTraceparent, linkTraceparent);
-            assertNotNull(links.get(i).getAttributes().get(AttributeKey.longKey(Tracer.MESSAGE_ENQUEUED_TIME)));
-        }*/
+            assertNotNull(links.get(i).getAttributes().get(AttributeKey.longKey("messaging.eventhubs.message.enqueued_time")));
+        }
     }
 
     private void assertConsumerSpan(ReadableSpan actual, EventData message, String spanName) {
@@ -494,7 +547,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private void assertConsumerSpan(ReadableSpan actual, List<EventData> messages, String spanName) {
         assertEquals(spanName, actual.getName());
         assertEquals(SpanKind.CONSUMER, actual.getKind());
-        /* TODO (lmolkova) uncomment after azure-core-tracing-opentelemetry 1.0.0-beta.31 ships
         assertEquals(messages.size(), actual.toSpanData().getLinks().size());
         List<LinkData> links =  actual.toSpanData().getLinks();
         for (EventData data : messages) {
@@ -502,16 +554,16 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             List<LinkData> link = links.stream().filter(l -> {
                 String linkedContext = "00-" + l.getSpanContext().getTraceId() + "-" + l.getSpanContext().getSpanId() + "-01";
                 return linkedContext.equals(messageTraceparent);
-            }).collect(Collectors.toList());
+            }).collect(toList());
             assertEquals(1, link.size());
-            assertNotNull(link.get(0).getAttributes().get(AttributeKey.longKey(Tracer.MESSAGE_ENQUEUED_TIME)));
-        }*/
+            assertNotNull(link.get(0).getAttributes().get(AttributeKey.longKey("messaging.eventhubs.message.enqueued_time")));
+        }
     }
 
     private List<ReadableSpan> findSpans(List<ReadableSpan> spans, String spanName) {
         return spans.stream()
             .filter(s -> s.getName().equals(spanName))
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     static class TestSpanProcessor implements SpanProcessor {
@@ -519,14 +571,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         private final String entityName;
         private final String namespace;
 
-        private AtomicReference<Consumer<ReadableSpan>> notifier = new AtomicReference<>();
+        private final AtomicReference<Consumer<ReadableSpan>> notifier = new AtomicReference<>();
 
         TestSpanProcessor(String namespace, String entityName) {
             this.namespace = namespace;
             this.entityName = entityName;
         }
         public List<ReadableSpan> getEndedSpans() {
-            return spans.stream().collect(Collectors.toList());
+            return spans.stream().collect(toList());
         }
 
         @Override
@@ -541,8 +593,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         @Override
         public void onEnd(ReadableSpan readableSpan) {
             assertEquals("Microsoft.EventHub", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
-            assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("message_bus.destination")));
-            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("peer.address")));
+            assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
+            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.name")));
+            assertEquals("eventhubs", readableSpan.getAttribute(AttributeKey.stringKey("messaging.system")));
 
             Consumer<ReadableSpan> filter = notifier.get();
             if (filter != null) {

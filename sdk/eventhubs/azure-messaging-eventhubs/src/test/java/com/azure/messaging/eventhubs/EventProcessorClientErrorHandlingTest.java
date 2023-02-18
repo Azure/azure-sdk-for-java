@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.Checkpoint;
@@ -58,9 +57,6 @@ public class EventProcessorClientErrorHandlingTest {
     @Mock
     private Tracer tracer;
 
-    @Mock
-    private Meter meter;
-
     private CountDownLatch countDownLatch;
 
     @BeforeEach
@@ -71,6 +67,7 @@ public class EventProcessorClientErrorHandlingTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
+        when(eventHubClientBuilder.createTracer()).thenReturn(tracer);
     }
 
     @ParameterizedTest(name = "{displayName} with [{arguments}]")
@@ -83,7 +80,7 @@ public class EventProcessorClientErrorHandlingTest {
                 Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
                 Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
                 Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
-        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, tracer);
+        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         try {
@@ -104,7 +101,7 @@ public class EventProcessorClientErrorHandlingTest {
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(), false,
             errorContext -> { }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
-            LoadBalancingStrategy.BALANCED, tracer);
+            LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -120,7 +117,7 @@ public class EventProcessorClientErrorHandlingTest {
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(), false,
             errorContext -> { }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
-            LoadBalancingStrategy.BALANCED, tracer);
+            LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -137,7 +134,7 @@ public class EventProcessorClientErrorHandlingTest {
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(), false,
             errorContext -> { }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
-            LoadBalancingStrategy.BALANCED, tracer);
+            LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();

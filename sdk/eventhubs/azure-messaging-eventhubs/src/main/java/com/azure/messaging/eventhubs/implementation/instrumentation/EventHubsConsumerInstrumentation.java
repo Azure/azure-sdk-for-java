@@ -16,7 +16,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME;
 
 public class EventHubsConsumerInstrumentation {
     private static final Symbol ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL = Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
@@ -43,7 +43,7 @@ public class EventHubsConsumerInstrumentation {
         Context child = parent;
         if (tracer.isEnabled() && !isSync) {
             StartSpanOptions options = tracer.createStartOption(SpanKind.CONSUMER)
-                .setAttribute(MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond())
+                .setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond())
                 .setRemoteParent(tracer.extractContext(message.getApplicationProperties().getValue()));
 
             child = tracer.startSpan(spanName, options, parent);

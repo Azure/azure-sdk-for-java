@@ -103,7 +103,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
     private final Tracer tracer;
 
     EventHubBufferedProducerAsyncClient(EventHubClientBuilder builder, BufferedProducerClientOptions clientOptions,
-        PartitionResolver partitionResolver, AmqpRetryOptions retryOptions, Tracer tracer) {
+        PartitionResolver partitionResolver, AmqpRetryOptions retryOptions) {
         this.client = builder.buildAsyncProducerClient();
         this.clientOptions = clientOptions;
         this.partitionResolver = partitionResolver;
@@ -124,7 +124,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
             return new ArrayList<>(partitionProducers.keySet()).toArray(new String[0]);
         })).cache();
 
-        this.tracer = tracer;
+        this.tracer = builder.createTracer();
     }
 
     /**

@@ -5,11 +5,11 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Locale;
@@ -74,14 +74,13 @@ public class EventProcessorClient {
      * @param loadBalancerUpdateInterval The time duration between load balancing update cycles.
      * @param partitionOwnershipExpirationInterval The time duration after which the ownership of partition expires.
      * @param loadBalancingStrategy The load balancing strategy to use.
-     * @param tracer Tracer instance.
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
         boolean trackLastEnqueuedEventProperties, Consumer<ErrorContext> processError,
         Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
         boolean batchReceiveMode, Duration loadBalancerUpdateInterval, Duration partitionOwnershipExpirationInterval,
-        LoadBalancingStrategy loadBalancingStrategy, Tracer tracer) {
+        LoadBalancingStrategy loadBalancingStrategy) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
@@ -101,7 +100,7 @@ public class EventProcessorClient {
         this.consumerGroup = consumerGroup.toLowerCase(Locale.ROOT);
         this.loadBalancerUpdateInterval = loadBalancerUpdateInterval;
 
-        EventHubsTracer ehTracer = new EventHubsTracer(tracer, fullyQualifiedNamespace, eventHubName);
+        EventHubsTracer ehTracer = new EventHubsTracer(eventHubClientBuilder.createTracer(), fullyQualifiedNamespace, eventHubName);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
             eventHubClientBuilder, trackLastEnqueuedEventProperties, ehTracer, initialPartitionEventPosition,
             maxBatchSize, maxWaitTime, batchReceiveMode);

@@ -20,15 +20,11 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ServiceLoader;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 public class EventHubsTracer {
@@ -37,7 +33,11 @@ public class EventHubsTracer {
 
     public static final String REACTOR_PARENT_TRACE_CONTEXT_KEY = "otel-context-key";
     public static final String TRACEPARENT_KEY = "traceparent";
+    public static final String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
+    public static final String MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME = "messaging.eventhubs.message.enqueued_time";
+    private static final String MESSAGING_SYSTEM_ATTRIBUTE_NAME = "messaging.system";
     private static final ClientLogger LOGGER = new ClientLogger(EventHubsTracer.class);
+
     private static final boolean IS_TRACING_DISABLED = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED, false);
     protected final Tracer tracer;
     private final String fullyQualifiedName;
@@ -47,12 +47,6 @@ public class EventHubsTracer {
         this.tracer = IS_TRACING_DISABLED ? null : tracer;
         this.fullyQualifiedName = Objects.requireNonNull(fullyQualifiedName, "'fullyQualifiedName' cannot be null");
         this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null");
-    }
-
-    public static Tracer getDefaultTracer() {
-        Iterable<Tracer> tracers = ServiceLoader.load(Tracer.class);
-        Iterator<Tracer> it = tracers.iterator();
-        return it.hasNext() ? it.next() : null;
     }
 
     public boolean isEnabled() {
@@ -133,7 +127,7 @@ public class EventHubsTracer {
                 // it might happen that unmodifiable map is something that we
                 // didn't account for in canModifyApplicationProperties method
                 // if it happens, let's not break everything, but log a warning
-                LOGGER.logExceptionAsWarning(ex);
+                LOGGER.warning("Failed to inject context into EventData", ex);
                 exception = ex;
             }
         } else {
@@ -162,7 +156,7 @@ public class EventHubsTracer {
 
         Map<String, Object> linkAttributes = null;
         if (enqueuedTime != null) {
-            linkAttributes = Collections.singletonMap(MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
+            linkAttributes = Collections.singletonMap(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
         }
 
         return new TracingLink(link, linkAttributes);
@@ -193,7 +187,7 @@ public class EventHubsTracer {
 
             Instant enqueuedTime = event.getEnqueuedTime();
             if (enqueuedTime != null) {
-                startOptions.setAttribute(MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
+                startOptions.setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
             }
 
             return tracer.start(name, startOptions, parent);
@@ -248,7 +242,7 @@ public class EventHubsTracer {
 
     public StartSpanOptions createStartOption(SpanKind kind) {
         return new StartSpanOptions(kind)
-            .setAttribute("messaging.system", "eventhubs")
+            .setAttribute(MESSAGING_SYSTEM_ATTRIBUTE_NAME, "eventhubs")
             .setAttribute(Tracer.ENTITY_PATH_KEY, entityName)
             .setAttribute(Tracer.HOST_NAME_KEY, fullyQualifiedName);
     }
