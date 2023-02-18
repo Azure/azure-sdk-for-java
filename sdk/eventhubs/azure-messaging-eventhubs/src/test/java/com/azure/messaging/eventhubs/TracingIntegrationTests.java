@@ -446,7 +446,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertTrue(processed.size() >= 2);
         assertConsumerSpan(processed.get(0), received.get(0), "EventHubs.process");
 
-        for (int i = 1; i < processed.size(); i ++) {
+        for (int i = 1; i < processed.size(); i++) {
             assertConsumerSpan(processed.get(i), received.get(i), "EventHubs.process");
             assertNotEquals(processed.get(0).getSpanContext().getTraceId(), processed.get(i).getSpanContext().getTraceId());
         }

@@ -213,8 +213,7 @@ public class EventHubProducerClientTest {
             .start(eq("EventHubs.send"), any(), any(Context.class));
         verify(tracer1, times(1))
             .start(eq("EventHubs.message"), any(), any(Context.class));
-        verify(tracer1, times(1)).end(isNull(), isNull(), any());
-        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(2)).end(isNull(), isNull(), any());
         verify(tracer1, times(1)).injectContext(any(), any());
 
         verifyNoInteractions(onClientClosed);
@@ -267,8 +266,9 @@ public class EventHubProducerClientTest {
 
         //Assert
         verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), any(Context.class));
+        verify(tracer1, times(1)).end(isNull(), isNull(), any());
+        verify(tracer1, times(1)).extractContext(any());
         verify(tracer1, never()).start(eq("EventHubs.message"), any(), any(Context.class));
-        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
         verify(tracer1, never()).injectContext(any(), any());
         verifyNoInteractions(onClientClosed);
     }
@@ -441,8 +441,7 @@ public class EventHubProducerClientTest {
             .start(eq("EventHubs.message"), any(), any(Context.class));
         verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), any(Context.class));
         verify(tracer1, times(2)).start(eq("EventHubs.message"), any(), any(Context.class));
-        verify(tracer1, times(2)).end(isNull(), isNull(), any());
-        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(3)).end(isNull(), isNull(), any());
         verify(tracer1, times(2)).injectContext(any(), any());
 
         verifyNoInteractions(onClientClosed);

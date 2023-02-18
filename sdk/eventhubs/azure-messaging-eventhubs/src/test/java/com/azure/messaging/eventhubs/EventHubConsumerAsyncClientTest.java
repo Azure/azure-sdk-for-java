@@ -894,7 +894,7 @@ class EventHubConsumerAsyncClientTest {
             .start(eq("EventHubs.getPartitionProperties"), any(StartSpanOptions.class), any(Context.class));
         verify(tracer1, times(1))
             .start(eq("EventHubs.getEventHubProperties"), any(StartSpanOptions.class), any(Context.class));
-        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(2)).end(isNull(), isNull(), any());
 
         verifyNoInteractions(onClientClosed);
     }

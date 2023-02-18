@@ -244,7 +244,7 @@ public class EventProcessorClientTest {
         doAnswer(invocation -> {
             latch.countDown();
             return null;
-        }).when(tracer1).end(eq("success"), isNull(), any());
+        }).when(tracer1).end(isNull(), isNull(), any());
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
@@ -260,7 +260,7 @@ public class EventProcessorClientTest {
         //Assert
         verify(tracer1, times(1)).extractContext(any());
         verify(tracer1, times(1)).start(eq("EventHubs.process"), any(), any(Context.class));
-        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(1)).end(isNull(), isNull(), any());
     }
 
 
@@ -327,7 +327,7 @@ public class EventProcessorClientTest {
         doAnswer(invocation -> {
             latch.countDown();
             return null;
-        }).when(tracer1).end(eq("success"), isNull(), any());
+        }).when(tracer1).end(isNull(), isNull(), any());
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
@@ -343,7 +343,7 @@ public class EventProcessorClientTest {
         //Assert
         verify(tracer1, times(2)).extractContext(any());
         verify(tracer1, times(1)).start(eq("EventHubs.process"), any(), any(Context.class));
-        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(1)).end(isNull(), isNull(), any());
     }
 
     /**
@@ -412,7 +412,7 @@ public class EventProcessorClientTest {
         // This is one less because the processEvent is called before the end span call, so it is possible for
         // to reach this line without calling it the 5th time yet. (Timing issue.)
         verify(tracer, times(numberOfEvents)).start(eq("EventHubs.process"), any(), any(Context.class));
-        verify(tracer, atLeast(numberOfEvents - 1)).end(eq("success"), isNull(), any());
+        verify(tracer, atLeast(numberOfEvents - 1)).end(isNull(), isNull(), any());
     }
 
     /**
