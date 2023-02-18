@@ -62,7 +62,7 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      *     override in {@link CosmosMicrometerMeterOptions} for that meter.
      * @return current CosmosMicrometerMetricsOptions instance
      */
-    public CosmosMicrometerMetricsOptions defaultTagNames(CosmosMetricTagName... tags) {
+    public CosmosMicrometerMetricsOptions configureDefaultTagNames(CosmosMetricTagName... tags) {
         if (tags == null || tags.length == 0) {
             this.defaultTagNames = TagName.DEFAULT_TAGS.clone();
         } else {
@@ -89,7 +89,7 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      *     there is no override in {@link CosmosMicrometerMeterOptions} for that meter.
      * @return current CosmosMicrometerMetricsOptions instance
      */
-    public CosmosMicrometerMetricsOptions defaultPercentiles(double... percentiles) {
+    public CosmosMicrometerMetricsOptions configureDefaultPercentiles(double... percentiles) {
         if (percentiles == null || percentiles.length == 0) {
             this.defaultPercentiles = null;
         } else {
@@ -117,7 +117,7 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      *     that meter.
      * @return current CosmosMicrometerMetricsOptions instance
      */
-    public CosmosMicrometerMetricsOptions defaultEnableHistograms(boolean publishHistograms) {
+    public CosmosMicrometerMetricsOptions enableHistogramsByDefault(boolean publishHistograms) {
         this.defaultShouldPublishHistograms = publishHistograms;
 
         return this;
@@ -303,7 +303,7 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
         return this.defaultTagNames;
     }
 
-    void setDefaultTagNames(EnumSet<TagName> newTagNames) {
+    void configureDefaultTagNames(EnumSet<TagName> newTagNames) {
         this.defaultTagNames = newTagNames;
     }
 }
