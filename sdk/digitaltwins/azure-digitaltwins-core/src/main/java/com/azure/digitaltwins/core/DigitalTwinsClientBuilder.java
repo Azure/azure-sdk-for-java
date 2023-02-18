@@ -155,11 +155,6 @@ public final class DigitalTwinsClientBuilder implements
             policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
         }
 
-        TracingOptions tracingOptions = null;
-        if (clientOptions != null) {
-            tracingOptions = clientOptions.getTracingOptions();
-        }
-
         // Custom policies, authentication policy, and add date policy all take place after the retry policy which means
         // they will be applied once per http request, and once for every retried http request. For example, the
         // AddDatePolicy will add a date time header for each request that is sent, and if the http request fails
@@ -170,6 +165,11 @@ public final class DigitalTwinsClientBuilder implements
 
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
+        TracingOptions tracingOptions = null;
+        if (clientOptions != null) {
+            tracingOptions = clientOptions.getTracingOptions();
+        }
+        
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE, tracingOptions);
 
