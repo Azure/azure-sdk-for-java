@@ -80,22 +80,27 @@ public class EventHubsTracer {
     }
 
     public void endSpan(Throwable throwable, Context span, AutoCloseable scope) {
-        if (tracer != null) {
-            String errorCondition = "success";
-            if (throwable instanceof AmqpException) {
-                AmqpException exception = (AmqpException) throwable;
-                errorCondition = exception.getErrorCondition().getErrorCondition();
-            }
+        if (tracer == null) {
+            return;
+        }
 
-            try {
-                if (scope != null) {
-                    scope.close();
-                }
-            } catch (Exception e) {
-                LOGGER.warning("Can't close scope", e);
-            } finally {
-                tracer.end(errorCondition, throwable, span);
+        final String errorMessage;
+        if (throwable instanceof AmqpException) {
+            AmqpException exception = (AmqpException) throwable;
+            errorMessage = exception.getErrorCondition().getErrorCondition();
+        } else {
+            // Based on Javadocs, a null parameter for error message === success.
+            errorMessage = null;
+        }
+
+        try {
+            if (scope != null) {
+                scope.close();
             }
+        } catch (Exception e) {
+            LOGGER.warning("Can't close scope", e);
+        } finally {
+            tracer.end(errorMessage, throwable, span);
         }
     }
 
