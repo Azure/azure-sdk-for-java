@@ -246,7 +246,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.beforeTest(CosmosMetricCategory.ALL);
             this
                 .inputMetricsOptions
-                .defaultTagNames(CosmosMetricTagName.ALL);
+                .configureDefaultTagNames(CosmosMetricTagName.ALL);
 
             if (suppressConsistencyLevelTag) {
                 this
@@ -255,8 +255,8 @@ public class ClientMetricsTest extends BatchTestBase {
                         CosmosMetricName.OPERATION_SUMMARY_LATENCY,
                         new CosmosMicrometerMeterOptions()
                             .suppressTagNames(CosmosMetricTagName.fromString("ConsistencyLevel"))
-                            .histogramPublishingEnabled(false)
-                            .percentiles(0.99, 0.999));
+                            .enableHistograms(false)
+                            .configurePercentiles(0.99, 0.999));
             }
 
             try {
@@ -850,8 +850,8 @@ public class ClientMetricsTest extends BatchTestBase {
                 .setMetricCategories(CosmosMetricCategory.ALL)
                 .removeMetricCategories(CosmosMetricCategory.OPERATION_DETAILS)
                 .addMetricCategories(CosmosMetricCategory.OPERATION_DETAILS, CosmosMetricCategory.REQUEST_DETAILS)
-                .defaultPercentiles(0.9)
-                .defaultEnableHistograms(false)
+                .configureDefaultPercentiles(0.9)
+                .enableHistogramsByDefault(false)
                 .setEnabled(true);
             
             assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(10);

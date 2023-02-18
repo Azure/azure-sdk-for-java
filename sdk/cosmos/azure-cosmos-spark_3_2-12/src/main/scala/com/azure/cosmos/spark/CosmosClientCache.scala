@@ -214,7 +214,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
           val metricsOptions = new CosmosMicrometerMetricsOptions()
             .meterRegistry(CosmosClientMetrics.meterRegistry.get)
-            .defaultTagNames(
+            .configureDefaultTagNames(
               CosmosMetricTagName.CONTAINER,
               CosmosMetricTagName.CLIENT_CORRELATION_ID,
               CosmosMetricTagName.OPERATION,
