@@ -89,7 +89,7 @@ public class EventHubsTracer {
             AmqpException exception = (AmqpException) throwable;
             errorMessage = exception.getErrorCondition().getErrorCondition();
         } else {
-            // Based on Javadocs, a null parameter for error message === success.
+            // Based on Javadocs for Tracer.end, a null parameter for errorMessage === success.
             errorMessage = null;
         }
 
