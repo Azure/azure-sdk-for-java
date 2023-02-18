@@ -75,7 +75,7 @@ public class EventHubsTracer {
 
     public void endSpan(Throwable throwable, Context span, AutoCloseable scope) {
         if (tracer != null) {
-            String errorCondition = "success";
+            String errorCondition = null;
             if (throwable instanceof AmqpException) {
                 AmqpException exception = (AmqpException) throwable;
                 errorCondition = exception.getErrorCondition().getErrorCondition();
