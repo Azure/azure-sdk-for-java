@@ -215,14 +215,14 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             return promise.setSuccess(transitTimeoutValidationMessage);
         }
 
-        String badChannelValidationMessage = this.isBadChannelValidation(timestamps, currentTime, channel);
-        if (StringUtils.isNotEmpty(badChannelValidationMessage)) {
-            return promise.setSuccess(badChannelValidationMessage);
-        }
-
         String idleConnectionValidationMessage = this.idleConnectionValidation(timestamps, currentTime, channel);
         if(StringUtils.isNotEmpty(idleConnectionValidationMessage)) {
             return promise.setSuccess(idleConnectionValidationMessage);
+        }
+
+        String isCancellationProneChannel = this.isCancellationProneChannel(timestamps, currentTime, channel);
+        if (StringUtils.isNotEmpty(isCancellationProneChannel)) {
+            return promise.setSuccess(isCancellationProneChannel);
         }
 
         channel.writeAndFlush(RntbdHealthCheckRequest.MESSAGE).addListener(completed -> {
@@ -381,27 +381,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         return transitTimeoutValidationMessage;
     }
 
-    private String isBadChannelValidation(Timestamps timestamps, Instant currentTime, Channel channel) {
-
-        final Duration readDelay = Duration.between(timestamps.lastChannelReadTime(), currentTime);
-        String errorMessage = StringUtils.EMPTY;
-
-        if (readDelay.compareTo(Duration.ofSeconds(13)) > 0) {
-            errorMessage = MessageFormat.format(
-                "{0} health check failed due to bad channel timeout: [lastChannelWrite: {1}, lastChannelRead: {2}, "
-                    + "idleConnectionTimeout: {3}, currentTime: {4}]",
-                channel,
-                timestamps.lastChannelWriteTime(),
-                timestamps.lastChannelReadTime(),
-                idleConnectionTimeoutInNanos,
-                currentTime);
-
-            logger.warn(errorMessage);
-        }
-
-        return errorMessage;
-    }
-
     private String idleConnectionValidation(Timestamps timestamps, Instant currentTime, Channel channel) {
         String errorMessage = StringUtils.EMPTY;
 
@@ -417,6 +396,32 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
                         currentTime);
 
                 logger.warn(errorMessage);
+            }
+        }
+
+        return errorMessage;
+    }
+
+
+    private String isCancellationProneChannel(Timestamps timestamps, Instant currentTime, Channel channel) {
+        String errorMessage = StringUtils.EMPTY;
+
+        if (timestamps.cancellationCount() > 0) {
+            final long writeRecency = Duration.between(timestamps.lastChannelWriteTime(), currentTime).toNanos();
+            final long readSuccessRecency = Duration.between(timestamps.lastChannelReadTime(), currentTime).toNanos();
+
+            if (writeRecency < 1_000_000_000 && readSuccessRecency > 40L * 1_000_000_000L) {
+                errorMessage = MessageFormat.format(
+                    "{0} health check failed due to channel being cancellation prone: [lastChannelWrite: {1}, lastChannelRead: {2},"
+                        + "cancellationCountSinceLastSuccessfulRead: {3}, currentTime: {4}]",
+                    channel,
+                    timestamps.lastChannelWriteTime(),
+                    timestamps.lastChannelReadTime(),
+                    timestamps.cancellationCount(),
+                    currentTime);
+
+                logger.warn(errorMessage);
+                return errorMessage;
             }
         }
 
@@ -455,6 +460,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         private static final AtomicReferenceFieldUpdater<Timestamps, Instant> transitTimeoutStartingTimeUpdater =
             newUpdater(Timestamps.class, Instant.class, "transitTimeoutStartingTime");
 
+        private static final AtomicIntegerFieldUpdater<Timestamps> cancellationCountUpdater =
+            AtomicIntegerFieldUpdater.newUpdater(Timestamps.class, "cancellationCount");
+
         private volatile Instant lastPingTime;
         private volatile Instant lastReadTime;
         private volatile Instant lastWriteTime;
@@ -462,7 +470,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         private volatile int transitTimeoutCount;
         private volatile int transitTimeoutWriteCount;
         private volatile Instant transitTimeoutStartingTime;
-
+        private volatile int cancellationCount;
         public Timestamps() {
             lastPingUpdater.set(this, Instant.now());
             lastReadUpdater.set(this, Instant.now());
@@ -480,6 +488,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             this.transitTimeoutCount = transitTimeoutCountUpdater.get(other);
             this.transitTimeoutWriteCount = transitTimeoutWriteCountUpdater.get(other);
             this.transitTimeoutStartingTime = transitTimeoutStartingTimeUpdater.get(other);
+            this.cancellationCount = cancellationCountUpdater.get(other);
         }
 
         public void channelPingCompleted() {
@@ -489,6 +498,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         public void channelReadCompleted() {
             lastReadUpdater.set(this, Instant.now());
             this.resetTransitTimeout(); // we have got a successful read, so reset the transitTimeout count.
+            this.resetCancellationCount();
         }
 
         public void channelWriteAttempted() {
@@ -512,6 +522,10 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             transitTimeoutCountUpdater.set(this, 0);
             transitTimeoutWriteCountUpdater.set(this, 0);
             transitTimeoutStartingTimeUpdater.set(this, null);
+        }
+
+        public void resetCancellationCount() {
+            cancellationCountUpdater.set(this, 0);
         }
 
         @JsonProperty
@@ -547,6 +561,11 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         @JsonProperty
         public Instant transitTimeoutStartingTime() {
             return transitTimeoutStartingTimeUpdater.get(this);
+        }
+
+        @JsonProperty
+        public int cancellationCount() {
+            return cancellationCountUpdater.get(this);
         }
 
         @Override
