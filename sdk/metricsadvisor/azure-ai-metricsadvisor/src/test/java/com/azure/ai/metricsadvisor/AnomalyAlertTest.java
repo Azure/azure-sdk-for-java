@@ -13,12 +13,14 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -110,11 +112,11 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     /**
      * Verifies that an exception is thrown for null detection configuration Id parameter.
      */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void getAnomalyAlertNullId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    @Test
+    @DoNotRecord
+    public void getAnomalyAlertNullId() {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        client = getNonRecordAdminClient().buildClient();
         // Act & Assert
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.getAlertConfig(null));
@@ -124,11 +126,11 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     /**
      * Verifies that an exception is thrown for invalid alert configuration Id.
      */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void getAnomalyAlertInvalidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    @Test
+    @DoNotRecord
+    public void getAnomalyAlertInvalidId() {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        client = getNonRecordAdminClient().buildClient();
 
         // Act & Assert
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
