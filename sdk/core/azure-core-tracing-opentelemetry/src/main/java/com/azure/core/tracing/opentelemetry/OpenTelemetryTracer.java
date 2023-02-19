@@ -15,6 +15,7 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
+import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.TracerBuilder;
 import io.opentelemetry.api.trace.TracerProvider;
@@ -262,7 +263,17 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * {@inheritDoc}
+     * Completes the current tracing span for AMQP calls. Does nothing when tracing is not enabled.
+     *
+     * @param errorMessage Error message for the span. If {@param throwable} is null, then the error message
+     *      is examined. If message is {@code null} then span is returned unmodified. Otherwise, if message is:
+     *      <ul>
+     *          <li>{@code "error"} then {@link StatusCode#ERROR} is set.</li>
+     *          <li>{@code "success"} then {@link StatusCode#OK} is set.</li>
+     *          <li>Otherwise, {@link StatusCode#ERROR} is set.</li>
+     *      </ul>
+     * @param throwable the error occurred during response transmission (optional).
+     * @param context Context associated with the span.
      */
     @Override
     public void end(String errorMessage, Throwable throwable, Context context) {
