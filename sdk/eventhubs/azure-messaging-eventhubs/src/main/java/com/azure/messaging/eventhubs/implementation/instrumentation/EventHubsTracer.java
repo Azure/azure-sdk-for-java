@@ -32,6 +32,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 
 public class EventHubsTracer {
+    private static final String SUCCESS_MESSAGE = "success";
     private static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> {
     };
 
@@ -89,8 +90,7 @@ public class EventHubsTracer {
             AmqpException exception = (AmqpException) throwable;
             errorMessage = exception.getErrorCondition().getErrorCondition();
         } else {
-            // Based on Javadocs for Tracer.end, a null parameter for errorMessage === success.
-            errorMessage = null;
+            errorMessage = SUCCESS_MESSAGE;
         }
 
         try {

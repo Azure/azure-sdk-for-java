@@ -306,9 +306,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<ReadableSpan> received = findSpans(spans, "EventHubs.receiveFromPartition");
         assertSyncConsumerSpan(received.get(0), receivedMessages, "EventHubs.receiveFromPartition");
 
-        // Based on documentation for OpenTelemetryTracer.end, passing in a null status and null error should result
-        // in an unset status code.
-        assertEquals(StatusCode.UNSET, received.get(0).toSpanData().getStatus().getStatusCode());
+        assertEquals(StatusCode.OK, received.get(0).toSpanData().getStatus().getStatusCode());
     }
 
     @Test
