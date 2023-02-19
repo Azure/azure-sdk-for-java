@@ -22,8 +22,11 @@ class OpenTelemetryUtils {
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryUtils.class);
 
     private static final Map<String, String> ATTRIBUTE_MAPPING_V1_17_0 = getMappingsV1200();
+
     static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
     static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
+    static final String SUCCESS_STATUS_MESSAGE = "success";
+    static final String ERROR_STATUS_MESSAGE = "error";
 
     private static Map<String, String> getMappingsV1200() {
         Map<String, String> mappings = new HashMap<>(8);
@@ -97,8 +100,8 @@ class OpenTelemetryUtils {
     }
 
     /**
-     * Adds attribute key-value pair to OpenTelemetry {@link Span}, if value type is not supported by
-     * OpenTelemetry, drops the attribute.
+     * Adds attribute key-value pair to OpenTelemetry {@link Span}, if value type is not supported by OpenTelemetry,
+     * drops the attribute.
      *
      * @param span {@link Span} instance
      * @param key key of the attribute to be added
@@ -134,23 +137,33 @@ class OpenTelemetryUtils {
      * Parses an OpenTelemetry Status from AMQP Error Condition.
      *
      * @param span the span to set the status for.
-     * @param statusMessage description for this error condition.
+     * @param statusMessage Description for this error condition. If {@param throwable} is null, then the status
+     *     message is examined. If message is {@code null} then span is returned unmodified. Otherwise, if message is:
+     *     <ul>
+     *         <li>{@code "error"} then {@link StatusCode#ERROR} is set.</li>
+     *         <li>{@code "success"} then {@link StatusCode#OK} is set.</li>
+     *         <li>Otherwise, {@link StatusCode#ERROR} is set.</li>
+     *     </ul>
      * @param throwable the error occurred during response transmission (optional).
+     *
      * @return the corresponding OpenTelemetry {@link Span}.
      */
-    public static Span setError(Span span, String statusMessage, Throwable throwable) {
+    static Span setError(Span span, String statusMessage, Throwable throwable) {
         if (throwable != null) {
             span.recordException(throwable);
             return span.setStatus(StatusCode.ERROR, statusMessage);
         }
 
-        if (statusMessage != null) {
-            if ("error".equals(statusMessage)) {
-                return span.setStatus(StatusCode.ERROR);
-            }
-            return span.setStatus(StatusCode.ERROR, statusMessage);
+        if (statusMessage == null) {
+            return span;
         }
 
-        return span;
+        if (ERROR_STATUS_MESSAGE.equals(statusMessage)) {
+            return span.setStatus(StatusCode.ERROR);
+        } else if (SUCCESS_STATUS_MESSAGE.equals(statusMessage)) {
+            return span.setStatus(StatusCode.OK);
+        } else {
+            return span.setStatus(StatusCode.ERROR, statusMessage);
+        }
     }
 }
