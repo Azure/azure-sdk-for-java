@@ -17,6 +17,10 @@ public final class NotebookWorkspaceInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private NotebookWorkspaceProperties innerProperties;
 
+    /** Creates an instance of NotebookWorkspaceInner class. */
+    public NotebookWorkspaceInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

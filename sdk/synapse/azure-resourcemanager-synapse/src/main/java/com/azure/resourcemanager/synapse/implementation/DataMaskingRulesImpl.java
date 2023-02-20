@@ -27,17 +27,6 @@ public final class DataMaskingRulesImpl implements DataMaskingRules {
         this.serviceManager = serviceManager;
     }
 
-    public DataMaskingRule get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName) {
-        DataMaskingRuleInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName);
-        if (inner != null) {
-            return new DataMaskingRuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataMaskingRule> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -54,6 +43,17 @@ public final class DataMaskingRulesImpl implements DataMaskingRules {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DataMaskingRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DataMaskingRule get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName) {
+        DataMaskingRuleInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName);
+        if (inner != null) {
+            return new DataMaskingRuleImpl(inner, this.manager());
         } else {
             return null;
         }

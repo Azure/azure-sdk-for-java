@@ -22,22 +22,20 @@ public final class AttachedDatabaseConfigurationProperties {
     private ResourceProvisioningState provisioningState;
 
     /*
-     * The name of the database which you would like to attach, use * if you
-     * want to follow all current and future databases.
+     * The name of the database which you would like to attach, use * if you want to follow all current and future
+     * databases.
      */
     @JsonProperty(value = "databaseName", required = true)
     private String databaseName;
 
     /*
-     * The resource id of the kusto pool where the databases you would like to
-     * attach reside.
+     * The resource id of the kusto pool where the databases you would like to attach reside.
      */
     @JsonProperty(value = "clusterResourceId", required = true)
     private String kustoPoolResourceId;
 
     /*
-     * The list of databases from the clusterResourceId which are currently
-     * attached to the kusto pool.
+     * The list of databases from the clusterResourceId which are currently attached to the kusto pool.
      */
     @JsonProperty(value = "attachedDatabaseNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> attachedDatabaseNames;
@@ -53,6 +51,10 @@ public final class AttachedDatabaseConfigurationProperties {
      */
     @JsonProperty(value = "tableLevelSharingProperties")
     private TableLevelSharingProperties tableLevelSharingProperties;
+
+    /** Creates an instance of AttachedDatabaseConfigurationProperties class. */
+    public AttachedDatabaseConfigurationProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.

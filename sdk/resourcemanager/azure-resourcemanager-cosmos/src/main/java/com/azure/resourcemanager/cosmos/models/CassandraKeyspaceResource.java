@@ -17,6 +17,10 @@ public class CassandraKeyspaceResource {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of CassandraKeyspaceResource class. */
+    public CassandraKeyspaceResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB Cassandra keyspace.
      *

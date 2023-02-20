@@ -89,7 +89,12 @@ public class AzureAuthenticationTemplate {
     }
 
     /**
-     * Get a String token value represents a password.
+     * Return a password which is an Azure AD token that can be used to authenticate.
+     *
+     * Always return a valid value, and the value won't expire in a threshold.
+     *
+     * To reduce the underlying auth method calling(like managed identity endpoint has a rate limit), as well as to improve the performance, multiple calls to
+     * this method may return cached value.
      *
      * @return A String value represents a password.
      */

@@ -10,7 +10,26 @@ import java.util.Map;
 /** Samples for SapCentralInstances Create. */
 public final class SapCentralInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPCentralInstances_Create.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPCentralInstances_Create_HA_AvSet.json
+     */
+    /**
+     * Sample code: Create SAP Central Instances for HA System with Availability Set.
+     *
+     * @param manager Entry point to WorkloadsManager.
+     */
+    public static void createSAPCentralInstancesForHASystemWithAvailabilitySet(
+        com.azure.resourcemanager.workloads.WorkloadsManager manager) {
+        manager
+            .sapCentralInstances()
+            .define("centralServer")
+            .withRegion("westcentralus")
+            .withExistingSapVirtualInstance("test-rg", "X00")
+            .withTags(mapOf())
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPCentralInstances_Create.json
      */
     /**
      * Sample code: SAPCentralInstances_Create.

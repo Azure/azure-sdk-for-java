@@ -27,6 +27,8 @@ public class ReasonCode extends ExpandableStringEnum<ReasonCode> {
         public static final ReasonCode SPEECH_OPTION_MATCHED = fromReasonCode(8545);
         /** Recognize option Speech not matched. */
         public static final ReasonCode SPEECH_OPTION_NOT_MATCHED = fromReasonCode(8547);
+        /** Recognize with choice incorrect tone detected. */
+        public static final ReasonCode INCORRECT_TONE_DETECTED = fromReasonCode(8534);
     }
 
     /** Reason code names for the Play operation */

@@ -17,6 +17,6 @@ public final class AssetsDeleteSamples {
     public static void deleteAnAsset(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .assets()
-            .deleteWithResponse("contoso", "contosomedia", "ClimbingMountAdams", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("contosorg", "contosomedia", "ClimbingMountAdams", com.azure.core.util.Context.NONE);
     }
 }

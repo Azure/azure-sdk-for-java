@@ -66,7 +66,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
-            <version>12.20.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+            <version>12.20.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
         </dependency>
 
         <dependency>
@@ -93,17 +93,17 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventhubs</artifactId>
-            <version>5.15.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+            <version>5.15.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.40.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+            <version>4.41.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-formrecognizer</artifactId>
-            <version>4.0.3</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
+            <version>4.0.4</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>

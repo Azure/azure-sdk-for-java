@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerUsages List. */
 public final class WorkspaceManagedSqlServerUsagesListSamples {
     /*
@@ -18,6 +16,6 @@ public final class WorkspaceManagedSqlServerUsagesListSamples {
      */
     public static void listUsagesMetricForTheWorkspaceManagedSqlServer(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerUsages().list("wsg-7398", "testWorkspace", Context.NONE);
+        manager.workspaceManagedSqlServerUsages().list("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }

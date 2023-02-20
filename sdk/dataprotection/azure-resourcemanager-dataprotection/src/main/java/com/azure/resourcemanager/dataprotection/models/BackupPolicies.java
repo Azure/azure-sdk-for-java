@@ -13,7 +13,7 @@ public interface BackupPolicies {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface BackupPolicies {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +38,7 @@ public interface BackupPolicies {
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
@@ -53,7 +53,7 @@ public interface BackupPolicies {
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +66,7 @@ public interface BackupPolicies {
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
@@ -81,7 +81,7 @@ public interface BackupPolicies {
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -656,7 +656,7 @@ public class DataSourceTests extends SearchTestBase {
         SearchIndexerDataSourceConnection expectedDataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(expectedDataSource.getName());
         Response<SearchIndexerDataSourceConnection> response = client
-            .createDataSourceConnectionWithResponse(expectedDataSource, null);
+            .createDataSourceConnectionWithResponse(expectedDataSource, Context.NONE);
 
         assertEquals(expectedDataSource.getName(), response.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode());

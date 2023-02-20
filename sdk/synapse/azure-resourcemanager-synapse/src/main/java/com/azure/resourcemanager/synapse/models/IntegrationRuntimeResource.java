@@ -46,6 +46,13 @@ public interface IntegrationRuntimeResource {
     IntegrationRuntime properties();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeResourceInner object.
      *
      * @return the inner object.
@@ -185,15 +192,9 @@ public interface IntegrationRuntimeResource {
     IntegrationRuntimeResource refresh(Context context);
 
     /**
-     * Upgrade an integration runtime.
+     * Upgrade integration runtime
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void upgrade();
-
-    /**
-     * Upgrade an integration runtime.
+     * <p>Upgrade an integration runtime.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,7 +205,19 @@ public interface IntegrationRuntimeResource {
     Response<Void> upgradeWithResponse(Context context);
 
     /**
-     * Start an integration runtime.
+     * Upgrade integration runtime
+     *
+     * <p>Upgrade an integration runtime.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgrade();
+
+    /**
+     * Start integration runtime
+     *
+     * <p>Start an integration runtime.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -213,7 +226,9 @@ public interface IntegrationRuntimeResource {
     IntegrationRuntimeStatusResponse start();
 
     /**
-     * Start an integration runtime.
+     * Start integration runtime
+     *
+     * <p>Start an integration runtime.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,7 +239,9 @@ public interface IntegrationRuntimeResource {
     IntegrationRuntimeStatusResponse start(Context context);
 
     /**
-     * Stop an integration runtime.
+     * Stop integration runtime
+     *
+     * <p>Stop an integration runtime.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -232,7 +249,9 @@ public interface IntegrationRuntimeResource {
     void stop();
 
     /**
-     * Stop an integration runtime.
+     * Stop integration runtime
+     *
+     * <p>Stop an integration runtime.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

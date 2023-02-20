@@ -24,6 +24,10 @@ public final class TransparentDataEncryptionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of TransparentDataEncryptionListResult class. */
+    public TransparentDataEncryptionListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

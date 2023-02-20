@@ -22,6 +22,10 @@ public class DatabaseAccountListReadOnlyKeysResultInner {
     @JsonProperty(value = "secondaryReadonlyMasterKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryReadonlyMasterKey;
 
+    /** Creates an instance of DatabaseAccountListReadOnlyKeysResultInner class. */
+    public DatabaseAccountListReadOnlyKeysResultInner() {
+    }
+
     /**
      * Get the primaryReadonlyMasterKey property: Base 64 encoded value of the primary read-only key.
      *

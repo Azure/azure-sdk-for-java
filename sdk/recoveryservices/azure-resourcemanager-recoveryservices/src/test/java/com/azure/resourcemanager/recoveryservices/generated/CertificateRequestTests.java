@@ -9,18 +9,17 @@ import com.azure.resourcemanager.recoveryservices.models.AuthType;
 import com.azure.resourcemanager.recoveryservices.models.CertificateRequest;
 import com.azure.resourcemanager.recoveryservices.models.RawCertificateData;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CertificateRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CertificateRequest model =
             BinaryData.fromString("{\"properties\":{\"authType\":\"Invalid\"}}").toObject(CertificateRequest.class);
         Assertions.assertEquals(AuthType.INVALID, model.properties().authType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CertificateRequest model =
             new CertificateRequest().withProperties(new RawCertificateData().withAuthType(AuthType.INVALID));
         model = BinaryData.fromObject(model).toObject(CertificateRequest.class);

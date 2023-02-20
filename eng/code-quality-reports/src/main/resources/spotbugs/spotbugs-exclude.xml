@@ -124,6 +124,7 @@
       <Class name="com.azure.core.util.CoreUtils"/>
       <Class name="com.azure.core.implementation.serializer.HttpResponseDecodeData"/>
       <Class name="com.azure.core.util.serializer.JacksonAdapter"/>
+      <Class name="com.azure.core.serializer.json.jackson.JacksonAdapter"/>
       <And>
         <Class name="com.microsoft.azure.servicebus.Utils"/>
         <Method name="getDataFromMessageBody"/>
@@ -174,7 +175,10 @@
 
   <!--False positive: https://github.com/spotbugs/spotbugs/issues/1219-->
   <Match>
-    <Class name="com.azure.core.implementation.jackson.ObjectMapperShim"/>
+    <Or>
+      <Class name="com.azure.core.implementation.jackson.ObjectMapperShim"/>
+      <Class name="com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim"/>
+    </Or>
     <Method name="createJsonMapper"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
@@ -712,21 +716,16 @@
   <!-- Serializers define non-transient non-serializable instance field -->
   <Match>
     <Or>
-      <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
-      <Class name="com.azure.core.implementation.jackson.FlatteningDeserializer"/>
-      <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesSerializer"/>
-      <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesDeserializer"/>
+      <Class name="~com\.azure\.core\.implementation\.jackson\.(FlatteningSerializer|FlatteningDeserializer|AdditionalPropertiesSerializer|AdditionalPropertiesDeserializer)"/>
+      <Class name="~com\.azure\.core\.serializer\.json\.jackson\.implementation\.(FlatteningSerializer|FlatteningDeserializer|AdditionalPropertiesSerializer|AdditionalPropertiesDeserializer)"/>
+      <Class name="com.azure.core.serializer.json.jackson.JacksonAdapter$GlobalSerializerAdapter"/>
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- FIXME: spotbugs issues in core test packages -->
   <Match>
-    <Or>
-      <Package name="com.azure.core.test"/>
-      <Package name="com.azure.core.test.implementation"/>
-      <Package name="com.azure.core.test.http"/>
-    </Or>
+    <Package name="com.azure.core.test(.(implementation|http))?"/>
     <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING,
                   DM_CONVERT_CASE,
                   EC_UNRELATED_TYPES,
@@ -1233,48 +1232,14 @@
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
     <Class name="com.azure.cosmos.CosmosException"/>
-    <Field name="cosmosError"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
-  <Match>
-    <Class name="com.azure.cosmos.CosmosException"/>
-    <Field name="cosmosDiagnostics"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
-  <Match>
-    <Class name="com.azure.cosmos.CosmosException"/>
-    <Field name="requestTimeline"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
-  <Match>
-    <Class name="com.azure.cosmos.CosmosException"/>
-    <Field name="requestUri"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.cosmos.CosmosException"/>
-    <Field name="channelAcquisitionTimeline"/>
+    <Field name="~(cosmosError|cosmosDiagnostics|requestTimeline|requestUri|channelAcquisitionTimeline)"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextException"/>
-    <Field name="cosmosError"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextException"/>
-    <Field name="status"/>
+    <Field name="~(cosmosError|status)"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
@@ -2047,158 +2012,36 @@
       <Package name="com.azure.cosmos.rx.examples.multimaster"/>
       <Package name="com.azure.cosmos.rx.examples.multimaster.samples"/>
     </Or>
-    <Bug pattern="JLM_JSR166_UTILCONCURRENT_MONITORENTER,
-    NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
-    NO_NOTIFY_NOT_NOTIFYALL,
-    UC_USELESS_OBJECT,
-    SIC_INNER_SHOULD_BE_STATIC,
-    SIC_INNER_SHOULD_BE_STATIC_ANON,
-    UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
-    NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
-    BX_UNBOXING_IMMEDIATELY_REBOXED,
-    MS_SHOULD_BE_FINAL,
-    REC_CATCH_EXCEPTION,
-    WA_NOT_IN_LOOP,
-    MS_SHOULD_BE_FINAL,
-    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
-    DLS_DEAD_LOCAL_STORE,
-    IM_BAD_CHECK_FOR_ODD,
-    RC_REF_COMPARISON,
-    REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- Exclude vendor-ed apache-commons types from spotbug -->
   <Match>
     <Class name="~com\.azure\.cosmos\.implementation\.apachecommons(.+)"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
-    IS2_INCONSISTENT_SYNC,
-    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
-    SE_BAD_FIELD,
-    SE_TRANSIENT_FIELD_NOT_RESTORED,
-    ES_COMPARING_PARAMETER_STRING_WITH_EQ,
-    PZLA_PREFER_ZERO_LENGTH_ARRAYS,
-    SF_SWITCH_FALLTHROUGH,
-    SF_SWITCH_NO_DEFAULT,
-    DM_CONVERT_CASE"/>
   </Match>
 
   <!-- Exclude vendor-ed guava25 types from spotbug -->
   <Match>
     <Class name="~com\.azure\.cosmos\.implementation\.guava25(.+)"/>
-    <Bug pattern="BC_BAD_CAST_TO_ABSTRACT_COLLECTION,
-    BC_UNCONFIRMED_CAST,
-    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
-    DLS_DEAD_LOCAL_STORE,
-    DLS_DEAD_LOCAL_STORE_IN_RETURN,
-    DMI_NONSERIALIZABLE_OBJECT_WRITTEN,
-    DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED,
-    EQ_DOESNT_OVERRIDE_EQUALS,
-    HE_EQUALS_NO_HASHCODE,
-    HE_EQUALS_USE_HASHCODE,
-    HE_HASHCODE_NO_EQUALS,
-    HE_INHERITS_EQUALS_USE_HASHCODE,
-    IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD,
-    IS2_INCONSISTENT_SYNC,
-    IT_NO_SUCH_ELEMENT,
-    NM_SAME_SIMPLE_NAME_AS_INTERFACE,
-    NP_LOAD_OF_KNOWN_NULL_VALUE,
-    NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
-    NS_NON_SHORT_CIRCUIT,
-    PZLA_PREFER_ZERO_LENGTH_ARRAYS,
-    RI_REDUNDANT_INTERFACES,
-    RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT,
-    SA_FIELD_SELF_ASSIGNMENT,
-    SE_BAD_FIELD,
-    SE_COMPARATOR_SHOULD_BE_SERIALIZABLE,
-    SE_INNER_CLASS,
-    SE_NO_SERIALVERSIONID,
-    SE_TRANSIENT_FIELD_NOT_RESTORED,
-    SF_SWITCH_FALLTHROUGH,
-    UC_USELESS_CONDITION,
-    UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,
-    UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
-    UWF_UNWRITTEN_FIELD"/>
   </Match>
 
   <!-- Exclude AAP source code types from spotbug -->
   <Match>
     <Class name="~com\.azure\.cosmos\.encryption\.implementation\.mdesrc(.+)"/>
-    <Bug pattern="DM_CONVERT_CASE,
-    ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD,
-    UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
-    NP_BOOLEAN_RETURN_NULL,
-    PZLA_PREFER_ZERO_LENGTH_ARRAYS,
-    SS_SHOULD_BE_STATIC,
-    UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD,
-    BX_UNBOXING_IMMEDIATELY_REBOXED,
-	EI_EXPOSE_REP,
-	URF_UNREAD_FIELD,
-	DM_DEFAULT_ENCODING,
-	DB_DUPLICATE_SWITCH_CLAUSES,
-	UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD,
-	HE_INHERITS_EQUALS_USE_HASHCODE,
-	HE_EQUALS_USE_HASHCODE,
-	ICAST_INTEGER_MULTIPLY_CAST_TO_LONG,
-	HE_EQUALS_USE_HASHCODE,
-	SIC_INNER_SHOULD_BE_STATIC_ANON,
-	EI_EXPOSE_REP2,
-	INT_VACUOUS_COMPARISON"/>
   </Match>
 
   <!-- Exclude vendor-ed com.fasterxml.uuid:java-uuid-generator types from spotbug -->
   <Match>
     <Class name="~com\.azure\.cosmos\.implementation\.uuid(.+)"/>
-    <Bug pattern="CN_IDIOM_NO_SUPER_CALL,
-    MS_PKGPROTECT,
-    DM_CONVERT_CASE,
-    MS_MUTABLE_COLLECTION_PKGPROTECT,
-    RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
-    SF_SWITCH_NO_DEFAULT,
-    UCF_USELESS_CONTROL_FLOW,
-    SE_COMPARATOR_SHOULD_BE_SERIALIZABLE,
-    CI_CONFUSED_INHERITANCE,
-    MS_SHOULD_BE_FINAL"/>
   </Match>
 
   <Match>
-    <Or>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientEncryptionKeyHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncContainerHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncDatabaseHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchOperationResultHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchRequestOptionsHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchResponseHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBulkExecutionOptionsHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBulkExecutionThresholdsStateHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBulkItemResponseHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosChangeFeedRequestOptionsHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientBuilderHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosContainerPropertiesHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosDiagnosticsHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosExceptionHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosItemRequestOptionsHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosItemResponseHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosPageFluxHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosPatchOperationsHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosQueryRequestOptionsHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$DirectConnectionConfigHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$FeedResponseHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$PartitionKeyHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientTelemetryConfigHelper"/>
-    </Or>
+    <Class name="~com.azure.cosmos.implementation.ImplementationBridgeHelpers(\$.*)?"/>
     <Bug pattern="DM_EXIT"/>
   </Match>
 
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
   <Match>
-    <Or>
-      <Class name="~com\.azure\.core\.http\.okhttp\.implementation\.OkHttpAsyncResponse(.*)"/>
-      <Class name="~com\.azure\.core\.http\.vertx\.implementation\.VertxHttpAsyncResponse(.*)"/>
-    </Or>
+    <Class name="~com\.azure\.core\.http\.(okhttp|vertx)\.implementation\.(OkHttpAsyncResponse|VertxHttpAsyncResponse)(.*)"/>
     <Method name="~(.*)\$(getBodyAsByteArray|null)\$(.*)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -2387,13 +2230,7 @@
   <!-- Use the property to take the custom serializer from SearchClient. -->
   <Match>
     <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-
-  <!-- Use abstract TypeReference class for serialize and deserialize API. -->
-  <Match>
-    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
   <Match>
@@ -2511,6 +2348,14 @@
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
 
+  <!-- This is an internal type used to hold the request body which will not be mutated outside this class -->
+  <Match>
+    <Or>
+      <Class name="com.azure.monitor.ingestion.implementation.LogsIngestionRequest"/>
+    </Or>
+    <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
+  </Match>
+
   <!-- Machine generated classes for MAA service generate spotBugs errors -->
   <Match>
     <Or>
@@ -2614,7 +2459,10 @@
 
   <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
   <Match>
-    <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
+    <Or>
+      <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
+      <Class name="com.azure.core.serializer.json.jackson.implementation.FlatteningSerializer"/>
+    </Or>
     <Method name="propertyOnlyFlattenSerialize"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
@@ -2654,11 +2502,7 @@
 
   <!-- Non Shipped code -->
   <Match>
-    <Or>
-      <Package name="~com\.azure\.redisson.*"/>
-      <Package name="~com\.azure\.lettuce.*"/>
-      <Package name="~com\.azure\.jedis.*"/>
-    </Or>
+    <Package name="~com\.azure\.(jedis|lettuce|redisson).*"/>
     <Bug pattern="UL_UNRELEASED_LOCK_EXCEPTION_PATH,
                   NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
                   BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
@@ -2672,15 +2516,7 @@
   <!-- Spotbugs raises a VO_VOLATILE_REFERENCE_TO_ARRAY now but this has the same issue as before where the array elements aren't volatile. -->
   <Match>
     <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY"/>
-    <Or>
-      <Class name="com.azure.core.implementation.util.ByteBufferContent"/>
-      <Class name="com.azure.core.implementation.util.FileContent"/>
-      <Class name="com.azure.core.implementation.util.FluxByteBufferContent"/>
-      <Class name="com.azure.core.implementation.util.InputStreamContent"/>
-      <Class name="com.azure.core.implementation.util.ListByteBufferContent"/>
-      <Class name="com.azure.core.implementation.util.SerializableContent"/>
-      <Class name="com.azure.core.implementation.util.StringContent"/>
-    </Or>
+    <Class name="~com\.azure\.core\.implementation\.util\.(.*)Content"/>
     <Field name="bytes"/>
   </Match>
 

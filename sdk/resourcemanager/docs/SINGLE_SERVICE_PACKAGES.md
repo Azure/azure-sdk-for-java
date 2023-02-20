@@ -332,6 +332,8 @@ service
 <details>
 <summary> costmanagement </summary>
 
+* [package-2022-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager#tag-package-2022-10)
+    * [1.0.0-beta.5](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-costmanagement/1.0.0-beta.5/jar)
 * [package-2020-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager#tag-package-2020-06)
     * [1.0.0-beta.4](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-costmanagement/1.0.0-beta.4/jar)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-costmanagement/1.0.0-beta.1/jar)
@@ -460,6 +462,8 @@ service
 
 * [package-preview-2022-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager#tag-package-preview-2022-11)
     * [1.0.0-beta.2](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-dataprotection/1.0.0-beta.2/jar)
+* [package-2023-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager#tag-package-2023-01)
+    * [1.0.0-beta.3](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-dataprotection/1.0.0-beta.3/jar)
 * [package-2021-07](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager#tag-package-2021-07)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-dataprotection/1.0.0-beta.1/jar)
 </details>
@@ -558,6 +562,7 @@ service
 <summary> digitaltwins </summary>
 
 * [package-2022-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/digitaltwins/resource-manager#tag-package-2022-10)
+    * [1.2.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-digitaltwins/1.2.0-beta.1/jar)
     * [1.1.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-digitaltwins/1.1.0-beta.1/jar)
     * [1.1.0](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-digitaltwins/1.1.0/jar)
 * [package-2022-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/digitaltwins/resource-manager#tag-package-2022-05)
@@ -852,6 +857,7 @@ service
 
 * [package-2022-12-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/loadtestservice/resource-manager#tag-package-2022-12-01)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-loadtesting/1.0.0-beta.1/jar)
+    * [1.0.0](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-loadtesting/1.0.0/jar)
 </details>
 
 <br/>
@@ -1166,6 +1172,14 @@ service
 
 <br/>
 <details>
+<summary> providerhub </summary>
+
+* [package-2020-11-20](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager#tag-package-2020-11-20)
+    * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-providerhub/1.0.0-beta.1/jar)
+</details>
+
+<br/>
+<details>
 <summary> purview </summary>
 
 * [package-2021-07-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/purview/resource-manager#tag-package-2021-07-01)
@@ -1186,6 +1200,8 @@ service
 <details>
 <summary> recoveryservices </summary>
 
+* [package-2023-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager#tag-package-2023-01)
+    * [1.0.0-beta.5](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-recoveryservices/1.0.0-beta.5/jar)
 * [package-2022-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager#tag-package-2022-10)
     * [1.0.0-beta.4](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-recoveryservices/1.0.0-beta.4/jar)
 * [package-2022-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager#tag-package-2022-04)
@@ -1243,6 +1259,14 @@ service
 * [package-2017-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager#tag-package-2017-04)
     * [1.0.0-beta.2](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-relay/1.0.0-beta.2/jar)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-relay/1.0.0-beta.1/jar)
+</details>
+
+<br/>
+<details>
+<summary> reservations </summary>
+
+* [package-2022-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager#tag-package-2022-11)
+    * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-reservations/1.0.0-beta.1/jar)
 </details>
 
 <br/>
@@ -1409,6 +1433,14 @@ service
 
 <br/>
 <details>
+<summary> storagemover </summary>
+
+* [package-2022-07-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagemover/resource-manager#tag-package-2022-07-01-preview)
+    * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-storagemover/1.0.0-beta.1/jar)
+</details>
+
+<br/>
+<details>
 <summary> storagepool </summary>
 
 * [package-2021-08-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagepool/resource-manager#tag-package-2021-08-01)
@@ -1449,6 +1481,7 @@ service
 <summary> synapse </summary>
 
 * [package-composite-v2](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager#tag-package-composite-v2)
+    * [1.0.0-beta.7](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-synapse/1.0.0-beta.7/jar)
     * [1.0.0-beta.6](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-synapse/1.0.0-beta.6/jar)
     * [1.0.0-beta.5](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-synapse/1.0.0-beta.5/jar)
     * [1.0.0-beta.4](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-synapse/1.0.0-beta.4/jar)
@@ -1505,6 +1538,8 @@ service
 <details>
 <summary> workloads </summary>
 
+* [package-preview-2022-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloads/resource-manager#tag-package-preview-2022-11)
+    * [1.0.0-beta.2](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-workloads/1.0.0-beta.2/jar)
 * [package-2021-12-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloads/resource-manager#tag-package-2021-12-01-preview)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-workloads/1.0.0-beta.1/jar)
 </details>

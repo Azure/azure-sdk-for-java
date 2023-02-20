@@ -57,6 +57,14 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this.innerModel().modifiedOn();
     }
 
+    public String dateRange() {
+        return this.innerModel().dateRange();
+    }
+
+    public String currency() {
+        return this.innerModel().currency();
+    }
+
     public ChartType chart() {
         return this.innerModel().chart();
     }
@@ -99,8 +107,12 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this.innerModel().timePeriod();
     }
 
-    public ReportConfigDataset dataset() {
-        return this.innerModel().dataset();
+    public ReportConfigDataset dataSet() {
+        return this.innerModel().dataSet();
+    }
+
+    public Boolean includeMonetaryCommitment() {
+        return this.innerModel().includeMonetaryCommitment();
     }
 
     public ViewInner innerModel() {
@@ -250,8 +262,13 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this;
     }
 
-    public ViewImpl withDataset(ReportConfigDataset dataset) {
-        this.innerModel().withDataset(dataset);
+    public ViewImpl withDataSet(ReportConfigDataset dataSet) {
+        this.innerModel().withDataSet(dataSet);
+        return this;
+    }
+
+    public ViewImpl withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment) {
+        this.innerModel().withIncludeMonetaryCommitment(includeMonetaryCommitment);
         return this;
     }
 }

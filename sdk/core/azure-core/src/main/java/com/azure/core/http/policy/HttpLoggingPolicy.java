@@ -198,7 +198,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 }
             }
 
-            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
+            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
                 addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), logBuilder);
             }
 
@@ -269,7 +269,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         private void logHeaders(ClientLogger logger, HttpResponse response, LoggingEventBuilder logBuilder) {
-            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
+            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
                 addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder);
             }
         }

@@ -30,16 +30,6 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
         this.serviceManager = serviceManager;
     }
 
-    public SapVirtualInstance getByResourceGroup(String resourceGroupName, String sapVirtualInstanceName) {
-        SapVirtualInstanceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, sapVirtualInstanceName);
-        if (inner != null) {
-            return new SapVirtualInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SapVirtualInstance> getByResourceGroupWithResponse(
         String resourceGroupName, String sapVirtualInstanceName, Context context) {
         Response<SapVirtualInstanceInner> inner =
@@ -50,6 +40,16 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SapVirtualInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SapVirtualInstance getByResourceGroup(String resourceGroupName, String sapVirtualInstanceName) {
+        SapVirtualInstanceInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, sapVirtualInstanceName);
+        if (inner != null) {
+            return new SapVirtualInstanceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -107,15 +107,6 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
     public OperationStatusResult start(String resourceGroupName, String sapVirtualInstanceName, Context context) {
         OperationStatusResultInner inner =
             this.serviceClient().start(resourceGroupName, sapVirtualInstanceName, context);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public OperationStatusResult stop(String resourceGroupName, String sapVirtualInstanceName, StopRequest body) {
-        OperationStatusResultInner inner = this.serviceClient().stop(resourceGroupName, sapVirtualInstanceName, body);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {

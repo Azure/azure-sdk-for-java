@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools ListFollowerDatabases. */
 public final class KustoPoolsListFollowerDatabasesSamples {
     /*
@@ -17,6 +15,9 @@ public final class KustoPoolsListFollowerDatabasesSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolListFollowerDatabases(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().listFollowerDatabases("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager
+            .kustoPools()
+            .listFollowerDatabases(
+                "kustorptest", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }

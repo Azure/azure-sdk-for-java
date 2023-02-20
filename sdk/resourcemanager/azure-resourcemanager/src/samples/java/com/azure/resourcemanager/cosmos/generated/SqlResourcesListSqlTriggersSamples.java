@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources ListSqlTriggers. */
 public final class SqlResourcesListSqlTriggersSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlTriggerList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlTriggerList.json
      */
     /**
      * Sample code: CosmosDBSqlTriggerList.
@@ -22,6 +20,6 @@ public final class SqlResourcesListSqlTriggersSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .listSqlTriggers("rgName", "ddb1", "databaseName", "containerName", Context.NONE);
+            .listSqlTriggers("rgName", "ddb1", "databaseName", "containerName", com.azure.core.util.Context.NONE);
     }
 }

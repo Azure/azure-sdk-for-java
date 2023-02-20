@@ -150,7 +150,15 @@ public final class SearchClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SearchClient buildClient() {
-        return new SearchClient(buildAsyncClient());
+        validateIndexNameAndEndpoint();
+        SearchServiceVersion buildVersion = (serviceVersion == null)
+            ? SearchServiceVersion.getLatest()
+            : serviceVersion;
+
+        HttpPipeline pipeline = getHttpPipeline();
+
+        return new SearchClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer,
+            Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline, getDefaultSerializerAdapter()));
     }
 
     /**
