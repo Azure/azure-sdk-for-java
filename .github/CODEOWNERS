@@ -43,10 +43,8 @@
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                               @mssfang @alzimmermsft
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/spring/spring-cloud-azure-appconfiguration-config-web/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/spring/spring-cloud-azure-feature-management/   @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/spring/spring-cloud-azure-feature-management-web/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 /sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
 
