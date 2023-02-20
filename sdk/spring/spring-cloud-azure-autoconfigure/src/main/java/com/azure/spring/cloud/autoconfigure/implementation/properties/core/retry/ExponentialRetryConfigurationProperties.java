@@ -21,7 +21,7 @@ public class ExponentialRetryConfigurationProperties implements RetryOptionsProv
      */
     private Duration baseDelay;
     /**
-     * Maximum permissible amount of time between retry attempts.
+     * Maximum permissible amount of time(duration) between retry attempts.
      */
     private Duration maxDelay;
 
