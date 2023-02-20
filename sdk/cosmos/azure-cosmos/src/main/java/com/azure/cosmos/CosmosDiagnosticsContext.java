@@ -8,8 +8,6 @@ import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.Utils;
-import com.codahale.metrics.SlidingTimeWindowReservoir;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -45,6 +43,7 @@ public final class CosmosDiagnosticsContext {
     private final ConsistencyLevel consistencyLevel;
     private final ConcurrentLinkedDeque<CosmosDiagnostics> diagnostics;
     private final Integer maxItemCount;
+    private final Duration thresholdForDiagnosticsOnTracer;
 
     private Throwable finalError;
     private Instant startTime = null;
@@ -65,7 +64,8 @@ public final class CosmosDiagnosticsContext {
         ResourceType resourceType,
         OperationType operationType,
         ConsistencyLevel consistencyLevel,
-        Integer maxItemCount) {
+        Integer maxItemCount,
+        Duration thresholdForDiagnosticsOnTracer) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
@@ -74,6 +74,9 @@ public final class CosmosDiagnosticsContext {
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
         checkNotNull(operationType, "Argument 'operationType' must not be null.");
         checkNotNull(consistencyLevel, "Argument 'consistencyLevel' must not be null.");
+        checkNotNull(
+            thresholdForDiagnosticsOnTracer,
+            "Argument 'thresholdForDiagnosticsOnTracer' must not be null.");
 
         this.spanName = spanName;
         this.accountName = accountName;
@@ -86,6 +89,7 @@ public final class CosmosDiagnosticsContext {
         this.diagnostics = new ConcurrentLinkedDeque<>();
         this.consistencyLevel = consistencyLevel;
         this.maxItemCount = maxItemCount;
+        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
     }
 
     /**
@@ -166,6 +170,12 @@ public final class CosmosDiagnosticsContext {
      */
     public String getSpanName() {
         return this.spanName;
+    }
+
+    public boolean isLatencyThresholdViolated() {
+
+        return this.duration != null &&
+            this.thresholdForDiagnosticsOnTracer.compareTo(this.duration) < 0;
     }
 
     void addDiagnostics(Collection<CosmosDiagnostics> cosmosDiagnostics) {
@@ -372,7 +382,8 @@ public final class CosmosDiagnosticsContext {
                     public CosmosDiagnosticsContext create(String spanName, String account, String databaseId,
                                                            String containerId, ResourceType resourceType,
                                                            OperationType operationType,
-                                                           ConsistencyLevel consistencyLevel, Integer maxItemCount) {
+                                                           ConsistencyLevel consistencyLevel, Integer maxItemCount,
+                                                           Duration thresholdForDiagnosticsOnTracer) {
 
                         return new CosmosDiagnosticsContext(
                             spanName,
@@ -382,7 +393,8 @@ public final class CosmosDiagnosticsContext {
                             resourceType,
                             operationType,
                             consistencyLevel,
-                            maxItemCount);
+                            maxItemCount,
+                            thresholdForDiagnosticsOnTracer);
                     }
 
                     @Override

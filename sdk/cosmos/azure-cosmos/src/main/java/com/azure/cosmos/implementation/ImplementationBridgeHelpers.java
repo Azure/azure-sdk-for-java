@@ -716,7 +716,8 @@ public class ImplementationBridgeHelpers {
                 ResourceType resourceType,
                 OperationType operationType,
                 ConsistencyLevel consistencyLevel,
-                Integer maxItemCount);
+                Integer maxItemCount,
+                Duration thresholdForDiagnosticsOnTracer);
 
             void startOperation(CosmosDiagnosticsContext ctx);
 

@@ -14,10 +14,12 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,7 +29,11 @@ import reactor.util.context.ContextView;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,8 +47,8 @@ public final class DiagnosticsProvider {
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
     private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
-    private static final ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static final Logger LOGGER = LoggerFactory.getLogger(DiagnosticsProvider.class);
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final int ERROR_CODE = 0;
@@ -56,7 +62,8 @@ public final class DiagnosticsProvider {
     private final Mono<Object> propagatingMono;
     private final Flux<Object> propagatingFlux;
     private final ArrayList<CosmosDiagnosticsHandler> diagnosticHandlers;
-        private final Tracer tracer;
+    private final Tracer tracer;
+    private final CosmosTracer cosmosTracer;
 
     public DiagnosticsProvider(
         Tracer tracer,
@@ -76,6 +83,12 @@ public final class DiagnosticsProvider {
             } else {
                 this.tracer = null;
             }
+        }
+
+        if (this.tracer != null) {
+            this.cosmosTracer = new LegacyCosmosTracer(this.tracer);
+        } else {
+            this.cosmosTracer = null;
         }
 
         this.propagatingMono = new PropagatingMono();
@@ -139,38 +152,17 @@ public final class DiagnosticsProvider {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
-        Context local = Objects
-            .requireNonNull(context, "'context' cannot be null.")
-            .addData(COSMOS_DIAGNOSTICS_CONTEXT_KEY, cosmosCtx);
-
-        // @TODO implement non-legacy
-        StartSpanOptions spanOptions = this.startSpanOptionsLegacy(
-            spanName,
-            cosmosCtx.getDatabaseName(),
-            cosmosCtx.getAccountName());
 
         ctxAccessor.startOperation(cosmosCtx);
 
-        // start the span and return the started span
-        return tracer.start(spanName, spanOptions, local);
+        if (this.cosmosTracer == null) {
+            return context;
+        }
+
+        return this.cosmosTracer.startSpan(spanName, cosmosCtx, context);
     }
 
-    /**
-     * Adds an event to the current span with the provided {@code timestamp} and {@code attributes}.
-     * <p>This API does not provide any normalization if provided timestamps are out of range of the current
-     * span timeline</p>
-     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].
-     * Any other Object value type and null values will be silently ignored.</p>
-     *
-     * @param name the name of the event.
-     * @param attributes the additional attributes to be set for the event.
-     * @param timestamp The instant, in UTC, at which the event will be associated to the span.
-     * @param context the call metadata containing information of the span to which the event should be associated with.
-     * @throws NullPointerException if {@code eventName} is {@code null}.
-     */
-    public void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp, Context context) {
-        tracer.addEvent(name, attributes, timestamp, context);
-    }
+
 
     /**
      * Given a context containing the current tracing span the span is marked completed with status info from
@@ -299,26 +291,6 @@ public final class DiagnosticsProvider {
                 switch (signal.getType()) {
                     case ON_NEXT:
                         T response = signal.get();
-                        // @TODO remove once ported
-                        /*
-                        Context traceContext = getContextFromReactorOrNull(signal.getContextView());
-                        CosmosDiagnostics cosmosDiagnostics = diagnosticFunc.apply(response);
-
-                        try {
-                            Duration threshold = thresholdForDiagnosticsOnTracer;
-                            if (threshold == null) {
-                                threshold = CRUD_THRESHOLD_FOR_DIAGNOSTICS;
-                            }
-
-
-                            if (cosmosDiagnostics != null
-                                && cosmosDiagnostics.getDuration() != null
-                                && cosmosDiagnostics.getDuration().compareTo(threshold) > 0) {
-                                addDiagnosticsOnTracerEvent(cosmosDiagnostics, traceContext);
-                            }
-                        } catch (JsonProcessingException ex) {
-                            LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
-                        }*/
 
                         this.endSpan(
                             signal,
@@ -370,9 +342,10 @@ public final class DiagnosticsProvider {
             consistencyLevel != null ?
                 consistencyLevel :
                 BridgeInternal.getContextClient(client).getConsistencyLevel(),
-            maxItemCount);
+            maxItemCount,
+            thresholdForDiagnosticsOnTracer);
 
-        Mono<T> tracerMono = diagnosticsEnabledPublisher(
+        return diagnosticsEnabledPublisher(
             cosmosCtx,
             resultPublisher,
             context,
@@ -381,12 +354,10 @@ public final class DiagnosticsProvider {
             actualItemCountFunc,
             requestChargeFunc,
             diagnosticFunc);
-
-        return tracerMono;
     }
 
     private boolean isNoneExceptional(int statusCode, CosmosException cosmosException) {
-        // @TODO implement other non-exceptional cases to short-cicuit relatively expensive
+        // @TODO implement other non-exceptional cases to short-circuit relatively expensive
         // exception propagation
         if (statusCode == HttpConstants.StatusCodes.NOTFOUND && cosmosException.getSubStatusCode() == 0) {
             return true;
@@ -405,7 +376,7 @@ public final class DiagnosticsProvider {
         Context context) {
 
         Throwable throwableForDiagnostics = throwable;
-        if (throwable != null && throwable instanceof CosmosException) {
+        if (throwable instanceof CosmosException) {
             CosmosException cosmosException = (CosmosException) throwable;
             if (isNoneExceptional(statusCode, cosmosException)) {
                 throwableForDiagnostics = null;
@@ -420,7 +391,7 @@ public final class DiagnosticsProvider {
             actualItemCount,
             requestCharge,
             diagnostics,
-            throwable);
+            throwableForDiagnostics);
 
         // @TODO - investigate whether we should push the handling of diagnostics out of the hot path
         // currently diagnostics are handled by the same thread on the hot path - which is intentional
@@ -432,21 +403,9 @@ public final class DiagnosticsProvider {
             }
         }
 
-        tracer.end(statusCode, throwable, context);
-    }
-
-    private StartSpanOptions startSpanOptionsLegacy(String methodName, String databaseId, String endpoint) {
-
-        StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT)
-            .setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME)
-            .setAttribute(DB_TYPE, DB_TYPE_VALUE)
-            .setAttribute(TracerProvider.DB_URL, endpoint)
-            .setAttribute(TracerProvider.DB_STATEMENT, methodName);
-        if (databaseId != null) {
-            spanOptions.setAttribute(TracerProvider.DB_INSTANCE, databaseId);
+        if (this.cosmosTracer != null) {
+            this.cosmosTracer.endSpan(cosmosCtx, context);
         }
-
-        return spanOptions;
     }
 
     private static void subscribe(Tracer tracer, CoreSubscriber<? super Object> actual) {
@@ -495,6 +454,222 @@ public final class DiagnosticsProvider {
         @Override
         public void subscribe(CoreSubscriber<? super Object> actual) {
             DiagnosticsProvider.subscribe(tracer, actual);
+        }
+    }
+
+    private interface CosmosTracer {
+        Context startSpan(String spanName, CosmosDiagnosticsContext cosmosCtx, Context context);
+        void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context);
+    }
+
+    private static final class LegacyCosmosTracer implements CosmosTracer {
+
+        private final static String JSON_STRING = "JSON";
+        private final Tracer tracer;
+
+        public LegacyCosmosTracer(Tracer tracer) {
+            checkNotNull(tracer, "Argument 'tracer' must not be null.");
+            this.tracer = tracer;
+        }
+
+        @Override
+        public Context startSpan(String spanName, CosmosDiagnosticsContext cosmosCtx, Context context) {
+            checkNotNull(spanName, "Argument 'spanName' must not be null.");
+            checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
+            Context local = Objects
+                .requireNonNull(context, "'context' cannot be null.")
+                .addData(COSMOS_DIAGNOSTICS_CONTEXT_KEY, cosmosCtx);
+
+            // @TODO implement non-legacy
+            StartSpanOptions spanOptions = this.startSpanOptions(
+                spanName,
+                cosmosCtx.getDatabaseName(),
+                cosmosCtx.getAccountName());
+
+            // start the span and return the started span
+            return tracer.start(spanName, spanOptions, local);
+        }
+
+        private StartSpanOptions startSpanOptions(String methodName, String databaseId, String endpoint) {
+            StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT)
+                .setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME)
+                .setAttribute(DB_TYPE, DB_TYPE_VALUE)
+                .setAttribute(TracerProvider.DB_URL, endpoint)
+                .setAttribute(TracerProvider.DB_STATEMENT, methodName);
+            if (databaseId != null) {
+                spanOptions.setAttribute(TracerProvider.DB_INSTANCE, databaseId);
+            }
+
+            return spanOptions;
+        }
+
+        @Override
+        public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context) {
+            try {
+                if (cosmosCtx != null && cosmosCtx.isLatencyThresholdViolated()) {
+                    Collection<CosmosDiagnostics> diagnostics = cosmosCtx.getDiagnostics();
+                    if (diagnostics != null && diagnostics.size() > 0) {
+                        for (CosmosDiagnostics d: diagnostics) {
+                            addDiagnosticsOnTracerEvent(d, context);
+                        }
+                    }
+                }
+            } catch (JsonProcessingException ex) {
+                LOGGER.warn("Error while serializing diagnostics for tracer.", ex);
+            }
+
+            if (cosmosCtx != null) {
+                tracer.end(cosmosCtx.getStatusCode(), cosmosCtx.getFinalError(), context);
+            }
+        }
+
+        private void addDiagnosticsOnTracerEvent(CosmosDiagnostics cosmosDiagnostics, Context context) throws JsonProcessingException {
+            if (cosmosDiagnostics == null || context == null) {
+                return;
+            }
+
+            ClientSideRequestStatistics clientSideRequestStatistics =
+                BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
+
+            Map<String, Object> attributes;
+            //adding storeResponse
+            int diagnosticsCounter = 1;
+            for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics :
+                clientSideRequestStatistics.getResponseStatisticsList()) {
+                attributes = new HashMap<>();
+                attributes.put(JSON_STRING, mapper.writeValueAsString(storeResponseStatistics));
+                Iterator<RequestTimeline.Event> eventIterator = null;
+                try {
+                    if (storeResponseStatistics.getStoreResult() != null) {
+                        eventIterator = storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
+                    }
+                } catch (CosmosException ex) {
+                    eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
+                }
+
+                OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(storeResponseStatistics.getRequestResponseTimeUTC()
+                    , ZoneOffset.UTC);
+                if (eventIterator != null) {
+                    while (eventIterator.hasNext()) {
+                        RequestTimeline.Event event = eventIterator.next();
+                        if (event.getName().equals("created")) {
+                            requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
+                            break;
+                        }
+                    }
+                }
+
+                this.addEvent("StoreResponse" + diagnosticsCounter++, attributes, requestStartTime, context);
+            }
+
+            //adding supplemental storeResponse
+            diagnosticsCounter = 1;
+            for (ClientSideRequestStatistics.StoreResponseStatistics statistics :
+                ClientSideRequestStatistics.getCappedSupplementalResponseStatisticsList(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
+                attributes = new HashMap<>();
+                attributes.put(JSON_STRING, mapper.writeValueAsString(statistics));
+                OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(statistics.getRequestResponseTimeUTC(),
+                    ZoneOffset.UTC);
+                if (statistics.getStoreResult() != null) {
+                    for (RequestTimeline.Event event :
+                        statistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline()) {
+                        if (event.getName().equals("created")) {
+                            requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
+                            break;
+                        }
+                    }
+                }
+                this.addEvent("Supplemental StoreResponse" + diagnosticsCounter++, attributes, requestStartTime, context);
+            }
+
+            //adding gateway statistics
+            if (clientSideRequestStatistics.getGatewayStatistics() != null) {
+                attributes = new HashMap<>();
+                attributes.put(JSON_STRING,
+                    mapper.writeValueAsString(clientSideRequestStatistics.getGatewayStatistics()));
+                OffsetDateTime requestStartTime =
+                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC);
+                if (clientSideRequestStatistics.getGatewayStatistics().getRequestTimeline() != null) {
+                    for (RequestTimeline.Event event :
+                        clientSideRequestStatistics.getGatewayStatistics().getRequestTimeline()) {
+                        if (event.getName().equals("created")) {
+                            requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
+                            break;
+                        }
+                    }
+                }
+                this.addEvent("GatewayStatistics", attributes, requestStartTime, context);
+            }
+
+            //adding retry context
+            if (clientSideRequestStatistics.getRetryContext().getRetryStartTime() != null) {
+                attributes = new HashMap<>();
+                attributes.put(JSON_STRING,
+                    mapper.writeValueAsString(clientSideRequestStatistics.getRetryContext()));
+                this.addEvent("Retry Context", attributes,
+                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRetryContext().getRetryStartTime(),
+                        ZoneOffset.UTC), context);
+            }
+
+            //adding addressResolutionStatistics
+            diagnosticsCounter = 1;
+            for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics :
+                clientSideRequestStatistics.getAddressResolutionStatistics().values()) {
+                attributes = new HashMap<>();
+                attributes.put(JSON_STRING, mapper.writeValueAsString(addressResolutionStatistics));
+                this.addEvent("AddressResolutionStatistics" + diagnosticsCounter++, attributes,
+                    OffsetDateTime.ofInstant(addressResolutionStatistics.getStartTimeUTC(), ZoneOffset.UTC), context);
+            }
+
+            //adding serializationDiagnosticsContext
+            if (clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList != null) {
+                for (SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics :
+                    clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList) {
+                    attributes = new HashMap<>();
+                    attributes.put(JSON_STRING, mapper.writeValueAsString(serializationDiagnostics));
+                    this.addEvent("SerializationDiagnostics " + serializationDiagnostics.serializationType, attributes,
+                        OffsetDateTime.ofInstant(serializationDiagnostics.startTimeUTC, ZoneOffset.UTC), context);
+                }
+            }
+
+            //adding systemInformation
+            attributes = new HashMap<>();
+            attributes.put(JSON_STRING,
+                mapper.writeValueAsString(clientSideRequestStatistics.getContactedRegionNames()));
+            this.addEvent("RegionContacted", attributes,
+                OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
+
+
+            //adding systemInformation
+            attributes = new HashMap<>();
+            attributes.put(JSON_STRING,
+                mapper.writeValueAsString(ClientSideRequestStatistics.fetchSystemInformation()));
+            this.addEvent("SystemInformation", attributes,
+                OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
+
+            //adding clientCfgs
+            attributes = new HashMap<>();
+            attributes.put(JSON_STRING,
+                mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
+            this.addEvent("ClientCfgs", attributes,
+                OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
+        }
+
+        void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp, Context context) {
+            tracer.addEvent(name, attributes, timestamp, context);
+        }
+    }
+
+    private final static class OpenTelemetryCosmosTracer implements CosmosTracer {
+
+        @Override
+        public Context startSpan(String spanName, CosmosDiagnosticsContext cosmosCtx, Context context) {
+            return null;
+        }
+
+        @Override
+        public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context) {
+
         }
     }
 
