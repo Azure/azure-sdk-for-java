@@ -187,10 +187,12 @@ public final class CosmosDiagnosticsContext {
 
     void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
-        this.addRequestSize(diagAccessor.getRequestPayloadSizeInBytes(cosmosDiagnostics));
-        this.addResponseSize(diagAccessor.getTotalResponsePayloadSizeInBytes(cosmosDiagnostics));
-        this.diagnostics.add(cosmosDiagnostics);
-        this.cachedRequestDiagnostics = null;
+        synchronized (this.spanName) {
+            this.addRequestSize(diagAccessor.getRequestPayloadSizeInBytes(cosmosDiagnostics));
+            this.addResponseSize(diagAccessor.getTotalResponsePayloadSizeInBytes(cosmosDiagnostics));
+            this.diagnostics.add(cosmosDiagnostics);
+            this.cachedRequestDiagnostics = null;
+        }
     }
 
     /**
@@ -241,16 +243,22 @@ public final class CosmosDiagnosticsContext {
         return this.totalRequestCharge;
     }
 
-    synchronized void addRequestCharge(float requestCharge) {
-        this.totalRequestCharge += requestCharge;
+    void addRequestCharge(float requestCharge) {
+        synchronized (this.spanName) {
+            this.totalRequestCharge += requestCharge;
+        }
     }
 
-    synchronized void addRequestSize(int bytes) {
-        this.maxRequestSize = Math.max(this.maxRequestSize, bytes);
+    void addRequestSize(int bytes) {
+        synchronized (this.spanName) {
+            this.maxRequestSize = Math.max(this.maxRequestSize, bytes);
+        }
     }
 
-    synchronized void addResponseSize(int bytes) {
-        this.maxResponseSize = Math.max(this.maxResponseSize, bytes);
+    void addResponseSize(int bytes) {
+        synchronized (this.spanName) {
+            this.maxResponseSize = Math.max(this.maxResponseSize, bytes);
+        }
     }
 
     /**
@@ -281,21 +289,25 @@ public final class CosmosDiagnosticsContext {
         checkState(
             this.startTime == null,
             "Method 'startOperation' must not be called multiple times.");
-        this.startTime = Instant.now();
-        this.cachedRequestDiagnostics = null;
+        synchronized (this.spanName) {
+            this.startTime = Instant.now();
+
+            this.cachedRequestDiagnostics = null;
+        }
     }
 
     synchronized void endOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
         if (this.duration != null) {
             return;
         }
-
-        this.statusCode = statusCode;
-        this.subStatusCode = subStatusCode;
-        this.finalError = finalError;
-        this.actualItemCount = actualItemCount;
-        this.duration = Duration.between(this.startTime, Instant.now());
-        this.cachedRequestDiagnostics = null;
+        synchronized (this.spanName) {
+            this.statusCode = statusCode;
+            this.subStatusCode = subStatusCode;
+            this.finalError = finalError;
+            this.actualItemCount = actualItemCount;
+            this.duration = Duration.between(this.startTime, Instant.now());
+            this.cachedRequestDiagnostics = null;
+        }
     }
 
     String getRequestDiagnostics() {

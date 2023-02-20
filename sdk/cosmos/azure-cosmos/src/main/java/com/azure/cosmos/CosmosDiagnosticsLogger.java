@@ -6,6 +6,7 @@ import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,14 +25,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
         ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
 
     private final CosmosDiagnosticsLoggerConfig config;
-    private final Set<OperationType> pointOperationTypes = new HashSet<OperationType>() {{
-        add(OperationType.Create);
-        add(OperationType.Delete);
-        add(OperationType.Patch);
-        add(OperationType.Read);
-        add(OperationType.Replace);
-        add(OperationType.Upsert);
-    }};
+    private final Set<OperationType> pointOperationTypes = getPointOperations();
 
     /**
      * Creates an instance of the CosmosDiagnosticLogger class
@@ -58,8 +52,8 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
 
     /**
      * Decides whether to log diagnostics for an operation
-     * @param diagnosticsContext
-     * @return a flag inidcating whether to log the operation or not
+     * @param diagnosticsContext the diagnostics context
+     * @return a flag indicating whether to log the operation or not
      */
     protected boolean shouldLog(CosmosDiagnosticsContext diagnosticsContext) {
 
@@ -86,11 +80,18 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
             }
         }
 
-        if (diagnosticsContext.getTotalRequestCharge() > this.config.getRequestChargeThreshold()) {
-            return true;
-        }
+        return diagnosticsContext.getTotalRequestCharge() > this.config.getRequestChargeThreshold();
+    }
 
-        return false;
+    private static Set<OperationType> getPointOperations() {
+        HashSet<OperationType> pointOperations = new HashSet<>();
+        pointOperations.add(OperationType.Create);
+        pointOperations.add(OperationType.Delete);
+        pointOperations.add(OperationType.Patch);
+        pointOperations.add(OperationType.Read);
+        pointOperations.add(OperationType.Replace);
+        pointOperations.add(OperationType.Upsert);
+        return ImmutableSet.copyOf(pointOperations);
     }
 
     private boolean shouldLogDueToStatusCode(int statusCode, int subStatusCode) {
@@ -99,7 +100,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
 
     /**
      * Logs the operation. This method can be overridden for example to emit logs to a different target than log4j
-     * @param ctx
+     * @param ctx the diagnostics context
      */
     protected void log(CosmosDiagnosticsContext ctx) {
         if (this.shouldLogDueToStatusCode(ctx.getStatusCode(), ctx.getSubStatusCode())) {
@@ -110,7 +111,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                 ctx.getCollectionName(),
                 ctx.getStatusCode(),
                 ctx.getSubStatusCode(),
-                ctx.toString());
+                ctx);
         } else {
             logger.info(
                 "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
@@ -119,7 +120,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                 ctx.getCollectionName(),
                 ctx.getStatusCode(),
                 ctx.getSubStatusCode(),
-                ctx.toString());
+                ctx);
         }
     }
 }

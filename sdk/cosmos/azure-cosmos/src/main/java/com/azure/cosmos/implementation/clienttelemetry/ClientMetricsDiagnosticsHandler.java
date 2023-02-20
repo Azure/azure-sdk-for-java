@@ -25,9 +25,6 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
 
     private final CosmosClientTelemetryConfig config;
     private final CosmosAsyncClient client;
-    private boolean isInitialized;
-    private Tag clientCorrelationTag;
-    private String accountTagValue;
 
     public ClientMetricsDiagnosticsHandler(
         CosmosAsyncClient client,
@@ -37,24 +34,11 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
         checkNotNull(client, "Argument 'client' must not be null.");
         this.config = config;
         this.client = client;
-        this.isInitialized = false;
-    }
-
-    private void ensureInitialized() {
-        if (this.isInitialized) {
-            return;
-        }
-
-        this.clientCorrelationTag = clientTelemetryConfigAccessor.getClientCorrelationTag(this.config);
-        this.accountTagValue = clientTelemetryConfigAccessor.getAccountName(this.config);
-        this.isInitialized = true;
     }
 
     @Override
     public void handleDiagnostics(Context traceContext, CosmosDiagnosticsContext diagnosticsContext) {
         checkNotNull(traceContext, "Argument 'traceContext' must not be null.");
-
-        this.ensureInitialized();
 
         for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
             ClientTelemetryMetrics.recordOperation(
