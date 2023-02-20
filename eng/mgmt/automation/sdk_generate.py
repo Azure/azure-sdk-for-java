@@ -162,13 +162,13 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
 
     readme = config['relatedReadmeMdFile']
     match = re.search(
-        '(specification)?/?([^/]+)/resource-manager/readme.md',
+        '(specification)?/?([^/]+)/resource-manager(/.*)*/readme.md',
         readme,
         re.IGNORECASE,
     )
     if not match:
         logging.info(
-            '[Skip] readme path does not format as */resource-manager/readme.md'
+            '[Skip] readme path does not format as */resource-manager/*/readme.md'
         )
     else:
         spec = match.group(2)
