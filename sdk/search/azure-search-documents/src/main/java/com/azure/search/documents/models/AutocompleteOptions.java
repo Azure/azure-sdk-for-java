@@ -70,6 +70,9 @@ public final class AutocompleteOptions {
     @JsonProperty(value = "$top")
     private Integer top;
 
+    /** Creates an instance of AutocompleteOptions class. */
+    public AutocompleteOptions() {}
+
     /**
      * Get the autocompleteMode property: Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms'
      * to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms.

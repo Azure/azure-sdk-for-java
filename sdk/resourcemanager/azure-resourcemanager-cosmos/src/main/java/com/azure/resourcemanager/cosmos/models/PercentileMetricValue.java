@@ -52,6 +52,10 @@ public final class PercentileMetricValue extends MetricValue {
     @JsonProperty(value = "P99", access = JsonProperty.Access.WRITE_ONLY)
     private Double p99;
 
+    /** Creates an instance of PercentileMetricValue class. */
+    public PercentileMetricValue() {
+    }
+
     /**
      * Get the p10 property: The 10th percentile value for the metric.
      *

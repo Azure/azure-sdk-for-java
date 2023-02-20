@@ -82,6 +82,7 @@ jobs:
           arguments: >
             -SourceDirectory $(System.DefaultWorkingDirectory)/build
             -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -Artifacts ('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' | ConvertFrom-Json)
             -InformationAction Continue
 
       - publish: $(Build.ArtifactStagingDirectory)

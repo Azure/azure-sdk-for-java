@@ -12,6 +12,12 @@ import java.util.Base64;
 @SuppressWarnings("resource")
 public abstract class XmlWriter implements AutoCloseable {
     /**
+     * Creates an instance of {@link XmlWriter}.
+     */
+    public XmlWriter() {
+    }
+
+    /**
      * Writes the XML document start ({@code <?xml version="1.0" encoding="utf-8?>}).
      * <p>
      * This uses the default version and encoding which are {@code 1.0} and {@code utf-8} respectively. If a different

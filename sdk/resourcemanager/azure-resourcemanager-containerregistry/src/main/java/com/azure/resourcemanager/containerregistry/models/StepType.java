@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StepType. */
+/** The type of the step. */
 public final class StepType extends ExpandableStringEnum<StepType> {
     /** Static value Docker for StepType. */
     public static final StepType DOCKER = fromString("Docker");
@@ -18,6 +18,15 @@ public final class StepType extends ExpandableStringEnum<StepType> {
 
     /** Static value EncodedTask for StepType. */
     public static final StepType ENCODED_TASK = fromString("EncodedTask");
+
+    /**
+     * Creates a new instance of StepType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StepType() {
+    }
 
     /**
      * Creates or finds a StepType from its string representation.
@@ -30,7 +39,11 @@ public final class StepType extends ExpandableStringEnum<StepType> {
         return fromString(name, StepType.class);
     }
 
-    /** @return known StepType values. */
+    /**
+     * Gets known StepType values.
+     *
+     * @return known StepType values.
+     */
     public static Collection<StepType> values() {
         return values(StepType.class);
     }

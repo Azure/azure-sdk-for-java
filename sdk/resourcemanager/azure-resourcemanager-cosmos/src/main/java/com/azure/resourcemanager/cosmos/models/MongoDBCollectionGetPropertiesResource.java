@@ -30,6 +30,10 @@ public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollect
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of MongoDBCollectionGetPropertiesResource class. */
+    public MongoDBCollectionGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

@@ -29,6 +29,10 @@ public final class VirtualMachineConfiguration {
     @JsonProperty(value = "osProfile", required = true)
     private OSProfile osProfile;
 
+    /** Creates an instance of VirtualMachineConfiguration class. */
+    public VirtualMachineConfiguration() {
+    }
+
     /**
      * Get the vmSize property: The virtual machine size.
      *

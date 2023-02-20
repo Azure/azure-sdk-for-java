@@ -30,7 +30,7 @@ public final class TracksGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"InProgress\"},\"id\":\"txfkfweg\",\"name\":\"rhptilluc\",\"type\":\"iqtgdqoh\"}";
+            "{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Failed\"},\"id\":\"e\",\"name\":\"nje\",\"type\":\"agltsxoa\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,7 @@ public final class TracksGetWithResponseMockTests {
         AssetTrack response =
             manager
                 .tracks()
-                .getWithResponse(
-                    "ehgpp", "pifhpfeoajvgcxtx", "csheafidltugsr", "smkss", com.azure.core.util.Context.NONE)
+                .getWithResponse("xzv", "mwmxqhndvnoamld", "ehaohdjhh", "lzok", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

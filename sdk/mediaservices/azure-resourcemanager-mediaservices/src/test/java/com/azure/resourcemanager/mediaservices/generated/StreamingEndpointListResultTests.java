@@ -19,18 +19,18 @@ public final class StreamingEndpointListResultTests {
         StreamingEndpointListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"i\",\"scaleUnits\":2120830890,\"availabilitySetName\":\"pdtii\",\"maxCacheAge\":233619173932499743,\"customHostNames\":[],\"hostName\":\"xoruzfgsquyfxrx\",\"cdnEnabled\":false,\"cdnProvider\":\"tramxjez\",\"cdnProfile\":\"wnwxuqlcvyd\",\"provisioningState\":\"atdooaojkniod\",\"resourceState\":\"Running\",\"freeTrialEndTime\":\"2021-10-14T05:21:41Z\",\"created\":\"2021-11-05T10:39:03Z\",\"lastModified\":\"2021-12-09T17:34:33Z\"},\"sku\":{\"name\":\"sbvdkcrodtjinfw\",\"capacity\":2087401910},\"location\":\"lt\",\"tags\":{\"gaowpulpqblylsyx\":\"jvefkdlfoakggkfp\",\"xsdszuempsb\":\"qjnsjervtia\",\"v\":\"kfzbeyvpnqicvi\"},\"id\":\"jjxd\",\"name\":\"rbuukzclewyhmlwp\",\"type\":\"ztzp\"},{\"properties\":{\"description\":\"cckwyfzqwhxxbu\",\"scaleUnits\":397594857,\"availabilitySetName\":\"xzfe\",\"maxCacheAge\":6702265057684474491,\"customHostNames\":[],\"hostName\":\"o\",\"cdnEnabled\":false,\"cdnProvider\":\"jaltolmnc\",\"cdnProfile\":\"obqwcsdbnwdcfh\",\"provisioningState\":\"qdpfuvglsbjjca\",\"resourceState\":\"Stopping\",\"freeTrialEndTime\":\"2021-10-12T20:22:23Z\",\"created\":\"2021-05-11T02:00:05Z\",\"lastModified\":\"2021-04-07T04:06:35Z\"},\"sku\":{\"name\":\"ormrlxqtvcofudfl\",\"capacity\":360831817},\"location\":\"jub\",\"tags\":{\"nqntorudsgsahm\":\"nnqvsa\",\"rauwjuetaebu\":\"yc\",\"dmovsm\":\"u\"},\"id\":\"l\",\"name\":\"wabm\",\"type\":\"oefki\"}],\"@odata.count\":841009999,\"@odata.nextLink\":\"puqujmqlgkfbtn\"}")
+                    "{\"value\":[{\"properties\":{\"description\":\"wkyhkobopgxe\",\"scaleUnits\":222452990,\"availabilitySetName\":\"wep\",\"maxCacheAge\":2106784928647085013,\"customHostNames\":[],\"hostName\":\"bwccsnjvcdwxlpqe\",\"cdnEnabled\":false,\"cdnProvider\":\"khtj\",\"cdnProfile\":\"i\",\"provisioningState\":\"wfqatmtd\",\"resourceState\":\"Scaling\",\"freeTrialEndTime\":\"2021-07-31T11:53:57Z\",\"created\":\"2021-08-05T12:13:03Z\",\"lastModified\":\"2021-01-21T23:13:20Z\"},\"sku\":{\"name\":\"zywkb\",\"capacity\":1291517950},\"location\":\"yuzhlhkjoqrvq\",\"tags\":{\"inrvgoupmfi\":\"t\",\"x\":\"bfggjioolvr\",\"kkgll\":\"v\",\"uhbxvvy\":\"wjygvjayvblmhvk\"},\"id\":\"gsopbyrqufegxu\",\"name\":\"wz\",\"type\":\"bnhlmc\"},{\"properties\":{\"description\":\"dn\",\"scaleUnits\":1262930280,\"availabilitySetName\":\"vgbmhr\",\"maxCacheAge\":2057644320658284812,\"customHostNames\":[],\"hostName\":\"jejveg\",\"cdnEnabled\":true,\"cdnProvider\":\"nai\",\"cdnProfile\":\"xccbdreaxhcex\",\"provisioningState\":\"rvqahqkghtpwi\",\"resourceState\":\"Stopping\",\"freeTrialEndTime\":\"2021-01-19T12:23:33Z\",\"created\":\"2021-01-08T14:12:57Z\",\"lastModified\":\"2021-03-13T14:46:48Z\"},\"sku\":{\"name\":\"fvoow\",\"capacity\":12517918},\"location\":\"mtg\",\"tags\":{\"nsxkmcwaekrrjr\":\"pyostronzmyhgfi\",\"jglikkxwslolb\":\"afxtsgum\",\"elfk\":\"pvuzlmv\",\"njwmwkpnbsazejj\":\"gplcrpwjxeznoigb\"},\"id\":\"qkagfhsxt\",\"name\":\"augzxnfaazpxdtn\",\"type\":\"dm\"},{\"properties\":{\"description\":\"jlwuenvrkp\",\"scaleUnits\":438145341,\"availabilitySetName\":\"aibrebqaaysjkixq\",\"maxCacheAge\":6681231920346117539,\"customHostNames\":[],\"hostName\":\"lwfffi\",\"cdnEnabled\":true,\"cdnProvider\":\"pqqmted\",\"cdnProfile\":\"mmji\",\"provisioningState\":\"eozphv\",\"resourceState\":\"Running\",\"freeTrialEndTime\":\"2021-08-16T03:21:06Z\",\"created\":\"2021-10-02T04:16:44Z\",\"lastModified\":\"2021-10-28T19:56:48Z\"},\"sku\":{\"name\":\"ipmdscwx\",\"capacity\":2130918233},\"location\":\"evzhfsto\",\"tags\":{\"lmcuvhixb\":\"ojujbyp\",\"ttpkiwkkbnujrywv\":\"xyfwnylrcool\",\"bfpncurdo\":\"y\",\"cbihwqk\":\"wiithtywub\"},\"id\":\"fdntwjchrdgoih\",\"name\":\"umwctondz\",\"type\":\"luudfdlwggytsb\"},{\"properties\":{\"description\":\"vvt\",\"scaleUnits\":10157721,\"availabilitySetName\":\"inqfiufxqknpirgn\",\"maxCacheAge\":7308969915106347578,\"customHostNames\":[],\"hostName\":\"sniffc\",\"cdnEnabled\":true,\"cdnProvider\":\"r\",\"cdnProfile\":\"lpijnkrxfrd\",\"provisioningState\":\"c\",\"resourceState\":\"Deleting\",\"freeTrialEndTime\":\"2021-08-13T20:41:57Z\",\"created\":\"2021-06-27T16:40:41Z\",\"lastModified\":\"2021-05-12T01:29:29Z\"},\"sku\":{\"name\":\"ft\",\"capacity\":1206467391},\"location\":\"yzhftwesgogczh\",\"tags\":{\"gnyhmossxkkg\":\"xkr\",\"rghxjb\":\"h\",\"rnsvbuswd\":\"hqxvcxgfrpdsofbs\",\"ybycnunvj\":\"z\"},\"id\":\"rtkfawnopq\",\"name\":\"ikyzirtxdy\",\"type\":\"x\"}],\"@odata.count\":1444158285,\"@odata.nextLink\":\"tpsew\"}")
                 .toObject(StreamingEndpointListResult.class);
-        Assertions.assertEquals("lt", model.value().get(0).location());
-        Assertions.assertEquals("jvefkdlfoakggkfp", model.value().get(0).tags().get("gaowpulpqblylsyx"));
-        Assertions.assertEquals(2087401910, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("i", model.value().get(0).description());
-        Assertions.assertEquals(2120830890, model.value().get(0).scaleUnits());
-        Assertions.assertEquals("pdtii", model.value().get(0).availabilitySetName());
-        Assertions.assertEquals(233619173932499743L, model.value().get(0).maxCacheAge());
+        Assertions.assertEquals("yuzhlhkjoqrvq", model.value().get(0).location());
+        Assertions.assertEquals("t", model.value().get(0).tags().get("inrvgoupmfi"));
+        Assertions.assertEquals(1291517950, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("wkyhkobopgxe", model.value().get(0).description());
+        Assertions.assertEquals(222452990, model.value().get(0).scaleUnits());
+        Assertions.assertEquals("wep", model.value().get(0).availabilitySetName());
+        Assertions.assertEquals(2106784928647085013L, model.value().get(0).maxCacheAge());
         Assertions.assertEquals(false, model.value().get(0).cdnEnabled());
-        Assertions.assertEquals("tramxjez", model.value().get(0).cdnProvider());
-        Assertions.assertEquals("wnwxuqlcvyd", model.value().get(0).cdnProfile());
+        Assertions.assertEquals("khtj", model.value().get(0).cdnProvider());
+        Assertions.assertEquals("i", model.value().get(0).cdnProfile());
     }
 
     @org.junit.jupiter.api.Test
@@ -41,47 +41,100 @@ public final class StreamingEndpointListResultTests {
                     Arrays
                         .asList(
                             new StreamingEndpointInner()
-                                .withLocation("lt")
+                                .withLocation("yuzhlhkjoqrvq")
                                 .withTags(
                                     mapOf(
-                                        "gaowpulpqblylsyx",
-                                        "jvefkdlfoakggkfp",
-                                        "xsdszuempsb",
-                                        "qjnsjervtia",
+                                        "inrvgoupmfi",
+                                        "t",
+                                        "x",
+                                        "bfggjioolvr",
+                                        "kkgll",
                                         "v",
-                                        "kfzbeyvpnqicvi"))
-                                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(2087401910))
-                                .withDescription("i")
-                                .withScaleUnits(2120830890)
-                                .withAvailabilitySetName("pdtii")
-                                .withMaxCacheAge(233619173932499743L)
+                                        "uhbxvvy",
+                                        "wjygvjayvblmhvk"))
+                                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(1291517950))
+                                .withDescription("wkyhkobopgxe")
+                                .withScaleUnits(222452990)
+                                .withAvailabilitySetName("wep")
+                                .withMaxCacheAge(2106784928647085013L)
                                 .withCustomHostNames(Arrays.asList())
                                 .withCdnEnabled(false)
-                                .withCdnProvider("tramxjez")
-                                .withCdnProfile("wnwxuqlcvyd"),
+                                .withCdnProvider("khtj")
+                                .withCdnProfile("i"),
                             new StreamingEndpointInner()
-                                .withLocation("jub")
-                                .withTags(mapOf("nqntorudsgsahm", "nnqvsa", "rauwjuetaebu", "yc", "dmovsm", "u"))
-                                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(360831817))
-                                .withDescription("cckwyfzqwhxxbu")
-                                .withScaleUnits(397594857)
-                                .withAvailabilitySetName("xzfe")
-                                .withMaxCacheAge(6702265057684474491L)
+                                .withLocation("mtg")
+                                .withTags(
+                                    mapOf(
+                                        "nsxkmcwaekrrjr",
+                                        "pyostronzmyhgfi",
+                                        "jglikkxwslolb",
+                                        "afxtsgum",
+                                        "elfk",
+                                        "pvuzlmv",
+                                        "njwmwkpnbsazejj",
+                                        "gplcrpwjxeznoigb"))
+                                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(12517918))
+                                .withDescription("dn")
+                                .withScaleUnits(1262930280)
+                                .withAvailabilitySetName("vgbmhr")
+                                .withMaxCacheAge(2057644320658284812L)
                                 .withCustomHostNames(Arrays.asList())
-                                .withCdnEnabled(false)
-                                .withCdnProvider("jaltolmnc")
-                                .withCdnProfile("obqwcsdbnwdcfh")));
+                                .withCdnEnabled(true)
+                                .withCdnProvider("nai")
+                                .withCdnProfile("xccbdreaxhcex"),
+                            new StreamingEndpointInner()
+                                .withLocation("evzhfsto")
+                                .withTags(
+                                    mapOf(
+                                        "lmcuvhixb",
+                                        "ojujbyp",
+                                        "ttpkiwkkbnujrywv",
+                                        "xyfwnylrcool",
+                                        "bfpncurdo",
+                                        "y",
+                                        "cbihwqk",
+                                        "wiithtywub"))
+                                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(2130918233))
+                                .withDescription("jlwuenvrkp")
+                                .withScaleUnits(438145341)
+                                .withAvailabilitySetName("aibrebqaaysjkixq")
+                                .withMaxCacheAge(6681231920346117539L)
+                                .withCustomHostNames(Arrays.asList())
+                                .withCdnEnabled(true)
+                                .withCdnProvider("pqqmted")
+                                .withCdnProfile("mmji"),
+                            new StreamingEndpointInner()
+                                .withLocation("yzhftwesgogczh")
+                                .withTags(
+                                    mapOf(
+                                        "gnyhmossxkkg",
+                                        "xkr",
+                                        "rghxjb",
+                                        "h",
+                                        "rnsvbuswd",
+                                        "hqxvcxgfrpdsofbs",
+                                        "ybycnunvj",
+                                        "z"))
+                                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(1206467391))
+                                .withDescription("vvt")
+                                .withScaleUnits(10157721)
+                                .withAvailabilitySetName("inqfiufxqknpirgn")
+                                .withMaxCacheAge(7308969915106347578L)
+                                .withCustomHostNames(Arrays.asList())
+                                .withCdnEnabled(true)
+                                .withCdnProvider("r")
+                                .withCdnProfile("lpijnkrxfrd")));
         model = BinaryData.fromObject(model).toObject(StreamingEndpointListResult.class);
-        Assertions.assertEquals("lt", model.value().get(0).location());
-        Assertions.assertEquals("jvefkdlfoakggkfp", model.value().get(0).tags().get("gaowpulpqblylsyx"));
-        Assertions.assertEquals(2087401910, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("i", model.value().get(0).description());
-        Assertions.assertEquals(2120830890, model.value().get(0).scaleUnits());
-        Assertions.assertEquals("pdtii", model.value().get(0).availabilitySetName());
-        Assertions.assertEquals(233619173932499743L, model.value().get(0).maxCacheAge());
+        Assertions.assertEquals("yuzhlhkjoqrvq", model.value().get(0).location());
+        Assertions.assertEquals("t", model.value().get(0).tags().get("inrvgoupmfi"));
+        Assertions.assertEquals(1291517950, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("wkyhkobopgxe", model.value().get(0).description());
+        Assertions.assertEquals(222452990, model.value().get(0).scaleUnits());
+        Assertions.assertEquals("wep", model.value().get(0).availabilitySetName());
+        Assertions.assertEquals(2106784928647085013L, model.value().get(0).maxCacheAge());
         Assertions.assertEquals(false, model.value().get(0).cdnEnabled());
-        Assertions.assertEquals("tramxjez", model.value().get(0).cdnProvider());
-        Assertions.assertEquals("wnwxuqlcvyd", model.value().get(0).cdnProfile());
+        Assertions.assertEquals("khtj", model.value().get(0).cdnProvider());
+        Assertions.assertEquals("i", model.value().get(0).cdnProfile());
     }
 
     @SuppressWarnings("unchecked")

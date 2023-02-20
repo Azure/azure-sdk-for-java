@@ -31,17 +31,6 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
         this.serviceManager = serviceManager;
     }
 
-    public ExtendedServerBlobAuditingPolicy get(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
-        ExtendedServerBlobAuditingPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, blobAuditingPolicyName);
-        if (inner != null) {
-            return new ExtendedServerBlobAuditingPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ExtendedServerBlobAuditingPolicy> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -55,6 +44,17 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ExtendedServerBlobAuditingPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ExtendedServerBlobAuditingPolicy get(
+        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
+        ExtendedServerBlobAuditingPolicyInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, blobAuditingPolicyName);
+        if (inner != null) {
+            return new ExtendedServerBlobAuditingPolicyImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -90,9 +90,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        BlobAuditingPolicyName blobAuditingPolicyName =
-            BlobAuditingPolicyName.fromString(Utils.getValueFromIdByName(id, "extendedAuditingSettings"));
-        if (blobAuditingPolicyName == null) {
+        String blobAuditingPolicyNameLocal = Utils.getValueFromIdByName(id, "extendedAuditingSettings");
+        if (blobAuditingPolicyNameLocal == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -101,6 +100,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
                                 "The resource ID '%s' is not valid. Missing path segment 'extendedAuditingSettings'.",
                                 id)));
         }
+        BlobAuditingPolicyName blobAuditingPolicyName = BlobAuditingPolicyName.fromString(blobAuditingPolicyNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, Context.NONE).getValue();
     }
 
@@ -120,9 +120,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        BlobAuditingPolicyName blobAuditingPolicyName =
-            BlobAuditingPolicyName.fromString(Utils.getValueFromIdByName(id, "extendedAuditingSettings"));
-        if (blobAuditingPolicyName == null) {
+        String blobAuditingPolicyNameLocal = Utils.getValueFromIdByName(id, "extendedAuditingSettings");
+        if (blobAuditingPolicyNameLocal == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -131,6 +130,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
                                 "The resource ID '%s' is not valid. Missing path segment 'extendedAuditingSettings'.",
                                 id)));
         }
+        BlobAuditingPolicyName blobAuditingPolicyName = BlobAuditingPolicyName.fromString(blobAuditingPolicyNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, context);
     }
 

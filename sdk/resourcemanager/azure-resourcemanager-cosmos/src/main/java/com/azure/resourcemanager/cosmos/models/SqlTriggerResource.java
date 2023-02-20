@@ -35,6 +35,10 @@ public class SqlTriggerResource {
     @JsonProperty(value = "triggerOperation")
     private TriggerOperation triggerOperation;
 
+    /** Creates an instance of SqlTriggerResource class. */
+    public SqlTriggerResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB SQL trigger.
      *

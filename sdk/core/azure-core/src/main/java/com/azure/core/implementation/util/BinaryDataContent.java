@@ -130,4 +130,11 @@ public abstract class BinaryDataContent {
      * @return Mono that emits replayable {@link BinaryDataContent}.
      */
     public abstract Mono<BinaryDataContent> toReplayableContentAsync();
+
+    /**
+     * Gets the {@link BinaryDataContent} content type.
+     *
+     * @return The {@link BinaryDataContent} content type.
+     */
+    public abstract BinaryDataContentType getContentType();
 }

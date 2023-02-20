@@ -19,14 +19,14 @@ jobs:
         Java 8 Windows (AzureCloud):
           JavaTestVersion: '1.8'
           Pool: "azsdk-pool-mms-win-2022-general"
-          OSVmImage: "MMS2022"
+          OSVmImage: "windows-2022"
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS Windows (AzureCloud):
           Pool: "azsdk-pool-mms-win-2022-general"
-          OSVmImage: "MMS2022"
+          OSVmImage: "windows-2022"
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
@@ -71,28 +71,28 @@ jobs:
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java 8 Windows (AzureUSGovernment):
           Pool: "azsdk-pool-mms-win-2022-general"
-          OSVmImage: "MMS2022"
+          OSVmImage: "windows-2022"
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
           ArmTemplateParameters: $(azureUSGovernmentArmParameters)
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS Windows (AzureUSGovernment):
           Pool: "azsdk-pool-mms-win-2022-general"
-          OSVmImage: "MMS2022"
+          OSVmImage: "windows-2022"
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
           ArmTemplateParameters: $(azureUSGovernmentArmParameters)
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java 8 Windows (AzureChinaCloud):
           Pool: "azsdk-pool-mms-win-2022-general"
-          OSVmImage: "MMS2022"
+          OSVmImage: "windows-2022"
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           ArmTemplateParameters: $(azureChinaCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS Windows (AzureChinaCloud):
           Pool: "azsdk-pool-mms-win-2022-general"
-          OSVmImage: "MMS2022"
+          OSVmImage: "windows-2022"
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           ArmTemplateParameters: $(azureChinaCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml

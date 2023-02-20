@@ -20,7 +20,7 @@ public final class EnvironmentsGetCatalogItemTests extends DevCenterClientTestBa
                 environmentsClient.getCatalogItemWithResponse("myProject", "foo", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
-                BinaryData.fromString("{\"name\":\"{itemName}\",\"catalogName\":\"main\",\"id\":\"foo\"}")
+                BinaryData.fromString("{\"name\":\"foo\",\"catalogName\":\"main\",\"id\":\"foo\"}")
                         .toObject(Object.class),
                 response.getValue().toObject(Object.class));
     }

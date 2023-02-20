@@ -9,11 +9,10 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.ReplicationUsage
 import com.azure.resourcemanager.recoveryservices.models.JobsSummary;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSummary;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ReplicationUsageInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ReplicationUsageInner model =
             BinaryData
                 .fromString(
@@ -34,8 +33,8 @@ public final class ReplicationUsageInnerTests {
         Assertions.assertEquals(1524084754, model.recoveryServicesProviderAuthType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ReplicationUsageInner model =
             new ReplicationUsageInner()
                 .withMonitoringSummary(

@@ -19,8 +19,8 @@ steps:
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
           -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter ${{ parameters.GroupID }}
-          -ArtifactIDFilter ${{ parameters.ArtifactID }}
+          -GroupIDFilter "${{ parameters.GroupID }}"
+          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
           -RepositoryUrl https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-$(Build.BuildID)/maven/v1
           -RepositoryUsername nobody
           -RepositoryPassword $(System.AccessToken)
@@ -37,8 +37,8 @@ steps:
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
           -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter ${{ parameters.GroupID }}
-          -ArtifactIDFilter ${{ parameters.ArtifactID }}
+          -GroupIDFilter "${{ parameters.GroupID }}"
+          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
           -RepositoryUrl ${{ parameters.RepositoryUrl }}
           -RepositoryUsername nobody
           -RepositoryPassword $(System.AccessToken)
@@ -55,8 +55,8 @@ steps:
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
           -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter ${{ parameters.GroupID }}
-          -ArtifactIDFilter ${{ parameters.ArtifactID }}
+          -GroupIDFilter "${{ parameters.GroupID }}"
+          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
           -RepositoryUrl https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-android/maven/v1
           -RepositoryUsername nobody
           -RepositoryPassword $(System.AccessToken)
@@ -98,16 +98,15 @@ steps:
           -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
           -InformationAction Continue
     - ${{if and(eq(parameters.ShouldPublish, 'true'), ne(parameters.StageOnly, 'true'))}}:
-      - task: EsrpRelease@1
+      - task: EsrpRelease@2
         displayName: 'Publish to ESRP'
         inputs:
           ConnectedServiceName: 'ESRP Release Service'
           Intent: 'PackageDistribution'
           ContentType: 'Maven'
-          PackageLocation: $(PackageLocation)
+          PackageLocation: ${{ parameters.OutputDirectory }}
           Owners: $(Build.RequestedForEmail)
           Approvers: 'wesh@microsoft.com'
           ServiceEndpointUrl: 'https://api.esrp.microsoft.com'
           MainPublisher: 'ESRPRELPACMANTEST'
           DomainTenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
-

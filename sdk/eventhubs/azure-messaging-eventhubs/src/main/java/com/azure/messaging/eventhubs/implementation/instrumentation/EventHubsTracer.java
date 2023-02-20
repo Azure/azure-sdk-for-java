@@ -120,17 +120,32 @@ public class EventHubsTracer {
         Context eventSpanContext = tracer.start("EventHubs.message", newMessageContext, ProcessKind.MESSAGE);
         Optional<Object> traceparentOpt = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
 
-        if (traceparentOpt.isPresent()) {
-            eventData.getProperties().put(DIAGNOSTIC_ID_KEY, traceparentOpt.get().toString());
-            eventData.getProperties().put(TRACEPARENT_KEY, traceparentOpt.get().toString());
-
-            endSpan(null, eventSpanContext, null);
-
-            Optional<Object> spanContext = eventSpanContext.getData(SPAN_CONTEXT_KEY);
-            if (spanContext.isPresent()) {
-                eventData.addContext(SPAN_CONTEXT_KEY, spanContext.get());
+        Exception exception = null;
+        String error = null;
+        if (traceparentOpt.isPresent() && canModifyApplicationProperties(eventData.getProperties())) {
+            try {
+                eventData.getProperties().put(DIAGNOSTIC_ID_KEY, traceparentOpt.get().toString());
+                eventData.getProperties().put(TRACEPARENT_KEY, traceparentOpt.get().toString());
+            } catch (RuntimeException ex) {
+                // it might happen that unmodifiable map is something that we
+                // didn't account for in canModifyApplicationProperties method
+                // if it happens, let's not break everything, but log a warning
+                LOGGER.logExceptionAsWarning(ex);
+                exception = ex;
             }
+        } else {
+            error = "failed to inject context into EventData";
         }
+        tracer.end(error, exception, eventSpanContext);
+
+        Optional<Object> spanContext = eventSpanContext.getData(SPAN_CONTEXT_KEY);
+        if (spanContext.isPresent()) {
+            eventData.addContext(SPAN_CONTEXT_KEY, spanContext.get());
+        }
+    }
+
+    private static boolean canModifyApplicationProperties(Map<String, Object> applicationProperties) {
+        return !applicationProperties.getClass().getSimpleName().equals("UnmodifiableMap");
     }
 
     public Context getBuilder(String spanName, Context context) {

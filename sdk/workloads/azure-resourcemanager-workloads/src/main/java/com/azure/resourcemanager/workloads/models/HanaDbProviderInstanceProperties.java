@@ -59,14 +59,30 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
     /*
      * Gets or sets the blob URI to SSL certificate for the DB.
      */
-    @JsonProperty(value = "dbSslCertificateUri")
-    private String dbSslCertificateUri;
+    @JsonProperty(value = "sslCertificateUri")
+    private String sslCertificateUri;
 
     /*
      * Gets or sets the hostname(s) in the SSL certificate.
      */
     @JsonProperty(value = "sslHostNameInCertificate")
     private String sslHostnameInCertificate;
+
+    /*
+     * Gets or sets certificate preference if secure communication is enabled.
+     */
+    @JsonProperty(value = "sslPreference")
+    private SslPreference sslPreference;
+
+    /*
+     * Gets or sets the SAP System Identifier.
+     */
+    @JsonProperty(value = "sapSid")
+    private String sapSid;
+
+    /** Creates an instance of HanaDbProviderInstanceProperties class. */
+    public HanaDbProviderInstanceProperties() {
+    }
 
     /**
      * Get the hostname property: Gets or sets the target virtual machine size.
@@ -209,22 +225,22 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
     }
 
     /**
-     * Get the dbSslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB.
+     * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB.
      *
-     * @return the dbSslCertificateUri value.
+     * @return the sslCertificateUri value.
      */
-    public String dbSslCertificateUri() {
-        return this.dbSslCertificateUri;
+    public String sslCertificateUri() {
+        return this.sslCertificateUri;
     }
 
     /**
-     * Set the dbSslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB.
+     * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB.
      *
-     * @param dbSslCertificateUri the dbSslCertificateUri value to set.
+     * @param sslCertificateUri the sslCertificateUri value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
-    public HanaDbProviderInstanceProperties withDbSslCertificateUri(String dbSslCertificateUri) {
-        this.dbSslCertificateUri = dbSslCertificateUri;
+    public HanaDbProviderInstanceProperties withSslCertificateUri(String sslCertificateUri) {
+        this.sslCertificateUri = sslCertificateUri;
         return this;
     }
 
@@ -245,6 +261,46 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
      */
     public HanaDbProviderInstanceProperties withSslHostnameInCertificate(String sslHostnameInCertificate) {
         this.sslHostnameInCertificate = sslHostnameInCertificate;
+        return this;
+    }
+
+    /**
+     * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @return the sslPreference value.
+     */
+    public SslPreference sslPreference() {
+        return this.sslPreference;
+    }
+
+    /**
+     * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @param sslPreference the sslPreference value to set.
+     * @return the HanaDbProviderInstanceProperties object itself.
+     */
+    public HanaDbProviderInstanceProperties withSslPreference(SslPreference sslPreference) {
+        this.sslPreference = sslPreference;
+        return this;
+    }
+
+    /**
+     * Get the sapSid property: Gets or sets the SAP System Identifier.
+     *
+     * @return the sapSid value.
+     */
+    public String sapSid() {
+        return this.sapSid;
+    }
+
+    /**
+     * Set the sapSid property: Gets or sets the SAP System Identifier.
+     *
+     * @param sapSid the sapSid value to set.
+     * @return the HanaDbProviderInstanceProperties object itself.
+     */
+    public HanaDbProviderInstanceProperties withSapSid(String sapSid) {
+        this.sapSid = sapSid;
         return this;
     }
 

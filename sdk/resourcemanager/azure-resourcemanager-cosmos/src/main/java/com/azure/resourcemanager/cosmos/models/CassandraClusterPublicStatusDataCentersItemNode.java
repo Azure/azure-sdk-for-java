@@ -110,6 +110,10 @@ public final class CassandraClusterPublicStatusDataCentersItemNode {
     @JsonProperty(value = "cpuUsage")
     private Double cpuUsage;
 
+    /** Creates an instance of CassandraClusterPublicStatusDataCentersItemNode class. */
+    public CassandraClusterPublicStatusDataCentersItemNode() {
+    }
+
     /**
      * Get the address property: The node's IP address.
      *

@@ -21,6 +21,10 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataTransferRegionalServiceResource> locations;
 
+    /** Creates an instance of DataTransferServiceResourceProperties class. */
+    public DataTransferServiceResourceProperties() {
+    }
+
     /**
      * Get the locations property: An array that contains all of the locations for the service.
      *

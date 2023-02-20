@@ -16,7 +16,7 @@ public final class ContentKeyPolicyOptionTests {
         ContentKeyPolicyOption model =
             BinaryData
                 .fromString(
-                    "{\"policyOptionId\":\"bf6093dc-ef49-4cc9-b9b2-5f2e2a72e50d\",\"name\":\"hsfwxosowzxcug\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}")
+                    "{\"policyOptionId\":\"f4e2b44a-02c8-4cc0-8e91-15e26828b0e9\",\"name\":\"hsfwxosowzxcug\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}")
                 .toObject(ContentKeyPolicyOption.class);
         Assertions.assertEquals("hsfwxosowzxcug", model.name());
     }

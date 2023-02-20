@@ -14,11 +14,6 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * <p>Credential policy for the container registry. It follows the challenge based authorization scheme.</p>
  *
@@ -41,8 +36,6 @@ import java.util.regex.Pattern;
 public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryCredentialsPolicy.class);
     private static final String BEARER = "Bearer";
-    public static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
-        Pattern.compile("(?:(\\w+)=\"([^\"\"]*)\")+");
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     public static final String SCOPES_PARAMETER = "scope";
     public static final String SERVICE_PARAMETER = "service";
@@ -140,14 +133,13 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return Mono.just(false);
         } else {
-            Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
-            if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
-                String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
-                String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
+            String scope =  extractValue(authHeader, SCOPES_PARAMETER);
+            String serviceName = extractValue(authHeader, SERVICE_PARAMETER);
+
+            if (scope != null && serviceName != null) {
                 return setAuthorizationHeader(context, new ContainerRegistryTokenRequestContext(serviceName, scope))
                     .thenReturn(true);
             }
-
             return Mono.just(false);
         }
     }
@@ -224,29 +216,37 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return false;
         } else {
-            Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
-            if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
-                String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
-                String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
+            String scope =  extractValue(authHeader, SCOPES_PARAMETER);
+            String serviceName = extractValue(authHeader, SERVICE_PARAMETER);
+
+            if (scope != null && serviceName != null) {
                 setAuthorizationHeaderSync(context, new ContainerRegistryTokenRequestContext(serviceName, scope));
                 return true;
             }
-
-            return false;
         }
+
+        return false;
     }
 
-    private Map<String, String> parseBearerChallenge(String header) {
-        if (header.startsWith(BEARER)) {
-            String challengeParams = header.substring(BEARER.length());
+    /**
+     * Extracts value for given key in www-authenticate header.
+     * Expects key="value" format and return value without quotes.
+     *
+     * returns if value is not found
+     */
+    private String extractValue(String authHeader, String key) {
+        int start = authHeader.indexOf(key);
+        if (start < 0 || authHeader.length() - start < key.length() + 3) {
+            return null;
+        }
 
-            Matcher matcher2 = AUTHENTICATION_CHALLENGE_PARAMS_PATTERN.matcher(challengeParams);
-
-            Map<String, String> challengeParameters = new HashMap<>();
-            while (matcher2.find()) {
-                challengeParameters.put(matcher2.group(1), matcher2.group(2));
+        start += key.length();
+        if (authHeader.charAt(start) == '=' && authHeader.charAt(start + 1) == '"') {
+            start += 2;
+            int end = authHeader.indexOf('"', start);
+            if (end > start) {
+                return authHeader.substring(start, end);
             }
-            return challengeParameters;
         }
 
         return null;

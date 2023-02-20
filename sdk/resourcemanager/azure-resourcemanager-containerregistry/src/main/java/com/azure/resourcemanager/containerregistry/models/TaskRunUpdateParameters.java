@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.TaskRunPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The parameters for updating a task run. */
 @Fluent
 public final class TaskRunUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskRunUpdateParameters.class);
-
     /*
      * Identity for the resource.
      */
@@ -41,6 +37,10 @@ public final class TaskRunUpdateParameters {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of TaskRunUpdateParameters class. */
+    public TaskRunUpdateParameters() {
+    }
 
     /**
      * Get the identity property: Identity for the resource.

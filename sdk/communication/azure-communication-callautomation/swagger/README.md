@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/517e4b305c3434cecff01cdd5dc299deefd8d013/specification/communication/data-plane/CallAutomation/readme.md
+    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/1fcceb1785e063e75b88436d18b56a04c04dc58d/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -49,8 +49,8 @@ context-client-method-parameter: true
 title: Azure Communication Call Automation Service
 directive:
 - rename-model:
-    from: AcsCallParticipant
-    to: AcsCallParticipantInternal
+    from: CallParticipant
+    to: CallParticipantInternal
 - rename-model:
     from: AddParticipantsRequest
     to: AddParticipantsRequestInternal
@@ -146,25 +146,25 @@ directive:
     to: RecognizeOptionsInternal
 - rename-model:
     from: Choice
-    to: RecognizeChoice
+    to: RecognizeChoiceInternal
 - rename-model:
-    from: MuteParticipantRequest
-    to: MuteParticipantRequestInternal
-- rename-model:
-    from: MuteAllParticipantsRequest
-    to: MuteAllParticipantsRequestInternal
+    from: MuteParticipantsRequest
+    to: MuteParticipantsRequestInternal
 - rename-model:
     from: MuteParticipantsResponse
     to: MuteParticipantsResponseInternal
 - rename-model:
-    from: UnmuteParticipantRequest
-    to: UnmuteParticipantRequestInternal
-- rename-model:
-    from: UnmuteAllParticipantsRequest
-    to: UnmuteAllParticipantsRequestInternal
+    from: UnmuteParticipantsRequest
+    to: UnmuteParticipantsRequestInternal
 - rename-model:
     from: UnmuteParticipantsResponse
     to: UnmuteParticipantsResponseInternal
+- rename-model:
+    from: CollectTonesResult
+    to: CollectTonesResultInternal
+- rename-model:
+    from: ChoiceResult
+    to: CollectChoiceResultInternal
 
 # Remove models
 - remove-model: AddParticipantsFailed
@@ -326,7 +326,7 @@ directive:
 - from: swagger-document
   where: $.definitions.Tone["x-ms-enum"]
   transform: >
-    $.name = "DtmfTone";
+    $.name = "DtmfToneInternal";
 ```
 
 ### Rename DtmfOptions to DtmfOptionsInternal
@@ -344,5 +344,5 @@ directive:
 - from: swagger-document
   where: $.definitions.Gender["x-ms-enum"]
   transform: >
-    $.name = "GenderType";
+    $.name = "GenderTypeInternal";
 ```

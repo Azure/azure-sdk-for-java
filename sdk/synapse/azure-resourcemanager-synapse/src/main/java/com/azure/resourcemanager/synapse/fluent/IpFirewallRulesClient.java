@@ -128,10 +128,11 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of any object.
+     * @return the {@link SyncPoller} for polling of iP firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Object>, Object> beginDelete(String resourceGroupName, String workspaceName, String ruleName);
+    SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginDelete(
+        String resourceGroupName, String workspaceName, String ruleName);
 
     /**
      * Deletes a firewall rule.
@@ -143,10 +144,10 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of any object.
+     * @return the {@link SyncPoller} for polling of iP firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Object>, Object> beginDelete(
+    SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginDelete(
         String resourceGroupName, String workspaceName, String ruleName, Context context);
 
     /**
@@ -158,10 +159,10 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return iP firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Object delete(String resourceGroupName, String workspaceName, String ruleName);
+    IpFirewallRuleInfoInner delete(String resourceGroupName, String workspaceName, String ruleName);
 
     /**
      * Deletes a firewall rule.
@@ -173,24 +174,10 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return iP firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Object delete(String resourceGroupName, String workspaceName, String ruleName, Context context);
-
-    /**
-     * Get a firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param ruleName The IP firewall rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    IpFirewallRuleInfoInner get(String resourceGroupName, String workspaceName, String ruleName);
+    IpFirewallRuleInfoInner delete(String resourceGroupName, String workspaceName, String ruleName, Context context);
 
     /**
      * Get a firewall rule.
@@ -207,6 +194,20 @@ public interface IpFirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IpFirewallRuleInfoInner> getWithResponse(
         String resourceGroupName, String workspaceName, String ruleName, Context context);
+
+    /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param ruleName The IP firewall rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a firewall rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IpFirewallRuleInfoInner get(String resourceGroupName, String workspaceName, String ruleName);
 
     /**
      * Replaces firewall rules.

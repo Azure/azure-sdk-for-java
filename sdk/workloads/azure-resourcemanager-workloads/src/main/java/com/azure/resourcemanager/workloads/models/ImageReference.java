@@ -22,8 +22,7 @@ public final class ImageReference {
     private String publisher;
 
     /*
-     * Specifies the offer of the platform image or marketplace image used to
-     * create the virtual machine.
+     * Specifies the offer of the platform image or marketplace image used to create the virtual machine.
      */
     @JsonProperty(value = "offer")
     private String offer;
@@ -35,31 +34,31 @@ public final class ImageReference {
     private String sku;
 
     /*
-     * Specifies the version of the platform image or marketplace image used to
-     * create the virtual machine. The allowed formats are Major.Minor.Build or
-     * 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest'
-     * to use the latest version of an image available at deploy time. Even if
-     * you use 'latest', the VM image will not automatically update after
-     * deploy time even if a new version becomes available.
+     * Specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed
+     * formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use
+     * the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not
+     * automatically update after deploy time even if a new version becomes available.
      */
     @JsonProperty(value = "version")
     private String version;
 
     /*
-     * Specifies in decimal numbers, the version of platform image or
-     * marketplace image used to create the virtual machine. This readonly
-     * field differs from 'version', only if the value specified in 'version'
-     * field is 'latest'.
+     * Specifies in decimal numbers, the version of platform image or marketplace image used to create the virtual
+     * machine. This readonly field differs from 'version', only if the value specified in 'version' field is 'latest'.
      */
     @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String exactVersion;
 
     /*
-     * Specified the shared gallery image unique id for vm deployment. This can
-     * be fetched from shared gallery image GET call.
+     * Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image
+     * GET call.
      */
     @JsonProperty(value = "sharedGalleryImageId")
     private String sharedGalleryImageId;
+
+    /** Creates an instance of ImageReference class. */
+    public ImageReference() {
+    }
 
     /**
      * Get the publisher property: The image publisher.

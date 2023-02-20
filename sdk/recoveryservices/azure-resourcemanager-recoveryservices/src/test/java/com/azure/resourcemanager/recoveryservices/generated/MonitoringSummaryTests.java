@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSummary;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MonitoringSummaryTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MonitoringSummary model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class MonitoringSummaryTests {
         Assertions.assertEquals(590284670, model.unsupportedProviderCount());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MonitoringSummary model =
             new MonitoringSummary()
                 .withUnHealthyVmCount(1920402368)

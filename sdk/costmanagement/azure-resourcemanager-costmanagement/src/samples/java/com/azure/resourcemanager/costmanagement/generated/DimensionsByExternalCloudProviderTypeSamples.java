@@ -9,7 +9,7 @@ import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType
 /** Samples for Dimensions ByExternalCloudProviderType. */
 public final class DimensionsByExternalCloudProviderTypeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalSubscriptionsDimensions.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalSubscriptionsDimensions.json
      */
     /**
      * Sample code: ExternalSubscriptionDimensionList.
@@ -31,7 +31,7 @@ public final class DimensionsByExternalCloudProviderTypeSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalBillingAccountsDimensions.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalBillingAccountsDimensions.json
      */
     /**
      * Sample code: ExternalBillingAccountDimensionList.

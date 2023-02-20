@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CassandraResources GetCassandraTableThroughput. */
 public final class CassandraResourcesGetCassandraTableThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBCassandraTableThroughputGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBCassandraTableThroughputGet.json
      */
     /**
      * Sample code: CosmosDBCassandraTableThroughputGet.
@@ -22,6 +20,7 @@ public final class CassandraResourcesGetCassandraTableThroughputSamples {
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .getCassandraTableThroughputWithResponse("rg1", "ddb1", "keyspaceName", "tableName", Context.NONE);
+            .getCassandraTableThroughputWithResponse(
+                "rg1", "ddb1", "keyspaceName", "tableName", com.azure.core.util.Context.NONE);
     }
 }
