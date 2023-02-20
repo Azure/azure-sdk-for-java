@@ -658,6 +658,26 @@
       <version>4.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
     </dependency>
     <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+      <version>4.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
+      <version>4.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-feature-management</artifactId>
+      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-feature-management-web</artifactId>
+      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
       <version>3.33.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
