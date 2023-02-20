@@ -222,7 +222,7 @@ public final class CosmosAsyncClient implements Closeable {
 
             telemetryConfigAccessor.addDiagnosticsHandler(
                 effectiveTelemetryConfig,
-                new ClientMetricsDiagnosticsHandler(this, effectiveTelemetryConfig)
+                new ClientMetricsDiagnosticsHandler(this)
             );
         }
 

@@ -23,16 +23,11 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
     private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor =
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
 
-    private final CosmosClientTelemetryConfig config;
     private final CosmosAsyncClient client;
 
-    public ClientMetricsDiagnosticsHandler(
-        CosmosAsyncClient client,
-        CosmosClientTelemetryConfig config) {
+    public ClientMetricsDiagnosticsHandler(CosmosAsyncClient client) {
 
-        checkNotNull(config, "Argument 'config' must not be null.");
         checkNotNull(client, "Argument 'client' must not be null.");
-        this.config = config;
         this.client = client;
     }
 
