@@ -24,6 +24,7 @@ from generate_utils import (
     generate,
     get_and_update_service_from_api_specs,
     get_suffix_from_api_specs,
+    update_spec,
 )
 
 os.chdir(pwd)
@@ -172,6 +173,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
         )
     else:
         spec = match.group(2)
+        spec = update_spec(spec, match.group(3))
         service = get_and_update_service_from_api_specs(
             api_specs_file, spec)
 
@@ -267,6 +269,7 @@ def main():
         readme = 'specification/{0}/resource-manager/readme.md'.format(spec)
     else:
         spec = match.group(1)
+        spec = update_spec(spec, match.group(2))
 
     args['readme'] = readme
     args['spec'] = spec
