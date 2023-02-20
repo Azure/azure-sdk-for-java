@@ -3,13 +3,22 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.Utils;
+import com.codahale.metrics.SlidingTimeWindowReservoir;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -20,8 +29,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkSt
  * by diagnostic handlers
  */
 public final class CosmosDiagnosticsContext {
-    private static final ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor =
+    private final static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
+    private final static ObjectMapper mapper = new ObjectMapper();
 
     private final String spanName;
     private final String accountName;
@@ -44,6 +55,7 @@ public final class CosmosDiagnosticsContext {
     private float totalRequestCharge = 0;
     private int maxRequestSize = 0;
     private int maxResponseSize = 0;
+    private String cachedRequestDiagnostics = null;
 
     CosmosDiagnosticsContext(
         String spanName,
@@ -168,6 +180,7 @@ public final class CosmosDiagnosticsContext {
         this.addRequestSize(diagAccessor.getRequestPayloadSizeInBytes(cosmosDiagnostics));
         this.addResponseSize(diagAccessor.getTotalResponsePayloadSizeInBytes(cosmosDiagnostics));
         this.diagnostics.add(cosmosDiagnostics);
+        this.cachedRequestDiagnostics = null;
     }
 
     /**
@@ -259,6 +272,7 @@ public final class CosmosDiagnosticsContext {
             this.startTime == null,
             "Method 'startOperation' must not be called multiple times.");
         this.startTime = Instant.now();
+        this.cachedRequestDiagnostics = null;
     }
 
     synchronized void endOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
@@ -271,11 +285,76 @@ public final class CosmosDiagnosticsContext {
         this.finalError = finalError;
         this.actualItemCount = actualItemCount;
         this.duration = Duration.between(this.startTime, Instant.now());
+        this.cachedRequestDiagnostics = null;
     }
 
     String getRequestDiagnostics() {
-        // @TODO implement - probably as overridden toString
-        return "";
+        ObjectNode ctxNode = mapper.createObjectNode();
+
+        ctxNode.put("spanName", this.spanName);
+        ctxNode.put("spanName", this.accountName);
+        ctxNode.put("spanName", this.databaseName);
+        ctxNode.put("spanName", this.collectionName);
+        ctxNode.put("spanName", this.resourceType.toString());
+        ctxNode.put("spanName", this.operationType.toString());
+        ctxNode.put("spanName", this.consistencyLevel.toString());
+        ctxNode.put("spanName", this.statusCode);
+        ctxNode.put("spanName", this.subStatusCode);
+        ctxNode.put("spanName", this.totalRequestCharge);
+        ctxNode.put("spanName", this.maxRequestSize);
+        ctxNode.put("spanName", this.maxResponseSize);
+
+        if (this.maxItemCount != null) {
+            ctxNode.put("spanName", this.maxItemCount);
+        }
+
+        if (this.actualItemCount != null) {
+            ctxNode.put("spanName", this.actualItemCount);
+        }
+
+        if (this.finalError != null) {
+            ctxNode.put("exception", this.finalError.toString());
+        }
+
+        if (this.diagnostics != null && this.diagnostics.size() > 0) {
+            List<String> diagnosticStrings = new ArrayList<>();
+            for (CosmosDiagnostics d: this.diagnostics) {
+                FeedResponseDiagnostics feedDiagnostics = d.getFeedResponseDiagnostics();
+                if (feedDiagnostics != null) {
+                    diagnosticStrings.add(feedDiagnostics.toString());
+                }
+
+                ClientSideRequestStatistics clientSideDiagnostics =
+                    d.getClientSideRequestStatisticsRaw();
+                if (clientSideDiagnostics != null) {
+                    diagnosticStrings.add(clientSideDiagnostics.toString());
+                }
+            }
+            ctxNode.putPOJO("diagnostics", diagnosticStrings);
+        }
+
+        try {
+            return mapper.writeValueAsString(ctxNode);
+        } catch (JsonProcessingException e) {
+            return "{ \"exception\": \"" + e + "\" }";
+        }
+    }
+
+    @Override
+    public String toString() {
+        String snapshot = this.cachedRequestDiagnostics;
+        if (snapshot != null) {
+            return snapshot;
+        }
+
+        synchronized (this.spanName) {
+            snapshot = this.cachedRequestDiagnostics;
+            if (snapshot != null) {
+                return snapshot;
+            }
+
+            return this.cachedRequestDiagnostics = getRequestDiagnostics();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

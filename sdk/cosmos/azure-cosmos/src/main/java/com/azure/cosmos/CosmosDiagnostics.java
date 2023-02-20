@@ -183,6 +183,10 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics.getMaxResponsePayloadSizeInBytes();
     }
 
+    ClientSideRequestStatistics getClientSideRequestStatisticsRaw() {
+        return this.clientSideRequestStatistics;
+    }
+
     List<ClientSideRequestStatistics> getClientSideRequestStatistics() {
         if (this.feedResponseDiagnostics != null) {
             return this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
