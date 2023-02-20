@@ -35,7 +35,6 @@ pr:
       - sdk/purview/azure-resourcemanager-purview/pom.xml
       - sdk/purview/azure-analytics-purview-workflow/pom.xml
 
-
 parameters:
   - name: release_azureanalyticspurviewadministration
     displayName: azure-analytics-purview-administration
@@ -55,6 +54,10 @@ parameters:
     default: false
   - name: release_azureanalyticspurviewworkflow
     displayName: azure-analytics-purview-workflow
+    type: boolean
+    default: true
+  - name: release_azureanalyticspurviewaccount
+    displayName: azure-analytics-purview-account
     type: boolean
     default: true
 
@@ -84,3 +87,7 @@ extends:
         groupId: com.azure
         safeName: azureanalyticspurviewworkflow
         releaseInBatch: ${{ parameters.release_azureanalyticspurviewworkflow }}
+      - name: azure-analytics-purview-account
+        groupId: com.azure
+        safeName: azureanalyticspurviewaccount
+        releaseInBatch: ${{ parameters.release_azureanalyticspurviewaccount }}
