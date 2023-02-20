@@ -15,8 +15,7 @@ public class AadProfileProperties {
      */
     private String tenantId; // tenantId can not set to "common" here, otherwise we can not know whether it's set by customer or it is the default value.
     /**
-     * Name of the Azure cloud to connect to.
-     * Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER.
+     * Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER.
      */
     private AzureProfileOptionsProvider.CloudType cloudType;
     /**
