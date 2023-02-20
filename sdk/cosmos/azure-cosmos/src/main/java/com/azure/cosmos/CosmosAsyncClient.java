@@ -18,7 +18,9 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
@@ -217,12 +219,31 @@ public final class CosmosAsyncClient implements Closeable {
                 effectiveTelemetryConfig,
                 this.accountTagValue
             );
+
+            telemetryConfigAccessor.addDiagnosticsHandler(
+                effectiveTelemetryConfig,
+                new ClientMetricsDiagnosticsHandler(this, effectiveTelemetryConfig)
+            );
         }
 
         if (this.isSendClientTelemetryToServiceEnabled) {
             telemetryConfigAccessor.setClientTelemetry(
                 effectiveTelemetryConfig,
                 asyncDocumentClient.getClientTelemetry()
+            );
+
+            telemetryConfigAccessor.addDiagnosticsHandler(
+                effectiveTelemetryConfig,
+                new ClientTelemetryDiagnosticsHandler(effectiveTelemetryConfig)
+            );
+        }
+
+        if (telemetryConfigAccessor.isDiagnosticsLogsEnabled(effectiveTelemetryConfig)) {
+            telemetryConfigAccessor.addDiagnosticsHandler(
+                effectiveTelemetryConfig,
+                new CosmosDiagnosticsLogger(
+                    telemetryConfigAccessor.getDiagnosticsLoggerConfig(effectiveTelemetryConfig)
+                )
             );
         }
     }

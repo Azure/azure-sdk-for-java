@@ -15,6 +15,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
+import com.azure.cosmos.CosmosDiagnosticsLoggerConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
@@ -1228,6 +1229,9 @@ public class ImplementationBridgeHelpers {
             Tag getClientCorrelationTag(CosmosClientTelemetryConfig config);
             void setClientTelemetry(CosmosClientTelemetryConfig config, ClientTelemetry clientTelemetry);
             ClientTelemetry getClientTelemetry(CosmosClientTelemetryConfig config);
+            void addDiagnosticsHandler(CosmosClientTelemetryConfig config, CosmosDiagnosticsHandler handler);
+            boolean isDiagnosticsLogsEnabled(CosmosClientTelemetryConfig config);
+            CosmosDiagnosticsLoggerConfig getDiagnosticsLoggerConfig(CosmosClientTelemetryConfig config);
         }
     }
 

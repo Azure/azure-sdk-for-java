@@ -126,7 +126,7 @@ public final class ClientTelemetryMetrics {
     }
 
     public static void recordOperation(
-        CosmosAsyncClient cosmosAsyncClient,
+        CosmosAsyncClient client,
         CosmosDiagnostics cosmosDiagnostics,
         int statusCode,
         Integer maxItemCount,
@@ -141,6 +141,7 @@ public final class ClientTelemetryMetrics {
         Duration latency
     ) {
         recordOperation(
+            client,
             cosmosDiagnostics,
             statusCode,
             maxItemCount,
@@ -152,16 +153,13 @@ public final class ClientTelemetryMetrics {
             consistencyLevel,
             operationId,
             requestCharge,
-            latency,
-            clientAccessor.isClientTelemetryMetricsEnabled(cosmosAsyncClient),
-            clientAccessor.getMetricTagNames(cosmosAsyncClient),
-            clientAccessor.getClientCorrelationTag(cosmosAsyncClient),
-            clientAccessor.getAccountTagValue(cosmosAsyncClient)
+            latency
         );
     }
 
 
     public static void recordOperation(
+        CosmosAsyncClient client,
         CosmosDiagnostics cosmosDiagnostics,
         int statusCode,
         Integer maxItemCount,
@@ -173,21 +171,22 @@ public final class ClientTelemetryMetrics {
         ConsistencyLevel consistencyLevel,
         String operationId,
         float requestCharge,
-        Duration latency,
-        boolean isClientTelemetryMetricsEnabled,
-        EnumSet<TagName> metricTagNames,
-        Tag clientCorrelationTag,
-        String accountTagValue
+        Duration latency
     ) {
+        boolean isClientTelemetryMetricsEnabled = clientAccessor.isClientTelemetryMetricsEnabled(client);
+
         if (compositeRegistry.getRegistries().isEmpty() ||
             !isClientTelemetryMetricsEnabled) {
             return;
         }
 
+        Tag clientCorrelationTag = clientAccessor.getClientCorrelationTag(client);
+        String accountTagValue = clientAccessor.getAccountTagValue(client);
+
         boolean isPointOperation = maxItemCount == null || maxItemCount < 0;
 
-        EnumSet<TagName> metricTagNames = clientAccessor.getMetricTagNames(cosmosAsyncClient);
-        EnumSet<MetricCategory> metricCategories = clientAccessor.getMetricCategories(cosmosAsyncClient);
+        EnumSet<TagName> metricTagNames = clientAccessor.getMetricTagNames(client);
+        EnumSet<MetricCategory> metricCategories = clientAccessor.getMetricCategories(client);
 
         Set<String> contactedRegions = Collections.emptySet();
         if (metricCategories.contains(MetricCategory.OperationDetails)) {
@@ -211,7 +210,7 @@ public final class ClientTelemetryMetrics {
 
         OperationMetricProducer metricProducer = new OperationMetricProducer(metricCategories, metricTagNames, operationTags);
         metricProducer.recordOperation(
-            cosmosAsyncClient,
+            client,
             requestCharge,
             latency,
             maxItemCount == null ? -1 : maxItemCount,

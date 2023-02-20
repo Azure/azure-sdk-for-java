@@ -10,6 +10,8 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
+import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 
@@ -21,21 +23,20 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
     private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor =
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
 
-    private final MeterRegistry registry;
     private final CosmosClientTelemetryConfig config;
+    private final CosmosAsyncClient client;
     private boolean isInitialized;
-    private EnumSet<TagName> metricTagNames;
     private Tag clientCorrelationTag;
-    private String accountTageValue;
+    private String accountTagValue;
 
     public ClientMetricsDiagnosticsHandler(
-        MeterRegistry registry,
+        CosmosAsyncClient client,
         CosmosClientTelemetryConfig config) {
 
-        checkNotNull(registry, "Argument 'registry' must not be null.");
         checkNotNull(config, "Argument 'config' must not be null.");
-        this.registry = registry;
+        checkNotNull(client, "Argument 'client' must not be null.");
         this.config = config;
+        this.client = client;
         this.isInitialized = false;
     }
 
@@ -44,9 +45,8 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
             return;
         }
 
-        this.metricTagNames = clientTelemetryConfigAccessor.getMetricTagNames(config);
         this.clientCorrelationTag = clientTelemetryConfigAccessor.getClientCorrelationTag(this.config);
-        this.accountTageValue = clientTelemetryConfigAccessor.getAccountName(this.config);
+        this.accountTagValue = clientTelemetryConfigAccessor.getAccountName(this.config);
         this.isInitialized = true;
     }
 
@@ -58,6 +58,7 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
 
         for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
             ClientTelemetryMetrics.recordOperation(
+                this.client,
                 diagnostics,
                 diagnosticsContext.getStatusCode(),
                 diagnosticsContext.getMaxItemCount(),
@@ -69,11 +70,7 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
                 diagnosticsContext.getConsistencyLevel(),
                 (String)null,
                 diagnosticsContext.getTotalRequestCharge(),
-                diagnostics.getDuration(),
-                true,
-                this.metricTagNames,
-                this.clientCorrelationTag,
-                this.accountTageValue);
+                diagnostics.getDuration());
         }
     }
 }

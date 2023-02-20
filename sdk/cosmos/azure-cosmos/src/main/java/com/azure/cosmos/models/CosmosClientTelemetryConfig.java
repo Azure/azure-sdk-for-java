@@ -5,20 +5,14 @@ package com.azure.cosmos.models;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.MetricsOptions;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
-import com.azure.cosmos.CosmosDiagnosticsLogger;
 import com.azure.cosmos.CosmosDiagnosticsLoggerConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
@@ -71,35 +65,6 @@ public final class CosmosClientTelemetryConfig {
     private String accountName;
     private ClientTelemetry clientTelemetry;
 
-    CosmosClientTelemetryConfig(CosmosClientTelemetryConfig toBeCopied, boolean effectiveIsClientTelemetryEnabled) {
-        this.httpNetworkRequestTimeout = toBeCopied.httpNetworkRequestTimeout;
-        this.maxConnectionPoolSize = toBeCopied.maxConnectionPoolSize;
-        this.idleHttpConnectionTimeout = toBeCopied.idleHttpConnectionTimeout;
-        this.proxy = toBeCopied.proxy;
-        this.clientCorrelationId = toBeCopied.clientCorrelationId;
-        this.metricTagNames = toBeCopied.metricTagNames;
-        this.clientMetricRegistry = toBeCopied.clientMetricRegistry;
-        this.isClientMetricsEnabled = toBeCopied.isClientMetricsEnabled;
-        this.clientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
-        this.customDiagnosticHandlers = new HashSet<>(toBeCopied.customDiagnosticHandlers);
-        this.diagnosticHandlers = new ArrayList<>(this.customDiagnosticHandlers);
-        if (this.isClientMetricsEnabled) {
-            EnumSet<TagName> metricTagNames = toBeCopied.getMetricTagNames();
-            this.diagnosticHandlers.add(
-                new ClientMetricsDiagnosticsHandler(
-                    this.clientMetricRegistry,
-                    this
-                    ));
-        }
-
-        if (effectiveIsClientTelemetryEnabled) {
-            this.diagnosticHandlers.add(new ClientTelemetryDiagnosticsHandler(this));
-        }
-
-        if (this.isDiagnosticsLoggerEnabled) {
-            this.diagnosticHandlers.add(new CosmosDiagnosticsLogger(this.diagnosticsLoggerConfig));
-        }
-    }
     private Boolean effectiveIsClientTelemetryEnabled = null;
     private CosmosMicrometerMetricsOptions micrometerMetricsOptions = null;
 
@@ -283,8 +248,6 @@ public final class CosmosClientTelemetryConfig {
         this.effectiveIsClientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
         return this;
     }
-
-
 
     Duration getHttpNetworkRequestTimeout() {
         return this.httpNetworkRequestTimeout;
@@ -544,9 +507,26 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
+                public void addDiagnosticsHandler(CosmosClientTelemetryConfig config,
+                                                  CosmosDiagnosticsHandler handler) {
+
+                    config.diagnosticHandlers.add(handler);
+                }
+
+                @Override
+                public boolean isDiagnosticsLogsEnabled(CosmosClientTelemetryConfig config) {
+                    return config.isDiagnosticsLoggerEnabled;
+                }
+
+                @Override
                 public void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config) {
 
                     config.resetIsSendClientTelemetryToServiceEnabled();
+                }
+
+                @Override
+                public CosmosDiagnosticsLoggerConfig getDiagnosticsLoggerConfig(CosmosClientTelemetryConfig config) {
+                    return config.diagnosticsLoggerConfig;
                 }
             });
     }
