@@ -365,6 +365,54 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
     }
 
     /**
+     * Get the authenticationType property: The type used for authentication. Type: string.
+     *
+     * @return the authenticationType value.
+     */
+    public AzureStorageAuthenticationType authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: The type used for authentication. Type: string.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService withAuthenticationType(AzureStorageAuthenticationType authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the containerUri property: Container uri of the Azure Blob Storage resource only support for anonymous
+     * access. Type: string (or Expression with resultType string).
+     *
+     * @return the containerUri value.
+     */
+    public Object containerUri() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().containerUri();
+    }
+
+    /**
+     * Set the containerUri property: Container uri of the Azure Blob Storage resource only support for anonymous
+     * access. Type: string (or Expression with resultType string).
+     *
+     * @param containerUri the containerUri value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService withContainerUri(Object containerUri) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withContainerUri(containerUri);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for OpenShiftManagedClusters UpdateTags. */
 public final class OpenShiftManagedClustersUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-04-30/examples/OpenShiftManagedClustersUpdateTags.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2019-04-30/examples/OpenShiftManagedClustersUpdateTags.json
      */
     /**
      * Sample code: Update OpenShift Managed Cluster Tags.

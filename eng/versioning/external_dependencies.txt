@@ -8,15 +8,15 @@
 # Format;
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.2.11
-com.fasterxml.jackson.core:jackson-annotations;2.13.4
-com.fasterxml.jackson.core:jackson-core;2.13.4
-com.fasterxml.jackson.core:jackson-databind;2.13.4.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.4
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.4
-com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.4
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.4
-com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.4
-com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.4
+com.fasterxml.jackson.core:jackson-annotations;2.13.5
+com.fasterxml.jackson.core:jackson-core;2.13.5
+com.fasterxml.jackson.core:jackson-databind;2.13.5
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.5
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.5
+com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.5
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.5
+com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.5
+com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.5
 com.fasterxml.woodstox:woodstox-core;6.4.0
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
@@ -322,7 +322,7 @@ org.testcontainers:junit-jupiter;1.17.6
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
-cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.3
+cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.5
 cosmos_com.google.guava:guava;30.1.1-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview

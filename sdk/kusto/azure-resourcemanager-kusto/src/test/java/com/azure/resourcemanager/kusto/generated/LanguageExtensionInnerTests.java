@@ -6,23 +6,29 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.LanguageExtensionInner;
+import com.azure.resourcemanager.kusto.models.LanguageExtensionImageName;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionName;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LanguageExtensionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         LanguageExtensionInner model =
-            BinaryData.fromString("{\"languageExtensionName\":\"PYTHON\"}").toObject(LanguageExtensionInner.class);
+            BinaryData
+                .fromString("{\"languageExtensionName\":\"PYTHON\",\"languageExtensionImageName\":\"Python3_10_8\"}")
+                .toObject(LanguageExtensionInner.class);
         Assertions.assertEquals(LanguageExtensionName.PYTHON, model.languageExtensionName());
+        Assertions.assertEquals(LanguageExtensionImageName.PYTHON3_10_8, model.languageExtensionImageName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         LanguageExtensionInner model =
-            new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON);
+            new LanguageExtensionInner()
+                .withLanguageExtensionName(LanguageExtensionName.PYTHON)
+                .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8);
         model = BinaryData.fromObject(model).toObject(LanguageExtensionInner.class);
         Assertions.assertEquals(LanguageExtensionName.PYTHON, model.languageExtensionName());
+        Assertions.assertEquals(LanguageExtensionImageName.PYTHON3_10_8, model.languageExtensionImageName());
     }
 }

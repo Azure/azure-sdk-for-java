@@ -11,46 +11,42 @@ import com.azure.resourcemanager.cognitiveservices.models.DeploymentProperties;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleSettings;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DeploymentInner model =
             BinaryData
                 .fromString(
-                    "{\"etag\":\"xc\",\"properties\":{\"provisioningState\":\"Moving\",\"model\":{\"format\":\"asrru\",\"name\":\"bhsqfsubcgjbirxb\",\"version\":\"bsrfbj\"},\"scaleSettings\":{\"scaleType\":\"Standard\",\"capacity\":1365200524,\"activeCapacity\":772106102},\"capabilities\":{\"exilzznfqqnvwpmq\":\"vjz\",\"r\":\"aruoujmkcjhwqyt\"},\"raiPolicyName\":\"n\",\"callRateLimit\":{\"count\":84.0863,\"renewalPeriod\":97.183586,\"rules\":[]}},\"id\":\"ervnaenqpehi\",\"name\":\"doy\",\"type\":\"mifthnzdnd\"}")
+                    "{\"etag\":\"ilvpnppfuflrwd\",\"properties\":{\"provisioningState\":\"Succeeded\",\"model\":{\"format\":\"jrxs\",\"name\":\"afcnih\",\"version\":\"qapnedgfbcv\"},\"scaleSettings\":{\"scaleType\":\"Standard\",\"capacity\":1489059266,\"activeCapacity\":346770564},\"capabilities\":{\"sotbob\":\"vdrhvoo\",\"ld\":\"dopcjwvnh\",\"twuoegrpkhjwni\":\"mgxcxrslpm\"},\"raiPolicyName\":\"sluicpdggkzz\",\"callRateLimit\":{\"count\":62.88767,\"renewalPeriod\":89.78058,\"rules\":[]}},\"id\":\"modfvuefywsbpfvm\",\"name\":\"yhrfouyftaakcpw\",\"type\":\"yzvqt\"}")
                 .toObject(DeploymentInner.class);
-        Assertions.assertEquals("asrru", model.properties().model().format());
-        Assertions.assertEquals("bhsqfsubcgjbirxb", model.properties().model().name());
-        Assertions.assertEquals("bsrfbj", model.properties().model().version());
+        Assertions.assertEquals("jrxs", model.properties().model().format());
+        Assertions.assertEquals("afcnih", model.properties().model().name());
+        Assertions.assertEquals("qapnedgfbcv", model.properties().model().version());
         Assertions.assertEquals(DeploymentScaleType.STANDARD, model.properties().scaleSettings().scaleType());
-        Assertions.assertEquals(1365200524, model.properties().scaleSettings().capacity());
-        Assertions.assertEquals("n", model.properties().raiPolicyName());
+        Assertions.assertEquals(1489059266, model.properties().scaleSettings().capacity());
+        Assertions.assertEquals("sluicpdggkzz", model.properties().raiPolicyName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DeploymentInner model =
             new DeploymentInner()
                 .withProperties(
                     new DeploymentProperties()
                         .withModel(
-                            new DeploymentModel()
-                                .withFormat("asrru")
-                                .withName("bhsqfsubcgjbirxb")
-                                .withVersion("bsrfbj"))
+                            new DeploymentModel().withFormat("jrxs").withName("afcnih").withVersion("qapnedgfbcv"))
                         .withScaleSettings(
                             new DeploymentScaleSettings()
                                 .withScaleType(DeploymentScaleType.STANDARD)
-                                .withCapacity(1365200524))
-                        .withRaiPolicyName("n"));
+                                .withCapacity(1489059266))
+                        .withRaiPolicyName("sluicpdggkzz"));
         model = BinaryData.fromObject(model).toObject(DeploymentInner.class);
-        Assertions.assertEquals("asrru", model.properties().model().format());
-        Assertions.assertEquals("bhsqfsubcgjbirxb", model.properties().model().name());
-        Assertions.assertEquals("bsrfbj", model.properties().model().version());
+        Assertions.assertEquals("jrxs", model.properties().model().format());
+        Assertions.assertEquals("afcnih", model.properties().model().name());
+        Assertions.assertEquals("qapnedgfbcv", model.properties().model().version());
         Assertions.assertEquals(DeploymentScaleType.STANDARD, model.properties().scaleSettings().scaleType());
-        Assertions.assertEquals(1365200524, model.properties().scaleSettings().capacity());
-        Assertions.assertEquals("n", model.properties().raiPolicyName());
+        Assertions.assertEquals(1489059266, model.properties().scaleSettings().capacity());
+        Assertions.assertEquals("sluicpdggkzz", model.properties().raiPolicyName());
     }
 }
