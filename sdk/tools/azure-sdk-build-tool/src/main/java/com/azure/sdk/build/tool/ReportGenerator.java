@@ -14,6 +14,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -75,10 +79,9 @@ public class ReportGenerator {
             JsonGenerator generator = new JsonFactory().createGenerator(writer).useDefaultPrettyPrinter();
 
             generator.writeStartObject();
-            generator.writeStringField("group", AzureSdkMojo.MOJO.getProject().getGroupId());
-            generator.writeStringField("artifact", AzureSdkMojo.MOJO.getProject().getArtifactId());
-            generator.writeStringField("version", AzureSdkMojo.MOJO.getProject().getVersion());
-            generator.writeStringField("name", AzureSdkMojo.MOJO.getProject().getName());
+            generator.writeStringField("group", getMd5(AzureSdkMojo.MOJO.getProject().getGroupId()));
+            generator.writeStringField("artifact", getMd5(AzureSdkMojo.MOJO.getProject().getArtifactId()));
+            generator.writeStringField("version", getMd5(AzureSdkMojo.MOJO.getProject().getVersion()));
             if (report.getBomVersion() != null && !report.getBomVersion().isEmpty()) {
                 generator.writeStringField("bomVersion", report.getBomVersion());
             }
@@ -89,7 +92,8 @@ public class ReportGenerator {
             if (report.getServiceMethodCalls() != null && !report.getServiceMethodCalls().isEmpty()) {
                 writeArray("serviceMethodCalls", report.getServiceMethodCalls()
                         .stream()
-                        .map(AnnotatedMethodCallerResult::toString)
+                        .map(annotatedMethodCallerResult -> annotatedMethodCallerResult.getAnnotatedMethod())
+                        .map(method -> method.toGenericString())
                         .collect(Collectors.toList()), generator);
             }
 
@@ -146,5 +150,17 @@ public class ReportGenerator {
                 .map(MavenUtils::toGAV)
                 .collect(Collectors.toList());
     }
+
+    private String getMd5(String inputText) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] digest = md.digest(inputText.getBytes(StandardCharsets.UTF_8));
+            return String.format("%032x", new BigInteger(1, digest));
+        } catch (NoSuchAlgorithmException exception) {
+            return "Unknown";
+        }
+
+    }
+
 }
 
