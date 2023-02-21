@@ -370,12 +370,12 @@ public class SchemaRegistryClientBuilder implements
      *      and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SchemaRegistryAsyncClient buildAsyncClient() {
-        AzureSchemaRegistryImpl restService = getAzureSchemaREgistryImplService();
+        AzureSchemaRegistryImpl restService = getAzureSchemaRegistryImplService();
 
         return new SchemaRegistryAsyncClient(restService);
     }
 
-    private AzureSchemaRegistryImpl getAzureSchemaREgistryImplService() {
+    private AzureSchemaRegistryImpl getAzureSchemaRegistryImplService() {
         Objects.requireNonNull(credential,
             "'credential' cannot be null and must be set via builder.credential(TokenCredential)");
         Objects.requireNonNull(fullyQualifiedNamespace,
@@ -454,7 +454,7 @@ public class SchemaRegistryClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SchemaRegistryClient buildClient() {
-        AzureSchemaRegistryImpl restService = getAzureSchemaREgistryImplService();
+        AzureSchemaRegistryImpl restService = getAzureSchemaRegistryImplService();
         return new SchemaRegistryClient(restService);
     }
 }
