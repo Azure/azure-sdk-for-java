@@ -11,7 +11,6 @@ import com.azure.digitaltwins.core.BasicDigitalTwin;
 import com.azure.digitaltwins.core.BasicDigitalTwinMetadata;
 import com.azure.digitaltwins.core.BasicRelationship;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
-import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.DigitalTwinsClientBuilder;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
@@ -1258,8 +1257,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.listImportJobs
 
         PagedIterable<DigitalTwinsImportJob> digitalTwinsImportJobs = digitalTwinsSyncClient.listImportJobs();
-        digitalTwinsImportJobs.forEach(importJob -> System.out.println("Retrieved import job with Id: " +
-            importJob.getId()));
+        digitalTwinsImportJobs.forEach(importJob -> System.out.println("Retrieved import job with Id: "
+            + importJob.getId()));
 
         // END: com.azure.digitaltwins.core.DigitalTwinsClient.listImportJobs
 
@@ -1268,8 +1267,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         PagedIterable<DigitalTwinsImportJob> importJobsWithOptions = digitalTwinsSyncClient.listImportJobs(
             new ImportJobDigitalTwinOptions().setMaxItemsPerPage(5),
             new Context("key", "value"));
-        importJobsWithOptions.forEach(importJob -> System.out.println("Retrieved import job with Id: " +
-            importJob.getId()));
+        importJobsWithOptions.forEach(importJob -> System.out.println("Retrieved import job with Id: "
+            + importJob.getId()));
 
         // END: com.azure.digitaltwins.core.DigitalTwinsClient.listImportJobs#ImportJobDigitalTwinOptions-Context
 
