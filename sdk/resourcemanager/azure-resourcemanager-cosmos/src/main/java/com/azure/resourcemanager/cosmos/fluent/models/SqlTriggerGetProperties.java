@@ -17,6 +17,10 @@ public final class SqlTriggerGetProperties {
     @JsonProperty(value = "resource")
     private SqlTriggerGetPropertiesResource resource;
 
+    /** Creates an instance of SqlTriggerGetProperties class. */
+    public SqlTriggerGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

@@ -96,6 +96,9 @@ public final class SparkRequest {
     @JsonProperty(value = "numExecutors")
     private Integer executorCount;
 
+    /** Creates an instance of SparkRequest class. */
+    public SparkRequest() {}
+
     /**
      * Get the name property: The name property.
      *

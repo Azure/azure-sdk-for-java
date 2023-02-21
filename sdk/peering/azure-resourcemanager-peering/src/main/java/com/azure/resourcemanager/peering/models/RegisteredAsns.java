@@ -16,6 +16,22 @@ public interface RegisteredAsns {
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing registered ASN with the specified name under the given subscription, resource group and
+     *     peering along with {@link Response}.
+     */
+    Response<PeeringRegisteredAsn> getWithResponse(
+        String resourceGroupName, String peeringName, String registeredAsnName, Context context);
+
+    /**
+     * Gets an existing registered ASN with the specified name under the given subscription, resource group and peering.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringName The name of the peering.
+     * @param registeredAsnName The name of the registered ASN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -25,7 +41,8 @@ public interface RegisteredAsns {
     PeeringRegisteredAsn get(String resourceGroupName, String peeringName, String registeredAsnName);
 
     /**
-     * Gets an existing registered ASN with the specified name under the given subscription, resource group and peering.
+     * Deletes an existing registered ASN with the specified name under the given subscription, resource group and
+     * peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
@@ -34,10 +51,9 @@ public interface RegisteredAsns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering.
+     * @return the {@link Response}.
      */
-    Response<PeeringRegisteredAsn> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String peeringName, String registeredAsnName, Context context);
 
     /**
@@ -54,22 +70,6 @@ public interface RegisteredAsns {
     void delete(String resourceGroupName, String peeringName, String registeredAsnName);
 
     /**
-     * Deletes an existing registered ASN with the specified name under the given subscription, resource group and
-     * peering.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringName The name of the peering.
-     * @param registeredAsnName The name of the registered ASN.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String peeringName, String registeredAsnName, Context context);
-
-    /**
      * Lists all registered ASNs under the given subscription, resource group and peering.
      *
      * @param resourceGroupName The name of the resource group.
@@ -77,7 +77,7 @@ public interface RegisteredAsns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PeeringRegisteredAsn> listByPeering(String resourceGroupName, String peeringName);
 
@@ -90,7 +90,7 @@ public interface RegisteredAsns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PeeringRegisteredAsn> listByPeering(String resourceGroupName, String peeringName, Context context);
 
@@ -102,7 +102,7 @@ public interface RegisteredAsns {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering along with {@link Response}.
      */
     PeeringRegisteredAsn getById(String id);
 
@@ -115,7 +115,7 @@ public interface RegisteredAsns {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering along with {@link Response}.
      */
     Response<PeeringRegisteredAsn> getByIdWithResponse(String id, Context context);
 
@@ -139,7 +139,7 @@ public interface RegisteredAsns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

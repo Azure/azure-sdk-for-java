@@ -32,6 +32,10 @@ public final class AdaptiveNetworkHardeningProperties {
     @JsonProperty(value = "effectiveNetworkSecurityGroups")
     private List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups;
 
+    /** Creates an instance of AdaptiveNetworkHardeningProperties class. */
+    public AdaptiveNetworkHardeningProperties() {
+    }
+
     /**
      * Get the rules property: The security rules which are recommended to be effective on the VM.
      *

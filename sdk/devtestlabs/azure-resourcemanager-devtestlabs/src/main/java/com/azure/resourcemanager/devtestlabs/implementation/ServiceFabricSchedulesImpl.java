@@ -14,10 +14,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.Schedule;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 import com.azure.resourcemanager.devtestlabs.models.ServiceFabricSchedules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceFabricSchedulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceFabricSchedulesImpl.class);
 
     private final ServiceFabricSchedulesClient innerClient;
 
@@ -54,16 +53,6 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
         return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
-    public Schedule get(
-        String resourceGroupName, String labName, String username, String serviceFabricName, String name) {
-        ScheduleInner inner = this.serviceClient().get(resourceGroupName, labName, username, serviceFabricName, name);
-        if (inner != null) {
-            return new ScheduleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Schedule> getWithResponse(
         String resourceGroupName,
         String labName,
@@ -87,17 +76,9 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
         }
     }
 
-    public Schedule createOrUpdate(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleInner schedule) {
-        ScheduleInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(resourceGroupName, labName, username, serviceFabricName, name, schedule);
+    public Schedule get(
+        String resourceGroupName, String labName, String username, String serviceFabricName, String name) {
+        ScheduleInner inner = this.serviceClient().get(resourceGroupName, labName, username, serviceFabricName, name);
         if (inner != null) {
             return new ScheduleImpl(inner, this.manager());
         } else {
@@ -129,9 +110,22 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
         }
     }
 
-    public void delete(
-        String resourceGroupName, String labName, String username, String serviceFabricName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, username, serviceFabricName, name);
+    public Schedule createOrUpdate(
+        String resourceGroupName,
+        String labName,
+        String username,
+        String serviceFabricName,
+        String name,
+        ScheduleInner schedule) {
+        ScheduleInner inner =
+            this
+                .serviceClient()
+                .createOrUpdate(resourceGroupName, labName, username, serviceFabricName, name, schedule);
+        if (inner != null) {
+            return new ScheduleImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -146,20 +140,9 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
             .deleteWithResponse(resourceGroupName, labName, username, serviceFabricName, name, context);
     }
 
-    public Schedule update(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleFragment schedule) {
-        ScheduleInner inner =
-            this.serviceClient().update(resourceGroupName, labName, username, serviceFabricName, name, schedule);
-        if (inner != null) {
-            return new ScheduleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(
+        String resourceGroupName, String labName, String username, String serviceFabricName, String name) {
+        this.serviceClient().delete(resourceGroupName, labName, username, serviceFabricName, name);
     }
 
     public Response<Schedule> updateWithResponse(
@@ -180,6 +163,22 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ScheduleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Schedule update(
+        String resourceGroupName,
+        String labName,
+        String username,
+        String serviceFabricName,
+        String name,
+        ScheduleFragment schedule) {
+        ScheduleInner inner =
+            this.serviceClient().update(resourceGroupName, labName, username, serviceFabricName, name, schedule);
+        if (inner != null) {
+            return new ScheduleImpl(inner, this.manager());
         } else {
             return null;
         }

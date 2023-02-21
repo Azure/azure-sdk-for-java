@@ -7,6 +7,7 @@ package com.azure.developer.devcenter;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -45,7 +46,8 @@ import java.util.stream.Collectors;
 public final class DevCenterClientBuilder
         implements HttpTrait<DevCenterClientBuilder>,
                 ConfigurationTrait<DevCenterClientBuilder>,
-                TokenCredentialTrait<DevCenterClientBuilder> {
+                TokenCredentialTrait<DevCenterClientBuilder>,
+                EndpointTrait<DevCenterClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -165,53 +167,15 @@ public final class DevCenterClientBuilder
     }
 
     /*
-     * The tenant to operate on.
+     * The service endpoint
      */
-    @Generated private String tenantId;
+    @Generated private String endpoint;
 
-    /**
-     * Sets The tenant to operate on.
-     *
-     * @param tenantId the tenantId value.
-     * @return the DevCenterClientBuilder.
-     */
+    /** {@inheritDoc}. */
     @Generated
-    public DevCenterClientBuilder tenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
-
-    /*
-     * The DevCenter to operate on.
-     */
-    @Generated private String devCenter;
-
-    /**
-     * Sets The DevCenter to operate on.
-     *
-     * @param devCenter the devCenter value.
-     * @return the DevCenterClientBuilder.
-     */
-    @Generated
-    public DevCenterClientBuilder devCenter(String devCenter) {
-        this.devCenter = devCenter;
-        return this;
-    }
-
-    /*
-     * The DNS suffix used as the base for all devcenter requests.
-     */
-    @Generated private String devCenterDnsSuffix;
-
-    /**
-     * Sets The DNS suffix used as the base for all devcenter requests.
-     *
-     * @param devCenterDnsSuffix the devCenterDnsSuffix value.
-     * @return the DevCenterClientBuilder.
-     */
-    @Generated
-    public DevCenterClientBuilder devCenterDnsSuffix(String devCenterDnsSuffix) {
-        this.devCenterDnsSuffix = devCenterDnsSuffix;
+    @Override
+    public DevCenterClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -257,17 +221,11 @@ public final class DevCenterClientBuilder
     @Generated
     private DevCenterClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localDevCenterDnsSuffix = (devCenterDnsSuffix != null) ? devCenterDnsSuffix : "devcenter.azure.com";
         DevCenterServiceVersion localServiceVersion =
                 (serviceVersion != null) ? serviceVersion : DevCenterServiceVersion.getLatest();
         DevCenterClientImpl client =
                 new DevCenterClientImpl(
-                        localPipeline,
-                        JacksonAdapter.createDefaultSerializerAdapter(),
-                        tenantId,
-                        devCenter,
-                        localDevCenterDnsSuffix,
-                        localServiceVersion);
+                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
         return client;
     }
 

@@ -52,7 +52,7 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface ActivityRunsService {
+    public interface ActivityRunsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

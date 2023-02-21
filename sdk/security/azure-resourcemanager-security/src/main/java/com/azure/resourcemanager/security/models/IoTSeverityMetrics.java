@@ -28,6 +28,10 @@ public final class IoTSeverityMetrics {
     @JsonProperty(value = "low")
     private Long low;
 
+    /** Creates an instance of IoTSeverityMetrics class. */
+    public IoTSeverityMetrics() {
+    }
+
     /**
      * Get the high property: Count of high severity alerts/recommendations.
      *

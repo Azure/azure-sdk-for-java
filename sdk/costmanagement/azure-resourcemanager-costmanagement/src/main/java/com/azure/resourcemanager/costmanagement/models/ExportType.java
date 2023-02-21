@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExportType. */
+/** The type of the query. */
 public final class ExportType extends ExpandableStringEnum<ExportType> {
     /** Static value Usage for ExportType. */
     public static final ExportType USAGE = fromString("Usage");
@@ -18,6 +18,15 @@ public final class ExportType extends ExpandableStringEnum<ExportType> {
 
     /** Static value AmortizedCost for ExportType. */
     public static final ExportType AMORTIZED_COST = fromString("AmortizedCost");
+
+    /**
+     * Creates a new instance of ExportType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExportType() {
+    }
 
     /**
      * Creates or finds a ExportType from its string representation.
@@ -30,7 +39,11 @@ public final class ExportType extends ExpandableStringEnum<ExportType> {
         return fromString(name, ExportType.class);
     }
 
-    /** @return known ExportType values. */
+    /**
+     * Gets known ExportType values.
+     *
+     * @return known ExportType values.
+     */
     public static Collection<ExportType> values() {
         return values(ExportType.class);
     }

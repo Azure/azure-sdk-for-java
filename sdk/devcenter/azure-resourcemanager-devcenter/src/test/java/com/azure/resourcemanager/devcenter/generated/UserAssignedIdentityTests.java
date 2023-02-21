@@ -11,7 +11,11 @@ import org.junit.jupiter.api.Test;
 public final class UserAssignedIdentityTests {
     @Test
     public void testDeserialize() {
-        UserAssignedIdentity model = BinaryData.fromString("{}").toObject(UserAssignedIdentity.class);
+        UserAssignedIdentity model =
+            BinaryData
+                .fromString(
+                    "{\"principalId\":\"72e8c163-8215-4d64-aaf2-3cba6eb40d42\",\"clientId\":\"ed63d920-710b-4f6e-aae6-481cd2b2a64c\"}")
+                .toObject(UserAssignedIdentity.class);
     }
 
     @Test

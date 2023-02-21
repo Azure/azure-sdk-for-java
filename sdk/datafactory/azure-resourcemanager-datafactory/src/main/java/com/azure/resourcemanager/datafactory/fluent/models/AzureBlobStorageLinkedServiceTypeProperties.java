@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
+import com.azure.resourcemanager.datafactory.models.AzureStorageAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -93,6 +94,19 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "credential")
     private CredentialReference credential;
+
+    /*
+     * The type used for authentication. Type: string.
+     */
+    @JsonProperty(value = "authenticationType")
+    private AzureStorageAuthenticationType authenticationType;
+
+    /*
+     * Container uri of the Azure Blob Storage resource only support for anonymous access. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "containerUri")
+    private Object containerUri;
 
     /** Creates an instance of AzureBlobStorageLinkedServiceTypeProperties class. */
     public AzureBlobStorageLinkedServiceTypeProperties() {
@@ -357,6 +371,49 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
      */
     public AzureBlobStorageLinkedServiceTypeProperties withCredential(CredentialReference credential) {
         this.credential = credential;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The type used for authentication. Type: string.
+     *
+     * @return the authenticationType value.
+     */
+    public AzureStorageAuthenticationType authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The type used for authentication. Type: string.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the AzureBlobStorageLinkedServiceTypeProperties object itself.
+     */
+    public AzureBlobStorageLinkedServiceTypeProperties withAuthenticationType(
+        AzureStorageAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the containerUri property: Container uri of the Azure Blob Storage resource only support for anonymous
+     * access. Type: string (or Expression with resultType string).
+     *
+     * @return the containerUri value.
+     */
+    public Object containerUri() {
+        return this.containerUri;
+    }
+
+    /**
+     * Set the containerUri property: Container uri of the Azure Blob Storage resource only support for anonymous
+     * access. Type: string (or Expression with resultType string).
+     *
+     * @param containerUri the containerUri value to set.
+     * @return the AzureBlobStorageLinkedServiceTypeProperties object itself.
+     */
+    public AzureBlobStorageLinkedServiceTypeProperties withContainerUri(Object containerUri) {
+        this.containerUri = containerUri;
         return this;
     }
 

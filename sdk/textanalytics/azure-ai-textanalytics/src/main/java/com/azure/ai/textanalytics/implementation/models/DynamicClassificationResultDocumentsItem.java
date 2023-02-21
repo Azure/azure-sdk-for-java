@@ -9,11 +9,14 @@ import java.util.List;
 
 /** The DynamicClassificationResultDocumentsItem model. */
 @Fluent
-public final class DynamicClassificationResultDocumentsItem extends ClassificationDocumentResult {
+public final class DynamicClassificationResultDocumentsItem extends DynamicClassificationDocumentResult {
+    /** Creates an instance of DynamicClassificationResultDocumentsItem class. */
+    public DynamicClassificationResultDocumentsItem() {}
+
     /** {@inheritDoc} */
     @Override
-    public DynamicClassificationResultDocumentsItem setClassProperty(List<ClassificationResult> classProperty) {
-        super.setClassProperty(classProperty);
+    public DynamicClassificationResultDocumentsItem setClassifications(List<ClassificationResult> classifications) {
+        super.setClassifications(classifications);
         return this;
     }
 

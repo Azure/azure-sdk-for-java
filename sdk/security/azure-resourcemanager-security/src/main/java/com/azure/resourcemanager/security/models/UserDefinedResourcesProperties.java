@@ -25,6 +25,10 @@ public final class UserDefinedResourcesProperties {
     @JsonProperty(value = "querySubscriptions", required = true)
     private List<String> querySubscriptions;
 
+    /** Creates an instance of UserDefinedResourcesProperties class. */
+    public UserDefinedResourcesProperties() {
+    }
+
     /**
      * Get the query property: Azure Resource Graph query which represents the security solution's user defined
      * resources. Required to start with "where type != "Microsoft.Devices/IotHubs"".

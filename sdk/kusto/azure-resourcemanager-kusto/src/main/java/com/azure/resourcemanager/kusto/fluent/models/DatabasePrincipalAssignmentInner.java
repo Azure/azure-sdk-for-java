@@ -20,6 +20,10 @@ public final class DatabasePrincipalAssignmentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DatabasePrincipalProperties innerProperties;
 
+    /** Creates an instance of DatabasePrincipalAssignmentInner class. */
+    public DatabasePrincipalAssignmentInner() {
+    }
+
     /**
      * Get the innerProperties property: The database principal.
      *

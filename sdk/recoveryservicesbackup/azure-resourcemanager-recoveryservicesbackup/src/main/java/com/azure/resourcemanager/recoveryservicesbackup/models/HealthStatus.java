@@ -23,6 +23,15 @@ public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
     public static final HealthStatus INVALID = fromString("Invalid");
 
     /**
+     * Creates a new instance of HealthStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HealthStatus() {
+    }
+
+    /**
      * Creates or finds a HealthStatus from its string representation.
      *
      * @param name a name to look for.

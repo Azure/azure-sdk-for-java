@@ -63,6 +63,10 @@ public final class ApplicationTypeResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ApplicationTypeResourceInner innerModel() {
         return this.innerObject;
     }

@@ -47,6 +47,10 @@ public final class RoleManagementPolicyRuleTarget {
     @JsonProperty(value = "enforcedSettings")
     private List<String> enforcedSettings;
 
+    /** Creates an instance of RoleManagementPolicyRuleTarget class. */
+    public RoleManagementPolicyRuleTarget() {
+    }
+
     /**
      * Get the caller property: The caller of the setting.
      *

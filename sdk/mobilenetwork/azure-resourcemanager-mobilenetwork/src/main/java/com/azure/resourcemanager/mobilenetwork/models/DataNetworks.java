@@ -41,19 +41,6 @@ public interface DataNetworks {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified data network.
-     */
-    DataNetwork get(String resourceGroupName, String mobileNetworkName, String dataNetworkName);
-
-    /**
-     * Gets information about the specified data network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param dataNetworkName The name of the data network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,6 +49,19 @@ public interface DataNetworks {
      */
     Response<DataNetwork> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context);
+
+    /**
+     * Gets information about the specified data network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param dataNetworkName The name of the data network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified data network.
+     */
+    DataNetwork get(String resourceGroupName, String mobileNetworkName, String dataNetworkName);
 
     /**
      * Lists all data networks in the mobile network.

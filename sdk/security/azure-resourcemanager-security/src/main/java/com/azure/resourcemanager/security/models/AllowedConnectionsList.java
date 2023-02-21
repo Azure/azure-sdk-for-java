@@ -24,6 +24,10 @@ public final class AllowedConnectionsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AllowedConnectionsList class. */
+    public AllowedConnectionsList() {
+    }
+
     /**
      * Get the value property: The value property.
      *

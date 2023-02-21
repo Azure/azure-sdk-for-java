@@ -22,22 +22,6 @@ public interface CustomAssessmentAutomationsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single custom assessment automation by name for the provided subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomAssessmentAutomationInner getByResourceGroup(String resourceGroupName, String customAssessmentAutomationName);
-
-    /**
-     * Gets a custom assessment automation
-     *
-     * <p>Gets a single custom assessment automation by name for the provided subscription and resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -50,25 +34,20 @@ public interface CustomAssessmentAutomationsClient {
         String resourceGroupName, String customAssessmentAutomationName, Context context);
 
     /**
-     * Creates a custom assessment automation
+     * Gets a custom assessment automation
      *
-     * <p>Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
-     * existing custom assessment automation will replace the existing record.
+     * <p>Gets a single custom assessment automation by name for the provided subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
-     * @param customAssessmentAutomationBody Custom Assessment Automation body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom Assessment Automation.
+     * @return a single custom assessment automation by name for the provided subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomAssessmentAutomationInner create(
-        String resourceGroupName,
-        String customAssessmentAutomationName,
-        CustomAssessmentAutomationRequest customAssessmentAutomationBody);
+    CustomAssessmentAutomationInner getByResourceGroup(String resourceGroupName, String customAssessmentAutomationName);
 
     /**
      * Creates a custom assessment automation
@@ -94,19 +73,25 @@ public interface CustomAssessmentAutomationsClient {
         Context context);
 
     /**
-     * Deletes a custom assessment automation
+     * Creates a custom assessment automation
      *
-     * <p>Deletes a custom assessment automation by name for a provided subscription.
+     * <p>Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
+     * existing custom assessment automation will replace the existing record.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
+     * @param customAssessmentAutomationBody Custom Assessment Automation body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom Assessment Automation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String customAssessmentAutomationName);
+    CustomAssessmentAutomationInner create(
+        String resourceGroupName,
+        String customAssessmentAutomationName,
+        CustomAssessmentAutomationRequest customAssessmentAutomationBody);
 
     /**
      * Deletes a custom assessment automation
@@ -124,6 +109,21 @@ public interface CustomAssessmentAutomationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String customAssessmentAutomationName, Context context);
+
+    /**
+     * Deletes a custom assessment automation
+     *
+     * <p>Deletes a custom assessment automation by name for a provided subscription.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String customAssessmentAutomationName);
 
     /**
      * List custom assessment automations in a subscription and a resource group

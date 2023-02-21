@@ -25,6 +25,10 @@ public final class AutomationList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AutomationList class. */
+    public AutomationList() {
+    }
+
     /**
      * Get the value property: The list of security automations under the given scope.
      *

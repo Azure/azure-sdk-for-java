@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.Exceptions.isPartitionCompletingSplittingException;
-import static com.azure.cosmos.implementation.Exceptions.isPartitionSplit;
+import static com.azure.cosmos.implementation.Exceptions.isPartitionSplitOrMerge;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -234,7 +234,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         checkNotNull(throwable, "Throwable can not be null");
 
         CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
-        if (isPartitionSplit(cosmosException) || isPartitionCompletingSplittingException(cosmosException)) {
+        if (isPartitionSplitOrMerge(cosmosException) || isPartitionCompletingSplittingException(cosmosException)) {
             this.refreshRequestController();
         }
     }

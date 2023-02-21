@@ -22,6 +22,10 @@ public final class CustomEntityStoreAssignmentProperties {
     @JsonProperty(value = "entityStoreDatabaseLink")
     private String entityStoreDatabaseLink;
 
+    /** Creates an instance of CustomEntityStoreAssignmentProperties class. */
+    public CustomEntityStoreAssignmentProperties() {
+    }
+
     /**
      * Get the principal property: The principal assigned with entity store. Format of principal is: [AAD
      * type]=[PrincipalObjectId];[TenantId].

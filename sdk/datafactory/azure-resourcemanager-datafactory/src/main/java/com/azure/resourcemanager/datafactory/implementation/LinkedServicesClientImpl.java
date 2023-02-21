@@ -58,7 +58,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface LinkedServicesService {
+    public interface LinkedServicesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

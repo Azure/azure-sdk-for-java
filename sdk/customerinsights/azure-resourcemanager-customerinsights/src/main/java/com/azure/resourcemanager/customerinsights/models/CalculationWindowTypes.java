@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CalculationWindowTypes. */
+/** The calculation window. */
 public enum CalculationWindowTypes {
     /** Enum value Lifetime. */
     LIFETIME("Lifetime"),
@@ -39,6 +39,9 @@ public enum CalculationWindowTypes {
      */
     @JsonCreator
     public static CalculationWindowTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CalculationWindowTypes[] items = CalculationWindowTypes.values();
         for (CalculationWindowTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum CalculationWindowTypes {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -10,7 +10,11 @@ import com.azure.resourcemanager.synapse.models.StorageAccountType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** SQL pool properties Properties of a SQL Analytics pool. */
+/**
+ * SQL pool properties
+ *
+ * <p>Properties of a SQL Analytics pool.
+ */
 @Fluent
 public final class SqlPoolResourceProperties {
     /*
@@ -60,18 +64,15 @@ public final class SqlPoolResourceProperties {
      *
      * Default: regular sql pool creation.
      *
-     * PointInTimeRestore: Creates a sql pool by restoring a point in time
-     * backup of an existing sql pool. sourceDatabaseId must be specified as
-     * the resource ID of the existing sql pool, and restorePointInTime must be
+     * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
      * specified.
      *
-     * Recovery: Creates a sql pool by a geo-replicated backup.
-     * sourceDatabaseId  must be specified as the recoverableDatabaseId to
-     * restore.
+     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the
+     * recoverableDatabaseId to restore.
      *
-     * Restore: Creates a sql pool by restoring a backup of a deleted sql
-     * pool. SourceDatabaseId should be the sql pool's original resource ID.
-     * SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
+     * Restore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      */
     @JsonProperty(value = "createMode")
     private CreateMode createMode;
@@ -93,6 +94,10 @@ public final class SqlPoolResourceProperties {
      */
     @JsonProperty(value = "sourceDatabaseDeletionDate")
     private OffsetDateTime sourceDatabaseDeletionDate;
+
+    /** Creates an instance of SqlPoolResourceProperties class. */
+    public SqlPoolResourceProperties() {
+    }
 
     /**
      * Get the maxSizeBytes property: Maximum size in bytes.

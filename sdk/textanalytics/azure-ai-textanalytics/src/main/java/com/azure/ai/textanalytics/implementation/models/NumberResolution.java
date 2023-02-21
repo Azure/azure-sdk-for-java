@@ -24,7 +24,10 @@ public final class NumberResolution extends BaseResolution {
      * A numeric representation of what the extracted text denotes.
      */
     @JsonProperty(value = "value", required = true)
-    private String value;
+    private double value;
+
+    /** Creates an instance of NumberResolution class. */
+    public NumberResolution() {}
 
     /**
      * Get the numberKind property: The type of the extracted number entity.
@@ -51,7 +54,7 @@ public final class NumberResolution extends BaseResolution {
      *
      * @return the value value.
      */
-    public String getValue() {
+    public double getValue() {
         return this.value;
     }
 
@@ -61,7 +64,7 @@ public final class NumberResolution extends BaseResolution {
      * @param value the value value to set.
      * @return the NumberResolution object itself.
      */
-    public NumberResolution setValue(String value) {
+    public NumberResolution setValue(double value) {
         this.value = value;
         return this;
     }

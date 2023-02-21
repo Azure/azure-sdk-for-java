@@ -22,6 +22,9 @@ public final class JWK {
     @JsonProperty(value = "alg")
     private String alg;
 
+    /** Creates an instance of JWK class. */
+    public JWK() {}
+
     /**
      * Get the jwk property: JSON web key parameter.
      *

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.fluent.models.JobCredentialInner;
 /** Samples for JobCredentials CreateOrUpdate. */
 public final class JobCredentialsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/CreateOrUpdateJobCredential.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobCredential.json
      */
     /**
      * Sample code: Create or update a credential.
@@ -28,7 +28,7 @@ public final class JobCredentialsCreateOrUpdateSamples {
                 "server1",
                 "agent1",
                 "cred1",
-                new JobCredentialInner().withUsername("myuser").withPassword("<password>"),
+                new JobCredentialInner().withUsername("myuser").withPassword("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }

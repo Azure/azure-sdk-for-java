@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuName. */
+/**
+ * Name of SKU is RS0 (Recovery Services 0th version) and the tier is standard tier. They do not have affect on backend
+ * storage redundancy or any other vault settings. To manage storage redundancy, use the backupstorageconfig.
+ */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
     /** Static value Standard for SkuName. */
     public static final SkuName STANDARD = fromString("Standard");
 
     /** Static value RS0 for SkuName. */
     public static final SkuName RS0 = fromString("RS0");
+
+    /**
+     * Creates a new instance of SkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuName() {
+    }
 
     /**
      * Creates or finds a SkuName from its string representation.

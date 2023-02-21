@@ -21,6 +21,10 @@ public final class SyncMemberInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SyncMemberProperties innerProperties;
 
+    /** Creates an instance of SyncMemberInner class. */
+    public SyncMemberInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *
@@ -97,6 +101,64 @@ public final class SyncMemberInner extends ProxyResource {
         }
         this.innerProperties().withSqlServerDatabaseId(sqlServerDatabaseId);
         return this;
+    }
+
+    /**
+     * Get the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
+     * members in Azure.
+     *
+     * @return the syncMemberAzureDatabaseResourceId value.
+     */
+    public String syncMemberAzureDatabaseResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().syncMemberAzureDatabaseResourceId();
+    }
+
+    /**
+     * Set the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
+     * members in Azure.
+     *
+     * @param syncMemberAzureDatabaseResourceId the syncMemberAzureDatabaseResourceId value to set.
+     * @return the SyncMemberInner object itself.
+     */
+    public SyncMemberInner withSyncMemberAzureDatabaseResourceId(String syncMemberAzureDatabaseResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncMemberProperties();
+        }
+        this.innerProperties().withSyncMemberAzureDatabaseResourceId(syncMemberAzureDatabaseResourceId);
+        return this;
+    }
+
+    /**
+     * Get the usePrivateLinkConnection property: Whether to use private link connection.
+     *
+     * @return the usePrivateLinkConnection value.
+     */
+    public Boolean usePrivateLinkConnection() {
+        return this.innerProperties() == null ? null : this.innerProperties().usePrivateLinkConnection();
+    }
+
+    /**
+     * Set the usePrivateLinkConnection property: Whether to use private link connection.
+     *
+     * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
+     * @return the SyncMemberInner object itself.
+     */
+    public SyncMemberInner withUsePrivateLinkConnection(Boolean usePrivateLinkConnection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncMemberProperties();
+        }
+        this.innerProperties().withUsePrivateLinkConnection(usePrivateLinkConnection);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointName property: Private endpoint name of the sync member if use private link connection is
+     * enabled, for sync members in Azure.
+     *
+     * @return the privateEndpointName value.
+     */
+    public String privateEndpointName() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointName();
     }
 
     /**

@@ -16,6 +16,10 @@ public class Etag {
     @JsonProperty(value = "etag")
     private String etag;
 
+    /** Creates an instance of Etag class. */
+    public Etag() {
+    }
+
     /**
      * Get the etag property: Entity tag is used for comparing two or more entities from the same requested resource.
      *

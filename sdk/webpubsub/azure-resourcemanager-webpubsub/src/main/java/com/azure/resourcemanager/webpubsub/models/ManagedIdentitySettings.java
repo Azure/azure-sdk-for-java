@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed identity settings for upstream. */
 @Fluent
 public final class ManagedIdentitySettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentitySettings.class);
-
     /*
      * The Resource indicating the App ID URI of the target resource.
      * It also appears in the aud (audience) claim of the issued token.
      */
     @JsonProperty(value = "resource")
     private String resource;
+
+    /** Creates an instance of ManagedIdentitySettings class. */
+    public ManagedIdentitySettings() {
+    }
 
     /**
      * Get the resource property: The Resource indicating the App ID URI of the target resource. It also appears in the

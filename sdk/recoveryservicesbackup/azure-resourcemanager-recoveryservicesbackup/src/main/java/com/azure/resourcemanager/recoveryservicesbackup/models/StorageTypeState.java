@@ -20,6 +20,15 @@ public final class StorageTypeState extends ExpandableStringEnum<StorageTypeStat
     public static final StorageTypeState UNLOCKED = fromString("Unlocked");
 
     /**
+     * Creates a new instance of StorageTypeState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageTypeState() {
+    }
+
+    /**
      * Creates or finds a StorageTypeState from its string representation.
      *
      * @param name a name to look for.

@@ -767,6 +767,15 @@
             "name": "ForwardDeadLetteredMessagesTo",
             "namespace": "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
           }
+        },
+        "MaxMessageSizeInKilobytes": {
+          "description": "The maximum size of a message in kilobytes.",
+          "type": "integer",
+          "format": "int64",
+          "xml": {
+            "name": "MaxMessageSizeInKilobytes",
+            "namespace": "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+          }
         }
       }
     },
@@ -1129,6 +1138,15 @@
           "type": "string",
           "xml": {
             "name": "UserMetadata",
+            "namespace": "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+          }
+        },
+        "MaxMessageSizeInKilobytes": {
+          "description": "The maximum size of a message in kilobytes.",
+          "type": "integer",
+          "format": "int64",
+          "xml": {
+            "name": "MaxMessageSizeInKilobytes",
             "namespace": "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
           }
         }

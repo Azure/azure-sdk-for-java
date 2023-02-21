@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphTeamSpecialization. */
+/** teamSpecialization. */
 public final class MicrosoftGraphTeamSpecialization extends ExpandableStringEnum<MicrosoftGraphTeamSpecialization> {
     /** Static value none for MicrosoftGraphTeamSpecialization. */
     public static final MicrosoftGraphTeamSpecialization NONE = fromString("none");
@@ -47,7 +47,11 @@ public final class MicrosoftGraphTeamSpecialization extends ExpandableStringEnum
         return fromString(name, MicrosoftGraphTeamSpecialization.class);
     }
 
-    /** @return known MicrosoftGraphTeamSpecialization values. */
+    /**
+     * Gets known MicrosoftGraphTeamSpecialization values.
+     *
+     * @return known MicrosoftGraphTeamSpecialization values.
+     */
     public static Collection<MicrosoftGraphTeamSpecialization> values() {
         return values(MicrosoftGraphTeamSpecialization.class);
     }

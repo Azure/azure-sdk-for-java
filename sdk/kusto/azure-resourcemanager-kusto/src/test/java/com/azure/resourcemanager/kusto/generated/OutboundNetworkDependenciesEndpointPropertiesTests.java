@@ -9,29 +9,35 @@ import com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependencies
 import com.azure.resourcemanager.kusto.models.EndpointDependency;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OutboundNetworkDependenciesEndpointPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OutboundNetworkDependenciesEndpointProperties model =
             BinaryData
                 .fromString(
-                    "{\"category\":\"nvpamq\",\"endpoints\":[{\"domainName\":\"u\",\"endpointDetails\":[]}],\"provisioningState\":\"Deleting\"}")
+                    "{\"category\":\"odfvuefywsbp\",\"endpoints\":[{\"domainName\":\"yhrfouyftaakcpw\",\"endpointDetails\":[]},{\"domainName\":\"qtmnubexkpzk\",\"endpointDetails\":[]}],\"provisioningState\":\"Failed\"}")
                 .toObject(OutboundNetworkDependenciesEndpointProperties.class);
-        Assertions.assertEquals("nvpamq", model.category());
-        Assertions.assertEquals("u", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("odfvuefywsbp", model.category());
+        Assertions.assertEquals("yhrfouyftaakcpw", model.endpoints().get(0).domainName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OutboundNetworkDependenciesEndpointProperties model =
             new OutboundNetworkDependenciesEndpointProperties()
-                .withCategory("nvpamq")
+                .withCategory("odfvuefywsbp")
                 .withEndpoints(
-                    Arrays.asList(new EndpointDependency().withDomainName("u").withEndpointDetails(Arrays.asList())));
+                    Arrays
+                        .asList(
+                            new EndpointDependency()
+                                .withDomainName("yhrfouyftaakcpw")
+                                .withEndpointDetails(Arrays.asList()),
+                            new EndpointDependency()
+                                .withDomainName("qtmnubexkpzk")
+                                .withEndpointDetails(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(OutboundNetworkDependenciesEndpointProperties.class);
-        Assertions.assertEquals("nvpamq", model.category());
-        Assertions.assertEquals("u", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("odfvuefywsbp", model.category());
+        Assertions.assertEquals("yhrfouyftaakcpw", model.endpoints().get(0).domainName());
     }
 }

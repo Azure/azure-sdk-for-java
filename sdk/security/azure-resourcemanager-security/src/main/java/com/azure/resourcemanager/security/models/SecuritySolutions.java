@@ -38,12 +38,14 @@ public interface SecuritySolutions {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param securitySolutionName Name of security solution.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution.
+     * @return a specific Security Solution along with {@link Response}.
      */
-    SecuritySolution get(String resourceGroupName, String ascLocation, String securitySolutionName);
+    Response<SecuritySolution> getWithResponse(
+        String resourceGroupName, String ascLocation, String securitySolutionName, Context context);
 
     /**
      * Gets a specific Security Solution.
@@ -53,12 +55,10 @@ public interface SecuritySolutions {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param securitySolutionName Name of security solution.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution along with {@link Response}.
+     * @return a specific Security Solution.
      */
-    Response<SecuritySolution> getWithResponse(
-        String resourceGroupName, String ascLocation, String securitySolutionName, Context context);
+    SecuritySolution get(String resourceGroupName, String ascLocation, String securitySolutionName);
 }

@@ -20,7 +20,7 @@ public final class DeviceSecurityGroupsDeleteSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .deviceSecurityGroups()
-            .deleteWithResponse(
+            .deleteByResourceGroupWithResponse(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Devices/iotHubs/sampleiothub",
                 "samplesecuritygroup",
                 Context.NONE);

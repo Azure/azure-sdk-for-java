@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * directoryRole Represents an Azure Active Directory object. The directoryObject type is the base type for many other
- * directory entity types.
+ * directoryRole
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryObjectInner {
@@ -33,17 +35,15 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
     private String displayName;
 
     /*
-     * The id of the directoryRoleTemplate that this role is based on. The
-     * property must be specified when activating a directory role in a tenant
-     * with a POST operation. After the directory role has been activated, the
-     * property is read only.
+     * The id of the directoryRoleTemplate that this role is based on. The property must be specified when activating a
+     * directory role in a tenant with a POST operation. After the directory role has been activated, the property is
+     * read only.
      */
     @JsonProperty(value = "roleTemplateId")
     private String roleTemplateId;
 
     /*
-     * Users that are members of this directory role. HTTP Methods: GET, POST,
-     * DELETE. Read-only. Nullable.
+     * Users that are members of this directory role. HTTP Methods: GET, POST, DELETE. Read-only. Nullable.
      */
     @JsonProperty(value = "members")
     private List<MicrosoftGraphDirectoryObjectInner> members;
@@ -55,10 +55,14 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
     private List<MicrosoftGraphScopedRoleMembership> scopedMembers;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDirectoryRole class. */
+    public MicrosoftGraphDirectoryRole() {
+    }
 
     /**
      * Get the description property: The description for the directory role. Read-only.

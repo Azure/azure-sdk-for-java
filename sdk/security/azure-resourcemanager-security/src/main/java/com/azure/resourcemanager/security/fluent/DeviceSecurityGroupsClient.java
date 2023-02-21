@@ -44,20 +44,6 @@ public interface DeviceSecurityGroupsClient {
      * @param resourceId The identifier of the resource.
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
      *     group is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeviceSecurityGroupInner get(String resourceId, String deviceSecurityGroupName);
-
-    /**
-     * Use this method to get the device security group for the specified IoT Hub resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
-     *     group is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,20 +55,18 @@ public interface DeviceSecurityGroupsClient {
         String resourceId, String deviceSecurityGroupName, Context context);
 
     /**
-     * Use this method to creates or updates the device security group on a specified IoT Hub resource.
+     * Use this method to get the device security group for the specified IoT Hub resource.
      *
      * @param resourceId The identifier of the resource.
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
      *     group is case insensitive.
-     * @param deviceSecurityGroup Security group object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the device security group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeviceSecurityGroupInner createOrUpdate(
-        String resourceId, String deviceSecurityGroupName, DeviceSecurityGroupInner deviceSecurityGroup);
+    DeviceSecurityGroupInner get(String resourceId, String deviceSecurityGroupName);
 
     /**
      * Use this method to creates or updates the device security group on a specified IoT Hub resource.
@@ -105,17 +89,20 @@ public interface DeviceSecurityGroupsClient {
         Context context);
 
     /**
-     * User this method to deletes the device security group.
+     * Use this method to creates or updates the device security group on a specified IoT Hub resource.
      *
      * @param resourceId The identifier of the resource.
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
      *     group is case insensitive.
+     * @param deviceSecurityGroup Security group object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the device security group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceId, String deviceSecurityGroupName);
+    DeviceSecurityGroupInner createOrUpdate(
+        String resourceId, String deviceSecurityGroupName, DeviceSecurityGroupInner deviceSecurityGroup);
 
     /**
      * User this method to deletes the device security group.
@@ -131,4 +118,17 @@ public interface DeviceSecurityGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceId, String deviceSecurityGroupName, Context context);
+
+    /**
+     * User this method to deletes the device security group.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
+     *     group is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceId, String deviceSecurityGroupName);
 }

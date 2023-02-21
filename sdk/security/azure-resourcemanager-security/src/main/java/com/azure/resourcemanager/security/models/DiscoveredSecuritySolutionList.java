@@ -24,6 +24,10 @@ public final class DiscoveredSecuritySolutionList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DiscoveredSecuritySolutionList class. */
+    public DiscoveredSecuritySolutionList() {
+    }
+
     /**
      * Get the value property: The value property.
      *

@@ -29,6 +29,10 @@ public class ListCustomAlertRule extends CustomAlertRule {
     @JsonProperty(value = "valueType", access = JsonProperty.Access.WRITE_ONLY)
     private ValueType valueType;
 
+    /** Creates an instance of ListCustomAlertRule class. */
+    public ListCustomAlertRule() {
+    }
+
     /**
      * Get the valueType property: The value type of the items in the list.
      *

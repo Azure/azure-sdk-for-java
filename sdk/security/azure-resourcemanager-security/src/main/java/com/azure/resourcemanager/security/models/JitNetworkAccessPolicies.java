@@ -118,21 +118,6 @@ public interface JitNetworkAccessPolicies {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    JitNetworkAccessPolicy get(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName);
-
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,7 +128,7 @@ public interface JitNetworkAccessPolicies {
         String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName, Context context);
 
     /**
-     * Delete a Just-in-Time access control policy.
+     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -153,8 +138,9 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void delete(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName);
+    JitNetworkAccessPolicy get(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName);
 
     /**
      * Delete a Just-in-Time access control policy.
@@ -174,24 +160,18 @@ public interface JitNetworkAccessPolicies {
         String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName, Context context);
 
     /**
-     * Initiate a JIT access from a specific Just-in-Time policy configuration.
+     * Delete a Just-in-Time access control policy.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    JitNetworkAccessRequest initiate(
-        String resourceGroupName,
-        String ascLocation,
-        String jitNetworkAccessPolicyName,
-        JitNetworkAccessPolicyInitiateRequest body);
+    void delete(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName);
 
     /**
      * Initiate a JIT access from a specific Just-in-Time policy configuration.
@@ -214,6 +194,26 @@ public interface JitNetworkAccessPolicies {
         String jitNetworkAccessPolicyName,
         JitNetworkAccessPolicyInitiateRequest body,
         Context context);
+
+    /**
+     * Initiate a JIT access from a specific Just-in-Time policy configuration.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    JitNetworkAccessRequest initiate(
+        String resourceGroupName,
+        String ascLocation,
+        String jitNetworkAccessPolicyName,
+        JitNetworkAccessPolicyInitiateRequest body);
 
     /**
      * Policies for protecting resources using Just-in-Time access control for the subscription, location.

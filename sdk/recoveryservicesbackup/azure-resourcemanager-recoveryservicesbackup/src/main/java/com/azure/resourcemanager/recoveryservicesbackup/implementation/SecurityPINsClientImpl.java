@@ -52,7 +52,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface SecurityPINsService {
+    public interface SecurityPINsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

@@ -70,15 +70,6 @@ public final class AlertsImpl implements Alerts {
         return Utils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
     }
 
-    public Alert getSubscriptionLevel(String ascLocation, String alertName) {
-        AlertInner inner = this.serviceClient().getSubscriptionLevel(ascLocation, alertName);
-        if (inner != null) {
-            return new AlertImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Alert> getSubscriptionLevelWithResponse(String ascLocation, String alertName, Context context) {
         Response<AlertInner> inner =
             this.serviceClient().getSubscriptionLevelWithResponse(ascLocation, alertName, context);
@@ -93,8 +84,8 @@ public final class AlertsImpl implements Alerts {
         }
     }
 
-    public Alert getResourceGroupLevel(String resourceGroupName, String ascLocation, String alertName) {
-        AlertInner inner = this.serviceClient().getResourceGroupLevel(resourceGroupName, ascLocation, alertName);
+    public Alert getSubscriptionLevel(String ascLocation, String alertName) {
+        AlertInner inner = this.serviceClient().getSubscriptionLevel(ascLocation, alertName);
         if (inner != null) {
             return new AlertImpl(inner, this.manager());
         } else {
@@ -117,8 +108,13 @@ public final class AlertsImpl implements Alerts {
         }
     }
 
-    public void updateSubscriptionLevelStateToDismiss(String ascLocation, String alertName) {
-        this.serviceClient().updateSubscriptionLevelStateToDismiss(ascLocation, alertName);
+    public Alert getResourceGroupLevel(String resourceGroupName, String ascLocation, String alertName) {
+        AlertInner inner = this.serviceClient().getResourceGroupLevel(resourceGroupName, ascLocation, alertName);
+        if (inner != null) {
+            return new AlertImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> updateSubscriptionLevelStateToDismissWithResponse(
@@ -126,8 +122,8 @@ public final class AlertsImpl implements Alerts {
         return this.serviceClient().updateSubscriptionLevelStateToDismissWithResponse(ascLocation, alertName, context);
     }
 
-    public void updateSubscriptionLevelStateToResolve(String ascLocation, String alertName) {
-        this.serviceClient().updateSubscriptionLevelStateToResolve(ascLocation, alertName);
+    public void updateSubscriptionLevelStateToDismiss(String ascLocation, String alertName) {
+        this.serviceClient().updateSubscriptionLevelStateToDismiss(ascLocation, alertName);
     }
 
     public Response<Void> updateSubscriptionLevelStateToResolveWithResponse(
@@ -135,8 +131,8 @@ public final class AlertsImpl implements Alerts {
         return this.serviceClient().updateSubscriptionLevelStateToResolveWithResponse(ascLocation, alertName, context);
     }
 
-    public void updateSubscriptionLevelStateToActivate(String ascLocation, String alertName) {
-        this.serviceClient().updateSubscriptionLevelStateToActivate(ascLocation, alertName);
+    public void updateSubscriptionLevelStateToResolve(String ascLocation, String alertName) {
+        this.serviceClient().updateSubscriptionLevelStateToResolve(ascLocation, alertName);
     }
 
     public Response<Void> updateSubscriptionLevelStateToActivateWithResponse(
@@ -144,8 +140,8 @@ public final class AlertsImpl implements Alerts {
         return this.serviceClient().updateSubscriptionLevelStateToActivateWithResponse(ascLocation, alertName, context);
     }
 
-    public void updateSubscriptionLevelStateToInProgress(String ascLocation, String alertName) {
-        this.serviceClient().updateSubscriptionLevelStateToInProgress(ascLocation, alertName);
+    public void updateSubscriptionLevelStateToActivate(String ascLocation, String alertName) {
+        this.serviceClient().updateSubscriptionLevelStateToActivate(ascLocation, alertName);
     }
 
     public Response<Void> updateSubscriptionLevelStateToInProgressWithResponse(
@@ -155,8 +151,8 @@ public final class AlertsImpl implements Alerts {
             .updateSubscriptionLevelStateToInProgressWithResponse(ascLocation, alertName, context);
     }
 
-    public void updateResourceGroupLevelStateToResolve(String resourceGroupName, String ascLocation, String alertName) {
-        this.serviceClient().updateResourceGroupLevelStateToResolve(resourceGroupName, ascLocation, alertName);
+    public void updateSubscriptionLevelStateToInProgress(String ascLocation, String alertName) {
+        this.serviceClient().updateSubscriptionLevelStateToInProgress(ascLocation, alertName);
     }
 
     public Response<Void> updateResourceGroupLevelStateToResolveWithResponse(
@@ -166,8 +162,8 @@ public final class AlertsImpl implements Alerts {
             .updateResourceGroupLevelStateToResolveWithResponse(resourceGroupName, ascLocation, alertName, context);
     }
 
-    public void updateResourceGroupLevelStateToDismiss(String resourceGroupName, String ascLocation, String alertName) {
-        this.serviceClient().updateResourceGroupLevelStateToDismiss(resourceGroupName, ascLocation, alertName);
+    public void updateResourceGroupLevelStateToResolve(String resourceGroupName, String ascLocation, String alertName) {
+        this.serviceClient().updateResourceGroupLevelStateToResolve(resourceGroupName, ascLocation, alertName);
     }
 
     public Response<Void> updateResourceGroupLevelStateToDismissWithResponse(
@@ -177,9 +173,8 @@ public final class AlertsImpl implements Alerts {
             .updateResourceGroupLevelStateToDismissWithResponse(resourceGroupName, ascLocation, alertName, context);
     }
 
-    public void updateResourceGroupLevelStateToActivate(
-        String resourceGroupName, String ascLocation, String alertName) {
-        this.serviceClient().updateResourceGroupLevelStateToActivate(resourceGroupName, ascLocation, alertName);
+    public void updateResourceGroupLevelStateToDismiss(String resourceGroupName, String ascLocation, String alertName) {
+        this.serviceClient().updateResourceGroupLevelStateToDismiss(resourceGroupName, ascLocation, alertName);
     }
 
     public Response<Void> updateResourceGroupLevelStateToActivateWithResponse(
@@ -189,9 +184,9 @@ public final class AlertsImpl implements Alerts {
             .updateResourceGroupLevelStateToActivateWithResponse(resourceGroupName, ascLocation, alertName, context);
     }
 
-    public void updateResourceGroupLevelStateToInProgress(
+    public void updateResourceGroupLevelStateToActivate(
         String resourceGroupName, String ascLocation, String alertName) {
-        this.serviceClient().updateResourceGroupLevelStateToInProgress(resourceGroupName, ascLocation, alertName);
+        this.serviceClient().updateResourceGroupLevelStateToActivate(resourceGroupName, ascLocation, alertName);
     }
 
     public Response<Void> updateResourceGroupLevelStateToInProgressWithResponse(
@@ -199,6 +194,11 @@ public final class AlertsImpl implements Alerts {
         return this
             .serviceClient()
             .updateResourceGroupLevelStateToInProgressWithResponse(resourceGroupName, ascLocation, alertName, context);
+    }
+
+    public void updateResourceGroupLevelStateToInProgress(
+        String resourceGroupName, String ascLocation, String alertName) {
+        this.serviceClient().updateResourceGroupLevelStateToInProgress(resourceGroupName, ascLocation, alertName);
     }
 
     public void simulate(String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody) {

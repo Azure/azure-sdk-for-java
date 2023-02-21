@@ -36,6 +36,10 @@ public final class CheckNameResultInner {
     @JsonProperty(value = "reason")
     private Reason reason;
 
+    /** Creates an instance of CheckNameResultInner class. */
+    public CheckNameResultInner() {
+    }
+
     /**
      * Get the nameAvailable property: Specifies a Boolean value that indicates if the name is available.
      *

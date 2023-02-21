@@ -26,6 +26,10 @@ public final class MicrosoftGraphWorkbookChartPointFormat extends MicrosoftGraph
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartPointFormat class. */
+    public MicrosoftGraphWorkbookChartPointFormat() {
+    }
+
     /**
      * Get the fill property: workbookChartFill.
      *

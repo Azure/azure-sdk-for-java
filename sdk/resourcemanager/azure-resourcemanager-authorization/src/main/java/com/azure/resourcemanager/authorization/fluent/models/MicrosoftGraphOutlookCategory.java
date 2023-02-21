@@ -22,8 +22,8 @@ public final class MicrosoftGraphOutlookCategory extends MicrosoftGraphEntity {
     private MicrosoftGraphCategoryColor color;
 
     /*
-     * A unique name that identifies a category in the user's mailbox. After a
-     * category is created, the name cannot be changed. Read-only.
+     * A unique name that identifies a category in the user's mailbox. After a category is created, the name cannot be
+     * changed. Read-only.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
@@ -32,6 +32,10 @@ public final class MicrosoftGraphOutlookCategory extends MicrosoftGraphEntity {
      * outlookCategory
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOutlookCategory class. */
+    public MicrosoftGraphOutlookCategory() {
+    }
 
     /**
      * Get the color property: categoryColor.

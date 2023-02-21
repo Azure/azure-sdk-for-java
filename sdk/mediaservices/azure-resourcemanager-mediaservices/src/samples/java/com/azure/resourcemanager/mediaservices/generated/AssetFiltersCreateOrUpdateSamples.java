@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for AssetFilters CreateOrUpdate. */
 public final class AssetFiltersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assetFilters-create.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/assetFilters-create.json
      */
     /**
      * Sample code: Create an Asset Filter.
@@ -26,7 +26,7 @@ public final class AssetFiltersCreateOrUpdateSamples {
         manager
             .assetFilters()
             .define("newAssetFilter")
-            .withExistingAsset("contoso", "contosomedia", "ClimbingMountRainer")
+            .withExistingAsset("contosorg", "contosomedia", "ClimbingMountRainer")
             .withPresentationTimeRange(
                 new PresentationTimeRange()
                     .withStartTimestamp(0L)

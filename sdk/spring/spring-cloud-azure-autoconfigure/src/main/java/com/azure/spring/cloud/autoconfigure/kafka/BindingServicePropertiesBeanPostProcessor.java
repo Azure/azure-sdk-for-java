@@ -21,27 +21,39 @@ import java.util.Map;
 class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
 
     static final String SPRING_MAIN_SOURCES_PROPERTY = "spring.main.sources";
-    private static final String KAKFA_BINDER_DEFAULT_NAME = "kafka";
-    private static final String KAKFA_BINDER_TYPE = "kafka";
+
+    static final String KAFKA_OAUTH2_SPRING_MAIN_SOURCES = String.join(",",
+        AzureKafkaSpringCloudStreamConfiguration.class.getName(),
+        AzureEventHubsKafkaOAuth2AutoConfiguration.class.getName());
+    private static final String DEFAULT_KAFKA_BINDER_NAME = "kafka";
+    private static final String KAFKA_BINDER_TYPE = "kafka";
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof BindingServiceProperties) {
             BindingServiceProperties bindingServiceProperties = (BindingServiceProperties) bean;
             if (bindingServiceProperties.getBinders().isEmpty()) {
-                BinderProperties kafkaBinderSourceProperty = new BinderProperties();
-                configureBinderSources(readSpringMainPropertiesMap(kafkaBinderSourceProperty.getEnvironment()));
+                Map<String, Object> environment = new HashMap<>();
+                Map<String, Object> springMainPropertiesMap = getOrCreateSpringMainPropertiesMap(environment);
+                configureSpringMainSources(springMainPropertiesMap);
 
-                Map<String, BinderProperties> kafkaBinderPropertyMap = new HashMap<>();
-                kafkaBinderPropertyMap.put(KAKFA_BINDER_DEFAULT_NAME, kafkaBinderSourceProperty);
+                BinderProperties defaultKafkaBinder = new BinderProperties();
+                defaultKafkaBinder.setEnvironment(environment);
 
-                bindingServiceProperties.setBinders(kafkaBinderPropertyMap);
+                Map<String, BinderProperties> binders = new HashMap<>();
+                binders.put(DEFAULT_KAFKA_BINDER_NAME, defaultKafkaBinder);
+
+                bindingServiceProperties.setBinders(binders);
             } else {
                 for (Map.Entry<String, BinderProperties> entry : bindingServiceProperties.getBinders().entrySet()) {
-                    if (entry.getKey() != null && entry.getValue() != null
-                            && (KAKFA_BINDER_TYPE.equalsIgnoreCase(entry.getValue().getType())
-                            || KAKFA_BINDER_DEFAULT_NAME.equalsIgnoreCase(entry.getKey()))) {
-                        configureBinderSources(readSpringMainPropertiesMap(entry.getValue().getEnvironment()));
+                    if (entry.getKey() != null && entry.getValue() != null) {
+                        boolean isBinderTypeKafka = KAFKA_BINDER_TYPE.equalsIgnoreCase(entry.getValue().getType());
+                        boolean isBinderNameKafka = DEFAULT_KAFKA_BINDER_NAME.equalsIgnoreCase(entry.getKey());
+                        if (isBinderTypeKafka || isBinderNameKafka) {
+                            Map<String, Object> environment = entry.getValue().getEnvironment();
+                            Map<String, Object> springMainPropertiesMap = getOrCreateSpringMainPropertiesMap(environment);
+                            configureSpringMainSources(springMainPropertiesMap);
+                        }
                     }
                 }
             }
@@ -49,31 +61,17 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
-    void configureBinderSources(Map<String, Object> originalSources) {
-        StringBuilder sources = new StringBuilder(AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
-        if (StringUtils.hasText((String) originalSources.get("sources"))) {
-            sources.append("," + originalSources.get("sources"));
+    void configureSpringMainSources(Map<String, Object> springMainPropertiesMap) {
+        String sources = KAFKA_OAUTH2_SPRING_MAIN_SOURCES;
+        if (StringUtils.hasText((String) springMainPropertiesMap.get("sources"))) {
+            sources += "," + springMainPropertiesMap.get("sources");
         }
-        originalSources.put("sources", sources.toString());
+        springMainPropertiesMap.put("sources", sources);
     }
 
     @SuppressWarnings("unchecked")
-    Map<String, Object> readSpringMainPropertiesMap(Map<String, Object> map) {
-        if (map.containsKey("spring")) {
-            Map<String, Object> spring = (Map<String, Object>) map.get("spring");
-            if (spring.containsKey("main")) {
-                return (Map<String, Object>) spring.get("main");
-            } else {
-                LinkedHashMap<String, Object> main = new LinkedHashMap<>();
-                spring.put("main", main);
-                return main;
-            }
-        } else {
-            Map<String, Object> main = new LinkedHashMap<>();
-            Map<String, Object> spring = new LinkedHashMap<>();
-            spring.put("main", main);
-            map.put("spring", spring);
-            return main;
-        }
+    Map<String, Object> getOrCreateSpringMainPropertiesMap(Map<String, Object> map) {
+        Map<String, Object> spring = (Map<String, Object>) map.computeIfAbsent("spring", k -> new LinkedHashMap<String, Object>());
+        return (Map<String, Object>) spring.computeIfAbsent("main", k -> new LinkedHashMap<String, Object>());
     }
 }

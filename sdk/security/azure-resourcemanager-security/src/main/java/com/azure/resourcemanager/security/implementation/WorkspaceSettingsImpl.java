@@ -37,15 +37,6 @@ public final class WorkspaceSettingsImpl implements WorkspaceSettings {
         return Utils.mapPage(inner, inner1 -> new WorkspaceSettingImpl(inner1, this.manager()));
     }
 
-    public WorkspaceSetting get(String workspaceSettingName) {
-        WorkspaceSettingInner inner = this.serviceClient().get(workspaceSettingName);
-        if (inner != null) {
-            return new WorkspaceSettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WorkspaceSetting> getWithResponse(String workspaceSettingName, Context context) {
         Response<WorkspaceSettingInner> inner = this.serviceClient().getWithResponse(workspaceSettingName, context);
         if (inner != null) {
@@ -59,12 +50,21 @@ public final class WorkspaceSettingsImpl implements WorkspaceSettings {
         }
     }
 
-    public void delete(String workspaceSettingName) {
-        this.serviceClient().delete(workspaceSettingName);
+    public WorkspaceSetting get(String workspaceSettingName) {
+        WorkspaceSettingInner inner = this.serviceClient().get(workspaceSettingName);
+        if (inner != null) {
+            return new WorkspaceSettingImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String workspaceSettingName, Context context) {
         return this.serviceClient().deleteWithResponse(workspaceSettingName, context);
+    }
+
+    public void delete(String workspaceSettingName) {
+        this.serviceClient().delete(workspaceSettingName);
     }
 
     public WorkspaceSetting getById(String id) {

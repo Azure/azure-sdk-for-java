@@ -28,6 +28,15 @@ public final class RemoteLoginPortPublicAccess extends ExpandableStringEnum<Remo
     public static final RemoteLoginPortPublicAccess NOT_SPECIFIED = fromString("NotSpecified");
 
     /**
+     * Creates a new instance of RemoteLoginPortPublicAccess value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RemoteLoginPortPublicAccess() {
+    }
+
+    /**
      * Creates or finds a RemoteLoginPortPublicAccess from its string representation.
      *
      * @param name a name to look for.

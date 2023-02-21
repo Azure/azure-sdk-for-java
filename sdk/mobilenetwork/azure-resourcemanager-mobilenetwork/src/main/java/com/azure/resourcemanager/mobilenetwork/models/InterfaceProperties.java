@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class InterfaceProperties {
     /*
-     * The logical name for this interface. This should match one of the
-     * interfaces configured on your Azure Stack Edge device.
+     * The logical name for this interface. This should match one of the interfaces configured on your Azure Stack Edge
+     * device.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -34,6 +34,10 @@ public final class InterfaceProperties {
      */
     @JsonProperty(value = "ipv4Gateway")
     private String ipv4Gateway;
+
+    /** Creates an instance of InterfaceProperties class. */
+    public InterfaceProperties() {
+    }
 
     /**
      * Get the name property: The logical name for this interface. This should match one of the interfaces configured on

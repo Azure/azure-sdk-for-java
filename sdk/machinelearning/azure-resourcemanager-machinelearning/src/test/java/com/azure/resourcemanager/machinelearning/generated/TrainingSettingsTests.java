@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.StackMetaLearnerType;
 import com.azure.resourcemanager.machinelearning.models.TrainingSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TrainingSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TrainingSettings model =
             BinaryData
                 .fromString(
@@ -32,8 +31,8 @@ public final class TrainingSettingsTests {
                 StackMetaLearnerType.LOGISTIC_REGRESSION_CV, model.stackEnsembleSettings().stackMetaLearnerType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TrainingSettings model =
             new TrainingSettings()
                 .withEnableDnnTraining(false)

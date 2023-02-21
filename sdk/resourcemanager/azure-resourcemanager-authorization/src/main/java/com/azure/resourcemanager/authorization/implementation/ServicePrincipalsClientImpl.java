@@ -53,7 +53,7 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftGraphClient")
-    private interface ServicePrincipalsService {
+    public interface ServicePrincipalsService {
         @Headers({"Content-Type: application/json"})
         @Post("/servicePrincipals/{servicePrincipal-id}/microsoft.graph.addKey")
         @ExpectedResponses({200})
@@ -159,31 +159,7 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphKeyCredentialInner> addKeyAsync(
         String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body) {
-        return addKeyWithResponseAsync(servicePrincipalId, body)
-            .flatMap(
-                (Response<MicrosoftGraphKeyCredentialInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Invoke action addKey.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keyCredential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphKeyCredentialInner addKey(
-        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body) {
-        return addKeyAsync(servicePrincipalId, body).block();
+        return addKeyWithResponseAsync(servicePrincipalId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -201,6 +177,22 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
     public Response<MicrosoftGraphKeyCredentialInner> addKeyWithResponse(
         String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body, Context context) {
         return addKeyWithResponseAsync(servicePrincipalId, body, context).block();
+    }
+
+    /**
+     * Invoke action addKey.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keyCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphKeyCredentialInner addKey(
+        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body) {
+        return addKeyWithResponse(servicePrincipalId, body, Context.NONE).getValue();
     }
 
     /**
@@ -285,31 +277,7 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphPasswordCredentialInner> addPasswordAsync(
         String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body) {
-        return addPasswordWithResponseAsync(servicePrincipalId, body)
-            .flatMap(
-                (Response<MicrosoftGraphPasswordCredentialInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Invoke action addPassword.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return passwordCredential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphPasswordCredentialInner addPassword(
-        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body) {
-        return addPasswordAsync(servicePrincipalId, body).block();
+        return addPasswordWithResponseAsync(servicePrincipalId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -327,5 +295,21 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
     public Response<MicrosoftGraphPasswordCredentialInner> addPasswordWithResponse(
         String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body, Context context) {
         return addPasswordWithResponseAsync(servicePrincipalId, body, context).block();
+    }
+
+    /**
+     * Invoke action addPassword.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return passwordCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphPasswordCredentialInner addPassword(
+        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body) {
+        return addPasswordWithResponse(servicePrincipalId, body, Context.NONE).getValue();
     }
 }

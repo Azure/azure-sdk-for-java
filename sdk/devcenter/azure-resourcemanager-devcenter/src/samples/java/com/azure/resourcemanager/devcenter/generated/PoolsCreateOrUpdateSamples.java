@@ -10,7 +10,7 @@ import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 /** Samples for Pools CreateOrUpdate. */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Pools_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_Put.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -20,9 +20,9 @@ public final class PoolsCreateOrUpdateSamples {
     public static void poolsCreateOrUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         manager
             .pools()
-            .define("{poolName}")
+            .define("DevPool")
             .withRegion("centralus")
-            .withExistingProject("rg1", "{projectName}")
+            .withExistingProject("rg1", "DevProject")
             .withDevBoxDefinitionName("WebDevBox")
             .withNetworkConnectionName("Network1-westus2")
             .withLicenseType(LicenseType.WINDOWS_CLIENT)

@@ -11,6 +11,7 @@ import com.azure.resourcemanager.batch.models.AutoStorageProperties;
 import com.azure.resourcemanager.batch.models.BatchAccountIdentity;
 import com.azure.resourcemanager.batch.models.EncryptionProperties;
 import com.azure.resourcemanager.batch.models.KeyVaultReference;
+import com.azure.resourcemanager.batch.models.NetworkProfile;
 import com.azure.resourcemanager.batch.models.PoolAllocationMode;
 import com.azure.resourcemanager.batch.models.ProvisioningState;
 import com.azure.resourcemanager.batch.models.PublicNetworkAccessType;
@@ -33,6 +34,10 @@ public final class BatchAccountInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private BatchAccountIdentity identity;
+
+    /** Creates an instance of BatchAccountInner class. */
+    public BatchAccountInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties associated with the account.
@@ -87,6 +92,16 @@ public final class BatchAccountInner extends Resource {
     }
 
     /**
+     * Get the nodeManagementEndpoint property: The endpoint used by compute node to connect to the Batch node
+     * management service.
+     *
+     * @return the nodeManagementEndpoint value.
+     */
+    public String nodeManagementEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodeManagementEndpoint();
+    }
+
+    /**
      * Get the provisioningState property: The provisioned state of the resource.
      *
      * @return the provisioningState value.
@@ -123,6 +138,43 @@ public final class BatchAccountInner extends Resource {
     }
 
     /**
+     * Set the publicNetworkAccess property: If not specified, the default value is 'enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the BatchAccountInner object itself.
+     */
+    public BatchAccountInner withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BatchAccountProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @return the networkProfile value.
+     */
+    public NetworkProfile networkProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
+    }
+
+    /**
+     * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the BatchAccountInner object itself.
+     */
+    public BatchAccountInner withNetworkProfile(NetworkProfile networkProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BatchAccountProperties();
+        }
+        this.innerProperties().withNetworkProfile(networkProfile);
+        return this;
+    }
+
+    /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the Batch
      * account.
      *
@@ -154,8 +206,10 @@ public final class BatchAccountInner extends Resource {
     }
 
     /**
-     * Get the dedicatedCoreQuota property: The dedicated core quota for the Batch account. For accounts with
-     * PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
+     * Get the dedicatedCoreQuota property: The dedicated core quota for the Batch account.
+     *
+     * <p>For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this
+     * value is not returned.
      *
      * @return the dedicatedCoreQuota value.
      */
@@ -164,8 +218,10 @@ public final class BatchAccountInner extends Resource {
     }
 
     /**
-     * Get the lowPriorityCoreQuota property: The Spot/low-priority core quota for the Batch account. For accounts with
-     * PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
+     * Get the lowPriorityCoreQuota property: The Spot/low-priority core quota for the Batch account.
+     *
+     * <p>For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this
+     * value is not returned.
      *
      * @return the lowPriorityCoreQuota value.
      */
@@ -186,12 +242,11 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Get the dedicatedCoreQuotaPerVMFamilyEnforced property: A value indicating whether core quotas per Virtual
-     * Machine family are enforced for this account Batch is transitioning its core quota system for dedicated cores to
-     * be enforced per Virtual Machine family. During this transitional phase, the dedicated core quota per Virtual
-     * Machine family may not yet be enforced. If this flag is false, dedicated core quota is enforced via the old
-     * dedicatedCoreQuota property on the account and does not consider Virtual Machine family. If this flag is true,
-     * dedicated core quota is enforced via the dedicatedCoreQuotaPerVMFamily property on the account, and the old
-     * dedicatedCoreQuota does not apply.
+     * Machine family are enforced for this account
+     *
+     * <p>If this flag is true, dedicated core quota is enforced via both the dedicatedCoreQuotaPerVMFamily and
+     * dedicatedCoreQuota properties on the account. If this flag is false, dedicated core quota is enforced only via
+     * the dedicatedCoreQuota property on the account and does not consider Virtual Machine family.
      *
      * @return the dedicatedCoreQuotaPerVMFamilyEnforced value.
      */

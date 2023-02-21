@@ -24,6 +24,10 @@ public final class SqlContainerGetProperties {
     @JsonProperty(value = "options")
     private SqlContainerGetPropertiesOptions options;
 
+    /** Creates an instance of SqlContainerGetProperties class. */
+    public SqlContainerGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

@@ -26,10 +26,14 @@ public final class SimGroupPropertiesFormat {
     private KeyVaultKey encryptionKey;
 
     /*
-     * Mobile network that this SIM belongs to
+     * Mobile network that this SIM group belongs to. The mobile network must be in the same location as the SIM group.
      */
     @JsonProperty(value = "mobileNetwork")
     private MobileNetworkResourceId mobileNetwork;
+
+    /** Creates an instance of SimGroupPropertiesFormat class. */
+    public SimGroupPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the SIM group resource.
@@ -61,7 +65,8 @@ public final class SimGroupPropertiesFormat {
     }
 
     /**
-     * Get the mobileNetwork property: Mobile network that this SIM belongs to.
+     * Get the mobileNetwork property: Mobile network that this SIM group belongs to. The mobile network must be in the
+     * same location as the SIM group.
      *
      * @return the mobileNetwork value.
      */
@@ -70,7 +75,8 @@ public final class SimGroupPropertiesFormat {
     }
 
     /**
-     * Set the mobileNetwork property: Mobile network that this SIM belongs to.
+     * Set the mobileNetwork property: Mobile network that this SIM group belongs to. The mobile network must be in the
+     * same location as the SIM group.
      *
      * @param mobileNetwork the mobileNetwork value to set.
      * @return the SimGroupPropertiesFormat object itself.

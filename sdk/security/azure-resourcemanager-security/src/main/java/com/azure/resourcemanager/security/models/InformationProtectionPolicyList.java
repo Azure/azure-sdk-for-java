@@ -24,6 +24,10 @@ public final class InformationProtectionPolicyList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of InformationProtectionPolicyList class. */
+    public InformationProtectionPolicyList() {
+    }
+
     /**
      * Get the value property: List of information protection policies.
      *

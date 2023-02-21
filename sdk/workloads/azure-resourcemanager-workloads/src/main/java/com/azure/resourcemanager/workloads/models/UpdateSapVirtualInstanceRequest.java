@@ -25,6 +25,10 @@ public final class UpdateSapVirtualInstanceRequest {
     @JsonProperty(value = "identity")
     private UserAssignedServiceIdentity identity;
 
+    /** Creates an instance of UpdateSapVirtualInstanceRequest class. */
+    public UpdateSapVirtualInstanceRequest() {
+    }
+
     /**
      * Get the tags property: Gets or sets the Resource tags.
      *

@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -51,6 +52,18 @@ public final class DirectoriesForceCloseHandlesHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
+    private static final HttpHeaderName X_MS_MARKER = HttpHeaderName.fromString("x-ms-marker");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_NUMBER_OF_HANDLES_CLOSED =
+            HttpHeaderName.fromString("x-ms-number-of-handles-closed");
+
+    private static final HttpHeaderName X_MS_NUMBER_OF_HANDLES_FAILED =
+            HttpHeaderName.fromString("x-ms-number-of-handles-failed");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of DirectoriesForceCloseHandlesHeaders class.
@@ -58,18 +71,18 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public DirectoriesForceCloseHandlesHeaders(HttpHeaders rawHeaders) {
-        this.xMsMarker = rawHeaders.getValue("x-ms-marker");
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        String xMsNumberOfHandlesClosed = rawHeaders.getValue("x-ms-number-of-handles-closed");
+        this.xMsMarker = rawHeaders.getValue(X_MS_MARKER);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsNumberOfHandlesClosed = rawHeaders.getValue(X_MS_NUMBER_OF_HANDLES_CLOSED);
         if (xMsNumberOfHandlesClosed != null) {
             this.xMsNumberOfHandlesClosed = Integer.parseInt(xMsNumberOfHandlesClosed);
         }
-        String xMsNumberOfHandlesFailed = rawHeaders.getValue("x-ms-number-of-handles-failed");
+        String xMsNumberOfHandlesFailed = rawHeaders.getValue(X_MS_NUMBER_OF_HANDLES_FAILED);
         if (xMsNumberOfHandlesFailed != null) {
             this.xMsNumberOfHandlesFailed = Integer.parseInt(xMsNumberOfHandlesFailed);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }

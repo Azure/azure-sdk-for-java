@@ -26,6 +26,10 @@ public final class ScopeElement {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ScopeElement class. */
+    public ScopeElement() {
+    }
+
     /**
      * Get the field property: The alert entity type to suppress by.
      *

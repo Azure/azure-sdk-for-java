@@ -55,7 +55,7 @@ public final class ComplianceResultsClientImpl implements ComplianceResultsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterCompli")
-    private interface ComplianceResultsService {
+    public interface ComplianceResultsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Security/complianceResults")
         @ExpectedResponses({200})
@@ -318,21 +318,6 @@ public final class ComplianceResultsClientImpl implements ComplianceResultsClien
      *
      * @param resourceId The identifier of the resource.
      * @param complianceResultName name of the desired assessment compliance result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a compliance result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComplianceResultInner get(String resourceId, String complianceResultName) {
-        return getAsync(resourceId, complianceResultName).block();
-    }
-
-    /**
-     * Security Compliance Result.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param complianceResultName name of the desired assessment compliance result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -343,6 +328,21 @@ public final class ComplianceResultsClientImpl implements ComplianceResultsClien
     public Response<ComplianceResultInner> getWithResponse(
         String resourceId, String complianceResultName, Context context) {
         return getWithResponseAsync(resourceId, complianceResultName, context).block();
+    }
+
+    /**
+     * Security Compliance Result.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param complianceResultName name of the desired assessment compliance result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a compliance result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ComplianceResultInner get(String resourceId, String complianceResultName) {
+        return getWithResponse(resourceId, complianceResultName, Context.NONE).getValue();
     }
 
     /**

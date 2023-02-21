@@ -18,7 +18,7 @@ public class CreateCallOptions {
     /**
      * The source property.
      */
-    private final CommunicationIdentifier source;
+    private final CallSource source;
 
     /**
      * The targets of the call.
@@ -30,11 +30,10 @@ public class CreateCallOptions {
      */
     private final String callbackUrl;
 
-    /**
-     * The source caller Id that's shown to the PSTN participant being invited.
-     * Required only when inviting a PSTN participant.
+    /*
+     * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    private String sourceCallerId;
+    private String azureCognitiveServicesEndpointUrl;
 
     /**
      * A customer set value used to track the answering of a call.
@@ -58,7 +57,7 @@ public class CreateCallOptions {
      * @param targets The targets of the call.
      * @param callbackUrl The call back URI.
      */
-    public CreateCallOptions(CommunicationIdentifier source, List<CommunicationIdentifier> targets, String callbackUrl) {
+    public CreateCallOptions(CallSource source, List<CommunicationIdentifier> targets, String callbackUrl) {
         this.source = source;
         this.targets = targets;
         this.callbackUrl = callbackUrl;
@@ -70,7 +69,7 @@ public class CreateCallOptions {
      *
      * @return the source value.
      */
-    public CommunicationIdentifier getSource() {
+    public CallSource getSource() {
         return source;
     }
 
@@ -93,21 +92,22 @@ public class CreateCallOptions {
     }
 
     /**
+     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @return the azureCognitiveServicesEndpointUrl value.
+     */
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return this.azureCognitiveServicesEndpointUrl;
+    }
+
+    /**
      * Get the operationContext: A customer set value used to track the answering of a call.
      *
      * @return the operationContext value.
      */
     public String getOperationContext() {
         return operationContext;
-    }
-
-    /**
-     * Get the source caller Id that's shown to the PSTN participant being invited.
-     *
-     * @return the sourceCallerId value.
-     */
-    public String getSourceCallerId() {
-        return sourceCallerId;
     }
 
     /**
@@ -140,18 +140,6 @@ public class CreateCallOptions {
     }
 
     /**
-     * Set the sourceCallerId.
-     *
-     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
-     *                       Required only when inviting a PSTN participant.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setSourceCallerId(String sourceCallerId) {
-        this.sourceCallerId = sourceCallerId;
-        return this;
-    }
-
-    /**
      * Set the media streaming configuration.
      *
      * @param mediaStreamingOptions The media streaming configuration.
@@ -170,6 +158,18 @@ public class CreateCallOptions {
      */
     public CreateCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
         this.repeatabilityHeaders = repeatabilityHeaders;
+        return this;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public CreateCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
         return this;
     }
 }

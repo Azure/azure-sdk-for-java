@@ -47,46 +47,11 @@ public interface WorkflowRunActionRepetitionDefinition {
     Map<String, String> tags();
 
     /**
-     * Gets the startTime property: The start time of the workflow scope repetition.
+     * Gets the repetitionIndexes property: The repetition indexes.
      *
-     * @return the startTime value.
+     * @return the repetitionIndexes value.
      */
-    OffsetDateTime startTime();
-
-    /**
-     * Gets the endTime property: The end time of the workflow scope repetition.
-     *
-     * @return the endTime value.
-     */
-    OffsetDateTime endTime();
-
-    /**
-     * Gets the correlation property: The correlation properties.
-     *
-     * @return the correlation value.
-     */
-    RunActionCorrelation correlation();
-
-    /**
-     * Gets the status property: The status of the workflow scope repetition.
-     *
-     * @return the status value.
-     */
-    WorkflowStatus status();
-
-    /**
-     * Gets the code property: The workflow scope repetition code.
-     *
-     * @return the code value.
-     */
-    String code();
-
-    /**
-     * Gets the error property: Any object.
-     *
-     * @return the error value.
-     */
-    Object error();
+    List<RepetitionIndex> repetitionIndexes();
 
     /**
      * Gets the trackingId property: Gets the tracking id.
@@ -145,11 +110,46 @@ public interface WorkflowRunActionRepetitionDefinition {
     Integer iterationCount();
 
     /**
-     * Gets the repetitionIndexes property: The repetition indexes.
+     * Gets the startTime property: The start time of the workflow scope repetition.
      *
-     * @return the repetitionIndexes value.
+     * @return the startTime value.
      */
-    List<RepetitionIndex> repetitionIndexes();
+    OffsetDateTime startTime();
+
+    /**
+     * Gets the endTime property: The end time of the workflow scope repetition.
+     *
+     * @return the endTime value.
+     */
+    OffsetDateTime endTime();
+
+    /**
+     * Gets the correlation property: The correlation properties.
+     *
+     * @return the correlation value.
+     */
+    RunActionCorrelation correlation();
+
+    /**
+     * Gets the status property: The status of the workflow scope repetition.
+     *
+     * @return the status value.
+     */
+    WorkflowStatus status();
+
+    /**
+     * Gets the code property: The workflow scope repetition code.
+     *
+     * @return the code value.
+     */
+    String code();
+
+    /**
+     * Gets the error property: Anything.
+     *
+     * @return the error value.
+     */
+    Object error();
 
     /**
      * Gets the inner com.azure.resourcemanager.logic.fluent.models.WorkflowRunActionRepetitionDefinitionInner object.

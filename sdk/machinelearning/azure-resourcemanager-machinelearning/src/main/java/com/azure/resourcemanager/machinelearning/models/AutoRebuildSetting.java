@@ -17,6 +17,15 @@ public final class AutoRebuildSetting extends ExpandableStringEnum<AutoRebuildSe
     public static final AutoRebuildSetting ON_BASE_IMAGE_UPDATE = fromString("OnBaseImageUpdate");
 
     /**
+     * Creates a new instance of AutoRebuildSetting value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutoRebuildSetting() {
+    }
+
+    /**
      * Creates or finds a AutoRebuildSetting from its string representation.
      *
      * @param name a name to look for.

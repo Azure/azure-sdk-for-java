@@ -4,115 +4,60 @@
 
 package com.azure.resourcemanager.costmanagement.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.costmanagement.fluent.models.CommonExportPropertiesInner;
+import java.time.OffsetDateTime;
 
-/** The common properties of the export. */
-@Fluent
-public class CommonExportProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommonExportProperties.class);
-
-    /*
-     * The format of the export being delivered.
-     */
-    @JsonProperty(value = "format")
-    private FormatType format;
-
-    /*
-     * Has delivery information for the export.
-     */
-    @JsonProperty(value = "deliveryInfo", required = true)
-    private ExportDeliveryInfo deliveryInfo;
-
-    /*
-     * Has definition for the export.
-     */
-    @JsonProperty(value = "definition", required = true)
-    private ExportDefinition definition;
-
+/** An immutable client-side representation of CommonExportProperties. */
+public interface CommonExportProperties {
     /**
-     * Get the format property: The format of the export being delivered.
+     * Gets the format property: The format of the export being delivered. Currently only 'Csv' is supported.
      *
      * @return the format value.
      */
-    public FormatType format() {
-        return this.format;
-    }
+    FormatType format();
 
     /**
-     * Set the format property: The format of the export being delivered.
-     *
-     * @param format the format value to set.
-     * @return the CommonExportProperties object itself.
-     */
-    public CommonExportProperties withFormat(FormatType format) {
-        this.format = format;
-        return this;
-    }
-
-    /**
-     * Get the deliveryInfo property: Has delivery information for the export.
+     * Gets the deliveryInfo property: Has delivery information for the export.
      *
      * @return the deliveryInfo value.
      */
-    public ExportDeliveryInfo deliveryInfo() {
-        return this.deliveryInfo;
-    }
+    ExportDeliveryInfo deliveryInfo();
 
     /**
-     * Set the deliveryInfo property: Has delivery information for the export.
-     *
-     * @param deliveryInfo the deliveryInfo value to set.
-     * @return the CommonExportProperties object itself.
-     */
-    public CommonExportProperties withDeliveryInfo(ExportDeliveryInfo deliveryInfo) {
-        this.deliveryInfo = deliveryInfo;
-        return this;
-    }
-
-    /**
-     * Get the definition property: Has definition for the export.
+     * Gets the definition property: Has the definition for the export.
      *
      * @return the definition value.
      */
-    public ExportDefinition definition() {
-        return this.definition;
-    }
+    ExportDefinition definition();
 
     /**
-     * Set the definition property: Has definition for the export.
+     * Gets the runHistory property: If requested, has the most recent run history for the export.
      *
-     * @param definition the definition value to set.
-     * @return the CommonExportProperties object itself.
+     * @return the runHistory value.
      */
-    public CommonExportProperties withDefinition(ExportDefinition definition) {
-        this.definition = definition;
-        return this;
-    }
+    ExportExecutionListResult runHistory();
 
     /**
-     * Validates the instance.
+     * Gets the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
+     * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
+     * Agreement commerce scopes.
      *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the partitionData value.
      */
-    public void validate() {
-        if (deliveryInfo() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deliveryInfo in model CommonExportProperties"));
-        } else {
-            deliveryInfo().validate();
-        }
-        if (definition() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property definition in model CommonExportProperties"));
-        } else {
-            definition().validate();
-        }
-    }
+    Boolean partitionData();
+
+    /**
+     * Gets the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next run
+     * time.
+     *
+     * @return the nextRunTimeEstimate value.
+     */
+    OffsetDateTime nextRunTimeEstimate();
+
+    /**
+     * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.CommonExportPropertiesInner object.
+     *
+     * @return the inner object.
+     */
+    CommonExportPropertiesInner innerModel();
 }

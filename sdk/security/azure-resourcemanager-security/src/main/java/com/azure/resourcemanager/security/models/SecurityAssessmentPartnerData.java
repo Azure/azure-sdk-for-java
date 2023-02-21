@@ -23,6 +23,10 @@ public final class SecurityAssessmentPartnerData {
     @JsonProperty(value = "secret", required = true)
     private String secret;
 
+    /** Creates an instance of SecurityAssessmentPartnerData class. */
+    public SecurityAssessmentPartnerData() {
+    }
+
     /**
      * Get the partnerName property: Name of the company of the partner.
      *

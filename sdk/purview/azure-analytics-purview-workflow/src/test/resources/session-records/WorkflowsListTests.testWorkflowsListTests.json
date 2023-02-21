@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.purview.azure.com/workflow/workflows?api-version=2022-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "55c78dca-08ba-48c6-ac01-c080d686bf0c"
+    },
+    "Response" : {
+      "content-length" : "1267",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "MicrosoftPurview",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "484717c8-484c-4ee6-8332-bec3a2526851",
+      "Body" : "{\"value\":[{\"id\":\"8af1ecae-16ee-4b2d-8972-00d611dd2f99\",\"triggers\":[{\"type\":\"when_term_deletion_is_requested\",\"underGlossaryHierarchy\":\"/glossaries/20031e20-b4df-4a66-a61d-1b0716f3fa48\"}],\"createdTime\":\"2023-01-11T10:15:43.610476536Z\",\"createdBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"lastUpdateTime\":\"2023-01-18T08:07:36.735876427Z\",\"updatedBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"name\":\"Delete glossary term\",\"isEnabled\":true,\"description\":\"\"},{\"id\":\"04cbb760-f111-4530-a5ad-7fa219e6383b\",\"triggers\":[{\"type\":\"when_term_update_is_requested\"}],\"createdTime\":\"2023-01-19T13:15:24.204275569Z\",\"createdBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"lastUpdateTime\":\"2023-01-19T13:15:24.204275569Z\",\"updatedBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"name\":\"Update glossary term 1\",\"isEnabled\":true,\"description\":\"\"},{\"id\":\"4afb5752-e47f-43a1-8ba7-c696bf8d2745\",\"triggers\":[{\"type\":\"when_term_creation_is_requested\",\"underGlossaryHierarchy\":\"/glossaries/20031e20-b4df-4a66-a61d-1b0716f3fa48\"}],\"createdTime\":\"2023-02-03T10:02:35.160618994Z\",\"createdBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"lastUpdateTime\":\"2023-02-03T10:02:35.160618994Z\",\"updatedBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"name\":\"Create glossary term workflow\",\"isEnabled\":true,\"description\":\"\"}]}",
+      "Date" : "Fri, 03 Feb 2023 10:03:20 GMT",
+      "x-ms-client-request-id" : "55c78dca-08ba-48c6-ac01-c080d686bf0c",
+      "x-ms-correlation-request-id" : "ff09c3d1-eb54-4755-98f7-15b16c43683a",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

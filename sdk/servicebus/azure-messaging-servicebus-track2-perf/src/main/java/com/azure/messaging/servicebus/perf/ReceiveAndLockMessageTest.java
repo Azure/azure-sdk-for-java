@@ -8,6 +8,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
@@ -68,11 +69,19 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        return receiverAsync
-            .receiveMessages()
-            .take(options.getMessagesToReceive())
-            .flatMap(message -> {
-                return receiverAsync.complete(message).thenReturn(true);
-            }, 1).then();
+        return Mono.using(
+            receiverBuilder::buildAsyncClient,
+            receiverAsyncClient -> {
+                return receiverAsyncClient
+                    .receiveMessages()
+                    .take(options.getMessagesToReceive())
+                    .flatMap(message -> {
+                        receiverAsyncClient.complete(message);
+                        return Mono.just(message);
+                    }, 1).then();
+            },
+            ServiceBusReceiverAsyncClient::close,
+            false
+        );
     }
 }

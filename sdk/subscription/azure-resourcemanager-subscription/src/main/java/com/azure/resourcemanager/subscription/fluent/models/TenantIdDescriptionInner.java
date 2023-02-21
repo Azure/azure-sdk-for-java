@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Tenant Id information. */
 @Immutable
 public final class TenantIdDescriptionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantIdDescriptionInner.class);
-
     /*
-     * The fully qualified ID of the tenant. For example,
-     * /tenants/00000000-0000-0000-0000-000000000000.
+     * The fully qualified ID of the tenant. For example, /tenants/00000000-0000-0000-0000-000000000000.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -26,6 +21,53 @@ public final class TenantIdDescriptionInner {
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
+
+    /*
+     * The category of the tenant. Possible values are
+     * TenantCategoryHome,TenantCategoryProjectedBy,TenantCategoryManagedBy
+     */
+    @JsonProperty(value = "tenantCategory", access = JsonProperty.Access.WRITE_ONLY)
+    private String tenantCategory;
+
+    /*
+     * The country/region name of the address for the tenant.
+     */
+    @JsonProperty(value = "country", access = JsonProperty.Access.WRITE_ONLY)
+    private String country;
+
+    /*
+     * The Country/region abbreviation for the tenant.
+     */
+    @JsonProperty(value = "countryCode", access = JsonProperty.Access.WRITE_ONLY)
+    private String countryCode;
+
+    /*
+     * The display name of the tenant.
+     */
+    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
+    private String displayName;
+
+    /*
+     * The list of domains for the tenant.
+     */
+    @JsonProperty(value = "domains", access = JsonProperty.Access.WRITE_ONLY)
+    private String domains;
+
+    /*
+     * The default domain for the tenant.
+     */
+    @JsonProperty(value = "defaultDomain", access = JsonProperty.Access.WRITE_ONLY)
+    private String defaultDomain;
+
+    /*
+     * The tenant type. Only available for Home tenant category.
+     */
+    @JsonProperty(value = "tenantType", access = JsonProperty.Access.WRITE_ONLY)
+    private String tenantType;
+
+    /** Creates an instance of TenantIdDescriptionInner class. */
+    public TenantIdDescriptionInner() {
+    }
 
     /**
      * Get the id property: The fully qualified ID of the tenant. For example,
@@ -44,6 +86,70 @@ public final class TenantIdDescriptionInner {
      */
     public String tenantId() {
         return this.tenantId;
+    }
+
+    /**
+     * Get the tenantCategory property: The category of the tenant. Possible values are
+     * TenantCategoryHome,TenantCategoryProjectedBy,TenantCategoryManagedBy.
+     *
+     * @return the tenantCategory value.
+     */
+    public String tenantCategory() {
+        return this.tenantCategory;
+    }
+
+    /**
+     * Get the country property: The country/region name of the address for the tenant.
+     *
+     * @return the country value.
+     */
+    public String country() {
+        return this.country;
+    }
+
+    /**
+     * Get the countryCode property: The Country/region abbreviation for the tenant.
+     *
+     * @return the countryCode value.
+     */
+    public String countryCode() {
+        return this.countryCode;
+    }
+
+    /**
+     * Get the displayName property: The display name of the tenant.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Get the domains property: The list of domains for the tenant.
+     *
+     * @return the domains value.
+     */
+    public String domains() {
+        return this.domains;
+    }
+
+    /**
+     * Get the defaultDomain property: The default domain for the tenant.
+     *
+     * @return the defaultDomain value.
+     */
+    public String defaultDomain() {
+        return this.defaultDomain;
+    }
+
+    /**
+     * Get the tenantType property: The tenant type. Only available for Home tenant category.
+     *
+     * @return the tenantType value.
+     */
+    public String tenantType() {
+        return this.tenantType;
     }
 
     /**

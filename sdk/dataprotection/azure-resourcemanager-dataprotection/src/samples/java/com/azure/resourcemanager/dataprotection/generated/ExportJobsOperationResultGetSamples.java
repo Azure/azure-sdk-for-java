@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExportJobsOperationResult Get. */
 public final class ExportJobsOperationResultGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/JobCRUD/GetExportJobsOperationResult.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/JobCRUD/GetExportJobsOperationResult.json
      */
     /**
      * Sample code: Get Export Jobs Operation Result.
@@ -21,6 +19,9 @@ public final class ExportJobsOperationResultGetSamples {
         manager
             .exportJobsOperationResults()
             .getWithResponse(
-                "SwaggerTestRg", "NetSDKTestRsVault", "00000000-0000-0000-0000-000000000000", Context.NONE);
+                "SwaggerTestRg",
+                "NetSDKTestRsVault",
+                "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

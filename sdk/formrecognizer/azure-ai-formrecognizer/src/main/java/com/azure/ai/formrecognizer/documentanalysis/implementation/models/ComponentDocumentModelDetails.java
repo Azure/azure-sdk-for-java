@@ -16,6 +16,9 @@ public final class ComponentDocumentModelDetails {
     @JsonProperty(value = "modelId", required = true)
     private String modelId;
 
+    /** Creates an instance of ComponentDocumentModelDetails class. */
+    public ComponentDocumentModelDetails() {}
+
     /**
      * Get the modelId property: Unique document model name.
      *

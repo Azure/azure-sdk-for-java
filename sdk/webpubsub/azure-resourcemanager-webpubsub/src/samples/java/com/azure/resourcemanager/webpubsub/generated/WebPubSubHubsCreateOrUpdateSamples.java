@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.resourcemanager.webpubsub.models.EventHandler;
+import com.azure.resourcemanager.webpubsub.models.EventHubEndpoint;
+import com.azure.resourcemanager.webpubsub.models.EventListener;
+import com.azure.resourcemanager.webpubsub.models.EventNameFilter;
 import com.azure.resourcemanager.webpubsub.models.ManagedIdentitySettings;
 import com.azure.resourcemanager.webpubsub.models.UpstreamAuthSettings;
 import com.azure.resourcemanager.webpubsub.models.UpstreamAuthType;
@@ -14,7 +17,7 @@ import java.util.Arrays;
 /** Samples for WebPubSubHubs CreateOrUpdate. */
 public final class WebPubSubHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubHubs_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubHubs_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubHubs_CreateOrUpdate.
@@ -38,7 +41,20 @@ public final class WebPubSubHubsCreateOrUpdateSamples {
                                     .withAuth(
                                         new UpstreamAuthSettings()
                                             .withType(UpstreamAuthType.MANAGED_IDENTITY)
-                                            .withManagedIdentity(new ManagedIdentitySettings().withResource("abc"))))))
+                                            .withManagedIdentity(new ManagedIdentitySettings().withResource("abc")))))
+                    .withEventListeners(
+                        Arrays
+                            .asList(
+                                new EventListener()
+                                    .withFilter(
+                                        new EventNameFilter()
+                                            .withSystemEvents(Arrays.asList("connected", "disconnected"))
+                                            .withUserEventPattern("*"))
+                                    .withEndpoint(
+                                        new EventHubEndpoint()
+                                            .withFullyQualifiedNamespace("example.servicebus.windows.net")
+                                            .withEventHubName("eventHubName1"))))
+                    .withAnonymousConnectPolicy("allow"))
             .create();
     }
 }

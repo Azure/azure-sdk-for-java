@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for ManagedDatabases CreateOrUpdate. */
 public final class ManagedDatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseCreateRecovery.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCreateRecovery.json
      */
     /**
      * Sample code: Creates a new managed database from restoring a geo-replicated backup.
@@ -41,7 +41,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseCreateRestoreExternalBackup.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCreateRestoreExternalBackup.json
      */
     /**
      * Sample code: Creates a new managed database by restoring from an external backup.
@@ -64,12 +64,14 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
                     .withCollation("SQL_Latin1_General_CP1_CI_AS")
                     .withCreateMode(ManagedDatabaseCreateMode.RESTORE_EXTERNAL_BACKUP)
                     .withStorageContainerUri("https://myaccountname.blob.core.windows.net/backups")
-                    .withStorageContainerSasToken("sv=2015-12-11&sr=c&sp=rl&sig=1234"),
+                    .withStorageContainerSasToken("fakeTokenPlaceholder")
+                    .withAutoCompleteRestore(true)
+                    .withLastBackupName("last_backup_name"),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseCreateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCreateMax.json
      */
     /**
      * Sample code: Creates a new managed database with maximal properties.
@@ -92,7 +94,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCreateMin.json
      */
     /**
      * Sample code: Creates a new managed database with minimal properties.
@@ -115,7 +117,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseCreatePointInTimeRestore.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCreatePointInTimeRestore.json
      */
     /**
      * Sample code: Creates a new managed database using point in time restore.
@@ -143,7 +145,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseCreateRestoreLtrBackup.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCreateRestoreLtrBackup.json
      */
     /**
      * Sample code: Creates a new managed database from restoring a long term retention backup.
@@ -166,7 +168,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
                     .withCollation("SQL_Latin1_General_CP1_CI_AS")
                     .withCreateMode(ManagedDatabaseCreateMode.RESTORE_EXTERNAL_BACKUP)
                     .withStorageContainerUri("https://myaccountname.blob.core.windows.net/backups")
-                    .withStorageContainerSasToken("sv=2015-12-11&sr=c&sp=rl&sig=1234"),
+                    .withStorageContainerSasToken("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 

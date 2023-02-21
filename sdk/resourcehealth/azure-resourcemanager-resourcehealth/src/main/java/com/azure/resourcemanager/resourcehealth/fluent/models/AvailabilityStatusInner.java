@@ -41,6 +41,10 @@ public final class AvailabilityStatusInner {
     @JsonProperty(value = "properties")
     private AvailabilityStatusProperties properties;
 
+    /** Creates an instance of AvailabilityStatusInner class. */
+    public AvailabilityStatusInner() {
+    }
+
     /**
      * Get the id property: Azure Resource Manager Identity for the availabilityStatuses resource.
      *

@@ -38,15 +38,6 @@ public final class AssessmentsImpl implements Assessments {
         return Utils.mapPage(inner, inner1 -> new SecurityAssessmentResponseImpl(inner1, this.manager()));
     }
 
-    public SecurityAssessmentResponse get(String resourceId, String assessmentName) {
-        SecurityAssessmentResponseInner inner = this.serviceClient().get(resourceId, assessmentName);
-        if (inner != null) {
-            return new SecurityAssessmentResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SecurityAssessmentResponse> getWithResponse(
         String resourceId, String assessmentName, ExpandEnum expand, Context context) {
         Response<SecurityAssessmentResponseInner> inner =
@@ -62,12 +53,21 @@ public final class AssessmentsImpl implements Assessments {
         }
     }
 
-    public void deleteByResourceGroup(String resourceId, String assessmentName) {
-        this.serviceClient().delete(resourceId, assessmentName);
+    public SecurityAssessmentResponse get(String resourceId, String assessmentName) {
+        SecurityAssessmentResponseInner inner = this.serviceClient().get(resourceId, assessmentName);
+        if (inner != null) {
+            return new SecurityAssessmentResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String resourceId, String assessmentName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceId, String assessmentName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceId, assessmentName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceId, String assessmentName) {
+        this.serviceClient().delete(resourceId, assessmentName);
     }
 
     public SecurityAssessmentResponse getById(String id) {
@@ -140,7 +140,7 @@ public final class AssessmentsImpl implements Assessments {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
         }
-        this.deleteWithResponse(resourceId, assessmentName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceId, assessmentName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -164,7 +164,7 @@ public final class AssessmentsImpl implements Assessments {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
         }
-        return this.deleteWithResponse(resourceId, assessmentName, context);
+        return this.deleteByResourceGroupWithResponse(resourceId, assessmentName, context);
     }
 
     private AssessmentsClient serviceClient() {

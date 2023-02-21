@@ -55,7 +55,7 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterGovern")
-    private interface GovernanceRulesService {
+    public interface GovernanceRulesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/governanceRules")
         @ExpectedResponses({200})

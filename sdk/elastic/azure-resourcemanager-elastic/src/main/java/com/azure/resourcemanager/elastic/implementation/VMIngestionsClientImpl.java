@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.fluent.VMIngestionsClient;
 import com.azure.resourcemanager.elastic.fluent.models.VMIngestionDetailsResponseInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VMIngestionsClient. */
 public final class VMIngestionsClientImpl implements VMIngestionsClient {
-    private final ClientLogger logger = new ClientLogger(VMIngestionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VMIngestionsService service;
 
@@ -53,7 +50,7 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftElasticVMIn")
-    private interface VMIngestionsService {
+    public interface VMIngestionsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
@@ -78,7 +75,8 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vm ingestion details to install an agent.
+     * @return the vm ingestion details to install an agent along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VMIngestionDetailsResponseInner>> detailsWithResponseAsync(
@@ -127,7 +125,8 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vm ingestion details to install an agent.
+     * @return the vm ingestion details to install an agent along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VMIngestionDetailsResponseInner>> detailsWithResponseAsync(
@@ -172,19 +171,29 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vm ingestion details to install an agent.
+     * @return the vm ingestion details to install an agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VMIngestionDetailsResponseInner> detailsAsync(String resourceGroupName, String monitorName) {
         return detailsWithResponseAsync(resourceGroupName, monitorName)
-            .flatMap(
-                (Response<VMIngestionDetailsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List the vm ingestion details that will be monitored by the Elastic monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * @param monitorName Monitor resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the vm ingestion details to install an agent along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<VMIngestionDetailsResponseInner> detailsWithResponse(
+        String resourceGroupName, String monitorName, Context context) {
+        return detailsWithResponseAsync(resourceGroupName, monitorName, context).block();
     }
 
     /**
@@ -199,23 +208,6 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VMIngestionDetailsResponseInner details(String resourceGroupName, String monitorName) {
-        return detailsAsync(resourceGroupName, monitorName).block();
-    }
-
-    /**
-     * List the vm ingestion details that will be monitored by the Elastic monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vm ingestion details to install an agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VMIngestionDetailsResponseInner> detailsWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        return detailsWithResponseAsync(resourceGroupName, monitorName, context).block();
+        return detailsWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
 }

@@ -47,21 +47,6 @@ public interface GovernanceAssignments {
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assignmentKey The security governance assignment key - the assessment key of the required governance
      *     assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific governanceAssignment for the requested scope by AssignmentKey.
-     */
-    GovernanceAssignment get(String scope, String assessmentName, String assignmentKey);
-
-    /**
-     * Get a specific governanceAssignment for the requested scope by AssignmentKey.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
-     *     assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,7 +57,7 @@ public interface GovernanceAssignments {
         String scope, String assessmentName, String assignmentKey, Context context);
 
     /**
-     * Delete a GovernanceAssignment over a given scope.
+     * Get a specific governanceAssignment for the requested scope by AssignmentKey.
      *
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
      *     management group (/providers/Microsoft.Management/managementGroups/mgName).
@@ -82,8 +67,9 @@ public interface GovernanceAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific governanceAssignment for the requested scope by AssignmentKey.
      */
-    void delete(String scope, String assessmentName, String assignmentKey);
+    GovernanceAssignment get(String scope, String assessmentName, String assignmentKey);
 
     /**
      * Delete a GovernanceAssignment over a given scope.
@@ -100,6 +86,20 @@ public interface GovernanceAssignments {
      * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String scope, String assessmentName, String assignmentKey, Context context);
+
+    /**
+     * Delete a GovernanceAssignment over a given scope.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
+     *     assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String scope, String assessmentName, String assignmentKey);
 
     /**
      * Get a specific governanceAssignment for the requested scope by AssignmentKey.

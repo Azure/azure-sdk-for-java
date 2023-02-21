@@ -34,6 +34,10 @@ public final class SkuCapability {
     @JsonProperty(value = "supportedMemoryPerVCoreMB", access = JsonProperty.Access.WRITE_ONLY)
     private Long supportedMemoryPerVCoreMB;
 
+    /** Creates an instance of SkuCapability class. */
+    public SkuCapability() {
+    }
+
     /**
      * Get the name property: vCore name.
      *

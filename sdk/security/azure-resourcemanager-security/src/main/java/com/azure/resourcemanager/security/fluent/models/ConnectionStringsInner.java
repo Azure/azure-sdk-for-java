@@ -19,6 +19,10 @@ public final class ConnectionStringsInner {
     @JsonProperty(value = "value", required = true)
     private List<IngestionConnectionString> value;
 
+    /** Creates an instance of ConnectionStringsInner class. */
+    public ConnectionStringsInner() {
+    }
+
     /**
      * Get the value property: Connection strings.
      *

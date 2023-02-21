@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Deployments Get. */
 public final class DeploymentsGetSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetDeployment.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/GetDeployment.json
      */
     /**
      * Sample code: GetDeployment.
@@ -17,6 +15,8 @@ public final class DeploymentsGetSamples {
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void getDeployment(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.deployments().getWithResponse("resourceGroupName", "accountName", "deploymentName", Context.NONE);
+        manager
+            .deployments()
+            .getWithResponse("resourceGroupName", "accountName", "deploymentName", com.azure.core.util.Context.NONE);
     }
 }

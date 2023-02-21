@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Description about the errors happen while performing migration validation. */
 @Fluent
 public final class ExecutionStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecutionStatistics.class);
-
     /*
      * No. of query executions
      */
@@ -35,10 +32,10 @@ public final class ExecutionStatistics {
     private Float elapsedTimeMs;
 
     /*
-     * Dictionary of sql query execution wait types and the respective
-     * statistics
+     * Dictionary of sql query execution wait types and the respective statistics
      */
     @JsonProperty(value = "waitStats")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, WaitStatistics> waitStats;
 
     /*
@@ -52,6 +49,10 @@ public final class ExecutionStatistics {
      */
     @JsonProperty(value = "sqlErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> sqlErrors;
+
+    /** Creates an instance of ExecutionStatistics class. */
+    public ExecutionStatistics() {
+    }
 
     /**
      * Get the executionCount property: No. of query executions.

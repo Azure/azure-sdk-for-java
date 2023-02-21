@@ -28,6 +28,10 @@ public final class CefSolutionProperties extends ExternalSecuritySolutionPropert
     @JsonProperty(value = "lastEventReceived")
     private String lastEventReceived;
 
+    /** Creates an instance of CefSolutionProperties class. */
+    public CefSolutionProperties() {
+    }
+
     /**
      * Get the hostname property: The hostname property.
      *

@@ -19,11 +19,14 @@ public final class OutboundEnvironmentEndpointInner {
     private String category;
 
     /*
-     * The endpoints for this service to which the Batch service makes outbound
-     * calls.
+     * The endpoints for this service to which the Batch service makes outbound calls.
      */
     @JsonProperty(value = "endpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<EndpointDependency> endpoints;
+
+    /** Creates an instance of OutboundEnvironmentEndpointInner class. */
+    public OutboundEnvironmentEndpointInner() {
+    }
 
     /**
      * Get the category property: The type of service that the Batch service connects to.

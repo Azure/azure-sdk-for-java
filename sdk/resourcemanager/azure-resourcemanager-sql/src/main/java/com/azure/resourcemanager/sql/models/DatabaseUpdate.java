@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.sql.fluent.models.DatabaseProperties;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** A database resource. */
+/** A database update resource. */
 @Fluent
 public final class DatabaseUpdate {
     /*
@@ -22,10 +22,16 @@ public final class DatabaseUpdate {
     private Sku sku;
 
     /*
+     * Database identity
+     */
+    @JsonProperty(value = "identity")
+    private DatabaseIdentity identity;
+
+    /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
-    private DatabaseProperties innerProperties;
+    private DatabaseUpdateProperties innerProperties;
 
     /*
      * Resource tags.
@@ -33,6 +39,10 @@ public final class DatabaseUpdate {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of DatabaseUpdate class. */
+    public DatabaseUpdate() {
+    }
 
     /**
      * Get the sku property: The name and tier of the SKU.
@@ -55,11 +65,31 @@ public final class DatabaseUpdate {
     }
 
     /**
+     * Get the identity property: Database identity.
+     *
+     * @return the identity value.
+     */
+    public DatabaseIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Database identity.
+     *
+     * @param identity the identity value to set.
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withIdentity(DatabaseIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: Resource properties.
      *
      * @return the innerProperties value.
      */
-    private DatabaseProperties innerProperties() {
+    private DatabaseUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -150,7 +180,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withCreateMode(CreateMode createMode) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withCreateMode(createMode);
         return this;
@@ -173,7 +203,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withCollation(String collation) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withCollation(collation);
         return this;
@@ -196,7 +226,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withMaxSizeBytes(Long maxSizeBytes) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withMaxSizeBytes(maxSizeBytes);
         return this;
@@ -219,7 +249,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withSampleName(SampleName sampleName) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withSampleName(sampleName);
         return this;
@@ -242,7 +272,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withElasticPoolId(String elasticPoolId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withElasticPoolId(elasticPoolId);
         return this;
@@ -267,7 +297,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withSourceDatabaseId(String sourceDatabaseId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withSourceDatabaseId(sourceDatabaseId);
         return this;
@@ -355,7 +385,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withRestorePointInTime(OffsetDateTime restorePointInTime) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withRestorePointInTime(restorePointInTime);
         return this;
@@ -378,7 +408,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
         return this;
@@ -403,7 +433,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withRecoveryServicesRecoveryPointId(String recoveryServicesRecoveryPointId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withRecoveryServicesRecoveryPointId(recoveryServicesRecoveryPointId);
         return this;
@@ -428,7 +458,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withLongTermRetentionBackupResourceId(longTermRetentionBackupResourceId);
         return this;
@@ -453,7 +483,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withRecoverableDatabaseId(String recoverableDatabaseId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withRecoverableDatabaseId(recoverableDatabaseId);
         return this;
@@ -478,7 +508,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withRestorableDroppedDatabaseId(restorableDroppedDatabaseId);
         return this;
@@ -501,7 +531,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withCatalogCollation(CatalogCollationType catalogCollation) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withCatalogCollation(catalogCollation);
         return this;
@@ -526,14 +556,15 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withZoneRedundant(Boolean zoneRedundant) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withZoneRedundant(zoneRedundant);
         return this;
     }
 
     /**
-     * Get the licenseType property: The license type to apply for this database.
+     * Get the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
+     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
      *
      * @return the licenseType value.
      */
@@ -542,14 +573,15 @@ public final class DatabaseUpdate {
     }
 
     /**
-     * Set the licenseType property: The license type to apply for this database.
+     * Set the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
+     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
      *
      * @param licenseType the licenseType value to set.
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withLicenseType(DatabaseLicenseType licenseType) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withLicenseType(licenseType);
         return this;
@@ -575,9 +607,9 @@ public final class DatabaseUpdate {
     }
 
     /**
-     * Get the readScale property: If enabled, connections that have application intent set to readonly in their
-     * connection string may be routed to a readonly secondary replica. This property is only settable for Premium and
-     * Business Critical databases.
+     * Get the readScale property: The state of read-only routing. If enabled, connections that have application intent
+     * set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Not
+     * applicable to a Hyperscale database within an elastic pool.
      *
      * @return the readScale value.
      */
@@ -586,45 +618,68 @@ public final class DatabaseUpdate {
     }
 
     /**
-     * Set the readScale property: If enabled, connections that have application intent set to readonly in their
-     * connection string may be routed to a readonly secondary replica. This property is only settable for Premium and
-     * Business Critical databases.
+     * Set the readScale property: The state of read-only routing. If enabled, connections that have application intent
+     * set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Not
+     * applicable to a Hyperscale database within an elastic pool.
      *
      * @param readScale the readScale value to set.
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withReadScale(DatabaseReadScale readScale) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withReadScale(readScale);
         return this;
     }
 
     /**
-     * Get the readReplicaCount property: The number of readonly secondary replicas associated with the database to
-     * which readonly application intent connections may be routed. This property is only settable for Hyperscale
-     * edition databases.
+     * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the database that
+     * are used to provide high availability. Not applicable to a Hyperscale database within an elastic pool.
      *
-     * @return the readReplicaCount value.
+     * @return the highAvailabilityReplicaCount value.
      */
-    public Integer readReplicaCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().readReplicaCount();
+    public Integer highAvailabilityReplicaCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().highAvailabilityReplicaCount();
     }
 
     /**
-     * Set the readReplicaCount property: The number of readonly secondary replicas associated with the database to
-     * which readonly application intent connections may be routed. This property is only settable for Hyperscale
-     * edition databases.
+     * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the database that
+     * are used to provide high availability. Not applicable to a Hyperscale database within an elastic pool.
      *
-     * @param readReplicaCount the readReplicaCount value to set.
+     * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
      * @return the DatabaseUpdate object itself.
      */
-    public DatabaseUpdate withReadReplicaCount(Integer readReplicaCount) {
+    public DatabaseUpdate withHighAvailabilityReplicaCount(Integer highAvailabilityReplicaCount) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
-        this.innerProperties().withReadReplicaCount(readReplicaCount);
+        this.innerProperties().withHighAvailabilityReplicaCount(highAvailabilityReplicaCount);
+        return this;
+    }
+
+    /**
+     * Get the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
+     * Named.
+     *
+     * @return the secondaryType value.
+     */
+    public SecondaryType secondaryType() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryType();
+    }
+
+    /**
+     * Set the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
+     * Named.
+     *
+     * @param secondaryType the secondaryType value to set.
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withSecondaryType(SecondaryType secondaryType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseUpdateProperties();
+        }
+        this.innerProperties().withSecondaryType(secondaryType);
         return this;
     }
 
@@ -656,9 +711,45 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withAutoPauseDelay(Integer autoPauseDelay) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withAutoPauseDelay(autoPauseDelay);
+        return this;
+    }
+
+    /**
+     * Get the currentBackupStorageRedundancy property: The storage account type used to store backups for this
+     * database.
+     *
+     * @return the currentBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy currentBackupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentBackupStorageRedundancy();
+    }
+
+    /**
+     * Get the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * database.
+     *
+     * @return the requestedBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy requestedBackupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().requestedBackupStorageRedundancy();
+    }
+
+    /**
+     * Set the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * database.
+     *
+     * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withRequestedBackupStorageRedundancy(
+        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseUpdateProperties();
+        }
+        this.innerProperties().withRequestedBackupStorageRedundancy(requestedBackupStorageRedundancy);
         return this;
     }
 
@@ -679,14 +770,14 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withMinCapacity(Double minCapacity) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withMinCapacity(minCapacity);
         return this;
     }
 
     /**
-     * Get the pausedDate property: The date when database was paused by user configuration or action (ISO8601 format).
+     * Get the pausedDate property: The date when database was paused by user configuration or action(ISO8601 format).
      * Null if the database is ready.
      *
      * @return the pausedDate value.
@@ -706,6 +797,90 @@ public final class DatabaseUpdate {
     }
 
     /**
+     * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the database. This
+     * configuration defines the period when the maintenance updates will occur.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the database. This
+     * configuration defines the period when the maintenance updates will occur.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseUpdateProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
+     * Get the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     *
+     * @return the isLedgerOn value.
+     */
+    public Boolean isLedgerOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().isLedgerOn();
+    }
+
+    /**
+     * Set the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     *
+     * @param isLedgerOn the isLedgerOn value to set.
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withIsLedgerOn(Boolean isLedgerOn) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseUpdateProperties();
+        }
+        this.innerProperties().withIsLedgerOn(isLedgerOn);
+        return this;
+    }
+
+    /**
+     * Get the isInfraEncryptionEnabled property: Infra encryption is enabled for this database.
+     *
+     * @return the isInfraEncryptionEnabled value.
+     */
+    public Boolean isInfraEncryptionEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isInfraEncryptionEnabled();
+    }
+
+    /**
+     * Get the federatedClientId property: The Client id used for cross tenant per database CMK scenario.
+     *
+     * @return the federatedClientId value.
+     */
+    public UUID federatedClientId() {
+        return this.innerProperties() == null ? null : this.innerProperties().federatedClientId();
+    }
+
+    /**
+     * Set the federatedClientId property: The Client id used for cross tenant per database CMK scenario.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withFederatedClientId(UUID federatedClientId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseUpdateProperties();
+        }
+        this.innerProperties().withFederatedClientId(federatedClientId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -713,6 +888,9 @@ public final class DatabaseUpdate {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();

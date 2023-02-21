@@ -24,6 +24,10 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CustomEntityStoreAssignmentProperties innerProperties;
 
+    /** Creates an instance of CustomEntityStoreAssignmentInner class. */
+    public CustomEntityStoreAssignmentInner() {
+    }
+
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *

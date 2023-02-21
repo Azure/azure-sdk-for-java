@@ -60,7 +60,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface PrivateEndpointConnectionOperationsService {
+    public interface PrivateEndpointConnectionOperationsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

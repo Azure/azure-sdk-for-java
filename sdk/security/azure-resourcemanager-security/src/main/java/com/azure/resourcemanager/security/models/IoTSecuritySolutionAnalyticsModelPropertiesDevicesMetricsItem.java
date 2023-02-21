@@ -23,6 +23,10 @@ public final class IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem
     @JsonProperty(value = "devicesMetrics")
     private IoTSeverityMetrics devicesMetrics;
 
+    /** Creates an instance of IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem class. */
+    public IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem() {
+    }
+
     /**
      * Get the date property: Aggregation of IoT Security solution device alert metrics by date.
      *

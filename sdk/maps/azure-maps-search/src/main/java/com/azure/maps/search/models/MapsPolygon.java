@@ -19,12 +19,14 @@ public final class MapsPolygon {
     private String providerID;
 
     /*
-     * Geometry data in GeoJSON format. Please refer to [RFC
-     * 7946](https://tools.ietf.org/html/rfc7946) for details. Present only if
-     * "error" is not present.
+     * Geometry data in GeoJSON format. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946) for details.
+     * Present only if "error" is not present.
      */
     @JsonProperty(value = "geometryData")
     private GeoJsonObject geometryData;
+
+    /** Creates an instance of Polygon class. */
+    public MapsPolygon() {}
 
     /**
      * Get the providerID property: ID of the returned entity.

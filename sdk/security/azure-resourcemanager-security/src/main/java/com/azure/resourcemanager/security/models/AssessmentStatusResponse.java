@@ -23,6 +23,10 @@ public final class AssessmentStatusResponse extends AssessmentStatus {
     @JsonProperty(value = "statusChangeDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime statusChangeDate;
 
+    /** Creates an instance of AssessmentStatusResponse class. */
+    public AssessmentStatusResponse() {
+    }
+
     /**
      * Get the firstEvaluationDate property: The time that the assessment was created and first evaluated. Returned as
      * UTC time in ISO 8601 format.

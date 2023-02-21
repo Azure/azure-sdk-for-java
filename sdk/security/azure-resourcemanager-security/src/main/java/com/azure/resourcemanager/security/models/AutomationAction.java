@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class AutomationAction {
+    /** Creates an instance of AutomationAction class. */
+    public AutomationAction() {
+    }
+
     /**
      * Validates the instance.
      *

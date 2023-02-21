@@ -16,9 +16,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphImageInfo {
     /*
-     * Optional; parameter used to indicate the server is able to render image
-     * dynamically in response to parameterization. For example – a high
-     * contrast image
+     * Optional; parameter used to indicate the server is able to render image dynamically in response to
+     * parameterization. For example – a high contrast image
      */
     @JsonProperty(value = "addImageQuery")
     private Boolean addImageQuery;
@@ -36,8 +35,7 @@ public final class MicrosoftGraphImageInfo {
     private String alternativeText;
 
     /*
-     * Optional; URI that points to an icon which represents the application
-     * used to generate the activity
+     * Optional; URI that points to an icon which represents the application used to generate the activity
      */
     @JsonProperty(value = "iconUrl")
     private String iconUrl;
@@ -46,6 +44,10 @@ public final class MicrosoftGraphImageInfo {
      * imageInfo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphImageInfo class. */
+    public MicrosoftGraphImageInfo() {
+    }
 
     /**
      * Get the addImageQuery property: Optional; parameter used to indicate the server is able to render image

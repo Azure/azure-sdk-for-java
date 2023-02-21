@@ -17,9 +17,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphPublicClientApplication {
     /*
-     * Specifies the URLs where user tokens are sent for sign-in, or the
-     * redirect URIs where OAuth 2.0 authorization codes and access tokens are
-     * sent.
+     * Specifies the URLs where user tokens are sent for sign-in, or the redirect URIs where OAuth 2.0 authorization
+     * codes and access tokens are sent.
      */
     @JsonProperty(value = "redirectUris")
     private List<String> redirectUris;
@@ -28,6 +27,10 @@ public final class MicrosoftGraphPublicClientApplication {
      * publicClientApplication
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPublicClientApplication class. */
+    public MicrosoftGraphPublicClientApplication() {
+    }
 
     /**
      * Get the redirectUris property: Specifies the URLs where user tokens are sent for sign-in, or the redirect URIs

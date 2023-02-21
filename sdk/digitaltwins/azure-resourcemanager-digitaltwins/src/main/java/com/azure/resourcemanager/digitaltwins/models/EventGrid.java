@@ -33,6 +33,10 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
     @JsonProperty(value = "accessKey2")
     private String accessKey2;
 
+    /** Creates an instance of EventGrid class. */
+    public EventGrid() {
+    }
+
     /**
      * Get the topicEndpoint property: EventGrid Topic Endpoint.
      *
@@ -111,6 +115,13 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
     @Override
     public EventGrid withDeadLetterUri(String deadLetterUri) {
         super.withDeadLetterUri(deadLetterUri);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EventGrid withIdentity(ManagedIdentityReference identity) {
+        super.withIdentity(identity);
         return this;
     }
 

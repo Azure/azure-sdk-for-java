@@ -6,15 +6,12 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The assembly properties definition. */
 @Fluent
 public final class AssemblyProperties extends ArtifactContentPropertiesDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssemblyProperties.class);
-
     /*
      * The assembly name.
      */
@@ -38,6 +35,10 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
      */
     @JsonProperty(value = "assemblyPublicKeyToken")
     private String assemblyPublicKeyToken;
+
+    /** Creates an instance of AssemblyProperties class. */
+    public AssemblyProperties() {
+    }
 
     /**
      * Get the assemblyName property: The assembly name.
@@ -170,9 +171,11 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
     public void validate() {
         super.validate();
         if (assemblyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property assemblyName in model AssemblyProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AssemblyProperties.class);
 }

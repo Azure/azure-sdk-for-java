@@ -7,8 +7,10 @@ package com.azure.resourcemanager.cognitiveservices.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInner;
 import com.azure.resourcemanager.cognitiveservices.models.AccountModel;
+import com.azure.resourcemanager.cognitiveservices.models.CallRateLimit;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ModelDeprecationInfo;
+import com.azure.resourcemanager.cognitiveservices.models.ModelLifecycleStatus;
 import java.util.Collections;
 import java.util.Map;
 
@@ -36,6 +38,10 @@ public final class AccountModelImpl implements AccountModel {
         return this.innerModel().version();
     }
 
+    public CallRateLimit callRateLimit() {
+        return this.innerModel().callRateLimit();
+    }
+
     public DeploymentModel baseModel() {
         return this.innerModel().baseModel();
     }
@@ -53,8 +59,21 @@ public final class AccountModelImpl implements AccountModel {
         }
     }
 
+    public Map<String, String> finetuneCapabilities() {
+        Map<String, String> inner = this.innerModel().finetuneCapabilities();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public ModelDeprecationInfo deprecation() {
         return this.innerModel().deprecation();
+    }
+
+    public ModelLifecycleStatus lifecycleStatus() {
+        return this.innerModel().lifecycleStatus();
     }
 
     public SystemData systemData() {

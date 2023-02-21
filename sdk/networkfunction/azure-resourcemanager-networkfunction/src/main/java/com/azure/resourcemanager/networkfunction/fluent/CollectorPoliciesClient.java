@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkfunction.fluent.models.CollectorPolicyInner;
+import com.azure.resourcemanager.networkfunction.models.TagsObject;
 
 /** An instance of this class provides access to all the operations defined in CollectorPoliciesClient. */
 public interface CollectorPoliciesClient {
@@ -49,20 +50,6 @@ public interface CollectorPoliciesClient {
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collector policy in a specified Traffic Collector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CollectorPolicyInner get(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName);
-
-    /**
-     * Gets the collector policy in a specified Traffic Collector.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,6 +59,20 @@ public interface CollectorPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CollectorPolicyInner> getWithResponse(
         String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context);
+
+    /**
+     * Gets the collector policy in a specified Traffic Collector.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collector policy in a specified Traffic Collector.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CollectorPolicyInner get(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName);
 
     /**
      * Creates or updates a Collector Policy resource.
@@ -211,4 +212,41 @@ public interface CollectorPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(
         String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context);
+
+    /**
+     * Updates the specified Collector Policy tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @param parameters Parameters supplied to update Collector Policy tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collector policy resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CollectorPolicyInner> updateTagsWithResponse(
+        String resourceGroupName,
+        String azureTrafficCollectorName,
+        String collectorPolicyName,
+        TagsObject parameters,
+        Context context);
+
+    /**
+     * Updates the specified Collector Policy tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @param parameters Parameters supplied to update Collector Policy tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collector policy resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CollectorPolicyInner updateTags(
+        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters);
 }

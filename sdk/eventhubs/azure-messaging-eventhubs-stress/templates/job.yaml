@@ -8,26 +8,45 @@ metadata:
 spec:
   containers:
     - name: sender
-      image: {{ .Values.image }}
+      image: {{ .Stress.imageTag }}
       imagePullPolicy: Always
       command: ['sh', '-c']
       args:
         - |
           set -a &&
           source $ENV_FILE &&
-          java "org.springframework.boot.loader.JarLauncher" \
+          export CONTAINER_NAME=sender &&
+          export APPLICATIONINSIGHTS_ROLE_NAME=sender &&
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
+          "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=EventSender
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
+      resources:
+        requests:
+          memory: "1G"
+          cpu: "1"
+        limits:
+          memory: "2G"
+          cpu: "2"
     - name: receiver
-      image: {{ .Values.image }}
+      image: {{ .Stress.imageTag }}
       imagePullPolicy: Always
       command: ['sh', '-c']
       args:
         - |
-            set -a &&
-            source $ENV_FILE &&
-            java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
-            "org.springframework.boot.loader.JarLauncher" \
-            --TEST_CLASS=EventProcessor
+          set -a &&
+          source $ENV_FILE &&
+          export CONTAINER_NAME=receiver &&
+          export APPLICATIONINSIGHTS_ROLE_NAME=receiver &&
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
+          "org.springframework.boot.loader.JarLauncher" \
+          --TEST_CLASS=EventProcessor
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
+      resources:
+        requests:
+          memory: "1G"
+          cpu: "1"
+        limits:
+          memory: "2G"
+          cpu: "2"
 {{- end -}}

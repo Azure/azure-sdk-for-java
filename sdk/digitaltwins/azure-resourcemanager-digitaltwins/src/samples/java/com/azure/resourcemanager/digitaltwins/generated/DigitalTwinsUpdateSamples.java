@@ -16,7 +16,7 @@ import java.util.Map;
 /** Samples for DigitalTwins Update. */
 public final class DigitalTwinsUpdateSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsPatch_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsPatch_example.json
      */
     /**
      * Sample code: Patch a DigitalTwinsInstance resource.
@@ -34,7 +34,7 @@ public final class DigitalTwinsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsPatch_WithPublicNetworkAccess.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsPatch_WithPublicNetworkAccess.json
      */
     /**
      * Sample code: Patch a DigitalTwinsInstance resource with publicNetworkAccess property.
@@ -55,7 +55,7 @@ public final class DigitalTwinsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsPatch_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsPatch_WithIdentity_example.json
      */
     /**
      * Sample code: Patch a DigitalTwinsInstance resource with identity.

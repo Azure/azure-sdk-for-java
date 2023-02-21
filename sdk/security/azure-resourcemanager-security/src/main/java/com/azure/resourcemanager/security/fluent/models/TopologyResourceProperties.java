@@ -25,6 +25,10 @@ public final class TopologyResourceProperties {
     @JsonProperty(value = "topologyResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<TopologySingleResource> topologyResources;
 
+    /** Creates an instance of TopologyResourceProperties class. */
+    public TopologyResourceProperties() {
+    }
+
     /**
      * Get the calculatedDateTime property: The UTC time on which the topology was calculated.
      *

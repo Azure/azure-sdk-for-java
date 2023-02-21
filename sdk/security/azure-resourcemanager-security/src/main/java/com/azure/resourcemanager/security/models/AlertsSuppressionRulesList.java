@@ -25,6 +25,10 @@ public final class AlertsSuppressionRulesList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AlertsSuppressionRulesList class. */
+    public AlertsSuppressionRulesList() {
+    }
+
     /**
      * Get the value property: The value property.
      *

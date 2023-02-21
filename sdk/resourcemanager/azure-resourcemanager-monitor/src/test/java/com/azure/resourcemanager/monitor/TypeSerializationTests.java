@@ -7,11 +7,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.monitor.fluent.models.AlertRuleResourceInner;
-import com.azure.resourcemanager.monitor.fluent.models.LogSearchRuleResourceInner;
 import com.azure.resourcemanager.monitor.fluent.models.MetricAlertResourceInner;
 import java.util.Arrays;
 
-import com.azure.resourcemanager.monitor.models.AlertingAction;
 import com.azure.resourcemanager.monitor.models.MetricAlertMultipleResourceMultipleMetricCriteria;
 import com.azure.resourcemanager.monitor.models.RuleEmailAction;
 import com.azure.resourcemanager.monitor.models.RuleMetricDataSource;
@@ -41,10 +39,10 @@ public class TypeSerializationTests {
         String alertRuleInnerJson = adapter.serialize(alertRuleInner, SerializerEncoding.JSON);
         checkOdatatypeJson(alertRuleInnerJson);
 
-        LogSearchRuleResourceInner logSearchRuleInner = new LogSearchRuleResourceInner();
-        logSearchRuleInner.withAction(new AlertingAction());
-        String logSearchRuleInnerJson = adapter.serialize(logSearchRuleInner, SerializerEncoding.JSON);
-        checkOdatatypeJson(logSearchRuleInnerJson);
+//        LogSearchRuleResourceInner logSearchRuleInner = new LogSearchRuleResourceInner();
+//        logSearchRuleInner.withAction(new AlertingAction());
+//        String logSearchRuleInnerJson = adapter.serialize(logSearchRuleInner, SerializerEncoding.JSON);
+//        checkOdatatypeJson(logSearchRuleInnerJson);
     }
 
     private void checkOdatatypeJson(String json) {

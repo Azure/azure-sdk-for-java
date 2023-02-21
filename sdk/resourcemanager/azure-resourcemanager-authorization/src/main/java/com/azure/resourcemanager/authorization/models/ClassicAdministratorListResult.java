@@ -24,6 +24,10 @@ public final class ClassicAdministratorListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ClassicAdministratorListResult class. */
+    public ClassicAdministratorListResult() {
+    }
+
     /**
      * Get the value property: An array of administrators.
      *

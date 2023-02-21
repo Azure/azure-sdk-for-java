@@ -126,6 +126,9 @@ public class HiveLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of HiveLinkedService class. */
+    public HiveLinkedService() {}
+
     /**
      * Get the host property: IP address or host name of the Hive server, separated by ';' for multiple hosts (only when
      * serviceDiscoveryMode is enable).

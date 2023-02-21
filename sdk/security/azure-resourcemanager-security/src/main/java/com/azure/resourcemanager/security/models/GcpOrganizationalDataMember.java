@@ -26,6 +26,10 @@ public final class GcpOrganizationalDataMember extends GcpOrganizationalData {
     @JsonProperty(value = "managementProjectNumber")
     private String managementProjectNumber;
 
+    /** Creates an instance of GcpOrganizationalDataMember class. */
+    public GcpOrganizationalDataMember() {
+    }
+
     /**
      * Get the parentHierarchyId property: If the multi cloud account is not of membership type organization, this will
      * be the ID of the project's parent.

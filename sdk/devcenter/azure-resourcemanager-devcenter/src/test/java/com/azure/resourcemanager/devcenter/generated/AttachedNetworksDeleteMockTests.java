@@ -57,6 +57,6 @@ public final class AttachedNetworksDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.attachedNetworks().delete("xsspuunnoxyhk", "g", "ddrihpf", Context.NONE);
+        manager.attachedNetworks().delete("uxzejntpsew", "ioilqukrydxtq", "ieoxorggufhyaomt", Context.NONE);
     }
 }

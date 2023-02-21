@@ -50,6 +50,19 @@
 - [List](#allowedconnections_list)
 - [ListByHomeRegion](#allowedconnections_listbyhomeregion)
 
+## ApiCollection
+
+- [Get](#apicollection_get)
+- [List](#apicollection_list)
+
+## ApiCollectionOffboarding
+
+- [Delete](#apicollectionoffboarding_delete)
+
+## ApiCollectionOnboarding
+
+- [Create](#apicollectiononboarding_create)
+
 ## ApplicationOperation
 
 - [CreateOrUpdate](#applicationoperation_createorupdate)
@@ -396,7 +409,7 @@ public final class AdaptiveApplicationControlsDeleteSamples {
      */
     public static void deleteAnApplicationControlMachineGroup(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveApplicationControls().deleteWithResponse("centralus", "GROUP1", Context.NONE);
+        manager.adaptiveApplicationControls().deleteByResourceGroupWithResponse("centralus", "GROUP1", Context.NONE);
     }
 }
 ```
@@ -1329,6 +1342,94 @@ public final class AllowedConnectionsListByHomeRegionSamples {
 }
 ```
 
+### ApiCollection_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for ApiCollection Get. */
+public final class ApiCollectionGetSamples {
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-11-20-preview/examples/ApiCollections/APICollection_Get_example.json
+     */
+    /**
+     * Sample code: Gets an Azure API Management API if it has been onboarded to Defender for APIs.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void getsAnAzureAPIManagementAPIIfItHasBeenOnboardedToDefenderForAPIs(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.apiCollections().getWithResponse("rg1", "apimService1", "echo-api", Context.NONE);
+    }
+}
+```
+
+### ApiCollection_List
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for ApiCollection List. */
+public final class ApiCollectionListSamples {
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-11-20-preview/examples/ApiCollections/APICollection_List_example.json
+     */
+    /**
+     * Sample code: Gets a list of Azure API Management APIs that have been onboarded to Defender for APIs.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void getsAListOfAzureAPIManagementAPIsThatHaveBeenOnboardedToDefenderForAPIs(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.apiCollections().list("rg1", "apimService1", Context.NONE);
+    }
+}
+```
+
+### ApiCollectionOffboarding_Delete
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for ApiCollectionOffboarding Delete. */
+public final class ApiCollectionOffboardingDeleteSamples {
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-11-20-preview/examples/ApiCollections/APICollectionOffboarding_Delete_example.json
+     */
+    /**
+     * Sample code: Delete a security recommendation task on a resource.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void deleteASecurityRecommendationTaskOnAResource(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.apiCollectionOffboardings().deleteWithResponse("rg1", "apimService1", "echo-api", Context.NONE);
+    }
+}
+```
+
+### ApiCollectionOnboarding_Create
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for ApiCollectionOnboarding Create. */
+public final class ApiCollectionOnboardingCreateSamples {
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-11-20-preview/examples/ApiCollections/APICollectionOnboarding_Create_example.json
+     */
+    /**
+     * Sample code: Onboard an Azure API Management API to Defender for APIs.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void onboardAnAzureAPIManagementAPIToDefenderForAPIs(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.apiCollectionOnboardings().createWithResponse("rg1", "apimService1", "echo-api", Context.NONE);
+    }
+}
+```
+
 ### ApplicationOperation_CreateOrUpdate
 
 ```java
@@ -1485,7 +1586,7 @@ public final class AssessmentsDeleteSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .assessments()
-            .deleteWithResponse(
+            .deleteByResourceGroupWithResponse(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss2",
                 "8bb8be0a-6010-4789-812f-e4d661c4ed0e",
                 Context.NONE);
@@ -1796,6 +1897,8 @@ import com.azure.resourcemanager.security.models.AutomationTriggeringRule;
 import com.azure.resourcemanager.security.models.EventSource;
 import com.azure.resourcemanager.security.models.Operator;
 import com.azure.resourcemanager.security.models.PropertyType;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -1811,7 +1914,7 @@ public final class AutomationsCreateOrUpdateSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void createOrUpdateASecurityAutomationForAllAssessmentsIncludingAllSeverities(
-        com.azure.resourcemanager.security.SecurityManager manager) {
+        com.azure.resourcemanager.security.SecurityManager manager) throws IOException {
         manager
             .automations()
             .define("exampleAutomation")
@@ -1839,7 +1942,7 @@ public final class AutomationsCreateOrUpdateSamples {
                         new AutomationActionLogicApp()
                             .withLogicAppResourceId(
                                 "/subscriptions/e54a4a18-5b94-4f90-9471-bd3decad8a2e/resourceGroups/sample/providers/Microsoft.Logic/workflows/MyTest1")
-                            .withUri("https://exampleTriggerUri1.com")))
+                            .withUri(new URL("https://exampleTriggerUri1.com"))))
             .create();
     }
 
@@ -1851,7 +1954,8 @@ public final class AutomationsCreateOrUpdateSamples {
      *
      * @param manager Entry point to SecurityManager.
      */
-    public static void disableOrEnableASecurityAutomation(com.azure.resourcemanager.security.SecurityManager manager) {
+    public static void disableOrEnableASecurityAutomation(com.azure.resourcemanager.security.SecurityManager manager)
+        throws IOException {
         manager
             .automations()
             .define("exampleAutomation")
@@ -1895,7 +1999,7 @@ public final class AutomationsCreateOrUpdateSamples {
                         new AutomationActionLogicApp()
                             .withLogicAppResourceId(
                                 "/subscriptions/e54a4a18-5b94-4f90-9471-bd3decad8a2e/resourceGroups/sample/providers/Microsoft.Logic/workflows/MyTest1")
-                            .withUri("https://exampleTriggerUri1.com")))
+                            .withUri(new URL("https://exampleTriggerUri1.com"))))
             .create();
     }
 
@@ -1908,7 +2012,7 @@ public final class AutomationsCreateOrUpdateSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void createOrUpdateASecurityAutomationForAllHighSeverityAssessments(
-        com.azure.resourcemanager.security.SecurityManager manager) {
+        com.azure.resourcemanager.security.SecurityManager manager) throws IOException {
         manager
             .automations()
             .define("exampleAutomation")
@@ -1952,7 +2056,7 @@ public final class AutomationsCreateOrUpdateSamples {
                         new AutomationActionLogicApp()
                             .withLogicAppResourceId(
                                 "/subscriptions/e54a4a18-5b94-4f90-9471-bd3decad8a2e/resourceGroups/sample/providers/Microsoft.Logic/workflows/MyTest1")
-                            .withUri("https://exampleTriggerUri1.com")))
+                            .withUri(new URL("https://exampleTriggerUri1.com"))))
             .create();
     }
 
@@ -1985,7 +2089,7 @@ public final class AutomationsDeleteSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void deleteASecurityAutomation(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.automations().deleteWithResponse("myRg", "myAutomationName", Context.NONE);
+        manager.automations().deleteByResourceGroupWithResponse("myRg", "myAutomationName", Context.NONE);
     }
 }
 ```
@@ -2068,6 +2172,8 @@ import com.azure.resourcemanager.security.models.AutomationTriggeringRule;
 import com.azure.resourcemanager.security.models.EventSource;
 import com.azure.resourcemanager.security.models.Operator;
 import com.azure.resourcemanager.security.models.PropertyType;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -2083,7 +2189,7 @@ public final class AutomationsValidateSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void validateTheSecurityAutomationModelBeforeCreateOrUpdate(
-        com.azure.resourcemanager.security.SecurityManager manager) {
+        com.azure.resourcemanager.security.SecurityManager manager) throws IOException {
         manager
             .automations()
             .validateWithResponse(
@@ -2129,7 +2235,7 @@ public final class AutomationsValidateSamples {
                                 new AutomationActionLogicApp()
                                     .withLogicAppResourceId(
                                         "/subscriptions/e54a4a18-5b94-4f90-9471-bd3decad8a2e/resourceGroups/sample/providers/Microsoft.Logic/workflows/MyTest1")
-                                    .withUri("https://exampleTriggerUri1.com"))),
+                                    .withUri(new URL("https://exampleTriggerUri1.com")))),
                 Context.NONE);
     }
 
@@ -2267,15 +2373,12 @@ public final class ConnectorsCreateOrUpdateSamples {
                     .withOrganizationId("AscDemoOrg")
                     .withType("service_account")
                     .withProjectId("asc-project-1234")
-                    .withPrivateKeyId("6efg587hra2568as34d22326b044cc20dc2af")
-                    .withPrivateKey(
-                        "-----BEGIN PRIVATE KEY-----\n"
-                            + "FAKE_PRIVATE_KEY_PLACEHOLDER"
-                            + "-----END PRIVATE KEY-----\n")
+                    .withPrivateKeyId("fakeTokenPlaceholder")
+                    .withPrivateKey("fakeTokenPlaceholder")
                     .withClientEmail("asc-135@asc-project-1234.iam.gserviceaccount.com")
                     .withClientId("105889053725632919854")
                     .withAuthUri("https://accounts.google.com/o/oauth2/auth")
-                    .withTokenUri("https://oauth2.googleapis.com/token")
+                    .withTokenUri("fakeTokenPlaceholder")
                     .withAuthProviderX509CertUrl("https://www.googleapis.com/oauth2/v1/certs")
                     .withClientX509CertUrl(
                         "https://www.googleapis.com/robot/v1/metadata/x509/asc-135%40asc-project-1234.iam.gserviceaccount.com"))
@@ -2304,11 +2407,11 @@ public final class ConnectorsCreateOrUpdateSamples {
                     .withServicePrincipal(
                         new ServicePrincipalProperties()
                             .withApplicationId("ad9bcd79-be9c-45ab-abd8-80ca1654a7d1")
-                            .withSecret("<secret>")))
+                            .withSecret("fakeTokenPlaceholder")))
             .withAuthenticationDetails(
                 new AwsCredsAuthenticationDetailsProperties()
-                    .withAwsAccessKeyId("AKIARPZCNODDNAEQFSOE")
-                    .withAwsSecretAccessKey("<awsSecretAccessKey>"))
+                    .withAwsAccessKeyId("fakeTokenPlaceholder")
+                    .withAwsSecretAccessKey("fakeTokenPlaceholder"))
             .create();
     }
 
@@ -2334,7 +2437,7 @@ public final class ConnectorsCreateOrUpdateSamples {
                     .withServicePrincipal(
                         new ServicePrincipalProperties()
                             .withApplicationId("ad9bcd79-be9c-45ab-abd8-80ca1654a7d1")
-                            .withSecret("<secret>")))
+                            .withSecret("fakeTokenPlaceholder")))
             .withAuthenticationDetails(
                 new AwAssumeRoleAuthenticationDetailsProperties()
                     .withAwsAssumeRoleArn("arn:aws:iam::81231569658:role/AscConnector")
@@ -2461,7 +2564,7 @@ public final class CustomAssessmentAutomationsDeleteSamples {
     public static void deleteACustomAssessmentAutomation(com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .customAssessmentAutomations()
-            .deleteWithResponse("TestResourceGroup", "MyCustomAssessmentAutomation", Context.NONE);
+            .deleteByResourceGroupWithResponse("TestResourceGroup", "MyCustomAssessmentAutomation", Context.NONE);
     }
 }
 ```
@@ -2575,7 +2678,8 @@ public final class CustomEntityStoreAssignmentsDeleteSamples {
     public static void deleteACustomEntityStoreAssignment(com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .customEntityStoreAssignments()
-            .deleteWithResponse("TestResourceGroup", "33e7cc6e-a139-4723-a0e5-76993aee0771", Context.NONE);
+            .deleteByResourceGroupWithResponse(
+                "TestResourceGroup", "33e7cc6e-a139-4723-a0e5-76993aee0771", Context.NONE);
     }
 }
 ```
@@ -2703,7 +2807,7 @@ public final class DeviceSecurityGroupsDeleteSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .deviceSecurityGroups()
-            .deleteWithResponse(
+            .deleteByResourceGroupWithResponse(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Devices/iotHubs/sampleiothub",
                 "samplesecuritygroup",
                 Context.NONE);
@@ -3562,7 +3666,7 @@ public final class IotSecuritySolutionDeleteSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void deleteAnIoTSecuritySolution(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.iotSecuritySolutions().deleteWithResponse("MyGroup", "default", Context.NONE);
+        manager.iotSecuritySolutions().deleteByResourceGroupWithResponse("MyGroup", "default", Context.NONE);
     }
 }
 ```
@@ -4923,7 +5027,7 @@ public final class SecurityConnectorsDeleteSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void deleteASecurityConnector(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityConnectors().deleteWithResponse("myRg", "mySecurityConnectorName", Context.NONE);
+        manager.securityConnectors().deleteByResourceGroupWithResponse("myRg", "mySecurityConnectorName", Context.NONE);
     }
 }
 ```

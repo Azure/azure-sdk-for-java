@@ -63,7 +63,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterIotSec")
-    private interface IotSecuritySolutionsAnalyticsRecommendationsService {
+    public interface IotSecuritySolutionsAnalyticsRecommendationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
@@ -254,25 +254,6 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param aggregatedRecommendationName Name of the recommendation aggregated for this query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution recommendation information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IoTSecurityAggregatedRecommendationInner get(
-        String resourceGroupName, String solutionName, String aggregatedRecommendationName) {
-        return getAsync(resourceGroupName, solutionName, aggregatedRecommendationName).block();
-    }
-
-    /**
-     * Use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This
-     * aggregation is performed by recommendation name.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param aggregatedRecommendationName Name of the recommendation aggregated for this query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -283,6 +264,25 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
     public Response<IoTSecurityAggregatedRecommendationInner> getWithResponse(
         String resourceGroupName, String solutionName, String aggregatedRecommendationName, Context context) {
         return getWithResponseAsync(resourceGroupName, solutionName, aggregatedRecommendationName, context).block();
+    }
+
+    /**
+     * Use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This
+     * aggregation is performed by recommendation name.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param aggregatedRecommendationName Name of the recommendation aggregated for this query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ioT Security solution recommendation information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IoTSecurityAggregatedRecommendationInner get(
+        String resourceGroupName, String solutionName, String aggregatedRecommendationName) {
+        return getWithResponse(resourceGroupName, solutionName, aggregatedRecommendationName, Context.NONE).getValue();
     }
 
     /**

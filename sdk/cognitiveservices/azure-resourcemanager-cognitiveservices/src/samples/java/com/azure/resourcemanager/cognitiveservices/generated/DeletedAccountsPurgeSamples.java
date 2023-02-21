@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DeletedAccounts Purge. */
 public final class DeletedAccountsPurgeSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/PurgeDeletedAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/PurgeDeletedAccount.json
      */
     /**
      * Sample code: Delete Account.
@@ -17,6 +15,6 @@ public final class DeletedAccountsPurgeSamples {
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void deleteAccount(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.deletedAccounts().purge("westus", "myResourceGroup", "PropTest01", Context.NONE);
+        manager.deletedAccounts().purge("westus", "myResourceGroup", "PropTest01", com.azure.core.util.Context.NONE);
     }
 }

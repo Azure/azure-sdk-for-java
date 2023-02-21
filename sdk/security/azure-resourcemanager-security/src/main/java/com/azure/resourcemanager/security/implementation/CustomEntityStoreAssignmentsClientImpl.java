@@ -61,7 +61,7 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterCustom")
-    private interface CustomEntityStoreAssignmentsService {
+    public interface CustomEntityStoreAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security"
@@ -293,25 +293,6 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single custom entity store assignment by name for the provided subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomEntityStoreAssignmentInner getByResourceGroup(
-        String resourceGroupName, String customEntityStoreAssignmentName) {
-        return getByResourceGroupAsync(resourceGroupName, customEntityStoreAssignmentName).block();
-    }
-
-    /**
-     * Gets a custom entity store assignment
-     *
-     * <p>Gets a single custom entity store assignment by name for the provided subscription and resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -323,6 +304,26 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
     public Response<CustomEntityStoreAssignmentInner> getByResourceGroupWithResponse(
         String resourceGroupName, String customEntityStoreAssignmentName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, customEntityStoreAssignmentName, context).block();
+    }
+
+    /**
+     * Gets a custom entity store assignment
+     *
+     * <p>Gets a single custom entity store assignment by name for the provided subscription and resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single custom entity store assignment by name for the provided subscription and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomEntityStoreAssignmentInner getByResourceGroup(
+        String resourceGroupName, String customEntityStoreAssignmentName) {
+        return getByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -491,29 +492,6 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      *     insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param customEntityStoreAssignmentRequestBody Custom entity store assignment body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom entity store assignment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomEntityStoreAssignmentInner create(
-        String resourceGroupName,
-        String customEntityStoreAssignmentName,
-        CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody) {
-        return createAsync(resourceGroupName, customEntityStoreAssignmentName, customEntityStoreAssignmentRequestBody)
-            .block();
-    }
-
-    /**
-     * Creates a custom entity store assignment
-     *
-     * <p>Creates a custom entity store assignment for the provided subscription, if not already exists.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
-     * @param customEntityStoreAssignmentRequestBody Custom entity store assignment body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -529,6 +507,33 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
         return createWithResponseAsync(
                 resourceGroupName, customEntityStoreAssignmentName, customEntityStoreAssignmentRequestBody, context)
             .block();
+    }
+
+    /**
+     * Creates a custom entity store assignment
+     *
+     * <p>Creates a custom entity store assignment for the provided subscription, if not already exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
+     * @param customEntityStoreAssignmentRequestBody Custom entity store assignment body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom entity store assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomEntityStoreAssignmentInner create(
+        String resourceGroupName,
+        String customEntityStoreAssignmentName,
+        CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody) {
+        return createWithResponse(
+                resourceGroupName,
+                customEntityStoreAssignmentName,
+                customEntityStoreAssignmentRequestBody,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -666,23 +671,6 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String customEntityStoreAssignmentName) {
-        deleteAsync(resourceGroupName, customEntityStoreAssignmentName).block();
-    }
-
-    /**
-     * Deleted a custom entity store assignment
-     *
-     * <p>Delete a custom entity store assignment by name for a provided subscription.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -693,6 +681,23 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String customEntityStoreAssignmentName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, customEntityStoreAssignmentName, context).block();
+    }
+
+    /**
+     * Deleted a custom entity store assignment
+     *
+     * <p>Delete a custom entity store assignment by name for a provided subscription.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String customEntityStoreAssignmentName) {
+        deleteWithResponse(resourceGroupName, customEntityStoreAssignmentName, Context.NONE);
     }
 
     /**

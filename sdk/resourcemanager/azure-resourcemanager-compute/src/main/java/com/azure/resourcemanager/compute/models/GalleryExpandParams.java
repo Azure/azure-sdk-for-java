@@ -14,6 +14,15 @@ public final class GalleryExpandParams extends ExpandableStringEnum<GalleryExpan
     public static final GalleryExpandParams SHARING_PROFILE_GROUPS = fromString("SharingProfile/Groups");
 
     /**
+     * Creates a new instance of GalleryExpandParams value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GalleryExpandParams() {
+    }
+
+    /**
      * Creates or finds a GalleryExpandParams from its string representation.
      *
      * @param name a name to look for.

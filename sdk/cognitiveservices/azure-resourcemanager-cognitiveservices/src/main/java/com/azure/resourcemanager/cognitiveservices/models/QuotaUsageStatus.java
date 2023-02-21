@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QuotaUsageStatus. */
+/** Cognitive Services account quota usage status. */
 public final class QuotaUsageStatus extends ExpandableStringEnum<QuotaUsageStatus> {
     /** Static value Included for QuotaUsageStatus. */
     public static final QuotaUsageStatus INCLUDED = fromString("Included");
@@ -21,6 +21,15 @@ public final class QuotaUsageStatus extends ExpandableStringEnum<QuotaUsageStatu
 
     /** Static value Unknown for QuotaUsageStatus. */
     public static final QuotaUsageStatus UNKNOWN = fromString("Unknown");
+
+    /**
+     * Creates a new instance of QuotaUsageStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QuotaUsageStatus() {
+    }
 
     /**
      * Creates or finds a QuotaUsageStatus from its string representation.

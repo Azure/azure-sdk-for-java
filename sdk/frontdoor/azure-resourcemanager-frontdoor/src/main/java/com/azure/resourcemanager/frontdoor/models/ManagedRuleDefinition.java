@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a managed rule definition. */
 @Immutable
 public final class ManagedRuleDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleDefinition.class);
-
     /*
      * Identifier for the managed rule.
      */
@@ -27,8 +23,7 @@ public final class ManagedRuleDefinition {
     private ManagedRuleEnabledState defaultState;
 
     /*
-     * Describes the default action to be applied when the managed rule
-     * matches.
+     * Describes the default action to be applied when the managed rule matches.
      */
     @JsonProperty(value = "defaultAction", access = JsonProperty.Access.WRITE_ONLY)
     private ActionType defaultAction;
@@ -38,6 +33,10 @@ public final class ManagedRuleDefinition {
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
+
+    /** Creates an instance of ManagedRuleDefinition class. */
+    public ManagedRuleDefinition() {
+    }
 
     /**
      * Get the ruleId property: Identifier for the managed rule.

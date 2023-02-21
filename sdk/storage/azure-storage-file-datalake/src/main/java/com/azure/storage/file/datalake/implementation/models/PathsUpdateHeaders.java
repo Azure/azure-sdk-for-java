@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -111,6 +112,14 @@ public final class PathsUpdateHeaders {
     @JsonProperty(value = "Content-Type")
     private String contentType;
 
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_PROPERTIES = HttpHeaderName.fromString("x-ms-properties");
+
+    private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsUpdateHeaders class.
@@ -118,31 +127,31 @@ public final class PathsUpdateHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsUpdateHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.contentRange = rawHeaders.getValue("Content-Range");
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.contentRange = rawHeaders.getValue(HttpHeaderName.CONTENT_RANGE);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsProperties = rawHeaders.getValue("x-ms-properties");
-        this.xMsContinuation = rawHeaders.getValue("x-ms-continuation");
-        String date = rawHeaders.getValue("Date");
+        this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
+        this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        this.contentMD5 = rawHeaders.getValue("Content-MD5");
-        this.acceptRanges = rawHeaders.getValue("Accept-Ranges");
-        this.cacheControl = rawHeaders.getValue("Cache-Control");
-        this.eTag = rawHeaders.getValue("ETag");
-        this.contentDisposition = rawHeaders.getValue("Content-Disposition");
-        this.contentEncoding = rawHeaders.getValue("Content-Encoding");
-        String contentLength = rawHeaders.getValue("Content-Length");
+        this.contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
+        this.acceptRanges = rawHeaders.getValue(HttpHeaderName.ACCEPT_RANGES);
+        this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
+        this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
+        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.contentLanguage = rawHeaders.getValue("Content-Language");
-        this.contentType = rawHeaders.getValue("Content-Type");
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
+        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
     }
 
     /**

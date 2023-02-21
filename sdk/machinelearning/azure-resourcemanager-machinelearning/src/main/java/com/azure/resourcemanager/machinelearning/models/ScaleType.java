@@ -17,6 +17,15 @@ public final class ScaleType extends ExpandableStringEnum<ScaleType> {
     public static final ScaleType TARGET_UTILIZATION = fromString("TargetUtilization");
 
     /**
+     * Creates a new instance of ScaleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScaleType() {
+    }
+
+    /**
      * Creates or finds a ScaleType from its string representation.
      *
      * @param name a name to look for.

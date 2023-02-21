@@ -32,6 +32,10 @@ public final class MicrosoftGraphRecentNotebookLinks {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphRecentNotebookLinks class. */
+    public MicrosoftGraphRecentNotebookLinks() {
+    }
+
     /**
      * Get the oneNoteClientUrl property: externalLink.
      *

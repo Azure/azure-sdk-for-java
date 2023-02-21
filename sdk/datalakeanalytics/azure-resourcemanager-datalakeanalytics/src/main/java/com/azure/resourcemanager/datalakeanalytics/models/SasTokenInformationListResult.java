@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.SasTokenInformationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SAS response that contains the storage account, container and associated SAS token for connection use. */
 @Immutable
 public final class SasTokenInformationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SasTokenInformationListResult.class);
-
     /*
      * The results of the list operation.
      */
@@ -27,6 +23,10 @@ public final class SasTokenInformationListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of SasTokenInformationListResult class. */
+    public SasTokenInformationListResult() {
+    }
 
     /**
      * Get the value property: The results of the list operation.

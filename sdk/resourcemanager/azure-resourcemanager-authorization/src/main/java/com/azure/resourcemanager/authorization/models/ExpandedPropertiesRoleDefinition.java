@@ -28,6 +28,10 @@ public final class ExpandedPropertiesRoleDefinition {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of ExpandedPropertiesRoleDefinition class. */
+    public ExpandedPropertiesRoleDefinition() {
+    }
+
     /**
      * Get the id property: Id of the role definition.
      *

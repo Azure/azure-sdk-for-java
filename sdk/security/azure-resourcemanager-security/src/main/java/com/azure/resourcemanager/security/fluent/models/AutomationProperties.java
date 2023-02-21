@@ -49,6 +49,10 @@ public final class AutomationProperties {
     @JsonProperty(value = "actions")
     private List<AutomationAction> actions;
 
+    /** Creates an instance of AutomationProperties class. */
+    public AutomationProperties() {
+    }
+
     /**
      * Get the description property: The security automation description.
      *

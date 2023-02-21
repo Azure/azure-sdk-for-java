@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ModelDeprecationInfo;
+import com.azure.resourcemanager.cognitiveservices.models.ModelLifecycleStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -35,16 +36,33 @@ public final class AccountModelInner extends DeploymentModel {
     private Map<String, String> capabilities;
 
     /*
+     * The capabilities for finetune models.
+     */
+    @JsonProperty(value = "finetuneCapabilities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> finetuneCapabilities;
+
+    /*
      * Cognitive Services account ModelDeprecationInfo.
      */
     @JsonProperty(value = "deprecation")
     private ModelDeprecationInfo deprecation;
 
     /*
+     * Model lifecycle status.
+     */
+    @JsonProperty(value = "lifecycleStatus")
+    private ModelLifecycleStatus lifecycleStatus;
+
+    /*
      * Metadata pertaining to creation and last modification of the resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of AccountModelInner class. */
+    public AccountModelInner() {
+    }
 
     /**
      * Get the baseModel property: Base Model Identifier.
@@ -107,6 +125,26 @@ public final class AccountModelInner extends DeploymentModel {
     }
 
     /**
+     * Get the finetuneCapabilities property: The capabilities for finetune models.
+     *
+     * @return the finetuneCapabilities value.
+     */
+    public Map<String, String> finetuneCapabilities() {
+        return this.finetuneCapabilities;
+    }
+
+    /**
+     * Set the finetuneCapabilities property: The capabilities for finetune models.
+     *
+     * @param finetuneCapabilities the finetuneCapabilities value to set.
+     * @return the AccountModelInner object itself.
+     */
+    public AccountModelInner withFinetuneCapabilities(Map<String, String> finetuneCapabilities) {
+        this.finetuneCapabilities = finetuneCapabilities;
+        return this;
+    }
+
+    /**
      * Get the deprecation property: Cognitive Services account ModelDeprecationInfo.
      *
      * @return the deprecation value.
@@ -123,6 +161,26 @@ public final class AccountModelInner extends DeploymentModel {
      */
     public AccountModelInner withDeprecation(ModelDeprecationInfo deprecation) {
         this.deprecation = deprecation;
+        return this;
+    }
+
+    /**
+     * Get the lifecycleStatus property: Model lifecycle status.
+     *
+     * @return the lifecycleStatus value.
+     */
+    public ModelLifecycleStatus lifecycleStatus() {
+        return this.lifecycleStatus;
+    }
+
+    /**
+     * Set the lifecycleStatus property: Model lifecycle status.
+     *
+     * @param lifecycleStatus the lifecycleStatus value to set.
+     * @return the AccountModelInner object itself.
+     */
+    public AccountModelInner withLifecycleStatus(ModelLifecycleStatus lifecycleStatus) {
+        this.lifecycleStatus = lifecycleStatus;
         return this;
     }
 

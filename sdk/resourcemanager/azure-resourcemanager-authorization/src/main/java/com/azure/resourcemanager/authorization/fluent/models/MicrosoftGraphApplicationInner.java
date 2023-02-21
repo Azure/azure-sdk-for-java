@@ -18,17 +18,17 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * application Represents an Azure Active Directory object. The directoryObject type is the base type for many other
- * directory entity types.
+ * application
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirectoryObjectInner {
     /*
-     * Defines custom behavior that a consuming service can use to call an app
-     * in specific contexts. For example, applications that can render file
-     * streams may set the addIns property for its 'FileHandler' functionality.
-     * This will let services like Microsoft 365 call the application in the
-     * context of a document the user is working on.
+     * Defines custom behavior that a consuming service can use to call an app in specific contexts. For example,
+     * applications that can render file streams may set the addIns property for its 'FileHandler' functionality. This
+     * will let services like Microsoft 365 call the application in the context of a document the user is working on.
      */
     @JsonProperty(value = "addIns")
     private List<MicrosoftGraphAddIn> addIns;
@@ -40,8 +40,8 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private MicrosoftGraphApiApplication api;
 
     /*
-     * The unique identifier for the application that is assigned to an
-     * application by Azure AD. Not nullable. Read-only.
+     * The unique identifier for the application that is assigned to an application by Azure AD. Not nullable.
+     * Read-only.
      */
     @JsonProperty(value = "appId")
     private String appId;
@@ -53,9 +53,8 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private String applicationTemplateId;
 
     /*
-     * The collection of roles the application declares. With app role
-     * assignments, these roles can be assigned to users, groups, or other
-     * applications' service principals. Not nullable.
+     * The collection of roles the application declares. With app role assignments, these roles can be assigned to
+     * users, groups, or other applications' service principals. Not nullable.
      */
     @JsonProperty(value = "appRoles")
     private List<MicrosoftGraphAppRole> appRoles;
@@ -79,22 +78,18 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private String displayName;
 
     /*
-     * Configures the groups claim issued in a user or OAuth 2.0 access token
-     * that the application expects. To set this attribute, use one of the
-     * following valid string values:NoneSecurityGroup: For security groups and
-     * Azure AD rolesAll: This will get all of the security groups,
-     * distribution groups, and Azure AD directory roles that the signed-in
-     * user is a member of
+     * Configures the groups claim issued in a user or OAuth 2.0 access token that the application expects. To set this
+     * attribute, use one of the following valid string values:NoneSecurityGroup: For security groups and Azure AD
+     * rolesAll: This will get all of the security groups, distribution groups, and Azure AD directory roles that the
+     * signed-in user is a member of
      */
     @JsonProperty(value = "groupMembershipClaims")
     private String groupMembershipClaims;
 
     /*
-     * The URIs that identify the application within its Azure AD tenant, or
-     * within a verified custom domain if the application is multi-tenant. For
-     * more information see Application Objects and Service Principal Objects.
-     * The any operator is required for filter expressions on multi-valued
-     * properties. Not nullable.
+     * The URIs that identify the application within its Azure AD tenant, or within a verified custom domain if the
+     * application is multi-tenant. For more information see Application Objects and Service Principal Objects. The any
+     * operator is required for filter expressions on multi-valued properties. Not nullable.
      */
     @JsonProperty(value = "identifierUris")
     private List<String> identifierUris;
@@ -112,20 +107,17 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private Boolean isDeviceOnlyAuthSupported;
 
     /*
-     * Specifies the fallback application type as public client, such as an
-     * installed application running on a mobile device. The default value is
-     * false which means the fallback application type is confidential client
-     * such as web app. There are certain scenarios where Azure AD cannot
-     * determine the client application type (e.g. ROPC flow where it is
-     * configured without specifying a redirect URI). In those cases Azure AD
-     * will interpret the application type based on the value of this property.
+     * Specifies the fallback application type as public client, such as an installed application running on a mobile
+     * device. The default value is false which means the fallback application type is confidential client such as web
+     * app. There are certain scenarios where Azure AD cannot determine the client application type (e.g. ROPC flow
+     * where it is configured without specifying a redirect URI). In those cases Azure AD will interpret the
+     * application type based on the value of this property.
      */
     @JsonProperty(value = "isFallbackPublicClient")
     private Boolean isFallbackPublicClient;
 
     /*
-     * The collection of key credentials associated with the application Not
-     * nullable.
+     * The collection of key credentials associated with the application Not nullable.
      */
     @JsonProperty(value = "keyCredentials")
     private List<MicrosoftGraphKeyCredentialInner> keyCredentials;
@@ -161,8 +153,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private MicrosoftGraphParentalControlSettings parentalControlSettings;
 
     /*
-     * The collection of password credentials associated with the application.
-     * Not nullable.
+     * The collection of password credentials associated with the application. Not nullable.
      */
     @JsonProperty(value = "passwordCredentials")
     private List<MicrosoftGraphPasswordCredentialInner> passwordCredentials;
@@ -180,45 +171,36 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private String publisherDomain;
 
     /*
-     * Specifies resources that this application requires access to and the set
-     * of OAuth permission scopes and application roles that it needs under
-     * each of those resources. This pre-configuration of required resource
+     * Specifies resources that this application requires access to and the set of OAuth permission scopes and
+     * application roles that it needs under each of those resources. This pre-configuration of required resource
      * access drives the consent experience. Not nullable.
      */
     @JsonProperty(value = "requiredResourceAccess")
     private List<MicrosoftGraphRequiredResourceAccess> requiredResourceAccess;
 
     /*
-     * Specifies the Microsoft accounts that are supported for the current
-     * application. Supported values are:AzureADMyOrg: Users with a Microsoft
-     * work or school account in my organization’s Azure AD tenant (single
-     * tenant)AzureADMultipleOrgs: Users with a Microsoft work or school
-     * account in any organization’s Azure AD tenant
-     * (multi-tenant).AzureADandPersonalMicrosoftAccount: Users with a personal
-     * Microsoft account, or a work or school account in any organization’s
-     * Azure AD tenant.PersonalMicrosoftAccount: Users with a personal
-     * Microsoft account only.For authenticating users with Azure AD B2C user
-     * flows, use AzureADandPersonalMicrosoftAccount. This value allows for the
-     * widest set of user identities including local accounts and user
-     * identities from Microsoft, Facebook, Google, Twitter, or any OpenID
-     * Connect provider.
+     * Specifies the Microsoft accounts that are supported for the current application. Supported values
+     * are:AzureADMyOrg: Users with a Microsoft work or school account in my organization’s Azure AD tenant (single
+     * tenant)AzureADMultipleOrgs: Users with a Microsoft work or school account in any organization’s Azure AD tenant
+     * (multi-tenant).AzureADandPersonalMicrosoftAccount: Users with a personal Microsoft account, or a work or school
+     * account in any organization’s Azure AD tenant.PersonalMicrosoftAccount: Users with a personal Microsoft account
+     * only.For authenticating users with Azure AD B2C user flows, use AzureADandPersonalMicrosoftAccount. This value
+     * allows for the widest set of user identities including local accounts and user identities from Microsoft,
+     * Facebook, Google, Twitter, or any OpenID Connect provider.
      */
     @JsonProperty(value = "signInAudience")
     private String signInAudience;
 
     /*
-     * Custom strings that can be used to categorize and identify the
-     * application. Not nullable.
+     * Custom strings that can be used to categorize and identify the application. Not nullable.
      */
     @JsonProperty(value = "tags")
     private List<String> tags;
 
     /*
-     * Specifies the keyId of a public key from the keyCredentials collection.
-     * When configured, Azure AD encrypts all the tokens it emits by using the
-     * key this property points to. The application code that receives the
-     * encrypted token must use the matching private key to decrypt the token
-     * before it can be used for the signed-in user.
+     * Specifies the keyId of a public key from the keyCredentials collection. When configured, Azure AD encrypts all
+     * the tokens it emits by using the key this property points to. The application code that receives the encrypted
+     * token must use the matching private key to decrypt the token before it can be used for the signed-in user.
      */
     @JsonProperty(value = "tokenEncryptionKeyId")
     private UUID tokenEncryptionKeyId;
@@ -230,9 +212,10 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private MicrosoftGraphWebApplication web;
 
     /*
-     * directoryObject Represents an Azure Active Directory object. The
-     * directoryObject type is the base type for many other directory entity
-     * types.
+     * directoryObject
+     *
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonProperty(value = "createdOnBehalfOf")
     private MicrosoftGraphDirectoryObjectInner createdOnBehalfOf;
@@ -250,9 +233,8 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private List<MicrosoftGraphHomeRealmDiscoveryPolicyInner> homeRealmDiscoveryPolicies;
 
     /*
-     * Directory objects that are owners of the application. The owners are a
-     * set of non-admin users who are allowed to modify this object. Requires
-     * version 2013-11-08 or newer. Read-only. Nullable.
+     * Directory objects that are owners of the application. The owners are a set of non-admin users who are allowed to
+     * modify this object. Requires version 2013-11-08 or newer. Read-only. Nullable.
      */
     @JsonProperty(value = "owners")
     private List<MicrosoftGraphDirectoryObjectInner> owners;
@@ -270,10 +252,14 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private List<MicrosoftGraphTokenLifetimePolicy> tokenLifetimePolicies;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphApplicationInner class. */
+    public MicrosoftGraphApplicationInner() {
+    }
 
     /**
      * Get the addIns property: Defines custom behavior that a consuming service can use to call an app in specific
@@ -882,8 +868,10 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     }
 
     /**
-     * Get the createdOnBehalfOf property: directoryObject Represents an Azure Active Directory object. The
-     * directoryObject type is the base type for many other directory entity types.
+     * Get the createdOnBehalfOf property: directoryObject
+     *
+     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
+     * directory entity types.
      *
      * @return the createdOnBehalfOf value.
      */
@@ -892,8 +880,10 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     }
 
     /**
-     * Set the createdOnBehalfOf property: directoryObject Represents an Azure Active Directory object. The
-     * directoryObject type is the base type for many other directory entity types.
+     * Set the createdOnBehalfOf property: directoryObject
+     *
+     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
+     * directory entity types.
      *
      * @param createdOnBehalfOf the createdOnBehalfOf value to set.
      * @return the MicrosoftGraphApplicationInner object itself.

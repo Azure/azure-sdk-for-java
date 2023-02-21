@@ -18,6 +18,10 @@ public final class SkuAvailabilityListResultInner {
     @JsonProperty(value = "value")
     private List<SkuAvailability> value;
 
+    /** Creates an instance of SkuAvailabilityListResultInner class. */
+    public SkuAvailabilityListResultInner() {
+    }
+
     /**
      * Get the value property: Check SKU availability result list.
      *

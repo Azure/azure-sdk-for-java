@@ -49,7 +49,7 @@ public final class JobOperationResultsClientImpl implements JobOperationResultsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface JobOperationResultsService {
+    public interface JobOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

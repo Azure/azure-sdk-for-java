@@ -33,6 +33,15 @@ public final class GalleryProvisioningState extends ExpandableStringEnum<Gallery
     public static final GalleryProvisioningState MIGRATING = fromString("Migrating");
 
     /**
+     * Creates a new instance of GalleryProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GalleryProvisioningState() {
+    }
+
+    /**
      * Creates or finds a GalleryProvisioningState from its string representation.
      *
      * @param name a name to look for.

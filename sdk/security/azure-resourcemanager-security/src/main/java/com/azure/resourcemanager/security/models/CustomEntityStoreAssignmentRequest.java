@@ -17,6 +17,10 @@ public final class CustomEntityStoreAssignmentRequest {
     @JsonProperty(value = "properties")
     private CustomEntityStoreAssignmentRequestProperties innerProperties;
 
+    /** Creates an instance of CustomEntityStoreAssignmentRequest class. */
+    public CustomEntityStoreAssignmentRequest() {
+    }
+
     /**
      * Get the innerProperties property: describes properties of custom entity store assignment request.
      *

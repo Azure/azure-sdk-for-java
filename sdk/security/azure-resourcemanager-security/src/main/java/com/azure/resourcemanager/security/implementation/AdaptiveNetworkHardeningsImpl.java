@@ -47,28 +47,6 @@ public final class AdaptiveNetworkHardeningsImpl implements AdaptiveNetworkHarde
         return Utils.mapPage(inner, inner1 -> new AdaptiveNetworkHardeningImpl(inner1, this.manager()));
     }
 
-    public AdaptiveNetworkHardening get(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName) {
-        AdaptiveNetworkHardeningInner inner =
-            this
-                .serviceClient()
-                .get(
-                    resourceGroupName,
-                    resourceNamespace,
-                    resourceType,
-                    resourceName,
-                    adaptiveNetworkHardeningResourceName);
-        if (inner != null) {
-            return new AdaptiveNetworkHardeningImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AdaptiveNetworkHardening> getWithResponse(
         String resourceGroupName,
         String resourceNamespace,
@@ -92,6 +70,28 @@ public final class AdaptiveNetworkHardeningsImpl implements AdaptiveNetworkHarde
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AdaptiveNetworkHardeningImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AdaptiveNetworkHardening get(
+        String resourceGroupName,
+        String resourceNamespace,
+        String resourceType,
+        String resourceName,
+        String adaptiveNetworkHardeningResourceName) {
+        AdaptiveNetworkHardeningInner inner =
+            this
+                .serviceClient()
+                .get(
+                    resourceGroupName,
+                    resourceNamespace,
+                    resourceType,
+                    resourceName,
+                    adaptiveNetworkHardeningResourceName);
+        if (inner != null) {
+            return new AdaptiveNetworkHardeningImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NotebookWorkspaces ListByDatabaseAccount. */
 public final class NotebookWorkspacesListByDatabaseAccountSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBNotebookWorkspaceList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBNotebookWorkspaceList.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceList.
@@ -22,6 +20,6 @@ public final class NotebookWorkspacesListByDatabaseAccountSamples {
             .manager()
             .serviceClient()
             .getNotebookWorkspaces()
-            .listByDatabaseAccount("rg1", "ddb1", Context.NONE);
+            .listByDatabaseAccount("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

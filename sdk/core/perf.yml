@@ -1,4 +1,8 @@
 parameters:
+- name: LanguageVersion
+  displayName: LanguageVersion (8, 11, 17)
+  type: string
+  default: '17'
 - name: PackageVersions
   displayName: PackageVersions (regex of package versions to run)
   type: string
@@ -19,14 +23,19 @@ parameters:
   displayName: AdditionalArguments (passed to PerfAutomation)
   type: string
   default: ' '
+- name: Profile
+  type: boolean
+  default: false
 
 extends:
   template: /eng/pipelines/templates/jobs/perf.yml
   parameters:
+    TimeoutInMinutes: 720
+    LanguageVersion: ${{ parameters.LanguageVersion }}
     ServiceDirectory: core
-    Services: "^core$"
     PackageVersions: ${{ parameters.PackageVersions }}
     Tests: ${{ parameters.Tests }}
     Arguments: ${{ parameters.Arguments }}
     Iterations: ${{ parameters.Iterations }}
     AdditionalArguments: ${{ parameters.AdditionalArguments }}
+    Profile: ${{ parameters.Profile }}

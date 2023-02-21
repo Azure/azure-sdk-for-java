@@ -45,6 +45,10 @@ public final class MaintenanceConfigurationImpl
         }
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String namespace() {
         return this.innerModel().namespace();
     }
@@ -86,16 +90,16 @@ public final class MaintenanceConfigurationImpl
         return this.innerModel().recurEvery();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public MaintenanceConfigurationInner innerModel() {

@@ -17,6 +17,15 @@ public final class ManagedIdentityTypes extends ExpandableStringEnum<ManagedIden
     public static final ManagedIdentityTypes USER_ASSIGNED = fromString("UserAssigned");
 
     /**
+     * Creates a new instance of ManagedIdentityTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedIdentityTypes() {
+    }
+
+    /**
      * Creates or finds a ManagedIdentityTypes from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class ManagedIdentityTypes extends ExpandableStringEnum<ManagedIden
         return fromString(name, ManagedIdentityTypes.class);
     }
 
-    /** @return known ManagedIdentityTypes values. */
+    /**
+     * Gets known ManagedIdentityTypes values.
+     *
+     * @return known ManagedIdentityTypes values.
+     */
     public static Collection<ManagedIdentityTypes> values() {
         return values(ManagedIdentityTypes.class);
     }

@@ -38,6 +38,10 @@ public final class MicrosoftGraphTeamsAppDefinition extends MicrosoftGraphEntity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTeamsAppDefinition class. */
+    public MicrosoftGraphTeamsAppDefinition() {
+    }
+
     /**
      * Get the displayName property: The name of the app provided by the app developer.
      *

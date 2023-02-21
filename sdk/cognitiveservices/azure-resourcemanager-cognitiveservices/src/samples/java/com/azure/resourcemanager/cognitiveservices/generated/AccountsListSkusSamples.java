@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Accounts ListSkus. */
 public final class AccountsListSkusSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListSkus.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/ListSkus.json
      */
     /**
      * Sample code: List SKUs.
@@ -17,6 +15,6 @@ public final class AccountsListSkusSamples {
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void listSKUs(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.accounts().listSkusWithResponse("myResourceGroup", "myAccount", Context.NONE);
+        manager.accounts().listSkusWithResponse("myResourceGroup", "myAccount", com.azure.core.util.Context.NONE);
     }
 }

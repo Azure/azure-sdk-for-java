@@ -59,7 +59,7 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterRegula")
-    private interface RegulatoryComplianceAssessmentsService {
+    public interface RegulatoryComplianceAssessmentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards"
@@ -496,27 +496,6 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance assessment details and state.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegulatoryComplianceAssessmentInner get(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String regulatoryComplianceAssessmentName) {
-        return getAsync(
-                regulatoryComplianceStandardName, regulatoryComplianceControlName, regulatoryComplianceAssessmentName)
-            .block();
-    }
-
-    /**
-     * Supported regulatory compliance details and state for selected assessment.
-     *
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -535,6 +514,30 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
                 regulatoryComplianceAssessmentName,
                 context)
             .block();
+    }
+
+    /**
+     * Supported regulatory compliance details and state for selected assessment.
+     *
+     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
+     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
+     * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return regulatory compliance assessment details and state.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RegulatoryComplianceAssessmentInner get(
+        String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName,
+        String regulatoryComplianceAssessmentName) {
+        return getWithResponse(
+                regulatoryComplianceStandardName,
+                regulatoryComplianceControlName,
+                regulatoryComplianceAssessmentName,
+                Context.NONE)
+            .getValue();
     }
 
     /**

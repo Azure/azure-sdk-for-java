@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.GetOutboundRoutesParameters;
 /** Samples for VirtualHubs GetOutboundRoutes. */
 public final class VirtualHubsGetOutboundRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/GetOutboundRoutes.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/GetOutboundRoutes.json
      */
     /**
      * Sample code: Outbound Routes for the Virtual Hub on a Particular Connection.

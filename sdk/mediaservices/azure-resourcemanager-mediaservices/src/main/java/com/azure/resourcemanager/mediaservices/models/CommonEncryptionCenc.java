@@ -41,6 +41,10 @@ public final class CommonEncryptionCenc {
     @JsonProperty(value = "clearKeyEncryptionConfiguration")
     private ClearKeyEncryptionConfiguration clearKeyEncryptionConfiguration;
 
+    /** Creates an instance of CommonEncryptionCenc class. */
+    public CommonEncryptionCenc() {
+    }
+
     /**
      * Get the enabledProtocols property: Representing supported protocols.
      *

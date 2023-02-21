@@ -88,6 +88,14 @@ public class WebPubSubServiceClientTests extends TestBase {
     }
 
     @Test
+    public void testBroadcastStringWithFilter() {
+        assertResponse(client.sendToAllWithResponse(
+            BinaryData.fromString("Hello World - Broadcast test!"),
+            new RequestOptions().setHeader("Content-Type", "text/plain")
+                .addQueryParam("filter", "userId ne 'user1'")), 202);
+    }
+
+    @Test
     public void testBroadcastBytes() {
         byte[] bytes = "Hello World - Broadcast test!".getBytes();
         assertResponse(client.sendToAllWithResponse(
@@ -119,6 +127,28 @@ public class WebPubSubServiceClientTests extends TestBase {
     }
 
     @Test
+    public void testSendToUserStringWithFilter() {
+        BinaryData message = BinaryData.fromString("Hello World!");
+
+        assertResponse(client.sendToUserWithResponse("test_user",
+            message,
+            new RequestOptions().addRequestCallback(request -> request.getHeaders()
+                .set("Content-Type", "text/plain"))), 202);
+
+        assertResponse(client.sendToUserWithResponse("test_user",
+                message, WebPubSubContentType.TEXT_PLAIN, message.getLength(),
+                null),
+            202);
+
+        ByteArrayInputStream messageStream = new ByteArrayInputStream(message.toBytes());
+        assertResponse(client.sendToUserWithResponse("test_user",
+                BinaryData.fromStream(messageStream),
+                WebPubSubContentType.APPLICATION_OCTET_STREAM, message.getLength(),
+                new RequestOptions().addQueryParam("filter", "userId ne 'user1'")),
+            202);
+    }
+
+    @Test
     public void testSendToUserBytes() {
         assertResponse(client.sendToUserWithResponse("test_user",
                 BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
@@ -132,6 +162,14 @@ public class WebPubSubServiceClientTests extends TestBase {
                 BinaryData.fromString("Hello World!"),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
                         .set("Content-Type", "text/plain"))), 202);
+    }
+
+    @Test
+    public void testSendToConnectionStringWithFilter() {
+        assertResponse(client.sendToConnectionWithResponse("test_connection",
+            BinaryData.fromString("Hello World!"),
+            new RequestOptions().setHeader("Content-Type", "text/plain")
+                .addQueryParam("filter", "userId ne 'user1'")), 202);
     }
 
     @Test
@@ -173,6 +211,13 @@ public class WebPubSubServiceClientTests extends TestBase {
         Response<Void> removeUserResponse =
             client.removeUserFromAllGroupsWithResponse("testRemoveNonExistentUserFromHub", new RequestOptions());
         assertEquals(204, removeUserResponse.getStatusCode());
+    }
+
+    @Test
+    public void testRemoveConnectionFromAllGroup() {
+        Response<Void> response =
+            client.removeConnectionFromAllGroupsWithResponse("test_connection", new RequestOptions());
+        assertEquals(204, response.getStatusCode());
     }
 
     @Test

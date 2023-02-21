@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The secrets related to a databox heavy. */
 @Immutable
 public final class DataBoxHeavySecret {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataBoxHeavySecret.class);
-
     /*
      * Serial number of the assigned device.
      */
@@ -44,6 +40,10 @@ public final class DataBoxHeavySecret {
      */
     @JsonProperty(value = "accountCredentialDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<AccountCredentialDetails> accountCredentialDetails;
+
+    /** Creates an instance of DataBoxHeavySecret class. */
+    public DataBoxHeavySecret() {
+    }
 
     /**
      * Get the deviceSerialNumber property: Serial number of the assigned device.

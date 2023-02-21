@@ -17,6 +17,10 @@ public final class RuleResultsProperties {
     @JsonProperty(value = "results")
     private List<List<String>> results;
 
+    /** Creates an instance of RuleResultsProperties class. */
+    public RuleResultsProperties() {
+    }
+
     /**
      * Get the results property: Expected results in the baseline.
      *

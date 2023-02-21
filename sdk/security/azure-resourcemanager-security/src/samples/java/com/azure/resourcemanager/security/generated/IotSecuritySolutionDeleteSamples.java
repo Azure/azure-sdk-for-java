@@ -17,6 +17,6 @@ public final class IotSecuritySolutionDeleteSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void deleteAnIoTSecuritySolution(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.iotSecuritySolutions().deleteWithResponse("MyGroup", "default", Context.NONE);
+        manager.iotSecuritySolutions().deleteByResourceGroupWithResponse("MyGroup", "default", Context.NONE);
     }
 }

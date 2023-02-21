@@ -18,8 +18,9 @@ public final class AzureFileShareConfiguration {
     private String accountName;
 
     /*
-     * The Azure Files URL. This is of the form
-     * 'https://{account}.file.core.windows.net/'.
+     * The Azure Files URL.
+     *
+     * This is of the form 'https://{account}.file.core.windows.net/'.
      */
     @JsonProperty(value = "azureFileUrl", required = true)
     private String azureFileUrl;
@@ -31,20 +32,25 @@ public final class AzureFileShareConfiguration {
     private String accountKey;
 
     /*
-     * The relative path on the compute node where the file system will be
-     * mounted All file systems are mounted relative to the Batch mounts
-     * directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment
-     * variable.
+     * The relative path on the compute node where the file system will be mounted
+     *
+     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
+     * environment variable.
      */
     @JsonProperty(value = "relativeMountPath", required = true)
     private String relativeMountPath;
 
     /*
-     * Additional command line options to pass to the mount command. These are
-     * 'net use' options in Windows and 'mount' options in Linux.
+     * Additional command line options to pass to the mount command.
+     *
+     * These are 'net use' options in Windows and 'mount' options in Linux.
      */
     @JsonProperty(value = "mountOptions")
     private String mountOptions;
+
+    /** Creates an instance of AzureFileShareConfiguration class. */
+    public AzureFileShareConfiguration() {
+    }
 
     /**
      * Get the accountName property: The Azure Storage account name.
@@ -67,8 +73,9 @@ public final class AzureFileShareConfiguration {
     }
 
     /**
-     * Get the azureFileUrl property: The Azure Files URL. This is of the form
-     * 'https://{account}.file.core.windows.net/'.
+     * Get the azureFileUrl property: The Azure Files URL.
+     *
+     * <p>This is of the form 'https://{account}.file.core.windows.net/'.
      *
      * @return the azureFileUrl value.
      */
@@ -77,8 +84,9 @@ public final class AzureFileShareConfiguration {
     }
 
     /**
-     * Set the azureFileUrl property: The Azure Files URL. This is of the form
-     * 'https://{account}.file.core.windows.net/'.
+     * Set the azureFileUrl property: The Azure Files URL.
+     *
+     * <p>This is of the form 'https://{account}.file.core.windows.net/'.
      *
      * @param azureFileUrl the azureFileUrl value to set.
      * @return the AzureFileShareConfiguration object itself.
@@ -110,8 +118,9 @@ public final class AzureFileShareConfiguration {
 
     /**
      * Get the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
-     * environment variable.
+     *
+     * <p>All file systems are mounted relative to the Batch mounts directory, accessible via the
+     * AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      *
      * @return the relativeMountPath value.
      */
@@ -121,8 +130,9 @@ public final class AzureFileShareConfiguration {
 
     /**
      * Set the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
-     * environment variable.
+     *
+     * <p>All file systems are mounted relative to the Batch mounts directory, accessible via the
+     * AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      *
      * @param relativeMountPath the relativeMountPath value to set.
      * @return the AzureFileShareConfiguration object itself.
@@ -133,8 +143,9 @@ public final class AzureFileShareConfiguration {
     }
 
     /**
-     * Get the mountOptions property: Additional command line options to pass to the mount command. These are 'net use'
-     * options in Windows and 'mount' options in Linux.
+     * Get the mountOptions property: Additional command line options to pass to the mount command.
+     *
+     * <p>These are 'net use' options in Windows and 'mount' options in Linux.
      *
      * @return the mountOptions value.
      */
@@ -143,8 +154,9 @@ public final class AzureFileShareConfiguration {
     }
 
     /**
-     * Set the mountOptions property: Additional command line options to pass to the mount command. These are 'net use'
-     * options in Windows and 'mount' options in Linux.
+     * Set the mountOptions property: Additional command line options to pass to the mount command.
+     *
+     * <p>These are 'net use' options in Windows and 'mount' options in Linux.
      *
      * @param mountOptions the mountOptions value to set.
      * @return the AzureFileShareConfiguration object itself.

@@ -35,6 +35,10 @@ public final class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
     @JsonProperty(value = "filterValue")
     private String filterValue;
 
+    /** Creates an instance of SelectVideoTrackByAttribute class. */
+    public SelectVideoTrackByAttribute() {
+    }
+
     /**
      * Get the attribute property: The TrackAttribute to filter the tracks by.
      *

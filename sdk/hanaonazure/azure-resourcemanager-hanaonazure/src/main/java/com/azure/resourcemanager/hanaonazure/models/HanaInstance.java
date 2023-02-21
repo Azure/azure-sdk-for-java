@@ -131,6 +131,13 @@ public interface HanaInstance {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.hanaonazure.fluent.models.HanaInstanceInner object.
      *
      * @return the inner object.
@@ -187,12 +194,7 @@ public interface HanaInstance {
                 DefinitionStages.WithStorageProfile,
                 DefinitionStages.WithOsProfile,
                 DefinitionStages.WithNetworkProfile,
-                DefinitionStages.WithHanaInstanceId,
-                DefinitionStages.WithPowerState,
-                DefinitionStages.WithProximityPlacementGroup,
-                DefinitionStages.WithHwRevision,
-                DefinitionStages.WithPartnerNodeId,
-                DefinitionStages.WithProvisioningState {
+                DefinitionStages.WithPartnerNodeId {
             /**
              * Executes the create request.
              *
@@ -258,46 +260,6 @@ public interface HanaInstance {
              */
             WithCreate withNetworkProfile(NetworkProfile networkProfile);
         }
-        /** The stage of the HanaInstance definition allowing to specify hanaInstanceId. */
-        interface WithHanaInstanceId {
-            /**
-             * Specifies the hanaInstanceId property: Specifies the HANA instance unique ID..
-             *
-             * @param hanaInstanceId Specifies the HANA instance unique ID.
-             * @return the next definition stage.
-             */
-            WithCreate withHanaInstanceId(String hanaInstanceId);
-        }
-        /** The stage of the HanaInstance definition allowing to specify powerState. */
-        interface WithPowerState {
-            /**
-             * Specifies the powerState property: Resource power state.
-             *
-             * @param powerState Resource power state.
-             * @return the next definition stage.
-             */
-            WithCreate withPowerState(HanaInstancePowerStateEnum powerState);
-        }
-        /** The stage of the HanaInstance definition allowing to specify proximityPlacementGroup. */
-        interface WithProximityPlacementGroup {
-            /**
-             * Specifies the proximityPlacementGroup property: Resource proximity placement group.
-             *
-             * @param proximityPlacementGroup Resource proximity placement group.
-             * @return the next definition stage.
-             */
-            WithCreate withProximityPlacementGroup(String proximityPlacementGroup);
-        }
-        /** The stage of the HanaInstance definition allowing to specify hwRevision. */
-        interface WithHwRevision {
-            /**
-             * Specifies the hwRevision property: Hardware revision of a HANA instance.
-             *
-             * @param hwRevision Hardware revision of a HANA instance.
-             * @return the next definition stage.
-             */
-            WithCreate withHwRevision(String hwRevision);
-        }
         /** The stage of the HanaInstance definition allowing to specify partnerNodeId. */
         interface WithPartnerNodeId {
             /**
@@ -308,16 +270,6 @@ public interface HanaInstance {
              * @return the next definition stage.
              */
             WithCreate withPartnerNodeId(String partnerNodeId);
-        }
-        /** The stage of the HanaInstance definition allowing to specify provisioningState. */
-        interface WithProvisioningState {
-            /**
-             * Specifies the provisioningState property: State of provisioning of the HanaInstance.
-             *
-             * @param provisioningState State of provisioning of the HanaInstance.
-             * @return the next definition stage.
-             */
-            WithCreate withProvisioningState(HanaProvisioningStatesEnum provisioningState);
         }
     }
     /**

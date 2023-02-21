@@ -28,15 +28,6 @@ public final class MdeOnboardingsImpl implements MdeOnboardings {
         this.serviceManager = serviceManager;
     }
 
-    public MdeOnboardingDataList list() {
-        MdeOnboardingDataListInner inner = this.serviceClient().list();
-        if (inner != null) {
-            return new MdeOnboardingDataListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MdeOnboardingDataList> listWithResponse(Context context) {
         Response<MdeOnboardingDataListInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
@@ -50,10 +41,10 @@ public final class MdeOnboardingsImpl implements MdeOnboardings {
         }
     }
 
-    public MdeOnboardingData get() {
-        MdeOnboardingDataInner inner = this.serviceClient().get();
+    public MdeOnboardingDataList list() {
+        MdeOnboardingDataListInner inner = this.serviceClient().list();
         if (inner != null) {
-            return new MdeOnboardingDataImpl(inner, this.manager());
+            return new MdeOnboardingDataListImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -67,6 +58,15 @@ public final class MdeOnboardingsImpl implements MdeOnboardings {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new MdeOnboardingDataImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MdeOnboardingData get() {
+        MdeOnboardingDataInner inner = this.serviceClient().get();
+        if (inner != null) {
+            return new MdeOnboardingDataImpl(inner, this.manager());
         } else {
             return null;
         }

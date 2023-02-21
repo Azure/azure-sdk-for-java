@@ -73,7 +73,11 @@ public final class ServicePrincipalsServicePrincipalExpand
         return fromString(name, ServicePrincipalsServicePrincipalExpand.class);
     }
 
-    /** @return known ServicePrincipalsServicePrincipalExpand values. */
+    /**
+     * Gets known ServicePrincipalsServicePrincipalExpand values.
+     *
+     * @return known ServicePrincipalsServicePrincipalExpand values.
+     */
     public static Collection<ServicePrincipalsServicePrincipalExpand> values() {
         return values(ServicePrincipalsServicePrincipalExpand.class);
     }

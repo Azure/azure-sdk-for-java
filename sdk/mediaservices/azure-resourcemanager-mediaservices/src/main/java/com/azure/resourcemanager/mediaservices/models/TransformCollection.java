@@ -25,6 +25,10 @@ public final class TransformCollection {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of TransformCollection class. */
+    public TransformCollection() {
+    }
+
     /**
      * Get the value property: A collection of Transform items.
      *

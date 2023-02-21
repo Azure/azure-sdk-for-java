@@ -14,7 +14,7 @@ public final class AllowedEnvironmentTypeListResultTests {
         AllowedEnvironmentTypeListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"uyonobglaoc\"},\"id\":\"tcc\",\"name\":\"g\",\"type\":\"udxytlmoyrx\"}],\"nextLink\":\"fudwpznt\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Created\"},\"id\":\"rywn\",\"name\":\"zoqftiyqzrnkcqvy\",\"type\":\"lwh\"}],\"nextLink\":\"sicohoqqnwvlry\"}")
                 .toObject(AllowedEnvironmentTypeListResult.class);
     }
 

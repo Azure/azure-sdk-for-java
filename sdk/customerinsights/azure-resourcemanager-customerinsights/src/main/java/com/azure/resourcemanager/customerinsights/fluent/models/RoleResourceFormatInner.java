@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The role resource format. */
-@JsonFlatten
 @Fluent
-public class RoleResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleResourceFormatInner.class);
-
+public final class RoleResourceFormatInner extends ProxyResource {
     /*
-     * The role name.
+     * The Role definition.
      */
-    @JsonProperty(value = "properties.roleName")
-    private String roleName;
+    @JsonProperty(value = "properties")
+    private Role innerProperties;
 
-    /*
-     * The description of the role.
+    /** Creates an instance of RoleResourceFormatInner class. */
+    public RoleResourceFormatInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The Role definition.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private Role innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the roleName property: The role name.
@@ -35,7 +36,7 @@ public class RoleResourceFormatInner extends ProxyResource {
      * @return the roleName value.
      */
     public String roleName() {
-        return this.roleName;
+        return this.innerProperties() == null ? null : this.innerProperties().roleName();
     }
 
     /**
@@ -45,7 +46,10 @@ public class RoleResourceFormatInner extends ProxyResource {
      * @return the RoleResourceFormatInner object itself.
      */
     public RoleResourceFormatInner withRoleName(String roleName) {
-        this.roleName = roleName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Role();
+        }
+        this.innerProperties().withRoleName(roleName);
         return this;
     }
 
@@ -55,7 +59,7 @@ public class RoleResourceFormatInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -65,7 +69,10 @@ public class RoleResourceFormatInner extends ProxyResource {
      * @return the RoleResourceFormatInner object itself.
      */
     public RoleResourceFormatInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Role();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -75,5 +82,8 @@ public class RoleResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

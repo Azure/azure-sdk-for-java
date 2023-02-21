@@ -37,6 +37,10 @@ public class ExternalSecuritySolutionInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
+    /** Creates an instance of ExternalSecuritySolutionInner class. */
+    public ExternalSecuritySolutionInner() {
+    }
+
     /**
      * Get the location property: Location where the resource is stored.
      *

@@ -34,6 +34,10 @@ public final class ClassicAdministratorInner {
     @JsonProperty(value = "properties")
     private ClassicAdministratorProperties innerProperties;
 
+    /** Creates an instance of ClassicAdministratorInner class. */
+    public ClassicAdministratorInner() {
+    }
+
     /**
      * Get the id property: The ID of the administrator.
      *

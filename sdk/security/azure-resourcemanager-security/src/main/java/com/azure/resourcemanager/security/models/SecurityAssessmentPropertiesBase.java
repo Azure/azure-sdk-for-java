@@ -51,6 +51,10 @@ public class SecurityAssessmentPropertiesBase {
     @JsonProperty(value = "partnersData")
     private SecurityAssessmentPartnerData partnersData;
 
+    /** Creates an instance of SecurityAssessmentPropertiesBase class. */
+    public SecurityAssessmentPropertiesBase() {
+    }
+
     /**
      * Get the resourceDetails property: Details of the resource that was assessed.
      *

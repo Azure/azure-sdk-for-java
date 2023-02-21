@@ -36,6 +36,10 @@ public final class MetricSettings {
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
+    /** Creates an instance of MetricSettings class. */
+    public MetricSettings() {
+    }
+
     /**
      * Get the timeGrain property: the timegrain of the metric in ISO8601 format.
      *

@@ -16,6 +16,10 @@ public final class DefenderForServersAwsOfferingDefenderForServers {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
+    /** Creates an instance of DefenderForServersAwsOfferingDefenderForServers class. */
+    public DefenderForServersAwsOfferingDefenderForServers() {
+    }
+
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
      *

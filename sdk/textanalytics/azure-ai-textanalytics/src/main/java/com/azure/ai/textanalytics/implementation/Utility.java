@@ -32,7 +32,7 @@ import com.azure.ai.textanalytics.implementation.models.DynamicClassificationRes
 import com.azure.ai.textanalytics.implementation.models.DynamicClassificationResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.DynamicClassificationTaskResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
-import com.azure.ai.textanalytics.implementation.models.EntitiesResultDocumentsItem;
+import com.azure.ai.textanalytics.implementation.models.EntitiesResultWithDetectedLanguage;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskResult;
@@ -83,8 +83,8 @@ import com.azure.ai.textanalytics.implementation.models.TemporalSpanResolution;
 import com.azure.ai.textanalytics.implementation.models.VolumeResolution;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.implementation.models.WeightResolution;
-import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AgeUnit;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -188,6 +188,7 @@ import java.util.stream.Collectors;
 public final class Utility {
     // default time interval for polling
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
+    public static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
 
@@ -229,16 +230,19 @@ public final class Utility {
      */
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
-            ErrorResponseException errorException = (ErrorResponseException) throwable;
-            final ErrorResponse errorResponse = errorException.getValue();
-            com.azure.ai.textanalytics.models.TextAnalyticsError textAnalyticsError = null;
-            if (errorResponse != null && errorResponse.getError() != null) {
-                textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
-            }
-            return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
-                textAnalyticsError);
+            return getHttpResponseException((ErrorResponseException) throwable);
         }
         return throwable;
+    }
+
+    public static HttpResponseException getHttpResponseException(ErrorResponseException errorException) {
+        final ErrorResponse errorResponse = errorException.getValue();
+        com.azure.ai.textanalytics.models.TextAnalyticsError textAnalyticsError = null;
+        if (errorResponse != null && errorResponse.getError() != null) {
+            textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
+        }
+        return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
+            textAnalyticsError);
     }
 
     /**
@@ -410,6 +414,18 @@ public final class Utility {
         return new HashMap<>();
     }
 
+    public static Integer getTopContinuesToken(Map<String, Object> continuationTokenMap) {
+        return (Integer) continuationTokenMap.getOrDefault("$top", null);
+    }
+
+    public static Integer getSkipContinuesToken(Map<String, Object> continuationTokenMap) {
+        return (Integer) continuationTokenMap.getOrDefault("$skip", null);
+    }
+
+    public static Boolean getShowStatsContinuesToken(Map<String, Object> continuationTokenMap) {
+        return (Boolean) continuationTokenMap.getOrDefault("showStats", null);
+    }
+
     // Sentiment Analysis
     public static Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponseLegacyApi(
         Response<SentimentResponse> response) {
@@ -430,7 +446,7 @@ public final class Utility {
     }
 
     // Detect Language
-    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionResponse(
+    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionLegacyApi(
         Response<LanguageResult> response) {
         final LanguageResult languageResult = response.getValue();
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
@@ -464,7 +480,7 @@ public final class Utility {
                 languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics())));
     }
 
-    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionResponse2(
+    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionLanguageApi(
         Response<AnalyzeTextTaskResult> response) {
         final LanguageDetectionResult languageResult =
             ((LanguageDetectionTaskResult) response.getValue()).getResults();
@@ -515,7 +531,7 @@ public final class Utility {
     }
 
     // Key Phrase Extraction
-    public static Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse(
+    public static Response<ExtractKeyPhrasesResultCollection> toResultCollectionResponseLegacyApi(
         final Response<KeyPhraseResult> response) {
         final KeyPhraseResult keyPhraseResult = response.getValue();
         // List of documents results
@@ -543,7 +559,7 @@ public final class Utility {
                     : toBatchStatistics(keyPhraseResult.getStatistics())));
     }
 
-    public static Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse2(
+    public static Response<ExtractKeyPhrasesResultCollection> toResultCollectionResponseLanguageApi(
         final Response<AnalyzeTextTaskResult> response) {
         final KeyPhraseResult keyPhraseResult = ((KeyPhraseTaskResult) response.getValue()).getResults();
         // List of documents results
@@ -604,7 +620,7 @@ public final class Utility {
                 : toTextDocumentStatistics(documentItem.getStatistics()),
             null);
         ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult,
-            new IterableStream<>(toDocumentClassifications(documentItem.getClassProperty())));
+            new IterableStream<>(toDocumentClassifications(documentItem.getClassifications())));
         ClassifyDocumentResultPropertiesHelper.setWarnings(classifyDocumentResult,
             new IterableStream<>(documentItem.getWarnings().stream().map(
                     warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())));
@@ -613,7 +629,7 @@ public final class Utility {
 
 
     // Named Entities Recognition
-    public static RecognizeEntitiesResultCollection toRecognizeEntitiesResultCollectionResponse(
+    public static RecognizeEntitiesResultCollection toRecognizeEntitiesResultCollection(
         final EntitiesResult entitiesResult) {
         // List of documents results
         List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
@@ -629,7 +645,7 @@ public final class Utility {
             entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
     }
 
-    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollection(
+    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponseLegacyApi(
         final Response<EntitiesResult> response) {
         EntitiesResult entitiesResult = response.getValue();
         return new SimpleResponse<>(response,
@@ -639,7 +655,7 @@ public final class Utility {
                 entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics())));
     }
 
-    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollection2(
+    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponseLanguageApi(
         final Response<AnalyzeTextTaskResult> response) {
         EntitiesTaskResult entitiesTaskResult = (EntitiesTaskResult) response.getValue();
         final EntitiesResult results = entitiesTaskResult.getResults();
@@ -762,7 +778,7 @@ public final class Utility {
             CurrencyResolution currencyResolutionImpl = (CurrencyResolution) resolution;
             com.azure.ai.textanalytics.models.CurrencyResolution currencyResolution
                     = new com.azure.ai.textanalytics.models.CurrencyResolution();
-            CurrencyResolutionPropertiesHelper.setISO4217(currencyResolution, currencyResolutionImpl.getISO4217());
+            CurrencyResolutionPropertiesHelper.setISO4217(currencyResolution, currencyResolutionImpl.getIso4217());
             CurrencyResolutionPropertiesHelper.setUnit(currencyResolution, currencyResolutionImpl.getUnit());
             CurrencyResolutionPropertiesHelper.setValue(currencyResolution, currencyResolutionImpl.getValue());
             return currencyResolution;
@@ -830,7 +846,8 @@ public final class Utility {
         }
     }
 
-    public static RecognizeEntitiesResult toRecognizeEntitiesResult(EntitiesResultDocumentsItem documentEntities) {
+    public static RecognizeEntitiesResult toRecognizeEntitiesResult(
+        EntitiesResultWithDetectedLanguage documentEntities) {
         final RecognizeEntitiesResult recognizeEntitiesResult = new RecognizeEntitiesResult(
             documentEntities.getId(),
             documentEntities.getStatistics() == null ? null
@@ -1160,7 +1177,11 @@ public final class Utility {
                     documentEntities.getFhirBundle());
                 if (documentEntities.getDetectedLanguage() != null) {
                     AnalyzeHealthcareEntitiesResultPropertiesHelper.setDetectedLanguage(analyzeHealthcareEntitiesResult,
-                        toDetectedLanguage(documentEntities.getDetectedLanguage()));
+                        toDetectedLanguage(
+                            // TODO: https://github.com/Azure/azure-sdk-for-java/issues/32252
+                            new com.azure.ai.textanalytics.implementation.models.DetectedLanguage()
+                                .setName(documentEntities.getDetectedLanguage())
+                        ));
                 }
                 analyzeHealthcareEntitiesResults.add(analyzeHealthcareEntitiesResult);
             });
@@ -1253,6 +1274,18 @@ public final class Utility {
         }
         throw LOGGER.logExceptionAsError(
             new RuntimeException("Failed to parse healthcare entity index from: " + entityReference));
+    }
+
+    /**
+     * Enable the sync stack rest proxy.
+     *
+     * @param context It offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
+     * Most applications do not need to pass arbitrary data to the pipeline and can pass Context.NONE or null.
+     *
+     * @return The Context.
+     */
+    public static Context enableSyncRestProxy(Context context) {
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     /**
@@ -1543,9 +1576,13 @@ public final class Utility {
                     toTextAnalyticsError(documentError.getError())));
         }
 
-        return new AbstractSummaryResultCollection(summaryResults, abstractiveSummarizationResult.getModelVersion(),
+        final AbstractSummaryResultCollection resultCollection = new AbstractSummaryResultCollection(summaryResults);
+        AbstractSummaryResultCollectionPropertiesHelper.setModelVersion(resultCollection,
+            abstractiveSummarizationResult.getModelVersion());
+        AbstractSummaryResultCollectionPropertiesHelper.setStatistics(resultCollection,
             abstractiveSummarizationResult.getStatistics() == null ? null
                 : toBatchStatistics(abstractiveSummarizationResult.getStatistics()));
+        return resultCollection;
     }
 
     public static AbstractSummaryResult toAbstractiveSummaryResult(
@@ -1618,10 +1655,13 @@ public final class Utility {
             extractSummaryResults.add(new ExtractSummaryResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError())));
         }
-        return new ExtractSummaryResultCollection(extractSummaryResults,
-            extractiveSummarizationResult.getModelVersion(),
+        final ExtractSummaryResultCollection resultCollection = new ExtractSummaryResultCollection(extractSummaryResults);
+        ExtractSummaryResultCollectionPropertiesHelper.setModelVersion(resultCollection,
+            extractiveSummarizationResult.getModelVersion());
+        ExtractSummaryResultCollectionPropertiesHelper.setStatistics(resultCollection,
             extractiveSummarizationResult.getStatistics() == null ? null
                 : toBatchStatistics(extractiveSummarizationResult.getStatistics()));
+        return resultCollection;
     }
 
     private static ExtractSummaryResult toExtractSummaryResult(

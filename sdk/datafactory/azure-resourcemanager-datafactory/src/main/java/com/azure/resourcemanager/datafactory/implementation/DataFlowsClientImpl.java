@@ -58,7 +58,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface DataFlowsService {
+    public interface DataFlowsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

@@ -32,6 +32,10 @@ public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphProfilePhoto class. */
+    public MicrosoftGraphProfilePhoto() {
+    }
+
     /**
      * Get the height property: The height of the photo. Read-only.
      *

@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about the Microsoft datacenter to which the drives should be shipped. */
 @Fluent
 public final class ShippingInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShippingInformation.class);
-
     /*
-     * The name of the recipient who will receive the hard drives when they are
-     * returned.
+     * The name of the recipient who will receive the hard drives when they are returned.
      */
     @JsonProperty(value = "recipientName")
     private String recipientName;
@@ -64,11 +59,14 @@ public final class ShippingInformation {
     private String phone;
 
     /*
-     * Additional shipping information for customer, specific to datacenter to
-     * which customer should send their disks.
+     * Additional shipping information for customer, specific to datacenter to which customer should send their disks.
      */
     @JsonProperty(value = "additionalInformation", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalInformation;
+
+    /** Creates an instance of ShippingInformation class. */
+    public ShippingInformation() {
+    }
 
     /**
      * Get the recipientName property: The name of the recipient who will receive the hard drives when they are

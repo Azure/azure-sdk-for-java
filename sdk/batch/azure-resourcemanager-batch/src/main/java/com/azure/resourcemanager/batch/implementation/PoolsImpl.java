@@ -56,15 +56,6 @@ public final class PoolsImpl implements Pools {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, context);
     }
 
-    public Pool get(String resourceGroupName, String accountName, String poolName) {
-        PoolInner inner = this.serviceClient().get(resourceGroupName, accountName, poolName);
-        if (inner != null) {
-            return new PoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Pool> getWithResponse(
         String resourceGroupName, String accountName, String poolName, Context context) {
         PoolsGetResponse inner =
@@ -80,8 +71,8 @@ public final class PoolsImpl implements Pools {
         }
     }
 
-    public Pool disableAutoScale(String resourceGroupName, String accountName, String poolName) {
-        PoolInner inner = this.serviceClient().disableAutoScale(resourceGroupName, accountName, poolName);
+    public Pool get(String resourceGroupName, String accountName, String poolName) {
+        PoolInner inner = this.serviceClient().get(resourceGroupName, accountName, poolName);
         if (inner != null) {
             return new PoolImpl(inner, this.manager());
         } else {
@@ -104,8 +95,8 @@ public final class PoolsImpl implements Pools {
         }
     }
 
-    public Pool stopResize(String resourceGroupName, String accountName, String poolName) {
-        PoolInner inner = this.serviceClient().stopResize(resourceGroupName, accountName, poolName);
+    public Pool disableAutoScale(String resourceGroupName, String accountName, String poolName) {
+        PoolInner inner = this.serviceClient().disableAutoScale(resourceGroupName, accountName, poolName);
         if (inner != null) {
             return new PoolImpl(inner, this.manager());
         } else {
@@ -123,6 +114,15 @@ public final class PoolsImpl implements Pools {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Pool stopResize(String resourceGroupName, String accountName, String poolName) {
+        PoolInner inner = this.serviceClient().stopResize(resourceGroupName, accountName, poolName);
+        if (inner != null) {
+            return new PoolImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -25,6 +25,15 @@ public final class AnalysisResolution extends ExpandableStringEnum<AnalysisResol
     public static final AnalysisResolution STANDARD_DEFINITION = fromString("StandardDefinition");
 
     /**
+     * Creates a new instance of AnalysisResolution value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnalysisResolution() {
+    }
+
+    /**
      * Creates or finds a AnalysisResolution from its string representation.
      *
      * @param name a name to look for.

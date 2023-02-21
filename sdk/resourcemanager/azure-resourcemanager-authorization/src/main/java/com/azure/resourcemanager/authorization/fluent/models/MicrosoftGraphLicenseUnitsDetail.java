@@ -38,6 +38,10 @@ public final class MicrosoftGraphLicenseUnitsDetail {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphLicenseUnitsDetail class. */
+    public MicrosoftGraphLicenseUnitsDetail() {
+    }
+
     /**
      * Get the enabled property: The number of units that are enabled.
      *

@@ -3,29 +3,28 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.search.windows.net/indexes('index')/search.stats?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d6a7d69a-7f9c-4b05-ac48-abf23ad4e2e4"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a76f3b61-7726-47ca-b6db-192c3c96cb41"
     },
     "Response" : {
-      "content-length" : "76",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d6a7d69a-7f9c-4b05-ac48-abf23ad4e2e4",
+      "request-id" : "a76f3b61-7726-47ca-b6db-192c3c96cb41",
       "StatusCode" : "404",
-      "Date" : "Tue, 13 Jul 2021 19:14:38 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:21:15 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "d6a7d69a-7f9c-4b05-ac48-abf23ad4e2e4",
-      "elapsed-time" : "9",
-      "OData-Version" : "4.0",
+      "client-request-id" : "a76f3b61-7726-47ca-b6db-192c3c96cb41",
+      "elapsed-time" : "18",
       "Expires" : "-1",
+      "Content-Length" : "76",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"An index named 'index' could not be found.\"}}",
-      "Content-Language" : "en",
-      "x-ms-client-request-id" : "d6a7d69a-7f9c-4b05-ac48-abf23ad4e2e4",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+      "x-ms-client-request-id" : "a76f3b61-7726-47ca-b6db-192c3c96cb41",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "d6a7d69a-7f9c-4b05-ac48-abf23ad4e2e4" ]
+  "variables" : [ "a76f3b61-7726-47ca-b6db-192c3c96cb41" ]
 }

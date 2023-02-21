@@ -20,6 +20,15 @@ public final class AccessLevel extends ExpandableStringEnum<AccessLevel> {
     public static final AccessLevel WRITE = fromString("Write");
 
     /**
+     * Creates a new instance of AccessLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessLevel() {
+    }
+
+    /**
      * Creates or finds a AccessLevel from its string representation.
      *
      * @param name a name to look for.

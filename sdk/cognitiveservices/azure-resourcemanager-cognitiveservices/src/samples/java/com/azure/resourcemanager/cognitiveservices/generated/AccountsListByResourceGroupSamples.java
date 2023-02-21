@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Accounts ListByResourceGroup. */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListAccountsByResourceGroup.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/ListAccountsByResourceGroup.json
      */
     /**
      * Sample code: List Accounts by Resource Group.
@@ -18,6 +16,6 @@ public final class AccountsListByResourceGroupSamples {
      */
     public static void listAccountsByResourceGroup(
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.accounts().listByResourceGroup("myResourceGroup", Context.NONE);
+        manager.accounts().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

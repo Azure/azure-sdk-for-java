@@ -63,25 +63,6 @@ public interface RoleEligibilityScheduleRequestsClient {
      *     for a resource.
      * @param roleEligibilityScheduleRequestName The name of the role eligibility to create. It can be any valid GUID.
      * @param parameters Parameters for the role eligibility schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Eligibility schedule request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleEligibilityScheduleRequestInner create(
-        String scope, String roleEligibilityScheduleRequestName, RoleEligibilityScheduleRequestInner parameters);
-
-    /**
-     * Creates a role eligibility schedule request.
-     *
-     * @param scope The scope of the role eligibility schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
-     * @param roleEligibilityScheduleRequestName The name of the role eligibility to create. It can be any valid GUID.
-     * @param parameters Parameters for the role eligibility schedule request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,6 +75,25 @@ public interface RoleEligibilityScheduleRequestsClient {
         String roleEligibilityScheduleRequestName,
         RoleEligibilityScheduleRequestInner parameters,
         Context context);
+
+    /**
+     * Creates a role eligibility schedule request.
+     *
+     * @param scope The scope of the role eligibility schedule request to create. The scope can be any REST resource
+     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
+     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     for a resource.
+     * @param roleEligibilityScheduleRequestName The name of the role eligibility to create. It can be any valid GUID.
+     * @param parameters Parameters for the role eligibility schedule request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Eligibility schedule request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleEligibilityScheduleRequestInner create(
+        String scope, String roleEligibilityScheduleRequestName, RoleEligibilityScheduleRequestInner parameters);
 
     /**
      * Get the specified role eligibility schedule request.
@@ -128,19 +128,6 @@ public interface RoleEligibilityScheduleRequestsClient {
      *
      * @param scope The scope of the role eligibility schedule request.
      * @param roleEligibilityScheduleRequestName The name (guid) of the role eligibility schedule request to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role eligibility schedule request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleEligibilityScheduleRequestInner get(String scope, String roleEligibilityScheduleRequestName);
-
-    /**
-     * Get the specified role eligibility schedule request.
-     *
-     * @param scope The scope of the role eligibility schedule request.
-     * @param roleEligibilityScheduleRequestName The name (guid) of the role eligibility schedule request to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -150,6 +137,19 @@ public interface RoleEligibilityScheduleRequestsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RoleEligibilityScheduleRequestInner> getWithResponse(
         String scope, String roleEligibilityScheduleRequestName, Context context);
+
+    /**
+     * Get the specified role eligibility schedule request.
+     *
+     * @param scope The scope of the role eligibility schedule request.
+     * @param roleEligibilityScheduleRequestName The name (guid) of the role eligibility schedule request to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role eligibility schedule request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleEligibilityScheduleRequestInner get(String scope, String roleEligibilityScheduleRequestName);
 
     /**
      * Gets role eligibility schedule requests for a scope.
@@ -243,18 +243,6 @@ public interface RoleEligibilityScheduleRequestsClient {
      *
      * @param scope The scope of the role eligibility request to cancel.
      * @param roleEligibilityScheduleRequestName The name of the role eligibility request to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String scope, String roleEligibilityScheduleRequestName);
-
-    /**
-     * Cancels a pending role eligibility schedule request.
-     *
-     * @param scope The scope of the role eligibility request to cancel.
-     * @param roleEligibilityScheduleRequestName The name of the role eligibility request to cancel.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -263,6 +251,18 @@ public interface RoleEligibilityScheduleRequestsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelWithResponse(String scope, String roleEligibilityScheduleRequestName, Context context);
+
+    /**
+     * Cancels a pending role eligibility schedule request.
+     *
+     * @param scope The scope of the role eligibility request to cancel.
+     * @param roleEligibilityScheduleRequestName The name of the role eligibility request to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancel(String scope, String roleEligibilityScheduleRequestName);
 
     /**
      * Validates a new role eligibility schedule request.
@@ -300,21 +300,6 @@ public interface RoleEligibilityScheduleRequestsClient {
      * @param scope The scope of the role eligibility request to validate.
      * @param roleEligibilityScheduleRequestName The name of the role eligibility request to validate.
      * @param parameters Parameters for the role eligibility schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Eligibility schedule request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleEligibilityScheduleRequestInner validate(
-        String scope, String roleEligibilityScheduleRequestName, RoleEligibilityScheduleRequestInner parameters);
-
-    /**
-     * Validates a new role eligibility schedule request.
-     *
-     * @param scope The scope of the role eligibility request to validate.
-     * @param roleEligibilityScheduleRequestName The name of the role eligibility request to validate.
-     * @param parameters Parameters for the role eligibility schedule request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -327,4 +312,19 @@ public interface RoleEligibilityScheduleRequestsClient {
         String roleEligibilityScheduleRequestName,
         RoleEligibilityScheduleRequestInner parameters,
         Context context);
+
+    /**
+     * Validates a new role eligibility schedule request.
+     *
+     * @param scope The scope of the role eligibility request to validate.
+     * @param roleEligibilityScheduleRequestName The name of the role eligibility request to validate.
+     * @param parameters Parameters for the role eligibility schedule request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Eligibility schedule request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleEligibilityScheduleRequestInner validate(
+        String scope, String roleEligibilityScheduleRequestName, RoleEligibilityScheduleRequestInner parameters);
 }

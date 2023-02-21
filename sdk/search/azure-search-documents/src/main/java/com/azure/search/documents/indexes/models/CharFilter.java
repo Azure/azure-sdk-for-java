@@ -5,7 +5,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             name = "#Microsoft.Azure.Search.PatternReplaceCharFilter",
             value = PatternReplaceCharFilter.class)
 })
-@Fluent
+@Immutable
 public abstract class CharFilter {
 
     /*

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Each KPI must contain a 'type' and 'enabled' key. */
 @Fluent
 public final class KpiProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpiProperties.class);
-
     /*
      * KPI type (Forecast, Budget).
      */
@@ -31,6 +27,10 @@ public final class KpiProperties {
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
+
+    /** Creates an instance of KpiProperties class. */
+    public KpiProperties() {
+    }
 
     /**
      * Get the type property: KPI type (Forecast, Budget).

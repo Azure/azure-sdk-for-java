@@ -24,6 +24,10 @@ public final class CustomEntityStoreAssignmentsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CustomEntityStoreAssignmentsListResult class. */
+    public CustomEntityStoreAssignmentsListResult() {
+    }
+
     /**
      * Get the value property: Collection of custom entity store assignments.
      *

@@ -18,6 +18,15 @@ public final class FilterTrackPropertyCompareOperation
     public static final FilterTrackPropertyCompareOperation NOT_EQUAL = fromString("NotEqual");
 
     /**
+     * Creates a new instance of FilterTrackPropertyCompareOperation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FilterTrackPropertyCompareOperation() {
+    }
+
+    /**
      * Creates or finds a FilterTrackPropertyCompareOperation from its string representation.
      *
      * @param name a name to look for.

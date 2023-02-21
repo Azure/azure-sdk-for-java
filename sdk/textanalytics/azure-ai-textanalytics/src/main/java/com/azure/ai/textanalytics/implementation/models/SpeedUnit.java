@@ -8,25 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SpeedUnit. */
+/** The speed Unit of measurement. */
 public final class SpeedUnit extends ExpandableStringEnum<SpeedUnit> {
     /** Static value Unspecified for SpeedUnit. */
     public static final SpeedUnit UNSPECIFIED = fromString("Unspecified");
 
-    /** Static value MetersPerSecond for SpeedUnit. */
-    public static final SpeedUnit METERS_PER_SECOND = fromString("MetersPerSecond");
+    /** Static value MeterPerSecond for SpeedUnit. */
+    public static final SpeedUnit METER_PER_SECOND = fromString("MeterPerSecond");
 
-    /** Static value KilometersPerHour for SpeedUnit. */
-    public static final SpeedUnit KILOMETERS_PER_HOUR = fromString("KilometersPerHour");
+    /** Static value KilometerPerHour for SpeedUnit. */
+    public static final SpeedUnit KILOMETER_PER_HOUR = fromString("KilometerPerHour");
 
-    /** Static value KilometersPerMinute for SpeedUnit. */
-    public static final SpeedUnit KILOMETERS_PER_MINUTE = fromString("KilometersPerMinute");
+    /** Static value KilometerPerMinute for SpeedUnit. */
+    public static final SpeedUnit KILOMETER_PER_MINUTE = fromString("KilometerPerMinute");
 
-    /** Static value KilometersPerSecond for SpeedUnit. */
-    public static final SpeedUnit KILOMETERS_PER_SECOND = fromString("KilometersPerSecond");
+    /** Static value KilometerPerSecond for SpeedUnit. */
+    public static final SpeedUnit KILOMETER_PER_SECOND = fromString("KilometerPerSecond");
 
-    /** Static value MilesPerHour for SpeedUnit. */
-    public static final SpeedUnit MILES_PER_HOUR = fromString("MilesPerHour");
+    /** Static value MilePerHour for SpeedUnit. */
+    public static final SpeedUnit MILE_PER_HOUR = fromString("MilePerHour");
 
     /** Static value Knot for SpeedUnit. */
     public static final SpeedUnit KNOT = fromString("Knot");
@@ -37,20 +37,20 @@ public final class SpeedUnit extends ExpandableStringEnum<SpeedUnit> {
     /** Static value FootPerMinute for SpeedUnit. */
     public static final SpeedUnit FOOT_PER_MINUTE = fromString("FootPerMinute");
 
-    /** Static value YardsPerMinute for SpeedUnit. */
-    public static final SpeedUnit YARDS_PER_MINUTE = fromString("YardsPerMinute");
+    /** Static value YardPerMinute for SpeedUnit. */
+    public static final SpeedUnit YARD_PER_MINUTE = fromString("YardPerMinute");
 
-    /** Static value YardsPerSecond for SpeedUnit. */
-    public static final SpeedUnit YARDS_PER_SECOND = fromString("YardsPerSecond");
+    /** Static value YardPerSecond for SpeedUnit. */
+    public static final SpeedUnit YARD_PER_SECOND = fromString("YardPerSecond");
 
-    /** Static value MetersPerMillisecond for SpeedUnit. */
-    public static final SpeedUnit METERS_PER_MILLISECOND = fromString("MetersPerMillisecond");
+    /** Static value MeterPerMillisecond for SpeedUnit. */
+    public static final SpeedUnit METER_PER_MILLISECOND = fromString("MeterPerMillisecond");
 
-    /** Static value CentimetersPerMillisecond for SpeedUnit. */
-    public static final SpeedUnit CENTIMETERS_PER_MILLISECOND = fromString("CentimetersPerMillisecond");
+    /** Static value CentimeterPerMillisecond for SpeedUnit. */
+    public static final SpeedUnit CENTIMETER_PER_MILLISECOND = fromString("CentimeterPerMillisecond");
 
-    /** Static value KilometersPerMillisecond for SpeedUnit. */
-    public static final SpeedUnit KILOMETERS_PER_MILLISECOND = fromString("KilometersPerMillisecond");
+    /** Static value KilometerPerMillisecond for SpeedUnit. */
+    public static final SpeedUnit KILOMETER_PER_MILLISECOND = fromString("KilometerPerMillisecond");
 
     /**
      * Creates or finds a SpeedUnit from its string representation.

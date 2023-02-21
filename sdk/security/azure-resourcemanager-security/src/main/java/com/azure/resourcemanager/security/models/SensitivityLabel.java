@@ -40,6 +40,10 @@ public final class SensitivityLabel {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of SensitivityLabel class. */
+    public SensitivityLabel() {
+    }
+
     /**
      * Get the displayName property: The name of the sensitivity label.
      *

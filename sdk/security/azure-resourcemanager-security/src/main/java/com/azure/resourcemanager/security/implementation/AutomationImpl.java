@@ -188,14 +188,14 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
         return this;
     }
 
-    public AutomationValidationStatus validate(AutomationInner automation) {
-        return serviceManager.automations().validate(resourceGroupName, automationName, automation);
-    }
-
     public Response<AutomationValidationStatus> validateWithResponse(AutomationInner automation, Context context) {
         return serviceManager
             .automations()
             .validateWithResponse(resourceGroupName, automationName, automation, context);
+    }
+
+    public AutomationValidationStatus validate(AutomationInner automation) {
+        return serviceManager.automations().validate(resourceGroupName, automationName, automation);
     }
 
     public AutomationImpl withRegion(Region location) {

@@ -10,9 +10,18 @@ import com.azure.core.util.metrics.MeterProvider;
 import java.util.Objects;
 
 /**
- * {@inheritDoc}
+ * Resolves and provides {@link Meter} implementation.
+ * <p>
+ * This class is intended to be used by Azure client libraries and provides abstraction over different metrics implementations.
+ * Application developers should use metrics implementations such as OpenTelemetry or Micrometer directly.
  */
 public final class OpenTelemetryMeterProvider implements MeterProvider {
+    /**
+     * Creates an instance of {@link OpenTelemetryMeterProvider}.
+     */
+    public OpenTelemetryMeterProvider() {
+    }
+
     /**
      * Creates named and versioned OpenTelemetry-based implementation of {@link Meter}
      *
@@ -20,8 +29,8 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      * <!-- src_embed com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default -->
      * <pre>
      *
-     * &#47;&#47; configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
-     * AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;;
+     * &#47;&#47; configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
+     * &#47;&#47; AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;;
      *
      * &#47;&#47; configure Azure Client, no metric configuration needed
      * AzureClient sampleClient = new AzureClientBuilder&#40;&#41;

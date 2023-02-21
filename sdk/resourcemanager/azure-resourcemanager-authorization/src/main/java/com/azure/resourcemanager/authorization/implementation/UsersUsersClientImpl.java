@@ -28,8 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.authorization.fluent.UsersUsersClient;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfUser;
 import com.azure.resourcemanager.authorization.fluent.models.Get2ItemsItem;
@@ -40,6 +38,8 @@ import com.azure.resourcemanager.authorization.fluent.models.Get8ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphUserInner;
 import com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in UsersUsersClient. */
@@ -67,7 +67,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftGraphClient")
-    private interface UsersUsersService {
+    public interface UsersUsersService {
         @Headers({"Content-Type: application/json"})
         @Get("/users")
         @ExpectedResponses({200})
@@ -175,11 +175,17 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
         }
         final String accept = "application/json";
         String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+            (orderby == null)
+                ? null
+                : orderby.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -247,11 +253,17 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
         }
         final String accept = "application/json";
         String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+            (orderby == null)
+                ? null
+                : orderby.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .listUser(
@@ -495,29 +507,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphUserInner> createUserAsync(MicrosoftGraphUserInner body) {
-        return createUserWithResponseAsync(body)
-            .flatMap(
-                (Response<MicrosoftGraphUserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Add new entity to users.
-     *
-     * @param body New entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphUserInner createUser(MicrosoftGraphUserInner body) {
-        return createUserAsync(body).block();
+        return createUserWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -533,6 +523,20 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphUserInner> createUserWithResponse(MicrosoftGraphUserInner body, Context context) {
         return createUserWithResponseAsync(body, context).block();
+    }
+
+    /**
+     * Add new entity to users.
+     *
+     * @param body New entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphUserInner createUser(MicrosoftGraphUserInner body) {
+        return createUserWithResponse(body, Context.NONE).getValue();
     }
 
     /**
@@ -561,9 +565,13 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
         }
         final String accept = "application/json";
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -610,39 +618,17 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
         }
         final String accept = "application/json";
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .getUser(
                 this.client.getEndpoint(), userId, consistencyLevel, selectConverted, expandConverted, accept, context);
-    }
-
-    /**
-     * Get entity from users by key.
-     *
-     * @param userId key: id of user.
-     * @param consistencyLevel Indicates the requested consistency level.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MicrosoftGraphUserInner> getUserAsync(
-        String userId, String consistencyLevel, List<Get2ItemsItem> select, List<Get3ItemsItem> expand) {
-        return getUserWithResponseAsync(userId, consistencyLevel, select, expand)
-            .flatMap(
-                (Response<MicrosoftGraphUserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
     }
 
     /**
@@ -660,31 +646,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
         final List<Get2ItemsItem> select = null;
         final List<Get3ItemsItem> expand = null;
         return getUserWithResponseAsync(userId, consistencyLevel, select, expand)
-            .flatMap(
-                (Response<MicrosoftGraphUserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get entity from users by key.
-     *
-     * @param userId key: id of user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphUserInner getUser(String userId) {
-        final String consistencyLevel = null;
-        final List<Get2ItemsItem> select = null;
-        final List<Get3ItemsItem> expand = null;
-        return getUserAsync(userId, consistencyLevel, select, expand).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -708,6 +670,23 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
         List<Get3ItemsItem> expand,
         Context context) {
         return getUserWithResponseAsync(userId, consistencyLevel, select, expand, context).block();
+    }
+
+    /**
+     * Get entity from users by key.
+     *
+     * @param userId key: id of user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return entity from users by key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphUserInner getUser(String userId) {
+        final String consistencyLevel = null;
+        final List<Get2ItemsItem> select = null;
+        final List<Get3ItemsItem> expand = null;
+        return getUserWithResponse(userId, consistencyLevel, select, expand, Context.NONE).getValue();
     }
 
     /**
@@ -787,21 +766,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateUserAsync(String userId, MicrosoftGraphUserInner body) {
-        return updateUserWithResponseAsync(userId, body).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Update entity in users.
-     *
-     * @param userId key: id of user.
-     * @param body New property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateUser(String userId, MicrosoftGraphUserInner body) {
-        updateUserAsync(userId, body).block();
+        return updateUserWithResponseAsync(userId, body).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -818,6 +783,20 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateUserWithResponse(String userId, MicrosoftGraphUserInner body, Context context) {
         return updateUserWithResponseAsync(userId, body, context).block();
+    }
+
+    /**
+     * Update entity in users.
+     *
+     * @param userId key: id of user.
+     * @param body New property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateUser(String userId, MicrosoftGraphUserInner body) {
+        updateUserWithResponse(userId, body, Context.NONE);
     }
 
     /**
@@ -878,21 +857,6 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * Delete entity from users.
      *
      * @param userId key: id of user.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteUserAsync(String userId, String ifMatch) {
-        return deleteUserWithResponseAsync(userId, ifMatch).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete entity from users.
-     *
-     * @param userId key: id of user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -901,21 +865,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteUserAsync(String userId) {
         final String ifMatch = null;
-        return deleteUserWithResponseAsync(userId, ifMatch).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete entity from users.
-     *
-     * @param userId key: id of user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteUser(String userId) {
-        final String ifMatch = null;
-        deleteUserAsync(userId, ifMatch).block();
+        return deleteUserWithResponseAsync(userId, ifMatch).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -935,9 +885,24 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
     }
 
     /**
+     * Delete entity from users.
+     *
+     * @param userId key: id of user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteUser(String userId) {
+        final String ifMatch = null;
+        deleteUserWithResponse(userId, ifMatch, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -965,7 +930,8 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.

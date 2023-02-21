@@ -50,6 +50,10 @@ public final class MicrosoftGraphTeamMessagingSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTeamMessagingSettings class. */
+    public MicrosoftGraphTeamMessagingSettings() {
+    }
+
     /**
      * Get the allowChannelMentions property: If set to true, @channel mentions are allowed.
      *

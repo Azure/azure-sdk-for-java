@@ -40,6 +40,10 @@ public final class BatchAccountCreateParameters {
     @JsonProperty(value = "identity")
     private BatchAccountIdentity identity;
 
+    /** Creates an instance of BatchAccountCreateParameters class. */
+    public BatchAccountCreateParameters() {
+    }
+
     /**
      * Get the location property: The region in which to create the account.
      *
@@ -202,6 +206,29 @@ public final class BatchAccountCreateParameters {
             this.innerProperties = new BatchAccountCreateProperties();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @return the networkProfile value.
+     */
+    public NetworkProfile networkProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
+    }
+
+    /**
+     * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the BatchAccountCreateParameters object itself.
+     */
+    public BatchAccountCreateParameters withNetworkProfile(NetworkProfile networkProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BatchAccountCreateProperties();
+        }
+        this.innerProperties().withNetworkProfile(networkProfile);
         return this;
     }
 

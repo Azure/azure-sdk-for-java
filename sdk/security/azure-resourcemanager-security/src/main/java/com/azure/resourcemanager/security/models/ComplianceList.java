@@ -24,6 +24,10 @@ public final class ComplianceList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ComplianceList class. */
+    public ComplianceList() {
+    }
+
     /**
      * Get the value property: List of Compliance objects.
      *

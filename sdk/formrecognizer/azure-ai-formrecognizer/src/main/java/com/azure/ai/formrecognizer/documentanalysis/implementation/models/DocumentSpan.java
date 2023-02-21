@@ -22,6 +22,9 @@ public final class DocumentSpan {
     @JsonProperty(value = "length", required = true)
     private int length;
 
+    /** Creates an instance of DocumentSpan class. */
+    public DocumentSpan() {}
+
     /**
      * Get the offset property: Zero-based index of the content represented by the span.
      *

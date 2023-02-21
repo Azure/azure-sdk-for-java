@@ -20,7 +20,7 @@ public interface Services {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Service resources.
+     * @return collection of Service resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Service> list();
 
@@ -36,9 +36,21 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Service resources.
+     * @return collection of Service resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Service> list(Context context);
+
+    /**
+     * Gets a specific Azure service for support ticket creation.
+     *
+     * @param serviceName Name of the Azure service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific Azure service for support ticket creation along with {@link Response}.
+     */
+    Response<Service> getWithResponse(String serviceName, Context context);
 
     /**
      * Gets a specific Azure service for support ticket creation.
@@ -50,16 +62,4 @@ public interface Services {
      * @return a specific Azure service for support ticket creation.
      */
     Service get(String serviceName);
-
-    /**
-     * Gets a specific Azure service for support ticket creation.
-     *
-     * @param serviceName Name of the Azure service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Azure service for support ticket creation.
-     */
-    Response<Service> getWithResponse(String serviceName, Context context);
 }

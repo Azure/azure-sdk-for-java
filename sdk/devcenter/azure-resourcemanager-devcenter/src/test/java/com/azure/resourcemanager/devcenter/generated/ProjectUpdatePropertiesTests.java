@@ -14,18 +14,18 @@ public final class ProjectUpdatePropertiesTests {
     public void testDeserialize() {
         ProjectUpdateProperties model =
             BinaryData
-                .fromString("{\"devCenterId\":\"dkvwrwjfe\",\"description\":\"nhutjeltmrldhugj\"}")
+                .fromString("{\"devCenterId\":\"l\",\"description\":\"uvfqawrlyxwj\"}")
                 .toObject(ProjectUpdateProperties.class);
-        Assertions.assertEquals("dkvwrwjfe", model.devCenterId());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.description());
+        Assertions.assertEquals("l", model.devCenterId());
+        Assertions.assertEquals("uvfqawrlyxwj", model.description());
     }
 
     @Test
     public void testSerialize() {
         ProjectUpdateProperties model =
-            new ProjectUpdateProperties().withDevCenterId("dkvwrwjfe").withDescription("nhutjeltmrldhugj");
+            new ProjectUpdateProperties().withDevCenterId("l").withDescription("uvfqawrlyxwj");
         model = BinaryData.fromObject(model).toObject(ProjectUpdateProperties.class);
-        Assertions.assertEquals("dkvwrwjfe", model.devCenterId());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.description());
+        Assertions.assertEquals("l", model.devCenterId());
+        Assertions.assertEquals("uvfqawrlyxwj", model.description());
     }
 }

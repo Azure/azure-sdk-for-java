@@ -494,7 +494,7 @@ public final class SearchesImpl {
     public Mono<Response<PolygonResult>> listPolygonsWithResponseAsync(JsonFormat format, List<String> geometryIds) {
         final String accept = "application/json";
         String geometryIdsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(geometryIds, CollectionFormat.CSV);
+                geometryIds.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.listPolygons(
@@ -536,7 +536,7 @@ public final class SearchesImpl {
             JsonFormat format, List<String> geometryIds, Context context) {
         final String accept = "application/json";
         String geometryIdsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(geometryIds, CollectionFormat.CSV);
+                geometryIds.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.listPolygons(
                 this.client.getHost(),
                 this.client.getClientId(),
@@ -620,14 +620,16 @@ public final class SearchesImpl {
      *
      * @param format Desired format of the response. Only `json` format is supported.
      * @param geometryIds Comma separated list of geometry UUIDs, previously retrieved from an Online Search request.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Polygon call.
+     * @return this object is returned from a successful Search Polygon call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolygonResult listPolygons(JsonFormat format, List<String> geometryIds) {
-        return listPolygonsAsync(format, geometryIds).block();
+    public Response<PolygonResult> listPolygonsWithResponse(
+            JsonFormat format, List<String> geometryIds, Context context) {
+        return listPolygonsWithResponseAsync(format, geometryIds, context).block();
     }
 
     /**
@@ -647,16 +649,14 @@ public final class SearchesImpl {
      *
      * @param format Desired format of the response. Only `json` format is supported.
      * @param geometryIds Comma separated list of geometry UUIDs, previously retrieved from an Online Search request.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Polygon call along with {@link Response}.
+     * @return this object is returned from a successful Search Polygon call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolygonResult> listPolygonsWithResponse(
-            JsonFormat format, List<String> geometryIds, Context context) {
-        return listPolygonsWithResponseAsync(format, geometryIds, context).block();
+    public PolygonResult listPolygons(JsonFormat format, List<String> geometryIds) {
+        return listPolygonsWithResponse(format, geometryIds, Context.NONE).getValue();
     }
 
     /**
@@ -788,15 +788,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -834,9 +834,13 @@ public final class SearchesImpl {
             OperatingHoursRange operatingHours) {
         final String accept = "application/json";
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String countryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(countryFilter, CollectionFormat.CSV);
+                (countryFilter == null)
+                        ? null
+                        : countryFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -850,7 +854,11 @@ public final class SearchesImpl {
                                 .map(value -> Objects.toString(value, ""))
                                 .collect(Collectors.joining(","));
         String brandFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(brandFilter, CollectionFormat.CSV);
+                (brandFilter == null)
+                        ? null
+                        : brandFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String electricVehicleConnectorFilterConverted =
                 (electricVehicleConnectorFilter == null)
                         ? null
@@ -1018,15 +1026,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -1066,9 +1074,13 @@ public final class SearchesImpl {
             Context context) {
         final String accept = "application/json";
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String countryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(countryFilter, CollectionFormat.CSV);
+                (countryFilter == null)
+                        ? null
+                        : countryFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -1082,7 +1094,11 @@ public final class SearchesImpl {
                                 .map(value -> Objects.toString(value, ""))
                                 .collect(Collectors.joining(","));
         String brandFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(brandFilter, CollectionFormat.CSV);
+                (brandFilter == null)
+                        ? null
+                        : brandFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String electricVehicleConnectorFilterConverted =
                 (electricVehicleConnectorFilter == null)
                         ? null
@@ -1248,15 +1264,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -1446,15 +1462,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -1647,213 +1663,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
-     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
-     *     available Views.
-     * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
-     *     will vary based on the data available. If not passed, then no opening hours information will be returned.
-     *     Supported value: nextSevenDays.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResult fuzzySearch(
-            ResponseFormat format,
-            String query,
-            Boolean isTypeAhead,
-            Integer top,
-            Integer skip,
-            List<Integer> categoryFilter,
-            List<String> countryFilter,
-            Double lat,
-            Double lon,
-            Integer radiusInMeters,
-            String topLeft,
-            String btmRight,
-            String language,
-            List<SearchIndexes> extendedPostalCodesFor,
-            Integer minFuzzyLevel,
-            Integer maxFuzzyLevel,
-            List<SearchIndexes> indexFilter,
-            List<String> brandFilter,
-            List<ElectricVehicleConnector> electricVehicleConnectorFilter,
-            GeographicEntityType entityType,
-            LocalizedMapView localizedMapView,
-            OperatingHoursRange operatingHours) {
-        return fuzzySearchAsync(
-                        format,
-                        query,
-                        isTypeAhead,
-                        top,
-                        skip,
-                        categoryFilter,
-                        countryFilter,
-                        lat,
-                        lon,
-                        radiusInMeters,
-                        topLeft,
-                        btmRight,
-                        language,
-                        extendedPostalCodesFor,
-                        minFuzzyLevel,
-                        maxFuzzyLevel,
-                        indexFilter,
-                        brandFilter,
-                        electricVehicleConnectorFilter,
-                        entityType,
-                        localizedMapView,
-                        operatingHours)
-                .block();
-    }
-
-    /**
-     * **Free Form Search**
-     *
-     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The basic default API is Free Form Search which handles the most fuzzy of inputs handling any combination of
-     * address or POI tokens. This search API is the canonical 'single line search'. The Free Form Search API is a
-     * seamless combination of POI search and geocoding. The API can also be weighted with a contextual position
-     * (lat./lon. pair), or fully constrained by a coordinate and radius, or it can be executed more generally without
-     * any geo biasing anchor point.&lt;br&gt;&lt;br&gt;We strongly advise you to use the 'countrySet' parameter to
-     * specify only the countries for which your application needs coverage, as the default behavior will be to search
-     * the entire world, potentially returning unnecessary results.&lt;br&gt;&lt;br&gt; E.g.: `countrySet`=US,FR
-     * &lt;br&gt;&lt;br&gt;Please see [Search
-     * Coverage](https://docs.microsoft.com/azure/location-based-services/geocoding-coverage) for a complete list of all
-     * the supported countries.&lt;br&gt;&lt;br&gt;Most Search queries default to `maxFuzzyLevel`=2 to gain performance
-     * and also reduce unusual results. This new default can be overridden as needed per request by passing in the query
-     * param `maxFuzzyLevel`=3 or 4.
-     *
-     * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param query The applicable query string (e.g., "seattle", "pizza"). Can _also_ be specified as a comma separated
-     *     string composed by latitude followed by longitude (e.g., "47.641268, -122.125679"). Must be properly URL
-     *     encoded.
-     * @param isTypeAhead Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and
-     *     the search will enter predictive mode.
-     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
-     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
-     *     maximum: 1900.
-     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
-     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
-     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
-     *     The list of supported categories can be discovered using  [POI Categories
-     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
-     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
-     *     Restaurant).
-     * @param countryFilter Comma separated string of country codes, e.g. FR,ES. This will limit the search to the
-     *     specified countries.
-     * @param lat Latitude where results should be biased. E.g. 37.337.
-     * @param lon Longitude where results should be biased. E.g. -121.89.
-     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
-     * @param topLeft Top left position of the bounding box. E.g. 37.553,-122.453.
-     * @param btmRight Bottom right position of the bounding box. E.g. 37.553,-122.453.
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, case insensitive. When data in specified language is not available for a specific field, default
-     *     language is used.
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
-     *     <p>Available indexes are:
-     *     <p>**Addr** = Address ranges
-     *     <p>**Geo** = Geographies
-     *     <p>**PAD** = Point Addresses
-     *     <p>**POI** = Points of Interest
-     *     <p>**Str** = Streets
-     *     <p>**XStr** = Cross Streets (intersections)
-     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
-     *     geographies can be quite long so they have to be explicitly requested when needed.
-     *     <p>Usage examples:
-     *     <p>extendedPostalCodesFor=POI
-     *     <p>extendedPostalCodesFor=PAD,Addr,POI
-     *     <p>extendedPostalCodesFor=None
-     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
-     *     region-dependent.
-     * @param minFuzzyLevel Minimum fuzziness level to be used. Default: 1, minimum: 1 and maximum: 4
-     *     <p>* Level 1 has no spell checking.
-     *     <p>* Level 2 uses normal n-gram spell checking. For example, query "restrant" can be matched to "restaurant."
-     *     <p>* Level 3 uses sound-like spell checking, and shingle spell checking. Sound-like spell checking is for
-     *     "rstrnt" to "restaurant" matching. Shingle spell checking is for "mountainview" to "mountain view" matching.
-     *     <p>* Level 4 doesn’t add any more spell checking functions.
-     *     <p>The search engine will start looking for a match on the level defined by minFuzzyLevel, and will stop
-     *     searching at the level specified by maxFuzzyLevel.
-     * @param maxFuzzyLevel Maximum fuzziness level to be used. Default: 2, minimum: 1 and maximum: 4
-     *     <p>* Level 1 has no spell checking.
-     *     <p>* Level 2 uses normal n-gram spell checking. For example, query "restrant" can be matched to "restaurant."
-     *     <p>* Level 3 uses sound-like spell checking, and shingle spell checking. Sound-like spell checking is for
-     *     "rstrnt" to "restaurant" matching. Shingle spell checking is for "mountainview" to "mountain view" matching.
-     *     <p>* Level 4 doesn’t add any more spell checking functions.
-     *     <p>The search engine will start looking for a match on the level defined by minFuzzyLevel, and will stop
-     *     searching at the level specified by maxFuzzyLevel.
-     * @param indexFilter A comma separated list of indexes which should be utilized for the search. Item order does not
-     *     matter. Available indexes are: Addr = Address range interpolation, Geo = Geographies, PAD = Point Addresses,
-     *     POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections).
-     * @param brandFilter A comma-separated list of brand names which could be used to restrict the result to specific
-     *     brands. Item order does not matter. When multiple brands are provided, only results that belong to (at least)
-     *     one of the provided list will be returned. Brands that contain a "," in their name should be put into quotes.
-     *     <p>Usage examples:
-     *     <p>brandSet=Foo
-     *     <p>brandSet=Foo,Bar
-     *     <p>brandSet="A,B,C Comma",Bar.
-     * @param electricVehicleConnectorFilter A comma-separated list of connector types which could be used to restrict
-     *     the result to Electric Vehicle Station supporting specific connector types. Item order does not matter. When
-     *     multiple connector types are provided, only results that belong to (at least) one of the provided list will
-     *     be returned.
-     *     <p>Available connector types are: * `StandardHouseholdCountrySpecific` - These are the standard household
-     *     connectors for a certain region. They are all AC single phase and the standard Voltage and standard Amperage.
-     *     See also: [Plug &amp; socket types - World
-     *     Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets). * `IEC62196Type1` - Type 1 connector
-     *     as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after
-     *     the standard that first published it. Mostly used in combination with 120V single phase or up to 240V single
-     *     phase infrastructure. * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3
-     *     standard. The connector is based on the Type 1 connector – as defined in the IEC 62196-2 standard – with two
-     *     additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type2CableAttached` - Type 2
-     *     connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging
-     *     point. * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a
-     *     socket set into the charging point. * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC
-     *     62196-3 standard. The connector is based on the Type 2 connector – as defined in the IEC 62196-2 standard –
-     *     with two additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type3` - Type 3
-     *     connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly
-     *     used in combination with up to 240V single phase or up to 420V three phase infrastructure. * `Chademo` -
-     *     CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial
-     *     partners. Because of this is is also known as the TEPCO's connector. It supports fast DC charging. *
-     *     `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is
-     *     sometime referred to as by some combination of the standard, the color and the fact that is a single phase
-     *     connector. The connector usually has the "P+N+E, 6h" configuration. * `IEC60309DCWhite` - Industrial White
-     *     connector is a DC connector defined in the IEC 60309 standard. * `Tesla` - The Tesla connector is the
-     *     regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector,
-     *     sometimes referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2)
-     *     in Europe.
-     *     <p>Usage examples:
-     *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
-     * @param entityType Specifies the level of filtering performed on geographies. Narrows the search for specified
-     *     geography entity types, e.g. return only municipality. The resulting response will contain the geography ID
-     *     as well as the entity type matched. If you provide more than one entity as a comma separated list, endpoint
-     *     will return the 'smallest entity available'. Returned Geometry ID can be used to get the geometry of that
-     *     geography via [Get Search Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API. The
-     *     following parameters are ignored when entityType is set:
-     *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
-     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -1915,6 +1733,205 @@ public final class SearchesImpl {
                         operatingHours,
                         context)
                 .block();
+    }
+
+    /**
+     * **Free Form Search**
+     *
+     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     *
+     * <p>The basic default API is Free Form Search which handles the most fuzzy of inputs handling any combination of
+     * address or POI tokens. This search API is the canonical 'single line search'. The Free Form Search API is a
+     * seamless combination of POI search and geocoding. The API can also be weighted with a contextual position
+     * (lat./lon. pair), or fully constrained by a coordinate and radius, or it can be executed more generally without
+     * any geo biasing anchor point.&lt;br&gt;&lt;br&gt;We strongly advise you to use the 'countrySet' parameter to
+     * specify only the countries for which your application needs coverage, as the default behavior will be to search
+     * the entire world, potentially returning unnecessary results.&lt;br&gt;&lt;br&gt; E.g.: `countrySet`=US,FR
+     * &lt;br&gt;&lt;br&gt;Please see [Search
+     * Coverage](https://docs.microsoft.com/azure/location-based-services/geocoding-coverage) for a complete list of all
+     * the supported countries.&lt;br&gt;&lt;br&gt;Most Search queries default to `maxFuzzyLevel`=2 to gain performance
+     * and also reduce unusual results. This new default can be overridden as needed per request by passing in the query
+     * param `maxFuzzyLevel`=3 or 4.
+     *
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param query The applicable query string (e.g., "seattle", "pizza"). Can _also_ be specified as a comma separated
+     *     string composed by latitude followed by longitude (e.g., "47.641268, -122.125679"). Must be properly URL
+     *     encoded.
+     * @param isTypeAhead Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and
+     *     the search will enter predictive mode.
+     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
+     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
+     *     maximum: 1900.
+     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
+     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
+     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
+     *     The list of supported categories can be discovered using  [POI Categories
+     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
+     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
+     *     Restaurant).
+     * @param countryFilter Comma separated string of country codes, e.g. FR,ES. This will limit the search to the
+     *     specified countries.
+     * @param lat Latitude where results should be biased. E.g. 37.337.
+     * @param lon Longitude where results should be biased. E.g. -121.89.
+     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
+     * @param topLeft Top left position of the bounding box. E.g. 37.553,-122.453.
+     * @param btmRight Bottom right position of the bounding box. E.g. 37.553,-122.453.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, case insensitive. When data in specified language is not available for a specific field, default
+     *     language is used.
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
+     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
+     *     <p>Available indexes are:
+     *     <p>**Addr** = Address ranges
+     *     <p>**Geo** = Geographies
+     *     <p>**PAD** = Point Addresses
+     *     <p>**POI** = Points of Interest
+     *     <p>**Str** = Streets
+     *     <p>**XStr** = Cross Streets (intersections)
+     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
+     *     geographies can be quite long so they have to be explicitly requested when needed.
+     *     <p>Usage examples:
+     *     <p>extendedPostalCodesFor=POI
+     *     <p>extendedPostalCodesFor=PAD,Addr,POI
+     *     <p>extendedPostalCodesFor=None
+     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
+     *     region-dependent.
+     * @param minFuzzyLevel Minimum fuzziness level to be used. Default: 1, minimum: 1 and maximum: 4
+     *     <p>* Level 1 has no spell checking.
+     *     <p>* Level 2 uses normal n-gram spell checking. For example, query "restrant" can be matched to "restaurant."
+     *     <p>* Level 3 uses sound-like spell checking, and shingle spell checking. Sound-like spell checking is for
+     *     "rstrnt" to "restaurant" matching. Shingle spell checking is for "mountainview" to "mountain view" matching.
+     *     <p>* Level 4 doesn’t add any more spell checking functions.
+     *     <p>The search engine will start looking for a match on the level defined by minFuzzyLevel, and will stop
+     *     searching at the level specified by maxFuzzyLevel.
+     * @param maxFuzzyLevel Maximum fuzziness level to be used. Default: 2, minimum: 1 and maximum: 4
+     *     <p>* Level 1 has no spell checking.
+     *     <p>* Level 2 uses normal n-gram spell checking. For example, query "restrant" can be matched to "restaurant."
+     *     <p>* Level 3 uses sound-like spell checking, and shingle spell checking. Sound-like spell checking is for
+     *     "rstrnt" to "restaurant" matching. Shingle spell checking is for "mountainview" to "mountain view" matching.
+     *     <p>* Level 4 doesn’t add any more spell checking functions.
+     *     <p>The search engine will start looking for a match on the level defined by minFuzzyLevel, and will stop
+     *     searching at the level specified by maxFuzzyLevel.
+     * @param indexFilter A comma separated list of indexes which should be utilized for the search. Item order does not
+     *     matter. Available indexes are: Addr = Address range interpolation, Geo = Geographies, PAD = Point Addresses,
+     *     POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections).
+     * @param brandFilter A comma-separated list of brand names which could be used to restrict the result to specific
+     *     brands. Item order does not matter. When multiple brands are provided, only results that belong to (at least)
+     *     one of the provided list will be returned. Brands that contain a "," in their name should be put into quotes.
+     *     <p>Usage examples:
+     *     <p>brandSet=Foo
+     *     <p>brandSet=Foo,Bar
+     *     <p>brandSet="A,B,C Comma",Bar.
+     * @param electricVehicleConnectorFilter A comma-separated list of connector types which could be used to restrict
+     *     the result to Electric Vehicle Station supporting specific connector types. Item order does not matter. When
+     *     multiple connector types are provided, only results that belong to (at least) one of the provided list will
+     *     be returned.
+     *     <p>Available connector types are: * `StandardHouseholdCountrySpecific` - These are the standard household
+     *     connectors for a certain region. They are all AC single phase and the standard Voltage and standard Amperage.
+     *     See also: [Plug &amp; socket types - World
+     *     Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets). * `IEC62196Type1` - Type 1 connector
+     *     as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after
+     *     the standard that first published it. Mostly used in combination with 120V single phase or up to 240V single
+     *     phase infrastructure. * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3
+     *     standard. The connector is based on the Type 1 connector – as defined in the IEC 62196-2 standard – with two
+     *     additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type2CableAttached` - Type 2
+     *     connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging
+     *     point. * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a
+     *     socket set into the charging point. * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC
+     *     62196-3 standard. The connector is based on the Type 2 connector – as defined in the IEC 62196-2 standard –
+     *     with two additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type3` - Type 3
+     *     connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly
+     *     used in combination with up to 240V single phase or up to 420V three phase infrastructure. * `Chademo` -
+     *     CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial
+     *     partners. Because of this is is also known as the TEPCO's connector. It supports fast DC charging. *
+     *     `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is
+     *     sometime referred to as by some combination of the standard, the color and the fact that is a single phase
+     *     connector. The connector usually has the "P+N+E, 6h" configuration. * `IEC60309DCWhite` - Industrial White
+     *     connector is a DC connector defined in the IEC 60309 standard. * `Tesla` - The Tesla connector is the
+     *     regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector,
+     *     sometimes referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2)
+     *     in Europe.
+     *     <p>Usage examples:
+     *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
+     * @param entityType Specifies the level of filtering performed on geographies. Narrows the search for specified
+     *     geography entity types, e.g. return only municipality. The resulting response will contain the geography ID
+     *     as well as the entity type matched. If you provide more than one entity as a comma separated list, endpoint
+     *     will return the 'smallest entity available'. Returned Geometry ID can be used to get the geometry of that
+     *     geography via [Get Search Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API. The
+     *     following parameters are ignored when entityType is set:
+     *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
+     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
+     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
+     *     available Views.
+     * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
+     *     will vary based on the data available. If not passed, then no opening hours information will be returned.
+     *     Supported value: nextSevenDays.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search calls.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAddressResult fuzzySearch(
+            ResponseFormat format,
+            String query,
+            Boolean isTypeAhead,
+            Integer top,
+            Integer skip,
+            List<Integer> categoryFilter,
+            List<String> countryFilter,
+            Double lat,
+            Double lon,
+            Integer radiusInMeters,
+            String topLeft,
+            String btmRight,
+            String language,
+            List<SearchIndexes> extendedPostalCodesFor,
+            Integer minFuzzyLevel,
+            Integer maxFuzzyLevel,
+            List<SearchIndexes> indexFilter,
+            List<String> brandFilter,
+            List<ElectricVehicleConnector> electricVehicleConnectorFilter,
+            GeographicEntityType entityType,
+            LocalizedMapView localizedMapView,
+            OperatingHoursRange operatingHours) {
+        return fuzzySearchWithResponse(
+                        format,
+                        query,
+                        isTypeAhead,
+                        top,
+                        skip,
+                        categoryFilter,
+                        countryFilter,
+                        lat,
+                        lon,
+                        radiusInMeters,
+                        topLeft,
+                        btmRight,
+                        language,
+                        extendedPostalCodesFor,
+                        minFuzzyLevel,
+                        maxFuzzyLevel,
+                        indexFilter,
+                        brandFilter,
+                        electricVehicleConnectorFilter,
+                        entityType,
+                        localizedMapView,
+                        operatingHours,
+                        Context.NONE)
+                .getValue();
     }
 
     /**
@@ -2003,15 +2020,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -2045,9 +2062,13 @@ public final class SearchesImpl {
             OperatingHoursRange operatingHours) {
         final String accept = "application/json";
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String countryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(countryFilter, CollectionFormat.CSV);
+                (countryFilter == null)
+                        ? null
+                        : countryFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -2055,7 +2076,11 @@ public final class SearchesImpl {
                                 .map(value -> Objects.toString(value, ""))
                                 .collect(Collectors.joining(","));
         String brandFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(brandFilter, CollectionFormat.CSV);
+                (brandFilter == null)
+                        ? null
+                        : brandFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String electricVehicleConnectorFilterConverted =
                 (electricVehicleConnectorFilter == null)
                         ? null
@@ -2176,15 +2201,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -2220,9 +2245,13 @@ public final class SearchesImpl {
             Context context) {
         final String accept = "application/json";
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String countryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(countryFilter, CollectionFormat.CSV);
+                (countryFilter == null)
+                        ? null
+                        : countryFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -2230,7 +2259,11 @@ public final class SearchesImpl {
                                 .map(value -> Objects.toString(value, ""))
                                 .collect(Collectors.joining(","));
         String brandFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(brandFilter, CollectionFormat.CSV);
+                (brandFilter == null)
+                        ? null
+                        : brandFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String electricVehicleConnectorFilterConverted =
                 (electricVehicleConnectorFilter == null)
                         ? null
@@ -2349,15 +2382,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -2496,15 +2529,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -2646,162 +2679,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
-     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
-     *     available Views.
-     * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
-     *     will vary based on the data available. If not passed, then no opening hours information will be returned.
-     *     Supported value: nextSevenDays.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResult searchPointOfInterest(
-            ResponseFormat format,
-            String query,
-            Boolean isTypeAhead,
-            Integer top,
-            Integer skip,
-            List<Integer> categoryFilter,
-            List<String> countryFilter,
-            Double lat,
-            Double lon,
-            Integer radiusInMeters,
-            String topLeft,
-            String btmRight,
-            String language,
-            List<PointOfInterestExtendedPostalCodes> extendedPostalCodesFor,
-            List<String> brandFilter,
-            List<ElectricVehicleConnector> electricVehicleConnectorFilter,
-            LocalizedMapView localizedMapView,
-            OperatingHoursRange operatingHours) {
-        return searchPointOfInterestAsync(
-                        format,
-                        query,
-                        isTypeAhead,
-                        top,
-                        skip,
-                        categoryFilter,
-                        countryFilter,
-                        lat,
-                        lon,
-                        radiusInMeters,
-                        topLeft,
-                        btmRight,
-                        language,
-                        extendedPostalCodesFor,
-                        brandFilter,
-                        electricVehicleConnectorFilter,
-                        localizedMapView,
-                        operatingHours)
-                .block();
-    }
-
-    /**
-     * **Get POI by Name**
-     *
-     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>Points of Interest (POI) Search allows you to request POI results by name. Search supports additional query
-     * parameters such as language and filtering results by area of interest driven by country or bounding box. Endpoint
-     * will return only POI results matching the query string. Response includes POI details such as address, coordinate
-     * location and category.
-     *
-     * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param query The POI name to search for (e.g., "statue of liberty", "starbucks"), must be properly URL encoded.
-     * @param isTypeAhead Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and
-     *     the search will enter predictive mode.
-     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
-     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
-     *     maximum: 1900.
-     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
-     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
-     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
-     *     The list of supported categories can be discovered using  [POI Categories
-     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
-     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
-     *     Restaurant).
-     * @param countryFilter Comma separated string of country codes, e.g. FR,ES. This will limit the search to the
-     *     specified countries.
-     * @param lat Latitude where results should be biased. E.g. 37.337.
-     * @param lon Longitude where results should be biased. E.g. -121.89.
-     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
-     * @param topLeft Top left position of the bounding box. E.g. 37.553,-122.453.
-     * @param btmRight Bottom right position of the bounding box. E.g. 37.553,-122.453.
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, case insensitive. When data in specified language is not available for a specific field, default
-     *     language is used.
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
-     *     <p>Available indexes are:
-     *     <p>**POI** = Points of Interest
-     *     <p>Value should be **POI** or **None** to disable extended postal codes.
-     *     <p>By default extended postal codes are included.
-     *     <p>Usage examples:
-     *     <p>extendedPostalCodesFor=POI
-     *     <p>extendedPostalCodesFor=None
-     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
-     *     region-dependent.
-     * @param brandFilter A comma-separated list of brand names which could be used to restrict the result to specific
-     *     brands. Item order does not matter. When multiple brands are provided, only results that belong to (at least)
-     *     one of the provided list will be returned. Brands that contain a "," in their name should be put into quotes.
-     *     <p>Usage examples:
-     *     <p>brandSet=Foo
-     *     <p>brandSet=Foo,Bar
-     *     <p>brandSet="A,B,C Comma",Bar.
-     * @param electricVehicleConnectorFilter A comma-separated list of connector types which could be used to restrict
-     *     the result to Electric Vehicle Station supporting specific connector types. Item order does not matter. When
-     *     multiple connector types are provided, only results that belong to (at least) one of the provided list will
-     *     be returned.
-     *     <p>Available connector types are: * `StandardHouseholdCountrySpecific` - These are the standard household
-     *     connectors for a certain region. They are all AC single phase and the standard Voltage and standard Amperage.
-     *     See also: [Plug &amp; socket types - World
-     *     Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets). * `IEC62196Type1` - Type 1 connector
-     *     as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after
-     *     the standard that first published it. Mostly used in combination with 120V single phase or up to 240V single
-     *     phase infrastructure. * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3
-     *     standard. The connector is based on the Type 1 connector – as defined in the IEC 62196-2 standard – with two
-     *     additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type2CableAttached` - Type 2
-     *     connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging
-     *     point. * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a
-     *     socket set into the charging point. * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC
-     *     62196-3 standard. The connector is based on the Type 2 connector – as defined in the IEC 62196-2 standard –
-     *     with two additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type3` - Type 3
-     *     connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly
-     *     used in combination with up to 240V single phase or up to 420V three phase infrastructure. * `Chademo` -
-     *     CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial
-     *     partners. Because of this is is also known as the TEPCO's connector. It supports fast DC charging. *
-     *     `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is
-     *     sometime referred to as by some combination of the standard, the color and the fact that is a single phase
-     *     connector. The connector usually has the "P+N+E, 6h" configuration. * `IEC60309DCWhite` - Industrial White
-     *     connector is a DC connector defined in the IEC 60309 standard. * `Tesla` - The Tesla connector is the
-     *     regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector,
-     *     sometimes referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2)
-     *     in Europe.
-     *     <p>Usage examples:
-     *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
-     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -2855,6 +2741,154 @@ public final class SearchesImpl {
                         operatingHours,
                         context)
                 .block();
+    }
+
+    /**
+     * **Get POI by Name**
+     *
+     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     *
+     * <p>Points of Interest (POI) Search allows you to request POI results by name. Search supports additional query
+     * parameters such as language and filtering results by area of interest driven by country or bounding box. Endpoint
+     * will return only POI results matching the query string. Response includes POI details such as address, coordinate
+     * location and category.
+     *
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param query The POI name to search for (e.g., "statue of liberty", "starbucks"), must be properly URL encoded.
+     * @param isTypeAhead Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and
+     *     the search will enter predictive mode.
+     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
+     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
+     *     maximum: 1900.
+     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
+     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
+     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
+     *     The list of supported categories can be discovered using  [POI Categories
+     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
+     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
+     *     Restaurant).
+     * @param countryFilter Comma separated string of country codes, e.g. FR,ES. This will limit the search to the
+     *     specified countries.
+     * @param lat Latitude where results should be biased. E.g. 37.337.
+     * @param lon Longitude where results should be biased. E.g. -121.89.
+     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
+     * @param topLeft Top left position of the bounding box. E.g. 37.553,-122.453.
+     * @param btmRight Bottom right position of the bounding box. E.g. 37.553,-122.453.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, case insensitive. When data in specified language is not available for a specific field, default
+     *     language is used.
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
+     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
+     *     <p>Available indexes are:
+     *     <p>**POI** = Points of Interest
+     *     <p>Value should be **POI** or **None** to disable extended postal codes.
+     *     <p>By default extended postal codes are included.
+     *     <p>Usage examples:
+     *     <p>extendedPostalCodesFor=POI
+     *     <p>extendedPostalCodesFor=None
+     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
+     *     region-dependent.
+     * @param brandFilter A comma-separated list of brand names which could be used to restrict the result to specific
+     *     brands. Item order does not matter. When multiple brands are provided, only results that belong to (at least)
+     *     one of the provided list will be returned. Brands that contain a "," in their name should be put into quotes.
+     *     <p>Usage examples:
+     *     <p>brandSet=Foo
+     *     <p>brandSet=Foo,Bar
+     *     <p>brandSet="A,B,C Comma",Bar.
+     * @param electricVehicleConnectorFilter A comma-separated list of connector types which could be used to restrict
+     *     the result to Electric Vehicle Station supporting specific connector types. Item order does not matter. When
+     *     multiple connector types are provided, only results that belong to (at least) one of the provided list will
+     *     be returned.
+     *     <p>Available connector types are: * `StandardHouseholdCountrySpecific` - These are the standard household
+     *     connectors for a certain region. They are all AC single phase and the standard Voltage and standard Amperage.
+     *     See also: [Plug &amp; socket types - World
+     *     Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets). * `IEC62196Type1` - Type 1 connector
+     *     as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after
+     *     the standard that first published it. Mostly used in combination with 120V single phase or up to 240V single
+     *     phase infrastructure. * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3
+     *     standard. The connector is based on the Type 1 connector – as defined in the IEC 62196-2 standard – with two
+     *     additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type2CableAttached` - Type 2
+     *     connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging
+     *     point. * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a
+     *     socket set into the charging point. * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC
+     *     62196-3 standard. The connector is based on the Type 2 connector – as defined in the IEC 62196-2 standard –
+     *     with two additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type3` - Type 3
+     *     connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly
+     *     used in combination with up to 240V single phase or up to 420V three phase infrastructure. * `Chademo` -
+     *     CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial
+     *     partners. Because of this is is also known as the TEPCO's connector. It supports fast DC charging. *
+     *     `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is
+     *     sometime referred to as by some combination of the standard, the color and the fact that is a single phase
+     *     connector. The connector usually has the "P+N+E, 6h" configuration. * `IEC60309DCWhite` - Industrial White
+     *     connector is a DC connector defined in the IEC 60309 standard. * `Tesla` - The Tesla connector is the
+     *     regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector,
+     *     sometimes referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2)
+     *     in Europe.
+     *     <p>Usage examples:
+     *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
+     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
+     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
+     *     available Views.
+     * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
+     *     will vary based on the data available. If not passed, then no opening hours information will be returned.
+     *     Supported value: nextSevenDays.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search calls.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAddressResult searchPointOfInterest(
+            ResponseFormat format,
+            String query,
+            Boolean isTypeAhead,
+            Integer top,
+            Integer skip,
+            List<Integer> categoryFilter,
+            List<String> countryFilter,
+            Double lat,
+            Double lon,
+            Integer radiusInMeters,
+            String topLeft,
+            String btmRight,
+            String language,
+            List<PointOfInterestExtendedPostalCodes> extendedPostalCodesFor,
+            List<String> brandFilter,
+            List<ElectricVehicleConnector> electricVehicleConnectorFilter,
+            LocalizedMapView localizedMapView,
+            OperatingHoursRange operatingHours) {
+        return searchPointOfInterestWithResponse(
+                        format,
+                        query,
+                        isTypeAhead,
+                        top,
+                        skip,
+                        categoryFilter,
+                        countryFilter,
+                        lat,
+                        lon,
+                        radiusInMeters,
+                        topLeft,
+                        btmRight,
+                        language,
+                        extendedPostalCodesFor,
+                        brandFilter,
+                        electricVehicleConnectorFilter,
+                        localizedMapView,
+                        operatingHours,
+                        Context.NONE)
+                .getValue();
     }
 
     /**
@@ -2945,15 +2979,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2979,9 +3013,13 @@ public final class SearchesImpl {
             LocalizedMapView localizedMapView) {
         final String accept = "application/json";
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String countryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(countryFilter, CollectionFormat.CSV);
+                (countryFilter == null)
+                        ? null
+                        : countryFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -2989,7 +3027,11 @@ public final class SearchesImpl {
                                 .map(value -> Objects.toString(value, ""))
                                 .collect(Collectors.joining(","));
         String brandFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(brandFilter, CollectionFormat.CSV);
+                (brandFilter == null)
+                        ? null
+                        : brandFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String electricVehicleConnectorFilterConverted =
                 (electricVehicleConnectorFilter == null)
                         ? null
@@ -3107,15 +3149,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -3143,9 +3185,13 @@ public final class SearchesImpl {
             Context context) {
         final String accept = "application/json";
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String countryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(countryFilter, CollectionFormat.CSV);
+                (countryFilter == null)
+                        ? null
+                        : countryFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -3153,7 +3199,11 @@ public final class SearchesImpl {
                                 .map(value -> Objects.toString(value, ""))
                                 .collect(Collectors.joining(","));
         String brandFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(brandFilter, CollectionFormat.CSV);
+                (brandFilter == null)
+                        ? null
+                        : brandFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String electricVehicleConnectorFilterConverted =
                 (electricVehicleConnectorFilter == null)
                         ? null
@@ -3269,15 +3319,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3405,15 +3455,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -3544,151 +3594,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
-     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
-     *     available Views.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResult searchNearbyPointOfInterest(
-            ResponseFormat format,
-            double lat,
-            double lon,
-            Integer top,
-            Integer skip,
-            List<Integer> categoryFilter,
-            List<String> countryFilter,
-            Integer radiusInMeters,
-            String language,
-            List<SearchIndexes> extendedPostalCodesFor,
-            List<String> brandFilter,
-            List<ElectricVehicleConnector> electricVehicleConnectorFilter,
-            LocalizedMapView localizedMapView) {
-        return searchNearbyPointOfInterestAsync(
-                        format,
-                        lat,
-                        lon,
-                        top,
-                        skip,
-                        categoryFilter,
-                        countryFilter,
-                        radiusInMeters,
-                        language,
-                        extendedPostalCodesFor,
-                        brandFilter,
-                        electricVehicleConnectorFilter,
-                        localizedMapView)
-                .block();
-    }
-
-    /**
-     * **Nearby Search**
-     *
-     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>If you have a use case for only retrieving POI results around a specific location, the nearby search method
-     * may be the right choice. This endpoint will only return POI results, and does not take in a search query
-     * parameter.
-     *
-     * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param lat Latitude where results should be biased. E.g. 37.337.
-     * @param lon Longitude where results should be biased. E.g. -121.89.
-     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
-     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
-     *     maximum: 1900.
-     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
-     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
-     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
-     *     The list of supported categories can be discovered using  [POI Categories
-     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
-     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
-     *     Restaurant).
-     * @param countryFilter Comma separated string of country codes, e.g. FR,ES. This will limit the search to the
-     *     specified countries.
-     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area, Min value is
-     *     1, Max Value is 50000.
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, case insensitive. When data in specified language is not available for a specific field, default
-     *     language is used.
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
-     *     <p>Available indexes are:
-     *     <p>**Addr** = Address ranges
-     *     <p>**Geo** = Geographies
-     *     <p>**PAD** = Point Addresses
-     *     <p>**POI** = Points of Interest
-     *     <p>**Str** = Streets
-     *     <p>**XStr** = Cross Streets (intersections)
-     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
-     *     geographies can be quite long so they have to be explicitly requested when needed.
-     *     <p>Usage examples:
-     *     <p>extendedPostalCodesFor=POI
-     *     <p>extendedPostalCodesFor=PAD,Addr,POI
-     *     <p>extendedPostalCodesFor=None
-     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
-     *     region-dependent.
-     * @param brandFilter A comma-separated list of brand names which could be used to restrict the result to specific
-     *     brands. Item order does not matter. When multiple brands are provided, only results that belong to (at least)
-     *     one of the provided list will be returned. Brands that contain a "," in their name should be put into quotes.
-     *     <p>Usage examples:
-     *     <p>brandSet=Foo
-     *     <p>brandSet=Foo,Bar
-     *     <p>brandSet="A,B,C Comma",Bar.
-     * @param electricVehicleConnectorFilter A comma-separated list of connector types which could be used to restrict
-     *     the result to Electric Vehicle Station supporting specific connector types. Item order does not matter. When
-     *     multiple connector types are provided, only results that belong to (at least) one of the provided list will
-     *     be returned.
-     *     <p>Available connector types are: * `StandardHouseholdCountrySpecific` - These are the standard household
-     *     connectors for a certain region. They are all AC single phase and the standard Voltage and standard Amperage.
-     *     See also: [Plug &amp; socket types - World
-     *     Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets). * `IEC62196Type1` - Type 1 connector
-     *     as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after
-     *     the standard that first published it. Mostly used in combination with 120V single phase or up to 240V single
-     *     phase infrastructure. * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3
-     *     standard. The connector is based on the Type 1 connector – as defined in the IEC 62196-2 standard – with two
-     *     additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type2CableAttached` - Type 2
-     *     connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging
-     *     point. * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a
-     *     socket set into the charging point. * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC
-     *     62196-3 standard. The connector is based on the Type 2 connector – as defined in the IEC 62196-2 standard –
-     *     with two additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type3` - Type 3
-     *     connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly
-     *     used in combination with up to 240V single phase or up to 420V three phase infrastructure. * `Chademo` -
-     *     CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial
-     *     partners. Because of this is is also known as the TEPCO's connector. It supports fast DC charging. *
-     *     `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is
-     *     sometime referred to as by some combination of the standard, the color and the fact that is a single phase
-     *     connector. The connector usually has the "P+N+E, 6h" configuration. * `IEC60309DCWhite` - Industrial White
-     *     connector is a DC connector defined in the IEC 60309 standard. * `Tesla` - The Tesla connector is the
-     *     regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector,
-     *     sometimes referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2)
-     *     in Europe.
-     *     <p>Usage examples:
-     *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
-     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -3729,6 +3643,143 @@ public final class SearchesImpl {
                         localizedMapView,
                         context)
                 .block();
+    }
+
+    /**
+     * **Nearby Search**
+     *
+     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     *
+     * <p>If you have a use case for only retrieving POI results around a specific location, the nearby search method
+     * may be the right choice. This endpoint will only return POI results, and does not take in a search query
+     * parameter.
+     *
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param lat Latitude where results should be biased. E.g. 37.337.
+     * @param lon Longitude where results should be biased. E.g. -121.89.
+     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
+     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
+     *     maximum: 1900.
+     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
+     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
+     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
+     *     The list of supported categories can be discovered using  [POI Categories
+     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
+     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
+     *     Restaurant).
+     * @param countryFilter Comma separated string of country codes, e.g. FR,ES. This will limit the search to the
+     *     specified countries.
+     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area, Min value is
+     *     1, Max Value is 50000.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, case insensitive. When data in specified language is not available for a specific field, default
+     *     language is used.
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
+     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
+     *     <p>Available indexes are:
+     *     <p>**Addr** = Address ranges
+     *     <p>**Geo** = Geographies
+     *     <p>**PAD** = Point Addresses
+     *     <p>**POI** = Points of Interest
+     *     <p>**Str** = Streets
+     *     <p>**XStr** = Cross Streets (intersections)
+     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
+     *     geographies can be quite long so they have to be explicitly requested when needed.
+     *     <p>Usage examples:
+     *     <p>extendedPostalCodesFor=POI
+     *     <p>extendedPostalCodesFor=PAD,Addr,POI
+     *     <p>extendedPostalCodesFor=None
+     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
+     *     region-dependent.
+     * @param brandFilter A comma-separated list of brand names which could be used to restrict the result to specific
+     *     brands. Item order does not matter. When multiple brands are provided, only results that belong to (at least)
+     *     one of the provided list will be returned. Brands that contain a "," in their name should be put into quotes.
+     *     <p>Usage examples:
+     *     <p>brandSet=Foo
+     *     <p>brandSet=Foo,Bar
+     *     <p>brandSet="A,B,C Comma",Bar.
+     * @param electricVehicleConnectorFilter A comma-separated list of connector types which could be used to restrict
+     *     the result to Electric Vehicle Station supporting specific connector types. Item order does not matter. When
+     *     multiple connector types are provided, only results that belong to (at least) one of the provided list will
+     *     be returned.
+     *     <p>Available connector types are: * `StandardHouseholdCountrySpecific` - These are the standard household
+     *     connectors for a certain region. They are all AC single phase and the standard Voltage and standard Amperage.
+     *     See also: [Plug &amp; socket types - World
+     *     Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets). * `IEC62196Type1` - Type 1 connector
+     *     as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after
+     *     the standard that first published it. Mostly used in combination with 120V single phase or up to 240V single
+     *     phase infrastructure. * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3
+     *     standard. The connector is based on the Type 1 connector – as defined in the IEC 62196-2 standard – with two
+     *     additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type2CableAttached` - Type 2
+     *     connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging
+     *     point. * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a
+     *     socket set into the charging point. * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC
+     *     62196-3 standard. The connector is based on the Type 2 connector – as defined in the IEC 62196-2 standard –
+     *     with two additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type3` - Type 3
+     *     connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly
+     *     used in combination with up to 240V single phase or up to 420V three phase infrastructure. * `Chademo` -
+     *     CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial
+     *     partners. Because of this is is also known as the TEPCO's connector. It supports fast DC charging. *
+     *     `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is
+     *     sometime referred to as by some combination of the standard, the color and the fact that is a single phase
+     *     connector. The connector usually has the "P+N+E, 6h" configuration. * `IEC60309DCWhite` - Industrial White
+     *     connector is a DC connector defined in the IEC 60309 standard. * `Tesla` - The Tesla connector is the
+     *     regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector,
+     *     sometimes referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2)
+     *     in Europe.
+     *     <p>Usage examples:
+     *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
+     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
+     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
+     *     available Views.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search calls.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAddressResult searchNearbyPointOfInterest(
+            ResponseFormat format,
+            double lat,
+            double lon,
+            Integer top,
+            Integer skip,
+            List<Integer> categoryFilter,
+            List<String> countryFilter,
+            Integer radiusInMeters,
+            String language,
+            List<SearchIndexes> extendedPostalCodesFor,
+            List<String> brandFilter,
+            List<ElectricVehicleConnector> electricVehicleConnectorFilter,
+            LocalizedMapView localizedMapView) {
+        return searchNearbyPointOfInterestWithResponse(
+                        format,
+                        lat,
+                        lon,
+                        top,
+                        skip,
+                        categoryFilter,
+                        countryFilter,
+                        radiusInMeters,
+                        language,
+                        extendedPostalCodesFor,
+                        brandFilter,
+                        electricVehicleConnectorFilter,
+                        localizedMapView,
+                        Context.NONE)
+                .getValue();
     }
 
     /**
@@ -3827,15 +3878,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -3869,9 +3920,13 @@ public final class SearchesImpl {
             OperatingHoursRange operatingHours) {
         final String accept = "application/json";
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String countryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(countryFilter, CollectionFormat.CSV);
+                (countryFilter == null)
+                        ? null
+                        : countryFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -3879,7 +3934,11 @@ public final class SearchesImpl {
                                 .map(value -> Objects.toString(value, ""))
                                 .collect(Collectors.joining(","));
         String brandFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(brandFilter, CollectionFormat.CSV);
+                (brandFilter == null)
+                        ? null
+                        : brandFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String electricVehicleConnectorFilterConverted =
                 (electricVehicleConnectorFilter == null)
                         ? null
@@ -4010,15 +4069,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -4054,9 +4113,13 @@ public final class SearchesImpl {
             Context context) {
         final String accept = "application/json";
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String countryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(countryFilter, CollectionFormat.CSV);
+                (countryFilter == null)
+                        ? null
+                        : countryFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -4064,7 +4127,11 @@ public final class SearchesImpl {
                                 .map(value -> Objects.toString(value, ""))
                                 .collect(Collectors.joining(","));
         String brandFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(brandFilter, CollectionFormat.CSV);
+                (brandFilter == null)
+                        ? null
+                        : brandFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String electricVehicleConnectorFilterConverted =
                 (electricVehicleConnectorFilter == null)
                         ? null
@@ -4193,15 +4260,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -4350,15 +4417,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -4510,172 +4577,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
-     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
-     *     available Views.
-     * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
-     *     will vary based on the data available. If not passed, then no opening hours information will be returned.
-     *     Supported value: nextSevenDays.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResult searchPointOfInterestCategory(
-            ResponseFormat format,
-            String query,
-            Boolean isTypeAhead,
-            Integer top,
-            Integer skip,
-            List<Integer> categoryFilter,
-            List<String> countryFilter,
-            Double lat,
-            Double lon,
-            Integer radiusInMeters,
-            String topLeft,
-            String btmRight,
-            String language,
-            List<SearchIndexes> extendedPostalCodesFor,
-            List<String> brandFilter,
-            List<ElectricVehicleConnector> electricVehicleConnectorFilter,
-            LocalizedMapView localizedMapView,
-            OperatingHoursRange operatingHours) {
-        return searchPointOfInterestCategoryAsync(
-                        format,
-                        query,
-                        isTypeAhead,
-                        top,
-                        skip,
-                        categoryFilter,
-                        countryFilter,
-                        lat,
-                        lon,
-                        radiusInMeters,
-                        topLeft,
-                        btmRight,
-                        language,
-                        extendedPostalCodesFor,
-                        brandFilter,
-                        electricVehicleConnectorFilter,
-                        localizedMapView,
-                        operatingHours)
-                .block();
-    }
-
-    /**
-     * **Get POI by Category**
-     *
-     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>Points of Interest (POI) Category Search allows you to request POI results from given category. Search allows
-     * to query POIs from one category at a time. Endpoint will only return POI results which are categorized as
-     * specified. Response includes POI details such as address, coordinate location and classification.
-     *
-     * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param query The POI category to search for (e.g., "AIRPORT", "RESTAURANT"), must be properly URL encoded.
-     *     Supported main categories can be requested by calling [Get Search POI Category Tree
-     *     API](https://aka.ms/AzureMapsPOICategoryTree). List of available categories can also be found
-     *     [here](https://docs.microsoft.com/azure/azure-maps/supported-search-categories). We recommend to use POI
-     *     Search Category Tree API to request the supported categories.
-     * @param isTypeAhead Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and
-     *     the search will enter predictive mode.
-     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
-     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
-     *     maximum: 1900.
-     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
-     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
-     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
-     *     The list of supported categories can be discovered using  [POI Categories
-     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
-     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
-     *     Restaurant).
-     * @param countryFilter Comma separated string of country codes, e.g. FR,ES. This will limit the search to the
-     *     specified countries.
-     * @param lat Latitude where results should be biased. E.g. 37.337.
-     * @param lon Longitude where results should be biased. E.g. -121.89.
-     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
-     * @param topLeft Top left position of the bounding box. E.g. 37.553,-122.453.
-     * @param btmRight Bottom right position of the bounding box. E.g. 37.553,-122.453.
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, case insensitive. When data in specified language is not available for a specific field, default
-     *     language is used.
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
-     *     <p>Available indexes are:
-     *     <p>**Addr** = Address ranges
-     *     <p>**Geo** = Geographies
-     *     <p>**PAD** = Point Addresses
-     *     <p>**POI** = Points of Interest
-     *     <p>**Str** = Streets
-     *     <p>**XStr** = Cross Streets (intersections)
-     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
-     *     geographies can be quite long so they have to be explicitly requested when needed.
-     *     <p>Usage examples:
-     *     <p>extendedPostalCodesFor=POI
-     *     <p>extendedPostalCodesFor=PAD,Addr,POI
-     *     <p>extendedPostalCodesFor=None
-     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
-     *     region-dependent.
-     * @param brandFilter A comma-separated list of brand names which could be used to restrict the result to specific
-     *     brands. Item order does not matter. When multiple brands are provided, only results that belong to (at least)
-     *     one of the provided list will be returned. Brands that contain a "," in their name should be put into quotes.
-     *     <p>Usage examples:
-     *     <p>brandSet=Foo
-     *     <p>brandSet=Foo,Bar
-     *     <p>brandSet="A,B,C Comma",Bar.
-     * @param electricVehicleConnectorFilter A comma-separated list of connector types which could be used to restrict
-     *     the result to Electric Vehicle Station supporting specific connector types. Item order does not matter. When
-     *     multiple connector types are provided, only results that belong to (at least) one of the provided list will
-     *     be returned.
-     *     <p>Available connector types are: * `StandardHouseholdCountrySpecific` - These are the standard household
-     *     connectors for a certain region. They are all AC single phase and the standard Voltage and standard Amperage.
-     *     See also: [Plug &amp; socket types - World
-     *     Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets). * `IEC62196Type1` - Type 1 connector
-     *     as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after
-     *     the standard that first published it. Mostly used in combination with 120V single phase or up to 240V single
-     *     phase infrastructure. * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3
-     *     standard. The connector is based on the Type 1 connector – as defined in the IEC 62196-2 standard – with two
-     *     additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type2CableAttached` - Type 2
-     *     connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging
-     *     point. * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a
-     *     socket set into the charging point. * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC
-     *     62196-3 standard. The connector is based on the Type 2 connector – as defined in the IEC 62196-2 standard –
-     *     with two additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type3` - Type 3
-     *     connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly
-     *     used in combination with up to 240V single phase or up to 420V three phase infrastructure. * `Chademo` -
-     *     CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial
-     *     partners. Because of this is is also known as the TEPCO's connector. It supports fast DC charging. *
-     *     `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is
-     *     sometime referred to as by some combination of the standard, the color and the fact that is a single phase
-     *     connector. The connector usually has the "P+N+E, 6h" configuration. * `IEC60309DCWhite` - Industrial White
-     *     connector is a DC connector defined in the IEC 60309 standard. * `Tesla` - The Tesla connector is the
-     *     regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector,
-     *     sometimes referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2)
-     *     in Europe.
-     *     <p>Usage examples:
-     *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
-     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -4729,6 +4639,164 @@ public final class SearchesImpl {
                         operatingHours,
                         context)
                 .block();
+    }
+
+    /**
+     * **Get POI by Category**
+     *
+     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     *
+     * <p>Points of Interest (POI) Category Search allows you to request POI results from given category. Search allows
+     * to query POIs from one category at a time. Endpoint will only return POI results which are categorized as
+     * specified. Response includes POI details such as address, coordinate location and classification.
+     *
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param query The POI category to search for (e.g., "AIRPORT", "RESTAURANT"), must be properly URL encoded.
+     *     Supported main categories can be requested by calling [Get Search POI Category Tree
+     *     API](https://aka.ms/AzureMapsPOICategoryTree). List of available categories can also be found
+     *     [here](https://docs.microsoft.com/azure/azure-maps/supported-search-categories). We recommend to use POI
+     *     Search Category Tree API to request the supported categories.
+     * @param isTypeAhead Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and
+     *     the search will enter predictive mode.
+     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
+     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
+     *     maximum: 1900.
+     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
+     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
+     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
+     *     The list of supported categories can be discovered using  [POI Categories
+     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
+     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
+     *     Restaurant).
+     * @param countryFilter Comma separated string of country codes, e.g. FR,ES. This will limit the search to the
+     *     specified countries.
+     * @param lat Latitude where results should be biased. E.g. 37.337.
+     * @param lon Longitude where results should be biased. E.g. -121.89.
+     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
+     * @param topLeft Top left position of the bounding box. E.g. 37.553,-122.453.
+     * @param btmRight Bottom right position of the bounding box. E.g. 37.553,-122.453.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, case insensitive. When data in specified language is not available for a specific field, default
+     *     language is used.
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
+     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
+     *     <p>Available indexes are:
+     *     <p>**Addr** = Address ranges
+     *     <p>**Geo** = Geographies
+     *     <p>**PAD** = Point Addresses
+     *     <p>**POI** = Points of Interest
+     *     <p>**Str** = Streets
+     *     <p>**XStr** = Cross Streets (intersections)
+     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
+     *     geographies can be quite long so they have to be explicitly requested when needed.
+     *     <p>Usage examples:
+     *     <p>extendedPostalCodesFor=POI
+     *     <p>extendedPostalCodesFor=PAD,Addr,POI
+     *     <p>extendedPostalCodesFor=None
+     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
+     *     region-dependent.
+     * @param brandFilter A comma-separated list of brand names which could be used to restrict the result to specific
+     *     brands. Item order does not matter. When multiple brands are provided, only results that belong to (at least)
+     *     one of the provided list will be returned. Brands that contain a "," in their name should be put into quotes.
+     *     <p>Usage examples:
+     *     <p>brandSet=Foo
+     *     <p>brandSet=Foo,Bar
+     *     <p>brandSet="A,B,C Comma",Bar.
+     * @param electricVehicleConnectorFilter A comma-separated list of connector types which could be used to restrict
+     *     the result to Electric Vehicle Station supporting specific connector types. Item order does not matter. When
+     *     multiple connector types are provided, only results that belong to (at least) one of the provided list will
+     *     be returned.
+     *     <p>Available connector types are: * `StandardHouseholdCountrySpecific` - These are the standard household
+     *     connectors for a certain region. They are all AC single phase and the standard Voltage and standard Amperage.
+     *     See also: [Plug &amp; socket types - World
+     *     Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets). * `IEC62196Type1` - Type 1 connector
+     *     as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after
+     *     the standard that first published it. Mostly used in combination with 120V single phase or up to 240V single
+     *     phase infrastructure. * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3
+     *     standard. The connector is based on the Type 1 connector – as defined in the IEC 62196-2 standard – with two
+     *     additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type2CableAttached` - Type 2
+     *     connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging
+     *     point. * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a
+     *     socket set into the charging point. * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC
+     *     62196-3 standard. The connector is based on the Type 2 connector – as defined in the IEC 62196-2 standard –
+     *     with two additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type3` - Type 3
+     *     connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly
+     *     used in combination with up to 240V single phase or up to 420V three phase infrastructure. * `Chademo` -
+     *     CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial
+     *     partners. Because of this is is also known as the TEPCO's connector. It supports fast DC charging. *
+     *     `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is
+     *     sometime referred to as by some combination of the standard, the color and the fact that is a single phase
+     *     connector. The connector usually has the "P+N+E, 6h" configuration. * `IEC60309DCWhite` - Industrial White
+     *     connector is a DC connector defined in the IEC 60309 standard. * `Tesla` - The Tesla connector is the
+     *     regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector,
+     *     sometimes referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2)
+     *     in Europe.
+     *     <p>Usage examples:
+     *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
+     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
+     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
+     *     available Views.
+     * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
+     *     will vary based on the data available. If not passed, then no opening hours information will be returned.
+     *     Supported value: nextSevenDays.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search calls.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAddressResult searchPointOfInterestCategory(
+            ResponseFormat format,
+            String query,
+            Boolean isTypeAhead,
+            Integer top,
+            Integer skip,
+            List<Integer> categoryFilter,
+            List<String> countryFilter,
+            Double lat,
+            Double lon,
+            Integer radiusInMeters,
+            String topLeft,
+            String btmRight,
+            String language,
+            List<SearchIndexes> extendedPostalCodesFor,
+            List<String> brandFilter,
+            List<ElectricVehicleConnector> electricVehicleConnectorFilter,
+            LocalizedMapView localizedMapView,
+            OperatingHoursRange operatingHours) {
+        return searchPointOfInterestCategoryWithResponse(
+                        format,
+                        query,
+                        isTypeAhead,
+                        top,
+                        skip,
+                        categoryFilter,
+                        countryFilter,
+                        lat,
+                        lon,
+                        radiusInMeters,
+                        topLeft,
+                        btmRight,
+                        language,
+                        extendedPostalCodesFor,
+                        brandFilter,
+                        electricVehicleConnectorFilter,
+                        localizedMapView,
+                        operatingHours,
+                        Context.NONE)
+                .getValue();
     }
 
     /**
@@ -4881,14 +4949,16 @@ public final class SearchesImpl {
      *     available for a specific field, default language is used (English).
      *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      *     details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful POI Category Tree call.
+     * @return this object is returned from a successful POI Category Tree call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PointOfInterestCategoryTreeResult getPointOfInterestCategoryTree(JsonFormat format, String language) {
-        return getPointOfInterestCategoryTreeAsync(format, language).block();
+    public Response<PointOfInterestCategoryTreeResult> getPointOfInterestCategoryTreeWithResponse(
+            JsonFormat format, String language, Context context) {
+        return getPointOfInterestCategoryTreeWithResponseAsync(format, language, context).block();
     }
 
     /**
@@ -4907,16 +4977,14 @@ public final class SearchesImpl {
      *     available for a specific field, default language is used (English).
      *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      *     details.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful POI Category Tree call along with {@link Response}.
+     * @return this object is returned from a successful POI Category Tree call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PointOfInterestCategoryTreeResult> getPointOfInterestCategoryTreeWithResponse(
-            JsonFormat format, String language, Context context) {
-        return getPointOfInterestCategoryTreeWithResponseAsync(format, language, context).block();
+    public PointOfInterestCategoryTreeResult getPointOfInterestCategoryTree(JsonFormat format, String language) {
+        return getPointOfInterestCategoryTreeWithResponse(format, language, Context.NONE).getValue();
     }
 
     /**
@@ -4975,15 +5043,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5011,7 +5079,11 @@ public final class SearchesImpl {
             LocalizedMapView localizedMapView) {
         final String accept = "application/json";
         String countryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(countryFilter, CollectionFormat.CSV);
+                (countryFilter == null)
+                        ? null
+                        : countryFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -5099,15 +5171,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -5137,7 +5209,11 @@ public final class SearchesImpl {
             Context context) {
         final String accept = "application/json";
         String countryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(countryFilter, CollectionFormat.CSV);
+                (countryFilter == null)
+                        ? null
+                        : countryFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -5223,15 +5299,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5331,15 +5407,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -5442,123 +5518,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
-     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
-     *     available Views.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResult searchAddress(
-            ResponseFormat format,
-            String query,
-            Boolean isTypeAhead,
-            Integer top,
-            Integer skip,
-            List<String> countryFilter,
-            Double lat,
-            Double lon,
-            Integer radiusInMeters,
-            String topLeft,
-            String btmRight,
-            String language,
-            List<SearchIndexes> extendedPostalCodesFor,
-            GeographicEntityType entityType,
-            LocalizedMapView localizedMapView) {
-        return searchAddressAsync(
-                        format,
-                        query,
-                        isTypeAhead,
-                        top,
-                        skip,
-                        countryFilter,
-                        lat,
-                        lon,
-                        radiusInMeters,
-                        topLeft,
-                        btmRight,
-                        language,
-                        extendedPostalCodesFor,
-                        entityType,
-                        localizedMapView)
-                .block();
-    }
-
-    /**
-     * **Address Geocoding**
-     *
-     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>In many cases, the complete search service might be too much, for instance if you are only interested in
-     * traditional geocoding. Search can also be accessed for address look up exclusively. The geocoding is performed by
-     * hitting the geocode endpoint with just the address or partial address in question. The geocoding search index
-     * will be queried for everything above the street level data. No POIs will be returned. Note that the geocoder is
-     * very tolerant of typos and incomplete addresses. It will also handle everything from exact street addresses or
-     * street or intersections as well as higher level geographies such as city centers, counties, states etc.
-     *
-     * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param query The address to search for (e.g., "1 Microsoft way, Redmond, WA"), must be properly URL encoded.
-     * @param isTypeAhead Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and
-     *     the search will enter predictive mode.
-     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
-     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
-     *     maximum: 1900.
-     * @param countryFilter Comma separated string of country codes, e.g. FR,ES. This will limit the search to the
-     *     specified countries.
-     * @param lat Latitude where results should be biased. E.g. 37.337.
-     * @param lon Longitude where results should be biased. E.g. -121.89.
-     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
-     * @param topLeft Top left position of the bounding box. E.g. 37.553,-122.453.
-     * @param btmRight Bottom right position of the bounding box. E.g. 37.553,-122.453.
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, case insensitive. When data in specified language is not available for a specific field, default
-     *     language is used.
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
-     *     <p>Available indexes are:
-     *     <p>**Addr** = Address ranges
-     *     <p>**Geo** = Geographies
-     *     <p>**PAD** = Point Addresses
-     *     <p>**POI** = Points of Interest
-     *     <p>**Str** = Streets
-     *     <p>**XStr** = Cross Streets (intersections)
-     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
-     *     geographies can be quite long so they have to be explicitly requested when needed.
-     *     <p>Usage examples:
-     *     <p>extendedPostalCodesFor=POI
-     *     <p>extendedPostalCodesFor=PAD,Addr,POI
-     *     <p>extendedPostalCodesFor=None
-     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
-     *     region-dependent.
-     * @param entityType Specifies the level of filtering performed on geographies. Narrows the search for specified
-     *     geography entity types, e.g. return only municipality. The resulting response will contain the geography ID
-     *     as well as the entity type matched. If you provide more than one entity as a comma separated list, endpoint
-     *     will return the 'smallest entity available'. Returned Geometry ID can be used to get the geometry of that
-     *     geography via [Get Search Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API. The
-     *     following parameters are ignored when entityType is set:
-     *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
-     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -5606,6 +5574,115 @@ public final class SearchesImpl {
     }
 
     /**
+     * **Address Geocoding**
+     *
+     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     *
+     * <p>In many cases, the complete search service might be too much, for instance if you are only interested in
+     * traditional geocoding. Search can also be accessed for address look up exclusively. The geocoding is performed by
+     * hitting the geocode endpoint with just the address or partial address in question. The geocoding search index
+     * will be queried for everything above the street level data. No POIs will be returned. Note that the geocoder is
+     * very tolerant of typos and incomplete addresses. It will also handle everything from exact street addresses or
+     * street or intersections as well as higher level geographies such as city centers, counties, states etc.
+     *
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param query The address to search for (e.g., "1 Microsoft way, Redmond, WA"), must be properly URL encoded.
+     * @param isTypeAhead Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and
+     *     the search will enter predictive mode.
+     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
+     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
+     *     maximum: 1900.
+     * @param countryFilter Comma separated string of country codes, e.g. FR,ES. This will limit the search to the
+     *     specified countries.
+     * @param lat Latitude where results should be biased. E.g. 37.337.
+     * @param lon Longitude where results should be biased. E.g. -121.89.
+     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
+     * @param topLeft Top left position of the bounding box. E.g. 37.553,-122.453.
+     * @param btmRight Bottom right position of the bounding box. E.g. 37.553,-122.453.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, case insensitive. When data in specified language is not available for a specific field, default
+     *     language is used.
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
+     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
+     *     <p>Available indexes are:
+     *     <p>**Addr** = Address ranges
+     *     <p>**Geo** = Geographies
+     *     <p>**PAD** = Point Addresses
+     *     <p>**POI** = Points of Interest
+     *     <p>**Str** = Streets
+     *     <p>**XStr** = Cross Streets (intersections)
+     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
+     *     geographies can be quite long so they have to be explicitly requested when needed.
+     *     <p>Usage examples:
+     *     <p>extendedPostalCodesFor=POI
+     *     <p>extendedPostalCodesFor=PAD,Addr,POI
+     *     <p>extendedPostalCodesFor=None
+     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
+     *     region-dependent.
+     * @param entityType Specifies the level of filtering performed on geographies. Narrows the search for specified
+     *     geography entity types, e.g. return only municipality. The resulting response will contain the geography ID
+     *     as well as the entity type matched. If you provide more than one entity as a comma separated list, endpoint
+     *     will return the 'smallest entity available'. Returned Geometry ID can be used to get the geometry of that
+     *     geography via [Get Search Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API. The
+     *     following parameters are ignored when entityType is set:
+     *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
+     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
+     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
+     *     available Views.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search calls.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAddressResult searchAddress(
+            ResponseFormat format,
+            String query,
+            Boolean isTypeAhead,
+            Integer top,
+            Integer skip,
+            List<String> countryFilter,
+            Double lat,
+            Double lon,
+            Integer radiusInMeters,
+            String topLeft,
+            String btmRight,
+            String language,
+            List<SearchIndexes> extendedPostalCodesFor,
+            GeographicEntityType entityType,
+            LocalizedMapView localizedMapView) {
+        return searchAddressWithResponse(
+                        format,
+                        query,
+                        isTypeAhead,
+                        top,
+                        skip,
+                        countryFilter,
+                        lat,
+                        lon,
+                        radiusInMeters,
+                        topLeft,
+                        btmRight,
+                        language,
+                        extendedPostalCodesFor,
+                        entityType,
+                        localizedMapView,
+                        Context.NONE)
+                .getValue();
+    }
+
+    /**
      * **Reverse Geocode to an Address**
      *
      * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
@@ -5643,15 +5720,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5677,7 +5754,7 @@ public final class SearchesImpl {
             LocalizedMapView localizedMapView) {
         final String accept = "application/json";
         String queryConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(query, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(query, CollectionFormat.CSV);
         String roadUseConverted =
                 (roadUse == null)
                         ? null
@@ -5743,15 +5820,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -5779,7 +5856,7 @@ public final class SearchesImpl {
             Context context) {
         final String accept = "application/json";
         String queryConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(query, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(query, CollectionFormat.CSV);
         String roadUseConverted =
                 (roadUse == null)
                         ? null
@@ -5843,15 +5920,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5930,15 +6007,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -6020,101 +6097,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
-     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
-     *     available Views.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReverseSearchAddressResult reverseSearchAddress(
-            ResponseFormat format,
-            List<Double> query,
-            String language,
-            Boolean includeSpeedLimit,
-            Integer heading,
-            Integer radiusInMeters,
-            String streetNumber,
-            Boolean includeRoadUse,
-            List<RoadUseType> roadUse,
-            Boolean allowFreeformNewline,
-            Boolean includeMatchType,
-            GeographicEntityType entityType,
-            LocalizedMapView localizedMapView) {
-        return reverseSearchAddressAsync(
-                        format,
-                        query,
-                        language,
-                        includeSpeedLimit,
-                        heading,
-                        radiusInMeters,
-                        streetNumber,
-                        includeRoadUse,
-                        roadUse,
-                        allowFreeformNewline,
-                        includeMatchType,
-                        entityType,
-                        localizedMapView)
-                .block();
-    }
-
-    /**
-     * **Reverse Geocode to an Address**
-     *
-     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>There may be times when you need to translate a coordinate (example: 37.786505, -122.3862) into a human
-     * understandable street address. Most often this is needed in tracking applications where you receive a GPS feed
-     * from the device or asset and wish to know what address where the coordinate is located. This endpoint will return
-     * address information for a given coordinate.
-     *
-     * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param query The applicable query specified as a comma separated string composed by latitude followed by
-     *     longitude e.g. "47.641268,-122.125679".
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, case insensitive. When data in specified language is not available for a specific field, default
-     *     language is used.
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @param includeSpeedLimit Boolean. To enable return of the posted speed limit.
-     * @param heading The directional heading of the vehicle in degrees, for travel along a segment of roadway. 0 is
-     *     North, 90 is East and so on, values range from -360 to 360. The precision can include upto one decimal place.
-     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
-     * @param streetNumber Street number as a string. If a number is sent in along with the request, the response may
-     *     include the side of the street (Left/Right) and also an offset position for that number.
-     * @param includeRoadUse Boolean. To enable return of the road use array for reverse geocodes at street level.
-     * @param roadUse To restrict reverse geocodes to a certain type of road use. The road use array for reverse
-     *     geocodes can be one or more of LimitedAccess, Arterial, Terminal, Ramp, Rotary, LocalStreet.
-     * @param allowFreeformNewline Format of newlines in the formatted address.
-     *     <p>If true, the address will contain newlines. If false, newlines will be converted to commas.
-     * @param includeMatchType Include information on the type of match the geocoder achieved in the response.
-     * @param entityType Specifies the level of filtering performed on geographies. Narrows the search for specified
-     *     geography entity types, e.g. return only municipality. The resulting response will contain the geography ID
-     *     as well as the entity type matched. If you provide more than one entity as a comma separated list, endpoint
-     *     will return the 'smallest entity available'. Returned Geometry ID can be used to get the geometry of that
-     *     geography via [Get Search Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API. The
-     *     following parameters are ignored when entityType is set:
-     *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
-     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -6158,6 +6149,93 @@ public final class SearchesImpl {
     }
 
     /**
+     * **Reverse Geocode to an Address**
+     *
+     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     *
+     * <p>There may be times when you need to translate a coordinate (example: 37.786505, -122.3862) into a human
+     * understandable street address. Most often this is needed in tracking applications where you receive a GPS feed
+     * from the device or asset and wish to know what address where the coordinate is located. This endpoint will return
+     * address information for a given coordinate.
+     *
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param query The applicable query specified as a comma separated string composed by latitude followed by
+     *     longitude e.g. "47.641268,-122.125679".
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, case insensitive. When data in specified language is not available for a specific field, default
+     *     language is used.
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
+     * @param includeSpeedLimit Boolean. To enable return of the posted speed limit.
+     * @param heading The directional heading of the vehicle in degrees, for travel along a segment of roadway. 0 is
+     *     North, 90 is East and so on, values range from -360 to 360. The precision can include upto one decimal place.
+     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
+     * @param streetNumber Street number as a string. If a number is sent in along with the request, the response may
+     *     include the side of the street (Left/Right) and also an offset position for that number.
+     * @param includeRoadUse Boolean. To enable return of the road use array for reverse geocodes at street level.
+     * @param roadUse To restrict reverse geocodes to a certain type of road use. The road use array for reverse
+     *     geocodes can be one or more of LimitedAccess, Arterial, Terminal, Ramp, Rotary, LocalStreet.
+     * @param allowFreeformNewline Format of newlines in the formatted address.
+     *     <p>If true, the address will contain newlines. If false, newlines will be converted to commas.
+     * @param includeMatchType Include information on the type of match the geocoder achieved in the response.
+     * @param entityType Specifies the level of filtering performed on geographies. Narrows the search for specified
+     *     geography entity types, e.g. return only municipality. The resulting response will contain the geography ID
+     *     as well as the entity type matched. If you provide more than one entity as a comma separated list, endpoint
+     *     will return the 'smallest entity available'. Returned Geometry ID can be used to get the geometry of that
+     *     geography via [Get Search Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API. The
+     *     following parameters are ignored when entityType is set:
+     *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
+     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
+     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
+     *     available Views.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search Address Reverse call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReverseSearchAddressResult reverseSearchAddress(
+            ResponseFormat format,
+            List<Double> query,
+            String language,
+            Boolean includeSpeedLimit,
+            Integer heading,
+            Integer radiusInMeters,
+            String streetNumber,
+            Boolean includeRoadUse,
+            List<RoadUseType> roadUse,
+            Boolean allowFreeformNewline,
+            Boolean includeMatchType,
+            GeographicEntityType entityType,
+            LocalizedMapView localizedMapView) {
+        return reverseSearchAddressWithResponse(
+                        format,
+                        query,
+                        language,
+                        includeSpeedLimit,
+                        heading,
+                        radiusInMeters,
+                        streetNumber,
+                        includeRoadUse,
+                        roadUse,
+                        allowFreeformNewline,
+                        includeMatchType,
+                        entityType,
+                        localizedMapView,
+                        Context.NONE)
+                .getValue();
+    }
+
+    /**
      * **Reverse Geocode to a Cross Street**
      *
      * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
@@ -6180,15 +6258,15 @@ public final class SearchesImpl {
      *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      *     details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6208,7 +6286,7 @@ public final class SearchesImpl {
             LocalizedMapView localizedMapView) {
         final String accept = "application/json";
         String queryConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(query, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(query, CollectionFormat.CSV);
         return FluxUtil.withContext(
                 context ->
                         service.reverseSearchCrossStreetAddress(
@@ -6249,15 +6327,15 @@ public final class SearchesImpl {
      *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      *     details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -6279,7 +6357,7 @@ public final class SearchesImpl {
             Context context) {
         final String accept = "application/json";
         String queryConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(query, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(query, CollectionFormat.CSV);
         return service.reverseSearchCrossStreetAddress(
                 this.client.getHost(),
                 this.client.getClientId(),
@@ -6318,15 +6396,15 @@ public final class SearchesImpl {
      *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      *     details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6372,15 +6450,15 @@ public final class SearchesImpl {
      *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      *     details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -6428,68 +6506,15 @@ public final class SearchesImpl {
      *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      *     details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
-     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
-     *     available Views.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse CrossStreet call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReverseSearchCrossStreetAddressResult reverseSearchCrossStreetAddress(
-            ResponseFormat format,
-            List<Double> query,
-            Integer top,
-            Integer heading,
-            Integer radiusInMeters,
-            String language,
-            LocalizedMapView localizedMapView) {
-        return reverseSearchCrossStreetAddressAsync(
-                        format, query, top, heading, radiusInMeters, language, localizedMapView)
-                .block();
-    }
-
-    /**
-     * **Reverse Geocode to a Cross Street**
-     *
-     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>There may be times when you need to translate a coordinate (example: 37.786505, -122.3862) into a human
-     * understandable cross street. Most often this is needed in tracking applications where you receive a GPS feed from
-     * the device or asset and wish to know what address where the coordinate is located. This endpoint will return
-     * cross street information for a given coordinate.
-     *
-     * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param query The applicable query specified as a comma separated string composed by latitude followed by
-     *     longitude e.g. "47.641268,-122.125679".
-     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
-     * @param heading The directional heading of the vehicle in degrees, for travel along a segment of roadway. 0 is
-     *     North, 90 is East and so on, values range from -360 to 360. The precision can include upto one decimal place.
-     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, case insensitive. When data in specified language is not available for a specific field, default
-     *     language is used.
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -6512,6 +6537,59 @@ public final class SearchesImpl {
         return reverseSearchCrossStreetAddressWithResponseAsync(
                         format, query, top, heading, radiusInMeters, language, localizedMapView, context)
                 .block();
+    }
+
+    /**
+     * **Reverse Geocode to a Cross Street**
+     *
+     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     *
+     * <p>There may be times when you need to translate a coordinate (example: 37.786505, -122.3862) into a human
+     * understandable cross street. Most often this is needed in tracking applications where you receive a GPS feed from
+     * the device or asset and wish to know what address where the coordinate is located. This endpoint will return
+     * cross street information for a given coordinate.
+     *
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param query The applicable query specified as a comma separated string composed by latitude followed by
+     *     longitude e.g. "47.641268,-122.125679".
+     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
+     * @param heading The directional heading of the vehicle in degrees, for travel along a segment of roadway. 0 is
+     *     North, 90 is East and so on, values range from -360 to 360. The precision can include upto one decimal place.
+     * @param radiusInMeters The radius in meters to for the results to be constrained to the defined area.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, case insensitive. When data in specified language is not available for a specific field, default
+     *     language is used.
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
+     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
+     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
+     *     available Views.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search Address Reverse CrossStreet call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReverseSearchCrossStreetAddressResult reverseSearchCrossStreetAddress(
+            ResponseFormat format,
+            List<Double> query,
+            Integer top,
+            Integer heading,
+            Integer radiusInMeters,
+            String language,
+            LocalizedMapView localizedMapView) {
+        return reverseSearchCrossStreetAddressWithResponse(
+                        format, query, top, heading, radiusInMeters, language, localizedMapView, Context.NONE)
+                .getValue();
     }
 
     /**
@@ -6570,15 +6648,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6696,15 +6774,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -6822,15 +6900,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6934,15 +7012,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -7049,127 +7127,15 @@ public final class SearchesImpl {
      *     following parameters are ignored when entityType is set:
      *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
-     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
-     *     available Views.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResult searchStructuredAddress(
-            ResponseFormat format,
-            String countryCode,
-            String language,
-            Integer top,
-            Integer skip,
-            String streetNumber,
-            String streetName,
-            String crossStreet,
-            String municipality,
-            String municipalitySubdivision,
-            String countryTertiarySubdivision,
-            String countrySecondarySubdivision,
-            String countrySubdivision,
-            String postalCode,
-            List<SearchIndexes> extendedPostalCodesFor,
-            GeographicEntityType entityType,
-            LocalizedMapView localizedMapView) {
-        return searchStructuredAddressAsync(
-                        format,
-                        countryCode,
-                        language,
-                        top,
-                        skip,
-                        streetNumber,
-                        streetName,
-                        crossStreet,
-                        municipality,
-                        municipalitySubdivision,
-                        countryTertiarySubdivision,
-                        countrySecondarySubdivision,
-                        countrySubdivision,
-                        postalCode,
-                        extendedPostalCodesFor,
-                        entityType,
-                        localizedMapView)
-                .block();
-    }
-
-    /**
-     * **Structured Address Geocoding**
-     *
-     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>Azure Address Geocoding can also be accessed for structured address look up exclusively. The geocoding search
-     * index will be queried for everything above the street level data. No POIs will be returned. Note that the
-     * geocoder is very tolerant of typos and incomplete addresses. It will also handle everything from exact street
-     * addresses or street or intersections as well as higher level geographies such as city centers, counties, states
-     * etc.
-     *
-     * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param countryCode The 2 or 3 letter [ISO3166-1](https://www.iso.org/iso-3166-country-codes.html) country code
-     *     portion of an address. E.g. US.
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, case insensitive. When data in specified language is not available for a specific field, default
-     *     language is used.
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
-     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
-     *     maximum: 1900.
-     * @param streetNumber The street number portion of an address.
-     * @param streetName The street name portion of an address.
-     * @param crossStreet The cross street name for the structured address.
-     * @param municipality The municipality portion of an address.
-     * @param municipalitySubdivision The municipality subdivision (sub/super city) for the structured address.
-     * @param countryTertiarySubdivision The named area for the structured address.
-     * @param countrySecondarySubdivision The county for the structured address.
-     * @param countrySubdivision The country subdivision portion of an address.
-     * @param postalCode The postal code portion of an address.
-     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
-     *     <p>Available indexes are:
-     *     <p>**Addr** = Address ranges
-     *     <p>**Geo** = Geographies
-     *     <p>**PAD** = Point Addresses
-     *     <p>**POI** = Points of Interest
-     *     <p>**Str** = Streets
-     *     <p>**XStr** = Cross Streets (intersections)
-     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
-     *     geographies can be quite long so they have to be explicitly requested when needed.
-     *     <p>Usage examples:
-     *     <p>extendedPostalCodesFor=POI
-     *     <p>extendedPostalCodesFor=PAD,Addr,POI
-     *     <p>extendedPostalCodesFor=None
-     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
-     *     region-dependent.
-     * @param entityType Specifies the level of filtering performed on geographies. Narrows the search for specified
-     *     geography entity types, e.g. return only municipality. The resulting response will contain the geography ID
-     *     as well as the entity type matched. If you provide more than one entity as a comma separated list, endpoint
-     *     will return the 'smallest entity available'. Returned Geometry ID can be used to get the geometry of that
-     *     geography via [Get Search Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API. The
-     *     following parameters are ignored when entityType is set:
-     *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
-     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param context The context to associate with this operation.
@@ -7218,6 +7184,119 @@ public final class SearchesImpl {
                         localizedMapView,
                         context)
                 .block();
+    }
+
+    /**
+     * **Structured Address Geocoding**
+     *
+     * <p>**Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     *
+     * <p>Azure Address Geocoding can also be accessed for structured address look up exclusively. The geocoding search
+     * index will be queried for everything above the street level data. No POIs will be returned. Note that the
+     * geocoder is very tolerant of typos and incomplete addresses. It will also handle everything from exact street
+     * addresses or street or intersections as well as higher level geographies such as city centers, counties, states
+     * etc.
+     *
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param countryCode The 2 or 3 letter [ISO3166-1](https://www.iso.org/iso-3166-country-codes.html) country code
+     *     portion of an address. E.g. US.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, case insensitive. When data in specified language is not available for a specific field, default
+     *     language is used.
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
+     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
+     * @param skip Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and
+     *     maximum: 1900.
+     * @param streetNumber The street number portion of an address.
+     * @param streetName The street name portion of an address.
+     * @param crossStreet The cross street name for the structured address.
+     * @param municipality The municipality portion of an address.
+     * @param municipalitySubdivision The municipality subdivision (sub/super city) for the structured address.
+     * @param countryTertiarySubdivision The named area for the structured address.
+     * @param countrySecondarySubdivision The county for the structured address.
+     * @param countrySubdivision The country subdivision portion of an address.
+     * @param postalCode The postal code portion of an address.
+     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
+     *     <p>Available indexes are:
+     *     <p>**Addr** = Address ranges
+     *     <p>**Geo** = Geographies
+     *     <p>**PAD** = Point Addresses
+     *     <p>**POI** = Points of Interest
+     *     <p>**Str** = Streets
+     *     <p>**XStr** = Cross Streets (intersections)
+     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
+     *     geographies can be quite long so they have to be explicitly requested when needed.
+     *     <p>Usage examples:
+     *     <p>extendedPostalCodesFor=POI
+     *     <p>extendedPostalCodesFor=PAD,Addr,POI
+     *     <p>extendedPostalCodesFor=None
+     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
+     *     region-dependent.
+     * @param entityType Specifies the level of filtering performed on geographies. Narrows the search for specified
+     *     geography entity types, e.g. return only municipality. The resulting response will contain the geography ID
+     *     as well as the entity type matched. If you provide more than one entity as a comma separated list, endpoint
+     *     will return the 'smallest entity available'. Returned Geometry ID can be used to get the geometry of that
+     *     geography via [Get Search Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API. The
+     *     following parameters are ignored when entityType is set:
+     *     <p>* heading * number * returnRoadUse * returnSpeedLimit * roadUse * returnMatchType.
+     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
+     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
+     *     available Views.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search calls.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAddressResult searchStructuredAddress(
+            ResponseFormat format,
+            String countryCode,
+            String language,
+            Integer top,
+            Integer skip,
+            String streetNumber,
+            String streetName,
+            String crossStreet,
+            String municipality,
+            String municipalitySubdivision,
+            String countryTertiarySubdivision,
+            String countrySecondarySubdivision,
+            String countrySubdivision,
+            String postalCode,
+            List<SearchIndexes> extendedPostalCodesFor,
+            GeographicEntityType entityType,
+            LocalizedMapView localizedMapView) {
+        return searchStructuredAddressWithResponse(
+                        format,
+                        countryCode,
+                        language,
+                        top,
+                        skip,
+                        streetNumber,
+                        streetName,
+                        crossStreet,
+                        municipality,
+                        municipalitySubdivision,
+                        countryTertiarySubdivision,
+                        countrySecondarySubdivision,
+                        countrySubdivision,
+                        postalCode,
+                        extendedPostalCodesFor,
+                        entityType,
+                        localizedMapView,
+                        Context.NONE)
+                .getValue();
     }
 
     /**
@@ -7287,15 +7366,15 @@ public final class SearchesImpl {
      *     matter. Available indexes are: Addr = Address range interpolation, Geo = Geographies, PAD = Point Addresses,
      *     POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections).
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -7321,7 +7400,7 @@ public final class SearchesImpl {
             OperatingHoursRange operatingHours) {
         final String accept = "application/json";
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -7421,15 +7500,15 @@ public final class SearchesImpl {
      *     matter. Available indexes are: Addr = Address range interpolation, Geo = Geographies, PAD = Point Addresses,
      *     POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections).
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -7457,7 +7536,7 @@ public final class SearchesImpl {
             Context context) {
         final String accept = "application/json";
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String extendedPostalCodesForConverted =
                 (extendedPostalCodesFor == null)
                         ? null
@@ -7555,15 +7634,15 @@ public final class SearchesImpl {
      *     matter. Available indexes are: Addr = Address range interpolation, Geo = Geographies, PAD = Point Addresses,
      *     POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections).
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -7667,15 +7746,15 @@ public final class SearchesImpl {
      *     matter. Available indexes are: Addr = Address range interpolation, Geo = Geographies, PAD = Point Addresses,
      *     POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections).
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -7782,127 +7861,15 @@ public final class SearchesImpl {
      *     matter. Available indexes are: Addr = Address range interpolation, Geo = Geographies, PAD = Point Addresses,
      *     POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections).
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
-     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
-     *     available Views.
-     * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
-     *     will vary based on the data available. If not passed, then no opening hours information will be returned.
-     *     Supported value: nextSevenDays.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResult searchInsideGeometry(
-            ResponseFormat format,
-            String query,
-            SearchInsideGeometryRequest geometry,
-            Integer top,
-            String language,
-            List<Integer> categoryFilter,
-            List<SearchIndexes> extendedPostalCodesFor,
-            List<SearchIndexes> indexFilter,
-            LocalizedMapView localizedMapView,
-            OperatingHoursRange operatingHours) {
-        return searchInsideGeometryAsync(
-                        format,
-                        query,
-                        geometry,
-                        top,
-                        language,
-                        categoryFilter,
-                        extendedPostalCodesFor,
-                        indexFilter,
-                        localizedMapView,
-                        operatingHours)
-                .block();
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Search Geometry endpoint allows you to perform a free form search inside a single geometry or many of
-     * them. The search results that fall inside the geometry/geometries will be returned.&lt;br&gt;&lt;br&gt;To send
-     * the geometry you will use a `POST` request where the request body will contain the `geometry` object represented
-     * as a `GeoJSON` type and the `Content-Type` header will be set to `application/json`. The geographical features to
-     * be searched can be modeled as Polygon and/or Circle geometries represented using any one of the following
-     * `GeoJSON` types:&lt;ul&gt;&lt;li&gt;**GeoJSON FeatureCollection** &lt;br&gt;The `geometry` can be represented as
-     * a `GeoJSON FeatureCollection` object. This is the recommended option if the geometry contains both Polygons and
-     * Circles. The `FeatureCollection` can contain a max of 50 `GeoJSON Feature` objects. Each `Feature` object should
-     * represent either a Polygon or a Circle with the following conditions:&lt;ul
-     * style="list-style-type:none"&gt;&lt;li&gt;A `Feature` object for the Polygon geometry can have a max of 50
-     * coordinates and it's properties must be empty.&lt;/li&gt;&lt;li&gt;A `Feature` object for the Circle geometry is
-     * composed of a _center_ represented using a `GeoJSON Point` type and a _radius_ value (in meters) which must be
-     * specified in the object's properties along with the _subType_ property whose value should be
-     * 'Circle'.&lt;/li&gt;&lt;/ul&gt;&lt;br&gt; Please see the Examples section below for a sample `FeatureCollection`
-     * representation.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;li&gt;**GeoJSON GeometryCollection**&lt;br&gt;The `geometry`
-     * can be represented as a `GeoJSON GeometryCollection` object. This is the recommended option if the geometry
-     * contains a list of Polygons only. The `GeometryCollection` can contain a max of 50 `GeoJSON Polygon` objects.
-     * Each `Polygon` object can have a max of 50 coordinates. Please see the Examples section below for a sample
-     * `GeometryCollection` representation.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;li&gt;**GeoJSON Polygon**&lt;br&gt;The
-     * `geometry` can be represented as a `GeoJSON Polygon` object. This is the recommended option if the geometry
-     * contains a single Polygon. The `Polygon` object can have a max of 50 coordinates. Please see the Examples section
-     * below for a sample `Polygon` representation.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;.&lt;br&gt;&lt;br&gt;.
-     *
-     * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param query The POI name to search for (e.g., "statue of liberty", "starbucks", "pizza"). Must be properly URL
-     *     encoded.
-     * @param geometry This represents the geometry for one or more geographical features (parks, state boundary etc.)
-     *     to search in and should be a GeoJSON compliant type. Please refer to [RFC
-     *     7946](https://tools.ietf.org/html/rfc7946) for details.
-     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, case insensitive. When data in specified language is not available for a specific field, default
-     *     language is used.
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
-     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
-     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
-     *     The list of supported categories can be discovered using  [POI Categories
-     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
-     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
-     *     Restaurant).
-     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
-     *     <p>Available indexes are:
-     *     <p>**Addr** = Address ranges
-     *     <p>**Geo** = Geographies
-     *     <p>**PAD** = Point Addresses
-     *     <p>**POI** = Points of Interest
-     *     <p>**Str** = Streets
-     *     <p>**XStr** = Cross Streets (intersections)
-     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
-     *     geographies can be quite long so they have to be explicitly requested when needed.
-     *     <p>Usage examples:
-     *     <p>extendedPostalCodesFor=POI
-     *     <p>extendedPostalCodesFor=PAD,Addr,POI
-     *     <p>extendedPostalCodesFor=None
-     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
-     *     region-dependent.
-     * @param indexFilter A comma separated list of indexes which should be utilized for the search. Item order does not
-     *     matter. Available indexes are: Addr = Address range interpolation, Geo = Geographies, PAD = Point Addresses,
-     *     POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections).
-     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -7940,6 +7907,119 @@ public final class SearchesImpl {
                         operatingHours,
                         context)
                 .block();
+    }
+
+    /**
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     *
+     * <p>The Search Geometry endpoint allows you to perform a free form search inside a single geometry or many of
+     * them. The search results that fall inside the geometry/geometries will be returned.&lt;br&gt;&lt;br&gt;To send
+     * the geometry you will use a `POST` request where the request body will contain the `geometry` object represented
+     * as a `GeoJSON` type and the `Content-Type` header will be set to `application/json`. The geographical features to
+     * be searched can be modeled as Polygon and/or Circle geometries represented using any one of the following
+     * `GeoJSON` types:&lt;ul&gt;&lt;li&gt;**GeoJSON FeatureCollection** &lt;br&gt;The `geometry` can be represented as
+     * a `GeoJSON FeatureCollection` object. This is the recommended option if the geometry contains both Polygons and
+     * Circles. The `FeatureCollection` can contain a max of 50 `GeoJSON Feature` objects. Each `Feature` object should
+     * represent either a Polygon or a Circle with the following conditions:&lt;ul
+     * style="list-style-type:none"&gt;&lt;li&gt;A `Feature` object for the Polygon geometry can have a max of 50
+     * coordinates and it's properties must be empty.&lt;/li&gt;&lt;li&gt;A `Feature` object for the Circle geometry is
+     * composed of a _center_ represented using a `GeoJSON Point` type and a _radius_ value (in meters) which must be
+     * specified in the object's properties along with the _subType_ property whose value should be
+     * 'Circle'.&lt;/li&gt;&lt;/ul&gt;&lt;br&gt; Please see the Examples section below for a sample `FeatureCollection`
+     * representation.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;li&gt;**GeoJSON GeometryCollection**&lt;br&gt;The `geometry`
+     * can be represented as a `GeoJSON GeometryCollection` object. This is the recommended option if the geometry
+     * contains a list of Polygons only. The `GeometryCollection` can contain a max of 50 `GeoJSON Polygon` objects.
+     * Each `Polygon` object can have a max of 50 coordinates. Please see the Examples section below for a sample
+     * `GeometryCollection` representation.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;li&gt;**GeoJSON Polygon**&lt;br&gt;The
+     * `geometry` can be represented as a `GeoJSON Polygon` object. This is the recommended option if the geometry
+     * contains a single Polygon. The `Polygon` object can have a max of 50 coordinates. Please see the Examples section
+     * below for a sample `Polygon` representation.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;.&lt;br&gt;&lt;br&gt;.
+     *
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param query The POI name to search for (e.g., "statue of liberty", "starbucks", "pizza"). Must be properly URL
+     *     encoded.
+     * @param geometry This represents the geometry for one or more geographical features (parks, state boundary etc.)
+     *     to search in and should be a GeoJSON compliant type. Please refer to [RFC
+     *     7946](https://tools.ietf.org/html/rfc7946) for details.
+     * @param top Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, case insensitive. When data in specified language is not available for a specific field, default
+     *     language is used.
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
+     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
+     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
+     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
+     *     The list of supported categories can be discovered using  [POI Categories
+     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
+     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
+     *     Restaurant).
+     * @param extendedPostalCodesFor Indexes for which extended postal codes should be included in the results.
+     *     <p>Available indexes are:
+     *     <p>**Addr** = Address ranges
+     *     <p>**Geo** = Geographies
+     *     <p>**PAD** = Point Addresses
+     *     <p>**POI** = Points of Interest
+     *     <p>**Str** = Streets
+     *     <p>**XStr** = Cross Streets (intersections)
+     *     <p>Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+     *     <p>By default extended postal codes are included for all indexes except Geo. Extended postal code lists for
+     *     geographies can be quite long so they have to be explicitly requested when needed.
+     *     <p>Usage examples:
+     *     <p>extendedPostalCodesFor=POI
+     *     <p>extendedPostalCodesFor=PAD,Addr,POI
+     *     <p>extendedPostalCodesFor=None
+     *     <p>Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is
+     *     region-dependent.
+     * @param indexFilter A comma separated list of indexes which should be utilized for the search. Item order does not
+     *     matter. Available indexes are: Addr = Address range interpolation, Geo = Geographies, PAD = Point Addresses,
+     *     POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections).
+     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
+     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
+     *     available Views.
+     * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
+     *     will vary based on the data available. If not passed, then no opening hours information will be returned.
+     *     Supported value: nextSevenDays.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search calls.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAddressResult searchInsideGeometry(
+            ResponseFormat format,
+            String query,
+            SearchInsideGeometryRequest geometry,
+            Integer top,
+            String language,
+            List<Integer> categoryFilter,
+            List<SearchIndexes> extendedPostalCodesFor,
+            List<SearchIndexes> indexFilter,
+            LocalizedMapView localizedMapView,
+            OperatingHoursRange operatingHours) {
+        return searchInsideGeometryWithResponse(
+                        format,
+                        query,
+                        geometry,
+                        top,
+                        language,
+                        categoryFilter,
+                        extendedPostalCodesFor,
+                        indexFilter,
+                        localizedMapView,
+                        operatingHours,
+                        Context.NONE)
+                .getValue();
     }
 
     /**
@@ -8009,15 +8089,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -8043,9 +8123,13 @@ public final class SearchesImpl {
             OperatingHoursRange operatingHours) {
         final String accept = "application/json";
         String brandFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(brandFilter, CollectionFormat.CSV);
+                (brandFilter == null)
+                        ? null
+                        : brandFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String electricVehicleConnectorFilterConverted =
                 (electricVehicleConnectorFilter == null)
                         ? null
@@ -8139,15 +8223,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -8175,9 +8259,13 @@ public final class SearchesImpl {
             Context context) {
         final String accept = "application/json";
         String brandFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(brandFilter, CollectionFormat.CSV);
+                (brandFilter == null)
+                        ? null
+                        : brandFilter.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         String categoryFilterConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(categoryFilter, CollectionFormat.CSV);
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
         String electricVehicleConnectorFilterConverted =
                 (electricVehicleConnectorFilter == null)
                         ? null
@@ -8269,15 +8357,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -8381,15 +8469,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -8496,127 +8584,15 @@ public final class SearchesImpl {
      *     <p>Usage examples:
      *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
-     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
-     *     available Views.
-     * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
-     *     will vary based on the data available. If not passed, then no opening hours information will be returned.
-     *     Supported value: nextSevenDays.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResult searchAlongRoute(
-            ResponseFormat format,
-            String query,
-            int maxDetourTime,
-            SearchAlongRouteRequest route,
-            Integer top,
-            List<String> brandFilter,
-            List<Integer> categoryFilter,
-            List<ElectricVehicleConnector> electricVehicleConnectorFilter,
-            LocalizedMapView localizedMapView,
-            OperatingHoursRange operatingHours) {
-        return searchAlongRouteAsync(
-                        format,
-                        query,
-                        maxDetourTime,
-                        route,
-                        top,
-                        brandFilter,
-                        categoryFilter,
-                        electricVehicleConnectorFilter,
-                        localizedMapView,
-                        operatingHours)
-                .block();
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Search Along Route endpoint allows you to perform a fuzzy search for POIs along a specified route. This
-     * search is constrained by specifying the `maxDetourTime` limiting measure.&lt;br&gt;&lt;br&gt;To send the
-     * route-points you will use a `POST` request where the request body will contain the `route` object represented as
-     * a `GeoJSON LineString` type and the `Content-Type` header will be set to `application/json`. Each route-point in
-     * `route` is represented as a `GeoJSON Position` type i.e. an array where the _longitude_ value is followed by the
-     * _latitude_ value and the _altitude_ value is ignored. The `route` should contain at least 2
-     * route-points.&lt;br&gt;&lt;br&gt;It is possible that original route will be altered, some of it's points may be
-     * skipped. If the route that passes through the found point is faster than the original one, the `detourTime` value
-     * in the response is negative.
-     *
-     * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param query The POI name to search for (e.g., "statue of liberty", "starbucks", "pizza"). Must be properly URL
-     *     encoded.
-     * @param maxDetourTime Maximum detour time of the point of interest in seconds. Max value is 3600 seconds.
-     * @param route This represents the route to search along and should be a valid `GeoJSON LineString` type. Please
-     *     refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.4) for details.
-     * @param top Maximum number of responses that will be returned. Default value is 10. Max value is 20.
-     * @param brandFilter A comma-separated list of brand names which could be used to restrict the result to specific
-     *     brands. Item order does not matter. When multiple brands are provided, only results that belong to (at least)
-     *     one of the provided list will be returned. Brands that contain a "," in their name should be put into quotes.
-     *     <p>Usage examples:
-     *     <p>brandSet=Foo
-     *     <p>brandSet=Foo,Bar
-     *     <p>brandSet="A,B,C Comma",Bar.
-     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
-     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
-     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
-     *     The list of supported categories can be discovered using  [POI Categories
-     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
-     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
-     *     Restaurant).
-     * @param electricVehicleConnectorFilter A comma-separated list of connector types which could be used to restrict
-     *     the result to Electric Vehicle Station supporting specific connector types. Item order does not matter. When
-     *     multiple connector types are provided, only results that belong to (at least) one of the provided list will
-     *     be returned.
-     *     <p>Available connector types are: * `StandardHouseholdCountrySpecific` - These are the standard household
-     *     connectors for a certain region. They are all AC single phase and the standard Voltage and standard Amperage.
-     *     See also: [Plug &amp; socket types - World
-     *     Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets). * `IEC62196Type1` - Type 1 connector
-     *     as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after
-     *     the standard that first published it. Mostly used in combination with 120V single phase or up to 240V single
-     *     phase infrastructure. * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3
-     *     standard. The connector is based on the Type 1 connector – as defined in the IEC 62196-2 standard – with two
-     *     additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type2CableAttached` - Type 2
-     *     connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging
-     *     point. * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a
-     *     socket set into the charging point. * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC
-     *     62196-3 standard. The connector is based on the Type 2 connector – as defined in the IEC 62196-2 standard –
-     *     with two additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type3` - Type 3
-     *     connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly
-     *     used in combination with up to 240V single phase or up to 420V three phase infrastructure. * `Chademo` -
-     *     CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial
-     *     partners. Because of this is is also known as the TEPCO's connector. It supports fast DC charging. *
-     *     `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is
-     *     sometime referred to as by some combination of the standard, the color and the fact that is a single phase
-     *     connector. The connector usually has the "P+N+E, 6h" configuration. * `IEC60309DCWhite` - Industrial White
-     *     connector is a DC connector defined in the IEC 60309 standard. * `Tesla` - The Tesla connector is the
-     *     regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector,
-     *     sometimes referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2)
-     *     in Europe.
-     *     <p>Usage examples:
-     *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
-     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
-     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries have
-     *     different views of such regions, and the View parameter allows your application to comply with the view
-     *     required by the country your application will be serving. By default, the View parameter is set to “Unified”
-     *     even if you haven’t defined it in the request. It is your responsibility to determine the location of your
-     *     users, and then set the View parameter correctly for that location. Alternatively, you have the option to set
-     *     ‘View=Auto’, which will return the map data based on the IP address of the request. The View parameter in
-     *     Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the country
-     *     where maps, images and other data and third party content that you are authorized to access via Azure Maps is
-     *     made available. Example: view=IN.
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
      *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
      *     available Views.
      * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
@@ -8654,6 +8630,119 @@ public final class SearchesImpl {
                         operatingHours,
                         context)
                 .block();
+    }
+
+    /**
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     *
+     * <p>The Search Along Route endpoint allows you to perform a fuzzy search for POIs along a specified route. This
+     * search is constrained by specifying the `maxDetourTime` limiting measure.&lt;br&gt;&lt;br&gt;To send the
+     * route-points you will use a `POST` request where the request body will contain the `route` object represented as
+     * a `GeoJSON LineString` type and the `Content-Type` header will be set to `application/json`. Each route-point in
+     * `route` is represented as a `GeoJSON Position` type i.e. an array where the _longitude_ value is followed by the
+     * _latitude_ value and the _altitude_ value is ignored. The `route` should contain at least 2
+     * route-points.&lt;br&gt;&lt;br&gt;It is possible that original route will be altered, some of it's points may be
+     * skipped. If the route that passes through the found point is faster than the original one, the `detourTime` value
+     * in the response is negative.
+     *
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param query The POI name to search for (e.g., "statue of liberty", "starbucks", "pizza"). Must be properly URL
+     *     encoded.
+     * @param maxDetourTime Maximum detour time of the point of interest in seconds. Max value is 3600 seconds.
+     * @param route This represents the route to search along and should be a valid `GeoJSON LineString` type. Please
+     *     refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.4) for details.
+     * @param top Maximum number of responses that will be returned. Default value is 10. Max value is 20.
+     * @param brandFilter A comma-separated list of brand names which could be used to restrict the result to specific
+     *     brands. Item order does not matter. When multiple brands are provided, only results that belong to (at least)
+     *     one of the provided list will be returned. Brands that contain a "," in their name should be put into quotes.
+     *     <p>Usage examples:
+     *     <p>brandSet=Foo
+     *     <p>brandSet=Foo,Bar
+     *     <p>brandSet="A,B,C Comma",Bar.
+     * @param categoryFilter A comma-separated list of category set IDs which could be used to restrict the result to
+     *     specific Points of Interest categories. ID order does not matter. When multiple category identifiers are
+     *     provided, only POIs that belong to (at least) one of the categories from the provided list will be returned.
+     *     The list of supported categories can be discovered using  [POI Categories
+     *     API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+     *     <p>* **categorySet=7315** (Search Points of Interest from category Restaurant)
+     *     <p>* **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French
+     *     Restaurant).
+     * @param electricVehicleConnectorFilter A comma-separated list of connector types which could be used to restrict
+     *     the result to Electric Vehicle Station supporting specific connector types. Item order does not matter. When
+     *     multiple connector types are provided, only results that belong to (at least) one of the provided list will
+     *     be returned.
+     *     <p>Available connector types are: * `StandardHouseholdCountrySpecific` - These are the standard household
+     *     connectors for a certain region. They are all AC single phase and the standard Voltage and standard Amperage.
+     *     See also: [Plug &amp; socket types - World
+     *     Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets). * `IEC62196Type1` - Type 1 connector
+     *     as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after
+     *     the standard that first published it. Mostly used in combination with 120V single phase or up to 240V single
+     *     phase infrastructure. * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3
+     *     standard. The connector is based on the Type 1 connector – as defined in the IEC 62196-2 standard – with two
+     *     additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type2CableAttached` - Type 2
+     *     connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging
+     *     point. * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a
+     *     socket set into the charging point. * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC
+     *     62196-3 standard. The connector is based on the Type 2 connector – as defined in the IEC 62196-2 standard –
+     *     with two additional direct current (DC) contacts to allow DC fast charging. * `IEC62196Type3` - Type 3
+     *     connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly
+     *     used in combination with up to 240V single phase or up to 420V three phase infrastructure. * `Chademo` -
+     *     CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial
+     *     partners. Because of this is is also known as the TEPCO's connector. It supports fast DC charging. *
+     *     `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is
+     *     sometime referred to as by some combination of the standard, the color and the fact that is a single phase
+     *     connector. The connector usually has the "P+N+E, 6h" configuration. * `IEC60309DCWhite` - Industrial White
+     *     connector is a DC connector defined in the IEC 60309 standard. * `Tesla` - The Tesla connector is the
+     *     regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector,
+     *     sometimes referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2)
+     *     in Europe.
+     *     <p>Usage examples:
+     *     <p>connectorSet=IEC62196Type2CableAttached connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached.
+     * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
+     *     correct maps for a certain country/region for geopolitically disputed regions. Different countries/regions
+     *     have different views of such regions, and the View parameter allows your application to comply with the view
+     *     required by the country/region your application will be serving. By default, the View parameter is set to
+     *     “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location
+     *     of your users, and then set the View parameter correctly for that location. Alternatively, you have the
+     *     option to set ‘View=Auto’, which will return the map data based on the IP address of the request. The View
+     *     parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping,
+     *     of the country/region where maps, images and other data and third party content that you are authorized to
+     *     access via Azure Maps is made available. Example: view=IN.
+     *     <p>Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the
+     *     available Views.
+     * @param operatingHours Hours of operation for a POI (Points of Interest). The availability of hours of operation
+     *     will vary based on the data available. If not passed, then no opening hours information will be returned.
+     *     Supported value: nextSevenDays.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search calls.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAddressResult searchAlongRoute(
+            ResponseFormat format,
+            String query,
+            int maxDetourTime,
+            SearchAlongRouteRequest route,
+            Integer top,
+            List<String> brandFilter,
+            List<Integer> categoryFilter,
+            List<ElectricVehicleConnector> electricVehicleConnectorFilter,
+            LocalizedMapView localizedMapView,
+            OperatingHoursRange operatingHours) {
+        return searchAlongRouteWithResponse(
+                        format,
+                        query,
+                        maxDetourTime,
+                        route,
+                        top,
+                        brandFilter,
+                        categoryFilter,
+                        electricVehicleConnectorFilter,
+                        localizedMapView,
+                        operatingHours,
+                        Context.NONE)
+                .getValue();
     }
 
     /**
@@ -9234,15 +9323,17 @@ public final class SearchesImpl {
      * @param format Desired format of the response. Only `json` format is supported.
      * @param batchRequest The list of search fuzzy queries/requests to process. The list can contain a max of 10,000
      *     queries and must contain at least 1 query.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
+     * @return this object is returned from a successful Search Address Batch service call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressBatchResult fuzzySearchBatchSync(JsonFormat format, BatchRequest batchRequest) {
-        return fuzzySearchBatchSyncAsync(format, batchRequest).block();
+    public Response<SearchAddressBatchResult> fuzzySearchBatchSyncWithResponse(
+            JsonFormat format, BatchRequest batchRequest, Context context) {
+        return fuzzySearchBatchSyncWithResponseAsync(format, batchRequest, context).block();
     }
 
     /**
@@ -9346,17 +9437,15 @@ public final class SearchesImpl {
      * @param format Desired format of the response. Only `json` format is supported.
      * @param batchRequest The list of search fuzzy queries/requests to process. The list can contain a max of 10,000
      *     queries and must contain at least 1 query.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call along with {@link Response}.
+     * @return this object is returned from a successful Search Address Batch service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressBatchResult> fuzzySearchBatchSyncWithResponse(
-            JsonFormat format, BatchRequest batchRequest, Context context) {
-        return fuzzySearchBatchSyncWithResponseAsync(format, batchRequest, context).block();
+    public SearchAddressBatchResult fuzzySearchBatchSync(JsonFormat format, BatchRequest batchRequest) {
+        return fuzzySearchBatchSyncWithResponse(format, batchRequest, Context.NONE).getValue();
     }
 
     /**
@@ -9717,9 +9806,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.fuzzySearchBatchWithResponseAsync(format, batchRequest),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, Context.NONE),
-                new TypeReferenceSearchAddressBatchResult(),
-                new TypeReferenceSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, Context.NONE),
+                TypeReference.createInstance(SearchAddressBatchResult.class),
+                TypeReference.createInstance(SearchAddressBatchResult.class));
     }
 
     /**
@@ -9836,9 +9925,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.fuzzySearchBatchWithResponseAsync(format, batchRequest, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, context),
-                new TypeReferenceSearchAddressBatchResult(),
-                new TypeReferenceSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, context),
+                TypeReference.createInstance(SearchAddressBatchResult.class),
+                TypeReference.createInstance(SearchAddressBatchResult.class));
     }
 
     /**
@@ -10417,9 +10506,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.getFuzzySearchBatchWithResponseAsync(batchId),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, Context.NONE),
-                new TypeReferenceSearchAddressBatchResult(),
-                new TypeReferenceSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, Context.NONE),
+                TypeReference.createInstance(SearchAddressBatchResult.class),
+                TypeReference.createInstance(SearchAddressBatchResult.class));
     }
 
     /**
@@ -10534,9 +10623,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.getFuzzySearchBatchWithResponseAsync(batchId, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, context),
-                new TypeReferenceSearchAddressBatchResult(),
-                new TypeReferenceSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, context),
+                TypeReference.createInstance(SearchAddressBatchResult.class),
+                TypeReference.createInstance(SearchAddressBatchResult.class));
     }
 
     /**
@@ -11334,15 +11423,17 @@ public final class SearchesImpl {
      * @param format Desired format of the response. Only `json` format is supported.
      * @param batchRequest The list of address geocoding queries/requests to process. The list can contain a max of
      *     10,000 queries and must contain at least 1 query.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
+     * @return this object is returned from a successful Search Address Batch service call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressBatchResult searchAddressBatchSync(JsonFormat format, BatchRequest batchRequest) {
-        return searchAddressBatchSyncAsync(format, batchRequest).block();
+    public Response<SearchAddressBatchResult> searchAddressBatchSyncWithResponse(
+            JsonFormat format, BatchRequest batchRequest, Context context) {
+        return searchAddressBatchSyncWithResponseAsync(format, batchRequest, context).block();
     }
 
     /**
@@ -11445,17 +11536,15 @@ public final class SearchesImpl {
      * @param format Desired format of the response. Only `json` format is supported.
      * @param batchRequest The list of address geocoding queries/requests to process. The list can contain a max of
      *     10,000 queries and must contain at least 1 query.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call along with {@link Response}.
+     * @return this object is returned from a successful Search Address Batch service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressBatchResult> searchAddressBatchSyncWithResponse(
-            JsonFormat format, BatchRequest batchRequest, Context context) {
-        return searchAddressBatchSyncWithResponseAsync(format, batchRequest, context).block();
+    public SearchAddressBatchResult searchAddressBatchSync(JsonFormat format, BatchRequest batchRequest) {
+        return searchAddressBatchSyncWithResponse(format, batchRequest, Context.NONE).getValue();
     }
 
     /**
@@ -11813,9 +11902,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.searchAddressBatchWithResponseAsync(format, batchRequest),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, Context.NONE),
-                new TypeReferenceSearchAddressBatchResult(),
-                new TypeReferenceSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, Context.NONE),
+                TypeReference.createInstance(SearchAddressBatchResult.class),
+                TypeReference.createInstance(SearchAddressBatchResult.class));
     }
 
     /**
@@ -11931,9 +12020,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.searchAddressBatchWithResponseAsync(format, batchRequest, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, context),
-                new TypeReferenceSearchAddressBatchResult(),
-                new TypeReferenceSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, context),
+                TypeReference.createInstance(SearchAddressBatchResult.class),
+                TypeReference.createInstance(SearchAddressBatchResult.class));
     }
 
     /**
@@ -12507,9 +12596,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.getSearchAddressBatchWithResponseAsync(batchId),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, Context.NONE),
-                new TypeReferenceSearchAddressBatchResult(),
-                new TypeReferenceSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, Context.NONE),
+                TypeReference.createInstance(SearchAddressBatchResult.class),
+                TypeReference.createInstance(SearchAddressBatchResult.class));
     }
 
     /**
@@ -12623,9 +12712,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.getSearchAddressBatchWithResponseAsync(batchId, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, context),
-                new TypeReferenceSearchAddressBatchResult(),
-                new TypeReferenceSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, context),
+                TypeReference.createInstance(SearchAddressBatchResult.class),
+                TypeReference.createInstance(SearchAddressBatchResult.class));
     }
 
     /**
@@ -13417,15 +13506,18 @@ public final class SearchesImpl {
      * @param format Desired format of the response. Only `json` format is supported.
      * @param batchRequest The list of reverse geocoding queries/requests to process. The list can contain a max of
      *     10,000 queries and must contain at least 1 query.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call.
+     * @return this object is returned from a successful Search Address Reverse Batch service call along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReverseSearchAddressBatchResult reverseSearchAddressBatchSync(JsonFormat format, BatchRequest batchRequest) {
-        return reverseSearchAddressBatchSyncAsync(format, batchRequest).block();
+    public Response<ReverseSearchAddressBatchResult> reverseSearchAddressBatchSyncWithResponse(
+            JsonFormat format, BatchRequest batchRequest, Context context) {
+        return reverseSearchAddressBatchSyncWithResponseAsync(format, batchRequest, context).block();
     }
 
     /**
@@ -13527,18 +13619,15 @@ public final class SearchesImpl {
      * @param format Desired format of the response. Only `json` format is supported.
      * @param batchRequest The list of reverse geocoding queries/requests to process. The list can contain a max of
      *     10,000 queries and must contain at least 1 query.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call along with {@link
-     *     Response}.
+     * @return this object is returned from a successful Search Address Reverse Batch service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReverseSearchAddressBatchResult> reverseSearchAddressBatchSyncWithResponse(
-            JsonFormat format, BatchRequest batchRequest, Context context) {
-        return reverseSearchAddressBatchSyncWithResponseAsync(format, batchRequest, context).block();
+    public ReverseSearchAddressBatchResult reverseSearchAddressBatchSync(JsonFormat format, BatchRequest batchRequest) {
+        return reverseSearchAddressBatchSyncWithResponse(format, batchRequest, Context.NONE).getValue();
     }
 
     /**
@@ -13893,9 +13982,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.reverseSearchAddressBatchWithResponseAsync(format, batchRequest),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, Context.NONE),
-                new TypeReferenceReverseSearchAddressBatchResult(),
-                new TypeReferenceReverseSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, Context.NONE),
+                TypeReference.createInstance(ReverseSearchAddressBatchResult.class),
+                TypeReference.createInstance(ReverseSearchAddressBatchResult.class));
     }
 
     /**
@@ -14010,9 +14099,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.reverseSearchAddressBatchWithResponseAsync(format, batchRequest, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, context),
-                new TypeReferenceReverseSearchAddressBatchResult(),
-                new TypeReferenceReverseSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, context),
+                TypeReference.createInstance(ReverseSearchAddressBatchResult.class),
+                TypeReference.createInstance(ReverseSearchAddressBatchResult.class));
     }
 
     /**
@@ -14582,9 +14671,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.getReverseSearchAddressBatchWithResponseAsync(batchId),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, Context.NONE),
-                new TypeReferenceReverseSearchAddressBatchResult(),
-                new TypeReferenceReverseSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, Context.NONE),
+                TypeReference.createInstance(ReverseSearchAddressBatchResult.class),
+                TypeReference.createInstance(ReverseSearchAddressBatchResult.class));
     }
 
     /**
@@ -14697,9 +14786,9 @@ public final class SearchesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.getReverseSearchAddressBatchWithResponseAsync(batchId, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, context),
-                new TypeReferenceReverseSearchAddressBatchResult(),
-                new TypeReferenceReverseSearchAddressBatchResult());
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, null, context),
+                TypeReference.createInstance(ReverseSearchAddressBatchResult.class),
+                TypeReference.createInstance(ReverseSearchAddressBatchResult.class));
     }
 
     /**
@@ -14919,14 +15008,5 @@ public final class SearchesImpl {
     public SyncPoller<ReverseSearchAddressBatchResult, ReverseSearchAddressBatchResult>
             beginGetReverseSearchAddressBatch(String batchId, Context context) {
         return this.beginGetReverseSearchAddressBatchAsync(batchId, context).getSyncPoller();
-    }
-
-    private static final class TypeReferenceSearchAddressBatchResult extends TypeReference<SearchAddressBatchResult> {
-        // empty
-    }
-
-    private static final class TypeReferenceReverseSearchAddressBatchResult
-            extends TypeReference<ReverseSearchAddressBatchResult> {
-        // empty
     }
 }

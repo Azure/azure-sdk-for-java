@@ -16,6 +16,10 @@ public final class AzureMonitorAlertSettings {
     @JsonProperty(value = "alertsForAllJobFailures")
     private AlertsState alertsForAllJobFailures;
 
+    /** Creates an instance of AzureMonitorAlertSettings class. */
+    public AzureMonitorAlertSettings() {
+    }
+
     /**
      * Get the alertsForAllJobFailures property: The alertsForAllJobFailures property.
      *

@@ -97,14 +97,6 @@ public final class QueueDescription {
     private Integer maxDeliveryCount;
 
     /*
-     * The maximum message size for a message.
-     */
-    @JacksonXmlProperty(
-        localName = "MaxMessageSizeInKilobytes",
-        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Long maxMessageSizeInKilobytes;
-
-    /*
      * Value that indicates whether server-side batched operations are enabled.
      */
     @JacksonXmlProperty(
@@ -275,6 +267,14 @@ public final class QueueDescription {
             localName = "ForwardDeadLetteredMessagesTo",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String forwardDeadLetteredMessagesTo;
+
+    /*
+     * The maximum message size for a message.
+     */
+    @JacksonXmlProperty(
+            localName = "MaxMessageSizeInKilobytes",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Long maxMessageSizeInKilobytes;
 
     /**
      * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the

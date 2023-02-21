@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DevCenters Update. */
 public final class DevCentersUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/DevCenters_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_Patch.json
      */
     /**
      * Sample code: DevCenters_Update.

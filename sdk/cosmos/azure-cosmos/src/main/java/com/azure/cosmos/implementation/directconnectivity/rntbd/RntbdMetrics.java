@@ -241,8 +241,11 @@ public final class RntbdMetrics implements RntbdMetricsCompletionRecorder {
         requestRecord.stop(this.requests, requestRecord.isCompletedExceptionally()
             ? this.responseErrors
             : this.responseSuccesses);
-        this.requestSize.record(requestRecord.requestLength());
-        this.responseSize.record(requestRecord.responseLength());
+
+        if (!requestRecord.isCancelled()) {
+            this.requestSize.record(requestRecord.requestLength());
+            this.responseSize.record(requestRecord.responseLength());
+        }
     }
 
     @Override

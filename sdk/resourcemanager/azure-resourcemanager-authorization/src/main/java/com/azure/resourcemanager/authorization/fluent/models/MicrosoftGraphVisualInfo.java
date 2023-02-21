@@ -23,9 +23,8 @@ public final class MicrosoftGraphVisualInfo {
     private MicrosoftGraphImageInfo attribution;
 
     /*
-     * Optional. Background color used to render the activity in the UI - brand
-     * color for the application source of the activity. Must be a valid hex
-     * color
+     * Optional. Background color used to render the activity in the UI - brand color for the application source of the
+     * activity. Must be a valid hex color
      */
     @JsonProperty(value = "backgroundColor")
     private String backgroundColor;
@@ -44,9 +43,8 @@ public final class MicrosoftGraphVisualInfo {
     private String description;
 
     /*
-     * Required. Short text description of the user's unique activity (for
-     * example, document name in cases where an activity refers to document
-     * creation)
+     * Required. Short text description of the user's unique activity (for example, document name in cases where an
+     * activity refers to document creation)
      */
     @JsonProperty(value = "displayText")
     private String displayText;
@@ -55,6 +53,10 @@ public final class MicrosoftGraphVisualInfo {
      * visualInfo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphVisualInfo class. */
+    public MicrosoftGraphVisualInfo() {
+    }
 
     /**
      * Get the attribution property: imageInfo.

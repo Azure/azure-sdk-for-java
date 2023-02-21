@@ -133,7 +133,7 @@ class StorageAccountImpl
 
     @Override
     public boolean infrastructureEncryptionEnabled() {
-        return this.encryptionHelper.infrastructureEncryptionEnabled();
+        return StorageEncryptionHelper.infrastructureEncryptionEnabled(this.innerModel());
     }
 
     @Override

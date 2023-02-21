@@ -66,6 +66,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
@@ -186,7 +187,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     public void channelRead(final ChannelHandlerContext context, final Object message) {
 
         this.traceOperation(context, "channelRead");
-        this.timestamps.resetTransitTimeout(); // we have got a successful read, so reset the transitTimeout count.
+        this.timestamps.channelReadCompleted();
 
         try {
             if (message.getClass() == RntbdResponse.class) {
@@ -230,7 +231,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     @Override
     public void channelReadComplete(final ChannelHandlerContext context) {
         this.traceOperation(context, "channelReadComplete");
-        this.timestamps.channelReadCompleted();
         context.fireChannelReadComplete();
     }
 
@@ -377,6 +377,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             if (event instanceof RntbdContext) {
                 this.contextFuture.complete((RntbdContext) event);
                 this.removeContextNegotiatorAndFlushPendingWrites(context);
+
+                // Important: currently the RntbdContext negotiation response will not be captured during channelRead
+                // need to mark the timestamp here
+                this.timestamps.channelReadCompleted();
                 return;
             }
             if (event instanceof RntbdContextException) {
@@ -577,18 +581,19 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (message instanceof RntbdRequestRecord) {
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
-
-            this.timestamps.channelWriteAttempted();
             record.setTimestamps(this.timestamps);
 
-            record.setSendingRequestHasStarted();
+            if (!record.isCancelled()) {
+                record.setSendingRequestHasStarted();
+                this.timestamps.channelWriteAttempted();
 
-            context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
-                record.stage(RntbdRequestRecord.Stage.SENT);
-                if (completed.isSuccess()) {
-                    this.timestamps.channelWriteCompleted();
-                }
-            });
+                context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
+                    record.stage(RntbdRequestRecord.Stage.SENT);
+                    if (completed.isSuccess()) {
+                        this.timestamps.channelWriteCompleted();
+                    }
+                });
+            }
 
             return;
         }
@@ -610,6 +615,19 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         reportIssue(context, "", error);
         this.exceptionCaught(context, error);
+    }
+
+    public RntbdChannelStatistics getChannelStatistics(
+        Channel channel,
+        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        return new RntbdChannelStatistics()
+            .channelId(channel.id().toString())
+            .pendingRequestsCount(this.pendingRequests.size())
+            .channelTaskQueueSize(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()))
+            .lastReadTime(this.timestamps.lastChannelReadTime())
+            .transitTimeoutCount(this.timestamps.transitTimeoutCount())
+            .transitTimeoutStartingTime(this.timestamps.transitTimeoutStartingTime())
+            .waitForConnectionInit(channelAcquisitionTimeline.isWaitForChannelInit());
     }
 
     // endregion
@@ -654,6 +672,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.pendingWrites.add(out, promise);
     }
 
+    public Timestamps getTimestamps() {
+        return this.timestamps;
+    }
+
     Timestamps snapshotTimestamps() {
         return new Timestamps(this.timestamps);
     }
@@ -664,30 +686,32 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     private RntbdRequestRecord addPendingRequestRecord(final ChannelHandlerContext context, final RntbdRequestRecord record) {
 
-        return this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
+        AtomicReference<Timeout> pendingRequestTimeout = new AtomicReference<>();
+        this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
 
             reportIssueUnless(current == null, context, "id: {}, current: {}, request: {}", record);
-            record.pendingRequestQueueSize(pendingRequests.size());
-
-            final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
+            pendingRequestTimeout.set(record.newTimeout(timeout -> {
 
                 // We don't wish to complete on the timeout thread, but rather on a thread doled out by our executor
                 requestExpirationExecutor.execute(record::expire);
-            });
-
-            record.whenComplete((response, error) -> {
-                this.pendingRequests.remove(id);
-                pendingRequestTimeout.cancel();
-            });
+            }));
 
             return record;
-
         });
+
+        // NOTE: please do not put the following logic inside the compute block. It may cause dead lock when a record is cancelled early
+        record.whenComplete((response, error) -> {
+            this.pendingRequests.remove(record.transportRequestId());
+            if (pendingRequestTimeout.get() != null) {
+                pendingRequestTimeout.get().cancel();
+            }
+        });
+
+        return record;
     }
 
     private void completeAllPendingRequestsExceptionally(
-        final ChannelHandlerContext context, final Throwable throwable
-    ) {
+        final ChannelHandlerContext context, final Throwable throwable) {
 
         reportIssueUnless(!this.closingExceptionally, context, "", throwable);
         this.closingExceptionally = true;
@@ -868,7 +892,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     final int subStatusCode = Math.toIntExact(response.getHeader(RntbdResponseHeader.SubStatus));
 
                     switch (subStatusCode) {
-                        case SubStatusCodes.COMPLETING_SPLIT:
+                        case SubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
                             cause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         case SubStatusCodes.COMPLETING_PARTITION_MIGRATION:
@@ -974,9 +998,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     // region Types
 
-    final static class UnhealthyChannelException extends ChannelException {
+    public final static class UnhealthyChannelException extends ChannelException {
 
-        UnhealthyChannelException(String reason) {
+        public UnhealthyChannelException(String reason) {
             super("health check failed, reason: " + reason);
         }
 

@@ -47,6 +47,10 @@ public final class LogProfileProperties {
     @JsonProperty(value = "retentionPolicy", required = true)
     private RetentionPolicy retentionPolicy;
 
+    /** Creates an instance of LogProfileProperties class. */
+    public LogProfileProperties() {
+    }
+
     /**
      * Get the storageAccountId property: the resource id of the storage account to which you would like to send the
      * Activity Log.

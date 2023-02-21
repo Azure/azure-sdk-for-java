@@ -24,6 +24,9 @@ public final class GeoJsonMultiPoint extends GeoJsonGeometry {
     @JsonProperty(value = "coordinates", required = true)
     private List<List<Double>> coordinates;
 
+    /** Creates an instance of GeoJsonMultiPoint class. */
+    public GeoJsonMultiPoint() {}
+
     /**
      * Get the coordinates property: Coordinates for the `GeoJson MultiPoint` geometry.
      *

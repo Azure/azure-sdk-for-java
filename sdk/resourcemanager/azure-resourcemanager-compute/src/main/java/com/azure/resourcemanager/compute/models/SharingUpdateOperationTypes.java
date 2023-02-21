@@ -26,6 +26,15 @@ public final class SharingUpdateOperationTypes extends ExpandableStringEnum<Shar
     public static final SharingUpdateOperationTypes ENABLE_COMMUNITY = fromString("EnableCommunity");
 
     /**
+     * Creates a new instance of SharingUpdateOperationTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SharingUpdateOperationTypes() {
+    }
+
+    /**
      * Creates or finds a SharingUpdateOperationTypes from its string representation.
      *
      * @param name a name to look for.

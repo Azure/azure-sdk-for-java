@@ -19,6 +19,10 @@ public final class SoftwareInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private SoftwareProperties innerProperties = new SoftwareProperties();
 
+    /** Creates an instance of SoftwareInner class. */
+    public SoftwareInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Software Inventory resource.
      *

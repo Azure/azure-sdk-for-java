@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Accounts ListUsages. */
 public final class AccountsListUsagesSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetUsages.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/GetUsages.json
      */
     /**
      * Sample code: Get Usages.
@@ -17,6 +15,8 @@ public final class AccountsListUsagesSamples {
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void getUsages(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.accounts().listUsagesWithResponse("myResourceGroup", "TestUsage02", null, Context.NONE);
+        manager
+            .accounts()
+            .listUsagesWithResponse("myResourceGroup", "TestUsage02", null, com.azure.core.util.Context.NONE);
     }
 }

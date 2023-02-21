@@ -12,10 +12,9 @@ import com.azure.resourcemanager.dataprotection.fluent.OperationStatusClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationResourceInner;
 import com.azure.resourcemanager.dataprotection.models.OperationResource;
 import com.azure.resourcemanager.dataprotection.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationStatusImpl implements OperationStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationStatusImpl.class);
 
     private final OperationStatusClient innerClient;
 
@@ -28,15 +27,6 @@ public final class OperationStatusImpl implements OperationStatus {
         this.serviceManager = serviceManager;
     }
 
-    public OperationResource get(String location, String operationId) {
-        OperationResourceInner inner = this.serviceClient().get(location, operationId);
-        if (inner != null) {
-            return new OperationResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OperationResource> getWithResponse(String location, String operationId, Context context) {
         Response<OperationResourceInner> inner = this.serviceClient().getWithResponse(location, operationId, context);
         if (inner != null) {
@@ -45,6 +35,15 @@ public final class OperationStatusImpl implements OperationStatus {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationResource get(String location, String operationId) {
+        OperationResourceInner inner = this.serviceClient().get(location, operationId);
+        if (inner != null) {
+            return new OperationResourceImpl(inner, this.manager());
         } else {
             return null;
         }

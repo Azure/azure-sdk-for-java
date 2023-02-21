@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.GalleryExpandParams;
 import com.azure.resourcemanager.compute.models.SelectPermissions;
 
@@ -24,7 +23,8 @@ public final class GalleriesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getGalleries()
-            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myGalleryName", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -42,7 +42,11 @@ public final class GalleriesGetByResourceGroupSamples {
             .serviceClient()
             .getGalleries()
             .getByResourceGroupWithResponse(
-                "myResourceGroup", "myGalleryName", SelectPermissions.PERMISSIONS, null, Context.NONE);
+                "myResourceGroup",
+                "myGalleryName",
+                SelectPermissions.PERMISSIONS,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -59,7 +63,8 @@ public final class GalleriesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getGalleries()
-            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myGalleryName", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -77,6 +82,10 @@ public final class GalleriesGetByResourceGroupSamples {
             .serviceClient()
             .getGalleries()
             .getByResourceGroupWithResponse(
-                "myResourceGroup", "myGalleryName", null, GalleryExpandParams.SHARING_PROFILE_GROUPS, Context.NONE);
+                "myResourceGroup",
+                "myGalleryName",
+                null,
+                GalleryExpandParams.SHARING_PROFILE_GROUPS,
+                com.azure.core.util.Context.NONE);
     }
 }

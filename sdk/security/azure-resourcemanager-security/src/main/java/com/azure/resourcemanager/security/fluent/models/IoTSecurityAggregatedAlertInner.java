@@ -30,6 +30,10 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of IoTSecurityAggregatedAlertInner class. */
+    public IoTSecurityAggregatedAlertInner() {
+    }
+
     /**
      * Get the innerProperties property: IoT Security solution aggregated alert details.
      *

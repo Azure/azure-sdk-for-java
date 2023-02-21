@@ -24,10 +24,8 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
     private String assistantName;
 
     /*
-     * The contact's birthday. The Timestamp type represents date and time
-     * information using ISO 8601 format and is always in UTC time. For
-     * example, midnight UTC on Jan 1, 2014 would look like this:
-     * '2014-01-01T00:00:00Z'
+     * The contact's birthday. The Timestamp type represents date and time information using ISO 8601 format and is
+     * always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "birthday")
     private OffsetDateTime birthday;
@@ -69,11 +67,9 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
     private String department;
 
     /*
-     * The contact's display name. You can specify the display name in a create
-     * or update operation. Note that later updates to other properties may
-     * cause an automatically generated value to overwrite the displayName
-     * value you have specified. To preserve a pre-existing value, always
-     * include it as displayName in an update operation.
+     * The contact's display name. You can specify the display name in a create or update operation. Note that later
+     * updates to other properties may cause an automatically generated value to overwrite the displayName value you
+     * have specified. To preserve a pre-existing value, always include it as displayName in an update operation.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
@@ -223,15 +219,13 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
     private String yomiSurname;
 
     /*
-     * The collection of open extensions defined for the contact. Read-only.
-     * Nullable.
+     * The collection of open extensions defined for the contact. Read-only. Nullable.
      */
     @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
-     * The collection of multi-value extended properties defined for the
-     * contact. Read-only. Nullable.
+     * The collection of multi-value extended properties defined for the contact. Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
@@ -243,8 +237,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphProfilePhoto photo;
 
     /*
-     * The collection of single-value extended properties defined for the
-     * contact. Read-only. Nullable.
+     * The collection of single-value extended properties defined for the contact. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
@@ -253,6 +246,10 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
      * contact
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphContact class. */
+    public MicrosoftGraphContact() {
+    }
 
     /**
      * Get the assistantName property: The name of the contact's assistant.

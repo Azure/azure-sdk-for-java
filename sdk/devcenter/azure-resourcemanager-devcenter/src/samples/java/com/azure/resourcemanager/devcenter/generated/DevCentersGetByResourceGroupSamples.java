@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DevCenters GetByResourceGroup. */
 public final class DevCentersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/DevCenters_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_Get.json
      */
     /**
      * Sample code: DevCenters_Get.

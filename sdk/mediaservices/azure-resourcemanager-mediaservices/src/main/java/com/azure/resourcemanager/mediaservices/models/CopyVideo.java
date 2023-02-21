@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.CopyVideo")
 @Fluent
 public final class CopyVideo extends Codec {
+    /** Creates an instance of CopyVideo class. */
+    public CopyVideo() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public CopyVideo withLabel(String label) {

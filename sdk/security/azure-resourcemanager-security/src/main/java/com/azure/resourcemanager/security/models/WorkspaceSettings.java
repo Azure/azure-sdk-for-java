@@ -37,18 +37,6 @@ public interface WorkspaceSettings {
      * custom-workspace configuration was set.
      *
      * @param workspaceSettingName Name of the security setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope.
-     */
-    WorkspaceSetting get(String workspaceSettingName);
-
-    /**
-     * Settings about where we should store your security data and logs. If the result is empty, it means that no
-     * custom-workspace configuration was set.
-     *
-     * @param workspaceSettingName Name of the security setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,14 +46,16 @@ public interface WorkspaceSettings {
     Response<WorkspaceSetting> getWithResponse(String workspaceSettingName, Context context);
 
     /**
-     * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
+     * Settings about where we should store your security data and logs. If the result is empty, it means that no
+     * custom-workspace configuration was set.
      *
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configures where to store the OMS agent data for workspaces under a scope.
      */
-    void delete(String workspaceSettingName);
+    WorkspaceSetting get(String workspaceSettingName);
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
@@ -78,6 +68,16 @@ public interface WorkspaceSettings {
      * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String workspaceSettingName, Context context);
+
+    /**
+     * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
+     *
+     * @param workspaceSettingName Name of the security setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String workspaceSettingName);
 
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no

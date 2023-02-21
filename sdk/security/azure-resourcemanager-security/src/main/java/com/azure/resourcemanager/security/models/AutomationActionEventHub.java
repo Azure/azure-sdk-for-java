@@ -35,6 +35,10 @@ public final class AutomationActionEventHub extends AutomationAction {
     @JsonProperty(value = "connectionString")
     private String connectionString;
 
+    /** Creates an instance of AutomationActionEventHub class. */
+    public AutomationActionEventHub() {
+    }
+
     /**
      * Get the eventHubResourceId property: The target Event Hub Azure Resource ID.
      *

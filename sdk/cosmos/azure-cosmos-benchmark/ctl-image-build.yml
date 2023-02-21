@@ -11,7 +11,8 @@ jobs:
         value: 'javactl.azurecr.io'
 
     pool:
-      vmImage: 'ubuntu-20.04'
+      name: 'azsdk-pool-mms-ubuntu-2004-general'
+      vmImage: 'MMSUbuntu20.04'
 
     steps:
     - task: Maven@3

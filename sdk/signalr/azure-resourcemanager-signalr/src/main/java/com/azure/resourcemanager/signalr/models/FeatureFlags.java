@@ -8,7 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FeatureFlags. */
+/**
+ * FeatureFlags is the supported features of Azure SignalR service. - ServiceMode: Flag for backend server for SignalR
+ * service. Values allowed: "Default": have your own backend server; "Serverless": your application doesn't have a
+ * backend server; "Classic": for backward compatibility. Support both Default and Serverless mode but not recommended;
+ * "PredefinedOnly": for future use. - EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log
+ * category respectively. - EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category
+ * respectively. - EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will
+ * give you live traces in real time, it will be helpful when you developing your own Azure SignalR based web
+ * application or self-troubleshooting some issues. Please note that live traces are counted as outbound messages that
+ * will be charged. Values allowed: "true"/"false", to enable/disable live trace feature.
+ */
 public final class FeatureFlags extends ExpandableStringEnum<FeatureFlags> {
     /** Static value ServiceMode for FeatureFlags. */
     public static final FeatureFlags SERVICE_MODE = fromString("ServiceMode");
@@ -33,7 +43,11 @@ public final class FeatureFlags extends ExpandableStringEnum<FeatureFlags> {
         return fromString(name, FeatureFlags.class);
     }
 
-    /** @return known FeatureFlags values. */
+    /**
+     * Gets known FeatureFlags values.
+     *
+     * @return known FeatureFlags values.
+     */
     public static Collection<FeatureFlags> values() {
         return values(FeatureFlags.class);
     }

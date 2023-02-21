@@ -20,6 +20,10 @@ public final class InformationProtectionAwsOffering extends CloudOffering {
     @JsonProperty(value = "informationProtection")
     private InformationProtectionAwsOfferingInformationProtection informationProtection;
 
+    /** Creates an instance of InformationProtectionAwsOffering class. */
+    public InformationProtectionAwsOffering() {
+    }
+
     /**
      * Get the informationProtection property: The native cloud connection configuration.
      *

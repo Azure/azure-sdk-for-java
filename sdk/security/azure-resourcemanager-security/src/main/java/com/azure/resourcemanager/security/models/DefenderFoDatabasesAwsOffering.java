@@ -26,6 +26,10 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
     @JsonProperty(value = "rds")
     private DefenderFoDatabasesAwsOfferingRds rds;
 
+    /** Creates an instance of DefenderFoDatabasesAwsOffering class. */
+    public DefenderFoDatabasesAwsOffering() {
+    }
+
     /**
      * Get the arcAutoProvisioning property: The ARC autoprovisioning configuration.
      *

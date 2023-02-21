@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managedapplications.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ApplicationArtifactType. */
+/** The managed application artifact type. */
 public enum ApplicationArtifactType {
     /** Enum value Template. */
     TEMPLATE("Template"),
@@ -30,6 +30,9 @@ public enum ApplicationArtifactType {
      */
     @JsonCreator
     public static ApplicationArtifactType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ApplicationArtifactType[] items = ApplicationArtifactType.values();
         for (ApplicationArtifactType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ApplicationArtifactType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -24,6 +24,9 @@ public final class GeoJsonFeatureCollection extends GeoJsonObject {
     @JsonProperty(value = "features", required = true)
     private List<GeoJsonFeature> features;
 
+    /** Creates an instance of GeoJsonFeatureCollection class. */
+    public GeoJsonFeatureCollection() {}
+
     /**
      * Get the features property: Contains a list of valid `GeoJSON Feature` objects.
      *

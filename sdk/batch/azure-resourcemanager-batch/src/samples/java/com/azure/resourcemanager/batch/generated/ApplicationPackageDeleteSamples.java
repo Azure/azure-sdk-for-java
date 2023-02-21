@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationPackage Delete. */
 public final class ApplicationPackageDeleteSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationPackageDelete.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/ApplicationPackageDelete.json
      */
     /**
      * Sample code: ApplicationPackageDelete.

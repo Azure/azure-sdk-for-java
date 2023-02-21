@@ -13,17 +13,6 @@ public interface AdvancedThreatProtections {
      * Gets the Advanced Threat Protection settings for the specified resource.
      *
      * @param resourceId The identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection settings for the specified resource.
-     */
-    AdvancedThreatProtectionSetting get(String resourceId);
-
-    /**
-     * Gets the Advanced Threat Protection settings for the specified resource.
-     *
-     * @param resourceId The identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,6 +20,17 @@ public interface AdvancedThreatProtections {
      * @return the Advanced Threat Protection settings for the specified resource along with {@link Response}.
      */
     Response<AdvancedThreatProtectionSetting> getWithResponse(String resourceId, Context context);
+
+    /**
+     * Gets the Advanced Threat Protection settings for the specified resource.
+     *
+     * @param resourceId The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Advanced Threat Protection settings for the specified resource.
+     */
+    AdvancedThreatProtectionSetting get(String resourceId);
 
     /**
      * Gets the Advanced Threat Protection settings for the specified resource.

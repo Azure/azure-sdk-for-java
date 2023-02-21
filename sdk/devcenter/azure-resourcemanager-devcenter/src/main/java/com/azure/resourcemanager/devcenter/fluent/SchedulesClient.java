@@ -19,7 +19,7 @@ public interface SchedulesClient {
     /**
      * Lists schedules for a pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,7 +33,7 @@ public interface SchedulesClient {
     /**
      * Lists schedules for a pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -50,7 +50,7 @@ public interface SchedulesClient {
     /**
      * Gets a schedule resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -73,7 +73,7 @@ public interface SchedulesClient {
     /**
      * Gets a schedule resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -88,7 +88,7 @@ public interface SchedulesClient {
     /**
      * Creates or updates a Schedule.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -105,7 +105,7 @@ public interface SchedulesClient {
     /**
      * Creates or updates a Schedule.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -130,7 +130,7 @@ public interface SchedulesClient {
     /**
      * Creates or updates a Schedule.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -147,7 +147,7 @@ public interface SchedulesClient {
     /**
      * Creates or updates a Schedule.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -172,7 +172,7 @@ public interface SchedulesClient {
     /**
      * Partially updates a Scheduled.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -180,16 +180,16 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(
+    SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(
         String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body);
 
     /**
      * Partially updates a Scheduled.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -199,10 +199,10 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(
+    SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(
         String resourceGroupName,
         String projectName,
         String poolName,
@@ -214,7 +214,7 @@ public interface SchedulesClient {
     /**
      * Partially updates a Scheduled.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -222,15 +222,16 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(
+    ScheduleInner update(
         String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body);
 
     /**
      * Partially updates a Scheduled.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -240,9 +241,10 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(
+    ScheduleInner update(
         String resourceGroupName,
         String projectName,
         String poolName,
@@ -254,7 +256,7 @@ public interface SchedulesClient {
     /**
      * Deletes a Scheduled.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -270,7 +272,7 @@ public interface SchedulesClient {
     /**
      * Deletes a Scheduled.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -293,7 +295,7 @@ public interface SchedulesClient {
     /**
      * Deletes a Scheduled.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -307,7 +309,7 @@ public interface SchedulesClient {
     /**
      * Deletes a Scheduled.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.

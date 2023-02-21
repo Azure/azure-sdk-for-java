@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphTeamsAppDistributionMethod. */
+/** teamsAppDistributionMethod. */
 public final class MicrosoftGraphTeamsAppDistributionMethod
     extends ExpandableStringEnum<MicrosoftGraphTeamsAppDistributionMethod> {
     /** Static value store for MicrosoftGraphTeamsAppDistributionMethod. */
@@ -35,7 +35,11 @@ public final class MicrosoftGraphTeamsAppDistributionMethod
         return fromString(name, MicrosoftGraphTeamsAppDistributionMethod.class);
     }
 
-    /** @return known MicrosoftGraphTeamsAppDistributionMethod values. */
+    /**
+     * Gets known MicrosoftGraphTeamsAppDistributionMethod values.
+     *
+     * @return known MicrosoftGraphTeamsAppDistributionMethod values.
+     */
     public static Collection<MicrosoftGraphTeamsAppDistributionMethod> values() {
         return values(MicrosoftGraphTeamsAppDistributionMethod.class);
     }

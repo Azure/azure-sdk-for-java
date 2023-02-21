@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphPlannerBucketTaskBoardTaskFormat extends MicrosoftGraphEntity {
     /*
-     * Hint used to order tasks in the Bucket view of the Task Board. The
-     * format is defined as outlined here.
+     * Hint used to order tasks in the Bucket view of the Task Board. The format is defined as outlined here.
      */
     @JsonProperty(value = "orderHint")
     private String orderHint;
@@ -26,6 +25,10 @@ public final class MicrosoftGraphPlannerBucketTaskBoardTaskFormat extends Micros
      * plannerBucketTaskBoardTaskFormat
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerBucketTaskBoardTaskFormat class. */
+    public MicrosoftGraphPlannerBucketTaskBoardTaskFormat() {
+    }
 
     /**
      * Get the orderHint property: Hint used to order tasks in the Bucket view of the Task Board. The format is defined

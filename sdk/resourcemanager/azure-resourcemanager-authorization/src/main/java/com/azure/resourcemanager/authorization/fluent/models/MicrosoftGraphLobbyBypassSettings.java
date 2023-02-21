@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphLobbyBypassSettings {
     /*
-     * Specifies whether or not to always let dial-in callers bypass the lobby.
-     * Optional.
+     * Specifies whether or not to always let dial-in callers bypass the lobby. Optional.
      */
     @JsonProperty(value = "isDialInBypassEnabled")
     private Boolean isDialInBypassEnabled;
@@ -32,6 +31,10 @@ public final class MicrosoftGraphLobbyBypassSettings {
      * lobbyBypassSettings
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphLobbyBypassSettings class. */
+    public MicrosoftGraphLobbyBypassSettings() {
+    }
 
     /**
      * Get the isDialInBypassEnabled property: Specifies whether or not to always let dial-in callers bypass the lobby.

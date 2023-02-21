@@ -55,6 +55,10 @@ public final class DatabasePrincipalInner {
     @JsonProperty(value = "tenantName", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantName;
 
+    /** Creates an instance of DatabasePrincipalInner class. */
+    public DatabasePrincipalInner() {
+    }
+
     /**
      * Get the role property: Database principal role.
      *

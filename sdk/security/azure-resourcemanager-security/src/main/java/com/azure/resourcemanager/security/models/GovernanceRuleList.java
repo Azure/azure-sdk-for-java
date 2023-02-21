@@ -24,6 +24,10 @@ public final class GovernanceRuleList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of GovernanceRuleList class. */
+    public GovernanceRuleList() {
+    }
+
     /**
      * Get the value property: Collection of governanceRules in this page.
      *

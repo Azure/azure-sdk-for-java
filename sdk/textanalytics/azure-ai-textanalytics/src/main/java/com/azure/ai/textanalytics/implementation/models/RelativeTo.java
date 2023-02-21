@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RelativeTo. */
+/** The reference point that the ordinal number denotes. */
 public final class RelativeTo extends ExpandableStringEnum<RelativeTo> {
     /** Static value Current for RelativeTo. */
     public static final RelativeTo CURRENT = fromString("Current");

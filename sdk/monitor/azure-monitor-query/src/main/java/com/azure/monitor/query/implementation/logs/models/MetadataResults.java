@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The metadata response for the app, including available tables, etc. */
+/**
+ * A metadata response.
+ *
+ * <p>The metadata response for the app, including available tables, etc.
+ */
 @Fluent
 public final class MetadataResults {
     /*
@@ -18,8 +22,7 @@ public final class MetadataResults {
     private List<MetadataCategory> categories;
 
     /*
-     * The list of resource types that are referenced in this metadata
-     * response.
+     * The list of resource types that are referenced in this metadata response.
      */
     @JsonProperty(value = "resourceTypes")
     private List<MetadataResourceType> resourceTypes;
@@ -31,43 +34,37 @@ public final class MetadataResults {
     private List<MetadataSolution> solutions;
 
     /*
-     * The list of tables and columns that comprise the schema of the
-     * workspace.
+     * The list of tables and columns that comprise the schema of the workspace.
      */
     @JsonProperty(value = "tables")
     private List<MetadataTable> tables;
 
     /*
-     * The list of functions stored on the workspace, or introduced by
-     * solutions etc.
+     * The list of functions stored on the workspace, or introduced by solutions etc.
      */
     @JsonProperty(value = "functions")
     private List<MetadataFunction> functions;
 
     /*
-     * The list of saved queries stored on the workspace, or introduced by
-     * solutions, resource types, etc.
+     * The list of saved queries stored on the workspace, or introduced by solutions, resource types, etc.
      */
     @JsonProperty(value = "queries")
     private List<MetadataQuery> queries;
 
     /*
-     * The list of Application Insights apps that were referenced in the
-     * metadata request.
+     * The list of Application Insights apps that were referenced in the metadata request.
      */
     @JsonProperty(value = "applications")
     private List<MetadataApplication> applications;
 
     /*
-     * The list of Log Analytics workspaces that were referenced in the
-     * metadata request.
+     * The list of Log Analytics workspaces that were referenced in the metadata request.
      */
     @JsonProperty(value = "workspaces")
     private List<MetadataWorkspace> workspaces;
 
     /*
-     * The list of Azure resources that were referenced in the metadata
-     * request.
+     * The list of Azure resources that were referenced in the metadata request.
      */
     @JsonProperty(value = "resources")
     private List<Object> resources;
@@ -77,6 +74,9 @@ public final class MetadataResults {
      */
     @JsonProperty(value = "permissions")
     private List<MetadataPermissions> permissions;
+
+    /** Creates an instance of MetadataResults class. */
+    public MetadataResults() {}
 
     /**
      * Get the categories property: The list of categories that are referenced in this metadata response.

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ResourceQuota;
 import java.nio.ByteBuffer;
@@ -60,6 +59,6 @@ public final class QuotasListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ResourceQuota> response = manager.quotas().list("drhutfdo", Context.NONE);
+        PagedIterable<ResourceQuota> response = manager.quotas().list("drhutfdo", com.azure.core.util.Context.NONE);
     }
 }

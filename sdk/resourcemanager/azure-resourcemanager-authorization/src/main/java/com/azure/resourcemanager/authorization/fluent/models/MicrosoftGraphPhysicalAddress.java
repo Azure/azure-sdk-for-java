@@ -22,8 +22,7 @@ public final class MicrosoftGraphPhysicalAddress {
     private String city;
 
     /*
-     * The country or region. It's a free-format string value, for example,
-     * 'United States'.
+     * The country or region. It's a free-format string value, for example, 'United States'.
      */
     @JsonProperty(value = "countryOrRegion")
     private String countryOrRegion;
@@ -50,6 +49,10 @@ public final class MicrosoftGraphPhysicalAddress {
      * physicalAddress
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPhysicalAddress class. */
+    public MicrosoftGraphPhysicalAddress() {
+    }
 
     /**
      * Get the city property: The city.

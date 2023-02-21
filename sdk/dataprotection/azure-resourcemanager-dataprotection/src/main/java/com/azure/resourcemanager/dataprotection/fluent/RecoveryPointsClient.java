@@ -16,23 +16,23 @@ public interface RecoveryPointsClient {
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
      *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureBackupRecoveryPointResourceInner> list(
-        String vaultName, String resourceGroupName, String backupInstanceName);
+        String resourceGroupName, String vaultName, String backupInstanceName);
 
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
      *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param filter OData filter options.
      * @param skipToken skipToken Filter.
@@ -40,12 +40,12 @@ public interface RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureBackupRecoveryPointResourceInner> list(
-        String vaultName,
         String resourceGroupName,
+        String vaultName,
         String backupInstanceName,
         String filter,
         String skipToken,
@@ -54,8 +54,25 @@ public interface RecoveryPointsClient {
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
      *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param backupInstanceName The name of the backup instance.
+     * @param recoveryPointId The recoveryPointId parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Recovery Point using recoveryPointId for a Datasource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AzureBackupRecoveryPointResourceInner> getWithResponse(
+        String resourceGroupName, String vaultName, String backupInstanceName, String recoveryPointId, Context context);
+
+    /**
+     * Gets a Recovery Point using recoveryPointId for a Datasource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param recoveryPointId The recoveryPointId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,22 +82,5 @@ public interface RecoveryPointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AzureBackupRecoveryPointResourceInner get(
-        String vaultName, String resourceGroupName, String backupInstanceName, String recoveryPointId);
-
-    /**
-     * Gets a Recovery Point using recoveryPointId for a Datasource.
-     *
-     * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param backupInstanceName The name of the backup instance.
-     * @param recoveryPointId The recoveryPointId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Recovery Point using recoveryPointId for a Datasource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureBackupRecoveryPointResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String backupInstanceName, String recoveryPointId, Context context);
+        String resourceGroupName, String vaultName, String backupInstanceName, String recoveryPointId);
 }

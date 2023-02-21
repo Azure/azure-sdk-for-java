@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplay;
 import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplayPropertyServiceSpecificationMetricsList;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OperationOrigin;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource provider available operation model. */
-@JsonFlatten
 @Fluent
-public class AvailableOperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableOperationInner.class);
-
+public final class AvailableOperationInner {
     /*
      * The list of operations
      */
@@ -44,10 +38,14 @@ public class AvailableOperationInner {
     private OperationOrigin origin;
 
     /*
-     * The list of specification's service metrics
+     * The list of operation properties
      */
-    @JsonProperty(value = "properties.serviceSpecification")
-    private AvailableOperationDisplayPropertyServiceSpecificationMetricsList serviceSpecification;
+    @JsonProperty(value = "properties")
+    private AvailableOperationDisplayPropertyServiceSpecification innerProperties;
+
+    /** Creates an instance of AvailableOperationInner class. */
+    public AvailableOperationInner() {
+    }
 
     /**
      * Get the display property: The list of operations.
@@ -130,12 +128,21 @@ public class AvailableOperationInner {
     }
 
     /**
+     * Get the innerProperties property: The list of operation properties.
+     *
+     * @return the innerProperties value.
+     */
+    private AvailableOperationDisplayPropertyServiceSpecification innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the serviceSpecification property: The list of specification's service metrics.
      *
      * @return the serviceSpecification value.
      */
     public AvailableOperationDisplayPropertyServiceSpecificationMetricsList serviceSpecification() {
-        return this.serviceSpecification;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceSpecification();
     }
 
     /**
@@ -146,7 +153,10 @@ public class AvailableOperationInner {
      */
     public AvailableOperationInner withServiceSpecification(
         AvailableOperationDisplayPropertyServiceSpecificationMetricsList serviceSpecification) {
-        this.serviceSpecification = serviceSpecification;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailableOperationDisplayPropertyServiceSpecification();
+        }
+        this.innerProperties().withServiceSpecification(serviceSpecification);
         return this;
     }
 
@@ -159,8 +169,8 @@ public class AvailableOperationInner {
         if (display() != null) {
             display().validate();
         }
-        if (serviceSpecification() != null) {
-            serviceSpecification().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -41,15 +41,6 @@ public final class KustoPoolDatabasesImpl implements KustoPoolDatabases {
         return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
-    public Database get(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
-        DatabaseInner inner = this.serviceClient().get(resourceGroupName, workspaceName, kustoPoolName, databaseName);
-        if (inner != null) {
-            return new DatabaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Database> getWithResponse(
         String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
         Response<DatabaseInner> inner =
@@ -62,6 +53,15 @@ public final class KustoPoolDatabasesImpl implements KustoPoolDatabases {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DatabaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Database get(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
+        DatabaseInner inner = this.serviceClient().get(resourceGroupName, workspaceName, kustoPoolName, databaseName);
+        if (inner != null) {
+            return new DatabaseImpl(inner, this.manager());
         } else {
             return null;
         }

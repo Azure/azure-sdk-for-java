@@ -24,6 +24,10 @@ public final class SyncAgentLinkedDatabaseListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SyncAgentLinkedDatabaseListResult class. */
+    public SyncAgentLinkedDatabaseListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ControllerConnectionDetails model. */
 @Fluent
 public final class ControllerConnectionDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ControllerConnectionDetails.class);
-
     /*
-     * Base class for types that supply values used to connect to container
-     * orchestrators
+     * Base class for types that supply values used to connect to container orchestrators
      */
     @JsonProperty(value = "orchestratorSpecificConnectionDetails")
     private OrchestratorSpecificConnectionDetails orchestratorSpecificConnectionDetails;
+
+    /** Creates an instance of ControllerConnectionDetails class. */
+    public ControllerConnectionDetails() {
+    }
 
     /**
      * Get the orchestratorSpecificConnectionDetails property: Base class for types that supply values used to connect

@@ -28,6 +28,10 @@ public final class VaultPropertiesEncryption {
     @JsonProperty(value = "infrastructureEncryption")
     private InfrastructureEncryptionState infrastructureEncryption;
 
+    /** Creates an instance of VaultPropertiesEncryption class. */
+    public VaultPropertiesEncryption() {
+    }
+
     /**
      * Get the keyVaultProperties property: The properties of the Key Vault which hosts CMK.
      *

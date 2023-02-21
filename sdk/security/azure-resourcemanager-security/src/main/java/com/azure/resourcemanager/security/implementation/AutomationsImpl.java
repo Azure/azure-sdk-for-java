@@ -49,15 +49,6 @@ public final class AutomationsImpl implements Automations {
         return Utils.mapPage(inner, inner1 -> new AutomationImpl(inner1, this.manager()));
     }
 
-    public Automation getByResourceGroup(String resourceGroupName, String automationName) {
-        AutomationInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, automationName);
-        if (inner != null) {
-            return new AutomationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Automation> getByResourceGroupWithResponse(
         String resourceGroupName, String automationName, Context context) {
         Response<AutomationInner> inner =
@@ -73,23 +64,22 @@ public final class AutomationsImpl implements Automations {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String automationName) {
-        this.serviceClient().delete(resourceGroupName, automationName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String automationName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, automationName, context);
-    }
-
-    public AutomationValidationStatus validate(
-        String resourceGroupName, String automationName, AutomationInner automation) {
-        AutomationValidationStatusInner inner =
-            this.serviceClient().validate(resourceGroupName, automationName, automation);
+    public Automation getByResourceGroup(String resourceGroupName, String automationName) {
+        AutomationInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, automationName);
         if (inner != null) {
-            return new AutomationValidationStatusImpl(inner, this.manager());
+            return new AutomationImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String automationName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, automationName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String automationName) {
+        this.serviceClient().delete(resourceGroupName, automationName);
     }
 
     public Response<AutomationValidationStatus> validateWithResponse(
@@ -102,6 +92,17 @@ public final class AutomationsImpl implements Automations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AutomationValidationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AutomationValidationStatus validate(
+        String resourceGroupName, String automationName, AutomationInner automation) {
+        AutomationValidationStatusInner inner =
+            this.serviceClient().validate(resourceGroupName, automationName, automation);
+        if (inner != null) {
+            return new AutomationValidationStatusImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -161,7 +162,7 @@ public final class AutomationsImpl implements Automations {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'automations'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, automationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -180,7 +181,7 @@ public final class AutomationsImpl implements Automations {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'automations'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, automationName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, automationName, context);
     }
 
     private AutomationsClient serviceClient() {

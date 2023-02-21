@@ -32,6 +32,10 @@ public final class MicrosoftGraphOperationError {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOperationError class. */
+    public MicrosoftGraphOperationError() {
+    }
+
     /**
      * Get the code property: Operation error code.
      *

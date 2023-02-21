@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AssignmentType. */
+/** Assignment type of the role assignment schedule. */
 public final class AssignmentType extends ExpandableStringEnum<AssignmentType> {
     /** Static value Activated for AssignmentType. */
     public static final AssignmentType ACTIVATED = fromString("Activated");
@@ -27,7 +27,11 @@ public final class AssignmentType extends ExpandableStringEnum<AssignmentType> {
         return fromString(name, AssignmentType.class);
     }
 
-    /** @return known AssignmentType values. */
+    /**
+     * Gets known AssignmentType values.
+     *
+     * @return known AssignmentType values.
+     */
     public static Collection<AssignmentType> values() {
         return values(AssignmentType.class);
     }

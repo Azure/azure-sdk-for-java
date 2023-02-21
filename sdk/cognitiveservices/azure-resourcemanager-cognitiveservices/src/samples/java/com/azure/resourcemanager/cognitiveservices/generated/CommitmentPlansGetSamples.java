@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CommitmentPlans Get. */
 public final class CommitmentPlansGetSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetCommitmentPlan.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/GetCommitmentPlan.json
      */
     /**
      * Sample code: GetCommitmentPlan.
@@ -19,6 +17,7 @@ public final class CommitmentPlansGetSamples {
     public static void getCommitmentPlan(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager
             .commitmentPlans()
-            .getWithResponse("resourceGroupName", "accountName", "commitmentPlanName", Context.NONE);
+            .getWithResponse(
+                "resourceGroupName", "accountName", "commitmentPlanName", com.azure.core.util.Context.NONE);
     }
 }

@@ -16,6 +16,10 @@ public final class InformationProtectionAwsOfferingInformationProtection {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
+    /** Creates an instance of InformationProtectionAwsOfferingInformationProtection class. */
+    public InformationProtectionAwsOfferingInformationProtection() {
+    }
+
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BackupWorkloadItems List. */
 public final class BackupWorkloadItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupWorkloadItems_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/BackupWorkloadItems_List.json
      */
     /**
      * Sample code: List Workload Items in Container.
@@ -27,6 +25,6 @@ public final class BackupWorkloadItemsListSamples {
                 "VMAppContainer;Compute;bvtdtestag;sqlserver-1",
                 "backupManagementType eq 'AzureWorkload'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

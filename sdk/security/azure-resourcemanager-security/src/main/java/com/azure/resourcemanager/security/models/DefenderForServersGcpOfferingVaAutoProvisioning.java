@@ -22,6 +22,10 @@ public final class DefenderForServersGcpOfferingVaAutoProvisioning {
     @JsonProperty(value = "configuration")
     private DefenderForServersGcpOfferingVaAutoProvisioningConfiguration configuration;
 
+    /** Creates an instance of DefenderForServersGcpOfferingVaAutoProvisioning class. */
+    public DefenderForServersGcpOfferingVaAutoProvisioning() {
+    }
+
     /**
      * Get the enabled property: Is Vulnerability Assessment auto provisioning enabled.
      *

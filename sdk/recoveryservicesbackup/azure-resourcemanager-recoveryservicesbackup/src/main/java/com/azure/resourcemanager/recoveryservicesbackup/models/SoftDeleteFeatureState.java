@@ -20,6 +20,15 @@ public final class SoftDeleteFeatureState extends ExpandableStringEnum<SoftDelet
     public static final SoftDeleteFeatureState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of SoftDeleteFeatureState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SoftDeleteFeatureState() {
+    }
+
+    /**
      * Creates or finds a SoftDeleteFeatureState from its string representation.
      *
      * @param name a name to look for.

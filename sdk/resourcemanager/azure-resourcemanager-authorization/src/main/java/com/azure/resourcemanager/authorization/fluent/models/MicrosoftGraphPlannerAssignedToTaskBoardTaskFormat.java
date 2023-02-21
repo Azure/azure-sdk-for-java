@@ -24,10 +24,9 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
     private Map<String, Object> orderHintsByAssignee;
 
     /*
-     * Hint value used to order the task on the AssignedTo view of the Task
-     * Board when the task is not assigned to anyone, or if the
-     * orderHintsByAssignee dictionary does not provide an order hint for the
-     * user the task is assigned to. The format is defined as outlined here.
+     * Hint value used to order the task on the AssignedTo view of the Task Board when the task is not assigned to
+     * anyone, or if the orderHintsByAssignee dictionary does not provide an order hint for the user the task is
+     * assigned to. The format is defined as outlined here.
      */
     @JsonProperty(value = "unassignedOrderHint")
     private String unassignedOrderHint;
@@ -36,6 +35,10 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
      * plannerAssignedToTaskBoardTaskFormat
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat class. */
+    public MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat() {
+    }
 
     /**
      * Get the orderHintsByAssignee property: plannerOrderHintsByAssignee.

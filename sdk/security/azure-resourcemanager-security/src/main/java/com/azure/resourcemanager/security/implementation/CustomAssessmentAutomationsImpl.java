@@ -28,17 +28,6 @@ public final class CustomAssessmentAutomationsImpl implements CustomAssessmentAu
         this.serviceManager = serviceManager;
     }
 
-    public CustomAssessmentAutomation getByResourceGroup(
-        String resourceGroupName, String customAssessmentAutomationName) {
-        CustomAssessmentAutomationInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, customAssessmentAutomationName);
-        if (inner != null) {
-            return new CustomAssessmentAutomationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CustomAssessmentAutomation> getByResourceGroupWithResponse(
         String resourceGroupName, String customAssessmentAutomationName, Context context) {
         Response<CustomAssessmentAutomationInner> inner =
@@ -56,13 +45,24 @@ public final class CustomAssessmentAutomationsImpl implements CustomAssessmentAu
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String customAssessmentAutomationName) {
-        this.serviceClient().delete(resourceGroupName, customAssessmentAutomationName);
+    public CustomAssessmentAutomation getByResourceGroup(
+        String resourceGroupName, String customAssessmentAutomationName) {
+        CustomAssessmentAutomationInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, customAssessmentAutomationName);
+        if (inner != null) {
+            return new CustomAssessmentAutomationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(
+    public Response<Void> deleteByResourceGroupWithResponse(
         String resourceGroupName, String customAssessmentAutomationName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, customAssessmentAutomationName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String customAssessmentAutomationName) {
+        this.serviceClient().delete(resourceGroupName, customAssessmentAutomationName);
     }
 
     public PagedIterable<CustomAssessmentAutomation> listByResourceGroup(String resourceGroupName) {
@@ -155,7 +155,7 @@ public final class CustomAssessmentAutomationsImpl implements CustomAssessmentAu
                                     + " 'customAssessmentAutomations'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, customAssessmentAutomationName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -178,7 +178,7 @@ public final class CustomAssessmentAutomationsImpl implements CustomAssessmentAu
                                     + " 'customAssessmentAutomations'.",
                                 id)));
         }
-        return this.deleteWithResponse(resourceGroupName, customAssessmentAutomationName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, context);
     }
 
     private CustomAssessmentAutomationsClient serviceClient() {

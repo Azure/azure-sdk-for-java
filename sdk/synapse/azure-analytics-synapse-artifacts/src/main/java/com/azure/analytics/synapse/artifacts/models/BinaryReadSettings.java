@@ -20,6 +20,9 @@ public final class BinaryReadSettings extends FormatReadSettings {
     @JsonProperty(value = "compressionProperties")
     private CompressionReadSettings compressionProperties;
 
+    /** Creates an instance of BinaryReadSettings class. */
+    public BinaryReadSettings() {}
+
     /**
      * Get the compressionProperties property: Compression settings.
      *

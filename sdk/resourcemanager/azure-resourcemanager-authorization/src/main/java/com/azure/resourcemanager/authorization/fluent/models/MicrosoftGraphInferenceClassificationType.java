@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphInferenceClassificationType. */
+/** inferenceClassificationType. */
 public final class MicrosoftGraphInferenceClassificationType
     extends ExpandableStringEnum<MicrosoftGraphInferenceClassificationType> {
     /** Static value focused for MicrosoftGraphInferenceClassificationType. */
@@ -28,7 +28,11 @@ public final class MicrosoftGraphInferenceClassificationType
         return fromString(name, MicrosoftGraphInferenceClassificationType.class);
     }
 
-    /** @return known MicrosoftGraphInferenceClassificationType values. */
+    /**
+     * Gets known MicrosoftGraphInferenceClassificationType values.
+     *
+     * @return known MicrosoftGraphInferenceClassificationType values.
+     */
     public static Collection<MicrosoftGraphInferenceClassificationType> values() {
         return values(MicrosoftGraphInferenceClassificationType.class);
     }

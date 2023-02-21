@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphLocationType. */
+/** locationType. */
 public final class MicrosoftGraphLocationType extends ExpandableStringEnum<MicrosoftGraphLocationType> {
     /** Static value default for MicrosoftGraphLocationType. */
     public static final MicrosoftGraphLocationType DEFAULT = fromString("default");
@@ -51,7 +51,11 @@ public final class MicrosoftGraphLocationType extends ExpandableStringEnum<Micro
         return fromString(name, MicrosoftGraphLocationType.class);
     }
 
-    /** @return known MicrosoftGraphLocationType values. */
+    /**
+     * Gets known MicrosoftGraphLocationType values.
+     *
+     * @return known MicrosoftGraphLocationType values.
+     */
     public static Collection<MicrosoftGraphLocationType> values() {
         return values(MicrosoftGraphLocationType.class);
     }

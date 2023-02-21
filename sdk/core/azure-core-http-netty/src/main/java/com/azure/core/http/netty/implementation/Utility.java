@@ -13,7 +13,6 @@ import java.nio.ByteBuffer;
  * Helper class containing utility methods.
  */
 public final class Utility {
-
     /**
      * Deep copies the passed {@link ByteBuf} into a {@link ByteBuffer}.
      * <p>

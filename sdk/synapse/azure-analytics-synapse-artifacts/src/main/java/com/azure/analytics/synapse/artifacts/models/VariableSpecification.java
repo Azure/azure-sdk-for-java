@@ -22,6 +22,9 @@ public final class VariableSpecification {
     @JsonProperty(value = "defaultValue")
     private Object defaultValue;
 
+    /** Creates an instance of VariableSpecification class. */
+    public VariableSpecification() {}
+
     /**
      * Get the type property: Variable type.
      *

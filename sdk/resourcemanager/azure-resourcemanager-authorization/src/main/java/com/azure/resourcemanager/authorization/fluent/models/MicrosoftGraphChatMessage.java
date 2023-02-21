@@ -18,8 +18,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /*
-     * Attached files. Attachments are currently read-only – sending
-     * attachments is not supported.
+     * Attached files. Attachments are currently read-only – sending attachments is not supported.
      */
     @JsonProperty(value = "attachments")
     private List<MicrosoftGraphChatMessageAttachment> attachments;
@@ -37,8 +36,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     private OffsetDateTime createdDateTime;
 
     /*
-     * Read only. Timestamp at which the chat message was deleted, or null if
-     * not deleted.
+     * Read only. Timestamp at which the chat message was deleted, or null if not deleted.
      */
     @JsonProperty(value = "deletedDateTime")
     private OffsetDateTime deletedDateTime;
@@ -62,16 +60,15 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     private MicrosoftGraphChatMessageImportance importance;
 
     /*
-     * Read only. Timestamp when edits to the chat message were made. Triggers
-     * an 'Edited' flag in the Microsoft Teams UI. If no edits are made the
-     * value is null.
+     * Read only. Timestamp when edits to the chat message were made. Triggers an 'Edited' flag in the Microsoft Teams
+     * UI. If no edits are made the value is null.
      */
     @JsonProperty(value = "lastEditedDateTime")
     private OffsetDateTime lastEditedDateTime;
 
     /*
-     * Read only. Timestamp when the chat message is created (initial setting)
-     * or edited, including when a reaction is added or removed.
+     * Read only. Timestamp when the chat message is created (initial setting) or edited, including when a reaction is
+     * added or removed.
      */
     @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
@@ -83,8 +80,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     private String locale;
 
     /*
-     * List of entities mentioned in the chat message. Currently supports user,
-     * bot, team, channel.
+     * List of entities mentioned in the chat message. Currently supports user, bot, team, channel.
      */
     @JsonProperty(value = "mentions")
     private List<MicrosoftGraphChatMessageMention> mentions;
@@ -108,8 +104,8 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     private List<MicrosoftGraphChatMessageReaction> reactions;
 
     /*
-     * Read-only. Id of the parent chat message or root chat message of the
-     * thread. (Only applies to chat messages in channels not chats)
+     * Read-only. Id of the parent chat message or root chat message of the thread. (Only applies to chat messages in
+     * channels not chats)
      */
     @JsonProperty(value = "replyToId")
     private String replyToId;
@@ -121,9 +117,8 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     private String subject;
 
     /*
-     * Summary text of the chat message that could be used for push
-     * notifications and summary views or fall back views. Only applies to
-     * channel chat messages, not chat messages in a chat.
+     * Summary text of the chat message that could be used for push notifications and summary views or fall back views.
+     * Only applies to channel chat messages, not chat messages in a chat.
      */
     @JsonProperty(value = "summary")
     private String summary;
@@ -150,6 +145,10 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
      * chatMessage
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphChatMessage class. */
+    public MicrosoftGraphChatMessage() {
+    }
 
     /**
      * Get the attachments property: Attached files. Attachments are currently read-only – sending attachments is not

@@ -64,7 +64,7 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterIotSec")
-    private interface IotSecuritySolutionsAnalyticsAggregatedAlertsService {
+    public interface IotSecuritySolutionsAnalyticsAggregatedAlertsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
@@ -485,25 +485,6 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsClientImpl
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param aggregatedAlertName Identifier of the aggregated alert.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Solution Aggregated Alert information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IoTSecurityAggregatedAlertInner get(
-        String resourceGroupName, String solutionName, String aggregatedAlertName) {
-        return getAsync(resourceGroupName, solutionName, aggregatedAlertName).block();
-    }
-
-    /**
-     * Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is
-     * performed by alert name.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param aggregatedAlertName Identifier of the aggregated alert.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -514,6 +495,25 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsClientImpl
     public Response<IoTSecurityAggregatedAlertInner> getWithResponse(
         String resourceGroupName, String solutionName, String aggregatedAlertName, Context context) {
         return getWithResponseAsync(resourceGroupName, solutionName, aggregatedAlertName, context).block();
+    }
+
+    /**
+     * Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is
+     * performed by alert name.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param aggregatedAlertName Identifier of the aggregated alert.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security Solution Aggregated Alert information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IoTSecurityAggregatedAlertInner get(
+        String resourceGroupName, String solutionName, String aggregatedAlertName) {
+        return getWithResponse(resourceGroupName, solutionName, aggregatedAlertName, Context.NONE).getValue();
     }
 
     /**
@@ -651,22 +651,6 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsClientImpl
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param aggregatedAlertName Identifier of the aggregated alert.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void dismiss(String resourceGroupName, String solutionName, String aggregatedAlertName) {
-        dismissAsync(resourceGroupName, solutionName, aggregatedAlertName).block();
-    }
-
-    /**
-     * Use this method to dismiss an aggregated IoT Security Solution Alert.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param aggregatedAlertName Identifier of the aggregated alert.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -677,6 +661,22 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsClientImpl
     public Response<Void> dismissWithResponse(
         String resourceGroupName, String solutionName, String aggregatedAlertName, Context context) {
         return dismissWithResponseAsync(resourceGroupName, solutionName, aggregatedAlertName, context).block();
+    }
+
+    /**
+     * Use this method to dismiss an aggregated IoT Security Solution Alert.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param aggregatedAlertName Identifier of the aggregated alert.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void dismiss(String resourceGroupName, String solutionName, String aggregatedAlertName) {
+        dismissWithResponse(resourceGroupName, solutionName, aggregatedAlertName, Context.NONE);
     }
 
     /**

@@ -39,6 +39,10 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOperation class. */
+    public MicrosoftGraphOperation() {
+    }
+
     /**
      * Get the createdDateTime property: The start time of the operation.
      *

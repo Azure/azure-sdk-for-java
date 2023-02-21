@@ -56,7 +56,7 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAdapti")
-    private interface AdaptiveApplicationControlsService {
+    public interface AdaptiveApplicationControlsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/applicationWhitelistings")
         @ExpectedResponses({200})
@@ -204,23 +204,6 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
     /**
      * Gets a list of application control machine groups for the subscription.
      *
-     * @param includePathRecommendations Include the policy rules.
-     * @param summary Return output in a summarized form.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of application control machine groups for the subscription on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AdaptiveApplicationControlGroupsInner> listAsync(Boolean includePathRecommendations, Boolean summary) {
-        return listWithResponseAsync(includePathRecommendations, summary)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a list of application control machine groups for the subscription.
-     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of application control machine groups for the subscription on successful completion of {@link
@@ -232,20 +215,6 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
         final Boolean summary = null;
         return listWithResponseAsync(includePathRecommendations, summary)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a list of application control machine groups for the subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of application control machine groups for the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AdaptiveApplicationControlGroupsInner list() {
-        final Boolean includePathRecommendations = null;
-        final Boolean summary = null;
-        return listAsync(includePathRecommendations, summary).block();
     }
 
     /**
@@ -263,6 +232,20 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
     public Response<AdaptiveApplicationControlGroupsInner> listWithResponse(
         Boolean includePathRecommendations, Boolean summary, Context context) {
         return listWithResponseAsync(includePathRecommendations, summary, context).block();
+    }
+
+    /**
+     * Gets a list of application control machine groups for the subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of application control machine groups for the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AdaptiveApplicationControlGroupsInner list() {
+        final Boolean includePathRecommendations = null;
+        final Boolean summary = null;
+        return listWithResponse(includePathRecommendations, summary, Context.NONE).getValue();
     }
 
     /**
@@ -385,22 +368,6 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param groupName Name of an application control machine group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application control VM/server group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AdaptiveApplicationControlGroupInner get(String ascLocation, String groupName) {
-        return getAsync(ascLocation, groupName).block();
-    }
-
-    /**
-     * Gets an application control VM/server group.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param groupName Name of an application control machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -411,6 +378,22 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
     public Response<AdaptiveApplicationControlGroupInner> getWithResponse(
         String ascLocation, String groupName, Context context) {
         return getWithResponseAsync(ascLocation, groupName, context).block();
+    }
+
+    /**
+     * Gets an application control VM/server group.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param groupName Name of an application control machine group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application control VM/server group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AdaptiveApplicationControlGroupInner get(String ascLocation, String groupName) {
+        return getWithResponse(ascLocation, groupName, Context.NONE).getValue();
     }
 
     /**
@@ -548,24 +531,6 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      *     locations.
      * @param groupName Name of an application control machine group.
      * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AdaptiveApplicationControlGroupInner put(
-        String ascLocation, String groupName, AdaptiveApplicationControlGroupInner body) {
-        return putAsync(ascLocation, groupName, body).block();
-    }
-
-    /**
-     * Update an application control machine group.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param groupName Name of an application control machine group.
-     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -576,6 +541,24 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
     public Response<AdaptiveApplicationControlGroupInner> putWithResponse(
         String ascLocation, String groupName, AdaptiveApplicationControlGroupInner body, Context context) {
         return putWithResponseAsync(ascLocation, groupName, body, context).block();
+    }
+
+    /**
+     * Update an application control machine group.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param groupName Name of an application control machine group.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AdaptiveApplicationControlGroupInner put(
+        String ascLocation, String groupName, AdaptiveApplicationControlGroupInner body) {
+        return putWithResponse(ascLocation, groupName, body, Context.NONE).getValue();
     }
 
     /**
@@ -694,21 +677,6 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param groupName Name of an application control machine group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String ascLocation, String groupName) {
-        deleteAsync(ascLocation, groupName).block();
-    }
-
-    /**
-     * Delete an application control machine group.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param groupName Name of an application control machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -718,5 +686,20 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String ascLocation, String groupName, Context context) {
         return deleteWithResponseAsync(ascLocation, groupName, context).block();
+    }
+
+    /**
+     * Delete an application control machine group.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param groupName Name of an application control machine group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String ascLocation, String groupName) {
+        deleteWithResponse(ascLocation, groupName, Context.NONE);
     }
 }

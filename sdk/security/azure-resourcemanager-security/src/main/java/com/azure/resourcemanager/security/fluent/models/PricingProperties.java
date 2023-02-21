@@ -47,6 +47,10 @@ public final class PricingProperties {
     @JsonProperty(value = "replacedBy", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> replacedBy;
 
+    /** Creates an instance of PricingProperties class. */
+    public PricingProperties() {
+    }
+
     /**
      * Get the pricingTier property: The pricing tier value. Microsoft Defender for Cloud is provided in two pricing
      * tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced

@@ -20,6 +20,15 @@ public final class H264RateControlMode extends ExpandableStringEnum<H264RateCont
     public static final H264RateControlMode CRF = fromString("CRF");
 
     /**
+     * Creates a new instance of H264RateControlMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public H264RateControlMode() {
+    }
+
+    /**
      * Creates or finds a H264RateControlMode from its string representation.
      *
      * @param name a name to look for.

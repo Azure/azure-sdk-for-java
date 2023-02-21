@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMs SimulateEviction. */
 public final class VirtualMachineScaleSetVMsSimulateEvictionSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_SimulateEviction.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_SimulateEviction.json
      */
     /**
      * Sample code: Simulate Eviction a virtual machine.
@@ -22,6 +20,7 @@ public final class VirtualMachineScaleSetVMsSimulateEvictionSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .simulateEvictionWithResponse("ResourceGroup", "VmScaleSetName", "InstanceId", Context.NONE);
+            .simulateEvictionWithResponse(
+                "ResourceGroup", "VmScaleSetName", "InstanceId", com.azure.core.util.Context.NONE);
     }
 }

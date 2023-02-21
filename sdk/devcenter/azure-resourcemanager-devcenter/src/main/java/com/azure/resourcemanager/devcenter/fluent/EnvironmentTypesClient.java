@@ -17,7 +17,7 @@ public interface EnvironmentTypesClient {
     /**
      * Lists environment types for the devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,7 +30,7 @@ public interface EnvironmentTypesClient {
     /**
      * Lists environment types for the devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -46,7 +46,7 @@ public interface EnvironmentTypesClient {
     /**
      * Gets an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -62,7 +62,7 @@ public interface EnvironmentTypesClient {
     /**
      * Gets an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,7 +76,7 @@ public interface EnvironmentTypesClient {
     /**
      * Creates or updates an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param body Represents an Environment Type.
@@ -97,7 +97,7 @@ public interface EnvironmentTypesClient {
     /**
      * Creates or updates an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param body Represents an Environment Type.
@@ -113,7 +113,7 @@ public interface EnvironmentTypesClient {
     /**
      * Partially updates an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param body Updatable environment type properties.
@@ -134,7 +134,7 @@ public interface EnvironmentTypesClient {
     /**
      * Partially updates an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param body Updatable environment type properties.
@@ -150,7 +150,7 @@ public interface EnvironmentTypesClient {
     /**
      * Deletes an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -166,7 +166,7 @@ public interface EnvironmentTypesClient {
     /**
      * Deletes an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

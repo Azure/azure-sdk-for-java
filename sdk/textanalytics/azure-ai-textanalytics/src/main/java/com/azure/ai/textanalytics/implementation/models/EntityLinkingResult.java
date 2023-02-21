@@ -15,14 +15,17 @@ public final class EntityLinkingResult extends PreBuiltResult {
      * Response by document
      */
     @JsonProperty(value = "documents", required = true)
-    private List<EntityLinkingResultDocumentsItem> documents;
+    private List<EntityLinkingResultWithDetectedLanguage> documents;
+
+    /** Creates an instance of EntityLinkingResult class. */
+    public EntityLinkingResult() {}
 
     /**
      * Get the documents property: Response by document.
      *
      * @return the documents value.
      */
-    public List<EntityLinkingResultDocumentsItem> getDocuments() {
+    public List<EntityLinkingResultWithDetectedLanguage> getDocuments() {
         return this.documents;
     }
 
@@ -32,7 +35,7 @@ public final class EntityLinkingResult extends PreBuiltResult {
      * @param documents the documents value to set.
      * @return the EntityLinkingResult object itself.
      */
-    public EntityLinkingResult setDocuments(List<EntityLinkingResultDocumentsItem> documents) {
+    public EntityLinkingResult setDocuments(List<EntityLinkingResultWithDetectedLanguage> documents) {
         this.documents = documents;
         return this;
     }

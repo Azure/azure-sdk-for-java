@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RequestType. */
+/** The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc. */
 public final class RequestType extends ExpandableStringEnum<RequestType> {
     /** Static value AdminAssign for RequestType. */
     public static final RequestType ADMIN_ASSIGN = fromString("AdminAssign");
@@ -48,7 +48,11 @@ public final class RequestType extends ExpandableStringEnum<RequestType> {
         return fromString(name, RequestType.class);
     }
 
-    /** @return known RequestType values. */
+    /**
+     * Gets known RequestType values.
+     *
+     * @return known RequestType values.
+     */
     public static Collection<RequestType> values() {
         return values(RequestType.class);
     }

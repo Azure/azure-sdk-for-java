@@ -56,7 +56,7 @@ public final class AllowedConnectionsClientImpl implements AllowedConnectionsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAllowe")
-    private interface AllowedConnectionsService {
+    public interface AllowedConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/allowedConnections")
         @ExpectedResponses({200})
@@ -570,27 +570,6 @@ public final class AllowedConnectionsClientImpl implements AllowedConnectionsCli
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param connectionType The type of allowed connections (Internal, External).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription and location, based on connection
-     *     type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AllowedConnectionsResourceInner get(
-        String resourceGroupName, String ascLocation, ConnectionType connectionType) {
-        return getAsync(resourceGroupName, ascLocation, connectionType).block();
-    }
-
-    /**
-     * Gets the list of all possible traffic between resources for the subscription and location, based on connection
-     * type.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param connectionType The type of allowed connections (Internal, External).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -602,6 +581,27 @@ public final class AllowedConnectionsClientImpl implements AllowedConnectionsCli
     public Response<AllowedConnectionsResourceInner> getWithResponse(
         String resourceGroupName, String ascLocation, ConnectionType connectionType, Context context) {
         return getWithResponseAsync(resourceGroupName, ascLocation, connectionType, context).block();
+    }
+
+    /**
+     * Gets the list of all possible traffic between resources for the subscription and location, based on connection
+     * type.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param connectionType The type of allowed connections (Internal, External).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of all possible traffic between resources for the subscription and location, based on connection
+     *     type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AllowedConnectionsResourceInner get(
+        String resourceGroupName, String ascLocation, ConnectionType connectionType) {
+        return getWithResponse(resourceGroupName, ascLocation, connectionType, Context.NONE).getValue();
     }
 
     /**

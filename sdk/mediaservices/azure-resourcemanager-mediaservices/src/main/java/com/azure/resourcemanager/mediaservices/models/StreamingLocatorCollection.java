@@ -25,6 +25,10 @@ public final class StreamingLocatorCollection {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of StreamingLocatorCollection class. */
+    public StreamingLocatorCollection() {
+    }
+
     /**
      * Get the value property: A collection of StreamingLocator items.
      *

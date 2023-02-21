@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.models.RunCommandRequest;
 
 /** Samples for ManagedClusters RunCommand. */
 public final class ManagedClustersRunCommandSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/RunCommandRequest.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/RunCommandRequest.json
      */
     /**
      * Sample code: submitNewCommand.
@@ -26,7 +25,10 @@ public final class ManagedClustersRunCommandSamples {
             .runCommand(
                 "rg1",
                 "clustername1",
-                new RunCommandRequest().withCommand("kubectl apply -f ns.yaml").withContext("").withClusterToken(""),
-                Context.NONE);
+                new RunCommandRequest()
+                    .withCommand("kubectl apply -f ns.yaml")
+                    .withContext("")
+                    .withClusterToken("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

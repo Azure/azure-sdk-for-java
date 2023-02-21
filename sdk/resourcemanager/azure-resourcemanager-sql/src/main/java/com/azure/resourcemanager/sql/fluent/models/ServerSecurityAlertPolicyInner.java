@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -15,17 +16,36 @@ import java.util.List;
 @Fluent
 public final class ServerSecurityAlertPolicyInner extends ProxyResource {
     /*
+     * SystemData of SecurityAlertPolicyResource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
-    private SecurityAlertPolicyProperties innerProperties;
+    private SecurityAlertsPolicyProperties innerProperties;
+
+    /** Creates an instance of ServerSecurityAlertPolicyInner class. */
+    public ServerSecurityAlertPolicyInner() {
+    }
+
+    /**
+     * Get the systemData property: SystemData of SecurityAlertPolicyResource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
      *
      * @return the innerProperties value.
      */
-    private SecurityAlertPolicyProperties innerProperties() {
+    private SecurityAlertsPolicyProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -48,7 +68,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      */
     public ServerSecurityAlertPolicyInner withState(SecurityAlertPolicyState state) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new SecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withState(state);
         return this;
@@ -56,7 +76,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Get the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
-     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action.
+     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force.
      *
      * @return the disabledAlerts value.
      */
@@ -66,14 +86,14 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Set the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
-     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action.
+     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force.
      *
      * @param disabledAlerts the disabledAlerts value to set.
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withDisabledAlerts(List<String> disabledAlerts) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new SecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withDisabledAlerts(disabledAlerts);
         return this;
@@ -96,7 +116,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      */
     public ServerSecurityAlertPolicyInner withEmailAddresses(List<String> emailAddresses) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new SecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withEmailAddresses(emailAddresses);
         return this;
@@ -119,7 +139,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      */
     public ServerSecurityAlertPolicyInner withEmailAccountAdmins(Boolean emailAccountAdmins) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new SecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withEmailAccountAdmins(emailAccountAdmins);
         return this;
@@ -144,7 +164,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      */
     public ServerSecurityAlertPolicyInner withStorageEndpoint(String storageEndpoint) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new SecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withStorageEndpoint(storageEndpoint);
         return this;
@@ -169,7 +189,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      */
     public ServerSecurityAlertPolicyInner withStorageAccountAccessKey(String storageAccountAccessKey) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new SecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withStorageAccountAccessKey(storageAccountAccessKey);
         return this;
@@ -192,7 +212,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      */
     public ServerSecurityAlertPolicyInner withRetentionDays(Integer retentionDays) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new SecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withRetentionDays(retentionDays);
         return this;

@@ -36,6 +36,10 @@ public final class CustomCertificateProperties {
     @JsonProperty(value = "keyVaultSecretVersion")
     private String keyVaultSecretVersion;
 
+    /** Creates an instance of CustomCertificateProperties class. */
+    public CustomCertificateProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the resource.
      *

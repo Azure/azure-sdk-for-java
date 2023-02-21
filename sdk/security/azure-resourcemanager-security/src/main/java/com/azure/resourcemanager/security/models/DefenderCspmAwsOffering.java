@@ -20,6 +20,10 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
     @JsonProperty(value = "vmScanners")
     private DefenderCspmAwsOfferingVmScanners vmScanners;
 
+    /** Creates an instance of DefenderCspmAwsOffering class. */
+    public DefenderCspmAwsOffering() {
+    }
+
     /**
      * Get the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
      *

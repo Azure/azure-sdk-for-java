@@ -46,26 +46,26 @@ public final class DevCentersClientImpl implements DevCentersClient {
     private final DevCentersService service;
 
     /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of DevCentersClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DevCentersClientImpl(DevCenterClientImpl client) {
+    DevCentersClientImpl(DevCenterManagementClientImpl client) {
         this.service =
             RestProxy.create(DevCentersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevCenterClientDevCenters to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for DevCenterManagementClientDevCenters to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DevCenterClientDevCe")
-    private interface DevCentersService {
+    @ServiceInterface(name = "DevCenterManagementC")
+    public interface DevCentersService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevCenter/devcenters")
         @ExpectedResponses({200})
@@ -347,7 +347,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Lists all devcenters in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -402,7 +402,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Lists all devcenters in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -455,7 +455,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Lists all devcenters in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -472,7 +472,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Lists all devcenters in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -489,7 +489,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Lists all devcenters in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -507,7 +507,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Lists all devcenters in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -522,7 +522,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Lists all devcenters in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -538,7 +538,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Gets a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -586,7 +586,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Gets a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -632,7 +632,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Gets a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -648,7 +648,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Gets a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -665,7 +665,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Gets a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -680,7 +680,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Creates or updates a devcenter resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -735,7 +735,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Creates or updates a devcenter resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
      * @param context The context to associate with this operation.
@@ -788,7 +788,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Creates or updates a devcenter resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -813,7 +813,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Creates or updates a devcenter resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
      * @param context The context to associate with this operation.
@@ -837,7 +837,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Creates or updates a devcenter resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -854,7 +854,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Creates or updates a devcenter resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
      * @param context The context to associate with this operation.
@@ -872,7 +872,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Creates or updates a devcenter resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -891,7 +891,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Creates or updates a devcenter resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
      * @param context The context to associate with this operation.
@@ -911,7 +911,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Creates or updates a devcenter resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -927,7 +927,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Creates or updates a devcenter resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
      * @param context The context to associate with this operation.
@@ -945,7 +945,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Partially updates a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1000,7 +1000,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Partially updates a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
      * @param context The context to associate with this operation.
@@ -1053,7 +1053,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Partially updates a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1078,7 +1078,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Partially updates a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
      * @param context The context to associate with this operation.
@@ -1102,7 +1102,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Partially updates a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1119,7 +1119,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Partially updates a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
      * @param context The context to associate with this operation.
@@ -1137,7 +1137,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Partially updates a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1155,7 +1155,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Partially updates a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
      * @param context The context to associate with this operation.
@@ -1175,7 +1175,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Partially updates a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1191,7 +1191,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Partially updates a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
      * @param context The context to associate with this operation.
@@ -1209,7 +1209,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Deletes a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1256,7 +1256,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Deletes a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1302,7 +1302,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Deletes a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1321,7 +1321,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Deletes a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1342,7 +1342,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Deletes a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1357,7 +1357,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Deletes a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1374,7 +1374,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Deletes a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1389,7 +1389,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Deletes a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1407,7 +1407,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Deletes a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1421,7 +1421,7 @@ public final class DevCentersClientImpl implements DevCentersClient {
     /**
      * Deletes a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

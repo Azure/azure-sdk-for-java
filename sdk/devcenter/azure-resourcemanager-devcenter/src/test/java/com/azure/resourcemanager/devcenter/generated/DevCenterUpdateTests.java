@@ -20,10 +20,10 @@ public final class DevCenterUpdateTests {
         DevCenterUpdate model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"mdvpjhulsu\":{}}},\"tags\":{\"odjpslwejd\":\"kjozkrwfnd\",\"cctazakljlahbc\":\"vwryoqpso\",\"gexpaojakhmsbz\":\"yffdfdos\"},\"location\":\"crzevdphlx\"}")
+                    "{\"identity\":{\"principalId\":\"0218f7cb-1973-4891-b7a7-b7e7bf835cc1\",\"tenantId\":\"c007f053-ec3c-4a7e-bb6e-e6547fdd282e\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ipjoxzjnchgejs\":{\"principalId\":\"46b87a21-c120-405e-aa71-751626bf8229\",\"clientId\":\"28bd133f-32bd-473d-bd8f-5068af5ba9da\"},\"mailzydehojw\":{\"principalId\":\"844c7466-6256-47ac-b865-cb907bed5c93\",\"clientId\":\"07144762-8153-450d-9688-dafe1f7ccd63\"},\"uxinpmqnjaq\":{\"principalId\":\"edc06086-f8b5-44c4-bf6d-fc586b42a36c\",\"clientId\":\"ffe278c5-9a31-43c5-97b5-ec3ca3c776d1\"}}},\"tags\":{\"jvwmfda\":\"jsprozvcpute\"},\"location\":\"cmdv\"}")
                 .toObject(DevCenterUpdate.class);
-        Assertions.assertEquals("kjozkrwfnd", model.tags().get("odjpslwejd"));
-        Assertions.assertEquals("crzevdphlx", model.location());
+        Assertions.assertEquals("jsprozvcpute", model.tags().get("jvwmfda"));
+        Assertions.assertEquals("cmdv", model.location());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
@@ -31,16 +31,22 @@ public final class DevCenterUpdateTests {
     public void testSerialize() {
         DevCenterUpdate model =
             new DevCenterUpdate()
-                .withTags(
-                    mapOf("odjpslwejd", "kjozkrwfnd", "cctazakljlahbc", "vwryoqpso", "gexpaojakhmsbz", "yffdfdos"))
-                .withLocation("crzevdphlx")
+                .withTags(mapOf("jvwmfda", "jsprozvcpute"))
+                .withLocation("cmdv")
                 .withIdentity(
                     new ManagedServiceIdentity()
                         .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("mdvpjhulsu", new UserAssignedIdentity())));
+                        .withUserAssignedIdentities(
+                            mapOf(
+                                "ipjoxzjnchgejs",
+                                new UserAssignedIdentity(),
+                                "mailzydehojw",
+                                new UserAssignedIdentity(),
+                                "uxinpmqnjaq",
+                                new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(DevCenterUpdate.class);
-        Assertions.assertEquals("kjozkrwfnd", model.tags().get("odjpslwejd"));
-        Assertions.assertEquals("crzevdphlx", model.location());
+        Assertions.assertEquals("jsprozvcpute", model.tags().get("jvwmfda"));
+        Assertions.assertEquals("cmdv", model.location());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 

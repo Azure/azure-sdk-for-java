@@ -53,11 +53,13 @@ public final class AddressValue {
     private String countryRegion;
 
     /*
-     * Street-level address, excluding city, state, countryRegion, and
-     * postalCode.
+     * Street-level address, excluding city, state, countryRegion, and postalCode.
      */
     @JsonProperty(value = "streetAddress")
     private String streetAddress;
+
+    /** Creates an instance of AddressValue class. */
+    public AddressValue() {}
 
     /**
      * Get the houseNumber property: House or building number.

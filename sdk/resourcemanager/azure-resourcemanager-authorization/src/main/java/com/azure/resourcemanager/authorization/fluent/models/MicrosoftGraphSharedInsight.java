@@ -57,6 +57,10 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphSharedInsight class. */
+    public MicrosoftGraphSharedInsight() {
+    }
+
     /**
      * Get the lastShared property: sharingDetail.
      *

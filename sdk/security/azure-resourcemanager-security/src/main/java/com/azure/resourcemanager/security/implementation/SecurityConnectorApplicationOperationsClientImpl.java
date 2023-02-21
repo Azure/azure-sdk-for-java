@@ -61,7 +61,7 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecuri")
-    private interface SecurityConnectorApplicationOperationsService {
+    public interface SecurityConnectorApplicationOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
@@ -252,23 +252,6 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific application for the requested scope by applicationId.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner get(String resourceGroupName, String securityConnectorName, String applicationId) {
-        return getAsync(resourceGroupName, securityConnectorName, applicationId).block();
-    }
-
-    /**
-     * Get a specific application for the requested scope by applicationId.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -279,6 +262,23 @@ public final class SecurityConnectorApplicationOperationsClientImpl
     public Response<ApplicationInner> getWithResponse(
         String resourceGroupName, String securityConnectorName, String applicationId, Context context) {
         return getWithResponseAsync(resourceGroupName, securityConnectorName, applicationId, context).block();
+    }
+
+    /**
+     * Get a specific application for the requested scope by applicationId.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @param applicationId The security Application key - unique key for the standard application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific application for the requested scope by applicationId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInner get(String resourceGroupName, String securityConnectorName, String applicationId) {
+        return getWithResponse(resourceGroupName, securityConnectorName, applicationId, Context.NONE).getValue();
     }
 
     /**
@@ -439,25 +439,6 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner createOrUpdate(
-        String resourceGroupName, String securityConnectorName, String applicationId, ApplicationInner application) {
-        return createOrUpdateAsync(resourceGroupName, securityConnectorName, applicationId, application).block();
-    }
-
-    /**
-     * Creates or update a security Application on the given security connector.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @param application Application over a subscription scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -474,6 +455,27 @@ public final class SecurityConnectorApplicationOperationsClientImpl
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, securityConnectorName, applicationId, application, context)
             .block();
+    }
+
+    /**
+     * Creates or update a security Application on the given security connector.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @param applicationId The security Application key - unique key for the standard application.
+     * @param application Application over a subscription scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security Application over a given scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInner createOrUpdate(
+        String resourceGroupName, String securityConnectorName, String applicationId, ApplicationInner application) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, securityConnectorName, applicationId, application, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -607,22 +609,6 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String securityConnectorName, String applicationId) {
-        deleteAsync(resourceGroupName, securityConnectorName, applicationId).block();
-    }
-
-    /**
-     * Delete an Application over a given scope.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -633,5 +619,21 @@ public final class SecurityConnectorApplicationOperationsClientImpl
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String securityConnectorName, String applicationId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, securityConnectorName, applicationId, context).block();
+    }
+
+    /**
+     * Delete an Application over a given scope.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @param applicationId The security Application key - unique key for the standard application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String securityConnectorName, String applicationId) {
+        deleteWithResponse(resourceGroupName, securityConnectorName, applicationId, Context.NONE);
     }
 }

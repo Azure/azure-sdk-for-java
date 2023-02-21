@@ -65,6 +65,10 @@ public final class SoftwareProperties {
     @JsonProperty(value = "firstSeenAt")
     private String firstSeenAt;
 
+    /** Creates an instance of SoftwareProperties class. */
+    public SoftwareProperties() {
+    }
+
     /**
      * Get the deviceId property: Unique identifier for the virtual machine in the service.
      *

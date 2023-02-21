@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkfunction.fluent.models.AzureTrafficCollectorInner;
-import com.azure.resourcemanager.networkfunction.fluent.models.CollectorPolicyInner;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +67,7 @@ public interface AzureTrafficCollector {
      *
      * @return the collectorPolicies value.
      */
-    List<CollectorPolicy> collectorPolicies();
+    List<ResourceReference> collectorPolicies();
 
     /**
      * Gets the virtualHub property: The virtualHub to which the Azure Traffic Collector belongs.
@@ -156,8 +155,7 @@ public interface AzureTrafficCollector {
          * The stage of the AzureTrafficCollector definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithCollectorPolicies, DefinitionStages.WithVirtualHub {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithVirtualHub {
             /**
              * Executes the create request.
              *
@@ -182,16 +180,6 @@ public interface AzureTrafficCollector {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the AzureTrafficCollector definition allowing to specify collectorPolicies. */
-        interface WithCollectorPolicies {
-            /**
-             * Specifies the collectorPolicies property: Collector Policies for Azure Traffic Collector..
-             *
-             * @param collectorPolicies Collector Policies for Azure Traffic Collector.
-             * @return the next definition stage.
-             */
-            WithCreate withCollectorPolicies(List<CollectorPolicyInner> collectorPolicies);
         }
         /** The stage of the AzureTrafficCollector definition allowing to specify virtualHub. */
         interface WithVirtualHub {

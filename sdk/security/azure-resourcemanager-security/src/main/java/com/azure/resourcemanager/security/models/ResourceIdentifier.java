@@ -25,6 +25,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ResourceIdentifier {
+    /** Creates an instance of ResourceIdentifier class. */
+    public ResourceIdentifier() {
+    }
+
     /**
      * Validates the instance.
      *

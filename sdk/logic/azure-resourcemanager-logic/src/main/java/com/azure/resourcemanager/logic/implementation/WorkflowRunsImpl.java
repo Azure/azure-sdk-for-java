@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.WorkflowRunsClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunInner;
 import com.azure.resourcemanager.logic.models.WorkflowRun;
 import com.azure.resourcemanager.logic.models.WorkflowRuns;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowRunsImpl implements WorkflowRuns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowRunsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunsImpl.class);
 
     private final WorkflowRunsClient innerClient;
 
@@ -40,15 +39,6 @@ public final class WorkflowRunsImpl implements WorkflowRuns {
         return Utils.mapPage(inner, inner1 -> new WorkflowRunImpl(inner1, this.manager()));
     }
 
-    public WorkflowRun get(String resourceGroupName, String workflowName, String runName) {
-        WorkflowRunInner inner = this.serviceClient().get(resourceGroupName, workflowName, runName);
-        if (inner != null) {
-            return new WorkflowRunImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WorkflowRun> getWithResponse(
         String resourceGroupName, String workflowName, String runName, Context context) {
         Response<WorkflowRunInner> inner =
@@ -64,13 +54,22 @@ public final class WorkflowRunsImpl implements WorkflowRuns {
         }
     }
 
-    public void cancel(String resourceGroupName, String workflowName, String runName) {
-        this.serviceClient().cancel(resourceGroupName, workflowName, runName);
+    public WorkflowRun get(String resourceGroupName, String workflowName, String runName) {
+        WorkflowRunInner inner = this.serviceClient().get(resourceGroupName, workflowName, runName);
+        if (inner != null) {
+            return new WorkflowRunImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> cancelWithResponse(
         String resourceGroupName, String workflowName, String runName, Context context) {
         return this.serviceClient().cancelWithResponse(resourceGroupName, workflowName, runName, context);
+    }
+
+    public void cancel(String resourceGroupName, String workflowName, String runName) {
+        this.serviceClient().cancel(resourceGroupName, workflowName, runName);
     }
 
     private WorkflowRunsClient serviceClient() {

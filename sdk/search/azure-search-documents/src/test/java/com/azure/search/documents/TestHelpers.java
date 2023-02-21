@@ -5,8 +5,10 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
@@ -14,6 +16,7 @@ import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.test.environment.models.NonNullableModel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -30,6 +33,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -39,11 +43,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
-import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
-import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
@@ -110,6 +113,32 @@ public final class TestHelpers {
             ObjectNode actualNode = MAPPER.valueToTree(actual);
             assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults, ignoredFields);
         }
+    }
+
+    /**
+     * Determines if two lists of documents are equal by comparing their keys.
+     *
+     * @param group1 The first list of documents.
+     * @param group2 The second list documents.
+     * @return True of false if the documents are equal or not equal, respectively.
+     */
+    public static boolean equalDocumentSets(List<NonNullableModel> group1, List<NonNullableModel> group2) {
+        List<String> group1Keys = produceKeyList(group1, TestHelpers::extractKeyFromDocument);
+        List<String> group2Keys = produceKeyList(group2, TestHelpers::extractKeyFromDocument);
+        return group1Keys.containsAll(group2Keys);
+    }
+
+    private static <T> List<String> produceKeyList(List<T> objList, Function<T, String> extractKeyFunc) {
+        List<String> keyList = new ArrayList<>();
+        for (T obj : objList) {
+            keyList.add(extractKeyFunc.apply(obj));
+        }
+        return keyList;
+    }
+
+    private static String extractKeyFromDocument(NonNullableModel document) {
+        ObjectNode node = MAPPER.valueToTree(document);
+        return node.get("Key").asText();
     }
 
     /**
@@ -220,7 +249,7 @@ public final class TestHelpers {
                 "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'."));
     }
 
-    private static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
+    public static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
         if (ex instanceof HttpResponseException) {
             assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
 
@@ -234,7 +263,7 @@ public final class TestHelpers {
 
     public static void waitForIndexing() {
         // Wait 2 seconds to allow index request to finish.
-        sleepIfRunningAgainstService(3000);
+        sleepIfRunningAgainstService(2000);
     }
 
     public static void sleepIfRunningAgainstService(long millis) {
@@ -284,6 +313,13 @@ public final class TestHelpers {
         return documents;
     }
 
+    public static List<Map<String, Object>> uploadDocumentsJson(SearchAsyncClient client, String dataJson) {
+        List<Map<String, Object>> documents = readJsonFileToList(dataJson);
+        uploadDocuments(client, documents);
+
+        return documents;
+    }
+
     public static HttpPipeline getHttpPipeline(SearchClient searchClient) {
         return searchClient.getHttpPipeline();
     }
@@ -322,27 +358,41 @@ public final class TestHelpers {
         }
     }
 
-    public static SearchIndexClient setupSharedIndex(String indexName) {
+    public static SearchIndexClient setupSharedIndex(String indexName, String indexDefinition, String indexData) {
         try {
-            byte[] hotelsTestIndexDataJsonData = loadResource(HOTELS_TESTS_INDEX_DATA_JSON);
+            byte[] hotelsTestIndexDataJsonData = loadResource(indexDefinition);
             JsonNode jsonNode = MAPPER.readTree(hotelsTestIndexDataJsonData);
             ((ObjectNode) jsonNode).set("name", new TextNode(indexName));
 
             SearchIndex index = MAPPER.treeToValue(jsonNode, SearchIndex.class);
 
-            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-                .endpoint(ENDPOINT)
-                .credential(new AzureKeyCredential(API_KEY))
-                .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
-                .buildClient();
-
+            SearchIndexClient searchIndexClient = createSharedSearchIndexClient();
             searchIndexClient.createOrUpdateIndex(index);
-            uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), HOTELS_DATA_JSON);
+
+            if (indexData != null) {
+                uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), indexData);
+            }
 
             return searchIndexClient;
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public static HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((httpRequest, context) -> false)
+            .assertSync()
+            .build();
+    }
+
+    public static SearchIndexClient createSharedSearchIndexClient() {
+        return new SearchIndexClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
+            .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
+            .buildClient();
     }
 
     public static String createGeographyPolygon(String... coordinates) {
@@ -368,7 +418,7 @@ public final class TestHelpers {
     static byte[] loadResource(String fileName) {
         return LOADED_FILE_DATA.computeIfAbsent(fileName, fName -> {
             try {
-                URI fileUri = AutocompleteSyncTests.class.getClassLoader()
+                URI fileUri = AutocompleteTests.class.getClassLoader()
                     .getResource(fileName)
                     .toURI();
 

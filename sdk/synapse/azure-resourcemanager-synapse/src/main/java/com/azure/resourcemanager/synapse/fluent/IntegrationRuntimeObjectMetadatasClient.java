@@ -19,22 +19,9 @@ import com.azure.resourcemanager.synapse.models.GetSsisObjectMetadataRequest;
  */
 public interface IntegrationRuntimeObjectMetadatasClient {
     /**
-     * Get object metadata from an integration runtime.
+     * Get integration runtime object metadata
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object metadata from an integration runtime.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SsisObjectMetadataListResponseInner list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
-
-    /**
-     * Get object metadata from an integration runtime.
+     * <p>Get object metadata from an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -55,7 +42,26 @@ public interface IntegrationRuntimeObjectMetadatasClient {
         Context context);
 
     /**
-     * Refresh the object metadata in an integration runtime.
+     * Get integration runtime object metadata
+     *
+     * <p>Get object metadata from an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object metadata from an integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SsisObjectMetadataListResponseInner list(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+
+    /**
+     * Refresh integration runtime object metadata
+     *
+     * <p>Refresh the object metadata in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -70,7 +76,9 @@ public interface IntegrationRuntimeObjectMetadatasClient {
         String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
-     * Refresh the object metadata in an integration runtime.
+     * Refresh integration runtime object metadata
+     *
+     * <p>Refresh the object metadata in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -86,7 +94,9 @@ public interface IntegrationRuntimeObjectMetadatasClient {
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
     /**
-     * Refresh the object metadata in an integration runtime.
+     * Refresh integration runtime object metadata
+     *
+     * <p>Refresh the object metadata in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -101,7 +111,9 @@ public interface IntegrationRuntimeObjectMetadatasClient {
         String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
-     * Refresh the object metadata in an integration runtime.
+     * Refresh integration runtime object metadata
+     *
+     * <p>Refresh the object metadata in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

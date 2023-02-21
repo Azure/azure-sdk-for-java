@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IsConfigPendingRestart. */
+/** If is the configuration pending restart or not. */
 public final class IsConfigPendingRestart extends ExpandableStringEnum<IsConfigPendingRestart> {
     /** Static value True for IsConfigPendingRestart. */
     public static final IsConfigPendingRestart TRUE = fromString("True");
 
     /** Static value False for IsConfigPendingRestart. */
     public static final IsConfigPendingRestart FALSE = fromString("False");
+
+    /**
+     * Creates a new instance of IsConfigPendingRestart value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IsConfigPendingRestart() {
+    }
 
     /**
      * Creates or finds a IsConfigPendingRestart from its string representation.
@@ -27,7 +36,11 @@ public final class IsConfigPendingRestart extends ExpandableStringEnum<IsConfigP
         return fromString(name, IsConfigPendingRestart.class);
     }
 
-    /** @return known IsConfigPendingRestart values. */
+    /**
+     * Gets known IsConfigPendingRestart values.
+     *
+     * @return known IsConfigPendingRestart values.
+     */
     public static Collection<IsConfigPendingRestart> values() {
         return values(IsConfigPendingRestart.class);
     }

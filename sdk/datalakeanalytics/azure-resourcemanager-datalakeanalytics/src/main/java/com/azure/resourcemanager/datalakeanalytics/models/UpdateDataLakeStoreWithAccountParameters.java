@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.UpdateDataLakeStoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to update a Data Lake Store account while updating a Data Lake Analytics account. */
-@JsonFlatten
 @Fluent
-public class UpdateDataLakeStoreWithAccountParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateDataLakeStoreWithAccountParameters.class);
-
+public final class UpdateDataLakeStoreWithAccountParameters {
     /*
      * The unique name of the Data Lake Store account to update.
      */
@@ -23,10 +19,14 @@ public class UpdateDataLakeStoreWithAccountParameters {
     private String name;
 
     /*
-     * The optional suffix for the Data Lake Store account.
+     * The Data Lake Store account properties to use when updating a Data Lake Store account.
      */
-    @JsonProperty(value = "properties.suffix")
-    private String suffix;
+    @JsonProperty(value = "properties")
+    private UpdateDataLakeStoreProperties innerProperties;
+
+    /** Creates an instance of UpdateDataLakeStoreWithAccountParameters class. */
+    public UpdateDataLakeStoreWithAccountParameters() {
+    }
 
     /**
      * Get the name property: The unique name of the Data Lake Store account to update.
@@ -49,12 +49,22 @@ public class UpdateDataLakeStoreWithAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The Data Lake Store account properties to use when updating a Data Lake Store
+     * account.
+     *
+     * @return the innerProperties value.
+     */
+    private UpdateDataLakeStoreProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the suffix property: The optional suffix for the Data Lake Store account.
      *
      * @return the suffix value.
      */
     public String suffix() {
-        return this.suffix;
+        return this.innerProperties() == null ? null : this.innerProperties().suffix();
     }
 
     /**
@@ -64,7 +74,10 @@ public class UpdateDataLakeStoreWithAccountParameters {
      * @return the UpdateDataLakeStoreWithAccountParameters object itself.
      */
     public UpdateDataLakeStoreWithAccountParameters withSuffix(String suffix) {
-        this.suffix = suffix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreProperties();
+        }
+        this.innerProperties().withSuffix(suffix);
         return this;
     }
 
@@ -75,10 +88,15 @@ public class UpdateDataLakeStoreWithAccountParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model UpdateDataLakeStoreWithAccountParameters"));
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UpdateDataLakeStoreWithAccountParameters.class);
 }

@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("HttpC2DMessagesNotInAllowedRange")
 @Fluent
 public final class HttpC2DMessagesNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /** Creates an instance of HttpC2DMessagesNotInAllowedRange class. */
+    public HttpC2DMessagesNotInAllowedRange() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public HttpC2DMessagesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

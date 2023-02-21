@@ -20,6 +20,22 @@ public interface ApplicationDefinitionsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed application definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ApplicationDefinitionInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String applicationDefinitionName, Context context);
+
+    /**
+     * Gets the managed application definition.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
@@ -30,22 +46,6 @@ public interface ApplicationDefinitionsClient {
     ApplicationDefinitionInner getByResourceGroup(String resourceGroupName, String applicationDefinitionName);
 
     /**
-     * Gets the managed application definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationDefinitionName The name of the managed application definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationDefinitionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationDefinitionName, Context context);
-
-    /**
      * Deletes the managed application definition.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -54,9 +54,9 @@ public interface ApplicationDefinitionsClient {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationDefinitionName);
 
     /**
@@ -69,9 +69,9 @@ public interface ApplicationDefinitionsClient {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String applicationDefinitionName, Context context);
 
@@ -112,9 +112,9 @@ public interface ApplicationDefinitionsClient {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link SyncPoller} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdate(
         String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters);
 
@@ -129,9 +129,9 @@ public interface ApplicationDefinitionsClient {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link SyncPoller} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String applicationDefinitionName,
@@ -182,7 +182,7 @@ public interface ApplicationDefinitionsClient {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApplicationDefinitionInner> listByResourceGroup(String resourceGroupName);
@@ -196,10 +196,26 @@ public interface ApplicationDefinitionsClient {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApplicationDefinitionInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets the managed application definition.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed application definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ApplicationDefinitionInner> getByIdWithResponse(
+        String resourceGroupName, String applicationDefinitionName, Context context);
 
     /**
      * Gets the managed application definition.
@@ -216,22 +232,6 @@ public interface ApplicationDefinitionsClient {
     ApplicationDefinitionInner getById(String resourceGroupName, String applicationDefinitionName);
 
     /**
-     * Gets the managed application definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationDefinitionName The name of the managed application definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationDefinitionInner> getByIdWithResponse(
-        String resourceGroupName, String applicationDefinitionName, Context context);
-
-    /**
      * Deletes the managed application definition.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -240,9 +240,9 @@ public interface ApplicationDefinitionsClient {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteById(String resourceGroupName, String applicationDefinitionName);
 
     /**
@@ -255,9 +255,9 @@ public interface ApplicationDefinitionsClient {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteById(
         String resourceGroupName, String applicationDefinitionName, Context context);
 
@@ -298,9 +298,9 @@ public interface ApplicationDefinitionsClient {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link SyncPoller} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdateById(
         String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters);
 
@@ -315,9 +315,9 @@ public interface ApplicationDefinitionsClient {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link SyncPoller} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdateById(
         String resourceGroupName,
         String applicationDefinitionName,

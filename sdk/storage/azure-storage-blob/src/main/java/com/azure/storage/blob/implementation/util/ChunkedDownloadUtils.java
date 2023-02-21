@@ -11,7 +11,6 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple3;
 
 import java.util.function.BiFunction;
@@ -43,7 +42,6 @@ public class ChunkedDownloadUtils {
             // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic provided the same
             // functionality with the added benefit that it won't infinitely create threads if needed and will instead
             // queue.
-            .subscribeOn(Schedulers.boundedElastic())
             .flatMap(response -> {
                 /*
                 Either the etag was set and it matches because the download succeeded, so this is a no-op, or there
@@ -81,7 +79,6 @@ public class ChunkedDownloadUtils {
                         // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic
                         // provided the same functionality with the added benefit that it won't infinitely create
                         // threads if needed and will instead queue.
-                        .subscribeOn(Schedulers.boundedElastic())
                         .flatMap(response -> {
                             /*
                             Ensure the blob is still 0 length by checking our download was the full length.
@@ -117,20 +114,16 @@ public class ChunkedDownloadUtils {
 
         // Make the download call.
         return downloader.apply(chunkRange, requestConditions)
-            .subscribeOn(Schedulers.boundedElastic())
             .flatMapMany(returnTransformer);
     }
 
     private static BlobRequestConditions setEtag(BlobRequestConditions requestConditions, String etag) {
         // We don't want to modify the user's object, so we'll create a duplicate and set the retrieved etag.
         return new BlobRequestConditions()
-            .setIfModifiedSince(
-                requestConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(
-                requestConditions.getIfModifiedSince())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfModifiedSince())
             .setIfMatch(etag)
-            .setIfNoneMatch(
-                requestConditions.getIfNoneMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setLeaseId(requestConditions.getLeaseId());
     }
 

@@ -13,7 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** deviceConfigurationState Device Configuration State for a given device. */
+/**
+ * deviceConfigurationState
+ *
+ * <p>Device Configuration State for a given device.
+ */
 @Fluent
 public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraphEntity {
     /*
@@ -56,6 +60,10 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
      * Device Configuration State for a given device.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDeviceConfigurationState class. */
+    public MicrosoftGraphDeviceConfigurationState() {
+    }
 
     /**
      * Get the displayName property: The name of the policy for this policyBase.

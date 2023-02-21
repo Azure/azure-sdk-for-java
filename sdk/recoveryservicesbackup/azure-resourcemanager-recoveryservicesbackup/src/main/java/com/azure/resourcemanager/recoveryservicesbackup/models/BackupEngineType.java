@@ -20,6 +20,15 @@ public final class BackupEngineType extends ExpandableStringEnum<BackupEngineTyp
     public static final BackupEngineType AZURE_BACKUP_SERVER_ENGINE = fromString("AzureBackupServerEngine");
 
     /**
+     * Creates a new instance of BackupEngineType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupEngineType() {
+    }
+
+    /**
      * Creates or finds a BackupEngineType from its string representation.
      *
      * @param name a name to look for.

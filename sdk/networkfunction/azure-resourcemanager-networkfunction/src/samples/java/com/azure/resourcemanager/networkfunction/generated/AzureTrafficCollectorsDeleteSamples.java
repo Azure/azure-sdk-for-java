@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AzureTrafficCollectors Delete. */
 public final class AzureTrafficCollectorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/AzureTrafficCollectorDelete.json
+     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorDelete.json
      */
     /**
      * Sample code: Delete Traffic Collector.

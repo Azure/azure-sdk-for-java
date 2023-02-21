@@ -10,7 +10,7 @@ import com.azure.resourcemanager.mediaservices.models.Visibility;
 /** Samples for Tracks CreateOrUpdate. */
 public final class TracksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/asset-tracks-create.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/asset-tracks-create.json
      */
     /**
      * Sample code: Creates a Track.
@@ -21,7 +21,7 @@ public final class TracksCreateOrUpdateSamples {
         manager
             .tracks()
             .define("text3")
-            .withExistingAsset("contoso", "contosomedia", "ClimbingMountRainer")
+            .withExistingAsset("contosorg", "contosomedia", "ClimbingMountRainer")
             .withTrack(
                 new TextTrack()
                     .withFileName("text3.ttml")

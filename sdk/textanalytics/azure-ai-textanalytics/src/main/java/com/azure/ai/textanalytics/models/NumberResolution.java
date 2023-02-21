@@ -17,7 +17,7 @@ public final class NumberResolution extends BaseResolution {
     /*
      * A numeric representation of what the extracted text denotes.
      */
-    private String value;
+    private double value;
 
     static {
         NumberResolutionPropertiesHelper.setAccessor(
@@ -28,7 +28,7 @@ public final class NumberResolution extends BaseResolution {
                 }
 
                 @Override
-                public void setValue(NumberResolution numberResolution, String value) {
+                public void setValue(NumberResolution numberResolution, double value) {
                     numberResolution.setValue(value);
                 }
             });
@@ -48,7 +48,7 @@ public final class NumberResolution extends BaseResolution {
      *
      * @return the value value.
      */
-    public String getValue() {
+    public double getValue() {
         return this.value;
     }
 
@@ -56,7 +56,7 @@ public final class NumberResolution extends BaseResolution {
         this.numberKind = numberKind;
     }
 
-    private void setValue(String value) {
+    private void setValue(double value) {
         this.value = value;
     }
 }

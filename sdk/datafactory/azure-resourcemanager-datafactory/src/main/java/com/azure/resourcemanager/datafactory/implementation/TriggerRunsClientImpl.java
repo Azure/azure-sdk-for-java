@@ -52,7 +52,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface TriggerRunsService {
+    public interface TriggerRunsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

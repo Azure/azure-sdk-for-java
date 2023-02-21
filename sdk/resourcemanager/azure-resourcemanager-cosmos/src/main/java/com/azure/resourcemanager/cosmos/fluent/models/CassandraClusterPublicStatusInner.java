@@ -38,6 +38,10 @@ public final class CassandraClusterPublicStatusInner {
     @JsonProperty(value = "dataCenters")
     private List<CassandraClusterPublicStatusDataCentersItem> dataCenters;
 
+    /** Creates an instance of CassandraClusterPublicStatusInner class. */
+    public CassandraClusterPublicStatusInner() {
+    }
+
     /**
      * Get the etag property: The eTag property.
      *

@@ -29,6 +29,10 @@ public final class SecureScoreItemProperties {
     @JsonProperty(value = "weight", access = JsonProperty.Access.WRITE_ONLY)
     private Long weight;
 
+    /** Creates an instance of SecureScoreItemProperties class. */
+    public SecureScoreItemProperties() {
+    }
+
     /**
      * Get the displayName property: The initiative’s name.
      *

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.WorkflowRunActionRequestHistoriesClient;
 import com.azure.resourcemanager.logic.fluent.models.RequestHistoryInner;
 import com.azure.resourcemanager.logic.models.RequestHistoryListResult;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in WorkflowRunActionRequestHistoriesClient.
  */
 public final class WorkflowRunActionRequestHistoriesClientImpl implements WorkflowRunActionRequestHistoriesClient {
-    private final ClientLogger logger = new ClientLogger(WorkflowRunActionRequestHistoriesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkflowRunActionRequestHistoriesService service;
 
@@ -64,7 +61,7 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
      */
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
-    private interface WorkflowRunActionRequestHistoriesService {
+    public interface WorkflowRunActionRequestHistoriesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
@@ -121,7 +118,8 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RequestHistoryInner>> listSinglePageAsync(
@@ -189,7 +187,8 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RequestHistoryInner>> listSinglePageAsync(
@@ -253,7 +252,7 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RequestHistoryInner> listAsync(
@@ -274,7 +273,7 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RequestHistoryInner> listAsync(
@@ -294,7 +293,7 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RequestHistoryInner> list(
@@ -313,7 +312,7 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RequestHistoryInner> list(
@@ -332,7 +331,7 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run request history.
+     * @return a workflow run request history along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RequestHistoryInner>> getWithResponseAsync(
@@ -397,7 +396,7 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run request history.
+     * @return a workflow run request history along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RequestHistoryInner>> getWithResponseAsync(
@@ -463,20 +462,39 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run request history.
+     * @return a workflow run request history on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RequestHistoryInner> getAsync(
         String resourceGroupName, String workflowName, String runName, String actionName, String requestHistoryName) {
         return getWithResponseAsync(resourceGroupName, workflowName, runName, actionName, requestHistoryName)
-            .flatMap(
-                (Response<RequestHistoryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a workflow run request history.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param actionName The workflow action name.
+     * @param requestHistoryName The request history name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow run request history along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RequestHistoryInner> getWithResponse(
+        String resourceGroupName,
+        String workflowName,
+        String runName,
+        String actionName,
+        String requestHistoryName,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, workflowName, runName, actionName, requestHistoryName, context)
+            .block();
     }
 
     /**
@@ -495,43 +513,20 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RequestHistoryInner get(
         String resourceGroupName, String workflowName, String runName, String actionName, String requestHistoryName) {
-        return getAsync(resourceGroupName, workflowName, runName, actionName, requestHistoryName).block();
-    }
-
-    /**
-     * Gets a workflow run request history.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param requestHistoryName The request history name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run request history.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RequestHistoryInner> getWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String requestHistoryName,
-        Context context) {
-        return getWithResponseAsync(resourceGroupName, workflowName, runName, actionName, requestHistoryName, context)
-            .block();
+        return getWithResponse(resourceGroupName, workflowName, runName, actionName, requestHistoryName, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RequestHistoryInner>> listNextSinglePageAsync(String nextLink) {
@@ -562,12 +557,14 @@ public final class WorkflowRunActionRequestHistoriesClientImpl implements Workfl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RequestHistoryInner>> listNextSinglePageAsync(String nextLink, Context context) {

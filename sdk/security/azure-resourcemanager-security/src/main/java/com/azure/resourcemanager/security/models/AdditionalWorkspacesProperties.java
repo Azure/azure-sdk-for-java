@@ -29,6 +29,10 @@ public final class AdditionalWorkspacesProperties {
     @JsonProperty(value = "dataTypes")
     private List<AdditionalWorkspaceDataType> dataTypes;
 
+    /** Creates an instance of AdditionalWorkspacesProperties class. */
+    public AdditionalWorkspacesProperties() {
+    }
+
     /**
      * Get the workspace property: Workspace resource id.
      *

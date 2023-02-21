@@ -39,6 +39,7 @@ public class StoreResult {
     final public Uri storePhysicalAddress;
     final public boolean isThroughputControlRequestRateTooLargeException;
     final public Double backendLatencyInMs;
+    final public Double retryAfterInMs;
 
     public StoreResult(
             StoreResponse storeResponse,
@@ -57,7 +58,8 @@ public class StoreResult {
             int numberOfReadRegions,
             long itemLSN,
             ISessionToken sessionToken,
-            Double backendLatencyInMs) {
+            Double backendLatencyInMs,
+            Double retryAfterInMs) {
         this.storeResponse = storeResponse;
         this.exception = exception;
         this.partitionKeyRangeId = partitionKeyRangeId;
@@ -80,6 +82,7 @@ public class StoreResult {
         this.sessionToken = sessionToken;
         this.isThroughputControlRequestRateTooLargeException = this.exception != null && Exceptions.isThroughputControlRequestRateTooLargeException(this.exception);
         this.backendLatencyInMs = backendLatencyInMs;
+        this.retryAfterInMs = retryAfterInMs;
     }
 
     public StoreResponse getStoreResponse() {

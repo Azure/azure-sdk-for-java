@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoadUseType. */
+/** Describes the possible uses of a road. */
 public final class RoadUseType extends ExpandableStringEnum<RoadUseType> {
     /** Static value LimitedAccess for RoadUseType. */
     public static final RoadUseType LIMITED_ACCESS = fromString("LimitedAccess");

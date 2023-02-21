@@ -59,7 +59,7 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAssess")
-    private interface AssessmentsMetadatasService {
+    public interface AssessmentsMetadatasService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Security/assessmentMetadata")
         @ExpectedResponses({200})
@@ -351,20 +351,6 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
      * Get metadata information on an assessment type.
      *
      * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityAssessmentMetadataResponseInner get(String assessmentMetadataName) {
-        return getAsync(assessmentMetadataName).block();
-    }
-
-    /**
-     * Get metadata information on an assessment type.
-     *
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -375,6 +361,20 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
     public Response<SecurityAssessmentMetadataResponseInner> getWithResponse(
         String assessmentMetadataName, Context context) {
         return getWithResponseAsync(assessmentMetadataName, context).block();
+    }
+
+    /**
+     * Get metadata information on an assessment type.
+     *
+     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata information on an assessment type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityAssessmentMetadataResponseInner get(String assessmentMetadataName) {
+        return getWithResponse(assessmentMetadataName, Context.NONE).getValue();
     }
 
     /**
@@ -629,20 +629,6 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
      * Get metadata information on an assessment type in a specific subscription.
      *
      * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type in a specific subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityAssessmentMetadataResponseInner getInSubscription(String assessmentMetadataName) {
-        return getInSubscriptionAsync(assessmentMetadataName).block();
-    }
-
-    /**
-     * Get metadata information on an assessment type in a specific subscription.
-     *
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -653,6 +639,20 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
     public Response<SecurityAssessmentMetadataResponseInner> getInSubscriptionWithResponse(
         String assessmentMetadataName, Context context) {
         return getInSubscriptionWithResponseAsync(assessmentMetadataName, context).block();
+    }
+
+    /**
+     * Get metadata information on an assessment type in a specific subscription.
+     *
+     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata information on an assessment type in a specific subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityAssessmentMetadataResponseInner getInSubscription(String assessmentMetadataName) {
+        return getInSubscriptionWithResponse(assessmentMetadataName, Context.NONE).getValue();
     }
 
     /**
@@ -783,22 +783,6 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
      *
      * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
      * @param assessmentMetadata AssessmentMetadata object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessment metadata response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityAssessmentMetadataResponseInner createInSubscription(
-        String assessmentMetadataName, SecurityAssessmentMetadataResponseInner assessmentMetadata) {
-        return createInSubscriptionAsync(assessmentMetadataName, assessmentMetadata).block();
-    }
-
-    /**
-     * Create metadata information on an assessment type in a specific subscription.
-     *
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @param assessmentMetadata AssessmentMetadata object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -809,6 +793,22 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
     public Response<SecurityAssessmentMetadataResponseInner> createInSubscriptionWithResponse(
         String assessmentMetadataName, SecurityAssessmentMetadataResponseInner assessmentMetadata, Context context) {
         return createInSubscriptionWithResponseAsync(assessmentMetadataName, assessmentMetadata, context).block();
+    }
+
+    /**
+     * Create metadata information on an assessment type in a specific subscription.
+     *
+     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
+     * @param assessmentMetadata AssessmentMetadata object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security assessment metadata response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityAssessmentMetadataResponseInner createInSubscription(
+        String assessmentMetadataName, SecurityAssessmentMetadataResponseInner assessmentMetadata) {
+        return createInSubscriptionWithResponse(assessmentMetadataName, assessmentMetadata, Context.NONE).getValue();
     }
 
     /**
@@ -919,20 +919,6 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
      * assessments of that type in that subscription.
      *
      * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteInSubscription(String assessmentMetadataName) {
-        deleteInSubscriptionAsync(assessmentMetadataName).block();
-    }
-
-    /**
-     * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
-     * assessments of that type in that subscription.
-     *
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -942,6 +928,20 @@ public final class AssessmentsMetadatasClientImpl implements AssessmentsMetadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteInSubscriptionWithResponse(String assessmentMetadataName, Context context) {
         return deleteInSubscriptionWithResponseAsync(assessmentMetadataName, context).block();
+    }
+
+    /**
+     * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
+     * assessments of that type in that subscription.
+     *
+     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteInSubscription(String assessmentMetadataName) {
+        deleteInSubscriptionWithResponse(assessmentMetadataName, Context.NONE);
     }
 
     /**
