@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HighAvailabilityState. */
+/** The state of server high availability. */
 public final class HighAvailabilityState extends ExpandableStringEnum<HighAvailabilityState> {
     /** Static value NotEnabled for HighAvailabilityState. */
     public static final HighAvailabilityState NOT_ENABLED = fromString("NotEnabled");
@@ -26,6 +26,15 @@ public final class HighAvailabilityState extends ExpandableStringEnum<HighAvaila
     public static final HighAvailabilityState REMOVING_STANDBY = fromString("RemovingStandby");
 
     /**
+     * Creates a new instance of HighAvailabilityState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HighAvailabilityState() {
+    }
+
+    /**
      * Creates or finds a HighAvailabilityState from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class HighAvailabilityState extends ExpandableStringEnum<HighAvaila
         return fromString(name, HighAvailabilityState.class);
     }
 
-    /** @return known HighAvailabilityState values. */
+    /**
+     * Gets known HighAvailabilityState values.
+     *
+     * @return known HighAvailabilityState values.
+     */
     public static Collection<HighAvailabilityState> values() {
         return values(HighAvailabilityState.class);
     }
