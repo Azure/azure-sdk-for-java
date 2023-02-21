@@ -28,6 +28,10 @@ public class RegionalServiceResource {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceStatus status;
 
+    /** Creates an instance of RegionalServiceResource class. */
+    public RegionalServiceResource() {
+    }
+
     /**
      * Get the name property: The regional service name.
      *

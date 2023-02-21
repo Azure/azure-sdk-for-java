@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AttachedDatabaseConfigurations Delete. */
 public final class AttachedDatabaseConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoAttachedDatabaseConfigurationsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoAttachedDatabaseConfigurationsDelete.json
      */
     /**
      * Sample code: AttachedDatabaseConfigurationsDelete.
@@ -19,6 +17,7 @@ public final class AttachedDatabaseConfigurationsDeleteSamples {
     public static void attachedDatabaseConfigurationsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
         manager
             .attachedDatabaseConfigurations()
-            .delete("kustorptest", "kustoCluster", "attachedDatabaseConfigurationsTest", Context.NONE);
+            .delete(
+                "kustorptest", "kustoCluster", "attachedDatabaseConfigurationsTest", com.azure.core.util.Context.NONE);
     }
 }

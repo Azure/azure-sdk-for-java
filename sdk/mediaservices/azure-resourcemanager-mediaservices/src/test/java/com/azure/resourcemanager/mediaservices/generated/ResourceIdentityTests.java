@@ -13,18 +13,18 @@ public final class ResourceIdentityTests {
     public void testDeserialize() throws Exception {
         ResourceIdentity model =
             BinaryData
-                .fromString("{\"userAssignedIdentity\":\"qsycbkbfkgu\",\"useSystemAssignedIdentity\":true}")
+                .fromString("{\"userAssignedIdentity\":\"hvpmoue\",\"useSystemAssignedIdentity\":false}")
                 .toObject(ResourceIdentity.class);
-        Assertions.assertEquals("qsycbkbfkgu", model.userAssignedIdentity());
-        Assertions.assertEquals(true, model.useSystemAssignedIdentity());
+        Assertions.assertEquals("hvpmoue", model.userAssignedIdentity());
+        Assertions.assertEquals(false, model.useSystemAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceIdentity model =
-            new ResourceIdentity().withUserAssignedIdentity("qsycbkbfkgu").withUseSystemAssignedIdentity(true);
+            new ResourceIdentity().withUserAssignedIdentity("hvpmoue").withUseSystemAssignedIdentity(false);
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
-        Assertions.assertEquals("qsycbkbfkgu", model.userAssignedIdentity());
-        Assertions.assertEquals(true, model.useSystemAssignedIdentity());
+        Assertions.assertEquals("hvpmoue", model.userAssignedIdentity());
+        Assertions.assertEquals(false, model.useSystemAssignedIdentity());
     }
 }

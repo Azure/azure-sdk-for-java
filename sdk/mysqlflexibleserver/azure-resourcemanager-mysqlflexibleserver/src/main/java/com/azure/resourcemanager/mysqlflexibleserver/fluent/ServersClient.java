@@ -198,19 +198,6 @@ public interface ServersClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerInner getByResourceGroup(String resourceGroupName, String serverName);
-
-    /**
-     * Gets information about a server.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -219,6 +206,19 @@ public interface ServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerInner> getByResourceGroupWithResponse(String resourceGroupName, String serverName, Context context);
+
+    /**
+     * Gets information about a server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServerInner getByResourceGroup(String resourceGroupName, String serverName);
 
     /**
      * List all the servers in a given resource group.

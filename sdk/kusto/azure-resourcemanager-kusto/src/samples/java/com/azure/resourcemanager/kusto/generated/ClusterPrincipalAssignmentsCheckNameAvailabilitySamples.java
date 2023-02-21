@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignmentCheckNameRequest;
 
 /** Samples for ClusterPrincipalAssignments CheckNameAvailability. */
 public final class ClusterPrincipalAssignmentsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoClusterPrincipalAssignmentsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoClusterPrincipalAssignmentsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsCheckNameAvailability.
@@ -25,6 +24,6 @@ public final class ClusterPrincipalAssignmentsCheckNameAvailabilitySamples {
                 "kustorptest",
                 "kustoCluster",
                 new ClusterPrincipalAssignmentCheckNameRequest().withName("kustoprincipal1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

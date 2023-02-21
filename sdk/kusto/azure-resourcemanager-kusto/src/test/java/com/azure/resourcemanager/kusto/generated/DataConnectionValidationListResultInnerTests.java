@@ -9,30 +9,23 @@ import com.azure.resourcemanager.kusto.fluent.models.DataConnectionValidationLis
 import com.azure.resourcemanager.kusto.models.DataConnectionValidationResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataConnectionValidationListResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataConnectionValidationListResultInner model =
             BinaryData
-                .fromString(
-                    "{\"value\":[{\"errorMessage\":\"c\"},{\"errorMessage\":\"auwjuetaebu\"},{\"errorMessage\":\"vdmovsmzlxwabm\"}]}")
+                .fromString("{\"value\":[{\"errorMessage\":\"vaytdwkqbrq\"}]}")
                 .toObject(DataConnectionValidationListResultInner.class);
-        Assertions.assertEquals("c", model.value().get(0).errorMessage());
+        Assertions.assertEquals("vaytdwkqbrq", model.value().get(0).errorMessage());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DataConnectionValidationListResultInner model =
             new DataConnectionValidationListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DataConnectionValidationResult().withErrorMessage("c"),
-                            new DataConnectionValidationResult().withErrorMessage("auwjuetaebu"),
-                            new DataConnectionValidationResult().withErrorMessage("vdmovsmzlxwabm")));
+                .withValue(Arrays.asList(new DataConnectionValidationResult().withErrorMessage("vaytdwkqbrq")));
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationListResultInner.class);
-        Assertions.assertEquals("c", model.value().get(0).errorMessage());
+        Assertions.assertEquals("vaytdwkqbrq", model.value().get(0).errorMessage());
     }
 }

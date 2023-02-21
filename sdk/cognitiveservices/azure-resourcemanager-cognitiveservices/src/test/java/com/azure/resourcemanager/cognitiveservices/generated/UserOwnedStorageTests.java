@@ -7,11 +7,10 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.UserOwnedStorage;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UserOwnedStorageTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UserOwnedStorage model =
             BinaryData
                 .fromString("{\"resourceId\":\"zitonpeqfpjkjl\",\"identityClientId\":\"fpdvhpfxxypi\"}")
@@ -20,8 +19,8 @@ public final class UserOwnedStorageTests {
         Assertions.assertEquals("fpdvhpfxxypi", model.identityClientId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UserOwnedStorage model =
             new UserOwnedStorage().withResourceId("zitonpeqfpjkjl").withIdentityClientId("fpdvhpfxxypi");
         model = BinaryData.fromObject(model).toObject(UserOwnedStorage.class);

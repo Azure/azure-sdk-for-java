@@ -18,6 +18,10 @@ public final class SqlUserDefinedFunctionListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlUserDefinedFunctionGetResultsInner> value;
 
+    /** Creates an instance of SqlUserDefinedFunctionListResult class. */
+    public SqlUserDefinedFunctionListResult() {
+    }
+
     /**
      * Get the value property: List of userDefinedFunctions and their properties.
      *

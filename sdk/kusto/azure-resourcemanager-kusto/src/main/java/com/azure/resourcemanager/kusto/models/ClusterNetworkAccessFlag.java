@@ -20,6 +20,15 @@ public final class ClusterNetworkAccessFlag extends ExpandableStringEnum<Cluster
     public static final ClusterNetworkAccessFlag DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of ClusterNetworkAccessFlag value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterNetworkAccessFlag() {
+    }
+
+    /**
      * Creates or finds a ClusterNetworkAccessFlag from its string representation.
      *
      * @param name a name to look for.

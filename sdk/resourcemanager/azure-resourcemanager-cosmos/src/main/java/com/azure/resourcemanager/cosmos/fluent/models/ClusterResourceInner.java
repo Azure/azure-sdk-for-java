@@ -20,6 +20,10 @@ public final class ClusterResourceInner extends ManagedCassandraArmResourcePrope
     @JsonProperty(value = "properties")
     private ClusterResourceProperties properties;
 
+    /** Creates an instance of ClusterResourceInner class. */
+    public ClusterResourceInner() {
+    }
+
     /**
      * Get the properties property: Properties of a managed Cassandra cluster.
      *

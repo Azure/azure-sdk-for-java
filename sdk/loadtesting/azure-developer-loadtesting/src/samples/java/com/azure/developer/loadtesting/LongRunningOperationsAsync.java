@@ -29,10 +29,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public final class LongRunningOperationsAsync {
     public void beginUploadTestFile() {
         // BEGIN: java-longRunningOperationsAsync-sample-beginUploadTestFile
-        LoadTestAdministrationAsyncClient client = new LoadTestingClientBuilder()
+        LoadTestAdministrationAsyncClient client = new LoadTestAdministrationClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestAdministrationAsyncClient();
+                .buildAsyncClient();
 
         String inputTestId = "12345678-1234-1234-1234-123456789abc";
         String inputFileName = "input-test-file.jmx";
@@ -75,10 +75,10 @@ public final class LongRunningOperationsAsync {
 
     public void beginTestRun() {
         // BEGIN: java-longRunningOperationsAsync-sample-beginTestRun
-        LoadTestRunAsyncClient client = new LoadTestingClientBuilder()
+        LoadTestRunAsyncClient client = new LoadTestRunClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestRunAsyncClient();
+                .buildAsyncClient();
 
         String inputTestRunId = "12345678-1234-1234-1234-123456789abc";
         String inputTestId = "87654321-1234-1234-1234-123456789abc";

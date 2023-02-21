@@ -9,114 +9,126 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInn
 import com.azure.resourcemanager.cognitiveservices.models.AccountModelListResult;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ModelDeprecationInfo;
+import com.azure.resourcemanager.cognitiveservices.models.ModelLifecycleStatus;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AccountModelListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AccountModelListResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"dslfhotwmcy\",\"value\":[{\"baseModel\":{\"format\":\"jnpg\",\"name\":\"ftadehxnltyfs\",\"version\":\"pusuesn\"},\"maxCapacity\":332314223,\"capabilities\":{\"xzdmohctb\":\"avo\"},\"deprecation\":{\"fineTune\":\"dwxdndnv\",\"inference\":\"gujjugwdkcglh\"},\"format\":\"zj\",\"name\":\"ggd\",\"version\":\"ixhbkuofqweykhm\",\"callRateLimit\":{\"count\":37.98073,\"renewalPeriod\":34.070343,\"rules\":[]}},{\"baseModel\":{\"format\":\"whybcib\",\"name\":\"vdcsitynn\",\"version\":\"mdectehfiqscjey\"},\"maxCapacity\":1237692135,\"capabilities\":{\"kqsleyyvxy\":\"kgqhcjrefovg\",\"cr\":\"jpkcattpng\",\"ajvnysounqe\":\"czsqpjhvm\"},\"deprecation\":{\"fineTune\":\"oaeupfhyhltrpmo\",\"inference\":\"mcmatuokthfuiu\"},\"format\":\"sfcpkvxodpuozm\",\"name\":\"ydagfuaxbe\",\"version\":\"iu\",\"callRateLimit\":{\"count\":79.920334,\"renewalPeriod\":75.16582,\"rules\":[]}},{\"baseModel\":{\"format\":\"wz\",\"name\":\"q\",\"version\":\"bsureximo\"},\"maxCapacity\":1027022233,\"capabilities\":{\"uxh\":\"fksymddystki\",\"czvyifq\":\"yudxorrqnbp\"},\"deprecation\":{\"fineTune\":\"dvjsllrmvvdf\",\"inference\":\"t\"},\"format\":\"pulexxbczw\",\"name\":\"uwiqzb\",\"version\":\"vsovmyokac\",\"callRateLimit\":{\"count\":2.3299038,\"renewalPeriod\":94.998985,\"rules\":[]}},{\"baseModel\":{\"format\":\"bpxjmfl\",\"name\":\"vnchrkcci\",\"version\":\"zjuqkhrsaj\"},\"maxCapacity\":481973669,\"capabilities\":{\"sauuimj\":\"oskg\",\"rfbyaosvexcso\":\"vxieduugidyj\",\"vleggzfbuhfmvfax\":\"pclhocohslk\",\"hl\":\"ffeii\"},\"deprecation\":{\"fineTune\":\"zy\",\"inference\":\"hxmzsbbzoggig\"},\"format\":\"burvjxxjnspy\",\"name\":\"tko\",\"version\":\"kouknvudwtiu\",\"callRateLimit\":{\"count\":13.5182085,\"renewalPeriod\":78.78897,\"rules\":[]}}]}")
+                    "{\"nextLink\":\"vxodpu\",\"value\":[{\"baseModel\":{\"format\":\"ydagfuaxbe\",\"name\":\"iu\",\"version\":\"ktwh\"},\"maxCapacity\":334875262,\"capabilities\":{\"xim\":\"wqsmbsur\",\"stkiiuxhqyud\":\"ryocfsfksymdd\",\"rq\":\"o\",\"oczvy\":\"b\"},\"finetuneCapabilities\":{\"vdfwatkpn\":\"rvkdvjsllrm\",\"wiqzbqjvsovmyo\":\"ulexxbczwtr\"},\"deprecation\":{\"fineTune\":\"spkwlhzdobpxjm\",\"inference\":\"bvvnchrkcciw\"},\"lifecycleStatus\":\"GenerallyAvailable\",\"format\":\"khrs\",\"name\":\"iwkuofos\",\"version\":\"hsauuimjmvxied\",\"callRateLimit\":{\"count\":93.76809,\"renewalPeriod\":14.127278,\"rules\":[]}},{\"baseModel\":{\"format\":\"f\",\"name\":\"aos\",\"version\":\"xc\"},\"maxCapacity\":771742090,\"capabilities\":{\"eggzfb\":\"hocohslkev\",\"ithlvmezyvshxm\":\"hfmvfaxkffe\",\"gigr\":\"sbbzo\"},\"finetuneCapabilities\":{\"jx\":\"ur\",\"koen\":\"jnspydp\",\"nvudwtiukb\":\"ou\"},\"deprecation\":{\"fineTune\":\"gkpocipazyxoe\",\"inference\":\"kgjn\"},\"lifecycleStatus\":\"Preview\",\"format\":\"ygevqzntypmrbpiz\",\"name\":\"r\",\"version\":\"sdpydnfyhxdeoejz\",\"callRateLimit\":{\"count\":90.01345,\"renewalPeriod\":67.792435,\"rules\":[]}},{\"baseModel\":{\"format\":\"gzfbishcbk\",\"name\":\"jdeyeamdpha\",\"version\":\"lpbuxwgipwhonowk\"},\"maxCapacity\":69341003,\"capabilities\":{\"bin\":\"kix\",\"iyqzrnk\":\"eputtmrywnuzoqf\",\"qnwvlrya\":\"qvyxlwhzlsicoho\"},\"finetuneCapabilities\":{\"mqhgyxzkonocuk\":\"heun\",\"szfkbe\":\"klyaxuconu\",\"jmwvvj\":\"pewr\"},\"deprecation\":{\"fineTune\":\"cxsenhwlrsff\",\"inference\":\"pwvlqdq\"},\"lifecycleStatus\":\"Preview\",\"format\":\"lihkaetcktvfc\",\"name\":\"fsnkymuctq\",\"version\":\"fbebrjcxer\",\"callRateLimit\":{\"count\":76.095024,\"renewalPeriod\":39.56957,\"rules\":[]}},{\"baseModel\":{\"format\":\"vjrbirphxepcyvah\",\"name\":\"ljkyqxjvuuj\",\"version\":\"idokgjlj\"},\"maxCapacity\":831407974,\"capabilities\":{\"szzhbijhtxfvgxbf\":\"ltbgsncghkj\",\"ec\":\"mxnehmp\",\"gr\":\"godebfqkkrbmpu\",\"ispnqzahmgkbrp\":\"wflzlfbxzpuzy\"},\"finetuneCapabilities\":{\"rgvtqag\":\"hibnuqqkpika\",\"bfs\":\"buynhijggm\"},\"deprecation\":{\"fineTune\":\"butr\",\"inference\":\"pnazzm\"},\"lifecycleStatus\":\"GenerallyAvailable\",\"format\":\"mpxttdbhrbnlankx\",\"name\":\"skpbhenbtkcxywn\",\"version\":\"nrs\",\"callRateLimit\":{\"count\":43.24222,\"renewalPeriod\":76.7722,\"rules\":[]}}]}")
                 .toObject(AccountModelListResult.class);
-        Assertions.assertEquals("dslfhotwmcy", model.nextLink());
-        Assertions.assertEquals("zj", model.value().get(0).format());
-        Assertions.assertEquals("ggd", model.value().get(0).name());
-        Assertions.assertEquals("ixhbkuofqweykhm", model.value().get(0).version());
-        Assertions.assertEquals("jnpg", model.value().get(0).baseModel().format());
-        Assertions.assertEquals("ftadehxnltyfs", model.value().get(0).baseModel().name());
-        Assertions.assertEquals("pusuesn", model.value().get(0).baseModel().version());
-        Assertions.assertEquals(332314223, model.value().get(0).maxCapacity());
-        Assertions.assertEquals("avo", model.value().get(0).capabilities().get("xzdmohctb"));
-        Assertions.assertEquals("dwxdndnv", model.value().get(0).deprecation().fineTune());
-        Assertions.assertEquals("gujjugwdkcglh", model.value().get(0).deprecation().inference());
+        Assertions.assertEquals("vxodpu", model.nextLink());
+        Assertions.assertEquals("khrs", model.value().get(0).format());
+        Assertions.assertEquals("iwkuofos", model.value().get(0).name());
+        Assertions.assertEquals("hsauuimjmvxied", model.value().get(0).version());
+        Assertions.assertEquals("ydagfuaxbe", model.value().get(0).baseModel().format());
+        Assertions.assertEquals("iu", model.value().get(0).baseModel().name());
+        Assertions.assertEquals("ktwh", model.value().get(0).baseModel().version());
+        Assertions.assertEquals(334875262, model.value().get(0).maxCapacity());
+        Assertions.assertEquals("wqsmbsur", model.value().get(0).capabilities().get("xim"));
+        Assertions.assertEquals("rvkdvjsllrm", model.value().get(0).finetuneCapabilities().get("vdfwatkpn"));
+        Assertions.assertEquals("spkwlhzdobpxjm", model.value().get(0).deprecation().fineTune());
+        Assertions.assertEquals("bvvnchrkcciw", model.value().get(0).deprecation().inference());
+        Assertions.assertEquals(ModelLifecycleStatus.GENERALLY_AVAILABLE, model.value().get(0).lifecycleStatus());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AccountModelListResult model =
             new AccountModelListResult()
-                .withNextLink("dslfhotwmcy")
+                .withNextLink("vxodpu")
                 .withValue(
                     Arrays
                         .asList(
                             new AccountModelInner()
-                                .withFormat("zj")
-                                .withName("ggd")
-                                .withVersion("ixhbkuofqweykhm")
+                                .withFormat("khrs")
+                                .withName("iwkuofos")
+                                .withVersion("hsauuimjmvxied")
                                 .withBaseModel(
-                                    new DeploymentModel()
-                                        .withFormat("jnpg")
-                                        .withName("ftadehxnltyfs")
-                                        .withVersion("pusuesn"))
-                                .withMaxCapacity(332314223)
-                                .withCapabilities(mapOf("xzdmohctb", "avo"))
-                                .withDeprecation(
-                                    new ModelDeprecationInfo().withFineTune("dwxdndnv").withInference("gujjugwdkcglh")),
-                            new AccountModelInner()
-                                .withFormat("sfcpkvxodpuozm")
-                                .withName("ydagfuaxbe")
-                                .withVersion("iu")
-                                .withBaseModel(
-                                    new DeploymentModel()
-                                        .withFormat("whybcib")
-                                        .withName("vdcsitynn")
-                                        .withVersion("mdectehfiqscjey"))
-                                .withMaxCapacity(1237692135)
+                                    new DeploymentModel().withFormat("ydagfuaxbe").withName("iu").withVersion("ktwh"))
+                                .withMaxCapacity(334875262)
                                 .withCapabilities(
-                                    mapOf("kqsleyyvxy", "kgqhcjrefovg", "cr", "jpkcattpng", "ajvnysounqe", "czsqpjhvm"))
+                                    mapOf("xim", "wqsmbsur", "stkiiuxhqyud", "ryocfsfksymdd", "rq", "o", "oczvy", "b"))
+                                .withFinetuneCapabilities(
+                                    mapOf("vdfwatkpn", "rvkdvjsllrm", "wiqzbqjvsovmyo", "ulexxbczwtr"))
                                 .withDeprecation(
                                     new ModelDeprecationInfo()
-                                        .withFineTune("oaeupfhyhltrpmo")
-                                        .withInference("mcmatuokthfuiu")),
+                                        .withFineTune("spkwlhzdobpxjm")
+                                        .withInference("bvvnchrkcciw"))
+                                .withLifecycleStatus(ModelLifecycleStatus.GENERALLY_AVAILABLE),
                             new AccountModelInner()
-                                .withFormat("pulexxbczw")
-                                .withName("uwiqzb")
-                                .withVersion("vsovmyokac")
-                                .withBaseModel(
-                                    new DeploymentModel().withFormat("wz").withName("q").withVersion("bsureximo"))
-                                .withMaxCapacity(1027022233)
-                                .withCapabilities(mapOf("uxh", "fksymddystki", "czvyifq", "yudxorrqnbp"))
+                                .withFormat("ygevqzntypmrbpiz")
+                                .withName("r")
+                                .withVersion("sdpydnfyhxdeoejz")
+                                .withBaseModel(new DeploymentModel().withFormat("f").withName("aos").withVersion("xc"))
+                                .withMaxCapacity(771742090)
+                                .withCapabilities(
+                                    mapOf("eggzfb", "hocohslkev", "ithlvmezyvshxm", "hfmvfaxkffe", "gigr", "sbbzo"))
+                                .withFinetuneCapabilities(mapOf("jx", "ur", "koen", "jnspydp", "nvudwtiukb", "ou"))
                                 .withDeprecation(
-                                    new ModelDeprecationInfo().withFineTune("dvjsllrmvvdf").withInference("t")),
+                                    new ModelDeprecationInfo().withFineTune("gkpocipazyxoe").withInference("kgjn"))
+                                .withLifecycleStatus(ModelLifecycleStatus.PREVIEW),
                             new AccountModelInner()
-                                .withFormat("burvjxxjnspy")
-                                .withName("tko")
-                                .withVersion("kouknvudwtiu")
+                                .withFormat("lihkaetcktvfc")
+                                .withName("fsnkymuctq")
+                                .withVersion("fbebrjcxer")
                                 .withBaseModel(
                                     new DeploymentModel()
-                                        .withFormat("bpxjmfl")
-                                        .withName("vnchrkcci")
-                                        .withVersion("zjuqkhrsaj"))
-                                .withMaxCapacity(481973669)
+                                        .withFormat("gzfbishcbk")
+                                        .withName("jdeyeamdpha")
+                                        .withVersion("lpbuxwgipwhonowk"))
+                                .withMaxCapacity(69341003)
+                                .withCapabilities(
+                                    mapOf("bin", "kix", "iyqzrnk", "eputtmrywnuzoqf", "qnwvlrya", "qvyxlwhzlsicoho"))
+                                .withFinetuneCapabilities(
+                                    mapOf("mqhgyxzkonocuk", "heun", "szfkbe", "klyaxuconu", "jmwvvj", "pewr"))
+                                .withDeprecation(
+                                    new ModelDeprecationInfo().withFineTune("cxsenhwlrsff").withInference("pwvlqdq"))
+                                .withLifecycleStatus(ModelLifecycleStatus.PREVIEW),
+                            new AccountModelInner()
+                                .withFormat("mpxttdbhrbnlankx")
+                                .withName("skpbhenbtkcxywn")
+                                .withVersion("nrs")
+                                .withBaseModel(
+                                    new DeploymentModel()
+                                        .withFormat("vjrbirphxepcyvah")
+                                        .withName("ljkyqxjvuuj")
+                                        .withVersion("idokgjlj"))
+                                .withMaxCapacity(831407974)
                                 .withCapabilities(
                                     mapOf(
-                                        "sauuimj",
-                                        "oskg",
-                                        "rfbyaosvexcso",
-                                        "vxieduugidyj",
-                                        "vleggzfbuhfmvfax",
-                                        "pclhocohslk",
-                                        "hl",
-                                        "ffeii"))
+                                        "szzhbijhtxfvgxbf",
+                                        "ltbgsncghkj",
+                                        "ec",
+                                        "mxnehmp",
+                                        "gr",
+                                        "godebfqkkrbmpu",
+                                        "ispnqzahmgkbrp",
+                                        "wflzlfbxzpuzy"))
+                                .withFinetuneCapabilities(mapOf("rgvtqag", "hibnuqqkpika", "bfs", "buynhijggm"))
                                 .withDeprecation(
-                                    new ModelDeprecationInfo().withFineTune("zy").withInference("hxmzsbbzoggig"))));
+                                    new ModelDeprecationInfo().withFineTune("butr").withInference("pnazzm"))
+                                .withLifecycleStatus(ModelLifecycleStatus.GENERALLY_AVAILABLE)));
         model = BinaryData.fromObject(model).toObject(AccountModelListResult.class);
-        Assertions.assertEquals("dslfhotwmcy", model.nextLink());
-        Assertions.assertEquals("zj", model.value().get(0).format());
-        Assertions.assertEquals("ggd", model.value().get(0).name());
-        Assertions.assertEquals("ixhbkuofqweykhm", model.value().get(0).version());
-        Assertions.assertEquals("jnpg", model.value().get(0).baseModel().format());
-        Assertions.assertEquals("ftadehxnltyfs", model.value().get(0).baseModel().name());
-        Assertions.assertEquals("pusuesn", model.value().get(0).baseModel().version());
-        Assertions.assertEquals(332314223, model.value().get(0).maxCapacity());
-        Assertions.assertEquals("avo", model.value().get(0).capabilities().get("xzdmohctb"));
-        Assertions.assertEquals("dwxdndnv", model.value().get(0).deprecation().fineTune());
-        Assertions.assertEquals("gujjugwdkcglh", model.value().get(0).deprecation().inference());
+        Assertions.assertEquals("vxodpu", model.nextLink());
+        Assertions.assertEquals("khrs", model.value().get(0).format());
+        Assertions.assertEquals("iwkuofos", model.value().get(0).name());
+        Assertions.assertEquals("hsauuimjmvxied", model.value().get(0).version());
+        Assertions.assertEquals("ydagfuaxbe", model.value().get(0).baseModel().format());
+        Assertions.assertEquals("iu", model.value().get(0).baseModel().name());
+        Assertions.assertEquals("ktwh", model.value().get(0).baseModel().version());
+        Assertions.assertEquals(334875262, model.value().get(0).maxCapacity());
+        Assertions.assertEquals("wqsmbsur", model.value().get(0).capabilities().get("xim"));
+        Assertions.assertEquals("rvkdvjsllrm", model.value().get(0).finetuneCapabilities().get("vdfwatkpn"));
+        Assertions.assertEquals("spkwlhzdobpxjm", model.value().get(0).deprecation().fineTune());
+        Assertions.assertEquals("bvvnchrkcciw", model.value().get(0).deprecation().inference());
+        Assertions.assertEquals(ModelLifecycleStatus.GENERALLY_AVAILABLE, model.value().get(0).lifecycleStatus());
     }
 
     @SuppressWarnings("unchecked")

@@ -14,15 +14,15 @@ public final class AbsoluteClipTimeTests {
     public void testDeserialize() throws Exception {
         AbsoluteClipTime model =
             BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.AbsoluteClipTime\",\"time\":\"PT119H29M19S\"}")
+                .fromString("{\"@odata.type\":\"#Microsoft.Media.AbsoluteClipTime\",\"time\":\"PT86H5M17S\"}")
                 .toObject(AbsoluteClipTime.class);
-        Assertions.assertEquals(Duration.parse("PT119H29M19S"), model.time());
+        Assertions.assertEquals(Duration.parse("PT86H5M17S"), model.time());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AbsoluteClipTime model = new AbsoluteClipTime().withTime(Duration.parse("PT119H29M19S"));
+        AbsoluteClipTime model = new AbsoluteClipTime().withTime(Duration.parse("PT86H5M17S"));
         model = BinaryData.fromObject(model).toObject(AbsoluteClipTime.class);
-        Assertions.assertEquals(Duration.parse("PT119H29M19S"), model.time());
+        Assertions.assertEquals(Duration.parse("PT86H5M17S"), model.time());
     }
 }

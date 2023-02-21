@@ -18,6 +18,15 @@ public final class ResourceSkuRestrictionsReasonCode extends ExpandableStringEnu
         fromString("NotAvailableForSubscription");
 
     /**
+     * Creates a new instance of ResourceSkuRestrictionsReasonCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceSkuRestrictionsReasonCode() {
+    }
+
+    /**
      * Creates or finds a ResourceSkuRestrictionsReasonCode from its string representation.
      *
      * @param name a name to look for.
