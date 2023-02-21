@@ -172,6 +172,10 @@ public final class CosmosDiagnosticsContext {
         return this.spanName;
     }
 
+    /**
+     * Indicates whether the latency of the operation exceeded the given threshold
+     * @return a flag indicating whether the latency of the operation exceeded its threshold.
+     */
     public boolean isLatencyThresholdViolated() {
 
         return this.duration != null &&
