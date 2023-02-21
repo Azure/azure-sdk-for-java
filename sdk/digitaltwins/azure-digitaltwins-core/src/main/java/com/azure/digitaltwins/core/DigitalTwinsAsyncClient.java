@@ -29,7 +29,7 @@ import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
-import com.azure.digitaltwins.core.models.ImportJobDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsImportJobOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
@@ -2721,30 +2721,30 @@ public final class DigitalTwinsAsyncClient {
      * </pre>
      * <!-- end com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs#ImportJobDigitalTwinOptions -->
      *
-     * @param options The optional parameters to use when listing import jobs. See {@link ImportJobDigitalTwinOptions} for more details
+     * @param options The optional parameters to use when listing import jobs. See {@link DigitalTwinsImportJobOptions} for more details
      * on what optional parameters can be set.
      * @return A {@link PagedFlux} that contains all the import job objects that exist in your digital twins instance.
      * This PagedFlux may take multiple service requests to iterate over all jobs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsImportJob> listImportJobs(ImportJobDigitalTwinOptions options) {
+    public PagedFlux<DigitalTwinsImportJob> listImportJobs(DigitalTwinsImportJobOptions options) {
         return new PagedFlux<>(
             () -> withContext(context -> listImportFirstPage(options, context)),
             nextLink -> withContext(context -> listImportNextPage(nextLink, options, context)));
     }
 
-    PagedFlux<DigitalTwinsImportJob> listImportJobs(ImportJobDigitalTwinOptions options, Context context) {
+    PagedFlux<DigitalTwinsImportJob> listImportJobs(DigitalTwinsImportJobOptions options, Context context) {
         return new PagedFlux<>(
             () -> listImportFirstPage(options, context != null ? context : Context.NONE),
             nextLink -> listImportNextPage(nextLink, options, context != null ? context : Context.NONE));
     }
 
-    Mono<PagedResponse<DigitalTwinsImportJob>> listImportFirstPage(ImportJobDigitalTwinOptions options, Context context) {
+    Mono<PagedResponse<DigitalTwinsImportJob>> listImportFirstPage(DigitalTwinsImportJobOptions options, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
         if (options == null) {
-            options = new ImportJobDigitalTwinOptions();
+            options = new DigitalTwinsImportJobOptions();
         }
 
         return protocolLayer
@@ -2755,12 +2755,12 @@ public final class DigitalTwinsAsyncClient {
             .map(pagedImportJobFunction);
     }
 
-    Mono<PagedResponse<DigitalTwinsImportJob>> listImportNextPage(String nextLink, ImportJobDigitalTwinOptions options, Context context) {
+    Mono<PagedResponse<DigitalTwinsImportJob>> listImportNextPage(String nextLink, DigitalTwinsImportJobOptions options, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
         if (options == null) {
-            options = new ImportJobDigitalTwinOptions();
+            options = new DigitalTwinsImportJobOptions();
         }
 
         return protocolLayer

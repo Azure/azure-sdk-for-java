@@ -15,7 +15,7 @@ import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
 import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
 import com.azure.digitaltwins.core.models.DigitalTwinsImportJob;
-import com.azure.digitaltwins.core.models.ImportJobDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsImportJobOptions;
 import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
 import com.azure.digitaltwins.core.models.ListModelsOptions;
 import com.azure.digitaltwins.core.models.PublishComponentTelemetryOptions;
@@ -1195,7 +1195,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs
 
         // BEGIN: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs#ImportJobDigitalTwinOptions
-        digitalTwinsAsyncClient.listImportJobs(new ImportJobDigitalTwinOptions().setMaxItemsPerPage(5))
+        digitalTwinsAsyncClient.listImportJobs(new DigitalTwinsImportJobOptions().setMaxItemsPerPage(5))
             .doOnNext(importJob -> System.out.println("Retrieved event route with Id: " + importJob.getId()))
             .subscribe();
         // END: com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs#ImportJobDigitalTwinOptions
