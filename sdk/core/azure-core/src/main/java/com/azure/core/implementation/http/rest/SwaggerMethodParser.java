@@ -567,16 +567,17 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     private static String serialize(SerializerAdapter serializer, Object value) {
         if (value == null) {
-            return null;
+            return "null";
         }
 
         if (value instanceof String) {
             return (String) value;
-        } else if (value instanceof Number
+        } else if (value.getClass().isPrimitive()
+            || value instanceof Number
             || value instanceof Boolean
             || value instanceof Character
             || value instanceof ExpandableStringEnum<?>
-            || value instanceof Enum<?>
+            || value.getClass().isEnum()
             || value instanceof DateTimeRfc1123) {
             return String.valueOf(value);
         } else if (value instanceof OffsetDateTime) {
