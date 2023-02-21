@@ -27,7 +27,6 @@ import com.azure.digitaltwins.core.implementation.converters.OptionsConverter;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsSerializerAdapter;
-import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
@@ -1836,7 +1835,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
+                objectPagedResponse.getValue().getContinuationToken(),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1867,7 +1866,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
+                objectPagedResponse.getValue().getContinuationToken(),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
