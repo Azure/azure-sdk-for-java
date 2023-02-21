@@ -38,9 +38,16 @@ public final class ErrorInformation {
     @JsonProperty(value = "innererror")
     private InnerError innerError;
 
+    /**
+     * Error details containing more specific information about the current Job.
+     *
+     * @param code
+     * @param message
+     * @param details
+     */
     public ErrorInformation(String code, String message, List<ErrorInformation> details) {
         this.code = code;
-        this.message= message;
+        this.message = message;
         this.details = details;
     }
 
