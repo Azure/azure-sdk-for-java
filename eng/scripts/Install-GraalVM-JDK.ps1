@@ -23,7 +23,7 @@ $graalVmUnzipName = "graalvm-$GraalVMVersion"
 
 Write-Host "Downloading GraalVM JDK to" (Get-Location)
 
-if (!(Test-Path -Path $jdkUnzipName -PathType container)) {
+if (!(Test-Path -Path $graalVmUnzipName -PathType container)) {
   $graalVmZipName = $graalVmReleaseUrl.split("/")[-1]
   Write-Host "Downloading install from '$graalVmReleaseUrl' to '$graalVmZipName'."
   Invoke-WebRequest -URI $graalVmReleaseUrl -OutFile $graalVmZipName
@@ -40,8 +40,7 @@ if (!(Test-Path -Path $jdkUnzipName -PathType container)) {
 }
 
 $javaHome = (Convert-Path $graalVmUnzipName)
+Write-Host "Current JAVA_HOME: $Env:JAVA_HOME"
 Write-Host "GraalVM JDK: $javaHome"
+Write-Host "##vso[task.setvariable variable=JAVA_HOME;]$javaHome"
 Write-Host "Updated JAVA_HOME: $Env:JAVA_HOME"
-
-$jdkFeatureVersionJavaHome = "JAVA_HOME"
-Write-Host "##vso[task.setvariable variable=$jdkFeatureVersionJavaHome;]$javaHome"
