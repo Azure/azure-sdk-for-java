@@ -86,7 +86,7 @@ public final class CosmosDiagnosticsThresholds {
      * There is some overhead of emitting the more detailed diagnostics - so recommendation is to choose a
      * payload size threshold that reduces the noise level and only emits detailed diagnostics when the payload size
      * is significantly higher than expected.
-     * @param bytes
+     * @param bytes the threshold for the payload size in bytes
      * @return current CosmosDiagnosticsThresholds instance
      */
     public CosmosDiagnosticsThresholds setPayloadSizeThreshold(int bytes) {
