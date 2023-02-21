@@ -119,13 +119,15 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         }
 
         if (buffer.remaining() == 0) {
-            refillReadBuffer(absolutePosition);
+            if (refillReadBuffer(absolutePosition) == -1) {
+                // cap any position overshooting if channel is at end
+                absolutePosition = readBehavior.getCachedLength();
+                return -1;
+            }
         }
-        // if _readBuffer is still empty after refill, there are no bytes remaining
+        // buffer still empty, no EOF signal, no exception: just return zero
         if (buffer.remaining() == 0) {
-            // cap any position overshooting if channel is at end
-            absolutePosition = readBehavior.getCachedLength();
-            return -1;
+            return 0;
         }
 
         int read = Math.min(buffer.remaining(), dst.remaining());
@@ -137,12 +139,13 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         return read;
     }
 
-    private void refillReadBuffer(long newBufferAbsolutePosition) {
+    private int refillReadBuffer(long newBufferAbsolutePosition) {
         buffer.clear();
         int read = readBehavior.read(buffer, newBufferAbsolutePosition);
         buffer.rewind();
         buffer.limit(Math.max(read, 0));
         bufferAbsolutePosition = Math.min(newBufferAbsolutePosition, readBehavior.getCachedLength());
+        return read;
     }
 
     @Override
