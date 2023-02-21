@@ -28,9 +28,9 @@ public class ImportAsyncTest extends ImportTestBase {
     int maxRandomDigits = 8;
 
     protected static final String IMPORT_FILE = Configuration.getGlobalConfiguration()
-        .get("INPUT_BLOB_URI");
+        .get("INPUT_BLOB_URI", "https://importjobcontainer.blob.core.windows.net/import/bulkinput1k2k.ndjson");
     protected static final String OUTPUT_FILE = Configuration.getGlobalConfiguration()
-        .get("STORAGE_CONTAINER_URI") + "/output-jobId.ndjson";
+        .get("STORAGE_CONTAINER_URI",  "https://importjobcontainer.blob.core.windows.net/output") + "/output-jobId.txt";
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
