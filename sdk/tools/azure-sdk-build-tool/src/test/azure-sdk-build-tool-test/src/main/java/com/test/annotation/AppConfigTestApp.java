@@ -14,14 +14,9 @@ public class AppConfigTestApp {
             .buildClient();
 
         System.out.println("Setting configuration");
-        try {
-            ConfigurationSetting setting = configurationClient.setConfigurationSetting("key", "label", "value");
-            System.out.println("Done: " + setting.getLastModified());
-            setting = configurationClient.getConfigurationSetting("key", "label");
-            System.out.println("Retrieved setting again, value is " + setting.getValue());
-        } catch (Exception exception) {
-
-        }
-
+        ConfigurationSetting setting = configurationClient.setConfigurationSetting("key", "label", "value");
+        System.out.println("Done: " + setting.getLastModified());
+        setting = configurationClient.getConfigurationSetting("key", "label");
+        System.out.println("Retrieved setting again, value is " + setting.getValue());
     }
 }
