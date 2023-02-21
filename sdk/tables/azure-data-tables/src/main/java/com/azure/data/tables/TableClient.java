@@ -21,6 +21,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
+import com.azure.data.tables.implementation.EntityPaged;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableSasGenerator;
 import com.azure.data.tables.implementation.TableSasUtils;
@@ -114,8 +115,6 @@ public final class TableClient {
     private final String tableEndpoint;
     private final HttpPipeline pipeline;
     private final TableClient transactionalBatchClient;
-
-    private static final int IMMEDIATELY = -1;
 
     TableClient(String tableName, HttpPipeline pipeline, String serviceUrl, TableServiceVersion serviceVersion,
                 SerializerAdapter tablesSerializer, SerializerAdapter transactionalBatchSerializer) {
@@ -548,8 +547,8 @@ public final class TableClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
         }
 
-        String partitionKey = escapeSingleQuotes(entity.getPartitionKey());
-        String rowKey = escapeSingleQuotes(entity.getRowKey());
+        String partitionKey = TableUtils.escapeSingleQuotes(entity.getPartitionKey());
+        String rowKey = TableUtils.escapeSingleQuotes(entity.getRowKey());
 
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
@@ -702,8 +701,8 @@ public final class TableClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
         }
 
-        String partitionKey = escapeSingleQuotes(entity.getPartitionKey());
-        String rowKey = escapeSingleQuotes(entity.getRowKey());
+        String partitionKey = TableUtils.escapeSingleQuotes(entity.getPartitionKey());
+        String rowKey = TableUtils.escapeSingleQuotes(entity.getRowKey());
         String eTag = ifUnchanged ? entity.getETag() : "*";
 
         EntityHelper.setPropertiesFromGetters(entity, logger);
@@ -838,7 +837,7 @@ public final class TableClient {
         }
 
         Callable<Response<Void>> deleteEntityOp = () -> tablesImplementation.getTables().deleteEntityWithResponse(
-            tableName, escapeSingleQuotes(partitionKey), escapeSingleQuotes(rowKey), finalETag, null,
+            tableName, TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), finalETag, null,
             null, null, contextValue);
 
         try {
@@ -1005,53 +1004,6 @@ public final class TableClient {
             response.getDeserializedHeaders().getXMsContinuationNextRowKey());
     }
 
-    private static class EntityPaged<T extends TableEntity> implements PagedResponse<T> {
-        private final Response<TableEntityQueryResponse> httpResponse;
-        private final IterableStream<T> entityStream;
-        private final String continuationToken;
-
-        EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<T> entityList,
-                    String nextPartitionKey, String nextRowKey) {
-            if (nextPartitionKey == null || nextRowKey == null) {
-                this.continuationToken = null;
-            } else {
-                this.continuationToken = String.join(DELIMITER_CONTINUATION_TOKEN, nextPartitionKey, nextRowKey);
-            }
-
-            this.httpResponse = httpResponse;
-            this.entityStream = IterableStream.of(entityList);
-        }
-
-        @Override
-        public int getStatusCode() {
-            return httpResponse.getStatusCode();
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return httpResponse.getHeaders();
-        }
-
-        @Override
-        public HttpRequest getRequest() {
-            return httpResponse.getRequest();
-        }
-
-        @Override
-        public IterableStream<T> getElements() {
-            return entityStream;
-        }
-
-        @Override
-        public String getContinuationToken() {
-            return continuationToken;
-        }
-
-        @Override
-        public void close() {
-        }
-    }
-
     /**
      * Gets a single {@link TableEntity entity} from the table.
      *
@@ -1150,7 +1102,7 @@ public final class TableClient {
         Callable<Response<TableEntity>> getEntityOp = () -> {
             ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>> response =
                 tablesImplementation.getTables().queryEntityWithPartitionAndRowKeyWithResponse(
-                tableName, escapeSingleQuotes(partitionKey), escapeSingleQuotes(rowKey), null, null,
+                tableName, TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), null, null,
                 queryOptions, contextValue);
 
             final Map<String, Object> matchingEntity = response.getValue();
@@ -1249,7 +1201,7 @@ public final class TableClient {
             );
             return new SimpleResponse<>(response,
                 new TableAccessPolicies(response.getValue() == null ? null : response.getValue().stream()
-                    .map(this::toTableSignedIdentifier)
+                    .map(TableUtils::toTableSignedIdentifier)
                     .collect(Collectors.toList())));
         };
 
@@ -1260,25 +1212,7 @@ public final class TableClient {
         }
     }
 
-    private TableSignedIdentifier toTableSignedIdentifier(SignedIdentifier signedIdentifier) {
-        if (signedIdentifier == null) {
-            return null;
-        }
-
-        return new TableSignedIdentifier(signedIdentifier.getId())
-            .setAccessPolicy(toTableAccessPolicy(signedIdentifier.getAccessPolicy()));
-    }
-
-    private TableAccessPolicy toTableAccessPolicy(AccessPolicy accessPolicy) {
-        if (accessPolicy == null) {
-            return null;
-        }
-
-        return new TableAccessPolicy()
-            .setExpiresOn(accessPolicy.getExpiry())
-            .setStartsOn(accessPolicy.getStart())
-            .setPermissions(accessPolicy.getPermission());
-    }
+    
     /**
      * Sets stored {@link TableAccessPolicies access policies} for the table that may be used with Shared Access
      * Signatures.
@@ -1367,7 +1301,7 @@ public final class TableClient {
         if (tableSignedIdentifiers != null) {
             signedIdentifiers = tableSignedIdentifiers.stream()
                 .map(tableSignedIdentifier -> {
-                    SignedIdentifier signedIdentifier = toSignedIdentifier(tableSignedIdentifier);
+                    SignedIdentifier signedIdentifier = TableUtils.toSignedIdentifier(tableSignedIdentifier);
 
                     if (signedIdentifier != null) {
                         if (signedIdentifier.getAccessPolicy() != null
@@ -1407,26 +1341,6 @@ public final class TableClient {
         }
     }
 
-    private SignedIdentifier toSignedIdentifier(TableSignedIdentifier tableSignedIdentifier) {
-        if (tableSignedIdentifier == null) {
-            return null;
-        }
-
-        return new SignedIdentifier()
-            .setId(tableSignedIdentifier.getId())
-            .setAccessPolicy(toAccessPolicy(tableSignedIdentifier.getAccessPolicy()));
-    }
-
-    private AccessPolicy toAccessPolicy(TableAccessPolicy tableAccessPolicy) {
-        if (tableAccessPolicy == null) {
-            return null;
-        }
-
-        return new AccessPolicy()
-            .setExpiry(tableAccessPolicy.getExpiresOn())
-            .setStart(tableAccessPolicy.getStartsOn())
-            .setPermission(tableAccessPolicy.getPermissions());
-    }
 
     /**
      * Executes all {@link TableTransactionAction actions} within the list inside a transaction. When the call
@@ -1680,21 +1594,7 @@ public final class TableClient {
             return THREAD_POOL.submit(submitTransactionOp).get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
 
-            throw logger.logExceptionAsError((RuntimeException) interpretException(ex));
-        }
-    }
-
-    private Exception interpretException(Exception ex) {
-        Throwable exception = ex;
-        if (exception instanceof ExecutionException) {
-            exception = exception.getCause();
-        }
-        Throwable cause = exception.getCause();
-        if (cause instanceof TableTransactionFailedException) {
-            TableTransactionFailedException failedException = (TableTransactionFailedException) cause;
-            return failedException;
-        } else {
-            return new RuntimeException(mapThrowableToTableServiceException(exception));
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.interpretException(ex));
         }
     }
 
@@ -1783,15 +1683,5 @@ public final class TableClient {
         } else {
             return new SimpleResponse<>(response, Arrays.asList(response.getValue()));
         }
-    }
-
-    // Single quotes in OData queries should be escaped by using two consecutive single quotes characters.
-    // Source: http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#sec_URLSyntax.
-    private String escapeSingleQuotes(String input) {
-        if (input == null) {
-            return null;
-        }
-
-        return input.replace("'", "''");
     }
 }

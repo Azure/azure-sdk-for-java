@@ -23,6 +23,7 @@ import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableAccountSasGenerator;
+import com.azure.data.tables.implementation.TablePaged;
 import com.azure.data.tables.implementation.TableSasUtils;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.models.CorsRule;
@@ -521,46 +522,6 @@ public final class TableServiceClient {
         return new TablePaged(response, tables, response.getDeserializedHeaders().getXMsContinuationNextTableName());
     }
 
-    private static class TablePaged implements PagedResponse<TableItem> {
-        private final Response<TableQueryResponse> httpResponse;
-        private final IterableStream<TableItem> tableStream;
-        private final String continuationToken;
-
-        TablePaged(Response<TableQueryResponse> httpResponse, List<TableItem> tableList, String continuationToken) {
-            this.httpResponse = httpResponse;
-            this.tableStream = IterableStream.of(tableList);
-            this.continuationToken = continuationToken;
-        }
-
-        @Override
-        public int getStatusCode() {
-            return httpResponse.getStatusCode();
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return httpResponse.getHeaders();
-        }
-
-        @Override
-        public HttpRequest getRequest() {
-            return httpResponse.getRequest();
-        }
-
-        @Override
-        public IterableStream<TableItem> getElements() {
-            return tableStream;
-        }
-
-        @Override
-        public String getContinuationToken() {
-            return continuationToken;
-        }
-
-        @Override
-        public void close() {
-        }
-    }
 
     /**
      * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
@@ -628,73 +589,9 @@ public final class TableServiceClient {
         context = TableUtils.setContext(context, true);
         Response<com.azure.data.tables.implementation.models.TableServiceProperties> response =
             this.implementation.getServices().getPropertiesWithResponse(null, null, context);
-        return new SimpleResponse<>(response, toTableServiceProperties(response.getValue()));
+        return new SimpleResponse<>(response, TableUtils.toTableServiceProperties(response.getValue()));
     }
 
-    private TableServiceProperties toTableServiceProperties(
-        com.azure.data.tables.implementation.models.TableServiceProperties tableServiceProperties) {
-
-        if (tableServiceProperties == null) {
-            return null;
-        }
-
-        return new TableServiceProperties()
-            .setLogging(toTableServiceLogging(tableServiceProperties.getLogging()))
-            .setHourMetrics(toTableServiceMetrics(tableServiceProperties.getHourMetrics()))
-            .setMinuteMetrics(toTableServiceMetrics(tableServiceProperties.getMinuteMetrics()))
-            .setCorsRules(tableServiceProperties.getCors() == null ? null
-                : tableServiceProperties.getCors().stream()
-                .map(this::toTablesServiceCorsRule)
-                .collect(Collectors.toList()));
-    }
-
-    private TableServiceLogging toTableServiceLogging(Logging logging) {
-        if (logging == null) {
-            return null;
-        }
-
-        return new TableServiceLogging()
-            .setAnalyticsVersion(logging.getVersion())
-            .setDeleteLogged(logging.isDelete())
-            .setReadLogged(logging.isRead())
-            .setWriteLogged(logging.isWrite())
-            .setRetentionPolicy(toTableServiceRetentionPolicy(logging.getRetentionPolicy()));
-    }
-
-    private TableServiceRetentionPolicy toTableServiceRetentionPolicy(RetentionPolicy retentionPolicy) {
-        if (retentionPolicy == null) {
-            return null;
-        }
-
-        return new TableServiceRetentionPolicy()
-            .setEnabled(retentionPolicy.isEnabled())
-            .setDaysToRetain(retentionPolicy.getDays());
-    }
-
-    private TableServiceMetrics toTableServiceMetrics(Metrics metrics) {
-        if (metrics == null) {
-            return null;
-        }
-
-        return new TableServiceMetrics()
-            .setVersion(metrics.getVersion())
-            .setEnabled(metrics.isEnabled())
-            .setIncludeApis(metrics.isIncludeAPIs())
-            .setRetentionPolicy(toTableServiceRetentionPolicy(metrics.getRetentionPolicy()));
-    }
-
-    private TableServiceCorsRule toTablesServiceCorsRule(CorsRule corsRule) {
-        if (corsRule == null) {
-            return null;
-        }
-
-        return new TableServiceCorsRule()
-            .setAllowedOrigins(corsRule.getAllowedOrigins())
-            .setAllowedMethods(corsRule.getAllowedMethods())
-            .setAllowedHeaders(corsRule.getAllowedHeaders())
-            .setExposedHeaders(corsRule.getExposedHeaders())
-            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
-    }
     /**
      * Sets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
@@ -784,69 +681,8 @@ public final class TableServiceClient {
     Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
         context = TableUtils.setContext(context, true);
         return new SimpleResponse<>(this.implementation.getServices()
-            .setPropertiesWithResponse(toImplTableServiceProperties(tableServiceProperties), null,
+            .setPropertiesWithResponse(TableUtils.toImplTableServiceProperties(tableServiceProperties), null,
                 null, context), null);
-    }
-
-    private com.azure.data.tables.implementation.models.TableServiceProperties toImplTableServiceProperties(
-        TableServiceProperties tableServiceProperties) {
-
-        return new com.azure.data.tables.implementation.models.TableServiceProperties()
-            .setLogging(toLogging(tableServiceProperties.getLogging()))
-            .setHourMetrics(toMetrics(tableServiceProperties.getHourMetrics()))
-            .setMinuteMetrics(toMetrics(tableServiceProperties.getMinuteMetrics()))
-            .setCors(tableServiceProperties.getCorsRules() == null ? null
-                : tableServiceProperties.getCorsRules().stream()
-                .map(this::toCorsRule)
-                .collect(Collectors.toList()));
-    }
-
-    private Logging toLogging(TableServiceLogging tableServiceLogging) {
-        if (tableServiceLogging == null) {
-            return null;
-        }
-
-        return new Logging()
-            .setVersion(tableServiceLogging.getAnalyticsVersion())
-            .setDelete(tableServiceLogging.isDeleteLogged())
-            .setRead(tableServiceLogging.isReadLogged())
-            .setWrite(tableServiceLogging.isWriteLogged())
-            .setRetentionPolicy(toRetentionPolicy(tableServiceLogging.getRetentionPolicy()));
-    }
-
-    private RetentionPolicy toRetentionPolicy(TableServiceRetentionPolicy tableServiceRetentionPolicy) {
-        if (tableServiceRetentionPolicy == null) {
-            return null;
-        }
-
-        return new RetentionPolicy()
-            .setEnabled(tableServiceRetentionPolicy.isEnabled())
-            .setDays(tableServiceRetentionPolicy.getDaysToRetain());
-    }
-
-    private Metrics toMetrics(TableServiceMetrics tableServiceMetrics) {
-        if (tableServiceMetrics == null) {
-            return null;
-        }
-
-        return new Metrics()
-            .setVersion(tableServiceMetrics.getVersion())
-            .setEnabled(tableServiceMetrics.isEnabled())
-            .setIncludeAPIs(tableServiceMetrics.isIncludeApis())
-            .setRetentionPolicy(toRetentionPolicy(tableServiceMetrics.getTableServiceRetentionPolicy()));
-    }
-
-    private CorsRule toCorsRule(TableServiceCorsRule corsRule) {
-        if (corsRule == null) {
-            return null;
-        }
-
-        return new CorsRule()
-            .setAllowedOrigins(corsRule.getAllowedOrigins())
-            .setAllowedMethods(corsRule.getAllowedMethods())
-            .setAllowedHeaders(corsRule.getAllowedHeaders())
-            .setExposedHeaders(corsRule.getExposedHeaders())
-            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
     }
 
     /**
@@ -917,25 +753,7 @@ public final class TableServiceClient {
         context = TableUtils.setContext(context, true);
         Response<TableServiceStats> response = this.implementation.getServices().getStatisticsWithResponse(
             null, null, context);
-        return new SimpleResponse<>(response, toTableServiceStatistics(response.getValue()));
+        return new SimpleResponse<>(response, TableUtils.toTableServiceStatistics(response.getValue()));
     }
 
-
-    private TableServiceStatistics toTableServiceStatistics(TableServiceStats tableServiceStats) {
-        if (tableServiceStats == null) {
-            return null;
-        }
-
-        return new TableServiceStatistics(toTableServiceGeoReplication(tableServiceStats.getGeoReplication()));
-    }
-
-    private TableServiceGeoReplication toTableServiceGeoReplication(GeoReplication geoReplication) {
-        if (geoReplication == null) {
-            return null;
-        }
-
-        return new TableServiceGeoReplication(
-            TableServiceGeoReplicationStatus.fromString(geoReplication.getStatus().toString()),
-            geoReplication.getLastSyncTime());
-    }
 }
