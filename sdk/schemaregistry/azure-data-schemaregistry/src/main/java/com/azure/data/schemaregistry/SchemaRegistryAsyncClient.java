@@ -24,10 +24,6 @@ import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -173,7 +169,7 @@ public final class SchemaRegistryAsyncClient {
         return restService.getSchemas().registerWithResponseAsync(groupName, name, contentType.toString(), binaryData,
                 binaryData.getLength(), context)
             .map(response -> {
-                final SchemaProperties registered = SchemaRegistryHelper.getSchemaPropertiesFromSchemaRegisterHeaders(response, format);
+                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), registered);
@@ -264,7 +260,7 @@ public final class SchemaRegistryAsyncClient {
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .flatMap(response -> {
-                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromSchemasGetByIdHeaders(response);
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
                 return convertToString(response.getValue())
                     .map(schema -> new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -284,7 +280,7 @@ public final class SchemaRegistryAsyncClient {
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .flatMap(response -> {
                 final Flux<ByteBuffer> schemaFlux = response.getValue();
-                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromGetSchemaVersionHeaders(response);
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
 
                 if (schemaFlux == null) {
                     return Mono.error(new IllegalArgumentException(String.format(
@@ -387,7 +383,7 @@ public final class SchemaRegistryAsyncClient {
                 context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                final SchemaProperties properties = SchemaRegistryHelper.getSchemaPropertiesFromQueryByIdContentHeaders(response, format);
+                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -414,33 +410,6 @@ public final class SchemaRegistryAsyncClient {
         }
 
         return error;
-    }
-
-    /**
-     * Converts an input stream into its string representation.
-     *
-     * @param inputStream Input stream.
-     *
-     * @return A string representation.
-     *
-     * @throws UncheckedIOException if an {@link IOException} is thrown when creating the readers.
-     */
-    static String convertToString(InputStream inputStream) {
-        final StringBuilder builder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-
-            String str;
-
-            while ((str = reader.readLine()) != null) {
-                builder.append(str);
-            }
-
-        } catch (IOException exception) {
-            throw new UncheckedIOException("Error occurred while deserializing schemaContent.", exception);
-        }
-
-        return builder.toString();
     }
 
     /**

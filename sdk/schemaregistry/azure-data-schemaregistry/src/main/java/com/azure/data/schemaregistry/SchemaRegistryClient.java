@@ -26,11 +26,14 @@ import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClient.convertToString;
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
@@ -162,7 +165,7 @@ public final class SchemaRegistryClient {
         final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
         ResponseBase<SchemasRegisterHeaders, Void> response = restService.getSchemas().registerWithResponse(groupName, name, contentType.toString(), binaryData, binaryData.getLength(), context);
-        final SchemaProperties registered = SchemaRegistryHelper.getSchemaPropertiesFromSchemaRegisterHeaders(response, format);
+        final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
         return new SimpleResponse<>(
             response.getRequest(), response.getStatusCode(),
             response.getHeaders(), registered);
@@ -226,7 +229,7 @@ public final class SchemaRegistryClient {
         context = enableSyncRestProxy(context);
         try {
             ResponseBase<SchemasGetByIdHeaders, BinaryData> response = this.restService.getSchemas().getByIdWithResponse(schemaId, context);
-            final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromSchemasGetByIdHeaders(response);
+            final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
             final String schema = convertToString(response.getValue().toStream());
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema));
@@ -262,7 +265,7 @@ public final class SchemaRegistryClient {
         ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> response = this.restService.getSchemas().getSchemaVersionWithResponse(groupName, schemaName, schemaVersion,
             context);
         final InputStream schemaInputStream = response.getValue().toStream();
-        final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromGetSchemaVersionHeaders(response);
+        final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
         final String schema;
 
         if (schemaInputStream == null) {
@@ -339,7 +342,7 @@ public final class SchemaRegistryClient {
         try {
             ResponseBase<SchemasQueryIdByContentHeaders, Void>  response = restService.getSchemas()
                 .queryIdByContentWithResponse(groupName, name, com.azure.data.schemaregistry.implementation.models.SchemaFormat.fromString(contentType.toString()), binaryData, binaryData.getLength(), context);
-            final SchemaProperties properties = SchemaRegistryHelper.getSchemaPropertiesFromQueryByIdContentHeaders(response, format);
+            final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
             return new SimpleResponse<>(
                 response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), properties);
@@ -350,5 +353,29 @@ public final class SchemaRegistryClient {
 
     private Context enableSyncRestProxy(Context context) {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    }
+
+    /**
+     * Converts an input stream into its string representation.
+     *
+     * @param inputStream Input stream.
+     *
+     * @return A string representation.
+     *
+     * @throws UncheckedIOException if an {@link IOException} is thrown when creating the readers.
+     */
+    static String convertToString(InputStream inputStream) {
+        final StringBuilder builder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            String str;
+            while ((str = reader.readLine()) != null) {
+                builder.append(str);
+            }
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Error occurred while deserializing schemaContent.", exception);
+        }
+
+        return builder.toString();
     }
 }

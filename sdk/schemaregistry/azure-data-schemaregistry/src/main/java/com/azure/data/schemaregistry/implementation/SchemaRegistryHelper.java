@@ -52,6 +52,40 @@ public final class SchemaRegistryHelper {
         accessor = Objects.requireNonNull(modelsAccessor, "'modelsAccessor' cannot be null.");
     }
 
+    public static SchemaProperties getSchemaProperties(SchemasRegisterHeaders deserializedHeaders, HttpHeaders httpHeaders, SchemaFormat fallbackFormat) {
+        final SchemaFormat responseFormat = getSchemaFormat(httpHeaders);
+        final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : fallbackFormat;
+
+        return accessor.getSchemaProperties(deserializedHeaders.getSchemaId(), schemaFormat,
+            deserializedHeaders.getSchemaGroupName(), deserializedHeaders.getSchemaName(),
+            deserializedHeaders.getSchemaVersion());
+    }
+
+    public static SchemaProperties getSchemaProperties(SchemasQueryIdByContentHeaders deserializedHeaders, HttpHeaders httpHeaders, SchemaFormat format) {
+        final SchemaFormat responseFormat = getSchemaFormat(httpHeaders);
+        final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : format;
+        return accessor.getSchemaProperties(deserializedHeaders.getSchemaId(), schemaFormat,
+            deserializedHeaders.getSchemaGroupName(), deserializedHeaders.getSchemaName(),
+            deserializedHeaders.getSchemaVersion());
+    }
+
+    public static SchemaProperties getSchemaProperties(SchemasGetByIdHeaders deserializedHeaders, HttpHeaders httpHeaders) {
+        final SchemaFormat schemaFormat = getSchemaFormat(httpHeaders);
+        return accessor.getSchemaProperties(deserializedHeaders.getSchemaId(), schemaFormat,
+            deserializedHeaders.getSchemaGroupName(), deserializedHeaders.getSchemaName(),
+            deserializedHeaders.getSchemaVersion());
+    }
+
+    public static SchemaProperties getSchemaProperties(SchemasGetSchemaVersionHeaders deserializedHeaders, HttpHeaders httpHeaders) {
+        final SchemaFormat schemaFormat = getSchemaFormat(httpHeaders);
+
+        return accessor.getSchemaProperties(deserializedHeaders.getSchemaId(), schemaFormat,
+            deserializedHeaders.getSchemaGroupName(), deserializedHeaders.getSchemaName(),
+            deserializedHeaders.getSchemaVersion());
+    }
+
+
+
     public static SchemaProperties getSchemaPropertiesFromSchemaRegisterHeaders(ResponseBase<SchemasRegisterHeaders, Void> response, SchemaFormat fallbackFormat) {
         final SchemasRegisterHeaders headers = response.getDeserializedHeaders();
         final SchemaFormat responseFormat = getSchemaFormat(response.getHeaders());
