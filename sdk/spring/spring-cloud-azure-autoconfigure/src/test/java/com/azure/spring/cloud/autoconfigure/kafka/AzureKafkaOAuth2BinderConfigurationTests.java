@@ -2,15 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.kafka;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
-import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler;
-import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.apache.kafka.common.config.types.Password;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -180,21 +178,18 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 KafkaOAuth2AuthenticateCallbackHandler callbackHandler = new KafkaOAuth2AuthenticateCallbackHandler();
                 callbackHandler.configure(modifiedConfigs, null, null);
 
-                AzurePasswordlessProperties properties = (AzurePasswordlessProperties) ReflectionTestUtils
-                    .getField(callbackHandler, "properties");
-                AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver =
-                    (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(callbackHandler, "tokenCredentialResolver");
-                assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof ManagedIdentityCredential);
+                @SuppressWarnings("unchecked") TokenCredentialProvider tokenCredentialProvider =
+                    (TokenCredentialProvider) ReflectionTestUtils.getField(callbackHandler, "tokenCredentialProvider");
+                assertTrue(tokenCredentialProvider.get() instanceof ManagedIdentityCredential);
 
                 modifiedConfigs.clear();
                 modifiedConfigs.putAll(processor.getMergedProducerProperties(kafkaProperties));
                 modifiedConfigs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList("myehnamespace.servicebus.windows.net:9093"));
                 modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
                 callbackHandler.configure(modifiedConfigs, null, null);
-                properties = (AzurePasswordlessProperties) ReflectionTestUtils.getField(callbackHandler, "properties");
-                azureTokenCredentialResolver =
-                    (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(callbackHandler, "tokenCredentialResolver");
-                assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof DefaultAzureCredential);
+                tokenCredentialProvider =
+                    (TokenCredentialProvider) ReflectionTestUtils.getField(callbackHandler, "tokenCredentialProvider");
+                assertTrue(tokenCredentialProvider.get() instanceof DefaultAzureCredential);
             });
     }
 

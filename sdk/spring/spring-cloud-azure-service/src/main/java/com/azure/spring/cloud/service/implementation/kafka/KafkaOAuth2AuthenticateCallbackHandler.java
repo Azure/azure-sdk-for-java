@@ -4,11 +4,10 @@ package com.azure.spring.cloud.service.implementation.kafka;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
-import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
-import com.azure.spring.cloud.core.properties.AzureProperties;
-import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzureKafkaPasswordlessProperties;
 import org.apache.kafka.common.config.types.Password;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
@@ -35,19 +34,17 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     private static final Duration ACCESS_TOKEN_REQUEST_BLOCK_TIME = Duration.ofSeconds(30);
     private static final String TOKEN_AUDIENCE_FORMAT = "%s://%s/.default";
 
-    private final AzurePasswordlessProperties properties;
-    private final AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver;
+    private final AzureKafkaPasswordlessProperties properties;
 
-    private AzureCredentialResolver<TokenCredential> tokenCredentialResolver;
+    private TokenCredentialProvider tokenCredentialProvider;
     private Function<TokenCredential, Mono<AzureOAuthBearerToken>> resolveToken;
 
     public KafkaOAuth2AuthenticateCallbackHandler() {
         this(null, null);
     }
 
-    public KafkaOAuth2AuthenticateCallbackHandler(AzurePasswordlessProperties properties, AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver) {
-        this.properties = properties == null ? new AzurePasswordlessProperties() : properties;
-        this.externalTokenCredentialResolver = externalTokenCredentialResolver == null ? new AzureTokenCredentialResolver() : externalTokenCredentialResolver;
+    public KafkaOAuth2AuthenticateCallbackHandler(AzureKafkaPasswordlessProperties properties, AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver) {
+        this.properties = properties == null ? new AzureKafkaPasswordlessProperties() : properties;
     }
 
     @Override
@@ -57,7 +54,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         }
         TokenRequestContext request = buildTokenRequestContext(configs);
         this.resolveToken = tokenCredential -> tokenCredential.getToken(request).map(AzureOAuthBearerToken::new);
-        this.tokenCredentialResolver = new InternalCredentialResolver(externalTokenCredentialResolver, configs);
+        this.tokenCredentialProvider = new InternalTokenCredentialProvider(TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties.toPasswordlessProperties())), configs);
     }
 
     private TokenRequestContext buildTokenRequestContext(Map<String, ?> configs) {
@@ -95,7 +92,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
             if (callback instanceof OAuthBearerTokenCallback) {
                 OAuthBearerTokenCallback oauthCallback = (OAuthBearerTokenCallback) callback;
                 this.resolveToken
-                    .apply(tokenCredentialResolver.resolve(properties))
+                    .apply(tokenCredentialProvider.get())
                     .doOnNext(oauthCallback::token)
                     .doOnError(throwable -> oauthCallback.error("invalid_grant", throwable.getMessage(), null))
                     .block(ACCESS_TOKEN_REQUEST_BLOCK_TIME);
@@ -110,35 +107,26 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         // NOOP
     }
 
-    private static class InternalCredentialResolver implements AzureCredentialResolver<TokenCredential> {
-        private final AzureCredentialResolver<TokenCredential> delegated;
+    private static class InternalTokenCredentialProvider implements TokenCredentialProvider {
+        private final TokenCredentialProvider delegated;
         private final Map<String, ?> configs;
         private TokenCredential credential;
 
-        InternalCredentialResolver(AzureCredentialResolver<TokenCredential> delegated, Map<String, ?> configs) {
+        InternalTokenCredentialProvider(TokenCredentialProvider delegated, Map<String, ?> configs) {
             this.delegated = delegated;
             this.configs = configs;
         }
 
         @Override
-        public TokenCredential resolve(AzureProperties properties) {
+        public TokenCredential get() {
             if (credential == null) {
                 credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
                 // Resolve the token credential when there is no credential passed from configs.
                 if (credential == null) {
-                    credential = delegated.resolve(properties);
-                    if (credential == null) {
-                        // Create DefaultAzureCredential when no credential can be resolved from configs.
-                        credential = new DefaultAzureCredentialBuilderFactory(properties).build().build();
-                    }
+                    credential = delegated.get();
                 }
             }
             return credential;
-        }
-
-        @Override
-        public boolean isResolvable(AzureProperties properties) {
-            return true;
         }
     }
 }

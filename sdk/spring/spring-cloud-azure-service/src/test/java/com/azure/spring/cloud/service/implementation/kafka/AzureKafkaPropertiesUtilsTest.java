@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.service.implementation.kafka;
 
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
-import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzureKafkaPasswordlessProperties;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.copyJaasPropertyToAzureProperties;
@@ -17,7 +17,7 @@ class AzureKafkaPropertiesUtilsTest {
     @Test
     void testCopyJaasPropertyToAzureProperties() {
         String jaasConfig = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required azure.configured=\"true\";";
-        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
+        AzureKafkaPasswordlessProperties properties = new AzureKafkaPasswordlessProperties();
 
         copyJaasPropertyToAzureProperties(jaasConfig, properties);
         assertFalse(properties.getCredential().isManagedIdentityEnabled());
@@ -29,7 +29,7 @@ class AzureKafkaPropertiesUtilsTest {
     void testCopyJaasPropertyWithCustomizedValuesToAzureProperties() {
         String jaasConfig = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required azure.configured=\"true\" "
             + "azure.credential.managed-identity-enabled=\"true\" azure.credential.client-id=\"test\" azure.profile.cloud-type=\"azure\";";
-        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
+        AzureKafkaPasswordlessProperties properties = new AzureKafkaPasswordlessProperties();
 
         copyJaasPropertyToAzureProperties(jaasConfig, properties);
         assertTrue(properties.getCredential().isManagedIdentityEnabled());
@@ -40,7 +40,7 @@ class AzureKafkaPropertiesUtilsTest {
 
     @Test
     void testClearAzureProperties() {
-        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
+        AzureKafkaPasswordlessProperties properties = new AzureKafkaPasswordlessProperties();
         properties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE);
         properties.getProfile().setTenantId("fake-tenant-id");
     }

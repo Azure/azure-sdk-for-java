@@ -8,9 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Bean;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -63,9 +64,13 @@ class AzureServiceBusJmsPropertiesTests {
     }
 
     @EnableConfigurationProperties
-    @Import(AzureServiceBusJmsProperties.class)
     static class AzureServiceBusJmsPropertiesTestConfig {
 
+        @Bean
+        @ConfigurationProperties(AzureServiceBusJmsProperties.PREFIX)
+        AzureServiceBusJmsProperties jmsProperties() {
+            return new AzureServiceBusJmsProperties();
+        }
     }
 
 }

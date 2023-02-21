@@ -5,12 +5,13 @@ package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.cloud.service.implementation.passwordless.AzureServiceBusPasswordlessProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
@@ -32,9 +33,10 @@ class ServiceBusJmsPasswordlessConfigurationTest {
 
         this.contextRunner
             .withPropertyValues("spring.jms.servicebus.passwordless-enabled=false")
+            .withPropertyValues("spring.jms.servicebus.connection-string=fake-connection-string")
+            .withPropertyValues("spring.jms.servicebus.pricing-tier=standard")
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureServiceBusPasswordlessProperties.class);
                 assertThat(context).doesNotHaveBean(AzureServiceBusJmsCredentialSupplier.class);
                 assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactoryCustomizer.class);
             });
@@ -47,15 +49,12 @@ class ServiceBusJmsPasswordlessConfigurationTest {
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
         azureProperties.getProfile().getEnvironment().setActiveDirectoryGraphApiVersion("v2");
 
-        AzureServiceBusJmsProperties jmsProperties = new AzureServiceBusJmsProperties();
         this.contextRunner
             .withPropertyValues("spring.jms.servicebus.passwordless-enabled=true")
             .withPropertyValues("spring.jms.servicebus.namespace=testnamespace")
             .withPropertyValues("spring.jms.servicebus.pricing-tier=standard")
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
-            .withBean(AzureServiceBusJmsProperties.class, () -> jmsProperties)
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureServiceBusPasswordlessProperties.class);
                 assertThat(context).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
                 assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactoryCustomizer.class);
             });
@@ -67,7 +66,6 @@ class ServiceBusJmsPasswordlessConfigurationTest {
         azureProperties.getProfile().setCloudType(AZURE);
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
         azureProperties.getProfile().getEnvironment().setActiveDirectoryGraphApiVersion("v2");
-        AzureServiceBusJmsProperties jmsProperties = new AzureServiceBusJmsProperties();
         this.contextRunner
             .withPropertyValues("spring.jms.servicebus.passwordless-enabled=true")
             .withPropertyValues("spring.jms.servicebus.namespace=testnamespace")
@@ -90,12 +88,10 @@ class ServiceBusJmsPasswordlessConfigurationTest {
                 "spring.jms.servicebus.proxy.password=password",
                 "spring.jms.servicebus.proxy.type=type")
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
-            .withBean(AzureServiceBusJmsProperties.class, () -> jmsProperties)
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureServiceBusPasswordlessProperties.class);
                 assertThat(context).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
                 assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactoryCustomizer.class);
-                AzureServiceBusPasswordlessProperties properties = context.getBean(AzureServiceBusPasswordlessProperties.class);
+                AzureServiceBusJmsProperties properties = context.getBean(AzureServiceBusJmsProperties.class);
                 assertThat(properties.getScopes()).isEqualTo("scopes");
                 assertThat(properties.getProfile().getTenantId()).isEqualTo("tenant-id");
                 assertThat(properties.getProfile().getSubscriptionId()).isEqualTo("subscription-id");
@@ -107,12 +103,7 @@ class ServiceBusJmsPasswordlessConfigurationTest {
                 assertThat(properties.getCredential().getUsername()).isEqualTo("username");
                 assertThat(properties.getCredential().getPassword()).isEqualTo("password");
                 assertThat(properties.getCredential().isManagedIdentityEnabled()).isTrue();
-                assertThat(properties.getClient().getApplicationId()).isEqualTo("application-id");
-                assertThat(properties.getProxy().getHostname()).isEqualTo("hostname");
-                assertThat(properties.getProxy().getUsername()).isEqualTo("username");
-                assertThat(properties.getProxy().getPort()).isEqualTo(1111);
-                assertThat(properties.getProxy().getPassword()).isEqualTo("password");
-                assertThat(properties.getProxy().getType()).isEqualTo("type");
+
             });
     }
 
@@ -132,7 +123,6 @@ class ServiceBusJmsPasswordlessConfigurationTest {
                 when(azureServiceBusJmsCredentialSupplierMocker.get()).thenReturn("fake-token");
 
                 contextRunner.run(runnerContext -> {
-                    assertThat(runnerContext).hasSingleBean(AzureServiceBusPasswordlessProperties.class);
                     assertThat(runnerContext).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
                     assertThat(runnerContext).hasSingleBean(ServiceBusJmsConnectionFactoryCustomizer.class);
                     runnerContext.getBean(AzureServiceBusJmsCredentialSupplier.class).get().equals("fake-token");
@@ -145,7 +135,13 @@ class ServiceBusJmsPasswordlessConfigurationTest {
     }
 
     @EnableConfigurationProperties
-    @Import(ServiceBusJmsPasswordlessConfiguration.class)
+    @Import({ServiceBusJmsPasswordlessConfiguration.class})
     static class ServiceBusJmsPasswordlessTestConfig {
+
+        @Bean
+        @ConfigurationProperties(AzureServiceBusJmsProperties.PREFIX)
+        AzureServiceBusJmsProperties jmsProperties() {
+            return new AzureServiceBusJmsProperties();
+        }
     }
 }
