@@ -86,6 +86,9 @@
 # PRLabel: %Communication - Resource Manager
 /sdk/communication/sdk/communication/azure-resourcemanager-communication/
 
+# PRLabel: %Communication - Rooms
+/sdk/communication/azure-communication-rooms/       @Azure/acs-rooms-sdk
+
 # PRLabel: %Container Registry
 /sdk/containerregistry/                              @lmolkova @alzimmermsft
 
