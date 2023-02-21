@@ -240,7 +240,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             SHARED_ENCRYPTION_DATABASE.createClientEncryptionKey("key2",
                 CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata2).block();
 
-            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
+            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths(), 2);
             String containerId = UUID.randomUUID().toString();
             CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
             properties.setClientEncryptionPolicy(clientEncryptionPolicy);
@@ -1292,6 +1292,18 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
             includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
+            ClientEncryptionIncludedPath includedPath14 = new ClientEncryptionIncludedPath();
+            includedPath14.setClientEncryptionKeyId("key1");
+            includedPath14.setPath("/id");
+            includedPath14.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath14.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+
+            ClientEncryptionIncludedPath includedPath15 = new ClientEncryptionIncludedPath();
+            includedPath15.setClientEncryptionKeyId("key1");
+            includedPath15.setPath("/pk");
+            includedPath15.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath15.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+
             List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
             paths.add(includedPath1);
             paths.add(includedPath2);
@@ -1306,6 +1318,8 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             paths.add(includedPath11);
             paths.add(includedPath12);
             paths.add(includedPath13);
+            paths.add(includedPath14);
+            paths.add(includedPath15);
 
             return paths;
         }

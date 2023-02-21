@@ -126,7 +126,7 @@ public final class CosmosContainerProperties {
     public CosmosContainerProperties setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         this.documentCollection.setPartitionKey(partitionKeyDefinition);
         if (this.getClientEncryptionPolicy() != null) {
-            this.getClientEncryptionPolicy().validatePartitionKeyPathsAreNotEncrypted(this.getPartitionKeyPathTokensList());
+            this.getClientEncryptionPolicy().validatePartitionKeyPathsIfEncrypted(this.getPartitionKeyPathTokensList());
         }
 
         return this;
@@ -315,7 +315,7 @@ public final class CosmosContainerProperties {
      */
     public CosmosContainerProperties setClientEncryptionPolicy(ClientEncryptionPolicy value) {
         if (value != null) {
-            value.validatePartitionKeyPathsAreNotEncrypted(this.getPartitionKeyPathTokensList());
+            value.validatePartitionKeyPathsIfEncrypted(this.getPartitionKeyPathTokensList());
         }
 
         this.documentCollection.setClientEncryptionPolicy(value);
