@@ -148,7 +148,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         if (isDisposed.getAndSet(true)) {
             return super.getIsClosedMono();
         }
-        return receiverUnsettledDeliveries.attemptGracefulClose().then(super.closeAsync(message, errorCondition));
+        return receiverUnsettledDeliveries.terminateAndAwaitForDispositionsInProgressToComplete()
+            .then(super.closeAsync(message, errorCondition));
     }
 
     @Override
@@ -188,7 +189,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     @Override
     protected void onHandlerClose() {
-        // See the code comment in ReactorReceiver.onHandlerClose() [temporary method, tobe removed].
+        // See the code comment in ReactorReceiver.onHandlerClose(), [temporary method, tobe removed.]
         receiverUnsettledDeliveries.close();
     }
 }

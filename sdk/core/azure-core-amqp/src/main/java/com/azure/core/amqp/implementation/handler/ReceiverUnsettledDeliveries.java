@@ -99,7 +99,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         this.timeout = retryOptions.getTryTimeout();
         this.deliveryEmptyTag = deliveryEmptyTag;
         this.logger = logger;
-        this.timoutTimer = Flux.interval(timeout).subscribe(__ -> completeUncompletedDispositionWorksOnTimeout("timer"));
+        this.timoutTimer = Flux.interval(timeout).subscribe(__ -> completeDispositionWorksOnTimeout("timer"));
     }
 
     /**
@@ -223,10 +223,11 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
     }
 
     /**
-     * Attempt any optional graceful (if possible) cleanup and terminate this {@link ReceiverUnsettledDeliveries}.
-     * The function eagerly times out any expired disposition work and waits for the completion or timeout of
-     * the remaining disposition. Finally, disposes of the timeout timer. Future attempts to notify deliveries or
-     * send delivery dispositions will be rejected.
+     * Terminate this {@link ReceiverUnsettledDeliveries} including expired disposition works, and await to complete
+     * disposition work in progress, with AmqpRetryOptions_tryTimeout as the upper bound for the wait time.
+     * <p>
+     * Given this is a terminal API in which the disposition timeout timer will be used last time, termination disposes
+     * the timer as well. Future attempts to notify unsettled deliveries or send delivery dispositions will be rejected.
      * <p>
      * From the point of view of this function's call site, it is still possible that the receive-link and dispatcher
      * may healthy, but not guaranteed. If healthy, send-receive of disposition frames are possible, enabling
@@ -236,19 +237,24 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      * healthy. On the other hand, if the broker initiates the closing of the link, further frame transfer may not be
      * possible.
      *
-     * @return a {@link Mono} that completes upon the termination.
+     * @return a {@link Mono} that await to complete disposition work in progress, the wait has an upper bound
+     * of AmqpRetryOptions_tryTimeout.
      */
-    public Mono<Void> attemptGracefulClose() {
+    public Mono<Void> terminateAndAwaitForDispositionsInProgressToComplete() {
+        // 1. Mark this ReceiverUnsettledDeliveries as terminated, so it no longer accept unsettled deliveries
+        //    or disposition requests
         isTerminated.getAndSet(true);
 
-        // Complete timed out works if any
-        completeUncompletedDispositionWorksOnTimeout("preClose");
+        // 2. then complete timed out works if any
+        completeDispositionWorksOnTimeout("terminateAndAwaitForDispositionsInProgressToComplete");
 
-        // then wait for the completion of all remaining (not timed out) works.
+        // 3. then obtain a Mono that wait, with AmqpRetryOptions_tryTimeout as the upper bound for the maximum
+        //    wait, for the completion of any disposition work in progress, which includes committing open transaction
+        //    work. The upper bound for the wait time is imposed through timeoutTimer.
         final List<Mono<Void>> workMonoList = new ArrayList<>();
         final StringJoiner deliveryTags = new StringJoiner(", ");
         for (DispositionWork work : pendingDispositions.values()) {
-            if (work.hasTimedout()) {
+            if (work == null || work.hasTimedout()) {
                 continue;
             }
             if (work.getDesiredState() instanceof TransactionalState) {
@@ -271,18 +277,21 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         } else {
             workMonoListMerged = Mono.empty();
         }
-        return workMonoListMerged.doFinally(__ -> timoutTimer.dispose());
+        final Mono<Void> dispositionsWithTimeout = workMonoListMerged;
+
+        // 4. finally, disposes the timeoutTimer after its final use (to timeout disposition works in-progress).
+        return dispositionsWithTimeout.doFinally(__ -> timoutTimer.dispose());
     }
 
     /**
      * Closes this {@link ReceiverUnsettledDeliveries} and force complete any uncompleted work. Future attempts
-     * to notify deliveries or send delivery dispositions will be rejected.
+     * to notify unsettled deliveries or send delivery dispositions will be rejected.
      */
     @Override
     public void close() {
         isTerminated.getAndSet(true);
 
-        // Disposes of subscription to the global interval timer.
+        // Disposes of timeoutTimer's internal subscription to the global interval timer.
         timoutTimer.dispose();
 
         // Note: Once disposition API support is enabled in ReceiveLinkHandler - this close() method should have
@@ -415,7 +424,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
     /**
      * Iterate through all the current {@link DispositionWork} and complete the work those are timed out.
      */
-    private void completeUncompletedDispositionWorksOnTimeout(String callSite) {
+    private void completeDispositionWorksOnTimeout(String callSite) {
         if (pendingDispositions.isEmpty()) {
             return;
         }
