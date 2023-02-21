@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
@@ -64,8 +67,8 @@ public class ImportTest extends ImportTestBase {
     }
 
     private boolean assertId(Iterable<DigitalTwinsImportJob> importJobList, DigitalTwinsImportJob response) {
-        for(DigitalTwinsImportJob digitalTwinsImportJob: importJobList) {
-            if(digitalTwinsImportJob.getId().equals(response.getId())){
+        for (DigitalTwinsImportJob digitalTwinsImportJob: importJobList) {
+            if (digitalTwinsImportJob.getId().equals(response.getId())) {
                 return true;
             }
         }

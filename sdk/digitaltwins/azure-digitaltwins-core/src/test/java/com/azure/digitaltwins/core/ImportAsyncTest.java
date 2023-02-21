@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
@@ -17,8 +20,6 @@ import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
-import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
-import static java.net.HttpURLConnection.HTTP_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -47,7 +48,7 @@ public class ImportAsyncTest extends ImportTestBase {
             .create(asyncClient.createImportJob(jobId, digitalTwinsImportJob)).thenConsumeWhile(responseList::add)
             .verifyComplete();
 
-        assertTrue(responseList.size()> 0);
+        assertTrue(responseList.size() > 0);
         assertEquals(responseList.get(0).getId(), jobId);
 
         // Validate list import job
@@ -74,8 +75,8 @@ public class ImportAsyncTest extends ImportTestBase {
         StepVerifier
             .create(asyncClient.cancelImportJob(jobId))
             .assertNext(importJobResponse -> assertTrue(
-                importJobResponse.getStatus()== Status.CANCELLING ||
-                importJobResponse.getStatus()==Status.SUCCEEDED))
+                importJobResponse.getStatus() == Status.CANCELLING
+                    || importJobResponse.getStatus() == Status.SUCCEEDED))
             .verifyComplete();
 
         // Validate delete import job
@@ -117,7 +118,7 @@ public class ImportAsyncTest extends ImportTestBase {
                 responseList.add(digitalTwinsImportJobResponse.getValue()))
             .verifyComplete();
 
-        assertTrue(responseList.size()> 0);
+        assertTrue(responseList.size() > 0);
         assertEquals(responseList.get(0).getId(), jobId);
 
         StepVerifier
