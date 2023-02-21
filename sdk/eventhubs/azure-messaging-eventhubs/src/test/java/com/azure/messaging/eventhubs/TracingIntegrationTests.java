@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@Isolated
+@Isolated("Sets global TracingProvider.")
 @Execution(ExecutionMode.SAME_THREAD)
 public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
@@ -69,6 +69,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName());
+
+        // For the first integration test run, the tracing provider may be already set because we import
+        if (GlobalOpenTelemetry.get() != null) {
+            logger.info("Global telemetry was not null. Manually resetting.");
+
+            GlobalOpenTelemetry.resetForTest();
+        }
+
         OpenTelemetrySdk.builder()
             .setTracerProvider(
                 SdkTracerProvider.builder()
