@@ -19,6 +19,9 @@ public enum DigitalTwinsServiceVersion implements ServiceVersion {
      */
     V2022_05_31("2022-05-31"),
 
+    /**
+     * Service version {@code 2023-02-27-preview}.
+     */
     V2023_02_27_Preview("2023-02-27-preview");
 
     private final String version;
