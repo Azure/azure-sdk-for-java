@@ -58,11 +58,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
 
     @Override
     public String registryName() {
-        if (this.registryName == null) {
-            return ResourceUtils.extractFromResourceId(inner.id(), "registries");
-        } else {
-            return this.registryName;
-        }
+        return this.registryName;
     }
 
     @Override
@@ -123,6 +119,10 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
         this.registriesInner = registryManager.serviceClient().getRegistries();
         this.platform = new PlatformProperties();
         this.inner = runInner;
+
+        if (inner != null && inner.id() != null) {
+            this.registryName = ResourceUtils.extractFromResourceId(inner.id(), "registries");
+        }
     }
 
     @Override
