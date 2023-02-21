@@ -93,8 +93,10 @@ public final class ErrorInformation {
      * error.
      *
      * @param innerError the innerError value to set.
+     * @return the Error object itself.
      */
-    public void setInnerError(InnerError innerError) {
+    public ErrorInformation setInnerError(InnerError innerError) {
         this.innerError = innerError;
+        return this;
     }
 }
