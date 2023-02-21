@@ -58,7 +58,11 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
 
     @Override
     public String registryName() {
-        return this.registryName;
+        if (this.registryName == null) {
+            return ResourceUtils.extractFromResourceId(inner.id(), "registries");
+        } else {
+            return this.registryName;
+        }
     }
 
     @Override
@@ -299,7 +303,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
         if (this.fileTaskRunRequest != null) {
             return this
                 .registriesInner
-                .scheduleRunAsync(this.resourceGroupName(), this.registryName, this.fileTaskRunRequest)
+                .scheduleRunAsync(this.resourceGroupName(), this.registryName(), this.fileTaskRunRequest)
                 .map(
                     runInner -> {
                         self.inner = runInner;
@@ -308,7 +312,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
         } else if (this.encodedTaskRunRequest != null) {
             return this
                 .registriesInner
-                .scheduleRunAsync(this.resourceGroupName(), this.registryName, this.encodedTaskRunRequest)
+                .scheduleRunAsync(this.resourceGroupName(), this.registryName(), this.encodedTaskRunRequest)
                 .map(
                     runInner -> {
                         self.inner = runInner;
@@ -317,7 +321,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
         } else if (this.dockerTaskRunRequest != null) {
             return this
                 .registriesInner
-                .scheduleRunAsync(this.resourceGroupName(), this.registryName, this.dockerTaskRunRequest)
+                .scheduleRunAsync(this.resourceGroupName(), this.registryName(), this.dockerTaskRunRequest)
                 .map(
                     runInner -> {
                         self.inner = runInner;
@@ -326,7 +330,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
         } else if (this.taskRunRequest != null) {
             return this
                 .registriesInner
-                .scheduleRunAsync(this.resourceGroupName(), this.registryName, this.taskRunRequest)
+                .scheduleRunAsync(this.resourceGroupName(), this.registryName(), this.taskRunRequest)
                 .map(
                     runInner -> {
                         self.inner = runInner;
@@ -372,7 +376,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
         return registryManager
             .serviceClient()
             .getRuns()
-            .getAsync(this.resourceGroupName(), this.registryName, this.inner.runId())
+            .getAsync(this.resourceGroupName(), this.registryName(), this.inner.runId())
             .map(
                 runInner -> {
                     self.inner = runInner;
