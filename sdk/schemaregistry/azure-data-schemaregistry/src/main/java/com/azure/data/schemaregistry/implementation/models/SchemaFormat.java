@@ -22,6 +22,14 @@ public final class SchemaFormat extends ExpandableStringEnum<SchemaFormat> {
     public static final SchemaFormat TEXT_PLAIN_CHARSET_UTF8 = fromString("text/plain; charset=utf-8");
 
     /**
+     * Creates a new instance of SchemaFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SchemaFormat() {}
+
+    /**
      * Creates or finds a SchemaFormat from its string representation.
      *
      * @param name a name to look for.
