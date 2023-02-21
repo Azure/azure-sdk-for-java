@@ -29,14 +29,14 @@ public final class DigitalTwinsImportJob {
      * describing the operations to perform in the job.
      */
     @JsonProperty(value = "inputBlobUri", required = true)
-    private String inputBlobUri;
+    private final String inputBlobUri;
 
     /*
      * The path to the output Azure storage blob that will contain the errors
      * and progress logs of import job.
      */
     @JsonProperty(value = "outputBlobUri", required = true)
-    private String outputBlobUri;
+    private final String outputBlobUri;
 
     /*
      * Status of the job.
@@ -95,15 +95,15 @@ public final class DigitalTwinsImportJob {
     /**
      * Creates an instance of BulkImportJob class.
      *
-     * @param id
-     * @param inputBlobUri
-     * @param outputBlobUri
-     * @param status
-     * @param createdDateTime
-     * @param lastActionDateTime
-     * @param finishedDateTime
-     * @param purgeDateTime
-     * @param errorInformation
+     * @param id id of the import job
+     * @param inputBlobUri Input file for the import job
+     * @param outputBlobUri Output file for the import job
+     * @param status Status of the import job
+     * @param createdDateTime Import job created time
+     * @param lastActionDateTime Import Job's last update time
+     * @param finishedDateTime Import job finish time
+     * @param purgeDateTime Import Job Purge time
+     * @param errorInformation Error details for the import job
      */
     public DigitalTwinsImportJob(String id,
                                  String inputBlobUri,

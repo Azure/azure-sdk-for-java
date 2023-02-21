@@ -17,19 +17,19 @@ public final class ErrorInformation {
      * error code.
      */
     @JsonProperty(value = "code")
-    private String code;
+    private final String code;
 
     /*
      * A human-readable representation of the error.
      */
     @JsonProperty(value = "message")
-    private String message;
+    private final String message;
 
     /*
      * Internal error details.
      */
     @JsonProperty(value = "details")
-    private List<ErrorInformation> details;
+    private final List<ErrorInformation> details;
 
     /*
      * An object containing more specific information than the current object
@@ -41,9 +41,9 @@ public final class ErrorInformation {
     /**
      * Error details containing more specific information about the current Job.
      *
-     * @param code
-     * @param message
-     * @param details
+     * @param code Error code from the service
+     * @param message Error message from the service
+     * @param details Detailed error message from the service
      */
     public ErrorInformation(String code, String message, List<ErrorInformation> details) {
         this.code = code;
@@ -93,10 +93,8 @@ public final class ErrorInformation {
      * error.
      *
      * @param innerError the innerError value to set.
-     * @return the Error object itself.
      */
-    public ErrorInformation setInnerError(InnerError innerError) {
+    public void setInnerError(InnerError innerError) {
         this.innerError = innerError;
-        return this;
     }
 }
