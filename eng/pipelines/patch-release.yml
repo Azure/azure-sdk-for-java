@@ -36,10 +36,6 @@ extends:
       groupId: com.azure
       safeName: azuresecuritykeyvaultadministration
       ServiceDirectory: keyvault
-    - name: azure-messaging-servicebus
-      groupId: com.azure
-      safeName: azuremessagingservicebus
-      ServiceDirectory: servicebus
     - name: azure-security-keyvault-secrets
       groupId: com.azure
       safeName: azuresecuritykeyvaultsecrets
