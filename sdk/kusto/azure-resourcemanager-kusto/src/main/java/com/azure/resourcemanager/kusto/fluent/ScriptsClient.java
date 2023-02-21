@@ -54,21 +54,6 @@ public interface ScriptsClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster database script.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ScriptInner get(String resourceGroupName, String clusterName, String databaseName, String scriptName);
-
-    /**
-     * Gets a Kusto cluster database script.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param scriptName The name of the Kusto database script.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,6 +63,21 @@ public interface ScriptsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScriptInner> getWithResponse(
         String resourceGroupName, String clusterName, String databaseName, String scriptName, Context context);
+
+    /**
+     * Gets a Kusto cluster database script.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param scriptName The name of the Kusto database script.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto cluster database script.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScriptInner get(String resourceGroupName, String clusterName, String databaseName, String scriptName);
 
     /**
      * Creates a Kusto database script.
@@ -308,22 +308,6 @@ public interface ScriptsClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the script.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, String databaseName, ScriptCheckNameRequest scriptName);
-
-    /**
-     * Checks that the script name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param scriptName The name of the script.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -337,4 +321,20 @@ public interface ScriptsClient {
         String databaseName,
         ScriptCheckNameRequest scriptName,
         Context context);
+
+    /**
+     * Checks that the script name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param scriptName The name of the script.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameResultInner checkNameAvailability(
+        String resourceGroupName, String clusterName, String databaseName, ScriptCheckNameRequest scriptName);
 }

@@ -1,14 +1,59 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2023-02-21)
 
-### Features Added
+- Azure Resource Manager Kusto client library for Java. This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2022-12. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Databases` was modified
 
-### Other Changes
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseInner,models.CallerRole)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseInner,models.CallerRole)` was removed
+
+### Features Added
+
+* `models.LanguageExtensionImageName` was added
+
+* `models.ResourceSkuZoneDetails` was added
+
+* `models.ResourceSkuCapabilities` was added
+
+* `models.CosmosDbDataConnection` was added
+
+* `models.Skus` was added
+
+#### `models.SkuLocationInfoItem` was modified
+
+* `withZoneDetails(java.util.List)` was added
+* `zoneDetails()` was added
+
+#### `KustoManager` was modified
+
+* `skus()` was added
+
+#### `models.LanguageExtension` was modified
+
+* `languageExtensionImageName()` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withLanguageExtensions(models.LanguageExtensionsList)` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `withLanguageExtensions(models.LanguageExtensionsList)` was added
+
+#### `models.TableLevelSharingProperties` was modified
+
+* `functionsToInclude()` was added
+* `withFunctionsToExclude(java.util.List)` was added
+* `functionsToExclude()` was added
+* `withFunctionsToInclude(java.util.List)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withLanguageExtensions(models.LanguageExtensionsList)` was added
 
 ## 1.0.0-beta.5 (2022-09-19)
 

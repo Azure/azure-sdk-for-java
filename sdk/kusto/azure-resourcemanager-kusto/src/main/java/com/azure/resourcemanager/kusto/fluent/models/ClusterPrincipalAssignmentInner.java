@@ -20,6 +20,10 @@ public final class ClusterPrincipalAssignmentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ClusterPrincipalProperties innerProperties;
 
+    /** Creates an instance of ClusterPrincipalAssignmentInner class. */
+    public ClusterPrincipalAssignmentInner() {
+    }
+
     /**
      * Get the innerProperties property: The cluster principal.
      *

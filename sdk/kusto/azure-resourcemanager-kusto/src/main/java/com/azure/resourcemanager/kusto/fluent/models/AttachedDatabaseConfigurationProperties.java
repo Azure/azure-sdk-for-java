@@ -65,6 +65,10 @@ public final class AttachedDatabaseConfigurationProperties {
     @JsonProperty(value = "databaseNamePrefix")
     private String databaseNamePrefix;
 
+    /** Creates an instance of AttachedDatabaseConfigurationProperties class. */
+    public AttachedDatabaseConfigurationProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioned state of the resource.
      *
