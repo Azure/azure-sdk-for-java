@@ -55,6 +55,7 @@ public class AadB2cProperties implements InitializingBean {
 
     /**
      * App ID URI which might be used in the "aud" claim of a token. For instance, 'https://{hostname}/{applicationId}'.
+     * @see <a href="https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri">APP ID URI</a>
      */
     private String appIdUri;
 
@@ -85,7 +86,7 @@ public class AadB2cProperties implements InitializingBean {
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
     /**
-     * Additional parameters for authentication. For instance, 'prompt: login'.
+     * Additional parameters above the standard parameters defined in the OAuth 2.0 Authorization Framework. Would be added to the Authorization URL for customizing the Authorization Request. For instance, 'prompt: login'.
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
@@ -115,7 +116,12 @@ public class AadB2cProperties implements InitializingBean {
     private Map<String, String> userFlows = new HashMap<>();
 
     /**
-     * Specify client configuration. For instance, 'authorizationGrantType: client_credentials'.
+     * The OAuth2 authorization clients, contains the authorization grant type(only support client credentials) and scope.
+     * The clients will be converted to OAuth2 ClientRegistration, the other information inherits from the OAuth2 login client(sign-in user flow).
+     * For instance, 'webapi:
+     *                   authorization-grant-type: client_credentials
+     *                   scopes:
+     *                       - ${WEB_API_APP_ID_URL}/.default'
      */
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 

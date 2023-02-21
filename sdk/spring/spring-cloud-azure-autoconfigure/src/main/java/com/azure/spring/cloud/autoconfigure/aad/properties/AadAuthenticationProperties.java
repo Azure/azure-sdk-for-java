@@ -83,11 +83,12 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     /**
      * App ID URI which might be used in the "aud" claim of an id_token. For instance, 'api://{applicationId}'.
+     * @see <a href="https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri">APP ID URI</a>
      */
     private String appIdUri;
 
     /**
-     * Add additional parameters to the Authorization URL. For instance, 'prompt: login'.
+     * Additional parameters above the standard parameters defined in the OAuth 2.0 Authorization Framework. Would be added to the Authorization URL for customizing the Authorization Request. For instance, 'prompt: login'.
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
@@ -124,6 +125,7 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     /**
      * The redirect uri after logout. For instance, 'http://localhost:8080/'.
+     * @see <a href="https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#redirect-uri">Redirect URI</a>
      */
     private String postLogoutRedirectUri;
 
@@ -134,7 +136,14 @@ public class AadAuthenticationProperties implements InitializingBean {
     private Boolean sessionStateless = false;
 
     /**
-     * The OAuth2 authorization clients. For instance, 'scopes: test1,test2'.
+     * The OAuth2 authorization clients, contains the authorization grant type, client authentication method and scope.
+     * The clients will be converted to OAuth2 ClientRegistration, the other information inherits from the delegated OAuth2 login client 'azure'.
+     * For instance, 'webapi:
+     *                   authorization-grant-type: on_behalf_of
+     *                   client-authentication-method: client_secret_post
+     *                   scopes:
+     *                      - ${WEB_API_APP_ID_URL}/WebApi.ExampleScope1
+     *                      - ${WEB_API_APP_ID_URL}/WebApi.ExampleScope2'
      */
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
