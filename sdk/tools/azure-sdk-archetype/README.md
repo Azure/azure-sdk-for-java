@@ -9,6 +9,9 @@ Azure SDK for Java Maven archetype creates a new Maven project with the followin
 * Support for generating a new project with a specified set of Azure SDK for Java client libraries.
 * Integration with the Azure SDK for Java build tooling that will give build-time analysis of your project to ensure as many best practices are followed.
 
+> **Note**
+> All other Microsoft maintained Azure maven archetypes can be found at [https://github.com/microsoft/azure-maven-archetypes](https://github.com/microsoft/azure-maven-archetypes)
+
 As the Azure SDK for Java Maven archetype is published to Maven Central, we can bootstrap a new application by using 
 the archetype directly.
 
