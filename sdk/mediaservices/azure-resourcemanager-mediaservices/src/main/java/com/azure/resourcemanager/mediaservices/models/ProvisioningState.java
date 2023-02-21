@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the Media Services account. */
+/** Provisioning state of the asset track. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /** Static value Failed for ProvisioningState. */
     public static final ProvisioningState FAILED = fromString("Failed");

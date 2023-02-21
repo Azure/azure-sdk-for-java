@@ -11,6 +11,10 @@ import java.util.Map;
 /** The core properties of ARM resources. */
 @Fluent
 public class ArmResourceProperties extends Resource {
+    /** Creates an instance of ArmResourceProperties class. */
+    public ArmResourceProperties() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ArmResourceProperties withLocation(String location) {

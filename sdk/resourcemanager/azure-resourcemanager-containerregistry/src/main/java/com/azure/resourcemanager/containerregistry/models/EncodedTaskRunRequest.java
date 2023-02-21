@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("EncodedTaskRunRequest")
 @Fluent
 public final class EncodedTaskRunRequest extends RunRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncodedTaskRunRequest.class);
-
     /*
      * Base64 encoded value of the template/definition file content.
      */
@@ -32,8 +29,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
     private String encodedValuesContent;
 
     /*
-     * The collection of overridable values that can be passed when running a
-     * task.
+     * The collection of overridable values that can be passed when running a task.
      */
     @JsonProperty(value = "values")
     private List<SetValue> values;
@@ -57,20 +53,21 @@ public final class EncodedTaskRunRequest extends RunRequest {
     private AgentProperties agentConfiguration;
 
     /*
-     * The URL(absolute or relative) of the source context. It can be an URL to
-     * a tar or git repository.
-     * If it is relative URL, the relative path should be obtained from calling
-     * listBuildSourceUploadUrl API.
+     * The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
+     * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      */
     @JsonProperty(value = "sourceLocation")
     private String sourceLocation;
 
     /*
-     * The properties that describes a set of credentials that will be used
-     * when this run is invoked.
+     * The properties that describes a set of credentials that will be used when this run is invoked.
      */
     @JsonProperty(value = "credentials")
     private Credentials credentials;
+
+    /** Creates an instance of EncodedTaskRunRequest class. */
+    public EncodedTaskRunRequest() {
+    }
 
     /**
      * Get the encodedTaskContent property: Base64 encoded value of the template/definition file content.
@@ -268,7 +265,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
     public void validate() {
         super.validate();
         if (encodedTaskContent() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property encodedTaskContent in model EncodedTaskRunRequest"));
@@ -277,7 +274,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
             values().forEach(e -> e.validate());
         }
         if (platform() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property platform in model EncodedTaskRunRequest"));
         } else {
@@ -290,4 +287,6 @@ public final class EncodedTaskRunRequest extends RunRequest {
             credentials().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncodedTaskRunRequest.class);
 }

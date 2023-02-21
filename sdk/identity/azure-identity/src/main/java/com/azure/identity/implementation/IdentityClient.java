@@ -218,7 +218,8 @@ public class IdentityClient extends IdentityClientBase {
                     ConfidentialClientApplication.Builder applicationBuilder =
                         ConfidentialClientApplication.builder(spDetails.get("client"),
                             ClientCredentialFactory.createFromSecret(spDetails.get("key")))
-                            .authority(authorityUrl);
+                            .authority(authorityUrl)
+                            .instanceDiscovery(options.getInstanceDiscovery());
 
                     // If http pipeline is available, then it should override the proxy options if any configured.
                     if (httpPipelineAdapter != null) {
@@ -889,7 +890,7 @@ public class IdentityClient extends IdentityClientBase {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    private Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
+    public Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
 
         return clientAssertionAccessor.getValue()
             .flatMap(assertionToken -> Mono.fromCallable(() -> {
@@ -1248,24 +1249,6 @@ public class IdentityClient extends IdentityClientBase {
         CompletableFuture<IAuthenticationResult> completableFuture = new CompletableFuture<>();
         completableFuture.completeExceptionally(e);
         return completableFuture;
-    }
-
-    /**
-     * Get the configured tenant id.
-     *
-     * @return the tenant id.
-     */
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    /**
-     * Get the configured client id.
-     *
-     * @return the client id.
-     */
-    public String getClientId() {
-        return clientId;
     }
 
     /**

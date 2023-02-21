@@ -6,31 +6,12 @@
 ################
 # As of 1/30/2023 these paths have no owners:
 
-# /
+# /**
 # /.devcontainer/
 # /.vscode/
 # /common/perf-test-score/
 # /doc/
 # /samples/
-
-###########
-# Eng Sys
-###########
-/eng/                                                @hallipr @weshaggard @benbp @JimSuplizio
-/eng/code-quality-reports/                           @mssfang @JonathanGiles
-/eng/jacoco-test-coverage/                           @srnagar @JonathanGiles
-/eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
-/eng/mgmt/                                           @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
-/eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
-/eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/eng/bomgenerator/                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
-/parent/                                             @alzimmermsft
-
-/**/tests.yml                                        @hallipr @JimSuplizio
-/**/ci.yml                                           @hallipr @JimSuplizio
-
-# Add owners for notifications for specific pipelines
-/eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles
 
 ################
 # Automation
@@ -62,8 +43,9 @@
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                               @mssfang @alzimmermsft
 # PRLabel: %azure-spring
-/sdk/appconfiguration/azure-spring-cloud-*/          @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/appconfiguration/spring-cloud-azure-*/          @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
 
 # PRLabel: %Attestation
@@ -175,10 +157,10 @@
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query*/                  @srnagar @lmolkova @ki1729
+/sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @ki1729
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-ingestion*/              @srnagar @lmolkova @ki1729
+/sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @ki1729
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/ @craigktreasure
@@ -784,3 +766,19 @@
 
 # ServiceLabel: %DevCenter %Service Attention
 #/<NotInRepo>/          @sebrenna @mharlan
+
+################
+# Eng Sys
+################
+/eng/                                                @hallipr @weshaggard @benbp @JimSuplizio
+/eng/code-quality-reports/                           @mssfang @JonathanGiles
+/eng/jacoco-test-coverage/                           @srnagar @JonathanGiles
+/eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
+/eng/mgmt/                                           @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
+/eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
+/eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/eng/bomgenerator/                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
+/parent/                                             @alzimmermsft
+
+# Add owners for notifications for specific pipelines
+/eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles

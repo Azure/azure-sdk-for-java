@@ -9,13 +9,23 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
+import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.base.Strings;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,6 +47,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.CancellationException;
@@ -90,6 +101,7 @@ public class RntbdTransportClient extends TransportClient {
     private final Tag tag;
     private boolean channelAcquisitionContextEnabled;
     private final GlobalEndpointManager globalEndpointManager;
+    private final CosmosClientTelemetryConfig metricConfig;
 
     // endregion
 
@@ -126,6 +138,7 @@ public class RntbdTransportClient extends TransportClient {
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
+        this.metricConfig = null;
     }
 
     RntbdTransportClient(
@@ -146,6 +159,13 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
+        if (clientTelemetry != null &&
+            clientTelemetry.getClientTelemetryConfig() != null) {
+
+            this.metricConfig = clientTelemetry.getClientTelemetryConfig();
+        } else {
+            this.metricConfig = null;
+        }
     }
 
     // endregion
@@ -245,11 +265,10 @@ public class RntbdTransportClient extends TransportClient {
             RequestTimeline timeline = record.takeTimelineSnapshot();
             storeResponse.setRequestTimeline(timeline);
             storeResponse.setEndpointStatistics(record.serviceEndpointStatistics());
+            storeResponse.setChannelStatistics(record.channelStatistics());
             storeResponse.setRntbdResponseLength(record.responseLength());
             storeResponse.setRntbdRequestLength(record.requestLength());
             storeResponse.setRequestPayloadLength(request.getContentLength());
-            storeResponse.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
-            storeResponse.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
             if (this.channelAcquisitionContextEnabled) {
                 storeResponse.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
@@ -287,13 +306,14 @@ public class RntbdTransportClient extends TransportClient {
             assert error instanceof CosmosException;
             CosmosException cosmosException = (CosmosException) error;
             BridgeInternal.setServiceEndpointStatistics(cosmosException, record.serviceEndpointStatistics());
-
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .setRntbdChannelStatistics(cosmosException, record.channelStatistics());
             BridgeInternal.setRntbdRequestLength(cosmosException, record.requestLength());
             BridgeInternal.setRntbdResponseLength(cosmosException, record.responseLength());
             BridgeInternal.setRequestBodyLength(cosmosException, request.getContentLength());
             BridgeInternal.setRequestTimeline(cosmosException, record.takeTimelineSnapshot());
-            BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
-            BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
             BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
             if (this.channelAcquisitionContextEnabled) {
                 BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
@@ -353,6 +373,26 @@ public class RntbdTransportClient extends TransportClient {
         if (this.closed.get()) {
             throw new TransportException(lenientFormat("%s is closed", this), null);
         }
+    }
+
+    public EnumSet<MetricCategory> getMetricCategories() {
+        return this.metricConfig != null ?
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getMetricCategories(this.metricConfig) : MetricCategory.DEFAULT_CATEGORIES;
+    }
+
+    public CosmosMeterOptions getMeterOptions(CosmosMetricName name) {
+        return this.metricConfig != null ?
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getMeterOptions(this.metricConfig, name) :
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .createDisabledMeterOptions(name);
     }
 
     // endregion
@@ -438,12 +478,67 @@ public class RntbdTransportClient extends TransportClient {
         private final Duration sslHandshakeTimeoutMinDuration;
 
         /**
-         * This property will be used in {@link RntbdClientChannelHealthChecker} to determine whether there is a readHang.
-         * If there is no successful reads for up to receiveHangDetectionTime, and the number of consecutive timeout has also reached this config,
-         * then SDK is going to treat the channel as unhealthy and close it.
+         * Used during Rntbd health check flow.
+         * This property will be used to indicate whether timeout related stats will be used.
+         *
+         * By default, it is enabled.
          */
         @JsonProperty()
-        private final int transientTimeoutDetectionThreshold;
+        private final boolean timeoutDetectionEnabled;
+
+
+        /**
+         * Used during Rntbd health check flow.
+         * Transit timeout can be a normal symptom under high CPU load.
+         * When request timeout due to high CPU, close the existing the connection and re-establish a new one will not help the issue but rather make it worse.
+         * This property indicate when the CPU load is beyond the threshold, the timeout detection flow will be disabled.
+         *
+         * By default, it is 90.0.
+         */
+        @JsonProperty()
+        private final double timeoutDetectionDisableCPUThreshold;
+
+        /**
+         * Used during Rntbd health check flow.
+         * When transitTimeoutHealthCheckEnabled is enabled,
+         * the channel will be closed if all requests are failed due to transit timeout within the time limit.
+         */
+        @JsonProperty()
+        private final Duration timeoutDetectionTimeLimit;
+
+        /**
+         * Used during Rntbd health check flow.
+         * Will be used together with timeoutHighFrequencyTimeLimitInNanos. If both conditions are met, the channel will be closed.
+         * This will control how fast the channel will be closed when high number consecutive timeout being observed.
+         */
+        @JsonProperty()
+        private final int timeoutDetectionHighFrequencyThreshold;
+
+        /**
+         * Used during Rntbd health check flow.
+         * Will be used together with timeoutHighFrequencyThreshold. If both conditions are met, the channel will be closed.
+         * This will control how fast the channel will be closed when high number consecutive timeout being observed.
+         */
+        @JsonProperty()
+        private final Duration timeoutDetectionHighFrequencyTimeLimit;
+
+        /**
+         * Used during Rntbd health check flow.
+         * Will be used together with timeoutOnWriteTimeLimitInNanos. If both conditions are met, the channel will be closed.
+         * This will control how fast the channel will be closed when write operation timeout being observed.
+         */
+        @JsonProperty()
+        private final int timeoutDetectionOnWriteThreshold;
+
+        /**
+         * Used during Rntbd health check flow.
+         * Will be used together with timeoutOnWriteThreshold. If both conditions are met, the channel will be closed.
+         * This will control how fast the channel will be closed when write operation timeout being observed.
+         */
+        @JsonProperty()
+        private final Duration timeoutDetectionOnWriteTimeLimit;
+
+
         // endregion
 
         // region Constructors
@@ -478,7 +573,13 @@ public class RntbdTransportClient extends TransportClient {
             this.tcpKeepIdle = builder.tcpKeepIdle;
             this.preferTcpNative = builder.preferTcpNative;
             this.sslHandshakeTimeoutMinDuration = builder.sslHandshakeTimeoutMinDuration;
-            this.transientTimeoutDetectionThreshold = builder.transientTimeoutDetectionThreshold;
+            this.timeoutDetectionEnabled = builder.timeoutDetectionEnabled;
+            this.timeoutDetectionDisableCPUThreshold = builder.timeoutDetectionDisableCPUThreshold;
+            this.timeoutDetectionTimeLimit = builder.timeoutDetectionTimeLimit;
+            this.timeoutDetectionHighFrequencyThreshold = builder.timeoutDetectionHighFrequencyThreshold;
+            this.timeoutDetectionHighFrequencyTimeLimit = builder.timeoutDetectionHighFrequencyTimeLimit;
+            this.timeoutDetectionOnWriteThreshold = builder.timeoutDetectionOnWriteThreshold;
+            this.timeoutDetectionOnWriteTimeLimit = builder.timeoutDetectionOnWriteTimeLimit;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.tcpNetworkRequestTimeout
@@ -510,9 +611,15 @@ public class RntbdTransportClient extends TransportClient {
             this.channelAcquisitionContextEnabled = false;
             this.ioThreadPriority = connectionPolicy.getIoThreadPriority();
             this.tcpKeepIntvl = 1; // Configuration for EpollChannelOption.TCP_KEEPINTVL
-            this.tcpKeepIdle = 30; // Configuration for EpollChannelOption.TCP_KEEPIDLE
+            this.tcpKeepIdle = 1; // Configuration for EpollChannelOption.TCP_KEEPIDLE
             this.sslHandshakeTimeoutMinDuration = Duration.ofSeconds(5);
-            this.transientTimeoutDetectionThreshold = 3;
+            this.timeoutDetectionEnabled = connectionPolicy.isTcpHealthCheckTimeoutDetectionEnabled();
+            this.timeoutDetectionDisableCPUThreshold = 90.0;
+            this.timeoutDetectionTimeLimit = Duration.ofSeconds(60L);
+            this.timeoutDetectionHighFrequencyThreshold = 3;
+            this.timeoutDetectionHighFrequencyTimeLimit = Duration.ofSeconds(10L);
+            this.timeoutDetectionOnWriteThreshold = 1;
+            this.timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
             this.preferTcpNative = true;
         }
 
@@ -618,10 +725,33 @@ public class RntbdTransportClient extends TransportClient {
             return Math.max(this.sslHandshakeTimeoutMinDuration.toMillis(), this.connectTimeout.toMillis());
         }
 
-        public int transientTimeoutDetectionThreshold() {
-            return this.transientTimeoutDetectionThreshold;
+        public boolean timeoutDetectionEnabled() {
+            return this.timeoutDetectionEnabled;
         }
 
+        public double timeoutDetectionDisableCPUThreshold() {
+            return this.timeoutDetectionDisableCPUThreshold;
+        }
+
+        public Duration timeoutDetectionTimeLimit() {
+            return this.timeoutDetectionTimeLimit;
+        }
+
+        public int timeoutDetectionHighFrequencyThreshold() {
+            return this.timeoutDetectionHighFrequencyThreshold;
+        }
+
+        public Duration timeoutDetectionHighFrequencyTimeLimit() {
+            return this.timeoutDetectionHighFrequencyTimeLimit;
+        }
+
+        public int timeoutDetectionOnWriteThreshold() {
+            return this.timeoutDetectionOnWriteThreshold;
+        }
+
+        public Duration timeoutDetectionOnWriteTimeLimit() {
+            return this.timeoutDetectionOnWriteTimeLimit;
+        }
 
         // endregion
 
@@ -684,7 +814,13 @@ public class RntbdTransportClient extends TransportClient {
          *   "sendHangDetectionTime": "PT10S",
          *   "shutdownTimeout": "PT15S",
          *   "threadCount": 16,
-         *   "transientTimeoutDetectionThreshold": 3
+         *   "timeoutDetectionEnabled": true,
+         *   "timeoutDetectionDisableCPUThreshold": 90.0,
+         *   "timeoutDetectionTimeLimit": "PT60S",
+         *   "timeoutDetectionHighFrequencyThreshold": 3,
+         *   "timeoutDetectionHighFrequencyTimeLimit": "PT10S",
+         *   "timeoutDetectionOnWriteThreshold": 1,
+         *   "timeoutDetectionOnWriteTimeLimit": "PT6s"
          * }}</pre>
          * </li>
          * </ol>
@@ -782,7 +918,14 @@ public class RntbdTransportClient extends TransportClient {
             private int tcpKeepIdle;
             private boolean preferTcpNative;
             private Duration sslHandshakeTimeoutMinDuration;
-            private int transientTimeoutDetectionThreshold;
+            private boolean timeoutDetectionEnabled;
+            private double timeoutDetectionDisableCPUThreshold;
+            private Duration timeoutDetectionTimeLimit;
+            private int timeoutDetectionHighFrequencyThreshold;
+            private Duration timeoutDetectionHighFrequencyTimeLimit;
+            private int timeoutDetectionOnWriteThreshold;
+            private Duration timeoutDetectionOnWriteTimeLimit;
+
 
             // endregion
 
@@ -817,7 +960,13 @@ public class RntbdTransportClient extends TransportClient {
                 this.tcpKeepIdle = DEFAULT_OPTIONS.tcpKeepIdle;
                 this.preferTcpNative = DEFAULT_OPTIONS.preferTcpNative;
                 this.sslHandshakeTimeoutMinDuration = DEFAULT_OPTIONS.sslHandshakeTimeoutMinDuration;
-                this.transientTimeoutDetectionThreshold = DEFAULT_OPTIONS.transientTimeoutDetectionThreshold;
+                this.timeoutDetectionEnabled = DEFAULT_OPTIONS.timeoutDetectionEnabled;
+                this.timeoutDetectionDisableCPUThreshold = DEFAULT_OPTIONS.timeoutDetectionDisableCPUThreshold;
+                this.timeoutDetectionTimeLimit = DEFAULT_OPTIONS.timeoutDetectionTimeLimit;
+                this.timeoutDetectionHighFrequencyThreshold = DEFAULT_OPTIONS.timeoutDetectionHighFrequencyThreshold;
+                this.timeoutDetectionHighFrequencyTimeLimit = DEFAULT_OPTIONS.timeoutDetectionHighFrequencyTimeLimit;
+                this.timeoutDetectionOnWriteThreshold = DEFAULT_OPTIONS.timeoutDetectionOnWriteThreshold;
+                this.timeoutDetectionOnWriteTimeLimit = DEFAULT_OPTIONS.timeoutDetectionOnWriteTimeLimit;
             }
 
             // endregion

@@ -43,7 +43,7 @@ public final class SqlPoolWorkloadGroupCreateOrUpdateSamples {
             .withMinResourcePercent(0)
             .withMaxResourcePercent(100)
             .withMinResourcePercentPerRequest(3.0)
-            .withMaxResourcePercentPerRequest(3.0)
+            .withMaxResourcePercentPerRequest(3.0D)
             .withImportance("normal")
             .withQueryExecutionTimeout(0)
             .create();

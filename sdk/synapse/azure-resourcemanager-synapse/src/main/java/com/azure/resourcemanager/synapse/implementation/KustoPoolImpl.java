@@ -112,6 +112,10 @@ public final class KustoPoolImpl implements KustoPool, KustoPool.Definition, Kus
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public KustoPoolInner innerModel() {
         return this.innerObject;
     }
@@ -367,13 +371,8 @@ public final class KustoPoolImpl implements KustoPool, KustoPool.Definition, Kus
     }
 
     public KustoPoolImpl withWorkspaceUid(String workspaceUid) {
-        if (isInCreateMode()) {
-            this.innerModel().withWorkspaceUid(workspaceUid);
-            return this;
-        } else {
-            this.updateParameters.withWorkspaceUid(workspaceUid);
-            return this;
-        }
+        this.innerModel().withWorkspaceUid(workspaceUid);
+        return this;
     }
 
     public KustoPoolImpl withIfMatch(String ifMatch) {

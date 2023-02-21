@@ -33,11 +33,14 @@ public final class HelloWorld {
      */
     public static void main(String[] args) {
         // Initialize the clients
-        LoadTestingClientBuilder builder = new LoadTestingClientBuilder()
+        LoadTestAdministrationClient adminClient = new LoadTestAdministrationClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint("<endpoint>");
-        LoadTestAdministrationClient adminClient = builder.buildLoadTestAdministrationClient();
-        LoadTestRunClient testRunClient = builder.buildLoadTestRunClient();
+                .endpoint("<endpoint>")
+                .buildClient();
+        LoadTestRunClient testRunClient = new LoadTestRunClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         // Constants and parameters
         final String testId = "6758667a-a57c-47e5-9cef-9b1f1432daca";
@@ -179,7 +182,7 @@ public final class HelloWorld {
         }
 
         // get list of all metric namespaces and pick the first one
-        Response<BinaryData> metricNamespacesOut = testRunClient.listMetricNamespacesWithResponse(testRunId, null);
+        Response<BinaryData> metricNamespacesOut = testRunClient.getMetricNamespacesWithResponse(testRunId, null);
         String metricNamespace = null;
         // parse JSON and read first value
         try {
@@ -191,7 +194,7 @@ public final class HelloWorld {
         }
 
         // get list of all metric definitions and pick the first one
-        Response<BinaryData> metricDefinitionsOut = testRunClient.listMetricDefinitionsWithResponse(testRunId, metricNamespace, null);
+        Response<BinaryData> metricDefinitionsOut = testRunClient.getMetricDefinitionsWithResponse(testRunId, metricNamespace, null);
         String metricName = null;
         // parse JSON and read first value
         try {

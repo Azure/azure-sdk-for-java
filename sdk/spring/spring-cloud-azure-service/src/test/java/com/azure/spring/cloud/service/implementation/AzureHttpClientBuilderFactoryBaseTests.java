@@ -107,7 +107,6 @@ public abstract class AzureHttpClientBuilderFactoryBaseTests<B, P extends AzureH
         B builder = factory.build();
         buildClient(builder);
         verifyRetryOptionsCalled(builder, properties, times(1));
-
     }
 
     @Test

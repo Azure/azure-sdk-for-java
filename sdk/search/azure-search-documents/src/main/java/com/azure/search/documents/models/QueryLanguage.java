@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QueryLanguage. */
+/** The language of the query. */
 public final class QueryLanguage extends ExpandableStringEnum<QueryLanguage> {
     /** Static value none for QueryLanguage. */
     public static final QueryLanguage NONE = fromString("none");

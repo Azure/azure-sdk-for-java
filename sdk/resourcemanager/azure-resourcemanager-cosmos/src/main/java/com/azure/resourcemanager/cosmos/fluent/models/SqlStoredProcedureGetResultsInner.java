@@ -19,6 +19,10 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
     @JsonProperty(value = "properties")
     private SqlStoredProcedureGetProperties innerProperties;
 
+    /** Creates an instance of SqlStoredProcedureGetResultsInner class. */
+    public SqlStoredProcedureGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB storedProcedure.
      *

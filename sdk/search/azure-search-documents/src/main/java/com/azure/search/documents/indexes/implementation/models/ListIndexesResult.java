@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -20,17 +19,8 @@ public final class ListIndexesResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndex> indexes;
 
-    /**
-     * Creates an instance of ListIndexesResult class.
-     *
-     * @param indexes the indexes value to set.
-     */
-    @JsonCreator
-    public ListIndexesResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchIndex> indexes) {
-        this.indexes = indexes;
-    }
+    /** Creates an instance of ListIndexesResult class. */
+    public ListIndexesResult() {}
 
     /**
      * Get the indexes property: The indexes in the Search service.

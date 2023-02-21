@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Spark pool Config Properties SparkConfig Properties for a Big Data pool powered by Apache Spark. */
+/**
+ * Spark pool Config Properties
+ *
+ * <p>SparkConfig Properties for a Big Data pool powered by Apache Spark.
+ */
 @Fluent
 public final class SparkConfigProperties {
     /*
@@ -34,6 +38,10 @@ public final class SparkConfigProperties {
      */
     @JsonProperty(value = "configurationType")
     private ConfigurationType configurationType;
+
+    /** Creates an instance of SparkConfigProperties class. */
+    public SparkConfigProperties() {
+    }
 
     /**
      * Get the time property: The last update time of the spark config properties file.

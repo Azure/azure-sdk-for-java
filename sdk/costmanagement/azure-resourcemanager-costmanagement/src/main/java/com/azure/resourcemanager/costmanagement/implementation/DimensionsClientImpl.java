@@ -59,7 +59,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
     public interface DimensionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.CostManagement/dimensions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DimensionsListResult>> list(
             @HostParam("$host") String endpoint,

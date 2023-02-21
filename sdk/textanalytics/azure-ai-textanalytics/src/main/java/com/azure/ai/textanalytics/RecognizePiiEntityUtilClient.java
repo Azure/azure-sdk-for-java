@@ -19,7 +19,6 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -32,10 +31,10 @@ import java.util.Objects;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
+import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
@@ -256,7 +255,7 @@ class RecognizePiiEntityUtilClient {
                         toCategoriesFilter(options.getCategoriesFilter()),
                         finalContext));
         } catch (ErrorResponseException ex) {
-            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 }

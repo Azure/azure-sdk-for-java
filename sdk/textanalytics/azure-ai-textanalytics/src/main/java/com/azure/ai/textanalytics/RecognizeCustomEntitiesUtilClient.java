@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-
 import com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl;
 import com.azure.ai.textanalytics.implementation.RecognizeCustomEntitiesOperationDetailPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeCustomEntitiesResultCollectionPropertiesHelper;
@@ -33,7 +32,6 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -60,10 +58,13 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
+import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getShowStatsContinuesToken;
+import static com.azure.ai.textanalytics.implementation.Utility.getSkipContinuesToken;
+import static com.azure.ai.textanalytics.implementation.Utility.getTopContinuesToken;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
@@ -177,7 +178,7 @@ class RecognizeCustomEntitiesUtilClient {
                     operationId -> getRecognizeCustomEntitiesPagedIterable(operationId, null, null,
                         finalIncludeStatistics, finalContext)));
         } catch (ErrorResponseException ex) {
-            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -201,18 +202,13 @@ class RecognizeCustomEntitiesUtilClient {
         try {
             if (continuationToken != null) {
                 final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-                final Integer topValue = (Integer) continuationTokenMap.getOrDefault("$top", null);
-                final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-                final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
-                return service.jobStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue,
-                    context)
-                    .map(this::toCustomEntitiesPagedResponse)
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-            } else {
-                return service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
-                    .map(this::toCustomEntitiesPagedResponse)
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                top = getTopContinuesToken(continuationTokenMap);
+                skip = getSkipContinuesToken(continuationTokenMap);
+                showStats = getShowStatsContinuesToken(continuationTokenMap);
             }
+            return service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
+                .map(this::toCustomEntitiesPagedResponse)
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -222,9 +218,9 @@ class RecognizeCustomEntitiesUtilClient {
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-            top = (Integer) continuationTokenMap.getOrDefault("$top", null);
-            skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-            showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+            top = getTopContinuesToken(continuationTokenMap);
+            skip = getSkipContinuesToken(continuationTokenMap);
+            showStats = getShowStatsContinuesToken(continuationTokenMap);
         }
         return toCustomEntitiesPagedResponse(service.jobStatusWithResponse(operationId, showStats, top, skip, context));
     }

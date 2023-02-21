@@ -626,8 +626,9 @@ public final class SpanDataMapper {
         if (isAzureSdkMessaging(attributes.get(AiSemanticAttributes.AZURE_SDK_NAMESPACE))) {
             // special case needed until Azure SDK moves to OTel semantic conventions
             String peerAddress = attributes.get(AiSemanticAttributes.AZURE_SDK_PEER_ADDRESS);
-            // TODO (limolkova) need to populate messaging.system in SB ans EH.
-            // this make exporter backward-compatible with current EventHubs and ServiceBus instrumentation and new otel plugin
+            // TODO (limolkova) need to populate messaging.system in SB and EH.
+            // this make exporter backward-compatible with current EventHubs and ServiceBus
+            // instrumentation and new otel plugin
             if (peerAddress != null) {
                 String destination = attributes.get(AiSemanticAttributes.AZURE_SDK_MESSAGE_BUS_DESTINATION);
                 return peerAddress + "/" + destination;

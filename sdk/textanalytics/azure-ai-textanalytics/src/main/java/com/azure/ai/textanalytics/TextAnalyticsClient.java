@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
@@ -19,6 +21,8 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -39,6 +43,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AbstractSummaryPagedIterable;
+import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
@@ -48,6 +54,8 @@ import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.ExtractSummaryPagedIterable;
+import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -2690,6 +2698,472 @@ public final class TextAnalyticsClient {
             String deploymentName, MultiLabelClassifyOptions options, Context context) {
         return client.labelClassifyUtilClient.multiLabelClassifyPagedIterable(
             documents, projectName, deploymentName, options, context);
+    }
+
+    // Abstractive Summarization
+    /**
+     * Returns a list of abstract summary for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginAbstractSummary#Iterable -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;AbstractSummaryOperationDetail, AbstractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginAbstractSummary&#40;documents&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
+     *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
+     *             for &#40;SummaryContext summaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
+     *                     summaryContext.getOffset&#40;&#41;, summaryContext.getLength&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginAbstractSummary#Iterable -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>..
+     *
+     * @return A {@link SyncPoller} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AbstractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> beginAbstractSummary(
+        Iterable<String> documents) {
+        return beginAbstractSummary(documents, client.getDefaultLanguage(), null);
+    }
+
+    /**
+     * Returns a list of abstract summary for the provided list of {@link String document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginAbstractSummary#Iterable-String-AbstractSummaryOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;AbstractSummaryOperationDetail, AbstractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginAbstractSummary&#40;documents, &quot;en&quot;,
+     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setMaxSentenceCount&#40;3&#41;&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
+     *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
+     *             for &#40;SummaryContext summaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
+     *                     summaryContext.getOffset&#40;&#41;, summaryContext.getLength&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginAbstractSummary#Iterable-String-AbstractSummaryOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AbstractSummaryOptions options} that may be passed
+     * when analyzing abstractive summarization.
+     *
+     * @return A {@link SyncPoller} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AbstractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> beginAbstractSummary(
+        Iterable<String> documents, String language, AbstractSummaryOptions options) {
+        return client.abstractSummaryUtilClient.abstractSummaryPagedIterable(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE);
+    }
+
+    /**
+     * Returns a list of abstract summary for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginAbstractSummary#Iterable-AbstractSummaryOptions-Context -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;&#41;;
+     * &#125;
+     * SyncPoller&lt;AbstractSummaryOperationDetail, AbstractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginAbstractSummary&#40;documents,
+     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setMaxSentenceCount&#40;3&#41;,
+     *         Context.NONE&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
+     *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
+     *             for &#40;SummaryContext summaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
+     *                     summaryContext.getOffset&#40;&#41;, summaryContext.getLength&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginAbstractSummary#Iterable-AbstractSummaryOptions-Context -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param options The additional configurable {@link AbstractSummaryOptions options} that may be passed
+     * when analyzing abstractive summarization.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AbstractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> beginAbstractSummary(
+        Iterable<TextDocumentInput> documents, AbstractSummaryOptions options, Context context) {
+        return client.abstractSummaryUtilClient.abstractSummaryPagedIterable(documents, options, context);
+    }
+
+    // Extractive Summarization
+    /**
+     * Returns a list of extract summaries for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginExtractSummary#Iterable -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;ExtractSummaryOperationDetail, ExtractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginExtractSummary&#40;documents&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;ExtractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tExtracted summary sentences:&quot;&#41;;
+     *         for &#40;SummarySentence summarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;
+     *                 &quot;&#92;t&#92;t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
+     *                 summarySentence.getText&#40;&#41;, summarySentence.getLength&#40;&#41;,
+     *                 summarySentence.getOffset&#40;&#41;, summarySentence.getRankScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginExtractSummary#Iterable -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     *
+     * @return A {@link SyncPoller} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ExtractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> beginExtractSummary(
+        Iterable<String> documents) {
+        return beginExtractSummary(documents, client.getDefaultLanguage(), null);
+    }
+
+    /**
+     * Returns a list of  extract summaries for the provided list of {@link String document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginExtractSummary#Iterable-String-ExtractSummaryOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;ExtractSummaryOperationDetail, ExtractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginExtractSummary&#40;documents,
+     *         &quot;en&quot;,
+     *         new ExtractSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;.setOrderBy&#40;SummarySentencesOrder.RANK&#41;&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;ExtractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tExtracted summary sentences:&quot;&#41;;
+     *         for &#40;SummarySentence summarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;
+     *                 &quot;&#92;t&#92;t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
+     *                 summarySentence.getText&#40;&#41;, summarySentence.getLength&#40;&#41;,
+     *                 summarySentence.getOffset&#40;&#41;, summarySentence.getRankScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginExtractSummary#Iterable-String-ExtractSummaryOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link ExtractSummaryOptions options} that may be passed
+     * when analyzing extractive summarization.
+     *
+     * @return A {@link SyncPoller} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ExtractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> beginExtractSummary(
+        Iterable<String> documents, String language, ExtractSummaryOptions options) {
+        return client.extractSummaryUtilClient.extractSummaryPagedIterable(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE);
+    }
+
+    /**
+     * Returns a list of extract summaries for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginExtractSummary#Iterable-ExtractSummaryOptions-Context -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;&#41;;
+     * &#125;
+     * SyncPoller&lt;ExtractSummaryOperationDetail, ExtractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginExtractSummary&#40;documents,
+     *         new ExtractSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;.setOrderBy&#40;SummarySentencesOrder.RANK&#41;,
+     *         Context.NONE&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;ExtractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tExtracted summary sentences:&quot;&#41;;
+     *         for &#40;SummarySentence summarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;
+     *                 &quot;&#92;t&#92;t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
+     *                 summarySentence.getText&#40;&#41;, summarySentence.getLength&#40;&#41;,
+     *                 summarySentence.getOffset&#40;&#41;, summarySentence.getRankScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginExtractSummary#Iterable-ExtractSummaryOptions-Context -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param options The additional configurable {@link ExtractSummaryOptions options} that may be passed
+     * when analyzing extractive summarization.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ExtractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> beginExtractSummary(
+        Iterable<TextDocumentInput> documents, ExtractSummaryOptions options, Context context) {
+        return client.extractSummaryUtilClient.extractSummaryPagedIterable(documents, options, context);
     }
 
     /**

@@ -17,21 +17,6 @@ public interface SqlPoolMaintenanceWindows {
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @param maintenanceWindowName Maintenance window name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's Maintenance Windows.
-     */
-    MaintenanceWindows get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName);
-
-    /**
-     * Get a SQL pool's Maintenance Windows.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param maintenanceWindowName Maintenance window name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,23 +31,19 @@ public interface SqlPoolMaintenanceWindows {
         Context context);
 
     /**
-     * Creates or updates a Sql pool's maintenance windows settings.
+     * Get a SQL pool's Maintenance Windows.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @param maintenanceWindowName Maintenance window name.
-     * @param parameters The required parameters for creating or updating Maintenance Windows settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SQL pool's Maintenance Windows.
      */
-    void createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters);
+    MaintenanceWindows get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName);
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
@@ -85,4 +66,23 @@ public interface SqlPoolMaintenanceWindows {
         String maintenanceWindowName,
         MaintenanceWindowsInner parameters,
         Context context);
+
+    /**
+     * Creates or updates a Sql pool's maintenance windows settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param maintenanceWindowName Maintenance window name.
+     * @param parameters The required parameters for creating or updating Maintenance Windows settings.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void createOrUpdate(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String maintenanceWindowName,
+        MaintenanceWindowsInner parameters);
 }

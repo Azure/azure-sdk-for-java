@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.36.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.37.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -113,16 +113,6 @@
       <version>2.13.4</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.13.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.woodstox</groupId>
-      <artifactId>woodstox-core</artifactId>
-      <version>6.4.0</version> <!-- {x-version-update;com.fasterxml.woodstox:woodstox-core;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
@@ -143,6 +133,20 @@
       <artifactId>reactor-core</artifactId>
       <version>3.4.26</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.13.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.woodstox</groupId>
+      <artifactId>woodstox-core</artifactId>
+      <version>6.4.0</version> <!-- {x-version-update;com.fasterxml.woodstox:woodstox-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>

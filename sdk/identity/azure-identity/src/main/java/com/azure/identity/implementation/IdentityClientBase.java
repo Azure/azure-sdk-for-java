@@ -85,8 +85,8 @@ public abstract class IdentityClientBase {
     static final String LINUX_MAC_STARTER = "/bin/sh";
     static final String WINDOWS_SWITCHER = "/c";
     static final String LINUX_MAC_SWITCHER = "-c";
-    static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
-    static final Pattern LINUX_MAC_PROCESS_ERROR_MESSAGE = Pattern.compile("(.*)az:(.*)not found");
+    static final Pattern WINDOWS_PROCESS_ERROR_MESSAGE = Pattern.compile("'azd?' is not recognized");
+    static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?: command not found");
     static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
     static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
     static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
@@ -206,7 +206,7 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl);
+            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -260,7 +260,7 @@ public abstract class IdentityClientBase {
             + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl);
+            builder = builder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -449,8 +449,8 @@ public abstract class IdentityClientBase {
                         break;
                     }
 
-                    if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE)
-                        || LINUX_MAC_PROCESS_ERROR_MESSAGE.matcher(line).matches()) {
+                    if (WINDOWS_PROCESS_ERROR_MESSAGE.matcher(line).find()
+                        || SH_PROCESS_ERROR_MESSAGE.matcher(line).find()) {
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException(
                                 "AzureCliCredential authentication unavailable. Azure CLI not installed."
@@ -537,8 +537,8 @@ public abstract class IdentityClientBase {
                         break;
                     }
 
-                    if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE)
-                            || LINUX_MAC_PROCESS_ERROR_MESSAGE.matcher(line).matches()) {
+                    if (WINDOWS_PROCESS_ERROR_MESSAGE.matcher(line).find()
+                            || SH_PROCESS_ERROR_MESSAGE.matcher(line).find()) {
                         throw LoggingUtil.logCredentialUnavailableException(
                                 LOGGER,
                                 options,
@@ -710,5 +710,23 @@ public abstract class IdentityClientBase {
             default:
                 return new Proxy(Proxy.Type.HTTP, options.getAddress());
         }
+    }
+
+    /**
+     * Get the configured tenant id.
+     *
+     * @return the tenant id.
+     */
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    /**
+     * Get the configured client id.
+     *
+     * @return the client id.
+     */
+    public String getClientId() {
+        return clientId;
     }
 }

@@ -16,29 +16,29 @@ public final class ArmStreamingEndpointSkuInfoTests {
         ArmStreamingEndpointSkuInfo model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"evxccedcp\",\"capacity\":{\"scaleType\":\"yodnwzxltj\",\"default\":424916927,\"minimum\":798686502,\"maximum\":823307226},\"sku\":{\"name\":\"cxnavv\"}}")
+                    "{\"resourceType\":\"ywrckp\",\"capacity\":{\"scaleType\":\"yhpluodpvruudlgz\",\"default\":1325865791,\"minimum\":1621588970,\"maximum\":777690092},\"sku\":{\"name\":\"tstvdxeclzedq\"}}")
                 .toObject(ArmStreamingEndpointSkuInfo.class);
-        Assertions.assertEquals("evxccedcp", model.resourceType());
-        Assertions.assertEquals(424916927, model.capacity().defaultProperty());
-        Assertions.assertEquals(798686502, model.capacity().minimum());
-        Assertions.assertEquals(823307226, model.capacity().maximum());
+        Assertions.assertEquals("ywrckp", model.resourceType());
+        Assertions.assertEquals(1325865791, model.capacity().defaultProperty());
+        Assertions.assertEquals(1621588970, model.capacity().minimum());
+        Assertions.assertEquals(777690092, model.capacity().maximum());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArmStreamingEndpointSkuInfo model =
             new ArmStreamingEndpointSkuInfo()
-                .withResourceType("evxccedcp")
+                .withResourceType("ywrckp")
                 .withCapacity(
                     new ArmStreamingEndpointCapacity()
-                        .withDefaultProperty(424916927)
-                        .withMinimum(798686502)
-                        .withMaximum(823307226))
+                        .withDefaultProperty(1325865791)
+                        .withMinimum(1621588970)
+                        .withMaximum(777690092))
                 .withSku(new ArmStreamingEndpointSku());
         model = BinaryData.fromObject(model).toObject(ArmStreamingEndpointSkuInfo.class);
-        Assertions.assertEquals("evxccedcp", model.resourceType());
-        Assertions.assertEquals(424916927, model.capacity().defaultProperty());
-        Assertions.assertEquals(798686502, model.capacity().minimum());
-        Assertions.assertEquals(823307226, model.capacity().maximum());
+        Assertions.assertEquals("ywrckp", model.resourceType());
+        Assertions.assertEquals(1325865791, model.capacity().defaultProperty());
+        Assertions.assertEquals(1621588970, model.capacity().minimum());
+        Assertions.assertEquals(777690092, model.capacity().maximum());
     }
 }

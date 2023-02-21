@@ -9,6 +9,10 @@ import com.azure.core.annotation.Immutable;
 /** Defines the SAP monitor errors. */
 @Immutable
 public final class MonitorPropertiesErrors extends Error {
+    /** Creates an instance of MonitorPropertiesErrors class. */
+    public MonitorPropertiesErrors() {
+    }
+
     /**
      * Validates the instance.
      *

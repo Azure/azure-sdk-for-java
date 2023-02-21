@@ -29,6 +29,10 @@ public final class VirtualNetworkConfiguration {
     @JsonProperty(value = "dataManagementPublicIpId", required = true)
     private String dataManagementPublicIpId;
 
+    /** Creates an instance of VirtualNetworkConfiguration class. */
+    public VirtualNetworkConfiguration() {
+    }
+
     /**
      * Get the subnetId property: The subnet resource id.
      *

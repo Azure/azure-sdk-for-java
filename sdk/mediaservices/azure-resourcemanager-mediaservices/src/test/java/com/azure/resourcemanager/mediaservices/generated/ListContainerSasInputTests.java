@@ -15,10 +15,10 @@ public final class ListContainerSasInputTests {
     public void testDeserialize() throws Exception {
         ListContainerSasInput model =
             BinaryData
-                .fromString("{\"permissions\":\"Read\",\"expiryTime\":\"2021-03-20T14:01:37Z\"}")
+                .fromString("{\"permissions\":\"Read\",\"expiryTime\":\"2021-06-03T10:31:17Z\"}")
                 .toObject(ListContainerSasInput.class);
         Assertions.assertEquals(AssetContainerPermission.READ, model.permissions());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T14:01:37Z"), model.expiryTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T10:31:17Z"), model.expiryTime());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,9 +26,9 @@ public final class ListContainerSasInputTests {
         ListContainerSasInput model =
             new ListContainerSasInput()
                 .withPermissions(AssetContainerPermission.READ)
-                .withExpiryTime(OffsetDateTime.parse("2021-03-20T14:01:37Z"));
+                .withExpiryTime(OffsetDateTime.parse("2021-06-03T10:31:17Z"));
         model = BinaryData.fromObject(model).toObject(ListContainerSasInput.class);
         Assertions.assertEquals(AssetContainerPermission.READ, model.permissions());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T14:01:37Z"), model.expiryTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T10:31:17Z"), model.expiryTime());
     }
 }

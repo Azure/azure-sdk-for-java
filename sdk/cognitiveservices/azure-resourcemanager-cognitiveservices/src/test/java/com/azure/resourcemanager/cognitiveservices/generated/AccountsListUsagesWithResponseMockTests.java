@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaUsageStatus;
 import com.azure.resourcemanager.cognitiveservices.models.UnitType;
@@ -34,7 +33,7 @@ public final class AccountsListUsagesWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"unit\":\"Percent\",\"quotaPeriod\":\"aabjyvayffimrz\",\"limit\":73.46061669897502,\"currentValue\":17.91741455628265,\"nextResetTime\":\"exn\",\"status\":\"Included\"},{\"unit\":\"Seconds\",\"quotaPeriod\":\"wmewzsyy\",\"limit\":25.41338781575959,\"currentValue\":89.18262876334961,\"nextResetTime\":\"judpfrxt\",\"status\":\"Included\"},{\"unit\":\"Seconds\",\"quotaPeriod\":\"tdwkqbrq\",\"limit\":22.47264634737206,\"currentValue\":0.7295389823285925,\"nextResetTime\":\"iilivpdtiirqtd\",\"status\":\"InOverage\"}]}";
+            "{\"value\":[{\"unit\":\"Bytes\",\"quotaPeriod\":\"uq\",\"limit\":92.17927923376674,\"currentValue\":83.973841997124,\"nextResetTime\":\"dnkfx\",\"status\":\"Unknown\"},{\"unit\":\"CountPerSecond\",\"quotaPeriod\":\"rmuhapfcq\",\"limit\":35.749186293792256,\"currentValue\":59.310411991053805,\"nextResetTime\":\"svuo\",\"status\":\"Included\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +62,16 @@ public final class AccountsListUsagesWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         UsageListResult response =
-            manager.accounts().listUsagesWithResponse("beddgssofw", "mzqa", "krmnjijpxacqqud", Context.NONE).getValue();
+            manager
+                .accounts()
+                .listUsagesWithResponse("yhmtnvyqiat", "zwpcnpwzcjaesg", "v", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals(UnitType.PERCENT, response.value().get(0).unit());
-        Assertions.assertEquals("aabjyvayffimrz", response.value().get(0).quotaPeriod());
-        Assertions.assertEquals(73.46061669897502D, response.value().get(0).limit());
-        Assertions.assertEquals(17.91741455628265D, response.value().get(0).currentValue());
-        Assertions.assertEquals("exn", response.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, response.value().get(0).status());
+        Assertions.assertEquals(UnitType.BYTES, response.value().get(0).unit());
+        Assertions.assertEquals("uq", response.value().get(0).quotaPeriod());
+        Assertions.assertEquals(92.17927923376674D, response.value().get(0).limit());
+        Assertions.assertEquals(83.973841997124D, response.value().get(0).currentValue());
+        Assertions.assertEquals("dnkfx", response.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, response.value().get(0).status());
     }
 }

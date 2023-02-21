@@ -1,3 +1,5 @@
+# For details see https://github.com/Azure/azure-sdk-tools/blob/main/doc/common/Cadl-Project-Scripts.md
+
 [CmdletBinding()]
 param (
     [Parameter(Position=0)]
@@ -42,10 +44,10 @@ function GetGitRemoteValue([string]$repo) {
         $gitRemotes = (git remote -v)
         foreach ($remote in $gitRemotes) {
             if ($remote.StartsWith("origin")) {
-                if ($remote -match 'https://github.com/\S+[\.git]') {
+                if ($remote -match 'https://github.com/\S+') {
                     $result = "https://github.com/$repo.git"
                     break
-                } elseif ($remote -match "git@github.com:\S+[\.git]"){
+                } elseif ($remote -match "git@github.com:\S+"){
                     $result = "git@github.com:$repo.git"
                     break
                 } else {

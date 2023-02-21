@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageSchemaType;
 import com.azure.resourcemanager.cosmos.models.ApiProperties;
@@ -22,6 +21,7 @@ import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentityUserAssignedIdentities;
+import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PeriodicModeBackupPolicy;
 import com.azure.resourcemanager.cosmos.models.PeriodicModeProperties;
@@ -39,7 +39,7 @@ import java.util.Map;
 /** Samples for DatabaseAccounts CreateOrUpdate. */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
@@ -72,7 +72,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                                     .withLocationName("southcentralus")
                                     .withFailoverPriority(0)
                                     .withIsZoneRedundant(false)))
-                    .withKeyVaultKeyUri("https://myKeyVault.vault.azure.net")
+                    .withKeyVaultKeyUri("fakeTokenPlaceholder")
                     .withEnableFreeTier(false)
                     .withApiProperties(new ApiProperties().withServerVersion(ServerVersion.THREE_TWO))
                     .withEnableAnalyticalStorage(true)
@@ -92,12 +92,13 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                                             .withCollectionNames(Arrays.asList("collection1", "collection2")),
                                         new DatabaseRestoreResource()
                                             .withDatabaseName("db2")
-                                            .withCollectionNames(Arrays.asList("collection3", "collection4"))))),
-                Context.NONE);
+                                            .withCollectionNames(Arrays.asList("collection3", "collection4")))))
+                    .withMinimalTlsVersion(MinimalTlsVersion.TLS),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountCreateMax.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountCreateMax.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
@@ -153,7 +154,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                                     .withId(
                                         "/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
                                     .withIgnoreMissingVNetServiceEndpoint(false)))
-                    .withKeyVaultKeyUri("https://myKeyVault.vault.azure.net")
+                    .withKeyVaultKeyUri("fakeTokenPlaceholder")
                     .withDefaultIdentity("FirstPartyIdentity")
                     .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                     .withEnableFreeTier(false)
@@ -175,12 +176,13 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                         Arrays
                             .asList(
                                 "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
-                    .withCapacity(new Capacity().withTotalThroughputLimit(2000)),
-                Context.NONE);
+                    .withCapacity(new Capacity().withTotalThroughputLimit(2000))
+                    .withMinimalTlsVersion(MinimalTlsVersion.TLS12),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountCreateMin.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountCreateMin.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.
@@ -206,7 +208,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                                     .withFailoverPriority(0)
                                     .withIsZoneRedundant(false)))
                     .withCreateMode(CreateMode.DEFAULT),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlTriggerCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlTriggerResource;
@@ -14,7 +13,7 @@ import com.azure.resourcemanager.cosmos.models.TriggerType;
 /** Samples for SqlResources CreateUpdateSqlTrigger. */
 public final class SqlResourcesCreateUpdateSqlTriggerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlTriggerCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlTriggerCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlTriggerCreateUpdate.
@@ -41,6 +40,6 @@ public final class SqlResourcesCreateUpdateSqlTriggerSamples {
                             .withTriggerType(TriggerType.fromString("triggerType"))
                             .withTriggerOperation(TriggerOperation.fromString("triggerOperation")))
                     .withOptions(new CreateUpdateOptions()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -11,38 +11,47 @@ import com.azure.resourcemanager.kusto.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterPrincipalAssignmentListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterPrincipalAssignmentListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"principalId\":\"fhyhltrpmopjmcma\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"kthfui\",\"principalType\":\"App\",\"tenantName\":\"dsfcpkvxodpuoz\",\"principalName\":\"zydagfuaxbezyiuo\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"hrdxwzywqsmbs\"},\"id\":\"reximoryocfs\",\"name\":\"ksymd\",\"type\":\"ys\"}]}")
+                    "{\"value\":[{\"properties\":{\"principalId\":\"z\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"ac\",\"principalType\":\"App\",\"tenantName\":\"osfln\",\"principalName\":\"sfqpteehz\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"yqrimzin\"},\"id\":\"vswjdk\",\"name\":\"rsoodqxhcrmnoh\",\"type\":\"t\"},{\"properties\":{\"principalId\":\"whdsoifiyip\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"qwpgrjbzn\",\"principalType\":\"App\",\"tenantName\":\"jxvsnbyxqabn\",\"principalName\":\"cpc\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"rzafbljjgpbtoqcj\"},\"id\":\"klj\",\"name\":\"vbqid\",\"type\":\"qajzyulpkudjkr\"},{\"properties\":{\"principalId\":\"hbzhfepg\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"e\",\"principalType\":\"Group\",\"tenantName\":\"ocxscpaierhhbcs\",\"principalName\":\"ummajtjaod\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"bdxkqpxokaj\"},\"id\":\"onpimexgstxg\",\"name\":\"po\",\"type\":\"gmaajrm\"}]}")
                 .toObject(ClusterPrincipalAssignmentListResult.class);
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.value().get(0).principalId());
-        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.value().get(0).role());
-        Assertions.assertEquals("kthfui", model.value().get(0).tenantId());
+        Assertions.assertEquals("z", model.value().get(0).principalId());
+        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.value().get(0).role());
+        Assertions.assertEquals("ac", model.value().get(0).tenantId());
         Assertions.assertEquals(PrincipalType.APP, model.value().get(0).principalType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClusterPrincipalAssignmentListResult model =
             new ClusterPrincipalAssignmentListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new ClusterPrincipalAssignmentInner()
-                                .withPrincipalId("fhyhltrpmopjmcma")
-                                .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
-                                .withTenantId("kthfui")
-                                .withPrincipalType(PrincipalType.APP)));
+                                .withPrincipalId("z")
+                                .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
+                                .withTenantId("ac")
+                                .withPrincipalType(PrincipalType.APP),
+                            new ClusterPrincipalAssignmentInner()
+                                .withPrincipalId("whdsoifiyip")
+                                .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
+                                .withTenantId("qwpgrjbzn")
+                                .withPrincipalType(PrincipalType.APP),
+                            new ClusterPrincipalAssignmentInner()
+                                .withPrincipalId("hbzhfepg")
+                                .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
+                                .withTenantId("e")
+                                .withPrincipalType(PrincipalType.GROUP)));
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalAssignmentListResult.class);
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.value().get(0).principalId());
-        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.value().get(0).role());
-        Assertions.assertEquals("kthfui", model.value().get(0).tenantId());
+        Assertions.assertEquals("z", model.value().get(0).principalId());
+        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.value().get(0).role());
+        Assertions.assertEquals("ac", model.value().get(0).tenantId());
         Assertions.assertEquals(PrincipalType.APP, model.value().get(0).principalType());
     }
 }

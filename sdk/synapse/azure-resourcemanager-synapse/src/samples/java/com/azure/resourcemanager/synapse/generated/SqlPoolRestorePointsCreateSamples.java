@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.CreateSqlPoolRestorePointDefinition;
 
 /** Samples for SqlPoolRestorePoints Create. */
@@ -25,6 +24,6 @@ public final class SqlPoolRestorePointsCreateSamples {
                 "testserver",
                 "testDatabase",
                 new CreateSqlPoolRestorePointDefinition().withRestorePointLabel("mylabel"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

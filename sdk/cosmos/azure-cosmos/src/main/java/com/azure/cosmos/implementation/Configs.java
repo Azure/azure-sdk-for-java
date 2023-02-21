@@ -110,6 +110,10 @@ public class Configs {
     private static final String REPLICA_ADDRESS_VALIDATION_ENABLED = "COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED";
     private static final boolean DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED = true;
 
+    // Rntbd health check related config
+    private static final String TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED = "COSMOS.TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED";
+    private static final boolean DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED = true;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -313,5 +317,11 @@ public class Configs {
         return getJVMConfigAsBoolean(
                 REPLICA_ADDRESS_VALIDATION_ENABLED,
                 DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED);
+    }
+
+    public static boolean isTcpHealthCheckTimeoutDetectionEnabled() {
+        return getJVMConfigAsBoolean(
+            TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED,
+            DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED);
     }
 }

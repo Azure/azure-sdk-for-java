@@ -32,7 +32,6 @@ import java.net.URL;
 import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
@@ -146,7 +145,7 @@ public final class ContainerRepository {
     public Response<Void> deleteWithResponse(Context context) {
         try {
             Response<DeleteRepositoryResult> response =
-                this.serviceClient.deleteRepositoryWithResponse(repositoryName, enableSync(getTracingContext(context)));
+                this.serviceClient.deleteRepositoryWithResponse(repositoryName, enableSync(context));
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -201,7 +200,7 @@ public final class ContainerRepository {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerRepositoryProperties> getPropertiesWithResponse(Context context) {
         try {
-            return this.serviceClient.getPropertiesWithResponse(repositoryName, enableSync(getTracingContext(context)));
+            return this.serviceClient.getPropertiesWithResponse(repositoryName, enableSync(context));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -360,7 +359,7 @@ public final class ContainerRepository {
         try {
             PagedResponse<ManifestAttributesBase> res =
                 this.serviceClient.getManifestsSinglePage(repositoryName, null, pageSize, orderString,
-                    enableSync(getTracingContext(context)));
+                    enableSync(context));
 
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName, registryLoginServer));
@@ -372,7 +371,7 @@ public final class ContainerRepository {
     private PagedResponse<ArtifactManifestProperties> listManifestPropertiesNextSinglePageSync(String nextLink, Context context) {
         try {
             PagedResponse<ManifestAttributesBase> res = this.serviceClient.getManifestsNextSinglePage(nextLink,
-                enableSync(getTracingContext(context)));
+                enableSync(context));
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName, registryLoginServer));
         } catch (AcrErrorsException exception) {
@@ -449,7 +448,7 @@ public final class ContainerRepository {
 
         try {
             return this.serviceClient.updatePropertiesWithResponse(repositoryName, writableProperties,
-                enableSync(getTracingContext(context)));
+                enableSync(context));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
