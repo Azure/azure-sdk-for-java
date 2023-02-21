@@ -87,6 +87,7 @@ public class AadB2cProperties implements InitializingBean {
 
     /**
      * Additional parameters above the standard parameters defined in the OAuth 2.0 Authorization Framework. Would be added to the Authorization URL for customizing the Authorization Request. For instance, 'prompt: login'.
+     * @see <a href="https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code">more additional parameters information</a>
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
@@ -101,7 +102,7 @@ public class AadB2cProperties implements InitializingBean {
     private String replyUrl = "{baseUrl}/login/oauth2/code/";
 
     /**
-     * Azure AD B2C endpoint base uri. The default value is `"/oauth2/authorization"`.
+     * Azure AD B2C endpoint base uri.
      */
     private String baseUri;
 
