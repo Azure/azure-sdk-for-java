@@ -1,14 +1,125 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0 (2023-02-21)
 
-### Features Added
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2022-12. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.CommitmentPlan$DefinitionStages` was modified
 
-### Other Changes
+* `withExistingAccount(java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.CommitmentPlan$Update` was modified
+
+* `withProperties(models.CommitmentPlanProperties)` was removed
+
+#### `models.CommitmentPlans` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteById(java.lang.String)` was removed
+* `define(java.lang.String)` was removed
+
+#### `models.CommitmentPlan$Definition` was modified
+
+* `withExistingAccount(java.lang.String,java.lang.String)` was removed
+
+### Features Added
+
+* `models.CommitmentPlanProvisioningState` was added
+
+* `models.CommitmentPlanAccountAssociation$Definition` was added
+
+* `models.CommitmentPlanAccountAssociation$Update` was added
+
+* `models.CommitmentPlanAccountAssociationListResult` was added
+
+* `models.CommitmentPlanAccountAssociation$UpdateStages` was added
+
+* `models.CommitmentPlanAssociation` was added
+
+* `models.PatchResourceTagsAndSku` was added
+
+* `models.CommitmentPlanAccountAssociation$DefinitionStages` was added
+
+* `models.MultiRegionSettings` was added
+
+* `models.PatchResourceTags` was added
+
+* `models.CommitmentPlanAccountAssociation` was added
+
+* `models.RoutingMethods` was added
+
+* `models.RegionSetting` was added
+
+* `models.ModelLifecycleStatus` was added
+
+#### `models.AccountModel` was modified
+
+* `finetuneCapabilities()` was added
+* `lifecycleStatus()` was added
+
+#### `models.AccountProperties` was modified
+
+* `withLocations(models.MultiRegionSettings)` was added
+* `locations()` was added
+* `commitmentPlanAssociations()` was added
+
+#### `models.CommitmentPlan` was modified
+
+* `regionName()` was added
+* `location()` was added
+* `sku()` was added
+* `tags()` was added
+* `region()` was added
+* `kind()` was added
+
+#### `models.CommitmentPlan$Update` was modified
+
+* `withTags(java.util.Map)` was added
+* `withSku(models.Sku)` was added
+
+#### `models.CommitmentPlanProperties` was modified
+
+* `provisioningState()` was added
+* `commitmentPlanGuid()` was added
+* `withCommitmentPlanGuid(java.lang.String)` was added
+
+#### `models.CommitmentPlans` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was added
+* `getAssociationByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.CommitmentPlanInner)` was added
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.CommitmentPlanInner,com.azure.core.util.Context)` was added
+* `getAssociation(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listByResourceGroup(java.lang.String)` was added
+* `getByResourceGroup(java.lang.String,java.lang.String)` was added
+* `deleteAssociationByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `listAssociations(java.lang.String,java.lang.String)` was added
+* `deletePlanById(java.lang.String)` was added
+* `deleteAssociationById(java.lang.String)` was added
+* `deleteAssociation(java.lang.String,java.lang.String,java.lang.String)` was added
+* `deletePlan(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deletePlanByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getAssociationWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `definePlan(java.lang.String)` was added
+* `deleteAssociation(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listPlansBySubscription()` was added
+* `listAssociations(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deletePlan(java.lang.String,java.lang.String)` was added
+* `listPlansBySubscription(com.azure.core.util.Context)` was added
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getAssociationById(java.lang.String)` was added
+* `defineAssociation(java.lang.String)` was added
+
+#### `models.CommitmentPlan$Definition` was modified
+
+* `withTags(java.util.Map)` was added
+* `withExistingResourceGroup(java.lang.String)` was added
+* `withKind(java.lang.String)` was added
+* `withSku(models.Sku)` was added
+* `withRegion(com.azure.core.management.Region)` was added
+* `withRegion(java.lang.String)` was added
 
 ## 1.0.0-beta.6 (2022-11-23)
 
