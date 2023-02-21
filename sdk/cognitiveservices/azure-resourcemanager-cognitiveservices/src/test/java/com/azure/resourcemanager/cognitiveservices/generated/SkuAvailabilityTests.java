@@ -7,40 +7,39 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.SkuAvailability;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuAvailabilityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuAvailability model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"jdhtldwkyzxu\",\"type\":\"kn\",\"skuName\":\"scwsv\",\"skuAvailable\":true,\"reason\":\"ogtwrupqsxvnmi\",\"message\":\"kvceoveilovnotyf\"}")
+                    "{\"kind\":\"hjdauwhvylwz\",\"type\":\"dhxujznbmpo\",\"skuName\":\"wpr\",\"skuAvailable\":false,\"reason\":\"eualupjmkhf\",\"message\":\"bbcswsrtjri\"}")
                 .toObject(SkuAvailability.class);
-        Assertions.assertEquals("jdhtldwkyzxu", model.kind());
-        Assertions.assertEquals("kn", model.type());
-        Assertions.assertEquals("scwsv", model.skuName());
-        Assertions.assertEquals(true, model.skuAvailable());
-        Assertions.assertEquals("ogtwrupqsxvnmi", model.reason());
-        Assertions.assertEquals("kvceoveilovnotyf", model.message());
+        Assertions.assertEquals("hjdauwhvylwz", model.kind());
+        Assertions.assertEquals("dhxujznbmpo", model.type());
+        Assertions.assertEquals("wpr", model.skuName());
+        Assertions.assertEquals(false, model.skuAvailable());
+        Assertions.assertEquals("eualupjmkhf", model.reason());
+        Assertions.assertEquals("bbcswsrtjri", model.message());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuAvailability model =
             new SkuAvailability()
-                .withKind("jdhtldwkyzxu")
-                .withType("kn")
-                .withSkuName("scwsv")
-                .withSkuAvailable(true)
-                .withReason("ogtwrupqsxvnmi")
-                .withMessage("kvceoveilovnotyf");
+                .withKind("hjdauwhvylwz")
+                .withType("dhxujznbmpo")
+                .withSkuName("wpr")
+                .withSkuAvailable(false)
+                .withReason("eualupjmkhf")
+                .withMessage("bbcswsrtjri");
         model = BinaryData.fromObject(model).toObject(SkuAvailability.class);
-        Assertions.assertEquals("jdhtldwkyzxu", model.kind());
-        Assertions.assertEquals("kn", model.type());
-        Assertions.assertEquals("scwsv", model.skuName());
-        Assertions.assertEquals(true, model.skuAvailable());
-        Assertions.assertEquals("ogtwrupqsxvnmi", model.reason());
-        Assertions.assertEquals("kvceoveilovnotyf", model.message());
+        Assertions.assertEquals("hjdauwhvylwz", model.kind());
+        Assertions.assertEquals("dhxujznbmpo", model.type());
+        Assertions.assertEquals("wpr", model.skuName());
+        Assertions.assertEquals(false, model.skuAvailable());
+        Assertions.assertEquals("eualupjmkhf", model.reason());
+        Assertions.assertEquals("bbcswsrtjri", model.message());
     }
 }
