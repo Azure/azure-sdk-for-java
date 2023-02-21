@@ -7,6 +7,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.MetricsOptions;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsLoggerConfig;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
@@ -69,6 +70,7 @@ public final class CosmosClientTelemetryConfig {
 
     private Boolean effectiveIsClientTelemetryEnabled = null;
     private CosmosMicrometerMetricsOptions micrometerMetricsOptions = null;
+    private CosmosDiagnosticsThresholds diagnosticsThresholds = new CosmosDiagnosticsThresholds();
 
     /**
      * Instantiates a new Cosmos client telemetry configuration.
@@ -179,6 +181,24 @@ public final class CosmosClientTelemetryConfig {
     public CosmosClientTelemetryConfig clientCorrelationId(String clientCorrelationId) {
         this.clientCorrelationId = clientCorrelationId;
         return this;
+    }
+
+    /**
+     * Request diagnostics for operations will be logged if their latency, request charge or payload size exceeds
+     * one of the defined thresholds. This method can be used to customize the default thresholds, which are used
+     * across different types of diagnostics (logging, tracing, client telemetry).
+     * @param thresholds the default thresholds across all diagnostic types
+     * @return current CosmosClientTelemetryConfig
+     */
+    public CosmosClientTelemetryConfig diagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
+        checkNotNull(thresholds, "Argument 'thresholds' must not be null.");
+        this.diagnosticsThresholds = thresholds;
+
+        return this;
+    }
+
+    CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        return this.diagnosticsThresholds;
     }
 
     String getClientCorrelationId() {
@@ -529,6 +549,11 @@ public final class CosmosClientTelemetryConfig {
                 @Override
                 public CosmosDiagnosticsLoggerConfig getDiagnosticsLoggerConfig(CosmosClientTelemetryConfig config) {
                     return config.diagnosticsLoggerConfig;
+                }
+
+                @Override
+                public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosClientTelemetryConfig config) {
+                    return config.diagnosticsThresholds;
                 }
             });
     }

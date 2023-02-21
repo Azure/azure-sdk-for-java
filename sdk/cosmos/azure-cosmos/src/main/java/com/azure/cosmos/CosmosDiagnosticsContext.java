@@ -43,7 +43,7 @@ public final class CosmosDiagnosticsContext {
     private final ConsistencyLevel consistencyLevel;
     private final ConcurrentLinkedDeque<CosmosDiagnostics> diagnostics;
     private final Integer maxItemCount;
-    private final Duration thresholdForDiagnosticsOnTracer;
+    private final CosmosDiagnosticsThresholds thresholds;
 
     private Throwable finalError;
     private Instant startTime = null;
@@ -65,7 +65,7 @@ public final class CosmosDiagnosticsContext {
         OperationType operationType,
         ConsistencyLevel consistencyLevel,
         Integer maxItemCount,
-        Duration thresholdForDiagnosticsOnTracer) {
+        CosmosDiagnosticsThresholds thresholds) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
@@ -74,9 +74,7 @@ public final class CosmosDiagnosticsContext {
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
         checkNotNull(operationType, "Argument 'operationType' must not be null.");
         checkNotNull(consistencyLevel, "Argument 'consistencyLevel' must not be null.");
-        checkNotNull(
-            thresholdForDiagnosticsOnTracer,
-            "Argument 'thresholdForDiagnosticsOnTracer' must not be null.");
+        checkNotNull(thresholds, "Argument 'thresholds' must not be null.");
 
         this.spanName = spanName;
         this.accountName = accountName;
@@ -89,7 +87,7 @@ public final class CosmosDiagnosticsContext {
         this.diagnostics = new ConcurrentLinkedDeque<>();
         this.consistencyLevel = consistencyLevel;
         this.maxItemCount = maxItemCount;
-        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        this.thresholds = thresholds;
     }
 
     /**
@@ -173,13 +171,39 @@ public final class CosmosDiagnosticsContext {
     }
 
     /**
-     * Indicates whether the latency of the operation exceeded the given threshold
-     * @return a flag indicating whether the latency of the operation exceeded its threshold.
+     * Indicates whether the latency, request charge or payload size of the operation exceeded the given threshold
+     * @return a flag indicating whether the latency, request charge or payload size of the operation
+     * exceeded its threshold.
      */
-    public boolean isLatencyThresholdViolated() {
+    public boolean isThresholdViolated() {
 
-        return this.duration != null &&
-            this.thresholdForDiagnosticsOnTracer.compareTo(this.duration) < 0;
+        if (this.thresholds == null) {
+            return false;
+        }
+
+        if (this.resourceType != ResourceType.Document) {
+            return false;
+        }
+
+        if (this.operationType.isPointOperation()) {
+            if (this.thresholds.getPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
+                return true;
+            }
+        } else {
+            if (this.thresholds.getNonPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
+                return true;
+            }
+        }
+
+        if (this.thresholds.getRequestChargeThreshold() < this.totalRequestCharge) {
+            return true;
+        }
+
+        if (this.thresholds.getPayloadSizeThreshold() < Math.max(this.maxRequestSize, this.maxResponseSize)) {
+            return true;
+        }
+
+        return false;
     }
 
     void addDiagnostics(Collection<CosmosDiagnostics> cosmosDiagnostics) {
@@ -399,7 +423,7 @@ public final class CosmosDiagnosticsContext {
                                                            String containerId, ResourceType resourceType,
                                                            OperationType operationType,
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
-                                                           Duration thresholdForDiagnosticsOnTracer) {
+                                                           CosmosDiagnosticsThresholds thresholds) {
 
                         return new CosmosDiagnosticsContext(
                             spanName,
@@ -410,7 +434,7 @@ public final class CosmosDiagnosticsContext {
                             operationType,
                             consistencyLevel,
                             maxItemCount,
-                            thresholdForDiagnosticsOnTracer);
+                            thresholds);
                     }
 
                     @Override

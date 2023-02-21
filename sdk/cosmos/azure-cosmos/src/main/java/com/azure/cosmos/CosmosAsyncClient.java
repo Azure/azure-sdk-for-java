@@ -782,7 +782,23 @@ public final class CosmosAsyncClient implements Closeable {
         return this.accountConsistencyLevel;
     }
 
+    CosmosDiagnosticsThresholds getEffectiveDiagnosticsThresholds(
+        CosmosDiagnosticsThresholds operationLevelThresholds) {
 
+        if (operationLevelThresholds != null) {
+            return operationLevelThresholds;
+        }
+
+
+        if (this.clientTelemetryConfig == null) {
+            return new CosmosDiagnosticsThresholds();
+        }
+
+        CosmosDiagnosticsThresholds clientLevelThresholds =
+            telemetryConfigAccessor.getDiagnosticsThresholds(this.clientTelemetryConfig);
+
+        return clientLevelThresholds != null ? clientLevelThresholds : new CosmosDiagnosticsThresholds();
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//

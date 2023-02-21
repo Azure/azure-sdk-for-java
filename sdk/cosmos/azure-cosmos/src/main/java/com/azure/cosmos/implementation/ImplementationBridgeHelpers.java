@@ -16,6 +16,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsLoggerConfig;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
@@ -333,6 +334,7 @@ public class ImplementationBridgeHelpers {
             CosmosItemRequestOptions clone(CosmosItemRequestOptions options);
             CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions);
+            CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosItemRequestOptions cosmosItemRequestOptions);
         }
     }
 
@@ -717,7 +719,7 @@ public class ImplementationBridgeHelpers {
                 OperationType operationType,
                 ConsistencyLevel consistencyLevel,
                 Integer maxItemCount,
-                Duration thresholdForDiagnosticsOnTracer);
+                CosmosDiagnosticsThresholds thresholds);
 
             void startOperation(CosmosDiagnosticsContext ctx);
 
@@ -1136,6 +1138,44 @@ public class ImplementationBridgeHelpers {
         }
     }
 
+    public static final class CosmosDiagnosticsThresholdsHelper {
+        private static final AtomicReference<CosmosDiagnosticsThresholdsAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosDiagnosticsThresholdsClassLoaded = new AtomicBoolean(false);
+
+        private CosmosDiagnosticsThresholdsHelper() {}
+
+        public static void setCosmosDiagnosticsThresholdsAccessor(final CosmosDiagnosticsThresholdsAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosDiagnosticsThresholds already initialized!");
+            } else {
+                logger.debug("Setting CosmosDiagnosticsThresholds...");
+                cosmosDiagnosticsThresholdsClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosDiagnosticsThresholdsAccessor getCosmosAsyncClientAccessor() {
+            if (!cosmosDiagnosticsThresholdsClassLoaded.get()) {
+                logger.debug("Initializing CosmosDiagnosticsThresholds...");
+                initializeAllAccessors();
+            }
+
+            CosmosDiagnosticsThresholdsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosDiagnosticsThresholdsAccessor is not initialized yet!");
+                System.exit(9726); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosDiagnosticsThresholdsAccessor {
+            Duration getPointReadLatencyThreshold(CosmosDiagnosticsThresholds thresholds);
+            Duration getNonPointReadLatencyThreshold(CosmosDiagnosticsThresholds thresholds);
+            float getRequestChargeThreshold(CosmosDiagnosticsThresholds thresholds);
+            int getPayloadSizeThreshold(CosmosDiagnosticsThresholds thresholds);
+        }
+    }
+
     public static final class CosmosExceptionHelper {
         private final static AtomicBoolean cosmosExceptionClassLoaded = new AtomicBoolean(false);
         private final static AtomicReference<CosmosExceptionAccessor> accessor = new AtomicReference<>();
@@ -1237,6 +1277,7 @@ public class ImplementationBridgeHelpers {
             void addDiagnosticsHandler(CosmosClientTelemetryConfig config, CosmosDiagnosticsHandler handler);
             boolean isDiagnosticsLogsEnabled(CosmosClientTelemetryConfig config);
             CosmosDiagnosticsLoggerConfig getDiagnosticsLoggerConfig(CosmosClientTelemetryConfig config);
+            CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosClientTelemetryConfig config);
         }
     }
 

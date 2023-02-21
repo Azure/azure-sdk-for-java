@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
@@ -41,7 +42,7 @@ public class RequestOptions {
     private String throughputControlGroupName;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
-    private Duration thresholdForDiagnosticsOnTracer;
+    private CosmosDiagnosticsThresholds thresholds;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -433,23 +434,11 @@ public class RequestOptions {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
     }
 
-    /**
-     * Gets the thresholdForDiagnosticsOnTracer, if latency on CRUD operation is greater than this
-     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
-     *
-     * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
-     */
-    public Duration getThresholdForDiagnosticsOnTracer() {
-        return thresholdForDiagnosticsOnTracer;
+    public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        return this.thresholds;
     }
 
-    /**
-     * Sets the thresholdForDiagnosticsOnTracer, if latency on CRUD operation is greater than this
-     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
-     *
-     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
-     */
-    public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
-        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+    public void setDiagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
+        this.thresholds = thresholds;
     }
 }

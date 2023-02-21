@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -23,6 +24,9 @@ import java.util.function.Function;
  * in the Azure Cosmos DB database service.
  */
 public class CosmosQueryRequestOptions {
+    private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private String partitionKeyRangeId;
@@ -41,7 +45,7 @@ public class CosmosQueryRequestOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
-    private Duration thresholdForDiagnosticsOnTracer;
+    private CosmosDiagnosticsThresholds thresholds;
     private Map<String, String> customOptions;
     private boolean indexMetricsEnabled;
     private boolean queryPlanRetrievalDisallowed;
@@ -54,6 +58,7 @@ public class CosmosQueryRequestOptions {
      */
     public CosmosQueryRequestOptions() {
 
+        this.thresholds = new CosmosDiagnosticsThresholds();
         this.queryMetricsEnabled = true;
         this.emptyPageDiagnosticsEnabled = Configs.isEmptyPageDiagnosticsEnabled();
     }
@@ -88,7 +93,7 @@ public class CosmosQueryRequestOptions {
         this.itemFactoryMethod = options.itemFactoryMethod;
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
-        this.thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
+        this.thresholds = options.thresholds;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -504,7 +509,7 @@ public class CosmosQueryRequestOptions {
      * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
      */
     public Duration getThresholdForDiagnosticsOnTracer() {
-        return thresholdForDiagnosticsOnTracer;
+        return thresholdsAccessor.getNonPointReadLatencyThreshold(this.thresholds);
     }
 
     /**
@@ -517,7 +522,11 @@ public class CosmosQueryRequestOptions {
      * @return the CosmosQueryRequestOptions
      */
     public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
-        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        this.thresholds.configureLatencyThresholds(
+            thresholdsAccessor.getPointReadLatencyThreshold(this.thresholds),
+            thresholdForDiagnosticsOnTracer
+        );
+
         return this;
     }
 
@@ -742,7 +751,7 @@ public class CosmosQueryRequestOptions {
                     requestOptions.setThroughputControlGroupName(queryRequestOptions.getThroughputControlGroupName());
                     requestOptions.setOperationContextAndListenerTuple(queryRequestOptions.getOperationContextAndListenerTuple());
                     requestOptions.setDedicatedGatewayRequestOptions(queryRequestOptions.getDedicatedGatewayRequestOptions());
-                    requestOptions.setThresholdForDiagnosticsOnTracer(queryRequestOptions.getThresholdForDiagnosticsOnTracer());
+                    requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {

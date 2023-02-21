@@ -114,12 +114,12 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
             .getClientBuilder()
             .clientTelemetryConfig(
                 new CosmosClientTelemetryConfig()
-                    .diagnosticLogs(
-                        new CosmosDiagnosticsLoggerConfig()
-                            .setFeedOperationLatencyThreshold(Duration.ofMillis(2000))
-                            .setPointOperationLatencyThreshold(Duration.ofMillis(100))
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .configureLatencyThresholds(Duration.ofMillis(100), Duration.ofMillis(2000))
                             .setRequestChargeThreshold(100)
                     )
+                    .diagnosticLogs()
             );
         CosmosContainer container = this.getContainer(builder);
         executeTestCase(builder, container);
@@ -136,13 +136,13 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
             .getClientBuilder()
             .clientTelemetryConfig(
                 new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .configureLatencyThresholds(Duration.ofMillis(100), Duration.ofMillis(2000))
+                            .setRequestChargeThreshold(100)
+                    )
                     .diagnosticsHandler(
-                        new ConsoleOutLogger(
-                            new CosmosDiagnosticsLoggerConfig()
-                                .setFeedOperationLatencyThreshold(Duration.ofMillis(2000))
-                                .setPointOperationLatencyThreshold(Duration.ofMillis(100))
-                                .setRequestChargeThreshold(100)
-                        )
+                        new ConsoleOutLogger(new CosmosDiagnosticsLoggerConfig())
                     )
             );
         CosmosContainer container = this.getContainer(builder);

@@ -776,5 +776,6 @@ public final class BridgeInternal {
         CosmosException.initialize();
         DirectConnectionConfig.initialize();
         CosmosAsyncClient.initialize();
+        CosmosDiagnosticsThresholds.initialize();
     }
 }

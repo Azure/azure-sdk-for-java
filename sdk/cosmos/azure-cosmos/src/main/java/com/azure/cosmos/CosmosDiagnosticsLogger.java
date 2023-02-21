@@ -64,25 +64,8 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
             return true;
         }
 
-        ResourceType resourceType = ctxAccessor.getResourceType(diagnosticsContext);
-        OperationType operationType = ctxAccessor.getOperationType(diagnosticsContext);
-
-        if (resourceType == ResourceType.Document) {
-            if (operationType.isPointOperation()) {
-                if (diagnosticsContext.getDuration().compareTo(this.config.getPointOperationLatencyThreshold()) >= 1) {
-                    return true;
-                }
-            } else {
-                if (diagnosticsContext.getDuration().compareTo(this.config.getFeedOperationLatencyThreshold()) >= 1) {
-                    return true;
-                }
-            }
-        }
-
-        return diagnosticsContext.getTotalRequestCharge() > this.config.getRequestChargeThreshold();
+        return diagnosticsContext.isThresholdViolated();
     }
-
-
 
     private boolean shouldLogDueToStatusCode(int statusCode, int subStatusCode) {
         return statusCode >= 500 || statusCode == 408 || statusCode == 410;

@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -229,7 +230,7 @@ public final class DiagnosticsProvider {
        ConsistencyLevel consistencyLevel,
        OperationType operationType,
        ResourceType resourceType,
-       Duration thresholdForDiagnosticsOnTracer) {
+       CosmosDiagnosticsThresholds thresholds) {
 
         return publisherWithDiagnostics(
             resultPublisher,
@@ -247,7 +248,7 @@ public final class DiagnosticsProvider {
             (r) -> null,
             CosmosItemResponse::getRequestCharge,
             CosmosItemResponse::getDiagnostics,
-            thresholdForDiagnosticsOnTracer);
+            thresholds);
     }
 
     /**
@@ -333,11 +334,7 @@ public final class DiagnosticsProvider {
                                                      Function<T, Integer> actualItemCountFunc,
                                                      Function<T, Double> requestChargeFunc,
                                                      Function<T, CosmosDiagnostics> diagnosticFunc,
-                                                     Duration thresholdForDiagnosticsOnTracer) {
-
-        Duration effectiveLatencyThreshold = thresholdForDiagnosticsOnTracer != null ?
-            thresholdForDiagnosticsOnTracer :
-            operationType.isPointOperation() ? Duration.ofSeconds(1) : Duration.ofSeconds(3);
+                                                     CosmosDiagnosticsThresholds thresholds) {
 
         CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
             spanName,
@@ -348,7 +345,7 @@ public final class DiagnosticsProvider {
             operationType,
             clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
             maxItemCount,
-            effectiveLatencyThreshold);
+            thresholds);
 
         return diagnosticsEnabledPublisher(
             cosmosCtx,
@@ -511,7 +508,7 @@ public final class DiagnosticsProvider {
         @Override
         public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context) {
             try {
-                if (cosmosCtx != null && cosmosCtx.isLatencyThresholdViolated()) {
+                if (cosmosCtx != null && cosmosCtx.isThresholdViolated()) {
                     Collection<CosmosDiagnostics> diagnostics = cosmosCtx.getDiagnostics();
                     if (diagnostics != null && diagnostics.size() > 0) {
                         for (CosmosDiagnostics d: diagnostics) {
