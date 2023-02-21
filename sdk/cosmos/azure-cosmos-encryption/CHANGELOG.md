@@ -3,10 +3,10 @@
 ### 2.0.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added support for allowing partition key path and id to be part of client encryption policy - See [PR 30678](https://github.com/Azure/azure-sdk-for-java/pull/30678)
+* Added support for allowing partition key path and id to be part of client encryption policy - See [PR 33648](https://github.com/Azure/azure-sdk-for-java/pull/33648)
 
 #### Breaking Changes
-* Adds code to support ParititonKey and Id encryption, when the PolicyFormatVersion is set to 2 - See [PR 30678](https://github.com/Azure/azure-sdk-for-java/pull/30678)
+* Adds code to support ParititonKey and Id encryption, when the PolicyFormatVersion is set to 2 - See [PR 33648](https://github.com/Azure/azure-sdk-for-java/pull/33648)
 
 #### Bugs Fixed
 
