@@ -10,7 +10,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 public class AppConfigTestApp {
     public static void main(String[] args) {
         final ConfigurationClient configurationClient = new ConfigurationClientBuilder()
-            .connectionString("Endpoint=https://srnagarappconfig.azconfig.io;Id=pFzC-l1-s0:ZN+D59S5KBG72bSsc2ly;Secret=A8kWyww+wZkiQH3RGTEd76oBBMicIQJpJ+aVqSC9rt0=")
+            .connectionString("foo")
             .buildClient();
 
         System.out.println("Setting configuration");
