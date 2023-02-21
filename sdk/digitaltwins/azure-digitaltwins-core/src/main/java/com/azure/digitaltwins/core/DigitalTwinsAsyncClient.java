@@ -25,7 +25,6 @@ import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDa
 import com.azure.digitaltwins.core.implementation.converters.EventRouteConverter;
 import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshipConverter;
 import com.azure.digitaltwins.core.implementation.converters.OptionsConverter;
-import com.azure.digitaltwins.core.implementation.models.ImportJob;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;

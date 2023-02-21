@@ -103,6 +103,7 @@ public final class DigitalTwinsImportJob {
      * @param lastActionDateTime
      * @param finishedDateTime
      * @param purgeDateTime
+     * @param errorInformation
      */
     public DigitalTwinsImportJob(String id,
                                  String inputBlobUri,
