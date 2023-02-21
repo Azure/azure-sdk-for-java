@@ -11,7 +11,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.models.ImportJobDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsImportJobOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
@@ -1997,7 +1997,7 @@ public final class DigitalTwinsClient {
      * This PagedIterable may take multiple service requests to iterate over all the jobs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DigitalTwinsImportJob> listImportJobs(ImportJobDigitalTwinOptions options, Context context) {
+    public PagedIterable<DigitalTwinsImportJob> listImportJobs(DigitalTwinsImportJobOptions options, Context context) {
         return new PagedIterable<>(this.digitalTwinsAsyncClient.listImportJobs(options, context));
     }
     //endregion Import APIs

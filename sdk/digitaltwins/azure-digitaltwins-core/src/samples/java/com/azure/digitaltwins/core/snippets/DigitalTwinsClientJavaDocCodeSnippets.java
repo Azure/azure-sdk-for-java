@@ -19,7 +19,7 @@ import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
 import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
 import com.azure.digitaltwins.core.models.DigitalTwinsImportJob;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
-import com.azure.digitaltwins.core.models.ImportJobDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsImportJobOptions;
 import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
 import com.azure.digitaltwins.core.models.ListModelsOptions;
@@ -1265,7 +1265,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.listImportJobs#ImportJobDigitalTwinOptions-Context
 
         PagedIterable<DigitalTwinsImportJob> importJobsWithOptions = digitalTwinsSyncClient.listImportJobs(
-            new ImportJobDigitalTwinOptions().setMaxItemsPerPage(5),
+            new DigitalTwinsImportJobOptions().setMaxItemsPerPage(5),
             new Context("key", "value"));
         importJobsWithOptions.forEach(importJob -> System.out.println("Retrieved import job with Id: "
             + importJob.getId()));
