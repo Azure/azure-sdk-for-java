@@ -396,7 +396,7 @@ public class AttestationTest extends AttestationClientTestBase {
         TpmAttestationResult tpmResponse = client.attestTpm(BinaryData.fromString(attestInitialPayload));
 
         JacksonAdapter serializer = new JacksonAdapter();
-        Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse.getString(), Object.class, SerializerEncoding.JSON));
+        Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse.getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
         assertTrue(deserializedResponse instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
@@ -444,7 +444,7 @@ public class AttestationTest extends AttestationClientTestBase {
         // END: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
 
         JacksonAdapter serializer = new JacksonAdapter();
-        Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse.getValue().getString(), Object.class, SerializerEncoding.JSON));
+        Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse.getValue().getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
         assertTrue(deserializedResponse instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
@@ -489,7 +489,7 @@ public class AttestationTest extends AttestationClientTestBase {
         StepVerifier.create(client.attestTpm(BinaryData.fromString(attestInitialPayload)))
             .assertNext(tpmResponse -> {
                 JacksonAdapter serializer = new JacksonAdapter();
-                Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse.getString(), Object.class, SerializerEncoding.JSON));
+                Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse.getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
                 assertTrue(deserializedResponse instanceof LinkedHashMap);
                 @SuppressWarnings("unchecked")
                 LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;

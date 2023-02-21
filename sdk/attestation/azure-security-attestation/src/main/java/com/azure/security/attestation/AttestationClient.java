@@ -11,7 +11,15 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.security.attestation.models.*;
+import com.azure.security.attestation.models.AttestationData;
+import com.azure.security.attestation.models.AttestationOpenIdMetadata;
+import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationResponse;
+import com.azure.security.attestation.models.AttestationResult;
+import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
+import com.azure.security.attestation.models.AttestationToken;
+import com.azure.security.attestation.models.TpmAttestationResult;
 
 /**
  * The AttestationClient implements the functionality required by the "Attest" family of APIs.

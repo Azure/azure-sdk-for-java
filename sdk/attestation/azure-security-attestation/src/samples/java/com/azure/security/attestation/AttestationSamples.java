@@ -11,7 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.attestation.models.*;
+import com.azure.security.attestation.models.AttestationData;
+import com.azure.security.attestation.models.AttestationDataInterpretation;
+import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationResult;
+import com.azure.security.attestation.models.AttestationTokenValidationOptions;
+import com.azure.security.attestation.models.AttestationType;
+import com.azure.security.attestation.models.PolicyModification;
+import com.azure.security.attestation.models.PolicyResult;
+import com.azure.security.attestation.models.TpmAttestationResult;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

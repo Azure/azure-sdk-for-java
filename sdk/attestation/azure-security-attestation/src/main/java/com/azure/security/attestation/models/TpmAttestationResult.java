@@ -3,13 +3,13 @@ package com.azure.security.attestation.models;
 import com.azure.core.util.BinaryData;
 
 public class TpmAttestationResult {
-    BinaryData tpmResult;
+    private final BinaryData tpmResult;
 
-    public TpmAttestationResult(String result) {
-        this.tpmResult = BinaryData.fromString(result);
+    public TpmAttestationResult(BinaryData result) {
+        this.tpmResult = result;
     }
 
-    public String getString() {
-        return tpmResult.toString();
+    public BinaryData getTpmResult() {
+        return tpmResult;
     }
 }
