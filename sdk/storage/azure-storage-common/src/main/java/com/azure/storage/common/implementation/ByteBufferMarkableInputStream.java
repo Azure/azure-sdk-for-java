@@ -34,6 +34,7 @@ public class ByteBufferMarkableInputStream extends InputStream {
         return len;
     }
 
+    @Override
     public int available() {
         return bb.remaining();
     }
