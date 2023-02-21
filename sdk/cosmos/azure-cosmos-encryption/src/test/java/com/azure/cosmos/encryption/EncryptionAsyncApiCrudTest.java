@@ -83,11 +83,6 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         properties.setClientEncryptionPolicy(clientEncryptionWithPolicyFormatVersion2);
         cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(properties).block();
 
-        // ClientEncryptionPolicy with Id and PartitionKey included, and policyFormatVersion 2
-//        ClientEncryptionPolicy clientEncryptionPolicyWithIdAndPartitionKeyPath = new ClientEncryptionPolicy(getPaths(), 2);
-//        CosmosContainerProperties propertiesWithIdAndPartitionKeyPath = new CosmosContainerProperties(containerId, "/mypk");
-//        propertiesWithIdAndPartitionKeyPath.setClientEncryptionPolicy(clientEncryptionPolicyWithIdAndPartitionKeyPath);
-
         encryptionContainerWithIncompatiblePolicyVersion =
             cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
     }
@@ -100,9 +95,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() {
-//        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
-
-        EncryptionPojo properties = getItem("7d925bf9-d583-4c6d-a49f-137bee7cff91");
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
 
         CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
             new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
