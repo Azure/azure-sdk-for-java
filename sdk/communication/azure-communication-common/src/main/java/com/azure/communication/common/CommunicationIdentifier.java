@@ -9,6 +9,22 @@ import com.azure.core.util.CoreUtils;
  */
 public abstract class CommunicationIdentifier {
 
+    protected static final String PhoneNumber = "4:";
+    protected static final String Bot = "28:";
+    protected static final String BotPublicCloud = "28:orgid:";
+    protected static final String BotDodCloud = "28:dod:";
+    protected static final String BotDodCloudGlobal = "28:dod-global:";
+    protected static final String BotGcchCloud = "28:gcch:";
+    protected static final String BotGcchCloudGlobal = "28:gcch-global:";
+    protected static final String TeamUserAnonymous = "8:teamsvisitor:";
+    protected static final String TeamUserPublicCloud = "8:orgid:";
+    protected static final String TeamUserDodCloud = "8:dod:";
+    protected static final String TeamUserGcchCloud = "8:gcch:";
+    protected static final String AcsUser = "8:acs:";
+    protected static final String AcsUserDodCloud = "8:dod-acs:";
+    protected static final String AcsUserGcchCloud = "8:gcch-acs:";
+    protected static final String SpoolUser = "8:spool:";
+
     private String rawId;
 
     /**
@@ -23,30 +39,41 @@ public abstract class CommunicationIdentifier {
             throw new IllegalArgumentException("The parameter [rawId] cannot be null to empty.");
         }
 
-        if (rawId.startsWith("4:")) {
+        if (rawId.startsWith(PhoneNumber)) {
             return new PhoneNumberIdentifier(rawId.substring("4:".length()));
         }
         final String[] segments = rawId.split(":");
         if (segments.length < 3) {
+            if(segments.length == 2 && segments[0].equals("28")){
+               return new MicrosoftBotIdentifier(segments[1], true).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
+            }
             return new UnknownIdentifier(rawId);
         }
 
         final String prefix = segments[0] + ":" + segments[1] + ":";
         final String suffix = rawId.substring(prefix.length());
 
-        if ("8:teamsvisitor:".equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, true);
-        } else if ("8:orgid:".equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false);
-        } else if ("8:dod:".equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
-        } else if ("8:gcch:".equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
-        } else if ("8:acs:".equals(prefix) || "8:spool:".equals(prefix) || "8:dod-acs:".equals(prefix) || "8:gcch-acs:".equals(prefix)) {
-            return new CommunicationUserIdentifier(rawId);
-        }
+        return switch (prefix) {
+            case TeamUserAnonymous -> new MicrosoftTeamsUserIdentifier(suffix, true);
+            case TeamUserPublicCloud -> new MicrosoftTeamsUserIdentifier(suffix, false);
+            case TeamUserDodCloud ->
+                new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+            case TeamUserGcchCloud ->
+                new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+            case AcsUser, SpoolUser, AcsUserDodCloud, AcsUserGcchCloud -> new CommunicationUserIdentifier(rawId);
+            case BotGcchCloudGlobal ->
+                new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+            case BotPublicCloud ->
+                new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
+            case BotDodCloudGlobal ->
+                new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+            case BotGcchCloud ->
+                new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+            case BotDodCloud ->
+                new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+            default -> new UnknownIdentifier(rawId);
+        };
 
-        return new UnknownIdentifier(rawId);
     }
 
     /**
@@ -77,11 +104,10 @@ public abstract class CommunicationIdentifier {
             return true;
         }
 
-        if (!(that instanceof CommunicationIdentifier)) {
+        if (!(that instanceof CommunicationIdentifier thatId)) {
             return false;
         }
 
-        CommunicationIdentifier thatId = (CommunicationIdentifier) that;
         return this.getRawId().equals(thatId.getRawId());
     }
 

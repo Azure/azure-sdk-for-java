@@ -68,6 +68,14 @@ public class CommunicationIdentifierTests {
             new PhoneNumberIdentifier("+14255550123"));
         assertEquals(new PhoneNumberIdentifier("+14255550123"),
             new PhoneNumberIdentifier("+override").setRawId("4:+14255550123"));
+
+        // Bots
+        assertEquals(new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true),
+            new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true));
+        assertNotEquals(new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true)
+                .setRawId("Raw Id"),
+            new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true)
+                .setRawId("Another Raw Id"));
     }
 
     @Test
@@ -82,6 +90,12 @@ public class CommunicationIdentifierTests {
         assertRawId(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",  false), "8:orgid:45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRawId(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true), "8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRawId(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setRawId("8:orgid:legacyFormat"), "8:orgid:legacyFormat");
+        assertRawId(new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC), "28:45ab2481-1c1c-4005-be24-0ffb879b1130");
+        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", true).setCloudEnvironment(CommunicationCloudEnvironment.GCCH), "28:gcch-global:01234567-89ab-cdef-0123-456789abcdef");
+        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", true).setCloudEnvironment(CommunicationCloudEnvironment.DOD), "28:dod-global:01234567-89ab-cdef-0123-456789abcdef");
+        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", false).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC), "28:orgid:01234567-89ab-cdef-0123-456789abcdef");
+        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH), "28:gcch:01234567-89ab-cdef-0123-456789abcdef");
+        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", false).setCloudEnvironment(CommunicationCloudEnvironment.DOD), "28:dod:01234567-89ab-cdef-0123-456789abcdef");
         assertRawId(new PhoneNumberIdentifier("+112345556789"), "4:+112345556789");
         assertRawId(new PhoneNumberIdentifier("112345556789"), "4:112345556789");
         assertRawId(new PhoneNumberIdentifier("otherFormat").setRawId("4:207ffef6-9444-41fb-92ab-20eacaae2768"), "4:207ffef6-9444-41fb-92ab-20eacaae2768");
@@ -104,13 +118,18 @@ public class CommunicationIdentifierTests {
         assertIdentifier("8:gcch:45ab2481-1c1c-4005-be24-0ffb879b1130", new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH));
         assertIdentifier("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130", new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC));
         assertIdentifier("8:orgid:legacyFormat", new MicrosoftTeamsUserIdentifier("legacyFormat", false).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC));
+        assertIdentifier("28:45ab2481-1c1c-4005-be24-0ffb879b1130", new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC));
+        assertIdentifier("28:gcch-global:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", true).setCloudEnvironment(CommunicationCloudEnvironment.GCCH));
+        assertIdentifier("28:dod-global:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", true).setCloudEnvironment(CommunicationCloudEnvironment.DOD));
+        assertIdentifier("28:orgid:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", false).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC));
+        assertIdentifier("28:gcch:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH));
+        assertIdentifier("28:dod:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", false).setCloudEnvironment(CommunicationCloudEnvironment.DOD));
         assertIdentifier("4:+112345556789", new PhoneNumberIdentifier("+112345556789"));
         assertIdentifier("4:112345556789", new PhoneNumberIdentifier("112345556789"));
         assertIdentifier("4:207ffef6-9444-41fb-92ab-20eacaae2768", new PhoneNumberIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768"));
         assertIdentifier("4:207ffef6-9444-41fb-92ab-20eacaae2768_207ffef6-9444-41fb-92ab-20eacaae2768", new PhoneNumberIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768_207ffef6-9444-41fb-92ab-20eacaae2768"));
         assertIdentifier("4:+112345556789_207ffef6-9444-41fb-92ab-20eacaae2768", new PhoneNumberIdentifier("+112345556789_207ffef6-9444-41fb-92ab-20eacaae2768"));
-        assertIdentifier("28:45ab2481-1c1c-4005-be24-0ffb879b1130", new UnknownIdentifier("28:45ab2481-1c1c-4005-be24-0ffb879b1130"));
-
+        assertIdentifier("28:ag09-global:01234567-89ab-cdef-0123-456789abcdef", new UnknownIdentifier("28:ag09-global:01234567-89ab-cdef-0123-456789abcdef"));
         final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> CommunicationIdentifier.fromRawId(null));
         assertEquals("The parameter [rawId] cannot be null to empty.", illegalArgumentException.getMessage());
     }
@@ -133,6 +152,13 @@ public class CommunicationIdentifierTests {
         assertRoundTrip("4:207ffef6-9444-41fb-92ab-20eacaae2768_207ffef6-9444-41fb-92ab-20eacaae2768");
         assertRoundTrip("4:+112345556789_207ffef6-9444-41fb-92ab-20eacaae2768");
         assertRoundTrip("28:45ab2481-1c1c-4005-be24-0ffb879b1130");
+        assertRoundTrip("28:gcch-global:01234567-89ab-cdef-0123-456789abcdef");
+        assertRoundTrip("28:dod-global:01234567-89ab-cdef-0123-456789abcdef");
+        assertRoundTrip("28:orgid:01234567-89ab-cdef-0123-456789abcdef");
+        assertRoundTrip("28:gcch:01234567-89ab-cdef-0123-456789abcdef");
+        assertRoundTrip("28:dod:01234567-89ab-cdef-0123-456789abcdef");
+        assertRoundTrip("28:gal-global:01234567-89ab-cdef-0123-456789abcdef");
+        assertRoundTrip("48:45ab2481-1c1c-4005-be24-0ffb879b1130");
     }
 
     private void assertRawId(CommunicationIdentifier identifier, String expectedRawId)  {
