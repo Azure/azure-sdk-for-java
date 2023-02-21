@@ -165,7 +165,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.13.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.13.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
