@@ -8,28 +8,27 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.ReadWriteDatabaseProperties;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ReadWriteDatabasePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ReadWriteDatabaseProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Running\",\"softDeletePeriod\":\"PT238H16S\",\"hotCachePeriod\":\"PT215H18M25S\",\"statistics\":{\"size\":52.45232},\"isFollowed\":false}")
+                    "{\"provisioningState\":\"Failed\",\"softDeletePeriod\":\"PT30H38M2S\",\"hotCachePeriod\":\"PT172H31M9S\",\"statistics\":{\"size\":24.742592},\"isFollowed\":false}")
                 .toObject(ReadWriteDatabaseProperties.class);
-        Assertions.assertEquals(Duration.parse("PT238H16S"), model.softDeletePeriod());
-        Assertions.assertEquals(Duration.parse("PT215H18M25S"), model.hotCachePeriod());
+        Assertions.assertEquals(Duration.parse("PT30H38M2S"), model.softDeletePeriod());
+        Assertions.assertEquals(Duration.parse("PT172H31M9S"), model.hotCachePeriod());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ReadWriteDatabaseProperties model =
             new ReadWriteDatabaseProperties()
-                .withSoftDeletePeriod(Duration.parse("PT238H16S"))
-                .withHotCachePeriod(Duration.parse("PT215H18M25S"));
+                .withSoftDeletePeriod(Duration.parse("PT30H38M2S"))
+                .withHotCachePeriod(Duration.parse("PT172H31M9S"));
         model = BinaryData.fromObject(model).toObject(ReadWriteDatabaseProperties.class);
-        Assertions.assertEquals(Duration.parse("PT238H16S"), model.softDeletePeriod());
-        Assertions.assertEquals(Duration.parse("PT215H18M25S"), model.hotCachePeriod());
+        Assertions.assertEquals(Duration.parse("PT30H38M2S"), model.softDeletePeriod());
+        Assertions.assertEquals(Duration.parse("PT172H31M9S"), model.hotCachePeriod());
     }
 }
