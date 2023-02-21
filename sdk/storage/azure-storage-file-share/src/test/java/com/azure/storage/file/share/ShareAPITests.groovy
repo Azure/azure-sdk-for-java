@@ -166,6 +166,51 @@ class ShareAPITests extends APISpec {
         testMetadata                                   | 6000  | 400        | ShareErrorCode.INVALID_HEADER_VALUE
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    @Unroll
+    def "Create directory and file trailing dot"() {
+        setup:
+        def serviceClient = fileServiceBuilderHelper().allowTrailingDot(allowTrailingDot).buildClient()
+        def shareClient = serviceClient.getShareClient(shareName)
+        def rootDirectory = shareClient.getRootDirectoryClient()
+        def dirName = generatePathName()
+        def dirNameWithDot = dirName + "."
+        def dirClient = shareClient.getDirectoryClient(dirNameWithDot)
+        dirClient.create()
+
+        def fileName = generatePathName()
+        def fileNameWithDot = fileName + "."
+        def fileClient = rootDirectory.getFileClient(fileNameWithDot)
+        fileClient.create(1024)
+
+        when:
+        def foundDirectories = [] as Set
+        def foundFiles = [] as Set
+        for (def fileRef : rootDirectory.listFilesAndDirectories()) {
+            if (fileRef.isDirectory()) {
+                foundDirectories << fileRef.getName()
+            } else {
+                foundFiles << fileRef.getName()
+            }
+        }
+
+        then:
+        foundDirectories.size() == 1
+        foundFiles.size() == 1
+        if (allowTrailingDot) {
+            foundDirectories[0] == dirNameWithDot
+            foundFiles[0] == fileNameWithDot
+        } else {
+            foundDirectories[0] == dirName
+            foundFiles[0] == fileName
+        }
+
+        where:
+        allowTrailingDot | _
+        true             | _
+        false            | _
+    }
+
     def "Create if not exists share"() {
         expect:
         FileTestHelper.assertResponseStatusCode(primaryShareClient.createIfNotExistsWithResponse(null, null, null), 201)
