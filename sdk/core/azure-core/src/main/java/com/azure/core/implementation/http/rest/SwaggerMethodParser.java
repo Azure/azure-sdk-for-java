@@ -567,7 +567,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     private static String serialize(SerializerAdapter serializer, Object value) {
         if (value == null) {
-            return "null";
+            return null;
         }
 
         if (value instanceof String) {
@@ -606,13 +606,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     private static String serializeAndEncodeFormValue(SerializerAdapter serializer, Object value,
-                                                      boolean shouldEncode) {
-        String serializedValue = serialize(serializer, value);
-
-        if (serializedValue == null) {
+        boolean shouldEncode) {
+        if (value == null) {
             return null;
         }
 
+        String serializedValue = serialize(serializer, value);
         return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
     }
 
