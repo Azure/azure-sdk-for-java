@@ -57,7 +57,7 @@ public final class CosmosMicrometerMeterOptions {
      * @param isEnabled - a flag indicating whether histogram publishing is enabled for this meter
      * @return current CosmosMeterOptions instance
      */
-    public CosmosMicrometerMeterOptions histogramPublishingEnabled(boolean isEnabled) {
+    public CosmosMicrometerMeterOptions enableHistograms(boolean isEnabled) {
         this.isHistogramPublishingEnabled = isEnabled;
 
         return this;
@@ -69,7 +69,7 @@ public final class CosmosMicrometerMeterOptions {
      * @param percentiles - a flag indicating whether histogram publishing is enabled for this meter
      * @return current CosmosMeterOptions instance
      */
-    public CosmosMicrometerMeterOptions percentiles(double... percentiles) {
+    public CosmosMicrometerMeterOptions configurePercentiles(double... percentiles) {
         if (percentiles == null || percentiles.length == 0) {
             this.percentiles = new double[0];
         } else {

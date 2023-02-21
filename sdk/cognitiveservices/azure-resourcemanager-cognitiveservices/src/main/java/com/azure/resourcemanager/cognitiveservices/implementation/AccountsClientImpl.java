@@ -443,7 +443,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
         String resourceGroupName, String accountName, AccountInner account) {
-        return beginCreateAsync(resourceGroupName, accountName, account).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, accountName, account).getSyncPoller();
     }
 
     /**
@@ -463,7 +463,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
         String resourceGroupName, String accountName, AccountInner account, Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
     }
 
     /**
@@ -717,7 +717,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
         String resourceGroupName, String accountName, AccountInner account) {
-        return beginUpdateAsync(resourceGroupName, accountName, account).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, account).getSyncPoller();
     }
 
     /**
@@ -736,7 +736,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
         String resourceGroupName, String accountName, AccountInner account, Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
     }
 
     /**
@@ -959,7 +959,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
-        return beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
     }
 
     /**
@@ -976,7 +976,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
     }
 
     /**

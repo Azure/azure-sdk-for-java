@@ -30,7 +30,6 @@ import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosMetricName;
-import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -625,7 +624,7 @@ public final class CosmosAsyncClient implements Closeable {
                     .flatMap(
                         cosmosAsyncContainer -> cosmosAsyncContainer
                             .openConnectionsAndInitCaches(
-                                this.proactiveContainerInitConfig.getNumProactiveConnectionRegions()),
+                                this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount()),
                         concurrency,
                         prefetch)
                     .collectList();

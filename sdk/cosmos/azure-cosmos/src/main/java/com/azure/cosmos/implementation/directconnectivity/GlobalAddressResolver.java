@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -16,7 +15,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -151,9 +149,9 @@ public class GlobalAddressResolver implements IAddressResolver {
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig
     ) {
 
-        if (proactiveContainerInitConfig.getNumProactiveConnectionRegions() > 0) {
+        if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
-                    .take(proactiveContainerInitConfig.getNumProactiveConnectionRegions())
+                    .take(proactiveContainerInitConfig.getProactiveConnectionRegionsCount())
                     .flatMap(readEndpoint -> {
                         if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
                             return this.addressCacheByEndpoint.get(readEndpoint)

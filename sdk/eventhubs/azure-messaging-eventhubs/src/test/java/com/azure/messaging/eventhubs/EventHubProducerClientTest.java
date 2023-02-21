@@ -226,7 +226,8 @@ public class EventHubProducerClientTest {
             .start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, times(1))
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(1)).end(isNull(), isNull(), any());
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
         verify(tracer1, times(1)).getSharedSpanBuilder(eq("EventHubs.send"), any());
         verify(tracer1, times(1)).addLink(any());
 
@@ -478,7 +479,8 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(2)).addLink(any());
         verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, times(2)).start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(3)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(2)).end(isNull(), isNull(), any());
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
 
         verifyNoInteractions(onClientClosed);
     }
