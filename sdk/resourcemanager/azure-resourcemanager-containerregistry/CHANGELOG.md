@@ -2,13 +2,9 @@
 
 ## 2.25.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug that `DiagnosticSetting` initialization failed, when category group exists in `LogSettings`.
 
 ## 2.24.0 (2023-02-17)
 
