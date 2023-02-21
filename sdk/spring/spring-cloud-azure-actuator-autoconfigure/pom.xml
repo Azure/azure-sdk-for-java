@@ -50,6 +50,11 @@
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
       <version>4.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
+      <version>4.0.0-beta.2</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+    </dependency>
 
     <!-- Azure SDKs-->
     <!-- Explicitly referencing azure-core.  It's possible that the dependent versions below conflict with our
@@ -63,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.40.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.41.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -75,7 +80,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.15.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.15.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>

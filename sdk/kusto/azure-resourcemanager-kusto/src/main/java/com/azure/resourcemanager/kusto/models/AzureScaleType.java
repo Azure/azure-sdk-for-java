@@ -20,6 +20,15 @@ public final class AzureScaleType extends ExpandableStringEnum<AzureScaleType> {
     public static final AzureScaleType NONE = fromString("none");
 
     /**
+     * Creates a new instance of AzureScaleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureScaleType() {
+    }
+
+    /**
      * Creates or finds a AzureScaleType from its string representation.
      *
      * @param name a name to look for.

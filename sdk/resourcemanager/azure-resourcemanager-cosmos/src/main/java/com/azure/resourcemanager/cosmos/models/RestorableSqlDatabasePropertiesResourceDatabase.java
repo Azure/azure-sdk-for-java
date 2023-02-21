@@ -46,6 +46,10 @@ public final class RestorableSqlDatabasePropertiesResourceDatabase extends SqlDa
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of RestorableSqlDatabasePropertiesResourceDatabase class. */
+    public RestorableSqlDatabasePropertiesResourceDatabase() {
+    }
+
     /**
      * Get the colls property: A system generated property that specified the addressable path of the collections
      * resource.

@@ -386,6 +386,7 @@ class BlobAPITest extends APISpec {
         headers.getBlobCommittedBlockCount() == null
         headers.isServerEncrypted() != null
         headers.getBlobContentMD5() == null
+        headers.getCreationTime() != null
 //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
@@ -951,6 +952,7 @@ class BlobAPITest extends APISpec {
         then:
         compareFiles(file, outFile, 0, fileSize)
         properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
+        properties.getValue().getCreationTime() != null
 
         cleanup:
         outFile.delete()
@@ -1440,7 +1442,6 @@ class BlobAPITest extends APISpec {
         6000 * Constants.MB | 6000 * Constants.MB || _ /* Trying to see if we can set it to a number greater than previous default. */
         6000 * Constants.MB | 5100 * Constants.MB || _ /* Testing chunking with a large size */
     }
-
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get properties default"() {
@@ -2354,7 +2355,7 @@ class BlobAPITest extends APISpec {
         false  | true
         false  | false
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy source AC"() {

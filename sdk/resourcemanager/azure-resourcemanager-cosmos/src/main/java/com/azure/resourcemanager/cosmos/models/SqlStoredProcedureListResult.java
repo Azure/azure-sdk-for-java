@@ -18,6 +18,10 @@ public final class SqlStoredProcedureListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlStoredProcedureGetResultsInner> value;
 
+    /** Creates an instance of SqlStoredProcedureListResult class. */
+    public SqlStoredProcedureListResult() {
+    }
+
     /**
      * Get the value property: List of storedProcedures and their properties.
      *

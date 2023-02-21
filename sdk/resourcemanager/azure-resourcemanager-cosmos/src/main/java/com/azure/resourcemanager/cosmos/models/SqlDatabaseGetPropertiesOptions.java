@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The SqlDatabaseGetPropertiesOptions model. */
 @Fluent
 public final class SqlDatabaseGetPropertiesOptions extends OptionsResource {
+    /** Creates an instance of SqlDatabaseGetPropertiesOptions class. */
+    public SqlDatabaseGetPropertiesOptions() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public SqlDatabaseGetPropertiesOptions withThroughput(Integer throughput) {

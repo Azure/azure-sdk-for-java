@@ -26,6 +26,10 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of PrivateEndpointConnectionInner class. */
+    public PrivateEndpointConnectionInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

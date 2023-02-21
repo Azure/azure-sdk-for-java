@@ -10,21 +10,20 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateEndpoint
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnectionProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionListResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointConnectionListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"groupIds\":[]},\"location\":\"xhniskxfbkpycgk\",\"etag\":\"ndnhj\",\"id\":\"auwhvylwzbtdhx\",\"name\":\"jznb\",\"type\":\"pow\"}]}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"groupIds\":[]},\"location\":\"sfxobl\",\"etag\":\"k\",\"id\":\"lmpewwwfbkr\",\"name\":\"rn\",\"type\":\"vshqjohxcr\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"groupIds\":[]},\"location\":\"ruvw\",\"etag\":\"sqfsubcgjbirxb\",\"id\":\"ybsrfbjfdtwss\",\"name\":\"t\",\"type\":\"tpvjzbexilzznfqq\"}]}")
                 .toObject(PrivateEndpointConnectionListResultInner.class);
-        Assertions.assertEquals("xhniskxfbkpycgk", model.value().get(0).location());
+        Assertions.assertEquals("sfxobl", model.value().get(0).location());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnectionListResultInner model =
             new PrivateEndpointConnectionListResultInner()
                 .withValue(
@@ -32,8 +31,11 @@ public final class PrivateEndpointConnectionListResultInnerTests {
                         .asList(
                             new PrivateEndpointConnectionInner()
                                 .withProperties(new PrivateEndpointConnectionProperties().withGroupIds(Arrays.asList()))
-                                .withLocation("xhniskxfbkpycgk")));
+                                .withLocation("sfxobl"),
+                            new PrivateEndpointConnectionInner()
+                                .withProperties(new PrivateEndpointConnectionProperties().withGroupIds(Arrays.asList()))
+                                .withLocation("ruvw")));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResultInner.class);
-        Assertions.assertEquals("xhniskxfbkpycgk", model.value().get(0).location());
+        Assertions.assertEquals("sfxobl", model.value().get(0).location());
     }
 }

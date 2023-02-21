@@ -17,10 +17,10 @@ public final class KeyDeliveryTests {
         KeyDelivery model =
             BinaryData
                 .fromString(
-                    "{\"accessControl\":{\"defaultAction\":\"Deny\",\"ipAllowList\":[\"o\",\"exhd\",\"xibqeojnx\"]}}")
+                    "{\"accessControl\":{\"defaultAction\":\"Deny\",\"ipAllowList\":[\"cbtwnpzaoqvuh\",\"hcffcyddglmjthjq\",\"wpyeicxmqciwqvh\"]}}")
                 .toObject(KeyDelivery.class);
         Assertions.assertEquals(DefaultAction.DENY, model.accessControl().defaultAction());
-        Assertions.assertEquals("o", model.accessControl().ipAllowList().get(0));
+        Assertions.assertEquals("cbtwnpzaoqvuh", model.accessControl().ipAllowList().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -30,9 +30,9 @@ public final class KeyDeliveryTests {
                 .withAccessControl(
                     new AccessControl()
                         .withDefaultAction(DefaultAction.DENY)
-                        .withIpAllowList(Arrays.asList("o", "exhd", "xibqeojnx")));
+                        .withIpAllowList(Arrays.asList("cbtwnpzaoqvuh", "hcffcyddglmjthjq", "wpyeicxmqciwqvh")));
         model = BinaryData.fromObject(model).toObject(KeyDelivery.class);
         Assertions.assertEquals(DefaultAction.DENY, model.accessControl().defaultAction());
-        Assertions.assertEquals("o", model.accessControl().ipAllowList().get(0));
+        Assertions.assertEquals("cbtwnpzaoqvuh", model.accessControl().ipAllowList().get(0));
     }
 }

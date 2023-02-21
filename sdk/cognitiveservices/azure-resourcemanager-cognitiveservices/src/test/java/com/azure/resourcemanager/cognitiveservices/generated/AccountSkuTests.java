@@ -9,42 +9,41 @@ import com.azure.resourcemanager.cognitiveservices.models.AccountSku;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 import com.azure.resourcemanager.cognitiveservices.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AccountSkuTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AccountSku model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"utqxlngx\",\"sku\":{\"name\":\"fgugnxkrxdqmid\",\"tier\":\"Basic\",\"size\":\"rvqdra\",\"family\":\"jybige\",\"capacity\":1279126864}}")
+                    "{\"resourceType\":\"jampmngnzscxaqw\",\"sku\":{\"name\":\"chcbonqvpkvlrxnj\",\"tier\":\"Basic\",\"size\":\"ipheoflokeyyien\",\"family\":\"dlwtgrhpdj\",\"capacity\":523400535}}")
                 .toObject(AccountSku.class);
-        Assertions.assertEquals("utqxlngx", model.resourceType());
-        Assertions.assertEquals("fgugnxkrxdqmid", model.sku().name());
+        Assertions.assertEquals("jampmngnzscxaqw", model.resourceType());
+        Assertions.assertEquals("chcbonqvpkvlrxnj", model.sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("rvqdra", model.sku().size());
-        Assertions.assertEquals("jybige", model.sku().family());
-        Assertions.assertEquals(1279126864, model.sku().capacity());
+        Assertions.assertEquals("ipheoflokeyyien", model.sku().size());
+        Assertions.assertEquals("dlwtgrhpdj", model.sku().family());
+        Assertions.assertEquals(523400535, model.sku().capacity());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AccountSku model =
             new AccountSku()
-                .withResourceType("utqxlngx")
+                .withResourceType("jampmngnzscxaqw")
                 .withSku(
                     new Sku()
-                        .withName("fgugnxkrxdqmid")
+                        .withName("chcbonqvpkvlrxnj")
                         .withTier(SkuTier.BASIC)
-                        .withSize("rvqdra")
-                        .withFamily("jybige")
-                        .withCapacity(1279126864));
+                        .withSize("ipheoflokeyyien")
+                        .withFamily("dlwtgrhpdj")
+                        .withCapacity(523400535));
         model = BinaryData.fromObject(model).toObject(AccountSku.class);
-        Assertions.assertEquals("utqxlngx", model.resourceType());
-        Assertions.assertEquals("fgugnxkrxdqmid", model.sku().name());
+        Assertions.assertEquals("jampmngnzscxaqw", model.resourceType());
+        Assertions.assertEquals("chcbonqvpkvlrxnj", model.sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("rvqdra", model.sku().size());
-        Assertions.assertEquals("jybige", model.sku().family());
-        Assertions.assertEquals(1279126864, model.sku().capacity());
+        Assertions.assertEquals("ipheoflokeyyien", model.sku().size());
+        Assertions.assertEquals("dlwtgrhpdj", model.sku().family());
+        Assertions.assertEquals(523400535, model.sku().capacity());
     }
 }

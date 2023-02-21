@@ -31,7 +31,7 @@ public final class AssetsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"assetId\":\"7fda299d-e17f-4355-9e87-da66aac6847b\",\"created\":\"2021-12-09T19:28:59Z\",\"lastModified\":\"2020-12-21T13:52:47Z\",\"alternateId\":\"pchwa\",\"description\":\"bousn\",\"container\":\"pgfewetwlyx\",\"storageAccountName\":\"cxy\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"jhlimmbcxfhbcpo\",\"name\":\"xvxcjzhq\",\"type\":\"zxfpxtgqsc\"}";
+            "{\"properties\":{\"assetId\":\"2b5c96b6-35dc-428b-9c76-7d16a07cbf28\",\"created\":\"2021-06-15T06:42:17Z\",\"lastModified\":\"2021-06-22T19:10:38Z\",\"alternateId\":\"iuubwefqsf\",\"description\":\"aqtferr\",\"container\":\"ex\",\"storageAccountName\":\"mfxapjwogqqno\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"cdabtqwpwya\",\"name\":\"bzasqbucljgkyexa\",\"type\":\"guyaip\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class AssetsGetWithResponseMockTests {
         Asset response =
             manager
                 .assets()
-                .getWithResponse("poaimlnwiaaomyl", "eazulcs", "thwwn", com.azure.core.util.Context.NONE)
+                .getWithResponse("ejnhlbkpb", "pcpil", "hahzvechndbnwi", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("pchwa", response.alternateId());
-        Assertions.assertEquals("bousn", response.description());
-        Assertions.assertEquals("pgfewetwlyx", response.container());
-        Assertions.assertEquals("cxy", response.storageAccountName());
+        Assertions.assertEquals("iuubwefqsf", response.alternateId());
+        Assertions.assertEquals("aqtferr", response.description());
+        Assertions.assertEquals("ex", response.container());
+        Assertions.assertEquals("mfxapjwogqqno", response.storageAccountName());
     }
 }

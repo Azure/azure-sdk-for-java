@@ -24,6 +24,10 @@ public final class TableGetProperties {
     @JsonProperty(value = "options")
     private TableGetPropertiesOptions options;
 
+    /** Creates an instance of TableGetProperties class. */
+    public TableGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

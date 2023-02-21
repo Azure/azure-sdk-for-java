@@ -26,6 +26,10 @@ public final class SqlTriggerCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of SqlTriggerCreateUpdateProperties class. */
+    public SqlTriggerCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a trigger.
      *
