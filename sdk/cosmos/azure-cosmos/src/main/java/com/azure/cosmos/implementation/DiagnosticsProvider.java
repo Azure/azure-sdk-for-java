@@ -47,6 +47,9 @@ public final class DiagnosticsProvider {
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
     private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DiagnosticsProvider.class);
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -332,6 +335,10 @@ public final class DiagnosticsProvider {
                                                      Function<T, CosmosDiagnostics> diagnosticFunc,
                                                      Duration thresholdForDiagnosticsOnTracer) {
 
+        Duration effectiveLatencyThreshold = thresholdForDiagnosticsOnTracer != null ?
+            thresholdForDiagnosticsOnTracer :
+            operationType.isPointOperation() ? Duration.ofSeconds(1) : Duration.ofSeconds(3);
+
         CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
             spanName,
             accountName,
@@ -339,11 +346,9 @@ public final class DiagnosticsProvider {
             containerId,
             resourceType,
             operationType,
-            consistencyLevel != null ?
-                consistencyLevel :
-                BridgeInternal.getContextClient(client).getConsistencyLevel(),
+            clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
             maxItemCount,
-            thresholdForDiagnosticsOnTracer);
+            effectiveLatencyThreshold);
 
         return diagnosticsEnabledPublisher(
             cosmosCtx,

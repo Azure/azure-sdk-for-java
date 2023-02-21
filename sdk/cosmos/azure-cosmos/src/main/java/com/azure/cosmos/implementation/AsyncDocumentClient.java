@@ -1655,4 +1655,6 @@ public interface AsyncDocumentClient {
      * @return A flux of {@link OpenConnectionResponse}.
      */
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
+
+    ConsistencyLevel getDefaultConsistencyLevelOfAccount();
 }

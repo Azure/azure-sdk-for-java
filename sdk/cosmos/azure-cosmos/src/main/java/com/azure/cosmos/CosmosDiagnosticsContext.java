@@ -401,10 +401,6 @@ public final class CosmosDiagnosticsContext {
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
                                                            Duration thresholdForDiagnosticsOnTracer) {
 
-                        Duration effectiveLatencyThreshold = thresholdForDiagnosticsOnTracer != null ?
-                            thresholdForDiagnosticsOnTracer :
-                                operationType.isPointOperation() ? Duration.ofSeconds(1) : Duration.ofSeconds(3);
-
                         return new CosmosDiagnosticsContext(
                             spanName,
                             account,
@@ -414,7 +410,7 @@ public final class CosmosDiagnosticsContext {
                             operationType,
                             consistencyLevel,
                             maxItemCount,
-                            effectiveLatencyThreshold);
+                            thresholdForDiagnosticsOnTracer);
                     }
 
                     @Override

@@ -4292,6 +4292,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return this.storeModel.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
+    @Override
+    public ConsistencyLevel getDefaultConsistencyLevelOfAccount() {
+        return this.gatewayConfigurationReader.getDefaultConsistencyLevel();
+    }
+
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(
         PartitionKey partitionKey,
         String partitionKeySelector) {

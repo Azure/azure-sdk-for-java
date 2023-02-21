@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TracerProvider;
@@ -101,6 +102,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
+    private final ConsistencyLevel accountConsistencyLevel;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -173,6 +175,8 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(this.clientCorrelationId)
                                        .build();
+
+        this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
 
         String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();
         String machineId = this.asyncDocumentClient.getMachineId();
@@ -759,6 +763,25 @@ public final class CosmosAsyncClient implements Closeable {
             this.serviceEndpoint);
     }
 
+    private ConsistencyLevel getEffectiveConsistencyLevel(
+        OperationType operationType,
+        ConsistencyLevel desiredConsistencyLevelOfOperation) {
+
+        if (operationType.isWriteOperation()) {
+            return this.accountConsistencyLevel;
+        }
+
+        if (desiredConsistencyLevelOfOperation != null) {
+            return desiredConsistencyLevelOfOperation;
+        }
+
+        if (this.desiredConsistencyLevel != null) {
+            return desiredConsistencyLevel;
+        }
+
+        return this.accountConsistencyLevel;
+    }
+
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -814,6 +837,15 @@ public final class CosmosAsyncClient implements Closeable {
                 public CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name) {
                     return  telemetryConfigAccessor
                         .getMeterOptions(client.clientTelemetryConfig, name);
+                }
+
+                @Override
+                public ConsistencyLevel getEffectiveConsistencyLevel(
+                    CosmosAsyncClient client,
+                    OperationType operationType,
+                    ConsistencyLevel desiredConsistencyLevelOfOperation) {
+
+                    return client.getEffectiveConsistencyLevel(operationType, desiredConsistencyLevelOfOperation);
                 }
             }
         );

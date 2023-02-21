@@ -1129,6 +1129,10 @@ public class ImplementationBridgeHelpers {
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
             CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name);
+            ConsistencyLevel getEffectiveConsistencyLevel(
+                CosmosAsyncClient client,
+                OperationType operationType,
+                ConsistencyLevel desiredConsistencyLevelOfOperation);
         }
     }
 
