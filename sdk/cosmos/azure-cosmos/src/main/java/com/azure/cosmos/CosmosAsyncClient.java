@@ -207,9 +207,6 @@ public final class CosmosAsyncClient implements Closeable {
         this.accountTagValue = URI.create(this.serviceEndpoint).getHost().replace(
             ".documents.azure.com", ""
         );
-        this.diagnosticsProvider = new DiagnosticsProvider(
-            TRACER,
-            effectiveTelemetryConfig);
 
         if (this.clientMetricsEnabled) {
             telemetryConfigAccessor.setClientCorrelationTag(
@@ -246,6 +243,10 @@ public final class CosmosAsyncClient implements Closeable {
                 )
             );
         }
+
+        this.diagnosticsProvider = new DiagnosticsProvider(
+            TRACER,
+            effectiveTelemetryConfig);
     }
 
     AsyncDocumentClient getContextClient() {

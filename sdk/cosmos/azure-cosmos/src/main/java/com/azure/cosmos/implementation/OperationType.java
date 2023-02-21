@@ -3,6 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Operation types in the Azure Cosmos DB database service.
  */
@@ -52,5 +57,14 @@ public enum OperationType {
                 this == Upsert ||
                 this == Patch ||
                 this == Batch;
+    }
+
+    public boolean isPointOperation() {
+        return this == Create ||
+            this == Delete ||
+            this == Replace ||
+            this == Upsert ||
+            this == Patch ||
+            this == Read;
     }
 }

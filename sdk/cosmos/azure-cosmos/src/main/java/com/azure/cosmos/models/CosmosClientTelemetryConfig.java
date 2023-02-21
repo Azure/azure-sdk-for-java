@@ -34,6 +34,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -57,7 +59,7 @@ public final class CosmosClientTelemetryConfig {
     private EnumSet<TagName> metricTagNamesOverride = null;
     private boolean isClientMetricsEnabled = false;
     private final HashSet<CosmosDiagnosticsHandler> customDiagnosticHandlers;
-    private final ArrayList<CosmosDiagnosticsHandler> diagnosticHandlers;
+    private final CopyOnWriteArrayList<CosmosDiagnosticsHandler> diagnosticHandlers;
     private boolean useLegacyOpenTelemetryTracing = false;
     private boolean isDiagnosticsLoggerEnabled = false;
     private CosmosDiagnosticsLoggerConfig diagnosticsLoggerConfig = new CosmosDiagnosticsLoggerConfig();
@@ -79,7 +81,7 @@ public final class CosmosClientTelemetryConfig {
         this.idleHttpConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
         this.proxy = this.getProxyOptions();
         this.customDiagnosticHandlers = new HashSet<>();
-        this.diagnosticHandlers = null;
+        this.diagnosticHandlers = new CopyOnWriteArrayList<>();
     }
 
     /**

@@ -25,7 +25,6 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
         ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
 
     private final CosmosDiagnosticsLoggerConfig config;
-    private final Set<OperationType> pointOperationTypes = getPointOperations();
 
     /**
      * Creates an instance of the CosmosDiagnosticLogger class
@@ -69,7 +68,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
         OperationType operationType = ctxAccessor.getOperationType(diagnosticsContext);
 
         if (resourceType == ResourceType.Document) {
-            if (pointOperationTypes.contains(operationType)) {
+            if (operationType.isPointOperation()) {
                 if (diagnosticsContext.getDuration().compareTo(this.config.getPointOperationLatencyThreshold()) >= 1) {
                     return true;
                 }
@@ -83,16 +82,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
         return diagnosticsContext.getTotalRequestCharge() > this.config.getRequestChargeThreshold();
     }
 
-    private static Set<OperationType> getPointOperations() {
-        HashSet<OperationType> pointOperations = new HashSet<>();
-        pointOperations.add(OperationType.Create);
-        pointOperations.add(OperationType.Delete);
-        pointOperations.add(OperationType.Patch);
-        pointOperations.add(OperationType.Read);
-        pointOperations.add(OperationType.Replace);
-        pointOperations.add(OperationType.Upsert);
-        return ImmutableSet.copyOf(pointOperations);
-    }
+
 
     private boolean shouldLogDueToStatusCode(int statusCode, int subStatusCode) {
         return statusCode >= 500 || statusCode == 408 || statusCode == 410;
