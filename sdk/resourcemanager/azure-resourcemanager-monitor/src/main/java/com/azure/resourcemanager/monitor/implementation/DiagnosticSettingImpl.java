@@ -32,7 +32,7 @@ class DiagnosticSettingImpl
     private String resourceId;
     private TreeMap<String, MetricSettings> metricSet;
     private TreeMap<String, LogSettings> logSet;
-    private TreeMap<String, LogSettings> logSetCategoryGroup;
+    private TreeMap<String, LogSettings> logCategoryGroupSet;
     private final MonitorManager myManager;
 
     DiagnosticSettingImpl(
@@ -220,7 +220,7 @@ class DiagnosticSettingImpl
     @Override
     public Mono<DiagnosticSetting> createResourceAsync() {
         this.innerModel().withLogs(new ArrayList<>(logSet.values()));
-        this.innerModel().withLogs(new ArrayList<>(logSetCategoryGroup.values()));
+        this.innerModel().withLogs(new ArrayList<>(logCategoryGroupSet.values()));
         this.innerModel().withMetrics(new ArrayList<>(metricSet.values()));
         return this
             .manager()
@@ -258,7 +258,7 @@ class DiagnosticSettingImpl
                 if (ls.category() != null) {
                     this.logSet.put(ls.category(), ls);
                 } else if (ls.categoryGroup() != null) {
-                    this.logSetCategoryGroup.put(ls.categoryGroup(), ls);
+                    this.logCategoryGroupSet.put(ls.categoryGroup(), ls);
                 }
             }
         }
@@ -271,8 +271,8 @@ class DiagnosticSettingImpl
         if (this.logSet == null) {
             this.logSet = new TreeMap<>();
         }
-        if (this.logSetCategoryGroup == null) {
-            this.logSetCategoryGroup = new TreeMap<>();
+        if (this.logCategoryGroupSet == null) {
+            this.logCategoryGroupSet = new TreeMap<>();
         }
     }
 }
