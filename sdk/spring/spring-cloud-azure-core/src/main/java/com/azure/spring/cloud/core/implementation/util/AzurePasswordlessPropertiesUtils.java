@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /**
- *
+ * Util class for AzurePasswordlessProperties.
  */
 public final class AzurePasswordlessPropertiesUtils {
 
@@ -49,12 +49,11 @@ public final class AzurePasswordlessPropertiesUtils {
         }
     }
 
-    // TODO (xiada): add tests for this
     /**
-     * Copy common properties from source {@link AzureProperties} object to target {@link T} object. Ignore the source
+     * Copy common properties from source {@link PasswordlessProperties} object to target {@link T} object. Ignore the source
      * value if it is null.
      *
-     * @param source The source {@link AzureProperties} object.
+     * @param source The source {@link PasswordlessProperties} object.
      * @param target The target object.
      * @param <T> The type of the target that extends AzureProperties.
      */
@@ -74,7 +73,7 @@ public final class AzurePasswordlessPropertiesUtils {
     }
 
     /**
-     * Merge properties from two {@link AzureProperties} objects. If a same property appears in both two objects, the
+     * Merge properties from a {@link AzureProperties} object and a {@link PasswordlessProperties} object. If a same property appears in both two objects, the
      * value from the latter will take precedence.
      * @param defaultProperties The default properties, the merge result will take value from this property as default.
      * @param properties The overridden properties, the merge result will take value from this if a same property
@@ -87,10 +86,8 @@ public final class AzurePasswordlessPropertiesUtils {
                                                                                      T target) {
         copyAzureCommonProperties(defaultProperties, target);
         copyAzureCommonPropertiesIgnoreNull(properties, target);
-        if (target instanceof PasswordlessProperties) {
-            target.setScopes(properties.getScopes());
-            target.setPasswordlessEnabled(properties.isPasswordlessEnabled());
-        }
+        target.setScopes(properties.getScopes());
+        target.setPasswordlessEnabled(properties.isPasswordlessEnabled());
     }
 
     /**

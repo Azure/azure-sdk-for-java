@@ -20,6 +20,7 @@ import java.util.Map;
 /**
  * {@link ConfigurationProperties} for configuring Azure Service Bus JMS.
  */
+@ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)
 public class AzureServiceBusJmsProperties implements InitializingBean, PasswordlessProperties {
 
     private static final String SERVICE_BUS_SCOPE_AZURE = "https://servicebus.azure.net/.default";
@@ -267,7 +268,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
      * @return the credential properties.
      */
     @Override
-    public TokenCredentialProperties getCredential() {
+    public TokenCredentialOptions getCredential() {
         return credential;
     }
 
@@ -276,7 +277,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
      *
      * @param credential the credential properties
      */
-    public void setCredential(TokenCredentialProperties credential) {
+    public void setCredential(TokenCredentialOptions credential) {
         this.credential = credential;
     }
 
@@ -300,7 +301,6 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
         if (null == pricingTier || !pricingTier.matches("(?i)premium|standard|basic")) {
             throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
-
     }
 
     /**
