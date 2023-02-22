@@ -112,7 +112,8 @@ public class AadB2cProperties implements InitializingBean {
     private String loginFlow = DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
 
     /**
-     * User flows. For instance, 'sign-up-or-sign-in: B2C_signin_or_signup'.
+     * Azure AD B2C User flows. Configure the user flow type and name mapping. For instance, 'sign-up-or-sign-in: B2C_signin_or_signup'.
+     * See Microsoft doc about User flows for more details: https://learn.microsoft.com/azure/active-directory-b2c/user-flow-overview#user-flows
      */
     private Map<String, String> userFlows = new HashMap<>();
 
