@@ -55,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@Isolated
+@Isolated("Sets global TracingProvider.")
 @Execution(ExecutionMode.SAME_THREAD)
 public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
@@ -75,6 +75,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName());
+
+        // For the first integration test run, the tracing provider may be already set because we import
+        if (GlobalOpenTelemetry.get() != null) {
+            logger.info("Global telemetry was not null. Manually resetting.");
+
+            GlobalOpenTelemetry.resetForTest();
+        }
+
         OpenTelemetrySdk.builder()
             .setTracerProvider(
                 SdkTracerProvider.builder()
@@ -263,7 +271,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Test
     public void sendBuffered() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
-        EventHubBufferedProducerAsyncClient bufferedProducer =  new EventHubBufferedProducerClientBuilder()
+        EventHubBufferedProducerAsyncClient bufferedProducer = new EventHubBufferedProducerClientBuilder()
             .connectionString(getConnectionString())
             .onSendBatchFailed(failed -> fail("Exception occurred while sending messages." + failed.getThrowable()))
             .onSendBatchSucceeded(succeeded -> latch.countDown())
@@ -278,15 +286,15 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 bufferedProducer
                     .getPartitionIds().take(1)
                     .map(partitionId -> new SendOptions().setPartitionId(partitionId))
-                        .flatMap(sendOpts ->
-                            bufferedProducer.enqueueEvent(event1, sendOpts)
+                    .flatMap(sendOpts ->
+                        bufferedProducer.enqueueEvent(event1, sendOpts)
                             .then(bufferedProducer.enqueueEvent(event2, sendOpts))))
             .expectNextCount(1)
             .verifyComplete();
 
         StepVerifier.create(consumer
-            .receive()
-            .take(2))
+                .receive()
+                .take(2))
             .expectNextCount(2)
             .verifyComplete();
 
@@ -313,7 +321,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     b.tryAdd(new EventData(CONTENTS_BYTES));
                     return b;
                 })
-            .flatMap(b -> producer.send(b)))
+                .flatMap(b -> producer.send(b)))
             .verifyComplete();
 
         List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID, 2, EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(10))
@@ -627,7 +635,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             this.entityName = entityName;
         }
         public List<ReadableSpan> getEndedSpans() {
-            return spans.stream().collect(toList());
+            return new ArrayList<>(spans);
         }
 
         @Override
@@ -641,6 +649,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         @Override
         public void onEnd(ReadableSpan readableSpan) {
+            // Various attribute keys can be found in:
+            // sdk/core/azure-core-metrics-opentelemetry/src/main/java/com/azure/core/metrics/opentelemetry/OpenTelemetryAttributes.java
+            // sdk/core/azure-core-tracing-opentelemetry/src/main/java/com/azure/core/tracing/opentelemetry/OpenTelemetryUtils.java
             assertEquals("Microsoft.EventHub", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
             assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
             assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.name")));
