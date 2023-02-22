@@ -9,49 +9,79 @@ import com.azure.core.util.CoreUtils;
  */
 public abstract class CommunicationIdentifier {
 
-    // Prefix for a phone number.
+    /**
+     * Prefix for a phone number.
+     */
     protected static final String PHONE_NUMBER = "4:";
 
-    // Prefix for a bot.
+    /**
+     * Prefix for a bot.
+     */
     protected static final String BOT = "28:";
 
-    // Prefix for a bot with public cloud.
+    /**
+     * Prefix for a bot with public cloud.
+     */
     protected static final String BOT_PUBLIC_CLOUD = "28:orgid:";
 
-    // Prefix for a bot with DOD cloud.
+    /**
+     * Prefix for a bot with DOD cloud.
+     */
     protected static final String BOT_DOD_CLOUD = "28:dod:";
 
-    // Prefix for a global bot with DOD cloud.
+    /**
+     * Prefix for a global bot with DOD cloud.
+     */
     protected static final String BOT_DOD_CLOUD_GLOBAL = "28:dod-global:";
 
-    // Prefix for a bot with GCCH cloud.
+    /**
+     * Prefix for a bot with GCCH cloud.
+     */
     protected static final String BOT_GCCH_CLOUD = "28:gcch:";
 
-    // Prefix for a global bot with GCCH cloud.
+    /**
+     * Prefix for a global bot with GCCH cloud.
+     */
     protected static final String BOT_GCCH_CLOUD_GLOBAL = "28:gcch-global:";
 
-    // Prefix for an anonymous Teams user.
+    /**
+     * Prefix for an anonymous Teams user.
+     */
     protected static final String TEAM_USER_ANONYMOUS = "8:teamsvisitor:";
 
-    // Prefix for a Teams user with public cloud.
+    /**
+     * Prefix for a Teams user with public cloud.
+     */
     protected static final String TEAM_USER_PUBLIC_CLOUD = "8:orgid:";
 
-    // Prefix for a Teams user with DOD cloud.
+    /**
+     * Prefix for a Teams user with DOD cloud.
+     */
     protected static final String TEAM_USER_DOD_CLOUD = "8:dod:";
 
-    // Prefix for a Teams user with GCCH cloud.
+    /**
+     * Prefix for a Teams user with GCCH cloud.
+     */
     protected static final String TEAM_USER_GCCH_CLOUD = "8:gcch:";
 
-    // Prefix for an ACS user.
+    /**
+     * Prefix for an ACS user.
+     */
     protected static final String STRING = "8:acs:";
 
-    // Prefix for an ACS user with DOD cloud.
+    /**
+     * Prefix for an ACS user with DOD cloud.
+     */
     protected static final String ACS_USER_DOD_CLOUD = "8:dod-acs:";
 
-    // Prefix for an ACS user with GCCH cloud.
+    /**
+     * Prefix for an ACS user with GCCH cloud.
+     */
     protected static final String ACS_USER_GCCH_CLOUD = "8:gcch-acs:";
 
-    // Prefix for a Spool user.
+    /**
+     * Prefix for a Spool user.
+     */
     protected static final String SPOOL_USER = "8:spool:";
 
     private String rawId;
