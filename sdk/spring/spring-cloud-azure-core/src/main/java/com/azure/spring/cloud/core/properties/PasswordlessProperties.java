@@ -44,6 +44,10 @@ public interface PasswordlessProperties extends TokenCredentialOptionsProvider, 
      */
     void setPasswordlessEnabled(boolean passwordlessEnabled);
 
+    /**
+     * Convert {@link PasswordlessProperties} to {@link Properties}.
+     * @return converted {@link Properties} instance
+     */
     default Properties toPasswordlessProperties() {
         Properties target = new Properties();
         for (AzurePasswordlessPropertiesMapping m : AzurePasswordlessPropertiesMapping.values()) {
@@ -55,7 +59,7 @@ public interface PasswordlessProperties extends TokenCredentialOptionsProvider, 
     }
 
     /**
-     * A mapping util used to transfer a  {@link PasswordlessProperties} instance to a  {@link Properties} instance.
+     * A mapping util used to convert a {@link PasswordlessProperties} instance to a {@link Properties} instance.
      */
     enum AzurePasswordlessPropertiesMapping {
 
@@ -126,14 +130,6 @@ public interface PasswordlessProperties extends TokenCredentialOptionsProvider, 
             String> setter) {
             this.getter = getter;
             this.setter = setter;
-        }
-
-        public Function<PasswordlessProperties, String> getter() {
-            return getter;
-        }
-
-        public BiConsumer<Properties, String> setter() {
-            return setter;
         }
 
     }
