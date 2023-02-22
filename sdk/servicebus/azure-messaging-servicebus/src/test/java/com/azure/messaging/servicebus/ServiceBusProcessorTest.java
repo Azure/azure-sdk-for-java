@@ -5,8 +5,10 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.SpanKind;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracingLink;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import org.junit.jupiter.api.Assertions;
@@ -24,12 +26,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer.MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -370,23 +377,25 @@ public class ServiceBusProcessorTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testProcessorWithTracingEnabled() throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
         final int numberOfTimes = 5;
 
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
 
-        when(tracer.extractContext(eq(diagnosticId), any())).thenAnswer(
+        when(tracer.extractContext(any())).thenAnswer(invocation -> {
+            Function<String, String> consumer = invocation.getArgument(0, Function.class);
+            assertEquals(diagnosticId, consumer.apply("traceparent"));
+            assertNull(consumer.apply("tracestate"));
+            return new Context(SPAN_CONTEXT_KEY, "value");
+        });
+
+        when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any())).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT_KEY, "value");
-            }
-        );
-        when(tracer.start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
-            invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
-                return passed.addData(SPAN_CONTEXT_KEY, "value1")
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 0);
+                Context passed = invocation.getArgument(2, Context.class);
+                return passed
                     .addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
@@ -422,12 +431,12 @@ public class ServiceBusProcessorTest {
         serviceBusProcessorClient.close();
 
         assertTrue(success, "Failed to receive all expected messages");
-        verify(tracer, times(numberOfTimes)).extractContext(eq(diagnosticId), any());
-        verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer, times(numberOfTimes)).extractContext(any());
+        verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
 
         // This is one less because the processEvent is called before the end span call, so it is possible for
         // to reach this line without calling it the 5th time yet. (Timing issue.)
-        verify(tracer, atLeast(numberOfTimes - 1)).end(eq("success"), isNull(), any());
+        verify(tracer, atLeast(numberOfTimes - 1)).end(isNull(), isNull(), any());
 
     }
 
@@ -436,13 +445,11 @@ public class ServiceBusProcessorTest {
         final Tracer tracer = mock(Tracer.class);
         final int numberOfTimes = 5;
 
-        when(tracer.start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+        when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any())).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 0);
+                Context passed = invocation.getArgument(2, Context.class);
                 return passed
-                    .addData(SPAN_CONTEXT_KEY, "value1")
-                    .addData("scope", (AutoCloseable) () -> { })
                     .addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
@@ -477,11 +484,11 @@ public class ServiceBusProcessorTest {
         serviceBusProcessorClient.close();
 
         assertTrue(success, "Failed to receive all expected messages");
-        verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
 
         // This is one less because the processEvent is called before the end span call, so it is possible for
         // to reach this line without calling it the 5th time yet. (Timing issue.)
-        verify(tracer, atLeast(numberOfTimes - 1)).end(eq("success"), isNull(), any());
+        verify(tracer, atLeast(numberOfTimes - 1)).end(isNull(), isNull(), any());
 
     }
 
@@ -520,5 +527,21 @@ public class ServiceBusProcessorTest {
         when(asyncClient.getInstrumentation()).thenReturn(DEFAULT_INSTRUMENTATION);
         doNothing().when(asyncClient).close();
         return receiverBuilder;
+    }
+
+    private void assertStartOptions(StartSpanOptions startOpts, int linkCount) {
+        assertEquals(SpanKind.CONSUMER, startOpts.getSpanKind());
+        assertEquals(ENTITY_NAME, startOpts.getAttributes().get(ENTITY_PATH_KEY));
+        assertEquals(NAMESPACE, startOpts.getAttributes().get(HOST_NAME_KEY));
+
+        if (linkCount == 0) {
+            assertTrue(startOpts.getAttributes().containsKey(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME));
+            assertNull(startOpts.getLinks());
+        } else {
+            assertEquals(linkCount, startOpts.getLinks().size());
+            for (TracingLink link : startOpts.getLinks()) {
+                assertTrue(link.getAttributes().containsKey(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME));
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.reactivestreams.Subscription;
@@ -20,6 +21,7 @@ import java.util.Objects;
 final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusMessageContext> {
     static final String PROCESS_ERROR_KEY = "process-error";
     private final ServiceBusReceiverInstrumentation instrumentation;
+    private static final ClientLogger LOGGER = new ClientLogger(FluxTrace.class);
 
     FluxTrace(Flux<? extends ServiceBusMessageContext> upstream, ServiceBusReceiverInstrumentation instrumentation) {
         super(upstream);
@@ -60,6 +62,7 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
             Context span = instrumentation.instrumentProcess("ServiceBus.process", message.getMessage(), Context.NONE);
             message.getMessage().setContext(span);
 
+            AutoCloseable scope  = tracer.makeSpanCurrent(span);
             try {
                 downstream.onNext(message);
             } catch (Throwable t) {
@@ -72,7 +75,7 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
                         exception = (Throwable) processorException;
                     }
                 }
-                tracer.endSpan(exception, context, null);
+                tracer.endSpan(exception, context, scope);
             }
         }
 

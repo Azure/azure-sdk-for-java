@@ -21,11 +21,11 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 class OpenTelemetryUtils {
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryUtils.class);
 
-    private static final Map<String, String> ATTRIBUTE_MAPPING_V1_17_0 = getMappingsV1200();
+    private static final Map<String, String> ATTRIBUTE_MAPPING_V1_17_0 = getMappingsV1700();
     static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
     static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
 
-    private static Map<String, String> getMappingsV1200() {
+    private static Map<String, String> getMappingsV1700() {
         Map<String, String> mappings = new HashMap<>(8);
         // messaging mapping, attributes are defined in com.azure.core.amqp.implementation.ClientConstants
         mappings.put(ENTITY_PATH_KEY, "messaging.destination.name");

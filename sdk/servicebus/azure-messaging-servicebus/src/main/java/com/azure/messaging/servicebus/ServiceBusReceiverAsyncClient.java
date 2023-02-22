@@ -834,15 +834,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
         return receiveMessagesWithContext(0)
                 .handle((serviceBusMessageContext, sink) -> {
-                    try (AutoCloseable scope  = tracer.makeSpanCurrent(serviceBusMessageContext.getMessage().getContext())) {
-                        if (serviceBusMessageContext.hasError()) {
-                            sink.error(serviceBusMessageContext.getThrowable());
-                            return;
-                        }
-                        sink.next(serviceBusMessageContext.getMessage());
-                    } catch (Exception ex) {
-                        LOGGER.verbose("Error disposing scope", ex);
+                    if (serviceBusMessageContext.hasError()) {
+                        sink.error(serviceBusMessageContext.getThrowable());
+                        return;
                     }
+                    sink.next(serviceBusMessageContext.getMessage());
                 });
     }
 

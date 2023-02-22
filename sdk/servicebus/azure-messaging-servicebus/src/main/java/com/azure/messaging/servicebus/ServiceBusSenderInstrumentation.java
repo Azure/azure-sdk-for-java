@@ -49,9 +49,7 @@ class ServiceBusSenderInstrumentation {
                     ServiceBusMessage::getContext, Context.NONE)));
         } else {
             return publisher
-                .doOnEach(signal -> {
-                    meter.reportBatchSend(batch.size(), signal.getThrowable(), Context.NONE);
-                });
+                .doOnEach(signal -> meter.reportBatchSend(batch.size(), signal.getThrowable(), Context.NONE));
         }
     }
 }

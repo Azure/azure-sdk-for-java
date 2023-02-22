@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -43,6 +44,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -392,7 +394,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         List<ReadableSpan> received = findSpans(spans, "ServiceBus.receiveMessages");
         assertReceiveSpan(received.get(0), receivedMessages, "ServiceBus.receiveMessages");
-        assertEquals(StatusCode.OK, received.get(0).toSpanData().getStatus().getStatusCode());
+        assertEquals(StatusCode.UNSET, received.get(0).toSpanData().getStatus().getStatusCode());
 
         assertEquals(0, findSpans(spans, "ServiceBus.process").size());
     }
@@ -467,7 +469,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         assertEquals(0, findSpans(spans, "ServiceBus.consume").size());
         List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process")
-            .stream().filter(p -> p == currentInProcess.get()).collect(Collectors.toList());
+            .stream().filter(p -> p.equals(currentInProcess.get())).collect(Collectors.toList());
         assertEquals(1, processed.size());
         assertConsumerSpan(processed.get(0), receivedMessage.get(), "ServiceBus.process");
 
@@ -668,8 +670,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             SpanContext linkContext = links.get(i).getSpanContext();
             String linkTraceparent = "00-" + linkContext.getTraceId() + "-" + linkContext.getSpanId() + "-01";
             assertEquals(messageTraceparent, linkTraceparent);
-            // TODO (lmolkova) uncomment after otel 1.0.0-beta.29 ships
-            // assertNotNull(links.get(i).getAttributes().get(AttributeKey.longKey(Tracer.MESSAGE_ENQUEUED_TIME)));
+            assertNotNull(links.get(i).getAttributes().get(AttributeKey.longKey(ServiceBusTracer.MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME)));
         }
     }
 
@@ -744,8 +745,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         @Override
         public void onEnd(ReadableSpan readableSpan) {
             assertEquals("Microsoft.ServiceBus", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
-            assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("message_bus.destination")));
-            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("peer.address")));
+            assertEquals("servicebus", readableSpan.getAttribute(AttributeKey.stringKey("messaging.system")));
+            assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
+            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.name")));
 
             Consumer<ReadableSpan> filter = notifier.get();
             if (filter != null) {
