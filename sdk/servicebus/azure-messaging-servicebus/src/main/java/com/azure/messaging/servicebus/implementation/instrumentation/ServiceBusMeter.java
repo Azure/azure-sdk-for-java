@@ -53,7 +53,6 @@ public class ServiceBusMeter {
     private LongGauge settledSequenceNumber;
 
     public ServiceBusMeter(Meter meter, String namespace, String entityPath, String subscriptionName) {
-        this.meter = meter;
         this.isEnabled = meter != null && meter.isEnabled();
         if (this.isEnabled) {
             Map<String, Object> commonAttributesMap = new HashMap<>(3);
