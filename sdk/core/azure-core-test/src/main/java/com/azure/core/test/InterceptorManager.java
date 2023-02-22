@@ -299,10 +299,10 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpClient getPlaybackClient() {
         if (enableTestProxy) {
-                if (testProxyPlaybackClient == null) {
-                    testProxyPlaybackClient = new TestProxyPlaybackClient();
-                    proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
-                }
+            if (testProxyPlaybackClient == null) {
+                testProxyPlaybackClient = new TestProxyPlaybackClient();
+                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
+            }
             return testProxyPlaybackClient;
         } else {
             return new PlaybackClient(recordedData, textReplacementRules);
@@ -435,12 +435,12 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Add sanitizer rule for sanitization during record or playback.
      * @param testProxySanitizers the list of replacement regex and rules.
+     * @throws RuntimeException Neither playback or record has started.
      */
     public void addSanitizers(List<TestProxySanitizer> testProxySanitizers) {
         if (testProxyPlaybackClient != null) {
             testProxyPlaybackClient.addProxySanitization(testProxySanitizers);
-        }
-        else if (testProxyRecordPolicy != null) {
+        } else if (testProxyRecordPolicy != null) {
             testProxyRecordPolicy.addProxySanitization(testProxySanitizers);
         } else {
             throw new RuntimeException("Playback or record must have been started before adding sanitizers.");
@@ -450,6 +450,7 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Add matcher rules to match recorded data in playback.
      * @param testProxyMatchers the list of matcher rules when playing back recorded data.
+     * @throws RuntimeException Playback has not started.
      */
     public void addMatchers(List<TestProxyMatcher> testProxyMatchers) {
         if (testProxyPlaybackClient != null) {

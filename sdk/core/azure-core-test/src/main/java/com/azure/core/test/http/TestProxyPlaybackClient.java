@@ -19,7 +19,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -111,13 +110,13 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @param sanitizers The sanitizers to add.
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
-        if(isPlayingBack()) {
+        if (isPlayingBack()) {
             getSanitizerRequests(sanitizers)
                 .forEach(request -> {
                     request.setHeader("x-recording-id", xRecordingId);
                     client.sendSync(request, Context.NONE);
                 });
-        }else {
+        } else {
             this.sanitizers.addAll(sanitizers);
         }
     }

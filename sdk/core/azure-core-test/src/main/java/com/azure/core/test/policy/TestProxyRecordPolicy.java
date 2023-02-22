@@ -21,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -117,7 +116,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
             getSanitizerRequests(sanitizers)
                 .forEach(request -> {
                     request.setHeader("x-recording-id", xRecordingId);
-                    HttpResponse response = client.sendSync(request, Context.NONE);
+                    client.sendSync(request, Context.NONE);
                 });
         } else {
             this.sanitizers.addAll(sanitizers);

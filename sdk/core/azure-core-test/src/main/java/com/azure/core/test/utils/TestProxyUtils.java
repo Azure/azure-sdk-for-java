@@ -122,6 +122,10 @@ public class TestProxyUtils {
         return sanitizers;
     }
 
+    /**
+     * Registers the default set of matchers for matching requests on playback.
+     * @return The list of default matchers to be added.
+     */
     public static List<TestProxyMatcher> loadMatchers() {
         List<TestProxyMatcher> matchers = new ArrayList<>();
         matchers.add(addDefaultCustomDefaultMatcher());
@@ -196,6 +200,12 @@ public class TestProxyUtils {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Creates a {@link List} of {@link HttpRequest} to be sent to the test proxy to register matchers.
+     * @param matchers The {@link TestProxyMatcher}s to encode into requests.
+     * @return The {@link HttpRequest}s to send to the proxy.
+     * @throws RuntimeException The {@link TestProxyMatcher.TestProxyMatcherType} is unsupported.
+     */
     public static List<HttpRequest> getMatcherRequests(List<TestProxyMatcher> matchers) {
         return matchers.stream().map(testProxyMatcher -> {
             HttpRequest request;
