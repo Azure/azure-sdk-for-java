@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -31,7 +30,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -99,7 +97,6 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
-        private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -122,12 +119,6 @@ public interface AsyncDocumentClient {
 
         public Builder withClientCorrelationId(String clientCorrelationId) {
             this.clientCorrelationId = clientCorrelationId;
-
-            return this;
-        }
-
-        public Builder withMetricTagNames(EnumSet<TagName> tagNames) {
-            this.metricTagNames = tagNames;
 
             return this;
         }
@@ -274,8 +265,7 @@ public interface AsyncDocumentClient {
                 state,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId,
-                metricTagNames);
+                clientCorrelationId);
 
             client.init(state, null);
             return client;
@@ -1660,7 +1650,7 @@ public interface AsyncDocumentClient {
     /**
      * Warm up caches and open connections for containers specified by
      * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
-     * {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()} preferred regions.
+     * {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()} preferred regions.
      *
      * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
      * @return A flux of {@link OpenConnectionResponse}.

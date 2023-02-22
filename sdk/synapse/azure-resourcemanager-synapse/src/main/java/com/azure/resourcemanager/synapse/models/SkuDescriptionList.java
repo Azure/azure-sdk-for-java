@@ -18,6 +18,10 @@ public final class SkuDescriptionList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuDescriptionInner> value;
 
+    /** Creates an instance of SkuDescriptionList class. */
+    public SkuDescriptionList() {
+    }
+
     /**
      * Get the value property: SKU descriptions.
      *

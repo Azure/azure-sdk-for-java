@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
@@ -143,7 +144,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 rntbdFaultInjector);
 
         if (clientTelemetry != null &&
-            clientTelemetry.isClientMetricsEnabled()) {
+            clientTelemetry.isClientMetricsEnabled() &&
+            (
+                provider.transportClient.getMetricCategories().contains(MetricCategory.DirectEndpoints)
+                    || provider.transportClient.getMetricCategories().contains(MetricCategory.DirectChannels)
+                    || provider.transportClient.getMetricCategories().contains(MetricCategory.DirectRequests)
+            )
+        ) {
 
             RntbdMetricsCompletionRecorder rntbdMetricsV2 =
                 ClientTelemetryMetrics.createRntbdMetrics(provider.transportClient, this);
@@ -159,7 +166,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             }
 
         } else {
-            this.metricsComplectionRecorder = RntbdMetrics.create(provider.transportClient, this);
+            if (RntbdMetrics.isEmpty()) {
+                this.metricsComplectionRecorder = RntbdMetricsCompletionRecorder.NoOpSingletonInstance;
+            } else {
+                this.metricsComplectionRecorder = RntbdMetrics.create(provider.transportClient, this);
+            }
         }
     }
 
@@ -199,6 +210,22 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     @Override
     public int channelsAcquiredMetric() {
         return this.channelPool.channelsAcquiredMetrics();
+    }
+
+    /**
+     * @return approximate number of acquired channels.
+     */
+    @Override
+    public int totalChannelsAcquiredMetric() {
+        return this.channelPool.totalChannelsAcquiredMetrics();
+    }
+
+    /**
+     * @return approximate number of closed channels.
+     */
+    @Override
+    public int totalChannelsClosedMetric() {
+        return this.channelPool.totalChannelsClosedMetrics();
     }
 
     /**
@@ -496,7 +523,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final Channel channel = (Channel) connected.getNow();
             assert channel != null : "impossible";
             this.releaseToPool(channel);
-            requestRecord.channelTaskQueueLength(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()));
+
+            // record channel statistics
+            requestRecord.channelStatistics(channel, requestRecord.getChannelAcquisitionTimeline());
+
             channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
 
             // mark address connected

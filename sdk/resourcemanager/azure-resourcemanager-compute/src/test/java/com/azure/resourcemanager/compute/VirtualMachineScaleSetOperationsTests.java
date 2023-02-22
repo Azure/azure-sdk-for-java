@@ -1853,12 +1853,35 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
-            .withUpgradeMode(UpgradeMode.AUTOMATIC)
+            .withUpgradeMode(UpgradeMode.MANUAL)
             .withEphemeralOSDisk()
             .withPlacement(DiffDiskPlacement.CACHE_DISK)
-            .withCapacity(2)
+            .withCapacity(1)
             .create();
         Assertions.assertTrue(uniformVMSS.isEphemeralOSDisk());
+
+        // somehow newly created vmss with ephemeral OS disk has outdated VMs and there's a delay before vmss detects that
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+        // update VMs to latest model, create baseline
+        uniformVMSS.virtualMachines().updateInstances(
+            uniformVMSS.virtualMachines()
+                .list()
+                .stream()
+                .map(VirtualMachineScaleSetVM::instanceId)
+                .toArray(String[]::new));
+
+        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
+
+        // scale up vmss
+        uniformVMSS.update()
+            .withCapacity(2)
+            .apply();
+
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+        // verify that scaling up won't result in outdated VMs
+        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
 
         // flex vmss with ephemeral os disk
         Network network2 =

@@ -21,8 +21,8 @@ public interface RestorableSqlContainersClient {
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -73,8 +73,8 @@ public interface RestorableSqlContainersClient {
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

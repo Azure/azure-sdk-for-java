@@ -38,6 +38,10 @@ public class ThroughputSettingsResource {
     @JsonProperty(value = "offerReplacePending", access = JsonProperty.Access.WRITE_ONLY)
     private String offerReplacePending;
 
+    /** Creates an instance of ThroughputSettingsResource class. */
+    public ThroughputSettingsResource() {
+    }
+
     /**
      * Get the throughput property: Value of the Cosmos DB resource throughput. Either throughput is required or
      * autoscaleSettings is required, but not both.

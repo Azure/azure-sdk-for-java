@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.CheckNameAvailabilityRequest;
 
 /** Samples for Operations CheckNameAvailability. */
@@ -23,7 +22,7 @@ public final class OperationsCheckNameAvailabilitySamples {
             .operations()
             .checkNameAvailabilityWithResponse(
                 new CheckNameAvailabilityRequest().withName("workspace1").withType("Microsoft.Synapse/workspaces"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,6 +40,6 @@ public final class OperationsCheckNameAvailabilitySamples {
                 new CheckNameAvailabilityRequest()
                     .withName("workspace1")
                     .withType("Microsoft.ProjectArcadia/workspaces"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

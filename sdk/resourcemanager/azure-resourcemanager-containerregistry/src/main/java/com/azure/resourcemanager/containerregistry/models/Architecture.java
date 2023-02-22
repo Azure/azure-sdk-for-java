@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Architecture. */
+/** The OS architecture. */
 public final class Architecture extends ExpandableStringEnum<Architecture> {
     /** Static value amd64 for Architecture. */
     public static final Architecture AMD64 = fromString("amd64");
@@ -26,6 +26,15 @@ public final class Architecture extends ExpandableStringEnum<Architecture> {
     public static final Architecture ARM64 = fromString("arm64");
 
     /**
+     * Creates a new instance of Architecture value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Architecture() {
+    }
+
+    /**
      * Creates or finds a Architecture from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class Architecture extends ExpandableStringEnum<Architecture> {
         return fromString(name, Architecture.class);
     }
 
-    /** @return known Architecture values. */
+    /**
+     * Gets known Architecture values.
+     *
+     * @return known Architecture values.
+     */
     public static Collection<Architecture> values() {
         return values(Architecture.class);
     }

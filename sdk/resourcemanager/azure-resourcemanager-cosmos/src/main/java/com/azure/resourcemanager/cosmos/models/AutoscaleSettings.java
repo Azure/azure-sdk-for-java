@@ -16,6 +16,10 @@ public final class AutoscaleSettings {
     @JsonProperty(value = "maxThroughput")
     private Integer maxThroughput;
 
+    /** Creates an instance of AutoscaleSettings class. */
+    public AutoscaleSettings() {
+    }
+
     /**
      * Get the maxThroughput property: Represents maximum throughput, the resource can scale up to.
      *

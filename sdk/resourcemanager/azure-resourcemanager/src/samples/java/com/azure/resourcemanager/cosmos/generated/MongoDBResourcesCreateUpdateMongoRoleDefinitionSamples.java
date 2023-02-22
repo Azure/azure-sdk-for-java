@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.MongoRoleDefinitionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.Privilege;
 import com.azure.resourcemanager.cosmos.models.PrivilegeResource;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for MongoDBResources CreateUpdateMongoRoleDefinition. */
 public final class MongoDBResourcesCreateUpdateMongoRoleDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBRoleDefinitionCreateUpdate.
@@ -41,6 +40,6 @@ public final class MongoDBResourcesCreateUpdateMongoRoleDefinitionSamples {
                                     .withResource(new PrivilegeResource().withDb("sales").withCollection("sales"))
                                     .withActions(Arrays.asList("insert", "find"))))
                     .withRoles(Arrays.asList(new Role().withDb("sales").withRole("myInheritedRole"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

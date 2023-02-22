@@ -8,26 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.kusto.models.PrivateEndpointConnectionListResult;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointConnectionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"dsotbobzd\",\"provisioningState\":\"cjwvn\"},\"id\":\"ld\",\"name\":\"mgxcxrslpm\",\"type\":\"twuoegrpkhjwni\"},{\"properties\":{\"groupId\":\"uicpd\",\"provisioningState\":\"kzzlvmbmpaxmodf\"},\"id\":\"efyw\",\"name\":\"bpfvm\",\"type\":\"yhrfouyftaakcpw\"},{\"properties\":{\"groupId\":\"qtmnubexkpzk\",\"provisioningState\":\"ondjmq\"},\"id\":\"vypomgkopkwho\",\"name\":\"v\",\"type\":\"ajqgxy\"},{\"properties\":{\"groupId\":\"mbqfqvmk\",\"provisioningState\":\"oz\"},\"id\":\"vhelxprglyatdd\",\"name\":\"kcbcue\",\"type\":\"rjxgciqib\"}]}")
+                    "{\"value\":[{\"properties\":{\"groupId\":\"ruvw\",\"provisioningState\":\"sqfsubcgjbirxb\"},\"id\":\"bsrfbj\",\"name\":\"dtws\",\"type\":\"otftpvjzbexilz\"},{\"properties\":{\"groupId\":\"q\",\"provisioningState\":\"wpmqt\"},\"id\":\"uoujmkcjhwqy\",\"name\":\"jrybnwjewgdrjer\",\"type\":\"naenqpehindo\"},{\"properties\":{\"groupId\":\"fthnzdn\",\"provisioningState\":\"l\"},\"id\":\"ayqigynduhav\",\"name\":\"qlkth\",\"type\":\"maqolbgycduie\"}]}")
                 .toObject(PrivateEndpointConnectionListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnectionListResult model =
             new PrivateEndpointConnectionListResult()
                 .withValue(
                     Arrays
                         .asList(
-                            new PrivateEndpointConnectionInner(),
                             new PrivateEndpointConnectionInner(),
                             new PrivateEndpointConnectionInner(),
                             new PrivateEndpointConnectionInner()));

@@ -8,17 +8,16 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.DnsZone;
 import com.azure.resourcemanager.recoveryservices.models.VaultSubResourceType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DnsZoneTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DnsZone model = BinaryData.fromString("{\"subResource\":\"AzureBackup\"}").toObject(DnsZone.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.subResource());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DnsZone model = new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP);
         model = BinaryData.fromObject(model).toObject(DnsZone.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.subResource());

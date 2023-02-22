@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.41.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.42.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -84,7 +84,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.23.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.24.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -474,6 +474,30 @@
                     <relocation>
                       <pattern>com.azure.resourcemanager</pattern>
                       <shadedPattern>${shadingPrefix}.com.azure.resourcemanager</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.microsoft.aad</pattern>
+                      <shadedPattern>${shadingPrefix}.com.microsoft.aad</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.nimbusds</pattern>
+                      <shadedPattern>${shadingPrefix}.com.nimbusds</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.sun.jna</pattern>
+                      <shadedPattern>${shadingPrefix}.com.sun.jna</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>net.minidev</pattern>
+                      <shadedPattern>${shadingPrefix}.net.minidev</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>org.objectweb</pattern>
+                      <shadedPattern>${shadingPrefix}.org.objectweb</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>net.jcip</pattern>
+                      <shadedPattern>${shadingPrefix}.net.jcip</shadedPattern>
                     </relocation>
                   </relocations>
                   <filters>

@@ -24,6 +24,10 @@ public final class LicensedComponentSetupTypeProperties {
     @JsonProperty(value = "licenseKey")
     private SecretBase licenseKey;
 
+    /** Creates an instance of LicensedComponentSetupTypeProperties class. */
+    public LicensedComponentSetupTypeProperties() {
+    }
+
     /**
      * Get the componentName property: The name of the 3rd party component.
      *

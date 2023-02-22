@@ -27,27 +27,6 @@ public interface KustoPoolDataConnectionsClient {
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
      * @param dataConnectionName The name of the data connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName);
-
-    /**
-     * Checks that the data connection name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param databaseName The name of the database in the Kusto pool.
-     * @param dataConnectionName The name of the data connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,6 +41,27 @@ public interface KustoPoolDataConnectionsClient {
         String databaseName,
         DataConnectionCheckNameRequest dataConnectionName,
         Context context);
+
+    /**
+     * Checks that the data connection name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param databaseName The name of the database in the Kusto pool.
+     * @param dataConnectionName The name of the data connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameResultInner checkNameAvailability(
+        String resourceGroupName,
+        String workspaceName,
+        String kustoPoolName,
+        String databaseName,
+        DataConnectionCheckNameRequest dataConnectionName);
 
     /**
      * Checks that the data connection parameters are valid.
@@ -194,27 +194,6 @@ public interface KustoPoolDataConnectionsClient {
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
      * @param dataConnectionName The name of the data connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a data connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataConnectionInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName);
-
-    /**
-     * Returns a data connection.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param databaseName The name of the database in the Kusto pool.
-     * @param dataConnectionName The name of the data connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -229,6 +208,27 @@ public interface KustoPoolDataConnectionsClient {
         String databaseName,
         String dataConnectionName,
         Context context);
+
+    /**
+     * Returns a data connection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param databaseName The name of the database in the Kusto pool.
+     * @param dataConnectionName The name of the data connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a data connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DataConnectionInner get(
+        String resourceGroupName,
+        String workspaceName,
+        String kustoPoolName,
+        String databaseName,
+        String dataConnectionName);
 
     /**
      * Creates or updates a data connection.

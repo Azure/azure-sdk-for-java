@@ -61,6 +61,7 @@ public class EventHubsMessageConverterTests extends UnaryAzureMessageConverterTe
     public void testConvertCustomHeadersToEventData() {
         Map<String, Object> headerMap = new HashMap<>();
         headerMap.put("fake-header", "fake-value");
+        headerMap.put(EventHubsMessageConverter.TARGET_PROTOCOL, "kafka");
         MessageHeaders headers = new MessageHeaders(headerMap);
 
         EventData eventData = new EventData(EVENT_DATA);
@@ -69,6 +70,7 @@ public class EventHubsMessageConverterTests extends UnaryAzureMessageConverterTe
         converter.setCustomHeaders(headers, eventData);
 
         assertEquals(eventData.getProperties().get("fake-header"), "fake-value");
+        assertEquals(eventData.getProperties().get(EventHubsMessageConverter.TARGET_PROTOCOL), "amqp");
         assertEquals(eventData.getBodyAsString(), EVENT_DATA);
     }
 

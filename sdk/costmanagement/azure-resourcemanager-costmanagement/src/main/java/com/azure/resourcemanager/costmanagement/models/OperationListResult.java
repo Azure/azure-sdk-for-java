@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.costmanagement.fluent.models.OperationInner;
+import com.azure.resourcemanager.costmanagement.fluent.models.CostManagementOperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public final class OperationListResult {
      * List of cost management operations supported by the Microsoft.CostManagement resource provider.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<OperationInner> value;
+    private List<CostManagementOperationInner> value;
 
     /*
      * URL to get the next set of operation list results if there are any.
@@ -37,7 +37,7 @@ public final class OperationListResult {
      *
      * @return the value value.
      */
-    public List<OperationInner> value() {
+    public List<CostManagementOperationInner> value() {
         return this.value;
     }
 

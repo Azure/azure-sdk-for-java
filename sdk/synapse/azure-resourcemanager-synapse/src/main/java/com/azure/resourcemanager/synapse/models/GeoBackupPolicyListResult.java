@@ -18,6 +18,10 @@ public final class GeoBackupPolicyListResult {
     @JsonProperty(value = "value")
     private List<GeoBackupPolicyInner> value;
 
+    /** Creates an instance of GeoBackupPolicyListResult class. */
+    public GeoBackupPolicyListResult() {
+    }
+
     /**
      * Get the value property: The list of geo backup policies.
      *

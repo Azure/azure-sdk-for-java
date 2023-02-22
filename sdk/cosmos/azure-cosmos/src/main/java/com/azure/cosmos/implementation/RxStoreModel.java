@@ -57,7 +57,7 @@ public interface RxStoreModel {
     /**
      * Warm up caches and open connections for containers specified by
      * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
-     * {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()} preferred regions.
+     * {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()} preferred regions.
      *
      * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
      * @return A flux of {@link OpenConnectionResponse}.

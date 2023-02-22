@@ -6,20 +6,19 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.OperationListResult;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"kaet\",\"isDataAction\":true,\"display\":{\"provider\":\"civfsnkymuctq\",\"resource\":\"fbebrjcxer\",\"operation\":\"wutttxfvjrbi\",\"description\":\"hxepcyvahfnlj\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"uujqgidokgjljyo\",\"isDataAction\":true,\"display\":{\"provider\":\"tbgsncghkj\",\"resource\":\"zz\",\"operation\":\"ijhtxf\",\"description\":\"xbf\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"mpvecxgodebfqk\",\"isDataAction\":true,\"display\":{\"provider\":\"ukgri\",\"resource\":\"lzlfbxzpuz\",\"operation\":\"ispnqzahmgkbrp\",\"description\":\"dhibnuq\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"drgvtqagn\"}")
+                    "{\"value\":[{\"name\":\"fcnj\",\"isDataAction\":false,\"display\":{\"provider\":\"dhbt\",\"resource\":\"phywpnvj\",\"operation\":\"qnermclfplphoxu\",\"description\":\"rpabg\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"tazqugxywpmueefj\"}")
                 .toObject(OperationListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationListResult model = new OperationListResult();
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
     }

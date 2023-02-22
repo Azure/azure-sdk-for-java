@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Managed identity for the resource. */
 @Fluent
 public final class IdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProperties.class);
-
     /*
      * The principal ID of resource identity.
      */
@@ -35,8 +31,7 @@ public final class IdentityProperties {
     private ResourceIdentityType type;
 
     /*
-     * The list of user identities associated with the resource. The user
-     * identity
+     * The list of user identities associated with the resource. The user identity
      * dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/
      * providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
@@ -44,6 +39,10 @@ public final class IdentityProperties {
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserIdentityProperties> userAssignedIdentities;
+
+    /** Creates an instance of IdentityProperties class. */
+    public IdentityProperties() {
+    }
 
     /**
      * Get the principalId property: The principal ID of resource identity.

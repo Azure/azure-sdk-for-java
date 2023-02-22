@@ -58,6 +58,24 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
     throughput.getProperties.getManualThroughput shouldEqual 1000
   }
 
+  it can "create a database with shared throughput and alter throughput afterwards" in {
+    val databaseName = getAutoCleanableDatabaseName
+
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName WITH DBPROPERTIES ('manualThroughput' = '1000');")
+
+    cosmosClient.getDatabase(databaseName).read().block()
+    var throughput = cosmosClient.getDatabase(databaseName).readThroughput().block()
+
+    throughput.getProperties.getManualThroughput shouldEqual 1000
+
+    spark.sql(s"ALTER DATABASE testCatalog.$databaseName SET DBPROPERTIES ('manualThroughput' = '4000');")
+
+    cosmosClient.getDatabase(databaseName).read().block()
+    throughput = cosmosClient.getDatabase(databaseName).readThroughput().block()
+
+    throughput.getProperties.getManualThroughput shouldEqual 4000
+  }
+
   it can "create a table with defaults" in {
     val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
@@ -94,6 +112,50 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
 
     // last modified as iso datetime like 2021-12-07T10:33:44Z
     tblProperties("LastModified").length shouldEqual 20
+  }
+
+  it can "create a table and alter throughput afterwards" in {
+    val databaseName = getAutoCleanableDatabaseName
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+    cleanupDatabaseLater(databaseName)
+
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp;")
+
+    val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
+
+    // verify default partition key path is used
+    containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/id"))
+
+    // validate throughput
+    var throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+    throughput.getManualThroughput shouldEqual 400
+
+    var tblProperties = getTblProperties(spark, databaseName, containerName)
+
+    tblProperties should have size 7
+
+    // would look like Manual|RUProvisioned|LastOfferModification
+    // - last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("ProvisionedThroughput").startsWith("Manual|400|") shouldEqual true
+    tblProperties("ProvisionedThroughput").length shouldEqual 31
+
+    // last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("LastModified").length shouldEqual 20
+
+    spark.sql(s"ALTER TABLE testCatalog.$databaseName.$containerName SET TBLPROPERTIES ('manualThroughput' = '4000');")
+
+    // validate throughput
+    throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+    throughput.getManualThroughput shouldEqual 4000
+
+    tblProperties = getTblProperties(spark, databaseName, containerName)
+
+    tblProperties should have size 7
+
+    // would look like Manual|RUProvisioned|LastOfferModification
+    // - last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("ProvisionedThroughput").startsWith("Manual|4000|") shouldEqual true
   }
 
   it can "create a table with shared throughput and Hash V2" in {

@@ -18,6 +18,10 @@ public final class MongoDBCollectionListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MongoDBCollectionGetResultsInner> value;
 
+    /** Creates an instance of MongoDBCollectionListResult class. */
+    public MongoDBCollectionListResult() {
+    }
+
     /**
      * Get the value property: List of MongoDB collections and their properties.
      *

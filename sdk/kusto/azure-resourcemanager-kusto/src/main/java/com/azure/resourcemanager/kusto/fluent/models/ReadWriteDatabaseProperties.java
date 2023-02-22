@@ -43,6 +43,10 @@ public final class ReadWriteDatabaseProperties {
     @JsonProperty(value = "isFollowed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isFollowed;
 
+    /** Creates an instance of ReadWriteDatabaseProperties class. */
+    public ReadWriteDatabaseProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioned state of the resource.
      *

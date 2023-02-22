@@ -21,6 +21,10 @@ containerregistry:
   suffix: generated
 containerservice:
   suffix: generated
+containerservice/Microsoft.ContainerService/aks:
+  suffix: generated
+containerservice/Microsoft.ContainerService/fleet:
+  service: containerservicefleet
 cosmos-db:
   service: cosmos
   suffix: generated
