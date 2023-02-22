@@ -400,6 +400,7 @@ public class CosmosItemRequestOptions {
 
     /**
      * Allows overriding the diagnostic thresholds for a specific operation.
+     * @param operationSpecificThresholds the diagnostic threshold override for this operation
      * @return the CosmosItemRequestOptions.
      */
     public CosmosItemRequestOptions configureDiagnosticsThresholds(
