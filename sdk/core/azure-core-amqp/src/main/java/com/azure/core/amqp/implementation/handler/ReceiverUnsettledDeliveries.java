@@ -301,7 +301,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         // by the broker, so we need settle only the deliveries in ReceiverUnsettledDeliveries.deliveries in this close.
 
         // Force complete all uncompleted works.
-        completeUncompletedDispositionWorksOnClose();
+        completeDispositionWorksOnClose();
     }
 
     /**
@@ -464,7 +464,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      * Iterate through all the {@link DispositionWork}, and 'force' to complete the uncompleted works because
      * this {@link ReceiverUnsettledDeliveries} is closed.
      */
-    private void completeUncompletedDispositionWorksOnClose() {
+    private void completeDispositionWorksOnClose() {
         // Note: Possible to have one function for cleaning both timeout and incomplete works, but readability
         // seems to be affected, hence separate functions.
 
