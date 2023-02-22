@@ -73,8 +73,8 @@ public abstract class CommunicationIdentifier {
         }
         final String[] segments = rawId.split(":");
         if (segments.length < 3) {
-            if(segments.length == 2 && segments[0].equals("28")){
-               return new MicrosoftBotIdentifier(segments[1], true).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
+            if (segments.length == 2 && segments[0].equals("28")) {
+                return new MicrosoftBotIdentifier(segments[1], true).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
             }
             return new UnknownIdentifier(rawId);
         }
