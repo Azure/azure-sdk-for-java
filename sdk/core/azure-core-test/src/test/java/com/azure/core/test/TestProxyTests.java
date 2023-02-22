@@ -259,7 +259,7 @@ public class TestProxyTests extends TestProxyTestBase {
         assertTrue(record.getResponse().get("primaryKey").contains("<PrimaryKey>REDACTED</PrimaryKey>"));
 
         // custom body regex
-        assertTrue(record.getResponse().get("TableName").equals(REDACTED));
+        assertEquals(record.getResponse().get("TableName"), REDACTED);
     }
 
     private RecordedTestProxyData readDataFromFile() {
