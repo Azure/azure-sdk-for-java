@@ -176,21 +176,21 @@ public final class CosmosPatchOperations {
      *                                     set as values of "/c".
      * </code>
      *
-     * @param from the source path for the operation.
-     * @param path the destination path for the operation.
+     * @param fromPath the source path for the operation.
+     * @param toPath the destination path for the operation.
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    public CosmosPatchOperations move(String from, String path) {
+    public CosmosPatchOperations move(String fromPath, String toPath) {
 
-        checkArgument(StringUtils.isNotEmpty(from), "Source path empty %s", from);
-        checkArgument(StringUtils.isNotEmpty(path), "Destination path empty %s", path);
+        checkArgument(StringUtils.isNotEmpty(fromPath), "Source path empty %s", fromPath);
+        checkArgument(StringUtils.isNotEmpty(toPath), "Destination path empty %s", toPath);
 
         this.patchOperations.add(
             new PatchOperationCore<>(
                 PatchOperationType.MOVE,
-                path,
-                from));
+                toPath,
+                fromPath));
 
         return this;
     }
