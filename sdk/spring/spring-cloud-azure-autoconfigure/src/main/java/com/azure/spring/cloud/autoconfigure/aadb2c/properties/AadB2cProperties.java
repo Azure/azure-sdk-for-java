@@ -55,7 +55,7 @@ public class AadB2cProperties implements InitializingBean {
 
     /**
      * App ID URI which might be used in the "aud" claim of a token. For instance, 'https://{hostname}/{applicationId}'.
-     * @see <a href="https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri">APP ID URI</a>
+     * See Microsoft doc about APP ID URL for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri
      */
     private String appIdUri;
 
@@ -87,7 +87,7 @@ public class AadB2cProperties implements InitializingBean {
 
     /**
      * Additional parameters above the standard parameters defined in the OAuth 2.0 Authorization Framework. Would be added to the Authorization URL for customizing the Authorization Request. For instance, 'prompt: login'.
-     * @see <a href="https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code">more additional parameters information</a>
+     * See Microsoft doc about more additional parameters information: https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 

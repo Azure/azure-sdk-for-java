@@ -83,13 +83,13 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     /**
      * App ID URI which might be used in the "aud" claim of an id_token. For instance, 'api://{applicationId}'.
-     * @see <a href="https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri">APP ID URI</a>
+     * See Microsoft doc about APP ID URL for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri
      */
     private String appIdUri;
 
     /**
      * Additional parameters above the standard parameters defined in the OAuth 2.0 Authorization Framework. Would be added to the Authorization URL for customizing the Authorization Request. For instance, 'prompt: login'.
-     * @see <a href="https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code">more additional parameters information</a>
+     * See Microsoft doc about more additional parameters information: https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
@@ -126,7 +126,7 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     /**
      * The redirect uri after logout. For instance, 'http://localhost:8080/'.
-     * @see <a href="https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#redirect-uri">Redirect URI</a>
+     * See Microsoft doc about Redirect URI for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#redirect-uri
      */
     private String postLogoutRedirectUri;
 
