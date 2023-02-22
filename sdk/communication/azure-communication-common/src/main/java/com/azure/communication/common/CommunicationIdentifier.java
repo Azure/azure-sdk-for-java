@@ -53,27 +53,29 @@ public abstract class CommunicationIdentifier {
         final String prefix = segments[0] + ":" + segments[1] + ":";
         final String suffix = rawId.substring(prefix.length());
 
-        return switch (prefix) {
-            case TeamUserAnonymous -> new MicrosoftTeamsUserIdentifier(suffix, true);
-            case TeamUserPublicCloud -> new MicrosoftTeamsUserIdentifier(suffix, false);
-            case TeamUserDodCloud ->
-                new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
-            case TeamUserGcchCloud ->
-                new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
-            case AcsUser, SpoolUser, AcsUserDodCloud, AcsUserGcchCloud -> new CommunicationUserIdentifier(rawId);
-            case BotGcchCloudGlobal ->
-                new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
-            case BotPublicCloud ->
-                new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
-            case BotDodCloudGlobal ->
-                new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
-            case BotGcchCloud ->
-                new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
-            case BotDodCloud ->
-                new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
-            default -> new UnknownIdentifier(rawId);
-        };
+        if (TeamUserAnonymous.equals(prefix)) {
+            return new MicrosoftTeamsUserIdentifier(suffix, true);
+        } else if (TeamUserPublicCloud.equals(prefix)) {
+            return new MicrosoftTeamsUserIdentifier(suffix, false);
+        } else if (TeamUserDodCloud.equals(prefix)) {
+            return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+        } else if (TeamUserGcchCloud.equals(prefix)) {
+            return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+        } else if (AcsUser.equals(prefix) || SpoolUser.equals(prefix) || AcsUserDodCloud.equals(prefix) || AcsUserGcchCloud.equals(prefix)) {
+            return new CommunicationUserIdentifier(rawId);
+        } else if (BotGcchCloudGlobal.equals(prefix)) {
+            new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+        } else if (BotPublicCloud.equals(prefix)) {
+            new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
+        } else if (BotDodCloudGlobal.equals(prefix)) {
+            new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+        } else if (BotGcchCloud.equals(prefix)) {
+            new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+        } else if (BotDodCloud.equals(prefix)) {
+            new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+        }
 
+        return new UnknownIdentifier(rawId);
     }
 
     /**
