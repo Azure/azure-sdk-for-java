@@ -114,33 +114,39 @@ public class EventHubsTracer {
             return;
         }
 
-        // Starting the span makes the sampling decision (nothing is logged at this time)
-        Context newMessageContext = setAttributes(eventContext);
-
-        Context eventSpanContext = tracer.start("EventHubs.message", newMessageContext, ProcessKind.MESSAGE);
-        Optional<Object> traceparentOpt = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
-
-        Exception exception = null;
-        String error = null;
-        if (traceparentOpt.isPresent() && canModifyApplicationProperties(eventData.getProperties())) {
-            try {
-                eventData.getProperties().put(DIAGNOSTIC_ID_KEY, traceparentOpt.get().toString());
-                eventData.getProperties().put(TRACEPARENT_KEY, traceparentOpt.get().toString());
-            } catch (RuntimeException ex) {
-                // it might happen that unmodifiable map is something that we
-                // didn't account for in canModifyApplicationProperties method
-                // if it happens, let's not break everything, but log a warning
-                LOGGER.logExceptionAsWarning(ex);
-                exception = ex;
+        synchronized (eventData) {
+            if (eventContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
+                return;
             }
-        } else {
-            error = "failed to inject context into EventData";
-        }
-        tracer.end(error, exception, eventSpanContext);
 
-        Optional<Object> spanContext = eventSpanContext.getData(SPAN_CONTEXT_KEY);
-        if (spanContext.isPresent()) {
-            eventData.addContext(SPAN_CONTEXT_KEY, spanContext.get());
+            // Starting the span makes the sampling decision (nothing is logged at this time)
+            Context newMessageContext = setAttributes(eventContext);
+
+            Context eventSpanContext = tracer.start("EventHubs.message", newMessageContext, ProcessKind.MESSAGE);
+            Optional<Object> spanContext = eventSpanContext.getData(SPAN_CONTEXT_KEY);
+            if (spanContext.isPresent()) {
+                eventData.addContext(SPAN_CONTEXT_KEY, spanContext.get());
+            }
+
+            Optional<Object> traceparentOpt = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+
+            Exception exception = null;
+            String error = null;
+            if (traceparentOpt.isPresent() && canModifyApplicationProperties(eventData.getProperties())) {
+                try {
+                    eventData.getProperties().put(DIAGNOSTIC_ID_KEY, traceparentOpt.get().toString());
+                    eventData.getProperties().put(TRACEPARENT_KEY, traceparentOpt.get().toString());
+                } catch (RuntimeException ex) {
+                    // it might happen that unmodifiable map is something that we
+                    // didn't account for in canModifyApplicationProperties method
+                    // if it happens, let's not break everything, but log a warning
+                    LOGGER.logExceptionAsWarning(ex);
+                    exception = ex;
+                }
+            } else {
+                error = "failed to inject context into EventData";
+            }
+            tracer.end(error, exception, eventSpanContext);
         }
     }
 
