@@ -43,7 +43,9 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SuppressWarnings("deprecation")
+/**
+ * Test class for testing Test proxy functionality of record, playback and redaction.
+ */
 public class TestProxyTests extends TestProxyTestBase {
     static TestProxyTestServer server;
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
@@ -196,7 +198,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
         interceptorManager.addSanitizers(customSanitizer);
-        interceptorManager.addMatchers(new ArrayList<>(Arrays.asList(new CustomMatcher().setExcludedHeaders("Ocp-Apim-Subscription-Key"))));
+        interceptorManager.addMatchers(new ArrayList<>(Arrays.asList(new CustomMatcher().setExcludedHeaders(Arrays.asList("Ocp-Apim-Subscription-Key")))));
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;
 

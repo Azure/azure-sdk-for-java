@@ -11,6 +11,7 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * Utility functions for interaction with the test proxy.
  */
 public class TestProxyUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(TestProxyUtils.class);
     private static final String PROXY_URL_SCHEME = "http";
     private static final String PROXY_URL_HOST = "localhost";
     private static final int PROXY_URL_PORT = 5000;
@@ -133,11 +135,25 @@ public class TestProxyUtils {
     }
 
     private static TestProxyRequestMatcher addDefaultCustomDefaultMatcher() {
-        return new CustomMatcher().setExcludedHeaders(String.join(",", EXCLUDED_HEADERS));
+        return new CustomMatcher().setExcludedHeaders(EXCLUDED_HEADERS);
     }
 
     private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {
-        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\", \"ignoreQueryOrdering\":%s}", customMatcher.getIgnoredHeaders(), customMatcher.getExcludedHeaders(), customMatcher.isCompareBodies(), customMatcher.getIgnoredQueryParameters(), customMatcher.isIgnoreQueryOrdering());
+        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\", \"ignoreQueryOrdering\":%s}",
+            getCommaSeperatedString(customMatcher.getHeadersKeyOnlyMatch()),
+            getCommaSeperatedString(customMatcher.getExcludedHeaders()),
+            customMatcher.isComparingBodies(),
+            getCommaSeperatedString(customMatcher.getIgnoredQueryParameters()),
+            customMatcher.isQueryOrderingIgnored());
+    }
+
+    private static String getCommaSeperatedString(List<String> stringList) {
+        if (stringList == null) {
+            return null;
+        }
+        return stringList.stream()
+            .filter(s -> s != null && !s.isEmpty())
+            .collect(Collectors.joining(","));
     }
 
     private static String createUrlRegexRequestBody(String regexValue, String redactedValue) {
