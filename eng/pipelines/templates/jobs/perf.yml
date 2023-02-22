@@ -1,4 +1,7 @@
 parameters:
+- name: TimeoutInMinutes
+  type: number
+  default: '360'
 - name: LanguageVersion
   type: string
   default: '17'
@@ -30,10 +33,11 @@ parameters:
 extends:
   template: /eng/common/pipelines/templates/jobs/perf.yml
   parameters:
-    Variables:
-    - template: /eng/pipelines/templates/variables/globals.yml
+    TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
     Language: Java
     LanguageVersion: ${{ parameters.LanguageVersion }}
+    Variables:
+    - template: /eng/pipelines/templates/variables/globals.yml
     InstallLanguageSteps:
     - task: JavaToolInstaller@0
       inputs:

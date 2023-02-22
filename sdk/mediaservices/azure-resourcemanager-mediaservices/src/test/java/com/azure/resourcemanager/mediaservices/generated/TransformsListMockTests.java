@@ -32,7 +32,7 @@ public final class TransformsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"created\":\"2021-05-05T15:09:59Z\",\"description\":\"hpc\",\"lastModified\":\"2021-02-01T16:41:13Z\",\"outputs\":[]},\"id\":\"xotngfdguge\",\"name\":\"zihgrkyu\",\"type\":\"zabs\"}]}";
+            "{\"value\":[{\"properties\":{\"created\":\"2021-01-24T13:41:17Z\",\"description\":\"bfrmbodthsqqgvri\",\"lastModified\":\"2021-03-11T16:35:03Z\",\"outputs\":[]},\"id\":\"lacjfrnxo\",\"name\":\"sxauzlwvsgmwohqf\",\"type\":\"izvu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,8 +63,8 @@ public final class TransformsListMockTests {
         PagedIterable<Transform> response =
             manager
                 .transforms()
-                .list("fuojrngif", "rzpasccbiuimzdly", "dfqwmkyoq", "fdvruz", com.azure.core.util.Context.NONE);
+                .list("dhbemzqkzszu", "iwtglxxhljfpg", "icrmnzh", "gmqgjs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hpc", response.iterator().next().description());
+        Assertions.assertEquals("bfrmbodthsqqgvri", response.iterator().next().description());
     }
 }

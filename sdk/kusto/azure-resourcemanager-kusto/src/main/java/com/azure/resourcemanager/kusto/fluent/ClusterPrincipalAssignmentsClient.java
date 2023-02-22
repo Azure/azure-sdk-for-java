@@ -23,23 +23,6 @@ public interface ClusterPrincipalAssignmentsClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the principal assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName);
-
-    /**
-     * Checks that the principal assignment name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param principalAssignmentName The name of the principal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,18 +37,21 @@ public interface ClusterPrincipalAssignmentsClient {
         Context context);
 
     /**
-     * Gets a Kusto cluster principalAssignment.
+     * Checks that the principal assignment name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param principalAssignmentName The name of the Kusto principalAssignment.
+     * @param principalAssignmentName The name of the principal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster principalAssignment.
+     * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterPrincipalAssignmentInner get(String resourceGroupName, String clusterName, String principalAssignmentName);
+    CheckNameResultInner checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
      * Gets a Kusto cluster principalAssignment.
@@ -82,6 +68,20 @@ public interface ClusterPrincipalAssignmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ClusterPrincipalAssignmentInner> getWithResponse(
         String resourceGroupName, String clusterName, String principalAssignmentName, Context context);
+
+    /**
+     * Gets a Kusto cluster principalAssignment.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param principalAssignmentName The name of the Kusto principalAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto cluster principalAssignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterPrincipalAssignmentInner get(String resourceGroupName, String clusterName, String principalAssignmentName);
 
     /**
      * Create a Kusto cluster principalAssignment.

@@ -36,7 +36,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mediaservices.fluent.LiveEventsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventStatusInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventStreamEventInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventTrackEventInner;
 import com.azure.resourcemanager.mediaservices.models.LiveEventActionInput;
+import com.azure.resourcemanager.mediaservices.models.LiveEventGetStatusResult;
+import com.azure.resourcemanager.mediaservices.models.LiveEventGetStreamEventsResult;
+import com.azure.resourcemanager.mediaservices.models.LiveEventGetTrackIngestHeartbeatsResult;
 import com.azure.resourcemanager.mediaservices.models.LiveEventListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -216,6 +222,54 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+                + "/{accountName}/liveEvents/{liveEventName}/getStatus")
+        @ExpectedResponses({200, 202, 304})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> listGetStatus(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("liveEventName") String liveEventName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+                + "/{accountName}/liveEvents/{liveEventName}/getStreamEvents")
+        @ExpectedResponses({200, 202, 304})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> listGetStreamEvents(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("liveEventName") String liveEventName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+                + "/{accountName}/liveEvents/{liveEventName}/getTrackIngestHeartbeats")
+        @ExpectedResponses({200, 202, 304})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> listGetTrackIngestHeartbeats(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("liveEventName") String liveEventName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
                 + "/{accountName}/liveEventOperations/{operationId}")
@@ -292,7 +346,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -353,7 +407,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -487,7 +541,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -544,7 +598,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -665,7 +719,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -736,7 +790,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1071,7 +1125,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1137,7 +1191,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1376,7 +1430,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1433,7 +1487,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1650,7 +1704,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1707,7 +1761,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1925,7 +1979,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1982,7 +2036,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2204,7 +2258,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2272,7 +2326,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2520,7 +2574,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2579,7 +2633,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2774,6 +2828,729 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<LiveEventStatusInner>> listGetStatusSinglePageAsync(
+        String resourceGroupName, String accountName, String liveEventName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (liveEventName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> {
+                    Mono<Response<Flux<ByteBuffer>>> mono =
+                        service
+                            .listGetStatus(
+                                this.client.getEndpoint(),
+                                this.client.getSubscriptionId(),
+                                resourceGroupName,
+                                accountName,
+                                liveEventName,
+                                apiVersion,
+                                accept,
+                                context)
+                            .cache();
+                    return Mono
+                        .zip(
+                            mono,
+                            this
+                                .client
+                                .<LiveEventGetStatusResult, LiveEventGetStatusResult>getLroResult(
+                                    mono,
+                                    this.client.getHttpPipeline(),
+                                    LiveEventGetStatusResult.class,
+                                    LiveEventGetStatusResult.class,
+                                    this.client.getContext())
+                                .last()
+                                .flatMap(this.client::getLroFinalResultOrError));
+                })
+            .<PagedResponse<LiveEventStatusInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getT1().getRequest(),
+                        res.getT1().getStatusCode(),
+                        res.getT1().getHeaders(),
+                        res.getT2().value(),
+                        null,
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<LiveEventStatusInner>> listGetStatusSinglePageAsync(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (liveEventName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            service
+                .listGetStatus(
+                    this.client.getEndpoint(),
+                    this.client.getSubscriptionId(),
+                    resourceGroupName,
+                    accountName,
+                    liveEventName,
+                    apiVersion,
+                    accept,
+                    context)
+                .cache();
+        return Mono
+            .zip(
+                mono,
+                this
+                    .client
+                    .<LiveEventGetStatusResult, LiveEventGetStatusResult>getLroResult(
+                        mono,
+                        this.client.getHttpPipeline(),
+                        LiveEventGetStatusResult.class,
+                        LiveEventGetStatusResult.class,
+                        context)
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getT1().getRequest(),
+                        res.getT1().getStatusCode(),
+                        res.getT1().getHeaders(),
+                        res.getT2().value(),
+                        null,
+                        null));
+    }
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<LiveEventStatusInner> listGetStatusAsync(
+        String resourceGroupName, String accountName, String liveEventName) {
+        return new PagedFlux<>(() -> listGetStatusSinglePageAsync(resourceGroupName, accountName, liveEventName));
+    }
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<LiveEventStatusInner> listGetStatusAsync(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        return new PagedFlux<>(
+            () -> listGetStatusSinglePageAsync(resourceGroupName, accountName, liveEventName, context));
+    }
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LiveEventStatusInner> listGetStatus(
+        String resourceGroupName, String accountName, String liveEventName) {
+        return new PagedIterable<>(listGetStatusAsync(resourceGroupName, accountName, liveEventName));
+    }
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LiveEventStatusInner> listGetStatus(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        return new PagedIterable<>(listGetStatusAsync(resourceGroupName, accountName, liveEventName, context));
+    }
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<LiveEventStreamEventInner>> listGetStreamEventsSinglePageAsync(
+        String resourceGroupName, String accountName, String liveEventName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (liveEventName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> {
+                    Mono<Response<Flux<ByteBuffer>>> mono =
+                        service
+                            .listGetStreamEvents(
+                                this.client.getEndpoint(),
+                                this.client.getSubscriptionId(),
+                                resourceGroupName,
+                                accountName,
+                                liveEventName,
+                                apiVersion,
+                                accept,
+                                context)
+                            .cache();
+                    return Mono
+                        .zip(
+                            mono,
+                            this
+                                .client
+                                .<LiveEventGetStreamEventsResult, LiveEventGetStreamEventsResult>getLroResult(
+                                    mono,
+                                    this.client.getHttpPipeline(),
+                                    LiveEventGetStreamEventsResult.class,
+                                    LiveEventGetStreamEventsResult.class,
+                                    this.client.getContext())
+                                .last()
+                                .flatMap(this.client::getLroFinalResultOrError));
+                })
+            .<PagedResponse<LiveEventStreamEventInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getT1().getRequest(),
+                        res.getT1().getStatusCode(),
+                        res.getT1().getHeaders(),
+                        res.getT2().value(),
+                        null,
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<LiveEventStreamEventInner>> listGetStreamEventsSinglePageAsync(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (liveEventName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            service
+                .listGetStreamEvents(
+                    this.client.getEndpoint(),
+                    this.client.getSubscriptionId(),
+                    resourceGroupName,
+                    accountName,
+                    liveEventName,
+                    apiVersion,
+                    accept,
+                    context)
+                .cache();
+        return Mono
+            .zip(
+                mono,
+                this
+                    .client
+                    .<LiveEventGetStreamEventsResult, LiveEventGetStreamEventsResult>getLroResult(
+                        mono,
+                        this.client.getHttpPipeline(),
+                        LiveEventGetStreamEventsResult.class,
+                        LiveEventGetStreamEventsResult.class,
+                        context)
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getT1().getRequest(),
+                        res.getT1().getStatusCode(),
+                        res.getT1().getHeaders(),
+                        res.getT2().value(),
+                        null,
+                        null));
+    }
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<LiveEventStreamEventInner> listGetStreamEventsAsync(
+        String resourceGroupName, String accountName, String liveEventName) {
+        return new PagedFlux<>(() -> listGetStreamEventsSinglePageAsync(resourceGroupName, accountName, liveEventName));
+    }
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<LiveEventStreamEventInner> listGetStreamEventsAsync(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        return new PagedFlux<>(
+            () -> listGetStreamEventsSinglePageAsync(resourceGroupName, accountName, liveEventName, context));
+    }
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LiveEventStreamEventInner> listGetStreamEvents(
+        String resourceGroupName, String accountName, String liveEventName) {
+        return new PagedIterable<>(listGetStreamEventsAsync(resourceGroupName, accountName, liveEventName));
+    }
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LiveEventStreamEventInner> listGetStreamEvents(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        return new PagedIterable<>(listGetStreamEventsAsync(resourceGroupName, accountName, liveEventName, context));
+    }
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<LiveEventTrackEventInner>> listGetTrackIngestHeartbeatsSinglePageAsync(
+        String resourceGroupName, String accountName, String liveEventName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (liveEventName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> {
+                    Mono<Response<Flux<ByteBuffer>>> mono =
+                        service
+                            .listGetTrackIngestHeartbeats(
+                                this.client.getEndpoint(),
+                                this.client.getSubscriptionId(),
+                                resourceGroupName,
+                                accountName,
+                                liveEventName,
+                                apiVersion,
+                                accept,
+                                context)
+                            .cache();
+                    return Mono
+                        .zip(
+                            mono,
+                            this
+                                .client
+                                .<LiveEventGetTrackIngestHeartbeatsResult, LiveEventGetTrackIngestHeartbeatsResult>
+                                    getLroResult(
+                                        mono,
+                                        this.client.getHttpPipeline(),
+                                        LiveEventGetTrackIngestHeartbeatsResult.class,
+                                        LiveEventGetTrackIngestHeartbeatsResult.class,
+                                        this.client.getContext())
+                                .last()
+                                .flatMap(this.client::getLroFinalResultOrError));
+                })
+            .<PagedResponse<LiveEventTrackEventInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getT1().getRequest(),
+                        res.getT1().getStatusCode(),
+                        res.getT1().getHeaders(),
+                        res.getT2().value(),
+                        null,
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<LiveEventTrackEventInner>> listGetTrackIngestHeartbeatsSinglePageAsync(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (liveEventName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            service
+                .listGetTrackIngestHeartbeats(
+                    this.client.getEndpoint(),
+                    this.client.getSubscriptionId(),
+                    resourceGroupName,
+                    accountName,
+                    liveEventName,
+                    apiVersion,
+                    accept,
+                    context)
+                .cache();
+        return Mono
+            .zip(
+                mono,
+                this
+                    .client
+                    .<LiveEventGetTrackIngestHeartbeatsResult, LiveEventGetTrackIngestHeartbeatsResult>getLroResult(
+                        mono,
+                        this.client.getHttpPipeline(),
+                        LiveEventGetTrackIngestHeartbeatsResult.class,
+                        LiveEventGetTrackIngestHeartbeatsResult.class,
+                        context)
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getT1().getRequest(),
+                        res.getT1().getStatusCode(),
+                        res.getT1().getHeaders(),
+                        res.getT2().value(),
+                        null,
+                        null));
+    }
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<LiveEventTrackEventInner> listGetTrackIngestHeartbeatsAsync(
+        String resourceGroupName, String accountName, String liveEventName) {
+        return new PagedFlux<>(
+            () -> listGetTrackIngestHeartbeatsSinglePageAsync(resourceGroupName, accountName, liveEventName));
+    }
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<LiveEventTrackEventInner> listGetTrackIngestHeartbeatsAsync(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        return new PagedFlux<>(
+            () -> listGetTrackIngestHeartbeatsSinglePageAsync(resourceGroupName, accountName, liveEventName, context));
+    }
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LiveEventTrackEventInner> listGetTrackIngestHeartbeats(
+        String resourceGroupName, String accountName, String liveEventName) {
+        return new PagedIterable<>(listGetTrackIngestHeartbeatsAsync(resourceGroupName, accountName, liveEventName));
+    }
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LiveEventTrackEventInner> listGetTrackIngestHeartbeats(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        return new PagedIterable<>(
+            listGetTrackIngestHeartbeatsAsync(resourceGroupName, accountName, liveEventName, context));
+    }
+
+    /**
      * Get operation status.
      *
      * <p>Get a live event operation status.
@@ -2811,7 +3588,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2868,7 +3645,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2983,7 +3760,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3045,7 +3822,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

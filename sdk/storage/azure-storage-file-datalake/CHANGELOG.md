@@ -1,6 +1,6 @@
 # Release History
 
-## 12.14.0-beta.2 (Unreleased)
+## 12.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.14.0 (2023-02-21)
+
+### Features Added
+- Added `FileReadHeaders.getCreationTime()` and `FileReadHeaders.setCreationTime(OffsetDateTime)` to access the x-ms-creation-time property.
+- Added support for 2021-12-02 service version.
+- Added support for leasing operations on `DataLakeFileClient.appendWithResponse()` and `DataLakeFileClient.flushWithResponse()`.
+
+### Other Changes
+- Deprecated the always-failing API `DataLakeFileClient.flush(long)` to avoid confusion regarding overwrite semantics in DataLake.
 
 ## 12.13.3 (2023-02-09)
 

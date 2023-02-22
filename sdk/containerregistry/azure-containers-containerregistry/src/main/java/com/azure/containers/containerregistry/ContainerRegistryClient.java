@@ -4,7 +4,6 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
@@ -72,12 +71,8 @@ public final class ContainerRegistryClient {
     ContainerRegistryClient(HttpPipeline httpPipeline, String endpoint, String version) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImplBuilder()
-            .url(endpoint)
-            .pipeline(httpPipeline)
-            .apiVersion(version)
-            .buildClient();
-        this.registriesImplClient = registryImplClient.getContainerRegistries();
+        this.registriesImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version)
+            .getContainerRegistries();
         this.apiVersion = version;
     }
 

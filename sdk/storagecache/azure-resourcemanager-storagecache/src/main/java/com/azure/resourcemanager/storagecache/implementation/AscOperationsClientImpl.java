@@ -50,7 +50,7 @@ public final class AscOperationsClientImpl implements AscOperationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageCacheManageme")
-    private interface AscOperationsService {
+    public interface AscOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/locations/{location}/ascOperations"
@@ -180,21 +180,6 @@ public final class AscOperationsClientImpl implements AscOperationsClient {
      *
      * @param location The name of the region used to look up the operation.
      * @param operationId The operation id which uniquely identifies the asynchronous operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an asynchronous operation for the Azure HPC Cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AscOperationInner get(String location, String operationId) {
-        return getAsync(location, operationId).block();
-    }
-
-    /**
-     * Gets the status of an asynchronous operation for the Azure HPC Cache.
-     *
-     * @param location The name of the region used to look up the operation.
-     * @param operationId The operation id which uniquely identifies the asynchronous operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -204,5 +189,20 @@ public final class AscOperationsClientImpl implements AscOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AscOperationInner> getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
+    }
+
+    /**
+     * Gets the status of an asynchronous operation for the Azure HPC Cache.
+     *
+     * @param location The name of the region used to look up the operation.
+     * @param operationId The operation id which uniquely identifies the asynchronous operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of an asynchronous operation for the Azure HPC Cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AscOperationInner get(String location, String operationId) {
+        return getWithResponse(location, operationId, Context.NONE).getValue();
     }
 }

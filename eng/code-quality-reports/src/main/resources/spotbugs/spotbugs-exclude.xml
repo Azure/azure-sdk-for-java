@@ -2314,8 +2314,16 @@
 
   <!-- False positives -->
   <Match>
-    <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore"/>
-    <Method name="getFilenames"/>
+    <Or>
+      <And>
+        <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore"/>
+        <Method name="getFilenames"/>
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser"/>
+        <Method name="serialize"/>
+      </And>
+    </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
   <Match>

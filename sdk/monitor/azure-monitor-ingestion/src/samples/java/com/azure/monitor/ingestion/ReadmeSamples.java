@@ -6,7 +6,7 @@ package com.azure.monitor.ingestion;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 
 import java.util.List;
 
@@ -74,12 +74,40 @@ public final class ReadmeSamples {
                 .buildClient();
 
         List<Object> logs = getLogs();
-        UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
+        LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
                 .setMaxConcurrency(3);
-        client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
+        client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOptions,
                 Context.NONE);
         System.out.println("Logs uploaded successfully");
         // END: readme-sample-uploadLogsWithMaxConcurrency
+    }
+
+
+    /**
+     * Sample to demonstrate uploading logs to Azure Monitor.
+     */
+    public void uploadLogsWithErrorHandler() {
+        // BEGIN: readme-sample-uploadLogs-error-handler
+        DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        LogsIngestionClient client = new LogsIngestionClientBuilder()
+                .endpoint("<data-collection-endpoint")
+                .credential(tokenCredential)
+                .buildClient();
+
+        List<Object> logs = getLogs();
+
+        LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
+                .setLogsUploadErrorConsumer(uploadLogsError -> {
+                    System.out.println("Error message " + uploadLogsError.getResponseException().getMessage());
+                    System.out.println("Total logs failed to upload = " + uploadLogsError.getFailedLogs().size());
+
+                    // throw the exception here to abort uploading remaining logs
+                    // throw uploadLogsError.getResponseException();
+                });
+        client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOptions,
+                Context.NONE);
+        // END: readme-sample-uploadLogs-error-handler
     }
 
     private List<Object> getLogs() {

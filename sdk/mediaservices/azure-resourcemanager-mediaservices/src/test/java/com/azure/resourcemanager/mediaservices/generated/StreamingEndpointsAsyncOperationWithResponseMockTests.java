@@ -31,7 +31,7 @@ public final class StreamingEndpointsAsyncOperationWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"name\":\"ndnbfqy\",\"status\":\"Succeeded\"}";
+        String responseStr = "{\"name\":\"tgrdogypx\",\"status\":\"Succeeded\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,11 @@ public final class StreamingEndpointsAsyncOperationWithResponseMockTests {
         AsyncOperationResult response =
             manager
                 .streamingEndpoints()
-                .asyncOperationWithResponse("gqrsxypruuu", "bnchrsziz", "yuel", com.azure.core.util.Context.NONE)
+                .asyncOperationWithResponse(
+                    "aurkihcirlde", "xrdcoxnbkkja", "urnnqbnqbpiz", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ndnbfqy", response.name());
+        Assertions.assertEquals("tgrdogypx", response.name());
         Assertions.assertEquals(AsyncOperationStatus.SUCCEEDED, response.status());
     }
 }

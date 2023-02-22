@@ -60,10 +60,10 @@ public final class LiveEventsStopMockTests {
         manager
             .liveEvents()
             .stop(
-                "rltzkatbhjmz",
-                "nbsoqeqalarv",
-                "agunbtgfebw",
-                new LiveEventActionInput().withRemoveOutputsOnStop(true),
+                "memhooclutnpq",
+                "emc",
+                "jk",
+                new LiveEventActionInput().withRemoveOutputsOnStop(false),
                 com.azure.core.util.Context.NONE);
     }
 }

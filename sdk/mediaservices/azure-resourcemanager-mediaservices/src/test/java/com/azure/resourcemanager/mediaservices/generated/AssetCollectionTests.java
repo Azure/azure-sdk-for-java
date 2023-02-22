@@ -16,12 +16,12 @@ public final class AssetCollectionTests {
         AssetCollection model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"assetId\":\"944a234b-9bdc-4095-9013-c4f48b0ef400\",\"created\":\"2021-01-08T10:17:45Z\",\"lastModified\":\"2021-02-06T09:08:09Z\",\"alternateId\":\"xdeoejzic\",\"description\":\"fsj\",\"container\":\"gzfbishcbk\",\"storageAccountName\":\"jdeyeamdpha\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"buxwgip\",\"name\":\"honowkgshwank\",\"type\":\"xzbinjeputt\"},{\"properties\":{\"assetId\":\"0a6f8505-9610-4ad4-bba9-f863c5813b6c\",\"created\":\"2021-03-15T01:43:12Z\",\"lastModified\":\"2021-04-17T17:28:27Z\",\"alternateId\":\"ftiyqzrnkcq\",\"description\":\"xlwhzlsicoh\",\"container\":\"qnwvlrya\",\"storageAccountName\":\"hheunmmqhgyx\",\"storageEncryptionFormat\":\"None\"},\"id\":\"ocukoklyax\",\"name\":\"conuqszfkbeype\",\"type\":\"rmjmwvvjektc\"}],\"@odata.nextLink\":\"enhwlrs\"}")
+                    "{\"value\":[{\"properties\":{\"assetId\":\"dcf15dd7-7297-4c35-b345-0652c5850873\",\"created\":\"2021-01-13T15:17:17Z\",\"lastModified\":\"2021-08-09T20:50:19Z\",\"alternateId\":\"rywn\",\"description\":\"oqftiyqzrnkcq\",\"container\":\"xlwhzlsicoh\",\"storageAccountName\":\"qnwvlrya\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"eun\",\"name\":\"mqhgyxzkonocuk\",\"type\":\"klyaxuconu\"},{\"properties\":{\"assetId\":\"a84715ee-f63c-48eb-8008-66203b2ec722\",\"created\":\"2021-09-15T09:48:55Z\",\"lastModified\":\"2021-10-30T19:28:33Z\",\"alternateId\":\"pewr\",\"description\":\"mwvvjektcxsenhw\",\"container\":\"s\",\"storageAccountName\":\"rzpwvlqdqgbiq\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"kaet\",\"name\":\"kt\",\"type\":\"fcivfsnkym\"},{\"properties\":{\"assetId\":\"204512af-90b8-4a97-bc2a-ea98ec35984b\",\"created\":\"2021-04-08T09:35Z\",\"lastModified\":\"2021-09-28T09:51:37Z\",\"alternateId\":\"ebrjcxe\",\"description\":\"uwutttxfvjrbi\",\"container\":\"hxepcyvahfnlj\",\"storageAccountName\":\"qxj\",\"storageEncryptionFormat\":\"None\"},\"id\":\"qgidokgjljyo\",\"name\":\"gvcl\",\"type\":\"bgsncghkjeszzhb\"}],\"@odata.nextLink\":\"htxfvgxbfsmxnehm\"}")
                 .toObject(AssetCollection.class);
-        Assertions.assertEquals("xdeoejzic", model.value().get(0).alternateId());
-        Assertions.assertEquals("fsj", model.value().get(0).description());
-        Assertions.assertEquals("gzfbishcbk", model.value().get(0).container());
-        Assertions.assertEquals("jdeyeamdpha", model.value().get(0).storageAccountName());
+        Assertions.assertEquals("rywn", model.value().get(0).alternateId());
+        Assertions.assertEquals("oqftiyqzrnkcq", model.value().get(0).description());
+        Assertions.assertEquals("xlwhzlsicoh", model.value().get(0).container());
+        Assertions.assertEquals("qnwvlrya", model.value().get(0).storageAccountName());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,19 +32,24 @@ public final class AssetCollectionTests {
                     Arrays
                         .asList(
                             new AssetInner()
-                                .withAlternateId("xdeoejzic")
-                                .withDescription("fsj")
-                                .withContainer("gzfbishcbk")
-                                .withStorageAccountName("jdeyeamdpha"),
+                                .withAlternateId("rywn")
+                                .withDescription("oqftiyqzrnkcq")
+                                .withContainer("xlwhzlsicoh")
+                                .withStorageAccountName("qnwvlrya"),
                             new AssetInner()
-                                .withAlternateId("ftiyqzrnkcq")
-                                .withDescription("xlwhzlsicoh")
-                                .withContainer("qnwvlrya")
-                                .withStorageAccountName("hheunmmqhgyx")));
+                                .withAlternateId("pewr")
+                                .withDescription("mwvvjektcxsenhw")
+                                .withContainer("s")
+                                .withStorageAccountName("rzpwvlqdqgbiq"),
+                            new AssetInner()
+                                .withAlternateId("ebrjcxe")
+                                .withDescription("uwutttxfvjrbi")
+                                .withContainer("hxepcyvahfnlj")
+                                .withStorageAccountName("qxj")));
         model = BinaryData.fromObject(model).toObject(AssetCollection.class);
-        Assertions.assertEquals("xdeoejzic", model.value().get(0).alternateId());
-        Assertions.assertEquals("fsj", model.value().get(0).description());
-        Assertions.assertEquals("gzfbishcbk", model.value().get(0).container());
-        Assertions.assertEquals("jdeyeamdpha", model.value().get(0).storageAccountName());
+        Assertions.assertEquals("rywn", model.value().get(0).alternateId());
+        Assertions.assertEquals("oqftiyqzrnkcq", model.value().get(0).description());
+        Assertions.assertEquals("xlwhzlsicoh", model.value().get(0).container());
+        Assertions.assertEquals("qnwvlrya", model.value().get(0).storageAccountName());
     }
 }
