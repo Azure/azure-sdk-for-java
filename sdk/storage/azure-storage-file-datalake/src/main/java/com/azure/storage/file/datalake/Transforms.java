@@ -442,7 +442,8 @@ class Transforms {
             .setEncryptionKeySha256(h.getEncryptionKeySha256())
             .setFileContentMd5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())
-            .setErrorCode(h.getErrorCode());
+            .setErrorCode(h.getErrorCode())
+            .setCreationTime(h.getCreationTime());
     }
 
     static List<BlobSignedIdentifier> toBlobIdentifierList(List<DataLakeSignedIdentifier> identifiers) {

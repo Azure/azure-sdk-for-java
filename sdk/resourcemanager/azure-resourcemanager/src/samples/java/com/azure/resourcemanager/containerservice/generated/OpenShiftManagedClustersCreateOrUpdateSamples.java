@@ -22,7 +22,7 @@ import java.util.Map;
 /** Samples for OpenShiftManagedClusters CreateOrUpdate. */
 public final class OpenShiftManagedClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-04-30/examples/OpenShiftManagedClustersCreate_Update.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2019-04-30/examples/OpenShiftManagedClustersCreate_Update.json
      */
     /**
      * Sample code: Create/Update OpenShift Managed Cluster.

@@ -462,6 +462,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         public void channelReadCompleted() {
             lastReadUpdater.set(this, Instant.now());
+            this.resetTransitTimeout(); // we have got a successful read, so reset the transitTimeout count.
         }
 
         public void channelWriteAttempted() {

@@ -11,11 +11,10 @@ import com.azure.resourcemanager.cognitiveservices.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Identity model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class IdentityTests {
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Identity model =
             new Identity()
                 .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)

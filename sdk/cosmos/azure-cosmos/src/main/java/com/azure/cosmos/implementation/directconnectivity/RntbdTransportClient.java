@@ -15,12 +15,17 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.base.Strings;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -42,6 +47,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.CancellationException;
@@ -95,6 +101,7 @@ public class RntbdTransportClient extends TransportClient {
     private final Tag tag;
     private boolean channelAcquisitionContextEnabled;
     private final GlobalEndpointManager globalEndpointManager;
+    private final CosmosClientTelemetryConfig metricConfig;
 
     // endregion
 
@@ -131,6 +138,7 @@ public class RntbdTransportClient extends TransportClient {
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
+        this.metricConfig = null;
     }
 
     RntbdTransportClient(
@@ -151,6 +159,13 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
+        if (clientTelemetry != null &&
+            clientTelemetry.getClientTelemetryConfig() != null) {
+
+            this.metricConfig = clientTelemetry.getClientTelemetryConfig();
+        } else {
+            this.metricConfig = null;
+        }
     }
 
     // endregion
@@ -358,6 +373,26 @@ public class RntbdTransportClient extends TransportClient {
         if (this.closed.get()) {
             throw new TransportException(lenientFormat("%s is closed", this), null);
         }
+    }
+
+    public EnumSet<MetricCategory> getMetricCategories() {
+        return this.metricConfig != null ?
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getMetricCategories(this.metricConfig) : MetricCategory.DEFAULT_CATEGORIES;
+    }
+
+    public CosmosMeterOptions getMeterOptions(CosmosMetricName name) {
+        return this.metricConfig != null ?
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getMeterOptions(this.metricConfig, name) :
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .createDisabledMeterOptions(name);
     }
 
     // endregion
@@ -717,7 +752,6 @@ public class RntbdTransportClient extends TransportClient {
         public Duration timeoutDetectionOnWriteTimeLimit() {
             return this.timeoutDetectionOnWriteTimeLimit;
         }
-
 
         // endregion
 

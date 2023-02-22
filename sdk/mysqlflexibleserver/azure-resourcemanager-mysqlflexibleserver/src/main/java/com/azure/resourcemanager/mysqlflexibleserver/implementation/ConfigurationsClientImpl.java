@@ -64,7 +64,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
-    private interface ConfigurationsService {
+    public interface ConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL"
@@ -126,6 +126,10 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
+            @QueryParam("tags") String tags,
+            @QueryParam("keyword") String keyword,
+            @QueryParam("page") Integer page,
+            @QueryParam("pageSize") Integer pageSize,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -335,7 +339,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(
         String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, configurationName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, configurationName, parameters).getSyncPoller();
     }
 
     /**
@@ -358,7 +362,9 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         String configurationName,
         ConfigurationInner parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, configurationName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, serverName, configurationName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -569,30 +575,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigurationInner> getAsync(String resourceGroupName, String serverName, String configurationName) {
         return getWithResponseAsync(resourceGroupName, serverName, configurationName)
-            .flatMap(
-                (Response<ConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets information about a configuration of server.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationInner get(String resourceGroupName, String serverName, String configurationName) {
-        return getAsync(resourceGroupName, serverName, configurationName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -611,6 +594,22 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     public Response<ConfigurationInner> getWithResponse(
         String resourceGroupName, String serverName, String configurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, configurationName, context).block();
+    }
+
+    /**
+     * Gets information about a configuration of server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param configurationName The name of the server configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a configuration of server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationInner get(String resourceGroupName, String serverName, String configurationName) {
+        return getWithResponse(resourceGroupName, serverName, configurationName, Context.NONE).getValue();
     }
 
     /**
@@ -788,7 +787,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationListResultInner>, ConfigurationListResultInner> beginBatchUpdate(
         String resourceGroupName, String serverName, ConfigurationListForBatchUpdate parameters) {
-        return beginBatchUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        return this.beginBatchUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
     /**
@@ -806,7 +805,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationListResultInner>, ConfigurationListResultInner> beginBatchUpdate(
         String resourceGroupName, String serverName, ConfigurationListForBatchUpdate parameters, Context context) {
-        return beginBatchUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        return this.beginBatchUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -888,6 +887,10 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
+     * @param tags The tags of the server configuration.
+     * @param keyword The keyword of the server configuration.
+     * @param page The page of the server configuration.
+     * @param pageSize The pageSize of the server configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -896,7 +899,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
+        String resourceGroupName, String serverName, String tags, String keyword, Integer page, Integer pageSize) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -927,6 +930,10 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serverName,
+                            tags,
+                            keyword,
+                            page,
+                            pageSize,
                             accept,
                             context))
             .<PagedResponse<ConfigurationInner>>map(
@@ -946,6 +953,10 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
+     * @param tags The tags of the server configuration.
+     * @param keyword The keyword of the server configuration.
+     * @param page The page of the server configuration.
+     * @param pageSize The pageSize of the server configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -955,7 +966,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String tags,
+        String keyword,
+        Integer page,
+        Integer pageSize,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -984,6 +1001,10 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serverName,
+                tags,
+                keyword,
+                page,
+                pageSize,
                 accept,
                 context)
             .map(
@@ -1002,15 +1023,20 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
+     * @param tags The tags of the server configuration.
+     * @param keyword The keyword of the server configuration.
+     * @param page The page of the server configuration.
+     * @param pageSize The pageSize of the server configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConfigurationInner> listByServerAsync(String resourceGroupName, String serverName) {
+    private PagedFlux<ConfigurationInner> listByServerAsync(
+        String resourceGroupName, String serverName, String tags, String keyword, Integer page, Integer pageSize) {
         return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+            () -> listByServerSinglePageAsync(resourceGroupName, serverName, tags, keyword, page, pageSize),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
@@ -1019,6 +1045,31 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server configurations as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConfigurationInner> listByServerAsync(String resourceGroupName, String serverName) {
+        final String tags = null;
+        final String keyword = null;
+        final Integer page = null;
+        final Integer pageSize = null;
+        return new PagedFlux<>(
+            () -> listByServerSinglePageAsync(resourceGroupName, serverName, tags, keyword, page, pageSize),
+            nextLink -> listByServerNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List all the configurations in a given server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param tags The tags of the server configuration.
+     * @param keyword The keyword of the server configuration.
+     * @param page The page of the server configuration.
+     * @param pageSize The pageSize of the server configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1027,9 +1078,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationInner> listByServerAsync(
-        String resourceGroupName, String serverName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String tags,
+        String keyword,
+        Integer page,
+        Integer pageSize,
+        Context context) {
         return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+            () -> listByServerSinglePageAsync(resourceGroupName, serverName, tags, keyword, page, pageSize, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
@@ -1045,7 +1102,11 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
+        final String tags = null;
+        final String keyword = null;
+        final Integer page = null;
+        final Integer pageSize = null;
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, tags, keyword, page, pageSize));
     }
 
     /**
@@ -1053,6 +1114,10 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
+     * @param tags The tags of the server configuration.
+     * @param keyword The keyword of the server configuration.
+     * @param page The page of the server configuration.
+     * @param pageSize The pageSize of the server configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1061,14 +1126,22 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationInner> listByServer(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
+        String resourceGroupName,
+        String serverName,
+        String tags,
+        String keyword,
+        Integer page,
+        Integer pageSize,
+        Context context) {
+        return new PagedIterable<>(
+            listByServerAsync(resourceGroupName, serverName, tags, keyword, page, pageSize, context));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1104,7 +1177,8 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

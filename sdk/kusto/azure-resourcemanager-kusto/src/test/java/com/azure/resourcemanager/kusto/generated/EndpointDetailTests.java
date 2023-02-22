@@ -7,19 +7,18 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.EndpointDetail;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EndpointDetailTests {
-    @Test
-    public void testDeserialize() {
-        EndpointDetail model = BinaryData.fromString("{\"port\":105922794}").toObject(EndpointDetail.class);
-        Assertions.assertEquals(105922794, model.port());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EndpointDetail model = BinaryData.fromString("{\"port\":1397433575}").toObject(EndpointDetail.class);
+        Assertions.assertEquals(1397433575, model.port());
     }
 
-    @Test
-    public void testSerialize() {
-        EndpointDetail model = new EndpointDetail().withPort(105922794);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EndpointDetail model = new EndpointDetail().withPort(1397433575);
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
-        Assertions.assertEquals(105922794, model.port());
+        Assertions.assertEquals(1397433575, model.port());
     }
 }

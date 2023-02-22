@@ -17,6 +17,16 @@ public final class ConfigurationListForBatchUpdate {
     @JsonProperty(value = "value")
     private List<ConfigurationForBatchUpdate> value;
 
+    /*
+     * Whether to reset all server parameters to default.
+     */
+    @JsonProperty(value = "resetAllToDefault")
+    private ResetAllToDefault resetAllToDefault;
+
+    /** Creates an instance of ConfigurationListForBatchUpdate class. */
+    public ConfigurationListForBatchUpdate() {
+    }
+
     /**
      * Get the value property: The list of server configurations.
      *
@@ -34,6 +44,26 @@ public final class ConfigurationListForBatchUpdate {
      */
     public ConfigurationListForBatchUpdate withValue(List<ConfigurationForBatchUpdate> value) {
         this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the resetAllToDefault property: Whether to reset all server parameters to default.
+     *
+     * @return the resetAllToDefault value.
+     */
+    public ResetAllToDefault resetAllToDefault() {
+        return this.resetAllToDefault;
+    }
+
+    /**
+     * Set the resetAllToDefault property: Whether to reset all server parameters to default.
+     *
+     * @param resetAllToDefault the resetAllToDefault value to set.
+     * @return the ConfigurationListForBatchUpdate object itself.
+     */
+    public ConfigurationListForBatchUpdate withResetAllToDefault(ResetAllToDefault resetAllToDefault) {
+        this.resetAllToDefault = resetAllToDefault;
         return this;
     }
 

@@ -3,6 +3,7 @@
 ## 12.14.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `FileReadHeaders.getCreationTime()` and `FileReadHeaders.setCreationTime(OffsetDateTime)` to access the x-ms-creation-time property.
 
 ### Breaking Changes
 

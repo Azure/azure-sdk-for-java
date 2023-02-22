@@ -6,19 +6,18 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.IdentityUserAssignedIdentities;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityUserAssignedIdentitiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         IdentityUserAssignedIdentities model =
             BinaryData
-                .fromString("{\"principalId\":\"ygxgispemvtz\",\"clientId\":\"ufubl\"}")
+                .fromString("{\"principalId\":\"nhsjcnyej\",\"clientId\":\"ryhtnapczwlokjy\"}")
                 .toObject(IdentityUserAssignedIdentities.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         IdentityUserAssignedIdentities model = new IdentityUserAssignedIdentities();
         model = BinaryData.fromObject(model).toObject(IdentityUserAssignedIdentities.class);
     }

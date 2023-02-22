@@ -61,8 +61,7 @@ public class SpyClientUnderTestFactory {
                     null,
                     null,
                     clientTelemetryConfig,
-                    null,
-                    EnumSet.allOf(TagName.class));
+                    null);
         }
 
         public abstract List<T> getCapturedRequests();
