@@ -762,10 +762,19 @@
 
   <!-- Returning null is correct in these cases as it represents the not-applicable case -->
   <Match>
-    <Class name="com.azure.storage.blob.nio.AzureBlobFileAttributes"/>
     <Or>
-      <Method name="isServerEncrypted"/>
-      <Method name="isAccessTierInferred"/>
+      <And>
+        <Class name="com.azure.storage.blob.nio.AzureBlobFileAttributes"/>
+        <Method name="isServerEncrypted"/>
+      </And>
+      <And>
+        <Class name="com.azure.storage.blob.nio.AzureBlobFileAttributes"/>
+        <Method name="isAccessTierInferred"/>
+      </And>
+      <And>
+        <Class name="com.azure.search.documents.indexes.models.EntityRecognitionSkill"/>
+        <Method name="areTypelessEntitiesIncluded"/>
+      </And>
     </Or>
     <Bug pattern="NP_BOOLEAN_RETURN_NULL"/>
   </Match>
@@ -2540,5 +2549,4 @@
       <Field name="searchClient"/>
     </Or>
   </Match>
-
 </FindBugsFilter>
