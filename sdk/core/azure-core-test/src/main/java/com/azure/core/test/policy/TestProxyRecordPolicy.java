@@ -44,12 +44,9 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     /**
      * Create an instance of {@link TestProxyRecordPolicy} with a list of custom sanitizers.
-     *
-     * @param customSanitizers the list of custom sanitizers to be added to {@link TestProxyRecordPolicy}
      */
-    public TestProxyRecordPolicy(List<TestProxySanitizer> customSanitizers) {
+    public TestProxyRecordPolicy() {
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
-        this.sanitizers.addAll(customSanitizers == null ? Collections.emptyList() : customSanitizers);
     }
 
     /**
@@ -65,7 +62,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
         this.xRecordingId = response.getHeaderValue("x-recording-id");
 
-        addProxySanitization();
+        addProxySanitization(this.sanitizers);
     }
 
     /**
@@ -111,12 +108,24 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         return next.process();
     }
 
-    private void addProxySanitization() {
-        getSanitizerRequests(this.sanitizers)
-            .forEach(request -> {
-                request.setHeader("x-recording-id", xRecordingId);
-                client.sendSync(request, Context.NONE);
-            });
+    /**
+     * Add a list of {@link TestProxySanitizer} to the current recording session.
+     * @param sanitizers The sanitizers to add.
+     */
+    public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
+        if (isRecording()) {
+            getSanitizerRequests(sanitizers)
+                .forEach(request -> {
+                    request.setHeader("x-recording-id", xRecordingId);
+                    HttpResponse response = client.sendSync(request, Context.NONE);
+                });
+        } else {
+            this.sanitizers.addAll(sanitizers);
+        }
+    }
+
+    private boolean isRecording() {
+        return xRecordingId != null;
     }
 }
 

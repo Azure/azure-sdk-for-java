@@ -50,14 +50,10 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     /**
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
-     *
-     * @param customSanitizers the list of custom sanitizers to be added to {@link TestProxyPlaybackClient}
      */
-    public TestProxyPlaybackClient(List<TestProxySanitizer> customSanitizers, List<TestProxyMatcher> customMatcher) {
+    public TestProxyPlaybackClient() {
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
-        this.sanitizers.addAll(customSanitizers == null ? Collections.emptyList() : customSanitizers);
         this.matchers.addAll(DEFAULT_MATCHERS);
-        this.matchers.addAll(customMatcher == null ? Collections.emptyList() : customMatcher);
     }
 
     /**
@@ -71,8 +67,8 @@ public class TestProxyPlaybackClient implements HttpClient {
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             xRecordingId = response.getHeaderValue("x-recording-id");
-            addProxySanitization();
-            addMatcherRequests();
+            addProxySanitization(this.sanitizers);
+            addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
             // The test proxy stores variables in a map with no guaranteed order.
             // The Java implementation of recording did not use a map, but relied on the order
@@ -110,19 +106,39 @@ public class TestProxyPlaybackClient implements HttpClient {
         return client.send(request);
     }
 
-    private void addProxySanitization() {
-        getSanitizerRequests(this.sanitizers)
-            .forEach(request -> {
-                request.setHeader("x-recording-id", xRecordingId);
-                client.sendSync(request, Context.NONE);
-            });
+    /**
+     * Add a list of {@link TestProxySanitizer} to the current playback session.
+     * @param sanitizers The sanitizers to add.
+     */
+    public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
+        if(isPlayingBack()) {
+            getSanitizerRequests(sanitizers)
+                .forEach(request -> {
+                    request.setHeader("x-recording-id", xRecordingId);
+                    client.sendSync(request, Context.NONE);
+                });
+        }else {
+            this.sanitizers.addAll(sanitizers);
+        }
     }
-    private void addMatcherRequests() {
 
-        getMatcherRequests(this.matchers)
-            .forEach(request -> {
-                request.setHeader("x-recording-id", xRecordingId);
-                client.sendSync(request, Context.NONE);
-            });
+    /**
+     * Add a list of {@link TestProxyMatcher} to the current playback session.
+     * @param matchers The matchers to add.
+     */
+    public void addMatcherRequests(List<TestProxyMatcher> matchers) {
+        if (isPlayingBack()) {
+            getMatcherRequests(matchers)
+                .forEach(request -> {
+                    request.setHeader("x-recording-id", xRecordingId);
+                    client.sendSync(request, Context.NONE);
+                });
+        } else {
+            this.matchers.addAll(matchers);
+        }
+    }
+
+    private boolean isPlayingBack() {
+        return xRecordingId != null;
     }
 }

@@ -74,8 +74,6 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyRecordPolicy testProxyRecordPolicy;
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
-    private List<TestProxySanitizer> recordSanitizers;
-    private List<TestProxyMatcher> customMatcher;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -301,8 +299,10 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpClient getPlaybackClient() {
         if (enableTestProxy) {
-            testProxyPlaybackClient = new TestProxyPlaybackClient(this.recordSanitizers, this.customMatcher);
-            proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
+                if (testProxyPlaybackClient == null) {
+                    testProxyPlaybackClient = new TestProxyPlaybackClient();
+                    proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
+                }
             return testProxyPlaybackClient;
         } else {
             return new PlaybackClient(recordedData, textReplacementRules);
@@ -371,8 +371,10 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     private HttpPipelinePolicy startProxyRecording() {
-        this.testProxyRecordPolicy = new TestProxyRecordPolicy(this.recordSanitizers);
-        testProxyRecordPolicy.startRecording(playbackRecordName);
+        if (testProxyRecordPolicy == null) {
+            testProxyRecordPolicy = new TestProxyRecordPolicy();
+            testProxyRecordPolicy.startRecording(playbackRecordName);
+        }
         return testProxyRecordPolicy;
     }
 
@@ -431,11 +433,18 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Add text replacement rule (regex as key, the replacement text as value) into {@code recordSanitizers}
+     * Add sanitizer rule for sanitization during record or playback.
      * @param testProxySanitizers the list of replacement regex and rules.
      */
     public void addSanitizers(List<TestProxySanitizer> testProxySanitizers) {
-        this.recordSanitizers = testProxySanitizers;
+        if (testProxyPlaybackClient != null) {
+            testProxyPlaybackClient.addProxySanitization(testProxySanitizers);
+        }
+        else if (testProxyRecordPolicy != null) {
+            testProxyRecordPolicy.addProxySanitization(testProxySanitizers);
+        } else {
+            throw new RuntimeException("Playback or record must have been started before adding sanitizers.");
+        }
     }
 
     /**
@@ -443,6 +452,10 @@ public class InterceptorManager implements AutoCloseable {
      * @param testProxyMatchers the list of matcher rules when playing back recorded data.
      */
     public void addMatchers(List<TestProxyMatcher> testProxyMatchers) {
-        this.customMatcher = testProxyMatchers;
+        if (testProxyPlaybackClient != null) {
+            testProxyPlaybackClient.addMatcherRequests(testProxyMatchers);
+        } else {
+            throw new RuntimeException("Playback must have been started before adding matchers.");
+        }
     }
 }
