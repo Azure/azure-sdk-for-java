@@ -100,7 +100,7 @@ public final class TestUtils {
      * @throws IllegalStateException if the session-records folder cannot be found.
      */
     public static File getRecordFolder() {
-        URL folderUrl = InterceptorManager.class.getClassLoader().getResource(RECORD_FOLDER);
+        URL folderUrl = TestUtils.class.getClassLoader().getResource(RECORD_FOLDER);
 
         if (folderUrl != null) {
             // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
