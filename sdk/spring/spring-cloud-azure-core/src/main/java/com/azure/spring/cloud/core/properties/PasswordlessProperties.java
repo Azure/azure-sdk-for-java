@@ -59,33 +59,63 @@ public interface PasswordlessProperties extends TokenCredentialOptionsProvider, 
      */
     enum AzurePasswordlessPropertiesMapping {
 
+        /**
+         * Getter function and setter biConsumer for scopes.
+         */
         scopes(p -> p.getScopes(),
             (p, s) -> p.setProperty(AuthProperty.SCOPES.getPropertyKey(), s)),
 
+        /**
+         * Getter function and setter biConsumer for clientCertificatePassword.
+         */
         clientCertificatePassword(p -> p.getCredential().getClientCertificatePassword(),
             (p, s) -> p.setProperty(AuthProperty.CLIENT_CERTIFICATE_PASSWORD.getPropertyKey(), s)),
 
+        /**
+         * Getter function and setter biConsumer for clientCertificatePath.
+         */
         clientCertificatePath(p -> p.getCredential().getClientCertificatePath(),
             (p, s) -> p.setProperty(AuthProperty.CLIENT_CERTIFICATE_PATH.getPropertyKey(), s)),
 
+        /**
+         * Getter function and setter biConsumer for clientId.
+         */
         clientId(p -> p.getCredential().getClientId(),
             (p, s) -> p.setProperty(AuthProperty.CLIENT_ID.getPropertyKey(), s)),
 
+        /**
+         * Getter function and setter biConsumer for clientSecret.
+         */
         clientSecret(p -> p.getCredential().getClientSecret(),
             (p, s) -> p.setProperty(AuthProperty.CLIENT_SECRET.getPropertyKey(), s)),
 
+        /**
+         * Getter function and setter biConsumer for managedIdentityEnabled.
+         */
         managedIdentityEnabled(p -> String.valueOf(p.getCredential().isManagedIdentityEnabled()),
             (p, s) -> p.setProperty(AuthProperty.MANAGED_IDENTITY_ENABLED.getPropertyKey(), s)),
 
+        /**
+         * Getter function and setter biConsumer for password.
+         */
         password(p -> p.getCredential().getPassword(),
             (p, s) -> p.setProperty(AuthProperty.PASSWORD.getPropertyKey(), s)),
 
+        /**
+         * Getter function and setter biConsumer for username.
+         */
         username(p -> p.getCredential().getUsername(),
             (p, s) -> p.setProperty(AuthProperty.USERNAME.getPropertyKey(), s)),
 
+        /**
+         * Getter function and setter biConsumer for tenantId.
+         */
         tenantId(p -> p.getProfile().getTenantId(),
             (p, s) -> p.setProperty(AuthProperty.TENANT_ID.getPropertyKey(), s)),
 
+        /**
+         * Getter function and setter biConsumer for authorityHost.
+         */
         authorityHost(p -> p.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
             (p, s) -> p.setProperty(AuthProperty.AUTHORITY_HOST.getPropertyKey(), s));
 
