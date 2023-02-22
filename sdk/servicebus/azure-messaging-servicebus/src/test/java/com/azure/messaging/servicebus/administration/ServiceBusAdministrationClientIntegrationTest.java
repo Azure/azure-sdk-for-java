@@ -12,8 +12,6 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
-import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -37,7 +35,6 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -46,13 +43,23 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.azure.messaging.servicebus.TestUtils.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
+import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
+import static com.azure.messaging.servicebus.TestUtils.getEntityName;
+import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getRuleBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getTopicBaseName;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
@@ -61,44 +68,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @Tag("integration")
 public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(20);
-
-    @AfterAll
-    static void cleanup() {
-
-        if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
-            return;
-        }
-        final ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString(getConnectionString(false))
-            .buildClient();
-        // Clear all queues
-        client.listQueues().stream()
-            .filter(queueProperties -> !queueProperties.getName().toLowerCase(Locale.ROOT)
-                                        .equals(getEntityName(getQueueBaseName(), 5)))
-            .forEach(property -> client.deleteQueue(property.getName()));
-
-        //Clear all topics
-        client.listTopics().stream()
-            .filter(properties -> !(properties.getName().toLowerCase(Locale.ROOT)
-                .equals(getEntityName(getTopicBaseName(), 2))
-            || properties.getName().toLowerCase(Locale.ROOT)
-                .equals(getEntityName(getTopicBaseName(), 1))))
-            .forEach(property -> client.deleteTopic(property.getName()));
-
-        //Clear all subscriptions
-        final String topicName = getEntityName(getTopicBaseName(), 2);
-        client.listSubscriptions(topicName).stream()
-            .filter(properties -> !properties.getSubscriptionName().toLowerCase(Locale.ROOT)
-                .equals(getEntityName(getSubscriptionBaseName(), 2)))
-            .forEach(property -> client.deleteSubscription(topicName, property.getSubscriptionName()));
-
-        //Clear rules in subscription
-        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
-        client.listRules(topicName, subscriptionName).stream()
-            .filter(properties -> !properties.getName().toLowerCase(Locale.ROOT)
-                .equals(getEntityName(getRuleBaseName(), 2)))
-            .forEach(property -> client.deleteRule(topicName, subscriptionName, property.getName()));
-    }
 
     /**
      * Test to connect to the service bus with an azure sas credential.
@@ -128,9 +97,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void createQueue() {
         final ServiceBusAdministrationClient client = getClient();
-        final String queueName = interceptorManager.isPlaybackMode()
-            ? "queue-2"
-            : getEntityName(getQueueBaseName(), 2);
+        final String queueName = testResourceNamer.randomName("test", 9);
         final String forwardToEntityName = interceptorManager.isPlaybackMode()
             ? "queue-5"
             : getEntityName(getQueueBaseName(), 5);
@@ -183,9 +150,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void createTopicWithResponse() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-3"
-            : getEntityName(getTopicBaseName(), 3);
+        final String topicName = testResourceNamer.randomName("test", 9);
         final CreateTopicOptions expected = new CreateTopicOptions()
             .setMaxSizeInMegabytes(2048L)
             .setDuplicateDetectionRequired(true)
@@ -220,7 +185,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final String forwardToTopic = interceptorManager.isPlaybackMode()
             ? "topic-1"
             : getEntityName(getTopicBaseName(), 1);
-        final String subscriptionName = testResourceNamer.randomName(getSubscriptionBaseName(), 10);
+        final String subscriptionName = testResourceNamer.randomName("sub", 9);
         final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
@@ -246,7 +211,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void createRule() {
         final ServiceBusAdministrationClient client = getClient();
 
-        final String ruleName = testResourceNamer.randomName("rule", 5);
+        final String ruleName = testResourceNamer.randomName("rule", 9);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
@@ -274,13 +239,13 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void createRuleDefaults() {
         final ServiceBusAdministrationClient client = getClient();
 
-        final String ruleName = testResourceNamer.randomName("rule", 7);
+        final String ruleName = testResourceNamer.randomName("rule", 9);
         final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-2"
+            ? "topic-13"
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            ? "subscription"
+            :  getSubscriptionBaseName();
 
         final RuleProperties rule = client.createRule(topicName, subscriptionName, ruleName);
         assertEquals(ruleName, rule.getName());
@@ -292,7 +257,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void createRuleResponse() {
         final ServiceBusAdministrationClient client = getClient();
 
-        final String ruleName = testResourceNamer.randomName("rule", 7);
+        final String ruleName = testResourceNamer.randomName("rule", 9);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
@@ -343,8 +308,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            ? "subscription"
+            : getSubscriptionBaseName();
         final ServiceBusAdministrationClient client = getClient();
 
         ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
@@ -362,8 +327,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            ? "subscription"
+            : getSubscriptionBaseName();
         final SqlRuleAction expectedAction = new SqlRuleAction("SET MessageId = 'matching-id'");
         final SqlRuleFilter expectedFilter = new SqlRuleFilter("sys.To = 'telemetry-event'");
 
@@ -495,9 +460,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     @Test
     void getTopicDoesNotExist() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-99"
-            : getEntityName(getTopicBaseName(), 99);
+        final String topicName = testResourceNamer.randomName("exists", 9);
 
         assertThrows(ResourceNotFoundException.class, () -> client.getTopic(topicName),
             "Topic exists! But should not. Incorrect getTopic behavior");
@@ -590,8 +553,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            ? "subscription"
+            : getSubscriptionBaseName();
 
         assertTrue(client.getSubscriptionExists(topicName, subscriptionName));
     }
@@ -604,7 +567,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final SubscriptionRuntimeProperties properties = client.getSubscriptionRuntimeProperties(topicName, subscriptionName);
@@ -667,8 +630,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            ? "subscription"
+            : getSubscriptionBaseName();
 
         final Response<RuleProperties> response = client.getRuleWithResponse(topicName, subscriptionName, ruleName, null);
         assertEquals(200, response.getStatusCode());
@@ -794,8 +757,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            ? "subscription"
+            : getSubscriptionBaseName();
 
         PagedIterable<RuleProperties> ruleProperties = client.listRules(topicName, subscriptionName);
 
