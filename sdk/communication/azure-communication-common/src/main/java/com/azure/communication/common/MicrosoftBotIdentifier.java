@@ -9,7 +9,6 @@ import com.azure.core.util.CoreUtils;
  * Communication identifier for Microsoft Teams User
  */
 public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
-
     private final String botId;
     private final boolean isGlobal;
     private boolean rawIdSet = false;
@@ -134,18 +133,18 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
         if (!rawIdSet) {
             if (this.isGlobal) {
                 if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
-                    super.setRawId(BotDodCloudGlobal + this.botId);
+                    super.setRawId(BOT_DOD_CLOUD_GLOBAL + this.botId);
                 } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
-                    super.setRawId(BotGcchCloudGlobal + this.botId);
+                    super.setRawId(BOT_GCCH_CLOUD_GLOBAL + this.botId);
                 } else {
-                    super.setRawId(Bot + this.botId);
+                    super.setRawId(BOT + this.botId);
                 }
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
-                super.setRawId(BotDodCloud + this.botId);
+                super.setRawId(BOT_DOD_CLOUD + this.botId);
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
-                super.setRawId(BotGcchCloud + this.botId);
+                super.setRawId(BOT_GCCH_CLOUD + this.botId);
             } else {
-                super.setRawId(BotPublicCloud + this.botId);
+                super.setRawId(BOT_PUBLIC_CLOUD + this.botId);
             }
         }
     }
