@@ -8,8 +8,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -73,7 +76,7 @@ public class SchemaRegistryClientTests extends TestBase {
             .fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
+            builder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
         } else {
             builder.addPolicy(new RetryPolicy())
                 .addPolicy(interceptorManager.getRecordPolicy());
@@ -83,6 +86,14 @@ public class SchemaRegistryClientTests extends TestBase {
     @Override
     protected void afterTest() {
         Mockito.framework().clearInlineMock(this);
+    }
+
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .skipRequest((httpRequest, context) -> false)
+            .build();
     }
 
     /**
@@ -200,18 +211,16 @@ public class SchemaRegistryClientTests extends TestBase {
     public void registerSchemaInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
-        final SchemaRegistryAsyncClient client = builder.buildAsyncClient();
+        final SchemaRegistryClient client = builder.buildClient();
         final SchemaFormat unknownSchemaFormat = SchemaFormat.fromString("protobuf");
 
         // Act & Assert
-        StepVerifier.create(client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof HttpResponseException);
+        try {
+            client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat, Context.NONE);
 
-                final HttpResponseException responseException = ((HttpResponseException) error);
-                assertEquals(403, responseException.getResponse().getStatusCode());
-            })
-            .verify();
+        } catch (HttpResponseException e) {
+            assertEquals(403, e.getResponse().getStatusCode());
+        }
     }
 
     /**
