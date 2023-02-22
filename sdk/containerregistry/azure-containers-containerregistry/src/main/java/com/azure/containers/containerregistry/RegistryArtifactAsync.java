@@ -4,6 +4,8 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.ArtifactManifestPropertiesHelper;
+import com.azure.containers.containerregistry.implementation.ArtifactTagPropertiesHelper;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
@@ -20,6 +22,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -236,6 +239,8 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
         try {
             return this.getDigestMono()
                 .flatMap(res -> this.serviceClient.getManifestPropertiesWithResponseAsync(getRepositoryName(), res, context))
+                .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                    ArtifactManifestPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -311,6 +316,8 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
             }
 
             return this.serviceClient.getTagPropertiesWithResponseAsync(getRepositoryName(), tag, context)
+                .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                    ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -495,6 +502,8 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
                 .setWriteEnabled(tagProperties.isWriteEnabled());
 
             return this.serviceClient.updateTagAttributesWithResponseAsync(getRepositoryName(), tag, writeableProperties, context)
+                .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                    ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
@@ -559,7 +568,8 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
         return withContext(context -> this.updateManifestPropertiesWithResponse(manifestProperties, context));
     }
 
-    private Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
+    private Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(
+        ArtifactManifestProperties manifestProperties, Context context) {
         try {
             if (manifestProperties == null) {
                 return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
@@ -572,7 +582,10 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
                 .setReadEnabled(manifestProperties.isReadEnabled());
 
             return getDigestMono()
-                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(getRepositoryName(), res, writeableProperties, context))
+                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(getRepositoryName(), res,
+                    writeableProperties, context))
+                .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                    ArtifactManifestPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);

@@ -23,7 +23,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Authentications. */
@@ -60,12 +59,9 @@ public final class AuthenticationsImpl {
      *
      * @param url the service endpoint.
      * @param httpPipeline the pipeline to use to make the call.
-     * @param serializerAdapter the serializer adapter for the rest client.
-     *
      */
-    public AuthenticationsImpl(String url, String apiVersion, HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
-        this.service =
-            RestProxy.create(AuthenticationsService.class, httpPipeline, serializerAdapter);
+    public AuthenticationsImpl(String url, String apiVersion, HttpPipeline httpPipeline) {
+        this.service = RestProxy.create(AuthenticationsService.class, httpPipeline);
         this.url = url;
         this.apiVersion = apiVersion;
     }
