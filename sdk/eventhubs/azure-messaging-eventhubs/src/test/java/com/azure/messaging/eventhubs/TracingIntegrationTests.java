@@ -147,8 +147,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime))
             .take(1)
             .subscribe(pe -> {
-                receivedMessage.set(pe.getData());
-                receivedSpan.set(Span.current());
+                receivedMessage.compareAndSet(null, pe.getData());
+                receivedSpan.compareAndSet(null, Span.current());
             });
 
         StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
@@ -178,8 +178,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .receive()
             .take(1)
             .subscribe(pe -> {
-                receivedMessage.set(pe.getData());
-                receivedSpan.set(Span.current());
+                receivedMessage.compareAndSet(null, pe.getData());
+                receivedSpan.compareAndSet(null, Span.current());
             });
 
 
@@ -219,8 +219,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         consumer.receive()
             .take(1)
             .subscribe(pe -> {
-                receivedMessage.set(pe.getData());
-                receivedSpan.set(Span.current());
+                receivedMessage.compareAndSet(null, pe.getData());
+                receivedSpan.compareAndSet(null, Span.current());
             });
 
         StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
@@ -373,7 +373,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void sendAndProcess() throws InterruptedException {
-        AtomicReference<Span> currentInProcess = new AtomicReference<>(Span.getInvalid());
+        AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<EventData> receivedMessage = new AtomicReference<>();
 
         CountDownLatch latch = new CountDownLatch(2);
@@ -387,8 +387,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())
             .processEvent(ec -> {
-                currentInProcess.set(Span.current());
-                receivedMessage.set(ec.getEventData());
+                currentInProcess.compareAndSet(null, Span.current());
+                receivedMessage.compareAndSet(null, ec.getEventData());
                 ec.updateCheckpoint();
             })
             .processError(e -> fail("unexpected error", e.getThrowable()))
@@ -466,7 +466,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         EventData message1 = new EventData(CONTENTS_BYTES);
         EventData message2 = new EventData(CONTENTS_BYTES);
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
-        List<EventData> received = new ArrayList<>();
+        AtomicReference<List<EventData>> received = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
         spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get());
         StepVerifier.create(producer.send(Arrays.asList(message1, message2), new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
@@ -478,12 +478,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())
             .processEventBatch(eb -> {
-                received.clear();
-                eb.getEvents().forEach(e -> {
-                    currentInProcess.set(Span.current());
-                    received.add(e);
-                    eb.updateCheckpoint();
-                });
+                currentInProcess.compareAndSet(null, Span.current());
+                received.compareAndSet(null, eb.getEvents());
+                eb.updateCheckpoint();
             }, 2)
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
@@ -504,13 +501,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<ReadableSpan> processed = findSpans(spans, "EventHubs.process")
             .stream().filter(p -> p == currentInProcess.get()).collect(toList());
         assertEquals(1, processed.size());
-        assertConsumerSpan(processed.get(0), received, "EventHubs.process", StatusCode.UNSET);
+        assertConsumerSpan(processed.get(0), received.get(), "EventHubs.process", StatusCode.UNSET);
     }
 
     @Test
     public void sendProcessAndFail() throws InterruptedException {
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
-        List<EventData> received = new ArrayList<>();
+        AtomicReference<List<EventData>> received = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || span.getName().equals("EventHubs.send"));
 
@@ -523,13 +520,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())
             .processEventBatch(eb -> {
-                received.clear();
-                eb.getEvents().forEach(e -> {
-                    currentInProcess.set(Span.current());
-                    received.add(e);
-                    eb.updateCheckpoint();
-                    throw new RuntimeException("foo");
-                });
+                currentInProcess.compareAndSet(null, Span.current());
+                received.compareAndSet(null, eb.getEvents());
+                eb.updateCheckpoint();
+                throw new RuntimeException("foo");
             }, 1)
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
@@ -543,7 +537,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .stream().filter(p -> p == currentInProcess.get())
             .collect(toList());
         assertEquals(1, processed.size());
-        assertConsumerSpan(processed.get(0), received, "EventHubs.process", StatusCode.ERROR);
+        assertConsumerSpan(processed.get(0), received.get(), "EventHubs.process", StatusCode.ERROR);
     }
 
     private void assertMessageSpan(ReadableSpan actual, EventData message) {
