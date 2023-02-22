@@ -55,7 +55,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
-##### Example
+##### Example - Create Parties Client
 
 ```java readme-sample-createPartiesClient
 String endpoint = "https://<farmbeats-endpoint>.farmbeats.azure.net";
@@ -68,6 +68,7 @@ PartiesAsyncClient partiesClient = partiesBuilder.buildAsyncClient();
 
 ```
 
+##### Example - Create Boundaries Client
 ```java readme-sample-createBoundariesClient
 // Create Boundaries Client
 BoundariesClientBuilder boundariesBuilder = new BoundariesClientBuilder()
@@ -76,6 +77,7 @@ BoundariesClientBuilder boundariesBuilder = new BoundariesClientBuilder()
 BoundariesAsyncClient boundariesClient = boundariesBuilder.buildAsyncClient();
 ```
 
+##### Example - Create Scenes Client
 ```java readme-sample-createScenesClient
 // Create Scenes Client
 ScenesClientBuilder scenesBuilder = new ScenesClientBuilder()
