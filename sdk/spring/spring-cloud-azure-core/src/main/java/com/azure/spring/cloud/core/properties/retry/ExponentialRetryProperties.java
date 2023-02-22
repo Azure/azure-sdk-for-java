@@ -21,7 +21,7 @@ public class ExponentialRetryProperties implements RetryOptionsProvider.RetryOpt
      */
     private Duration baseDelay;
     /**
-     * Maximum permissible amount of time between retry attempts.
+     * Maximum permissible amount(duration) of time between retry attempts.
      */
     private Duration maxDelay;
 

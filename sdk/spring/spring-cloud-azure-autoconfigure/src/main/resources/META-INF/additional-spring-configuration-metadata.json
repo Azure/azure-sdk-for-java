@@ -465,7 +465,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].resource.region",
       "type": "java.lang.String",
-      "description": "The region of an Azure resource.",
+      "description": "The region of an Azure resource. For instance, '\"eastus\"'.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.resourcemanager.AzureResourceMetadataConfigurationProperties"
     },
     {
@@ -489,7 +489,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.max-delay",
       "type": "java.time.Duration",
-      "description": "Maximum permissible amount of time between retry attempts.",
+      "description": "Maximum permissible amount of time(duration) between retry attempts.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.ExponentialRetryConfigurationProperties"
     },
     {
