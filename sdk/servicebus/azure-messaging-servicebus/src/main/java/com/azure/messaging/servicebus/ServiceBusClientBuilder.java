@@ -34,6 +34,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
@@ -209,6 +211,7 @@ public final class ServiceBusClientBuilder implements
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
     private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
+    private static final String AZ_NAMESPACE_VALUE = ""
 
     private final Object connectionLock = new Object();
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
@@ -931,6 +934,10 @@ public final class ServiceBusClientBuilder implements
             } else {
                 clientIdentifier = UUID.randomUUID().toString();
             }
+
+            Tracer tracer = TracerProvider.getDefaultProvider().createTracer(LIBRARY_NAME, LIBRARY_VERSION,
+                AZ_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
+
 
             final ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(ServiceBusTracer.getDefaultTracer(),
                 createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityName);
