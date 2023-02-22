@@ -91,6 +91,14 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     @Test
+    @Tag("Playback")
+    public void testOrdering() {
+        // this proves that regardless of where in your test method you might try and get a variable it works.
+        String name = testResourceNamer.randomName("test", 10);
+        assertEquals("test32950", name);
+    }
+
+    @Test
     @Tag("Record")
     public void testRecordWithPath() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
