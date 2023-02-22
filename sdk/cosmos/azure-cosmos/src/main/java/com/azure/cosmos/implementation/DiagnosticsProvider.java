@@ -207,7 +207,11 @@ public final class DiagnosticsProvider {
                         CosmosException exception = (CosmosException) throwable;
                         statusCode = exception.getStatusCode();
                         subStatusCode = exception.getSubStatusCode();
-                        effectiveRequestCharge += exception.getRequestCharge();
+                        if (effectiveRequestCharge != null) {
+                            effectiveRequestCharge += exception.getRequestCharge();
+                        } else {
+                            effectiveRequestCharge = exception.getRequestCharge();
+                        }
                         effectiveDiagnostics = exception.getDiagnostics();
                     }
                 }
