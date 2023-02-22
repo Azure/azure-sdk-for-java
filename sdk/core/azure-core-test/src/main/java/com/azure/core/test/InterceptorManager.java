@@ -9,10 +9,11 @@ import com.azure.core.test.http.TestProxyPlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
-import com.azure.core.test.models.TestProxyMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.test.policy.TestProxyRecordPolicy;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,9 +24,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,7 +54,6 @@ import java.util.function.Supplier;
  * calls that were recorded are persisted to: "<i>session-records/{@code testName}.json</i>"
  */
 public class InterceptorManager implements AutoCloseable {
-    private static final String RECORD_FOLDER = "session-records/";
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     private static final ClientLogger LOGGER = new ClientLogger(InterceptorManager.class);
@@ -70,7 +67,7 @@ public class InterceptorManager implements AutoCloseable {
     // Stores a map of all the HTTP properties in a session
     // A state machine ensuring a test is always reset before another one is setup
     private final RecordedData recordedData;
-    private final boolean enableTestProxy;
+    private final boolean testProxyEnabled;
     private TestProxyRecordPolicy testProxyRecordPolicy;
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
@@ -121,11 +118,11 @@ public class InterceptorManager implements AutoCloseable {
      */
     public InterceptorManager(TestContextManager testContextManager) {
         this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
-            testContextManager.getTestMode(), testContextManager.doNotRecordTest(), testContextManager.getEnableTestProxy());
+            testContextManager.getTestMode(), testContextManager.doNotRecordTest(), testContextManager.isTestProxyEnabled());
     }
 
     private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy) {
-        this.enableTestProxy = enableTestProxy;
+        this.testProxyEnabled = enableTestProxy;
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
         this.testName = testName;
@@ -211,7 +208,7 @@ public class InterceptorManager implements AutoCloseable {
         this.testMode = TestMode.PLAYBACK;
         this.allowedToReadRecordedValues = !doNotRecord;
         this.allowedToRecordValues = false;
-        this.enableTestProxy = false;
+        this.testProxyEnabled = false;
 
         this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
         this.textReplacementRules = textReplacementRules;
@@ -271,8 +268,8 @@ public class InterceptorManager implements AutoCloseable {
      * @return HttpPipelinePolicy to record network calls.
      */
     public HttpPipelinePolicy getRecordPolicy() {
-        if (enableTestProxy) {
-            return startProxyRecording();
+        if (testProxyEnabled) {
+            return getProxyRecordingPolicy();
         }
         return getRecordPolicy(Collections.emptyList());
     }
@@ -286,8 +283,8 @@ public class InterceptorManager implements AutoCloseable {
      * @return {@link HttpPipelinePolicy} to record network calls.
      */
     public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
-        if (enableTestProxy) {
-            return startProxyRecording();
+        if (testProxyEnabled) {
+            return getProxyRecordingPolicy();
         }
         return new RecordNetworkCallPolicy(recordedData, recordingRedactors);
     }
@@ -298,7 +295,7 @@ public class InterceptorManager implements AutoCloseable {
      * @return An HTTP client that plays back network calls from its recorded data.
      */
     public HttpClient getPlaybackClient() {
-        if (enableTestProxy) {
+        if (testProxyEnabled) {
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient();
                 proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
@@ -318,7 +315,7 @@ public class InterceptorManager implements AutoCloseable {
     @Override
     public void close() {
         if (allowedToRecordValues) {
-            if (enableTestProxy) {
+            if (testProxyEnabled) {
                 testProxyRecordPolicy.stopRecording(proxyVariableQueue);
             } else {
                 try (BufferedWriter writer = Files.newBufferedWriter(createRecordFile(playbackRecordName).toPath())) {
@@ -328,7 +325,7 @@ public class InterceptorManager implements AutoCloseable {
                         new UncheckedIOException("Unable to write data to playback file.", ex));
                 }
             }
-        } else if (isPlaybackMode() && enableTestProxy) {
+        } else if (isPlaybackMode() && testProxyEnabled) {
             testProxyPlaybackClient.stopPlayback();
         }
     }
@@ -343,34 +340,7 @@ public class InterceptorManager implements AutoCloseable {
         }
     }
 
-    /**
-     * Get the {@link File} pointing to the folder where session records live.
-     * @return The session-records folder.
-     * @throws IllegalStateException if the session-records folder cannot be found.
-     */
-    public static File getRecordFolder() {
-        URL folderUrl = InterceptorManager.class.getClassLoader().getResource(RECORD_FOLDER);
-
-        if (folderUrl != null) {
-            // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
-            // URI-based constructor of File.
-            return new File(toURI(folderUrl, LOGGER));
-        }
-
-        throw new IllegalStateException("Unable to locate session-records folder. Please create a session-records "
-            + "folder in '/src/test/resources' of the module (ex. for azure-core-test this is "
-            + "'/sdk/core/azure-core-test/src/test/resources/session-records').");
-    }
-
-    private static URI toURI(URL url, ClientLogger logger) {
-        try {
-            return url.toURI();
-        } catch (URISyntaxException ex) {
-            throw logger.logExceptionAsError(new IllegalStateException(ex));
-        }
-    }
-
-    private HttpPipelinePolicy startProxyRecording() {
+    private HttpPipelinePolicy getProxyRecordingPolicy() {
         if (testProxyRecordPolicy == null) {
             testProxyRecordPolicy = new TestProxyRecordPolicy();
             testProxyRecordPolicy.startRecording(playbackRecordName);
@@ -382,7 +352,7 @@ public class InterceptorManager implements AutoCloseable {
      * Attempts to retrieve the playback file, if it is not found an exception is thrown as playback can't continue.
      */
     private File getRecordFile() {
-        File recordFolder = getRecordFolder();
+        File recordFolder = TestUtils.getRecordFolder();
         File playbackFile = new File(recordFolder, playbackRecordName + ".json");
         File oldPlaybackFile = new File(recordFolder, testName + ".json");
 
@@ -405,7 +375,7 @@ public class InterceptorManager implements AutoCloseable {
      * Retrieves or creates the file that will be used to store the recorded test values.
      */
     private File createRecordFile(String testName) throws IOException {
-        File recordFolder = getRecordFolder();
+        File recordFolder = TestUtils.getRecordFolder();
         if (!recordFolder.exists()) {
             if (recordFolder.mkdir()) {
                 LOGGER.verbose("Created directory: {}", recordFolder.getPath());
@@ -452,7 +422,7 @@ public class InterceptorManager implements AutoCloseable {
      * @param testProxyMatchers the list of matcher rules when playing back recorded data.
      * @throws RuntimeException Playback has not started.
      */
-    public void addMatchers(List<TestProxyMatcher> testProxyMatchers) {
+    public void addMatchers(List<TestProxyRequestMatcher> testProxyMatchers) {
         if (testProxyPlaybackClient != null) {
             testProxyPlaybackClient.addMatcherRequests(testProxyMatchers);
         } else {

@@ -14,6 +14,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -59,11 +60,11 @@ public class TestProxyTests extends TestProxyTestBase {
     @BeforeAll
     public static void setupClass() {
         server = new TestProxyTestServer();
-        TestProxyTestBase.setupClass();
+        TestProxyTestBase.setup();
     }
     @AfterAll
     public static void teardownClass() {
-        TestProxyTestBase.teardownClass();
+        TestProxyTestBase.teardown();
         server.close();
     }
     @Test
@@ -263,7 +264,7 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     private RecordedTestProxyData readDataFromFile() {
-        String filePath = Paths.get(InterceptorManager.getRecordFolder().getPath(), this.testContextManager.getTestPlaybackRecordingName()) + ".json";
+        String filePath = Paths.get(TestUtils.getRecordFolder().getPath(), this.testContextManager.getTestPlaybackRecordingName()) + ".json";
 
         File recordFile = new File(filePath);
         try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {

@@ -56,7 +56,7 @@ public abstract class TestBase implements BeforeEachCallback {
     /**
      * Specifies that the out of process test proxy should be used.
      */
-    protected static boolean enableTestProxy;
+    private static boolean enableTestProxy;
 
     private static final Duration PLAYBACK_POLL_INTERVAL = Duration.ofMillis(1);
     private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration.getGlobalConfiguration()
@@ -138,7 +138,7 @@ public abstract class TestBase implements BeforeEachCallback {
         } else if (testInfo.getTags().contains("Playback")) {
             localTestMode = TestMode.PLAYBACK;
         }
-        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), localTestMode, useTestProxy());
+        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), localTestMode, isTestProxyEnabled());
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
         logger.info("Test Mode: {}, Name: {}", localTestMode, testContextManager.getTestName());
 
@@ -149,7 +149,7 @@ public abstract class TestBase implements BeforeEachCallback {
             Assertions.fail(e);
         }
 
-        if (useTestProxy()) {
+        if (isTestProxyEnabled()) {
             // The supplier/consumer are used to retrieve/store variables over the wire.
             testResourceNamer = new TestResourceNamer(testContextManager,
                 interceptorManager.getProxyVariableConsumer(),
@@ -291,8 +291,12 @@ public abstract class TestBase implements BeforeEachCallback {
      * Indicates whether the out of process test recording proxy is in use.
      * @return true if test proxy is to be used.
      */
-    static boolean useTestProxy() {
+    protected static boolean isTestProxyEnabled() {
         return enableTestProxy;
+    }
+
+    protected static void setTestProxyEnabled() {
+        enableTestProxy = true;
     }
 
     /**

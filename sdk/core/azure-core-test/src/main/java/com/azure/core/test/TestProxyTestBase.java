@@ -4,15 +4,16 @@
 package com.azure.core.test;
 
 import com.azure.core.test.utils.TestProxyManager;
+import com.azure.core.test.utils.TestUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 /**
  * Base class for running live and playback tests using test-proxy
  */
-public class TestProxyTestBase extends TestBase {
+public abstract class TestProxyTestBase extends TestBase {
     static {
-        enableTestProxy = true;
+        setTestProxyEnabled();
     }
     private static TestProxyManager testProxyManager;
 
@@ -20,12 +21,11 @@ public class TestProxyTestBase extends TestBase {
      * Before tests are executed, determines the test mode by reading the {@code AZURE_TEST_MODE} environment variable.
      * If it is not set, {@link TestMode#PLAYBACK}
      */
-    @SuppressWarnings({"deprecation", "resource"})
     @BeforeAll
-    public static void setupClass() {
+    public static void setup() {
         testMode = initializeTestMode();
-        if (useTestProxy() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
-            testProxyManager = new TestProxyManager(InterceptorManager.getRecordFolder());
+        if (isTestProxyEnabled() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
+            testProxyManager = new TestProxyManager(TestUtils.getRecordFolder());
             testProxyManager.startProxy();
         }
     }
@@ -34,7 +34,7 @@ public class TestProxyTestBase extends TestBase {
      * Performs cleanup actions after all tests are executed.
      */
     @AfterAll
-    public static void teardownClass() {
+    public static void teardown() {
         if (testProxyManager != null) {
             testProxyManager.stopProxy();
         }

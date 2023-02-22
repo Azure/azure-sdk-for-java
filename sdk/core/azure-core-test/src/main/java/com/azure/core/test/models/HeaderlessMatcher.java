@@ -6,11 +6,11 @@ package com.azure.core.test.models;
 /**
  * Adjusts the "match" operation to ignore header differences when matching a request
  * */
-public class HeaderlessMatcher extends TestProxyMatcher {
+public class HeaderlessMatcher extends TestProxyRequestMatcher {
     /**
      * Creates an instance of HeaderlessMatcher
      */
     public HeaderlessMatcher() {
-        super(TestProxyMatcherType.HEADERLESS);
+        super(TestProxyRequestMatcherType.HEADERLESS);
     }
 }

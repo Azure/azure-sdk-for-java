@@ -7,7 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.models.CustomMatcher;
-import com.azure.core.test.models.TestProxyMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
@@ -126,13 +126,13 @@ public class TestProxyUtils {
      * Registers the default set of matchers for matching requests on playback.
      * @return The list of default matchers to be added.
      */
-    public static List<TestProxyMatcher> loadMatchers() {
-        List<TestProxyMatcher> matchers = new ArrayList<>();
+    public static List<TestProxyRequestMatcher> loadMatchers() {
+        List<TestProxyRequestMatcher> matchers = new ArrayList<>();
         matchers.add(addDefaultCustomDefaultMatcher());
         return matchers;
     }
 
-    private static TestProxyMatcher addDefaultCustomDefaultMatcher() {
+    private static TestProxyRequestMatcher addDefaultCustomDefaultMatcher() {
         return new CustomMatcher().setExcludedHeaders(String.join(",", EXCLUDED_HEADERS));
     }
 
@@ -202,29 +202,29 @@ public class TestProxyUtils {
 
     /**
      * Creates a {@link List} of {@link HttpRequest} to be sent to the test proxy to register matchers.
-     * @param matchers The {@link TestProxyMatcher}s to encode into requests.
+     * @param matchers The {@link TestProxyRequestMatcher}s to encode into requests.
      * @return The {@link HttpRequest}s to send to the proxy.
-     * @throws RuntimeException The {@link TestProxyMatcher.TestProxyMatcherType} is unsupported.
+     * @throws RuntimeException The {@link TestProxyRequestMatcher.TestProxyRequestMatcherType} is unsupported.
      */
-    public static List<HttpRequest> getMatcherRequests(List<TestProxyMatcher> matchers) {
+    public static List<HttpRequest> getMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         return matchers.stream().map(testProxyMatcher -> {
             HttpRequest request;
             String matcherType;
             switch (testProxyMatcher.getType()) {
                 case HEADERLESS:
-                    matcherType = TestProxyMatcher.TestProxyMatcherType.HEADERLESS.getName();
+                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.HEADERLESS.getName();
                     request
                         = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl()));
                     break;
                 case BODILESS:
                     request
                         = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl()));
-                    matcherType = TestProxyMatcher.TestProxyMatcherType.BODILESS.getName();
+                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName();
                     break;
                 case CUSTOM:
                     CustomMatcher customMatcher = (CustomMatcher) testProxyMatcher;
                     String requestBody = createCustomMatcherRequestBody(customMatcher);
-                    matcherType = TestProxyMatcher.TestProxyMatcherType.CUSTOM.getName();
+                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName();
                     request
                         = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl())).setBody(requestBody);
                     break;

@@ -32,7 +32,7 @@ import java.util.zip.GZIPInputStream;
 public final class TestProxyDownloader {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyDownloader.class);
     private static final String TEST_PROXY_TAG = "test-proxy_1.0.0-dev.20230125.14";
-    private static final Path PROXYPATH = Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy");
+    private static final Path PROXY_PATH = Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy");
     private static final String TEST_PROXY_VERSION_FILE = "test-proxy-version.txt";
 
     private TestProxyDownloader() { }
@@ -42,7 +42,7 @@ public final class TestProxyDownloader {
      * @return A {@link Path} with the test proxy location.
      */
     public static Path getProxyDirectory() {
-        return PROXYPATH;
+        return PROXY_PATH;
     }
 
     /**
@@ -58,9 +58,9 @@ public final class TestProxyDownloader {
 
     private static void extractTestProxy(PlatformInfo platformInfo) {
         Path zipFile = getZipFileLocation(platformInfo.getExtension());
-        if (Files.exists(PROXYPATH)) {
+        if (Files.exists(PROXY_PATH)) {
             try {
-                Files.walk(PROXYPATH)
+                Files.walk(PROXY_PATH)
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
                     .forEach(File::delete);
@@ -120,7 +120,7 @@ public final class TestProxyDownloader {
     }
 
     private static File getOutputFile(ArchiveEntry entry) {
-        return new File(PROXYPATH.toFile(), entry.getName());
+        return new File(PROXY_PATH.toFile(), entry.getName());
     }
 
 

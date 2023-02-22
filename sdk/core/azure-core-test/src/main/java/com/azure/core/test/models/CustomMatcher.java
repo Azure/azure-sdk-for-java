@@ -7,7 +7,7 @@ package com.azure.core.test.models;
  * This matcher exposes the default matcher in a customizable way.
  * Currently, this includes ignoring/excluding headers, comparing request bodies and ignoring query params or query params ordering.
  */
-public class CustomMatcher extends TestProxyMatcher {
+public class CustomMatcher extends TestProxyRequestMatcher {
     private String excludedHeaders;
 
     private String ignoredHeaders;
@@ -20,7 +20,7 @@ public class CustomMatcher extends TestProxyMatcher {
      * Creates an instance of CustomMatcher
      */
     public CustomMatcher() {
-        super(TestProxyMatcherType.CUSTOM);
+        super(TestProxyRequestMatcherType.CUSTOM);
     }
 
     /**

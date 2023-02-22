@@ -7,7 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.models.TestProxyMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
@@ -18,13 +18,13 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.stream.Collectors;
 
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
@@ -43,9 +43,9 @@ public class TestProxyPlaybackClient implements HttpClient {
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
 
-    private static final List<TestProxyMatcher> DEFAULT_MATCHERS = loadMatchers();
+    private static final List<TestProxyRequestMatcher> DEFAULT_MATCHERS = loadMatchers();
 
-    private final List<TestProxyMatcher> matchers = new ArrayList<>();
+    private final List<TestProxyRequestMatcher> matchers = new ArrayList<>();
 
     /**
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
@@ -59,7 +59,7 @@ public class TestProxyPlaybackClient implements HttpClient {
      * Starts playback of a test recording.
      * @param recordFile The name of the file to read.
      * @return A {@link Queue} representing the variables in the recording.
-     * @throws RuntimeException if an {@link IOException} is thrown.
+     * @throws UncheckedIOException if an {@link IOException} is thrown.
      */
     public Queue<String> startPlayback(String recordFile) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", TestProxyUtils.getProxyUrl()))
@@ -75,10 +75,18 @@ public class TestProxyPlaybackClient implements HttpClient {
             // the key. See TestProxyRecordPolicy.serializeVariables.
             // This deserializes the map returned from the test proxy and creates an ordered list
             // based on the key.
-            return SERIALIZER.<Map<String, String>>deserialize(body, Map.class, SerializerEncoding.JSON).entrySet().stream().sorted(Comparator.comparingInt(e -> Integer.parseInt(e.getKey()))).map(Map.Entry::getValue).collect(Collectors.toCollection(LinkedList::new));
+            List<Map.Entry<String, String>> toSort;
+            toSort = new ArrayList<>(SERIALIZER.<Map<String, String>>deserialize(body, Map.class, SerializerEncoding.JSON).entrySet());
+            toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
+            LinkedList<String> strings = new LinkedList<>();
+            for (Map.Entry<String, String> stringStringEntry : toSort) {
+                String value = stringStringEntry.getValue();
+                strings.add(value);
+            }
+            return strings;
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -122,10 +130,10 @@ public class TestProxyPlaybackClient implements HttpClient {
     }
 
     /**
-     * Add a list of {@link TestProxyMatcher} to the current playback session.
+     * Add a list of {@link TestProxyRequestMatcher} to the current playback session.
      * @param matchers The matchers to add.
      */
-    public void addMatcherRequests(List<TestProxyMatcher> matchers) {
+    public void addMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         if (isPlayingBack()) {
             getMatcherRequests(matchers)
                 .forEach(request -> {

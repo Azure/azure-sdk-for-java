@@ -101,7 +101,7 @@ public class TestContextManager {
      *
      * @return True if the text proxy is enabled
      */
-    public boolean getEnableTestProxy() {
+    public boolean isTestProxyEnabled() {
         return enableTestProxy;
     }
 
