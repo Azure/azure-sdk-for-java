@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.jms.servicebus.passwordless-enabled", havingValue = "true")
-public class ServiceBusJmsPasswordlessConfiguration {
+class ServiceBusJmsPasswordlessConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

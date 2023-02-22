@@ -205,12 +205,79 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
         this.nameSpace = nameSpace;
     }
 
+    /**
+     * Get the scopes required for the access token.
+     *
+     * @return scopes required for the access token
+     */
+    @Override
+    public String getScopes() {
+        return this.scopes == null ? getDefaultScopes() : this.scopes;
+    }
+
+    /**
+     * Set the scopes required for the access token.
+     *
+     * @param scopes the scopes required for the access token
+     */
     public void setScopes(String scopes) {
         this.scopes = scopes;
     }
 
+    /**
+     * Whether to enable connections authenticating with Azure AD, default is false.
+     *
+     * @return enable connections authenticating with Azure AD if true, otherwise false.
+     */
+    @Override
+    public boolean isPasswordlessEnabled() {
+        return passwordlessEnabled;
+    }
+
+    /**
+     * Set the value to enable/disable connections authenticating with Azure AD.
+     * If not set, by default the value is false.
+     *
+     * @param passwordlessEnabled the passwordlessEnabled
+     */
     public void setPasswordlessEnabled(boolean passwordlessEnabled) {
         this.passwordlessEnabled = passwordlessEnabled;
+    }
+
+    /**
+     * Get the profile
+     * @return the profile
+     */
+    @Override
+    public AzureProfileProperties getProfile() {
+        return profile;
+    }
+
+    /**
+     * Set the profile
+     * @param profile the profile properties related to an Azure subscription
+     */
+    public void setProfile(AzureProfileProperties profile) {
+        this.profile = profile;
+    }
+
+    /**
+     * Get the credential properties.
+     *
+     * @return the credential properties.
+     */
+    @Override
+    public TokenCredentialProperties getCredential() {
+        return credential;
+    }
+
+    /**
+     * Set the credential properties.
+     *
+     * @param credential the credential properties
+     */
+    public void setCredential(TokenCredentialProperties credential) {
+        this.credential = credential;
     }
 
     /**
@@ -234,34 +301,6 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
             throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
 
-    }
-
-    @Override
-    public String getScopes() {
-        return this.scopes == null ? getScopesFromMap() : this.scopes;
-    }
-
-    @Override
-    public boolean isPasswordlessEnabled() {
-        return passwordlessEnabled;
-    }
-
-    @Override
-    public AzureProfileProperties getProfile() {
-        return profile;
-    }
-
-    public void setProfile(AzureProfileProperties profile) {
-        this.profile = profile;
-    }
-
-    @Override
-    public TokenCredentialProperties getCredential() {
-        return credential;
-    }
-
-    public void setCredential(TokenCredentialProperties credential) {
-        this.credential = credential;
     }
 
     /**
@@ -504,7 +543,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
         }
     }
 
-    private String getScopesFromMap() {
+    private String getDefaultScopes() {
         return SERVICEBUS_SCOPE_MAP.getOrDefault(getProfile().getCloudType(), SERVICE_BUS_SCOPE_AZURE);
     }
 }

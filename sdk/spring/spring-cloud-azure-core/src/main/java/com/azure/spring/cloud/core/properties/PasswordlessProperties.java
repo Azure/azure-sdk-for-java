@@ -17,7 +17,7 @@ import java.util.function.Function;
 public interface PasswordlessProperties extends TokenCredentialOptionsProvider, AzureProfileOptionsProvider {
 
     /**
-     * Gets the scopes required for the access token.
+     * Get the scopes required for the access token.
      *
      * @return scopes required for the access token
      */
