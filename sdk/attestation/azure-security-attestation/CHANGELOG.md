@@ -6,6 +6,10 @@
 
 ### Breaking Changes
 
+- Changed `attestTpm` to match `attestOpenEnclave` and `attestSgxEnclave`
+- Added `TpmAttestationResult.java` to make the attestTpm return type more consistency.
+- Changed `attestTpm` parameter from String to Binary Data
+
 ### Bugs Fixed
 
 ### Other Changes
