@@ -109,6 +109,12 @@ public abstract class TestBase implements BeforeEachCallback {
 
 
     /**
+     * Creates a new instance of {@link TestBase}.
+     */
+    public TestBase() {
+    }
+
+    /**
      * Before tests are executed, determines the test mode by reading the {@code AZURE_TEST_MODE} environment variable.
      * If it is not set, {@link TestMode#PLAYBACK}
      */

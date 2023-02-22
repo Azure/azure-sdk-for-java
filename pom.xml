@@ -132,6 +132,7 @@
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
+    <module>sdk/providerhub</module>
     <module>sdk/purview</module>
     <module>sdk/quantum</module>
     <module>sdk/quota</module>
@@ -141,6 +142,7 @@
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>
+    <module>sdk/reservations</module>
     <module>sdk/resourceconnector</module>
     <module>sdk/resourcegraph</module>
     <module>sdk/resourcehealth</module>
@@ -163,6 +165,7 @@
     <module>sdk/storage</module>
     <module>sdk/storagecache</module>
     <module>sdk/storageimportexport</module>
+    <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>
     <module>sdk/subscription</module>
@@ -176,6 +179,7 @@
     <module>sdk/translation</module>
     <module>sdk/videoanalyzer</module>
     <module>sdk/vmwarecloudsimple</module>
+    <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/workloads</module>
   </modules>

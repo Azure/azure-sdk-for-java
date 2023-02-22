@@ -32,7 +32,7 @@ public final class TransformsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"created\":\"2021-02-13T21:35:20Z\",\"description\":\"yprotwyp\",\"lastModified\":\"2021-05-09T02:53:19Z\",\"outputs\":[]},\"id\":\"xhugcm\",\"name\":\"k\",\"type\":\"vlgo\"}";
+            "{\"properties\":{\"created\":\"2021-07-04T06:24:24Z\",\"description\":\"l\",\"lastModified\":\"2021-03-31T13:06:19Z\",\"outputs\":[]},\"id\":\"iauogphuartv\",\"name\":\"iukyefchnmna\",\"type\":\"mnxhkxjqirwrweo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,12 @@ public final class TransformsCreateOrUpdateWithResponseMockTests {
         Transform response =
             manager
                 .transforms()
-                .define("hriypoqeyhlqhy")
-                .withExistingMediaService("aoqltfaey", "inmfgvxirp")
-                .withDescription("yznuciqd")
+                .define("vqylkmqpzoyhl")
+                .withExistingMediaService("mur", "xxgewpk")
+                .withDescription("gcl")
                 .withOutputs(Arrays.asList())
                 .create();
 
-        Assertions.assertEquals("yprotwyp", response.description());
+        Assertions.assertEquals("l", response.description());
     }
 }

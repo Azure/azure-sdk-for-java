@@ -32,6 +32,10 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     @JsonProperty(value = "properties", required = true)
     private DatabaseAccountCreateUpdateProperties innerProperties = new DatabaseAccountCreateUpdateProperties();
 
+    /** Creates an instance of DatabaseAccountCreateUpdateParameters class. */
+    public DatabaseAccountCreateUpdateParameters() {
+    }
+
     /**
      * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
      *
@@ -773,6 +777,31 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
             this.innerProperties = new DatabaseAccountCreateUpdateProperties();
         }
         this.innerProperties().withEnablePartitionMerge(enablePartitionMerge);
+        return this;
+    }
+
+    /**
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersion minimalTlsVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 

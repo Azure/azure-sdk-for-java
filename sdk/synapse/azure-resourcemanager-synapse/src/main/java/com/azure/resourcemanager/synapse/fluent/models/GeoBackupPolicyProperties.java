@@ -24,6 +24,10 @@ public final class GeoBackupPolicyProperties {
     @JsonProperty(value = "storageType", access = JsonProperty.Access.WRITE_ONLY)
     private String storageType;
 
+    /** Creates an instance of GeoBackupPolicyProperties class. */
+    public GeoBackupPolicyProperties() {
+    }
+
     /**
      * Get the state property: The state of the geo backup policy.
      *

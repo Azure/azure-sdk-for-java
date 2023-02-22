@@ -16,6 +16,10 @@ public final class CacheSku {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of CacheSku class. */
+    public CacheSku() {
+    }
+
     /**
      * Get the name property: SKU name for this Cache.
      *

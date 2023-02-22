@@ -18,8 +18,7 @@ public final class EnvironmentsUpdateEnvironmentTests extends DevCenterClientTes
         BinaryData body = BinaryData.fromString("{\"description\":\"Personal Dev Environment 2\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                environmentsClient.updateEnvironmentWithResponse(
-                        "myProject", "me", "{environmentName}", body, requestOptions);
+                environmentsClient.updateEnvironmentWithResponse("myProject", "me", "mydevenv", body, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

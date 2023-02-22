@@ -24,6 +24,10 @@ public final class StorageTargetsResult {
     @JsonProperty(value = "value")
     private List<StorageTargetInner> value;
 
+    /** Creates an instance of StorageTargetsResult class. */
+    public StorageTargetsResult() {
+    }
+
     /**
      * Get the nextLink property: The URI to fetch the next page of Storage Targets.
      *

@@ -38,6 +38,10 @@ public final class DeploymentWithOSConfiguration extends SapConfiguration {
     @JsonProperty(value = "osSapConfiguration")
     private OsSapConfiguration osSapConfiguration;
 
+    /** Creates an instance of DeploymentWithOSConfiguration class. */
+    public DeploymentWithOSConfiguration() {
+    }
+
     /**
      * Get the appLocation property: The geo-location where the SAP system is to be created.
      *

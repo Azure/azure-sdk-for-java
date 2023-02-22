@@ -18,6 +18,10 @@ public final class MongoUserDefinitionCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private MongoUserDefinitionResource innerProperties;
 
+    /** Creates an instance of MongoUserDefinitionCreateUpdateParameters class. */
+    public MongoUserDefinitionCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update an Azure Cosmos DB Mongo User Definition.
      *

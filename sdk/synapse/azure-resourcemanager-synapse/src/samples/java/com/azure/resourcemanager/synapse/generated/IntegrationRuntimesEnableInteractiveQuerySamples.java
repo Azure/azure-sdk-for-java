@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes EnableInteractiveQuery. */
 public final class IntegrationRuntimesEnableInteractiveQuerySamples {
     /*
@@ -20,6 +18,9 @@ public final class IntegrationRuntimesEnableInteractiveQuerySamples {
         manager
             .integrationRuntimes()
             .enableInteractiveQuery(
-                "exampleResourceGroup", "exampleWorkspace", "exampleManagedIntegrationRuntime", Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

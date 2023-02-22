@@ -6,16 +6,15 @@ package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.PrivateEndpoint;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpoint model = BinaryData.fromString("{\"id\":\"lnwsubisn\"}").toObject(PrivateEndpoint.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpoint model = new PrivateEndpoint();
         model = BinaryData.fromObject(model).toObject(PrivateEndpoint.class);
     }

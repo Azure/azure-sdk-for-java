@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TableResources GetTableThroughput. */
 public final class TableResourcesGetTableThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBTableThroughputGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBTableThroughputGet.json
      */
     /**
      * Sample code: CosmosDBTableThroughputGet.
@@ -22,6 +20,6 @@ public final class TableResourcesGetTableThroughputSamples {
             .manager()
             .serviceClient()
             .getTableResources()
-            .getTableThroughputWithResponse("rg1", "ddb1", "tableName", Context.NONE);
+            .getTableThroughputWithResponse("rg1", "ddb1", "tableName", com.azure.core.util.Context.NONE);
     }
 }

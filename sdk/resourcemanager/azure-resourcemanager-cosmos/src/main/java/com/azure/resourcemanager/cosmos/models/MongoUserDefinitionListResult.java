@@ -18,6 +18,10 @@ public final class MongoUserDefinitionListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MongoUserDefinitionGetResultsInner> value;
 
+    /** Creates an instance of MongoUserDefinitionListResult class. */
+    public MongoUserDefinitionListResult() {
+    }
+
     /**
      * Get the value property: List of User Definition and their properties.
      *

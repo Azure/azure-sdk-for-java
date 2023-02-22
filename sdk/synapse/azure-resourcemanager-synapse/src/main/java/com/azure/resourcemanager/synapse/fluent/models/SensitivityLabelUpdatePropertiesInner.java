@@ -42,6 +42,10 @@ public final class SensitivityLabelUpdatePropertiesInner {
     @JsonProperty(value = "sensitivityLabel")
     private SensitivityLabelInner sensitivityLabel;
 
+    /** Creates an instance of SensitivityLabelUpdatePropertiesInner class. */
+    public SensitivityLabelUpdatePropertiesInner() {
+    }
+
     /**
      * Get the op property: The op property.
      *

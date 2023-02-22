@@ -15,6 +15,7 @@ trigger:
       - sdk/purview/azure-analytics-purview-catalog/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-resourcemanager-purview/pom.xml
+      - sdk/purview/azure-analytics-purview-workflow/pom.xml
 
 pr:
   branches:
@@ -32,24 +33,30 @@ pr:
       - sdk/purview/azure-analytics-purview-catalog/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-resourcemanager-purview/pom.xml
+      - sdk/purview/azure-analytics-purview-workflow/pom.xml
+
 
 parameters:
-- name: release_azureanalyticspurviewadministration
-  displayName: 'azure-analytics-purview-administration'
-  type: boolean
-  default: true
-- name: release_azureanalyticspurviewcatalog
-  displayName: 'azure-analytics-purview-catalog'
-  type: boolean
-  default: true
-- name: release_azureanalyticspurviewscanning
-  displayName: 'azure-analytics-purview-scanning'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerpurview
-  displayName: 'azure-resourcemanager-purview'
-  type: boolean
-  default: false
+  - name: release_azureanalyticspurviewadministration
+    displayName: azure-analytics-purview-administration
+    type: boolean
+    default: true
+  - name: release_azureanalyticspurviewcatalog
+    displayName: azure-analytics-purview-catalog
+    type: boolean
+    default: true
+  - name: release_azureanalyticspurviewscanning
+    displayName: azure-analytics-purview-scanning
+    type: boolean
+    default: true
+  - name: release_azureresourcemanagerpurview
+    displayName: azure-resourcemanager-purview
+    type: boolean
+    default: false
+  - name: release_azureanalyticspurviewworkflow
+    displayName: azure-analytics-purview-workflow
+    type: boolean
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -73,3 +80,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerpurview
         releaseInBatch: ${{ parameters.release_azureresourcemanagerpurview }}
+      - name: azure-analytics-purview-workflow
+        groupId: com.azure
+        safeName: azureanalyticspurviewworkflow
+        releaseInBatch: ${{ parameters.release_azureanalyticspurviewworkflow }}

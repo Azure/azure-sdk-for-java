@@ -38,7 +38,7 @@ public final class TestUtils {
      */
     public static void assertArraysEqual(byte[] expected, byte[] actual) {
         if (!Arrays.equals(expected, actual)) {
-            assertArraysEqual(expected, actual);
+            Assertions.assertArrayEquals(expected, actual);
         }
     }
 
@@ -90,7 +90,7 @@ public final class TestUtils {
             byte[] actualArray = new byte[actual.remaining()];
             actual.get(actualArray);
 
-            assertArraysEqual(expectedArray, actualArray);
+            Assertions.assertArrayEquals(expectedArray, actualArray);
         }
     }
 

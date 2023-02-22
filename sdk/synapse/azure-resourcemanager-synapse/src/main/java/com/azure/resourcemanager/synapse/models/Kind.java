@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Kind. */
+/** Kind of the database. */
 public final class Kind extends ExpandableStringEnum<Kind> {
     /** Static value ReadWrite for Kind. */
     public static final Kind READ_WRITE = fromString("ReadWrite");
 
     /** Static value ReadOnlyFollowing for Kind. */
     public static final Kind READ_ONLY_FOLLOWING = fromString("ReadOnlyFollowing");
+
+    /**
+     * Creates a new instance of Kind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Kind() {
+    }
 
     /**
      * Creates or finds a Kind from its string representation.
@@ -27,7 +36,11 @@ public final class Kind extends ExpandableStringEnum<Kind> {
         return fromString(name, Kind.class);
     }
 
-    /** @return known Kind values. */
+    /**
+     * Gets known Kind values.
+     *
+     * @return known Kind values.
+     */
     public static Collection<Kind> values() {
         return values(Kind.class);
     }

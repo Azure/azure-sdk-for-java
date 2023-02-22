@@ -9,11 +9,10 @@ import com.azure.resourcemanager.recoveryservices.models.DnsZoneResponse;
 import com.azure.resourcemanager.recoveryservices.models.VaultSubResourceType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DnsZoneResponseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DnsZoneResponse model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class DnsZoneResponseTests {
         Assertions.assertEquals("yevc", model.requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DnsZoneResponse model =
             new DnsZoneResponse()
                 .withSubResource(VaultSubResourceType.AZURE_BACKUP_SECONDARY)

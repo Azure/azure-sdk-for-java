@@ -10,11 +10,10 @@ import com.azure.resourcemanager.recoveryservices.models.DnsZone;
 import com.azure.resourcemanager.recoveryservices.models.VaultSubResourceType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CapabilitiesPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CapabilitiesProperties model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class CapabilitiesPropertiesTests {
         Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.dnsZones().get(0).subResource());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CapabilitiesProperties model =
             new CapabilitiesProperties()
                 .withDnsZones(

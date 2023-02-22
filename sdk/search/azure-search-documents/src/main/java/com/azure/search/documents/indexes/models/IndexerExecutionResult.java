@@ -99,16 +99,16 @@ public final class IndexerExecutionResult {
      */
     @JsonCreator
     public IndexerExecutionResult(
-            @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    IndexerExecutionStatus status,
-            @JsonProperty(value = "errors", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchIndexerError> errors,
-            @JsonProperty(value = "warnings", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchIndexerWarning> warnings,
-            @JsonProperty(value = "itemsProcessed", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    int itemCount,
-            @JsonProperty(value = "itemsFailed", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    int failedItemCount) {
+        @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            IndexerExecutionStatus status,
+        @JsonProperty(value = "errors", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            List<SearchIndexerError> errors,
+        @JsonProperty(value = "warnings", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            List<SearchIndexerWarning> warnings,
+        @JsonProperty(value = "itemsProcessed", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            int itemCount,
+        @JsonProperty(value = "itemsFailed", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            int failedItemCount) {
         this.status = status;
         this.errors = errors;
         this.warnings = warnings;

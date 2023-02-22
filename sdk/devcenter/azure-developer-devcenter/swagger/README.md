@@ -3,9 +3,9 @@
 ```yaml
 use: '@autorest/java@4.1.7'
 input-file:
-  - https://github.com/Azure/azure-rest-api-specs/blob/9685ef961fe7931fccdd9bf86afac8bca0b3ae88/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/devcenter.json
-  - https://github.com/Azure/azure-rest-api-specs/blob/9685ef961fe7931fccdd9bf86afac8bca0b3ae88/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/devbox.json
-  - https://github.com/Azure/azure-rest-api-specs/blob/9685ef961fe7931fccdd9bf86afac8bca0b3ae88/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-03-01-preview/environments.json
+  - https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-11-11-preview/devcenter.json
+  - https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-11-11-preview/devbox.json
+  - https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/devcenter/data-plane/Microsoft.DevCenter/preview/2022-11-11-preview/environments.json
 output-folder: ../
 java: true
 regenerate-pom: false
@@ -17,7 +17,7 @@ artifact-id: azure-developer-devcenter
 generate-samples: true
 namespace: com.azure.developer.devcenter
 service-versions:
-- 2022-03-01-preview
+- 2022-11-11-preview
 directive:
 - from: swagger-document
   where: $.parameters["ProjectNameParameter"]

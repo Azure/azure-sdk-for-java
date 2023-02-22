@@ -25,6 +25,10 @@ public final class UpdateMonitorRequest {
     @JsonProperty(value = "identity")
     private UserAssignedServiceIdentity identity;
 
+    /** Creates an instance of UpdateMonitorRequest class. */
+    public UpdateMonitorRequest() {
+    }
+
     /**
      * Get the tags property: Gets or sets the Resource tags.
      *

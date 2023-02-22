@@ -36,18 +36,6 @@ public interface KustoPools {
      *
      * @param location The name of Azure region.
      * @param kustoPoolName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    CheckNameResult checkNameAvailability(String location, KustoPoolCheckNameRequest kustoPoolName);
-
-    /**
-     * Checks that the kusto pool name is valid and is not already in use.
-     *
-     * @param location The name of Azure region.
-     * @param kustoPoolName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,19 +46,21 @@ public interface KustoPools {
         String location, KustoPoolCheckNameRequest kustoPoolName, Context context);
 
     /**
-     * List all Kusto pools.
+     * Checks that the kusto pool name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
+     * @param location The name of Azure region.
+     * @param kustoPoolName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto pools operation response.
+     * @return the result returned from a check name availability request.
      */
-    KustoPoolListResult listByWorkspace(String resourceGroupName, String workspaceName);
+    CheckNameResult checkNameAvailability(String location, KustoPoolCheckNameRequest kustoPoolName);
 
     /**
-     * List all Kusto pools.
+     * List Kusto pools
+     *
+     * <p>List all Kusto pools.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -84,17 +74,18 @@ public interface KustoPools {
         String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Gets a Kusto pool.
+     * List Kusto pools
      *
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
+     * <p>List all Kusto pools.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto pool.
+     * @return the list Kusto pools operation response.
      */
-    KustoPool get(String workspaceName, String kustoPoolName, String resourceGroupName);
+    KustoPoolListResult listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
      * Gets a Kusto pool.
@@ -110,6 +101,19 @@ public interface KustoPools {
      */
     Response<KustoPool> getWithResponse(
         String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+
+    /**
+     * Gets a Kusto pool.
+     *
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto pool.
+     */
+    KustoPool get(String workspaceName, String kustoPoolName, String resourceGroupName);
 
     /**
      * Deletes a Kusto pool.

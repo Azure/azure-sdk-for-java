@@ -28,6 +28,10 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of GremlinGraphGetPropertiesResource class. */
+    public GremlinGraphGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

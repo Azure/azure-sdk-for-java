@@ -51,6 +51,10 @@ public class MetricInner {
     @JsonProperty(value = "metricValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricValue> metricValues;
 
+    /** Creates an instance of MetricInner class. */
+    public MetricInner() {
+    }
+
     /**
      * Get the startTime property: The start time for the metric (ISO-8601 format).
      *

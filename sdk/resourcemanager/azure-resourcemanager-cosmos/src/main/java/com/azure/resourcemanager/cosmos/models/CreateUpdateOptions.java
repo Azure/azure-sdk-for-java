@@ -25,6 +25,10 @@ public final class CreateUpdateOptions {
     @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettings autoscaleSettings;
 
+    /** Creates an instance of CreateUpdateOptions class. */
+    public CreateUpdateOptions() {
+    }
+
     /**
      * Get the throughput property: Request Units per second. For example, "throughput": 10000.
      *

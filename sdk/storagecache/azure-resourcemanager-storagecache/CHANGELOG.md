@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,52 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2023-02-22)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. A Storage Cache provides scalable caching service for NAS clients, serving data from either NFSv3 or Blob at-rest storage (referred to as "Storage Targets"). These operations allow you to manage Caches. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Caches` was modified
+
+* `startPrimingJob(java.lang.String,java.lang.String,models.PrimingJob)` was removed
+* `spaceAllocation(java.lang.String,java.lang.String,java.util.List)` was removed
+* `stopPrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter)` was removed
+* `pausePrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter)` was removed
+* `resumePrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter)` was removed
+
+#### `models.StorageTargets` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.Cache` was modified
+
+* `startPrimingJob(models.PrimingJob)` was removed
+* `stopPrimingJob(models.PrimingJobIdParameter)` was removed
+* `resumePrimingJob(models.PrimingJobIdParameter)` was removed
+* `pausePrimingJob(models.PrimingJobIdParameter)` was removed
+
+### Features Added
+
+#### `models.Nfs3Target` was modified
+
+* `withWriteBackTimer(java.lang.Integer)` was added
+* `withVerificationTimer(java.lang.Integer)` was added
+* `verificationTimer()` was added
+* `writeBackTimer()` was added
+
+#### `models.StorageTargets` was modified
+
+* `restoreDefaults(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `restoreDefaults(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.BlobNfsTarget` was modified
+
+* `writeBackTimer()` was added
+* `withWriteBackTimer(java.lang.Integer)` was added
+* `verificationTimer()` was added
+* `withVerificationTimer(java.lang.Integer)` was added
 
 ## 1.0.0-beta.6 (2022-07-08)
 

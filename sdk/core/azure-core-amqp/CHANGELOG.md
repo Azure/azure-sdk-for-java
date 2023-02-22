@@ -1,5 +1,15 @@
 # Release History
 
+## 2.9.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.8.2 (2023-02-01)
 
 ### Other Changes
@@ -424,7 +434,7 @@
 - Update qpid-proton-j-extensions dependency
 - Shorten tracing span names
 - Fixes AMQP link handlers not to close associated sessions when they are closed.
-- Move to use Schedulers.single() because pushing to Qpid's reactor is not thread-safe.
+- Move to use Schedulers.single() because pushing to qpid-proton-j reactor is not thread-safe.
 
 ## 1.0.0-beta.8 (2019-12-03)
 

@@ -31,6 +31,10 @@ public class ExtendedResourceProperties {
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of ExtendedResourceProperties class. */
+    public ExtendedResourceProperties() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *
