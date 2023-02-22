@@ -60,15 +60,11 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
             return false;
         }
 
-        if (shouldLogDueToStatusCode(diagnosticsContext.getStatusCode(), diagnosticsContext.getSubStatusCode())) {
+        if (diagnosticsContext.isFailure()) {
             return true;
         }
 
         return diagnosticsContext.isThresholdViolated();
-    }
-
-    private boolean shouldLogDueToStatusCode(int statusCode, int subStatusCode) {
-        return statusCode >= 500 || statusCode == 408 || statusCode == 410;
     }
 
     /**
@@ -76,7 +72,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
      * @param ctx the diagnostics context
      */
     protected void log(CosmosDiagnosticsContext ctx) {
-        if (this.shouldLogDueToStatusCode(ctx.getStatusCode(), ctx.getSubStatusCode())) {
+        if (ctx.isFailure()) {
             logger.warn(
                 "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
                 ctx.getAccountName(),

@@ -176,9 +176,8 @@ public final class CosmosDiagnosticsContext {
      * exceeded its threshold.
      */
     public boolean isThresholdViolated() {
-
-        if (this.thresholds == null) {
-            return false;
+        if (this.thresholds.isFailureCondition(this.statusCode, this.subStatusCode)) {
+            return true;
         }
 
         if (this.resourceType != ResourceType.Document) {
@@ -311,6 +310,16 @@ public final class CosmosDiagnosticsContext {
      */
     public Duration getDuration() {
         return this.duration;
+    }
+
+    /**
+     * A flag indicating whether the operation should be considered failed or not based on the status code handling
+     * rules in {@link CosmosDiagnosticsThresholds#configureStatusCodeHandling(int, Integer, boolean)} or
+     * {@link CosmosDiagnosticsThresholds#isFailureCondition(int, int)}
+     * @return a flag indicating whether the operation should be considered failed or not
+     */
+    public boolean isFailure() {
+        return this.thresholds.isFailureCondition(this.statusCode, this.subStatusCode);
     }
 
     void startOperation() {

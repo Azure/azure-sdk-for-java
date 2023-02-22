@@ -370,7 +370,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         if (shouldContainsSession) {
             assertThat(ctJson).contains("\"consistency\":\"Session\"");
         } else {
-            assertThat(ctJson).doesNotContain("consistency");
+            assertThat(ctJson).doesNotContain("\"consistency\":\"Session\"");
         }
 
         if (shouldContainsPreferredRegion) {

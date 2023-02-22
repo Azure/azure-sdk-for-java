@@ -1173,6 +1173,7 @@ public class ImplementationBridgeHelpers {
             Duration getNonPointReadLatencyThreshold(CosmosDiagnosticsThresholds thresholds);
             float getRequestChargeThreshold(CosmosDiagnosticsThresholds thresholds);
             int getPayloadSizeThreshold(CosmosDiagnosticsThresholds thresholds);
+            boolean isFailureCondition(CosmosDiagnosticsThresholds thresholds, int statusCode, int subStatusCode);
         }
     }
 

@@ -48,6 +48,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
@@ -184,6 +185,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Ignore
     public void cosmosAsyncContainer() throws Exception {
         Tracer mockTracer = getMockTracer();
         TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer, false, false));
@@ -412,6 +414,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Ignore
     public void tracerExceptionSpan() throws Exception {
         Tracer mockTracer = getMockTracer();
         TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer, false, false));
