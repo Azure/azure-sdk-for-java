@@ -75,6 +75,10 @@ public final class StorageTargetProperties {
     @JsonProperty(value = "allocationPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer allocationPercentage;
 
+    /** Creates an instance of StorageTargetProperties class. */
+    public StorageTargetProperties() {
+    }
+
     /**
      * Get the junctions property: List of Cache namespace junctions to target for namespace associations.
      *
