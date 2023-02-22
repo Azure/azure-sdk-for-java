@@ -64,15 +64,15 @@ public abstract class CommunicationIdentifier {
         } else if (AcsUser.equals(prefix) || SpoolUser.equals(prefix) || AcsUserDodCloud.equals(prefix) || AcsUserGcchCloud.equals(prefix)) {
             return new CommunicationUserIdentifier(rawId);
         } else if (BotGcchCloudGlobal.equals(prefix)) {
-            new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+            return new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
         } else if (BotPublicCloud.equals(prefix)) {
-            new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
+            return new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
         } else if (BotDodCloudGlobal.equals(prefix)) {
-            new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+            return new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
         } else if (BotGcchCloud.equals(prefix)) {
-            new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+            return new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
         } else if (BotDodCloud.equals(prefix)) {
-            new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+            return new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
         }
 
         return new UnknownIdentifier(rawId);
