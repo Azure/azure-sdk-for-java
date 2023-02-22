@@ -59,8 +59,8 @@ jobs:
           JdkVersion: $(JavaTestVersion)
 
       - template: /eng/pipelines/templates/steps/install-graalvm-jdk.yml
-          parameters:
-            LatestJdkFeatureVersion: '22.3.0'
+        parameters:
+          GraalVMJdkVersion: '22.3.0'
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
           - template: /eng/common/TestResources/build-test-resource-config.yml
