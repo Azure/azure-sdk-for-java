@@ -104,10 +104,11 @@ public abstract class CommunicationIdentifier {
             return true;
         }
 
-        if (!(that instanceof CommunicationIdentifier thatId)) {
+        if (!(that instanceof CommunicationIdentifier)) {
             return false;
         }
 
+        CommunicationIdentifier thatId = (CommunicationIdentifier) that;
         return this.getRawId().equals(thatId.getRawId());
     }
 

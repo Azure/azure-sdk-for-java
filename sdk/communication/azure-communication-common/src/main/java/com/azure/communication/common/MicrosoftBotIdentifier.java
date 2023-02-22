@@ -98,15 +98,25 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
             return true;
         }
 
-        if (!(that instanceof MicrosoftBotIdentifier thatId)) {
+        if (!(that instanceof MicrosoftBotIdentifier)) {
             return false;
         }
+
+        MicrosoftBotIdentifier thatId = (MicrosoftBotIdentifier) that;
 
         if (cloudEnvironment != null && !cloudEnvironment.equals(thatId.cloudEnvironment)) {
             return false;
         }
 
         if (thatId.cloudEnvironment != null && !thatId.cloudEnvironment.equals(this.cloudEnvironment)) {
+            return false;
+        }
+
+        if (thatId.isGlobal() != this.isGlobal()) {
+            return false;
+        }
+
+        if (!thatId.getBotId().equals(this.getBotId())) {
             return false;
         }
 
