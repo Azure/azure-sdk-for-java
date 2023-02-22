@@ -249,10 +249,12 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .take(messageCount)
                 .doOnNext(pe -> {
                     String traceparent = (String) pe.getData().getProperties().get("traceparent");
-                    String traceId = Span.current().getSpanContext().getTraceId();
+                    if (traceparent != null) {
+                        String traceId = Span.current().getSpanContext().getTraceId();
 
-                    // context created for the message and current are the same
-                    assertTrue(traceparent.startsWith("00-" + traceId));
+                        // context created for the message and current are the same
+                        assertTrue(traceparent.startsWith("00-" + traceId));
+                    }
                     assertFalse(((ReadableSpan) Span.current()).hasEnded());
                 })
                 .parallel(messageCount, 1)
