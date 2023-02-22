@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.jms.properties;
 
+import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
-import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
-import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -44,11 +44,11 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
      */
     public static final String PREFIX = "spring.jms.servicebus";
 
-    private AzureProfileProperties profile = new AzureProfileProperties();
+    private AzureProfileConfigurationProperties profile = new AzureProfileConfigurationProperties();
 
     private String scopes;
 
-    private TokenCredentialProperties credential = new TokenCredentialProperties();
+    private TokenCredentialConfigurationProperties credential = new TokenCredentialConfigurationProperties();
 
     /**
      * Whether to enable Servive Bus JMS autoconfiguration.
@@ -250,7 +250,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
      * @return the profile
      */
     @Override
-    public AzureProfileProperties getProfile() {
+    public AzureProfileConfigurationProperties getProfile() {
         return profile;
     }
 
@@ -258,7 +258,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
      * Set the profile
      * @param profile the profile properties related to an Azure subscription
      */
-    public void setProfile(AzureProfileProperties profile) {
+    public void setProfile(AzureProfileConfigurationProperties profile) {
         this.profile = profile;
     }
 
@@ -268,7 +268,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
      * @return the credential properties.
      */
     @Override
-    public TokenCredentialOptions getCredential() {
+    public TokenCredentialConfigurationProperties getCredential() {
         return credential;
     }
 
@@ -277,7 +277,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
      *
      * @param credential the credential properties
      */
-    public void setCredential(TokenCredentialOptions credential) {
+    public void setCredential(TokenCredentialConfigurationProperties credential) {
         this.credential = credential;
     }
 
