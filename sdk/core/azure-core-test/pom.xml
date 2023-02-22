@@ -142,6 +142,7 @@
               <includes>
                 <include>io.projectreactor:reactor-test:[3.4.26]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty-http:[1.0.27]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <!-- special allowance for azure-core-test as it is not a shipping library: -->
                 <include>org.junit.jupiter:junit-jupiter-api:[5.9.1]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
                 <include>org.junit.jupiter:junit-jupiter-params:[5.9.1]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
