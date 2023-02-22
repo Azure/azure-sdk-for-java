@@ -289,7 +289,6 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
         if (enableTestProxy) {
-            proxyVariableQueue.clear();
             return startProxyRecording();
         }
         return new RecordNetworkCallPolicy(recordedData, recordingRedactors);
