@@ -52,14 +52,14 @@ class EventHubsProducerInstrumentation {
         return tracer;
     }
 
-    private Context startSpanWithLinks(String name, EventDataBatch batch, Context context) {
-        StartSpanOptions startOptions = tracer.createStartOption(SpanKind.CLIENT);
+    private Context startSpanWithLinks(String spanName, EventDataBatch batch, Context context) {
+        StartSpanOptions startOptions = tracer.createStartOption(SpanKind.CLIENT, EventHubsTracer.OperationName.PUBLISH);
         if (batch != null) {
             for (EventData event : batch.getEvents()) {
                 startOptions.addLink(tracer.createLink(event.getProperties(), null, event.getContext()));
             }
         }
 
-        return tracer.startSpan(name, startOptions, context);
+        return tracer.startSpan(spanName, startOptions, context);
     }
 }

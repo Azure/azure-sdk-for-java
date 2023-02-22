@@ -20,6 +20,11 @@
   <description>Libraries built on Microsoft Azure Event Hubs</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <properties>
+    <javaModulesSurefireArgLine>
+      --add-reads com.azure.messaging.eventhubs=com.azure.core.tracing.opentelemetry
+    </javaModulesSurefireArgLine>
+  </properties>
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>

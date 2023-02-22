@@ -546,6 +546,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals("EventHubs.message", actual.getName());
         assertEquals(SpanKind.PRODUCER, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
+        assertNull(actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
         String traceparent = "00-" + actual.getSpanContext().getTraceId() + "-" + actual.getSpanContext().getSpanId() + "-01";
         assertEquals(message.getProperties().get("Diagnostic-Id"), traceparent);
         assertEquals(message.getProperties().get("traceparent"), traceparent);
@@ -555,6 +556,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(spanName, actual.getName());
         assertEquals(SpanKind.CLIENT, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
+        assertEquals("publish", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
         List<LinkData> links = actual.toSpanData().getLinks();
         assertEquals(messages.size(), links.size());
         for (int i = 0; i < links.size(); i++) {
@@ -570,7 +572,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(SpanKind.CLIENT, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
         List<LinkData> links = actual.toSpanData().getLinks();
-
+        assertEquals("receive", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
         assertEquals(messages.size(), links.size());
         for (int i = 0; i < links.size(); i++) {
             String messageTraceparent = (String) messages.get(i).getData().getProperties().get("traceparent");
@@ -586,6 +588,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
         assertEquals(0, actual.toSpanData().getLinks().size());
+        assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
 
         String messageTraceparent = (String) message.getProperties().get("traceparent");
         if (messageTraceparent == null) {
@@ -600,6 +603,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(spanName, actual.getName());
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(status, actual.toSpanData().getStatus().getStatusCode());
+        assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+
         assertEquals(messages.stream().filter(m -> m.getProperties().containsKey("traceparent")).count(), actual.toSpanData().getLinks().size());
         List<LinkData> links =  actual.toSpanData().getLinks();
         for (EventData data : messages) {
@@ -649,9 +654,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             // sdk/core/azure-core-metrics-opentelemetry/src/main/java/com/azure/core/metrics/opentelemetry/OpenTelemetryAttributes.java
             // sdk/core/azure-core-tracing-opentelemetry/src/main/java/com/azure/core/tracing/opentelemetry/OpenTelemetryUtils.java
             assertEquals("Microsoft.EventHub", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
+            assertEquals("eventhubs", readableSpan.getAttribute(AttributeKey.stringKey("messaging.system")));
             assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
             assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.name")));
-            assertEquals("eventhubs", readableSpan.getAttribute(AttributeKey.stringKey("messaging.system")));
 
             Consumer<ReadableSpan> filter = notifier.get();
             if (filter != null) {

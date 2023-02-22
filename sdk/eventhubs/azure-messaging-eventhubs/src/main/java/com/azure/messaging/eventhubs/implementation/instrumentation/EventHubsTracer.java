@@ -36,6 +36,7 @@ public class EventHubsTracer {
     public static final String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
     public static final String MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME = "messaging.eventhubs.message.enqueued_time";
     private static final String MESSAGING_SYSTEM_ATTRIBUTE_NAME = "messaging.system";
+    private static final String MESSAGING_OPERATION_ATTRIBUTE_NAME = "messaging.operation";
     private static final ClientLogger LOGGER = new ClientLogger(EventHubsTracer.class);
 
     private static final boolean IS_TRACING_DISABLED = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED, false);
@@ -67,7 +68,7 @@ public class EventHubsTracer {
                     }
                 })
                 .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY,
-                    tracer.start(spanName, createStartOption(SpanKind.CLIENT), Context.NONE)));
+                    tracer.start(spanName, createStartOption(SpanKind.CLIENT, null), Context.NONE)));
         }
 
         return publisher;
@@ -109,7 +110,7 @@ public class EventHubsTracer {
         }
 
         // Starting the span makes the sampling decision (nothing is logged at this time)
-        StartSpanOptions startOptions = createStartOption(SpanKind.PRODUCER);
+        StartSpanOptions startOptions = createStartOption(SpanKind.PRODUCER, null);
 
         Context eventSpanContext = tracer.start("EventHubs.message", startOptions, eventContext);
 
@@ -182,7 +183,7 @@ public class EventHubsTracer {
 
     public Context startProcessSpan(String name, EventData event, Context parent) {
         if (tracer != null) {
-            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER)
+            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS)
                 .setRemoteParent(extractContext(event.getProperties()));
 
             Instant enqueuedTime = event.getEnqueuedTime();
@@ -198,7 +199,7 @@ public class EventHubsTracer {
 
     public Context startProcessSpan(String name, List<EventData> events, Context parent) {
         if (tracer != null && events != null) {
-            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER);
+            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS);
             for (EventData event : events) {
                 startOptions.addLink(createLink(event.getProperties(), event.getEnqueuedTime(), Context.NONE));
             }
@@ -216,7 +217,7 @@ public class EventHubsTracer {
                 if (signal.isOnNext()) {
                     eventsList.add(signal.get());
                 } else if (signal.isOnComplete() || signal.isOnError()) {
-                    StartSpanOptions startSpanOptions = createStartOption(SpanKind.CLIENT)
+                    StartSpanOptions startSpanOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE)
                         .setStartTimestamp(startTime);
                     for (PartitionEvent event : eventsList) {
                         startSpanOptions.addLink(createLink(event.getData().getProperties(), event.getData().getEnqueuedTime(), Context.NONE));
@@ -240,10 +241,32 @@ public class EventHubsTracer {
         return diagnosticId == null ? null : diagnosticId.toString();
     }
 
-    public StartSpanOptions createStartOption(SpanKind kind) {
-        return new StartSpanOptions(kind)
+    public StartSpanOptions createStartOption(SpanKind kind, OperationName operationName) {
+        StartSpanOptions startOptions =  new StartSpanOptions(kind)
             .setAttribute(MESSAGING_SYSTEM_ATTRIBUTE_NAME, "eventhubs")
             .setAttribute(Tracer.ENTITY_PATH_KEY, entityName)
             .setAttribute(Tracer.HOST_NAME_KEY, fullyQualifiedName);
+
+        if (operationName != null) {
+            startOptions.setAttribute(MESSAGING_OPERATION_ATTRIBUTE_NAME, operationName.toString());
+        }
+
+        return startOptions;
+    }
+
+    public enum OperationName {
+        PUBLISH("publish"),
+        RECEIVE("receive"),
+        PROCESS("process");
+
+        private final String operationName;
+        OperationName(String operationName) {
+            this.operationName = operationName;
+        }
+
+        @Override
+        public String toString() {
+            return operationName;
+        }
     }
 }

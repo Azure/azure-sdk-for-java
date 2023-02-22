@@ -42,7 +42,7 @@ public class EventHubsConsumerInstrumentation {
         Instant enqueuedTime = MessageUtils.getEnqueuedTime(message.getMessageAnnotations().getValue(), ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL);
         Context child = parent;
         if (tracer.isEnabled() && !isSync) {
-            StartSpanOptions options = tracer.createStartOption(SpanKind.CONSUMER)
+            StartSpanOptions options = tracer.createStartOption(SpanKind.CONSUMER, EventHubsTracer.OperationName.PROCESS)
                 .setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond())
                 .setRemoteParent(tracer.extractContext(message.getApplicationProperties().getValue()));
 
