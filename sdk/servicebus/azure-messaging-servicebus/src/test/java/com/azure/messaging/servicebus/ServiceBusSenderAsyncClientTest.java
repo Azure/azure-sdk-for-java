@@ -397,6 +397,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void sendMultipleMessagesTracesSpans() {
         // Arrange
         final int count = 4;
