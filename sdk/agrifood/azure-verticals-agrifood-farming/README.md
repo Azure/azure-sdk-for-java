@@ -38,8 +38,6 @@ In order to interact with the Azure FarmBeats service, your client must present 
 
 The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
-#### Create PartiesClient, BoundariesClient and ScenesClient with Azure Active Directory Credential and Ingest Satellite Data
-
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
 
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
@@ -99,7 +97,7 @@ Farm hierarchy is a collection of below entities.
 - Boundary - is the actual multi-polygon area expressed as a geometry (in geojson). It is normally associated with a field or a seasonal field. Satellite, weather and farm operations data is linked to a boundary.
 - Cascade delete - Agronomic data is stored hierarchically with party as the root. The hierarchy includes Party -> Farms -> Fields -> Seasonal Fields -> Boundaries -> Associated data (satellite, weather, farm operations). Cascade delete refers to the process of deleting any node and its subtree. 
 
-##### Example
+#### Example
 
 ```java readme-sample-createFarmHierarchy
 // Create Party
@@ -120,7 +118,7 @@ System.out.println(response.getValue());
 ### [Scenes][scenes]
 Scenes refers to images normally ingested using satellite APIs. This includes raw bands and derived bands (Ex: NDVI). Scenes may also include spatial outputs of an inference or AI/ML model (Ex: LAI).
 
-##### Example
+#### Example
 
 ```java readme-sample-ingestSatelliteData
 // Trigger Satellite job and wait for completion
