@@ -301,6 +301,9 @@ public abstract class TestBase implements BeforeEachCallback {
         return enableTestProxy;
     }
 
+    /**
+     * Enables use of the test proxy.
+     */
     protected static void setTestProxyEnabled() {
         enableTestProxy = true;
     }
