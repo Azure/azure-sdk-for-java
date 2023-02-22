@@ -4,16 +4,9 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
-import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
-import com.azure.cosmos.implementation.clienttelemetry.TagName;
-import com.azure.cosmos.models.CosmosMetricName;
-import io.micrometer.core.instrument.Tag;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -24,9 +17,24 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * high RU consumption or high payload sizes.
  */
 public final class CosmosDiagnosticsThresholds {
+    /**
+     * The default request charge (RU) threshold to determine whether to include request diagnostics or not
+     */
     public final static float DEFAULT_REQUEST_CHARGE_THRESHOLD = 1000;
+
+    /**
+     * The default latency threshold to determine whether to include request diagnostics or not for point operations
+     */
     public final static Duration DEFAULT_POINT_OPERATION_LATENCY_THRESHOLD = Duration.ofSeconds(1);
+
+    /**
+     * The default latency threshold to determine whether to include request diagnostics or not for non-point operations
+     */
     public final static Duration DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD = Duration.ofSeconds(3);
+
+    /**
+     * The default payload size (in bytes) threshold to determine whether to include request diagnostics or not
+     */
     public final static int DEFAULT_PAYLOAD_SIZE_THRESHOLD_IN_BYTES = Integer.MAX_VALUE;
 
     private Duration pointOperationLatencyThreshold;
