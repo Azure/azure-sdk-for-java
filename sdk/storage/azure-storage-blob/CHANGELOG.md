@@ -1,15 +1,13 @@
 # Release History
 
-## 12.21.0-beta.2 (Unreleased)
+## 12.21.0 (2023-02-21)
 
 ### Features Added
 - Added `BlobDownloadHeaders.getCreationTime()` and `BlobDownloadHeaders.setCreationTime(OffsetDateTime)` to access the x-ms-creation-time property.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for 2021-12-02 service version.
+- Added support for Blob Cold Tier `AccessTier.COLD`.
+- Fixed bug where `BlobErrorCode.IncrementalCopyOfEarlierVersionSnapshotNotAllowed` was spelled incorrectly.
+- Added new overload `AppendBlobClient.getBlobOutputStream(boolean)` that takes in a boolean for overwrite and appends to existing data if overwrite is specified `false`, or deletes and recreates a blob if overwrite is specified `true`.
 
 ## 12.20.2 (2023-02-09)
 
