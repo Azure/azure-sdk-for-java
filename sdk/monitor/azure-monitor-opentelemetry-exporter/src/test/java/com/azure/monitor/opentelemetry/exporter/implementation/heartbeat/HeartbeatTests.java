@@ -36,6 +36,7 @@ class HeartbeatTests {
         // then
         MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
         assertThat(data).isNotNull();
+        assertThat(data.getProperties()).isNotNull();
         assertThat(data.getProperties().size() > 0).isTrue();
     }
 
