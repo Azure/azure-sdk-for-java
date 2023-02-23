@@ -27,7 +27,11 @@ public final class RecognizeInputTypeInternal extends ExpandableStringEnum<Recog
         return fromString(name, RecognizeInputTypeInternal.class);
     }
 
-    /** @return known RecognizeInputTypeInternal values. */
+    /**
+     * Gets known RecognizeInputTypeInternal values.
+     *
+     * @return known RecognizeInputTypeInternal values.
+     */
     public static Collection<RecognizeInputTypeInternal> values() {
         return values(RecognizeInputTypeInternal.class);
     }

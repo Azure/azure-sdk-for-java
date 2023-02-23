@@ -6,16 +6,15 @@ package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** The response payload for adding participants to the call. */
 @Fluent
-public final class AddParticipantsResponseInternal {
+public final class AddParticipantResponseInternal {
     /*
      * List of current participants in the call.
      */
-    @JsonProperty(value = "participants")
-    private List<CallParticipantInternal> participants;
+    @JsonProperty(value = "participant")
+    private CallParticipantInternal participant;
 
     /*
      * The operation context provided by client.
@@ -24,22 +23,22 @@ public final class AddParticipantsResponseInternal {
     private String operationContext;
 
     /**
-     * Get the participants property: List of current participants in the call.
+     * Get the participant property: List of current participants in the call.
      *
-     * @return the participants value.
+     * @return the participant value.
      */
-    public List<CallParticipantInternal> getParticipants() {
-        return this.participants;
+    public CallParticipantInternal getParticipant() {
+        return this.participant;
     }
 
     /**
-     * Set the participants property: List of current participants in the call.
+     * Set the participant property: List of current participants in the call.
      *
-     * @param participants the participants value to set.
-     * @return the AddParticipantsResponseInternal object itself.
+     * @param participant the participant value to set.
+     * @return the AddParticipantResponseInternal object itself.
      */
-    public AddParticipantsResponseInternal setParticipants(List<CallParticipantInternal> participants) {
-        this.participants = participants;
+    public AddParticipantResponseInternal setParticipant(CallParticipantInternal participant) {
+        this.participant = participant;
         return this;
     }
 
@@ -56,9 +55,9 @@ public final class AddParticipantsResponseInternal {
      * Set the operationContext property: The operation context provided by client.
      *
      * @param operationContext the operationContext value to set.
-     * @return the AddParticipantsResponseInternal object itself.
+     * @return the AddParticipantResponseInternal object itself.
      */
-    public AddParticipantsResponseInternal setOperationContext(String operationContext) {
+    public AddParticipantResponseInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

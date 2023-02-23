@@ -6,16 +6,15 @@ package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** The remove participant by identifier request. */
 @Fluent
-public final class RemoveParticipantsRequestInternal {
+public final class RemoveParticipantRequestInternal {
     /*
      * The participants to be removed from the call.
      */
-    @JsonProperty(value = "participantsToRemove", required = true)
-    private List<CommunicationIdentifierModel> participantsToRemove;
+    @JsonProperty(value = "participantToRemove", required = true)
+    private CommunicationIdentifierModel participantToRemove;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request
@@ -25,23 +24,22 @@ public final class RemoveParticipantsRequestInternal {
     private String operationContext;
 
     /**
-     * Get the participantsToRemove property: The participants to be removed from the call.
+     * Get the participantToRemove property: The participants to be removed from the call.
      *
-     * @return the participantsToRemove value.
+     * @return the participantToRemove value.
      */
-    public List<CommunicationIdentifierModel> getParticipantsToRemove() {
-        return this.participantsToRemove;
+    public CommunicationIdentifierModel getParticipantToRemove() {
+        return this.participantToRemove;
     }
 
     /**
-     * Set the participantsToRemove property: The participants to be removed from the call.
+     * Set the participantToRemove property: The participants to be removed from the call.
      *
-     * @param participantsToRemove the participantsToRemove value to set.
-     * @return the RemoveParticipantsRequestInternal object itself.
+     * @param participantToRemove the participantToRemove value to set.
+     * @return the RemoveParticipantRequestInternal object itself.
      */
-    public RemoveParticipantsRequestInternal setParticipantsToRemove(
-            List<CommunicationIdentifierModel> participantsToRemove) {
-        this.participantsToRemove = participantsToRemove;
+    public RemoveParticipantRequestInternal setParticipantToRemove(CommunicationIdentifierModel participantToRemove) {
+        this.participantToRemove = participantToRemove;
         return this;
     }
 
@@ -60,9 +58,9 @@ public final class RemoveParticipantsRequestInternal {
      * the response event.
      *
      * @param operationContext the operationContext value to set.
-     * @return the RemoveParticipantsRequestInternal object itself.
+     * @return the RemoveParticipantRequestInternal object itself.
      */
-    public RemoveParticipantsRequestInternal setOperationContext(String operationContext) {
+    public RemoveParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
