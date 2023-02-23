@@ -234,6 +234,31 @@ public final class MediaServiceUpdate {
     }
 
     /**
+     * Get the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
+     * optional property. If unspecified, a secure default value will be used.
+     *
+     * @return the minimumTlsVersion value.
+     */
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersion();
+    }
+
+    /**
+     * Set the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
+     * optional property. If unspecified, a secure default value will be used.
+     *
+     * @param minimumTlsVersion the minimumTlsVersion value to set.
+     * @return the MediaServiceUpdate object itself.
+     */
+    public MediaServiceUpdate withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MediaServiceProperties();
+        }
+        this.innerProperties().withMinimumTlsVersion(minimumTlsVersion);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

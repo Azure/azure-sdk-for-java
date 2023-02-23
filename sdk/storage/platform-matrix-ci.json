@@ -4,7 +4,7 @@
   },
   "include": [
     {
-      "Agent": { "windows-2022": { "OSVmImage": "MMS2022", "Pool": "azsdk-pool-mms-win-2022-general" } },
+      "Agent": { "windows-2022": { "OSVmImage": "windows-2022", "Pool": "azsdk-pool-mms-win-2022-general" } },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestGoals": "surefire:test",

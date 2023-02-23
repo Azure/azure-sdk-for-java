@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.RunRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of task run. */
 @Fluent
 public final class TaskRunPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskRunPropertiesInner.class);
-
     /*
      * The provisioning state of this task run
      */
@@ -35,11 +31,14 @@ public final class TaskRunPropertiesInner {
     private RunInner runResult;
 
     /*
-     * How the run should be forced to rerun even if the run request
-     * configuration has not changed
+     * How the run should be forced to rerun even if the run request configuration has not changed
      */
     @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
+
+    /** Creates an instance of TaskRunPropertiesInner class. */
+    public TaskRunPropertiesInner() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of this task run.

@@ -14,15 +14,15 @@ public final class OutputFileTests {
     public void testDeserialize() throws Exception {
         OutputFile model =
             BinaryData
-                .fromString("{\"labels\":[\"sutrgjup\",\"uutpwoqhih\",\"jqgwzp\",\"fqntcyp\"]}")
+                .fromString("{\"labels\":[\"lhzdsqtzb\",\"rgnowcjhfgm\",\"ecactx\",\"wotey\"]}")
                 .toObject(OutputFile.class);
-        Assertions.assertEquals("sutrgjup", model.labels().get(0));
+        Assertions.assertEquals("lhzdsqtzb", model.labels().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutputFile model = new OutputFile().withLabels(Arrays.asList("sutrgjup", "uutpwoqhih", "jqgwzp", "fqntcyp"));
+        OutputFile model = new OutputFile().withLabels(Arrays.asList("lhzdsqtzb", "rgnowcjhfgm", "ecactx", "wotey"));
         model = BinaryData.fromObject(model).toObject(OutputFile.class);
-        Assertions.assertEquals("sutrgjup", model.labels().get(0));
+        Assertions.assertEquals("lhzdsqtzb", model.labels().get(0));
     }
 }

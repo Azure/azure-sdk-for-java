@@ -798,7 +798,7 @@ public class CosmosContainer {
 
     /***
      *  Initializes the container by warming up the caches and connections to a specified no. of proactive connection regions.
-     *  For more information about proactive connection regions, see {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()}
+     *  For more information about proactive connection regions, see {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}
      *
      *  <p>
      *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.

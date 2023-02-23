@@ -7,7 +7,7 @@ package com.azure.resourcemanager.synapse.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TransparentDataEncryptionStatus. */
+/** The status of the database transparent data encryption. */
 public enum TransparentDataEncryptionStatus {
     /** Enum value Enabled. */
     ENABLED("Enabled"),
@@ -30,6 +30,9 @@ public enum TransparentDataEncryptionStatus {
      */
     @JsonCreator
     public static TransparentDataEncryptionStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TransparentDataEncryptionStatus[] items = TransparentDataEncryptionStatus.values();
         for (TransparentDataEncryptionStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum TransparentDataEncryptionStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

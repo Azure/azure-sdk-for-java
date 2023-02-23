@@ -42,6 +42,10 @@ public final class ManagedPrivateEndpointProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ManagedPrivateEndpointProperties class. */
+    public ManagedPrivateEndpointProperties() {
+    }
+
     /**
      * Get the privateLinkResourceId property: The ARM resource ID of the resource for which the managed private
      * endpoint is created.

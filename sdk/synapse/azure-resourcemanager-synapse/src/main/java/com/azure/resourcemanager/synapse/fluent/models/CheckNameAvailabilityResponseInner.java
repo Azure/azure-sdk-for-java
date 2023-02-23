@@ -7,7 +7,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Check name availability response A response saying whether the workspace name is available. */
+/**
+ * Check name availability response
+ *
+ * <p>A response saying whether the workspace name is available.
+ */
 @Fluent
 public final class CheckNameAvailabilityResponseInner {
     /*
@@ -33,6 +37,10 @@ public final class CheckNameAvailabilityResponseInner {
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of CheckNameAvailabilityResponseInner class. */
+    public CheckNameAvailabilityResponseInner() {
+    }
 
     /**
      * Get the message property: Validation message.

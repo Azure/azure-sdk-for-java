@@ -7,16 +7,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /** The SkillNames model. */
 @Fluent
-public final class SkillNames {
+public final class SkillNames implements JsonSerializable<SkillNames> {
     /*
      * the names of skills to be reset.
      */
-    @JsonProperty(value = "skillNames")
     private List<String> skillNames;
 
     /** Creates an instance of SkillNames class. */
@@ -40,5 +43,41 @@ public final class SkillNames {
     public SkillNames setSkillNames(List<String> skillNames) {
         this.skillNames = skillNames;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("skillNames", this.skillNames, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkillNames from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkillNames if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     * @throws IOException If an error occurs while reading the SkillNames.
+     */
+    public static SkillNames fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    List<String> skillNames = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("skillNames".equals(fieldName)) {
+                            skillNames = reader.readArray(reader1 -> reader1.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SkillNames deserializedValue = new SkillNames();
+                    deserializedValue.skillNames = skillNames;
+
+                    return deserializedValue;
+                });
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Service Delete. */
 public final class ServiceDeleteSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlDedicatedGatewayServiceDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlDedicatedGatewayServiceDelete.json
      */
     /**
      * Sample code: SqlDedicatedGatewayServiceDelete.
@@ -22,11 +20,11 @@ public final class ServiceDeleteSamples {
             .manager()
             .serviceClient()
             .getServices()
-            .delete("rg1", "ddb1", "SqlDedicatedGateway", Context.NONE);
+            .delete("rg1", "ddb1", "SqlDedicatedGateway", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMaterializedViewsBuilderServiceDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMaterializedViewsBuilderServiceDelete.json
      */
     /**
      * Sample code: MaterializedViewsBuilderServiceDelete.
@@ -39,11 +37,11 @@ public final class ServiceDeleteSamples {
             .manager()
             .serviceClient()
             .getServices()
-            .delete("rg1", "ddb1", "MaterializedViewsBuilder", Context.NONE);
+            .delete("rg1", "ddb1", "MaterializedViewsBuilder", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDataTransferServiceDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDataTransferServiceDelete.json
      */
     /**
      * Sample code: DataTransferServiceDelete.
@@ -56,11 +54,11 @@ public final class ServiceDeleteSamples {
             .manager()
             .serviceClient()
             .getServices()
-            .delete("rg1", "ddb1", "DataTransfer", Context.NONE);
+            .delete("rg1", "ddb1", "DataTransfer", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGraphAPIComputeServiceDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBGraphAPIComputeServiceDelete.json
      */
     /**
      * Sample code: GraphAPIComputeServiceDelete.
@@ -73,6 +71,6 @@ public final class ServiceDeleteSamples {
             .manager()
             .serviceClient()
             .getServices()
-            .delete("rg1", "ddb1", "GraphAPICompute", Context.NONE);
+            .delete("rg1", "ddb1", "GraphAPICompute", com.azure.core.util.Context.NONE);
     }
 }

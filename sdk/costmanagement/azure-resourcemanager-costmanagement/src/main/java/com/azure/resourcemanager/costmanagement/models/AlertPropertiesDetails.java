@@ -108,6 +108,42 @@ public final class AlertPropertiesDetails {
     @JsonProperty(value = "overridingAlert")
     private String overridingAlert;
 
+    /*
+     * department name
+     */
+    @JsonProperty(value = "departmentName")
+    private String departmentName;
+
+    /*
+     * company name
+     */
+    @JsonProperty(value = "companyName")
+    private String companyName;
+
+    /*
+     * enrollment number
+     */
+    @JsonProperty(value = "enrollmentNumber")
+    private String enrollmentNumber;
+
+    /*
+     * datetime of enrollmentStartDate
+     */
+    @JsonProperty(value = "enrollmentStartDate")
+    private String enrollmentStartDate;
+
+    /*
+     * datetime of enrollmentEndDate
+     */
+    @JsonProperty(value = "enrollmentEndDate")
+    private String enrollmentEndDate;
+
+    /*
+     * invoicing threshold
+     */
+    @JsonProperty(value = "invoicingThreshold")
+    private BigDecimal invoicingThreshold;
+
     /** Creates an instance of AlertPropertiesDetails class. */
     public AlertPropertiesDetails() {
     }
@@ -429,6 +465,126 @@ public final class AlertPropertiesDetails {
      */
     public AlertPropertiesDetails withOverridingAlert(String overridingAlert) {
         this.overridingAlert = overridingAlert;
+        return this;
+    }
+
+    /**
+     * Get the departmentName property: department name.
+     *
+     * @return the departmentName value.
+     */
+    public String departmentName() {
+        return this.departmentName;
+    }
+
+    /**
+     * Set the departmentName property: department name.
+     *
+     * @param departmentName the departmentName value to set.
+     * @return the AlertPropertiesDetails object itself.
+     */
+    public AlertPropertiesDetails withDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+        return this;
+    }
+
+    /**
+     * Get the companyName property: company name.
+     *
+     * @return the companyName value.
+     */
+    public String companyName() {
+        return this.companyName;
+    }
+
+    /**
+     * Set the companyName property: company name.
+     *
+     * @param companyName the companyName value to set.
+     * @return the AlertPropertiesDetails object itself.
+     */
+    public AlertPropertiesDetails withCompanyName(String companyName) {
+        this.companyName = companyName;
+        return this;
+    }
+
+    /**
+     * Get the enrollmentNumber property: enrollment number.
+     *
+     * @return the enrollmentNumber value.
+     */
+    public String enrollmentNumber() {
+        return this.enrollmentNumber;
+    }
+
+    /**
+     * Set the enrollmentNumber property: enrollment number.
+     *
+     * @param enrollmentNumber the enrollmentNumber value to set.
+     * @return the AlertPropertiesDetails object itself.
+     */
+    public AlertPropertiesDetails withEnrollmentNumber(String enrollmentNumber) {
+        this.enrollmentNumber = enrollmentNumber;
+        return this;
+    }
+
+    /**
+     * Get the enrollmentStartDate property: datetime of enrollmentStartDate.
+     *
+     * @return the enrollmentStartDate value.
+     */
+    public String enrollmentStartDate() {
+        return this.enrollmentStartDate;
+    }
+
+    /**
+     * Set the enrollmentStartDate property: datetime of enrollmentStartDate.
+     *
+     * @param enrollmentStartDate the enrollmentStartDate value to set.
+     * @return the AlertPropertiesDetails object itself.
+     */
+    public AlertPropertiesDetails withEnrollmentStartDate(String enrollmentStartDate) {
+        this.enrollmentStartDate = enrollmentStartDate;
+        return this;
+    }
+
+    /**
+     * Get the enrollmentEndDate property: datetime of enrollmentEndDate.
+     *
+     * @return the enrollmentEndDate value.
+     */
+    public String enrollmentEndDate() {
+        return this.enrollmentEndDate;
+    }
+
+    /**
+     * Set the enrollmentEndDate property: datetime of enrollmentEndDate.
+     *
+     * @param enrollmentEndDate the enrollmentEndDate value to set.
+     * @return the AlertPropertiesDetails object itself.
+     */
+    public AlertPropertiesDetails withEnrollmentEndDate(String enrollmentEndDate) {
+        this.enrollmentEndDate = enrollmentEndDate;
+        return this;
+    }
+
+    /**
+     * Get the invoicingThreshold property: invoicing threshold.
+     *
+     * @return the invoicingThreshold value.
+     */
+    public BigDecimal invoicingThreshold() {
+        return this.invoicingThreshold;
+    }
+
+    /**
+     * Set the invoicingThreshold property: invoicing threshold.
+     *
+     * @param invoicingThreshold the invoicingThreshold value to set.
+     * @return the AlertPropertiesDetails object itself.
+     */
+    public AlertPropertiesDetails withInvoicingThreshold(BigDecimal invoicingThreshold) {
+        this.invoicingThreshold = invoicingThreshold;
         return this;
     }
 

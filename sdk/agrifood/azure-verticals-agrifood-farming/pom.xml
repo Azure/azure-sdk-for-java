@@ -31,7 +31,9 @@
 
   <properties>
     <!-- Anomaly detector temporarily skipping code coverage until tests are added -->
-    <jacoco.skip>true</jacoco.skip>
+    <jacoco.skip>false</jacoco.skip>
+    <jacoco.min.linecoverage>0.001</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.001</jacoco.min.branchcoverage> 
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>

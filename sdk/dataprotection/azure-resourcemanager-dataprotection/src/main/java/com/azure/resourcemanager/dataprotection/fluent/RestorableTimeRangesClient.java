@@ -16,7 +16,7 @@ public interface RestorableTimeRangesClient {
     /**
      * The find operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -37,7 +37,7 @@ public interface RestorableTimeRangesClient {
     /**
      * The find operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.

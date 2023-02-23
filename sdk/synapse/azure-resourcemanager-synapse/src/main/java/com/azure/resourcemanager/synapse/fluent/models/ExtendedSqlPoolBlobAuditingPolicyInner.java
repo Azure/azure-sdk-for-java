@@ -20,6 +20,10 @@ public final class ExtendedSqlPoolBlobAuditingPolicyInner extends ProxyResource 
     @JsonProperty(value = "properties")
     private ExtendedSqlPoolBlobAuditingPolicyProperties innerProperties;
 
+    /** Creates an instance of ExtendedSqlPoolBlobAuditingPolicyInner class. */
+    public ExtendedSqlPoolBlobAuditingPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

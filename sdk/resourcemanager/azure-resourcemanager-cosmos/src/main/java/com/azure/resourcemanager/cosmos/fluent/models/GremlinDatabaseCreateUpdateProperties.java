@@ -26,6 +26,10 @@ public final class GremlinDatabaseCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of GremlinDatabaseCreateUpdateProperties class. */
+    public GremlinDatabaseCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a Gremlin database.
      *

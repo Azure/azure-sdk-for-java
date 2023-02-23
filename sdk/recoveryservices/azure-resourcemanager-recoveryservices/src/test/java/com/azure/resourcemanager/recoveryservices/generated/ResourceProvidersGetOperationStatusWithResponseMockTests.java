@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.OperationResource;
 import java.nio.ByteBuffer;
@@ -63,7 +62,7 @@ public final class ResourceProvidersGetOperationStatusWithResponseMockTests {
         OperationResource response =
             manager
                 .resourceProviders()
-                .getOperationStatusWithResponse("xkgymareqnajxqu", "jhkycub", "ddg", Context.NONE)
+                .getOperationStatusWithResponse("xkgymareqnajxqu", "jhkycub", "ddg", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T12:39:32Z"), response.endTime());

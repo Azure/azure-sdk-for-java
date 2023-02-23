@@ -23,10 +23,10 @@ public final class TransferToParticipantRequestInternal {
     private PhoneNumberIdentifierModel transfereeCallerId;
 
     /*
-     * The user to user information.
+     * Used by customer to send custom context to targets
      */
-    @JsonProperty(value = "userToUserInformation")
-    private String userToUserInformation;
+    @JsonProperty(value = "customContext")
+    private CustomContext customContext;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request
@@ -76,22 +76,22 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-     * Get the userToUserInformation property: The user to user information.
+     * Get the customContext property: Used by customer to send custom context to targets.
      *
-     * @return the userToUserInformation value.
+     * @return the customContext value.
      */
-    public String getUserToUserInformation() {
-        return this.userToUserInformation;
+    public CustomContext getCustomContext() {
+        return this.customContext;
     }
 
     /**
-     * Set the userToUserInformation property: The user to user information.
+     * Set the customContext property: Used by customer to send custom context to targets.
      *
-     * @param userToUserInformation the userToUserInformation value to set.
+     * @param customContext the customContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
-    public TransferToParticipantRequestInternal setUserToUserInformation(String userToUserInformation) {
-        this.userToUserInformation = userToUserInformation;
+    public TransferToParticipantRequestInternal setCustomContext(CustomContext customContext) {
+        this.customContext = customContext;
         return this;
     }
 

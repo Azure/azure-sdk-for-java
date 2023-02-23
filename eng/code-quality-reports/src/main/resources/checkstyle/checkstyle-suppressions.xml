@@ -22,6 +22,9 @@
   <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
   <suppress checks="Header" files="com.azure.core.implementation.jackson.(OptionModule|OptionPropertiesModifier|OptionBeanPropertyWriter|OptionTypeModifier|OptionSerializerProvider|OptionSerializer)"/>
 
+  <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
+  <suppress checks="Header" files="com.azure.core.serializer.json.jackson.implementation.(OptionModule|OptionPropertiesModifier|OptionBeanPropertyWriter|OptionTypeModifier|OptionSerializerProvider|OptionSerializer)"/>
+
   <!-- empty Enum Singleton Pattern -->
   <suppress checks="NoWhitespaceBefore" files="Messages.java"/>
 
@@ -455,7 +458,7 @@ the main ServiceBusClientBuilder. -->
   <!-- The clients don't end with 'Client' but instead with 'Sender' -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
             files="com.azure.search.documents.SearchClientBuilder"
-            lines="506,540,554"/>
+            lines="511,545,559"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.(SearchIndexingBufferedAsyncSender|SearchIndexingBufferedSender)"/>
 
@@ -494,8 +497,8 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
 
   <!-- Suppress VisibilityModifier in MemberConverterImplTests and FieldBuilderTests.-->
-  <suppress checks="VisibilityModifier"
-            files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
+  <suppress checks="VisibilityModifier" files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
+  <suppress checks="VisibilityModifier" files="com.azure.core.serializer.json.jackson.implementation.MemberNameConverterImplTests.java"/>
   <suppress checks="VisibilityModifier" files="com.azure.search.documents.indexes.FieldBuilderTests.java"/>
 
   <!-- These APIs have already leaked implementation and cannot be changed -->

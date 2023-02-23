@@ -77,6 +77,10 @@ public final class OperationMetaMetricSpecification {
     @JsonProperty(value = "metricFilterPattern")
     private String metricFilterPattern;
 
+    /** Creates an instance of OperationMetaMetricSpecification class. */
+    public OperationMetaMetricSpecification() {
+    }
+
     /**
      * Get the sourceMdmNamespace property: The source MDM namespace.
      *
