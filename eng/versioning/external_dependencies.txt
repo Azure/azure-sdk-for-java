@@ -196,10 +196,10 @@ com.microsoft.azure:msal4j-persistence-extension;1.1.0
 com.sun.activation:jakarta.activation;1.2.2
 io.opentelemetry:opentelemetry-api;1.23.0
 io.opentelemetry:opentelemetry-sdk;1.23.0
-io.opentelemetry:opentelemetry-exporter-logging;1.20.0
-io.opentelemetry:opentelemetry-exporter-jaeger;1.20.0
-io.opentelemetry:opentelemetry-exporter-otlp;1.20.0
-io.opentelemetry:opentelemetry-sdk-testing;1.20.0
+io.opentelemetry:opentelemetry-exporter-logging;1.23.0
+io.opentelemetry:opentelemetry-exporter-jaeger;1.23.0
+io.opentelemetry:opentelemetry-exporter-otlp;1.23.0
+io.opentelemetry:opentelemetry-sdk-testing;1.23.0
 io.opentelemetry:opentelemetry-sdk-logs;1.23.0-alpha
 io.projectreactor:reactor-test;3.4.26
 junit:junit;4.13.2
