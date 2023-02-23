@@ -1,32 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/89422f7789422f77e927097289398b80d7f543cf98?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/89422f7789422f7762b07191320a510ffda144568c?restype=share",
     "Headers" : {
       "x-ms-version" : "2021-12-02",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "27d9b38a-d2b5-4420-9fb2-7774a62c081d"
+      "x-ms-client-request-id" : "866a6b0d-862f-403a-9f0c-e1c014f5dbe1"
     },
     "Response" : {
       "x-ms-version" : "2021-12-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8DB102B64E81FD9",
-      "Last-Modified" : "Thu, 16 Feb 2023 14:37:56 GMT",
+      "ETag" : "0x8DB15BBDC758FD8",
+      "Last-Modified" : "Thu, 23 Feb 2023 16:34:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "4556e3af-701a-0045-0f14-423d3a000000",
-      "Date" : "Thu, 16 Feb 2023 14:37:56 GMT",
-      "x-ms-client-request-id" : "27d9b38a-d2b5-4420-9fb2-7774a62c081d"
+      "x-ms-request-id" : "4e40b5c4-901a-0066-15a4-4752f1000000",
+      "Date" : "Thu, 23 Feb 2023 16:34:39 GMT",
+      "x-ms-client-request-id" : "866a6b0d-862f-403a-9f0c-e1c014f5dbe1"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/89422f7789422f7762b07191320a510ffda144568c/89422f7789422f7762b60369c7a94972bb594a99a3",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "171d71e1-1921-4048-9fe3-526ced4035ce"
+    },
+    "Response" : {
+      "x-ms-file-id" : "13835128424026341376",
+      "x-ms-file-permission-key" : "10117549752055461719*2650414171312005081",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2023-02-23T16:34:40.6455877Z",
+      "Last-Modified" : "Thu, 23 Feb 2023 16:34:40 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 23 Feb 2023 16:34:40 GMT",
+      "ETag" : "0x8DB15BBDC8E9245",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-parent-id" : "0",
+      "x-ms-file-change-time" : "2023-02-23T16:34:40.6455877Z",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "9611ea4c-001a-0041-05a4-47c8b8000000",
+      "x-ms-file-last-write-time" : "2023-02-23T16:34:40.6455877Z",
+      "x-ms-client-request-id" : "171d71e1-1921-4048-9fe3-526ced4035ce"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.file.core.windows.net/89422f7789422f77e927097289398b80d7f543cf98?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/89422f7789422f7762b07191320a510ffda144568c?restype=share",
     "Headers" : {
       "x-ms-version" : "2021-12-02",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "96fa689e-c435-49ae-9b5d-a47ae23c8941"
+      "x-ms-client-request-id" : "c6fd9994-c116-482e-8640-4677110564ca"
     },
     "Response" : {
       "x-ms-version" : "2021-12-02",
@@ -34,11 +63,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "c87ad8cf-701a-0028-7714-429714000000",
-      "Date" : "Thu, 16 Feb 2023 14:37:56 GMT",
-      "x-ms-client-request-id" : "96fa689e-c435-49ae-9b5d-a47ae23c8941"
+      "x-ms-request-id" : "5776e205-b01a-0058-38a4-47e4d0000000",
+      "Date" : "Thu, 23 Feb 2023 16:34:40 GMT",
+      "x-ms-client-request-id" : "c6fd9994-c116-482e-8640-4677110564ca"
     },
     "Exception" : null
   } ],
-  "variables" : [ "89422f7789422f77e927097289398b80d7f543cf98", "89422f7789422f77e92790175757f1cbb420471cb7" ]
+  "variables" : [ "89422f7789422f7762b07191320a510ffda144568c", "89422f7789422f7762b60369c7a94972bb594a99a3" ]
 }
