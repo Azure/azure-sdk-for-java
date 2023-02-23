@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.reactivestreams.Subscription;
@@ -21,7 +20,6 @@ import java.util.Objects;
 final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusMessageContext> {
     static final String PROCESS_ERROR_KEY = "process-error";
     private final ServiceBusReceiverInstrumentation instrumentation;
-    private static final ClientLogger LOGGER = new ClientLogger(FluxTrace.class);
 
     FluxTrace(Flux<? extends ServiceBusMessageContext> upstream, ServiceBusReceiverInstrumentation instrumentation) {
         super(upstream);

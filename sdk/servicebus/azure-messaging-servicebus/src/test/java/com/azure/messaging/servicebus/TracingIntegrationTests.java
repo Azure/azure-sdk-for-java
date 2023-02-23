@@ -305,7 +305,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .flatMap(m -> receiver.receiveDeferredMessage(m.getSequenceNumber()).thenReturn(m))
             .subscribe(m -> {
                 if (traceparent.equals(m.getApplicationProperties().get("traceparent"))) {
-                    receivedMessage.set(m);
+                    receivedMessage.compareAndSet(null, m);
                     latch.countDown();
                 }
             });
@@ -434,14 +434,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         String message1SpanId = message.getApplicationProperties().get("traceparent").toString().substring(36, 52);
         CountDownLatch completedFound = new CountDownLatch(1);
         spanProcessor.notifyIfCondition(completedFound, span -> {
-            if (!span.getName().equals("ServiceBus.complete")) {
+            if (!span.getName().equals("ServiceBus.process")) {
                 return false;
             }
-            List<LinkData> links = span.toSpanData().getLinks();
-            return links.size() > 0 && links.get(0).getSpanContext().getSpanId().equals(message1SpanId);
+
+            return span.getParentSpanContext().getSpanId().equals(message1SpanId);
         });
 
-        AtomicReference<Span> currentInProcess = new AtomicReference<>(Span.getInvalid());
+        AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
         processor = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
@@ -449,8 +449,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .queueName(getQueueName(0))
             .processMessage(mc -> {
                 if (mc.getMessage().getMessageId().equals(messageId)) {
-                    currentInProcess.set(Span.current());
-                    receivedMessage.set(mc.getMessage());
+                    currentInProcess.compareAndSet(null, Span.current());
+                    receivedMessage.compareAndSet(null, mc.getMessage());
                 }
             })
             .processError(e -> {
@@ -599,7 +599,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .queueName(getQueueName(0))
             .processMessage(mc -> {
                 if (mc.getMessage().getMessageId().equals(messageId)) {
-                    receivedMessage.set(mc.getMessage());
+                    receivedMessage.compareAndSet(null, mc.getMessage());
                     throw new RuntimeException("foo");
                 }
             })
@@ -655,6 +655,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<LinkData> links = actual.toSpanData().getLinks();
         assertEquals(messages.size(), links.size());
         assertEquals(operationName, actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        if (messages.size() > 1) {
+            assertEquals(messages.size(), actual.getAttribute(AttributeKey.longKey("messaging.batch.message_count")));
+        }
+
         for (int i = 0; i < links.size(); i++) {
             String messageTraceparent = (String) messages.get(i).getApplicationProperties().get("traceparent");
             SpanContext linkContext = links.get(i).getSpanContext();
@@ -669,6 +673,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<LinkData> links = actual.toSpanData().getLinks();
         assertEquals(messages.size(), links.size());
         assertEquals(operationName, actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        if (messages.size() > 1) {
+            assertEquals(messages.size(), actual.getAttribute(AttributeKey.longKey("messaging.batch.message_count")));
+        }
         for (int i = 0; i < links.size(); i++) {
             String messageTraceparent = (String) messages.get(i).getApplicationProperties().get("traceparent");
             SpanContext linkContext = links.get(i).getSpanContext();
@@ -683,7 +690,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(0, actual.toSpanData().getLinks().size());
         assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
-
         String messageTraceparent = (String) message.getApplicationProperties().get("traceparent");
         String parent = "00-" + actual.getSpanContext().getTraceId() + "-" + actual.getParentSpanContext().getSpanId() + "-01";
         assertEquals(messageTraceparent, parent);

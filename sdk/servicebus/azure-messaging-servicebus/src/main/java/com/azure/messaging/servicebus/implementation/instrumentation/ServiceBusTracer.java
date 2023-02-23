@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -42,6 +43,8 @@ public class ServiceBusTracer {
     private static final String TRACEPARENT_KEY = "traceparent";
     private static final String MESSAGING_SYSTEM_ATTRIBUTE_NAME = "messaging.system";
     public static final String MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME = "messaging.servicebus.message.enqueued_time";
+    public static final String MESSAGE_BATCH_SIZE_ATTRIBUTE_NAME = "messaging.batch.message_count";
+
     private static final String MESSAGING_OPERATION_ATTRIBUTE_NAME = "messaging.operation";
     protected static final boolean IS_TRACING_DISABLED = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED, false);
     protected final Tracer tracer;
@@ -237,12 +240,15 @@ public class ServiceBusTracer {
     public Flux<ServiceBusReceivedMessage> traceSyncReceive(String spanName, Flux<ServiceBusReceivedMessage> messages) {
         if (tracer != null) {
             AtomicReference<StartSpanOptions> startOptions = new AtomicReference<>(createStartOption(SpanKind.CLIENT, OperationName.RECEIVE));
+            AtomicInteger messageCount = new AtomicInteger(0);
             return messages
                 .doOnEach(signal -> {
                     ServiceBusReceivedMessage message = signal.get();
                     if (message != null) {
                         startOptions.get().addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), Context.NONE));
+                        messageCount.getAndIncrement();
                     } else if (signal.isOnComplete() || signal.isOnError()) {
+                        startOptions.get().setAttribute(MESSAGE_BATCH_SIZE_ATTRIBUTE_NAME, messageCount.get());
                         Context span = tracer.start(spanName, startOptions.get(), Context.NONE);
                         endSpan(signal.getThrowable(), span, null);
                     }
@@ -255,6 +261,7 @@ public class ServiceBusTracer {
     public Context startSpanWithLinks(String spanName, OperationName operationName, List<ServiceBusMessage> batch, Function<ServiceBusMessage, Context> getMessageContext, Context parent) {
         if (tracer != null) {
             StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, operationName);
+            startOptions.setAttribute(MESSAGE_BATCH_SIZE_ATTRIBUTE_NAME, batch.size());
             for (ServiceBusMessage message : batch) {
                 startOptions.addLink(createLink(message.getApplicationProperties(), null, getMessageContext.apply(message)));
             }
