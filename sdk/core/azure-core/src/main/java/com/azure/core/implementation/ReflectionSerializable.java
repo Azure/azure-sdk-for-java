@@ -15,8 +15,10 @@ import java.io.OutputStream;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * Utility class that handles creating and using {@code JsonSerializable} and {@code XmlSerializable} reflectively while
@@ -171,13 +173,55 @@ public final class ReflectionSerializable {
      * @return The {@link ByteBuffer} representing the serialized {@code jsonSerializable}.
      * @throws IOException If an error occurs during serialization.
      */
-    static ByteBuffer serializeAsJsonSerializable(Object jsonSerializable) throws IOException {
+    public static ByteBuffer serializeJsonSerializableToByteBuffer(Object jsonSerializable) throws IOException {
+        return serializeJsonSerializableWithReturn(jsonSerializable, AccessibleByteArrayOutputStream::toByteBuffer);
+    }
+
+    /**
+     * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
+     *
+     * @param jsonSerializable The {@code JsonSerializable} content.
+     * @return The {@code byte[]} representing the serialized {@code jsonSerializable}.
+     * @throws IOException If an error occurs during serialization.
+     */
+    public static byte[] serializeJsonSerializableToBytes(Object jsonSerializable) throws IOException {
+        return serializeJsonSerializableWithReturn(jsonSerializable, AccessibleByteArrayOutputStream::toByteArray);
+    }
+
+    /**
+     * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
+     *
+     * @param jsonSerializable The {@code JsonSerializable} content.
+     * @return The {@link String} representing the serialized {@code jsonSerializable}.
+     * @throws IOException If an error occurs during serialization.
+     */
+    public static String serializeJsonSerializableToString(Object jsonSerializable) throws IOException {
+        return serializeJsonSerializableWithReturn(jsonSerializable, aos -> aos.toString(StandardCharsets.UTF_8));
+    }
+
+    private static <T> T serializeJsonSerializableWithReturn(Object jsonSerializable,
+        Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-            Closeable jsonWriter = JSON_WRITER_CREATOR.call(outputStream)) {
+             Closeable jsonWriter = JSON_WRITER_CREATOR.call(outputStream)) {
             JSON_WRITER_WRITE_JSON_SERIALIZABLE.call(jsonWriter, jsonSerializable);
             JSON_WRITER_FLUSH.call(jsonWriter);
 
-            return outputStream.toByteBuffer();
+            return returner.apply(outputStream);
+        }
+    }
+
+    /**
+     * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
+     *
+     * @param jsonSerializable The {@code JsonSerializable} content.
+     * @param outputStream Where the serialized {@code JsonSerializable} will be written.
+     * @throws IOException If an error occurs during serialization.
+     */
+    public static void serializeJsonSerializableIntoOutputStream(Object jsonSerializable, OutputStream outputStream)
+        throws IOException {
+        try (Closeable jsonWriter = JSON_WRITER_CREATOR.call(outputStream)) {
+            JSON_WRITER_WRITE_JSON_SERIALIZABLE.call(jsonWriter, jsonSerializable);
+            JSON_WRITER_FLUSH.call(jsonWriter);
         }
     }
 
@@ -233,18 +277,65 @@ public final class ReflectionSerializable {
     /**
      * Serializes the {@code bodyContent} as an instance of {@code XmlSerializable}.
      *
-     * @param bodyContent The {@code XmlSerializable} body content.
+     * @param xmlSerializable The {@code XmlSerializable} body content.
      * @return The {@link ByteBuffer} representing the serialized {@code bodyContent}.
      * @throws IOException If the XmlWriter fails to close properly.
      */
-    static ByteBuffer serializeAsXmlSerializable(Object bodyContent) throws IOException {
+    public static ByteBuffer serializeXmlSerializableToByteBuffer(Object xmlSerializable) throws IOException {
+        return serializeXmlSerializableWithReturn(xmlSerializable, AccessibleByteArrayOutputStream::toByteBuffer);
+    }
+
+    /**
+     * Serializes the {@code bodyContent} as an instance of {@code XmlSerializable}.
+     *
+     * @param xmlSerializable The {@code XmlSerializable} body content.
+     * @return The {@code byte[]} representing the serialized {@code bodyContent}.
+     * @throws IOException If the XmlWriter fails to close properly.
+     */
+    public static byte[] serializeXmlSerializableToBytes(Object xmlSerializable) throws IOException {
+        return serializeXmlSerializableWithReturn(xmlSerializable, AccessibleByteArrayOutputStream::toByteArray);
+    }
+
+    /**
+     * Serializes the {@code bodyContent} as an instance of {@code XmlSerializable}.
+     *
+     * @param xmlSerializable The {@code XmlSerializable} body content.
+     * @return The {@link String} representing the serialized {@code bodyContent}.
+     * @throws IOException If the XmlWriter fails to close properly.
+     */
+    public static String serializeXmlSerializableToString(Object xmlSerializable) throws IOException {
+        return serializeXmlSerializableWithReturn(xmlSerializable, aos -> aos.toString(StandardCharsets.UTF_8));
+    }
+
+    private static <T> T serializeXmlSerializableWithReturn(Object xmlSerializable,
+        Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-            AutoCloseable xmlWriter = XML_WRITER_CREATOR.call(outputStream)) {
+             AutoCloseable xmlWriter = XML_WRITER_CREATOR.call(outputStream)) {
             XML_WRITER_WRITE_XML_START_DOCUMENT.call(xmlWriter);
-            XML_WRITER_WRITE_XML_SERIALIZABLE.call(xmlWriter, bodyContent);
+            XML_WRITER_WRITE_XML_SERIALIZABLE.call(xmlWriter, xmlSerializable);
             XML_WRITER_FLUSH.call(xmlWriter);
 
-            return outputStream.toByteBuffer();
+            return returner.apply(outputStream);
+        } catch (IOException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new IOException(ex);
+        }
+    }
+
+    /**
+     * Serializes the {@code xmlSerializable} as an instance of {@code XmlSerializable}.
+     *
+     * @param xmlSerializable The {@code XmlSerializable} content.
+     * @param outputStream Where the serialized {@code XmlSerializable} will be written.
+     * @throws IOException If an error occurs during serialization.
+     */
+    public static void serializeXmlSerializableIntoOutputStream(Object xmlSerializable, OutputStream outputStream)
+        throws IOException {
+        try (AutoCloseable xmlWriter = XML_WRITER_CREATOR.call(outputStream)) {
+            XML_WRITER_WRITE_XML_START_DOCUMENT.call(xmlWriter);
+            XML_WRITER_WRITE_XML_SERIALIZABLE.call(xmlWriter, xmlSerializable);
+            XML_WRITER_FLUSH.call(xmlWriter);
         } catch (IOException ex) {
             throw ex;
         } catch (Exception ex) {
