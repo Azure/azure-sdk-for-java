@@ -15,7 +15,7 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
     private static final String QUEUE_ENDPOINT_PATTERN = "https://%s.queue%s";
 
     /**
-     * Endpoint for Azure Storage service.
+     * Endpoint for Azure Storage service. For instance, 'https://{storage-account-name}.queue.storage.azure.net'.
      */
     private String endpoint;
     /**

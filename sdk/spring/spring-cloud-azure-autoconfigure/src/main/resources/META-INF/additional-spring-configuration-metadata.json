@@ -870,7 +870,7 @@
     {
       "name": "spring.cloud.azure.servicebus.retry-options.try-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time to wait until a timeout. This is a legacy property.",
+      "description": "Amount of time(Duration) to wait until a timeout. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
