@@ -35,8 +35,10 @@ public class EventHubsTracer {
     public static final String TRACEPARENT_KEY = "traceparent";
     public static final String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
     public static final String MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME = "messaging.eventhubs.message.enqueued_time";
+    public static final String MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME = "messaging.batch.message_count";
     private static final String MESSAGING_SYSTEM_ATTRIBUTE_NAME = "messaging.system";
     private static final String MESSAGING_OPERATION_ATTRIBUTE_NAME = "messaging.operation";
+
     private static final ClientLogger LOGGER = new ClientLogger(EventHubsTracer.class);
 
     private static final boolean IS_TRACING_DISABLED = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED, false);
@@ -147,10 +149,14 @@ public class EventHubsTracer {
     }
 
     public TracingLink createLink(Map<String, Object> applicationProperties, Instant enqueuedTime, Context eventContext) {
-        Context link;
+        Context link = Context.NONE;
         Optional<Object> linkContext = eventContext.getData(SPAN_CONTEXT_KEY);
         if (linkContext.isPresent()) {
-            link = linkContext.get() instanceof Context ? (Context) linkContext.get() : Context.NONE;
+            if (linkContext.get() instanceof Context) {
+                link = (Context) linkContext.get();
+            } else {
+                LOGGER.verbose("Unexpected type under 'span-context' key - {}", linkContext.get().getClass());
+            }
         } else {
             link = extractContext(applicationProperties);
         }
@@ -200,6 +206,7 @@ public class EventHubsTracer {
     public Context startProcessSpan(String name, List<EventData> events, Context parent) {
         if (tracer != null && events != null) {
             StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS);
+            startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, events.size());
             for (EventData event : events) {
                 startOptions.addLink(createLink(event.getProperties(), event.getEnqueuedTime(), Context.NONE));
             }
@@ -223,6 +230,7 @@ public class EventHubsTracer {
                         startSpanOptions.addLink(createLink(event.getData().getProperties(), event.getData().getEnqueuedTime(), Context.NONE));
                     }
 
+                    startSpanOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, eventsList.size());
                     Context span = tracer.start(name, startSpanOptions, parent);
                     tracer.end(null, signal.getThrowable(), span);
                 }

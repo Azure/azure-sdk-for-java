@@ -557,6 +557,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(SpanKind.CLIENT, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
         assertEquals("publish", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        if (messages.size() > 1) {
+            assertEquals(messages.size(), actual.getAttribute(AttributeKey.longKey("messaging.batch.message_count")));
+        }
         List<LinkData> links = actual.toSpanData().getLinks();
         assertEquals(messages.size(), links.size());
         for (int i = 0; i < links.size(); i++) {
@@ -573,6 +576,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
         List<LinkData> links = actual.toSpanData().getLinks();
         assertEquals("receive", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        if (messages.size() > 1) {
+            assertEquals(messages.size(), actual.getAttribute(AttributeKey.longKey("messaging.batch.message_count")));
+        }
         assertEquals(messages.size(), links.size());
         for (int i = 0; i < links.size(); i++) {
             String messageTraceparent = (String) messages.get(i).getData().getProperties().get("traceparent");
@@ -606,6 +612,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
 
         assertEquals(messages.stream().filter(m -> m.getProperties().containsKey("traceparent")).count(), actual.toSpanData().getLinks().size());
+        if (messages.size() > 1) {
+            assertEquals(messages.size(), actual.getAttribute(AttributeKey.longKey("messaging.batch.message_count")));
+        }
+
         List<LinkData> links =  actual.toSpanData().getLinks();
         for (EventData data : messages) {
             String messageTraceparent = (String) data.getProperties().get("traceparent");

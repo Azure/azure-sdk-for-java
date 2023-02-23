@@ -12,6 +12,7 @@ import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsMet
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import reactor.core.publisher.Mono;
 
+import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.REACTOR_PARENT_TRACE_CONTEXT_KEY;
 
 class EventHubsProducerInstrumentation {
@@ -54,6 +55,7 @@ class EventHubsProducerInstrumentation {
 
     private Context startSpanWithLinks(String spanName, EventDataBatch batch, Context context) {
         StartSpanOptions startOptions = tracer.createStartOption(SpanKind.CLIENT, EventHubsTracer.OperationName.PUBLISH);
+        startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, batch.getCount());
         if (batch != null) {
             for (EventData event : batch.getEvents()) {
                 startOptions.addLink(tracer.createLink(event.getProperties(), null, event.getContext()));
