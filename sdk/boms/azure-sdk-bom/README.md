@@ -4,9 +4,14 @@ dependencies. It provides a simple and elegant way to orchestrate using multiple
 minimal dependency conflicts.
 
 ## Table of contents
-- [Getting started](#getting-started)
-  - [Adding the BOM to your project](#adding-the-bom-to-your-project)
-  - [Adding libraries to your project](#adding-libraries-to-your-project)
+- [Azure BOM for client libraries](#azure-bom-for-client-libraries)
+  - [Table of contents](#table-of-contents)
+  - [Getting started](#getting-started)
+    - [Adding the BOM to your project](#adding-the-bom-to-your-project)
+    - [Adding libraries to your project](#adding-libraries-to-your-project)
+    - [Overview](#overview)
+      - [Release cadence](#release-cadence)
+      - [Included library requirements](#included-library-requirements)
 
 ## Getting started
 
@@ -21,7 +26,7 @@ result in all dependencies being included in your project.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-bom</artifactId>
-      <version>1.2.9</version>
+      <version>1.2.10</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
