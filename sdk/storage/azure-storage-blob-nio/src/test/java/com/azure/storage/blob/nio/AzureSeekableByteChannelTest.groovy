@@ -150,7 +150,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         writeByteChannel.write(ByteBuffer.wrap(fileContent))
         then:
         while (count < sourceFileSize) {
-            int writeAmount = Math.min(rand.nextInt(100 * 1024, 1024 * 1024), sourceFileSize - count)
+            int writeAmount = Math.min(rand.nextInt(1024 * 1024), sourceFileSize - count)
             def buffer = new byte[writeAmount]
             fileStream.read(buffer)
             writeByteChannel.write(ByteBuffer.wrap(buffer))
