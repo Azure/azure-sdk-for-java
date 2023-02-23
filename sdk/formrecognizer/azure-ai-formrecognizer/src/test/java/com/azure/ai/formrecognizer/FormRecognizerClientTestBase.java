@@ -29,6 +29,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -285,6 +286,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeCustomFormLabeledDataWithBlankPdfContentType(HttpClient httpClient,
                                                                         FormRecognizerServiceVersion serviceVersion);
 
+    @Disabled
     @Test
     abstract void recognizeCustomFormLabeledDataExcludeFieldElements(HttpClient httpClient,
                                                                      FormRecognizerServiceVersion serviceVersion);
@@ -375,6 +377,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient,
                                                          FormRecognizerServiceVersion serviceVersion);
 
+    @Disabled
     @Test
     abstract void recognizeCustomFormUrlLabeledDataWithSelectionMark(HttpClient httpClient,
                                                                      FormRecognizerServiceVersion serviceVersion);

@@ -28,6 +28,10 @@ public final class OperationMetaLogSpecification {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of OperationMetaLogSpecification class. */
+    public OperationMetaLogSpecification() {
+    }
+
     /**
      * Get the displayName property: Log display name.
      *

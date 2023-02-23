@@ -7,7 +7,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-ingestion</artifactId>
-    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-monitor-ingestion;current} -->
+    <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-ingestion;current} -->
 
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Azure Monitor Data Ingestion</name>
@@ -47,6 +47,7 @@
             <![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
         <javaModulesSurefireArgLine>
             --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+            --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
             --add-opens com.azure.monitor.ingestion/com.azure.monitor.ingestion=ALL-UNNAMED
         </javaModulesSurefireArgLine>
     </properties>

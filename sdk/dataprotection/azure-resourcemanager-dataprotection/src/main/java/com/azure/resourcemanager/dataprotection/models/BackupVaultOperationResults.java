@@ -12,7 +12,7 @@ public interface BackupVaultOperationResults {
     /**
      * The get operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -27,7 +27,7 @@ public interface BackupVaultOperationResults {
     /**
      * The get operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

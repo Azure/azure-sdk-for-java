@@ -13,7 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SparkConfigurationResourc
 /** An instance of this class provides access to all the operations defined in SparkConfigurationsOperationsClient. */
 public interface SparkConfigurationsOperationsClient {
     /**
-     * List sparkConfigurations in a workspace.
+     * List the sparkConfigurations in a workspace.
+     *
+     * <p>List sparkConfigurations in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -26,7 +28,9 @@ public interface SparkConfigurationsOperationsClient {
     PagedIterable<SparkConfigurationResourceInner> listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
-     * List sparkConfigurations in a workspace.
+     * List the sparkConfigurations in a workspace.
+     *
+     * <p>List sparkConfigurations in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

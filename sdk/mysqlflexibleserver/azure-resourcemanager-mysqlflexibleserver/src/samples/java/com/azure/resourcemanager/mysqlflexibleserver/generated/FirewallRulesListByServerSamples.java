@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FirewallRules ListByServer. */
 public final class FirewallRulesListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/FirewallRulesListByServer.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/FirewallRulesListByServer.json
      */
     /**
      * Sample code: List all firewall rules in a server.
@@ -18,6 +16,6 @@ public final class FirewallRulesListByServerSamples {
      */
     public static void listAllFirewallRulesInAServer(
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.firewallRules().listByServer("TestGroup", "testserver", Context.NONE);
+        manager.firewallRules().listByServer("TestGroup", "testserver", com.azure.core.util.Context.NONE);
     }
 }

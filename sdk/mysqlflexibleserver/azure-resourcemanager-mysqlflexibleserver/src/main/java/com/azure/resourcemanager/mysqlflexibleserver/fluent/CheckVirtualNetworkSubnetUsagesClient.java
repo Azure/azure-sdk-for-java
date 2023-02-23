@@ -18,19 +18,6 @@ public interface CheckVirtualNetworkSubnetUsagesClient {
      *
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkSubnetUsageResultInner execute(String locationName, VirtualNetworkSubnetUsageParameter parameters);
-
-    /**
-     * Get virtual network subnet usage for a given vNet resource id.
-     *
-     * @param locationName The name of the location.
-     * @param parameters The required parameters for creating or updating a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,4 +27,17 @@ public interface CheckVirtualNetworkSubnetUsagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualNetworkSubnetUsageResultInner> executeWithResponse(
         String locationName, VirtualNetworkSubnetUsageParameter parameters, Context context);
+
+    /**
+     * Get virtual network subnet usage for a given vNet resource id.
+     *
+     * @param locationName The name of the location.
+     * @param parameters The required parameters for creating or updating a server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual network subnet usage for a given vNet resource id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkSubnetUsageResultInner execute(String locationName, VirtualNetworkSubnetUsageParameter parameters);
 }

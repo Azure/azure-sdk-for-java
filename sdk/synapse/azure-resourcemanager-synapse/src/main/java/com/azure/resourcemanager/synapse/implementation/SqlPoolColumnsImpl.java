@@ -26,22 +26,6 @@ public final class SqlPoolColumnsImpl implements SqlPoolColumns {
         this.serviceManager = serviceManager;
     }
 
-    public SqlPoolColumn get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        SqlPoolColumnInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
-        if (inner != null) {
-            return new SqlPoolColumnImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SqlPoolColumn> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -61,6 +45,22 @@ public final class SqlPoolColumnsImpl implements SqlPoolColumns {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SqlPoolColumnImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlPoolColumn get(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String schemaName,
+        String tableName,
+        String columnName) {
+        SqlPoolColumnInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
+        if (inner != null) {
+            return new SqlPoolColumnImpl(inner, this.manager());
         } else {
             return null;
         }

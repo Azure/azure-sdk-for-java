@@ -5,12 +5,9 @@ package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Collection;
-import java.util.Collections;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck.UNUSED_CAUGHT_EXCEPTION_ERROR;
 
@@ -20,12 +17,12 @@ import static com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck.UNU
 public class UseCaughtExceptionTest extends AbstractModuleTestSupport {
     private Checker checker;
 
-    @Before
+    @BeforeEach
     public void prepare() throws Exception {
         checker = createChecker(createModuleConfig(UseCaughtExceptionCauseCheck.class));
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         checker.destroy();
     }

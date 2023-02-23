@@ -5,40 +5,39 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /** Docker V2 image layer descriptor including config and layers. */
 @Fluent
-public final class OciBlobDescriptor {
+public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescriptor> {
     /*
      * Layer media type
      */
-    @JsonProperty(value = "mediaType")
     private String mediaType;
 
     /*
      * Layer size
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
      * Layer digest
      */
-    @JsonProperty(value = "digest")
     private String digest;
 
     /*
      * Specifies a list of URIs from which this object may be downloaded.
      */
-    @JsonProperty(value = "urls")
     private List<String> urls;
 
     /*
      * Additional information provided through arbitrary metadata.
      */
-    @JsonProperty(value = "annotations")
     private OciAnnotations annotations;
 
     /** Creates an instance of OciBlobDescriptor class. */
@@ -142,5 +141,61 @@ public final class OciBlobDescriptor {
     public OciBlobDescriptor setAnnotations(OciAnnotations annotations) {
         this.annotations = annotations;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mediaType", this.mediaType);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeStringField("digest", this.digest);
+        jsonWriter.writeArrayField("urls", this.urls, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("annotations", this.annotations);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OciBlobDescriptor from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OciBlobDescriptor if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OciBlobDescriptor.
+     */
+    public static OciBlobDescriptor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    String mediaType = null;
+                    Long size = null;
+                    String digest = null;
+                    List<String> urls = null;
+                    OciAnnotations annotations = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("mediaType".equals(fieldName)) {
+                            mediaType = reader.getString();
+                        } else if ("size".equals(fieldName)) {
+                            size = reader.getNullable(JsonReader::getLong);
+                        } else if ("digest".equals(fieldName)) {
+                            digest = reader.getString();
+                        } else if ("urls".equals(fieldName)) {
+                            urls = reader.readArray(reader1 -> reader1.getString());
+                        } else if ("annotations".equals(fieldName)) {
+                            annotations = OciAnnotations.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    OciBlobDescriptor deserializedValue = new OciBlobDescriptor();
+                    deserializedValue.mediaType = mediaType;
+                    deserializedValue.size = size;
+                    deserializedValue.digest = digest;
+                    deserializedValue.urls = urls;
+                    deserializedValue.annotations = annotations;
+
+                    return deserializedValue;
+                });
     }
 }

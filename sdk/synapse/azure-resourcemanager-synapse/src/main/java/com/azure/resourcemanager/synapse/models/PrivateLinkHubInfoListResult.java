@@ -24,6 +24,10 @@ public final class PrivateLinkHubInfoListResult {
     @JsonProperty(value = "value")
     private List<PrivateLinkHubInner> value;
 
+    /** Creates an instance of PrivateLinkHubInfoListResult class. */
+    public PrivateLinkHubInfoListResult() {
+    }
+
     /**
      * Get the nextLink property: Link to the next page of results.
      *

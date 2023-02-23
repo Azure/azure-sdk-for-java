@@ -23,6 +23,10 @@ public final class ReadOnlyFollowingDatabase extends DatabaseInner {
     @JsonProperty(value = "properties")
     private ReadOnlyFollowingDatabaseProperties innerProperties;
 
+    /** Creates an instance of ReadOnlyFollowingDatabase class. */
+    public ReadOnlyFollowingDatabase() {
+    }
+
     /**
      * Get the innerProperties property: The database properties.
      *

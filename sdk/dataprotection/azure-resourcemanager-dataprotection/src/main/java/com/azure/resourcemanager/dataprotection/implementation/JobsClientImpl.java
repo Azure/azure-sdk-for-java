@@ -28,6 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dataprotection.fluent.JobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupJobResourceInner;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupJobResourceList;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobsClient. */
@@ -64,7 +65,7 @@ public final class JobsClientImpl implements JobsClient {
         Mono<Response<AzureBackupJobResourceList>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @HeaderParam("Accept") String accept,
@@ -79,7 +80,7 @@ public final class JobsClientImpl implements JobsClient {
         Mono<Response<AzureBackupJobResourceInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("jobId") String jobId,
@@ -100,7 +101,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -158,7 +159,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,7 +215,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -230,7 +231,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,7 +250,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -264,7 +265,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,7 +282,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,7 +335,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @param context The context to associate with this operation.
@@ -385,7 +386,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -402,7 +403,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @param context The context to associate with this operation.
@@ -420,7 +421,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.

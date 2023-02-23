@@ -7,11 +7,12 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -19,24 +20,22 @@ import java.util.Map;
  * as document summary. Captions are only returned for queries of type 'semantic'..
  */
 @Fluent
-public final class CaptionResult {
+public final class CaptionResult implements JsonSerializable<CaptionResult> {
     /*
      * A representative text passage extracted from the document most relevant to the search query.
      */
-    @JsonProperty(value = "text", access = JsonProperty.Access.WRITE_ONLY)
     private String text;
 
     /*
      * Same text passage as in the Text property with highlighted phrases most relevant to the query.
      */
-    @JsonProperty(value = "highlights", access = JsonProperty.Access.WRITE_ONLY)
     private String highlights;
 
     /*
      * Captions are the most representative passages from the document relatively to the search query. They are often
      * used as document summary. Captions are only returned for queries of type 'semantic'..
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of CaptionResult class. */
     public CaptionResult() {}
@@ -68,7 +67,6 @@ public final class CaptionResult {
      *
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -86,11 +84,55 @@ public final class CaptionResult {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("highlights", this.highlights);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CaptionResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CaptionResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CaptionResult.
+     */
+    public static CaptionResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    String text = null;
+                    String highlights = null;
+                    Map<String, Object> additionalProperties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("text".equals(fieldName)) {
+                            text = reader.getString();
+                        } else if ("highlights".equals(fieldName)) {
+                            highlights = reader.getString();
+                        } else {
+                            if (additionalProperties == null) {
+                                additionalProperties = new LinkedHashMap<>();
+                            }
+
+                            additionalProperties.put(fieldName, reader.readUntyped());
+                        }
+                    }
+                    CaptionResult deserializedValue = new CaptionResult();
+                    deserializedValue.text = text;
+                    deserializedValue.highlights = highlights;
+                    deserializedValue.additionalProperties = additionalProperties;
+
+                    return deserializedValue;
+                });
     }
 }

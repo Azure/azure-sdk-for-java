@@ -4,21 +4,21 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
-import com.azure.communication.callautomation.implementation.models.RemoveParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
 import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsResponseInternal;
-import com.azure.communication.callautomation.models.AddParticipantsOptions;
-import com.azure.communication.callautomation.models.AddParticipantsResult;
+import com.azure.communication.callautomation.models.AddParticipantOptions;
+import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
+import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
-import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
-import com.azure.communication.callautomation.models.RemoveParticipantsResult;
-import com.azure.communication.callautomation.models.RepeatabilityHeaders;
+import com.azure.communication.callautomation.models.RemoveParticipantOptions;
+import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
@@ -107,11 +107,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
 
         assertNotNull(hangUpResponse);
         assertEquals(204, hangUpResponse.getStatusCode());
-
-        RepeatabilityHeaders repeatabilityHeaders = hangUpOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -189,7 +184,8 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        TransferCallResult transferCallResult = callConnectionAsync.transferToParticipantCall(new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
+        TransferCallResult transferCallResult = callConnectionAsync.transferToParticipantCall(callInvite).block();
         assertNotNull(transferCallResult);
         assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
     }
@@ -203,18 +199,14 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        TransferToParticipantCallOptions transferToParticipantCallOptions = new TransferToParticipantCallOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
+        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
+        TransferToParticipantCallOptions transferToParticipantCallOptions = new TransferToParticipantCallOptions(callInvite)
             .setOperationContext(CALL_OPERATION_CONTEXT);
         Response<TransferCallResult> transferCallResultResponse = callConnectionAsync.transferToParticipantCallWithResponse(transferToParticipantCallOptions).block();
 
         assertNotNull(transferCallResultResponse);
         assertEquals(202, transferCallResultResponse.getStatusCode());
         assertNotNull(transferCallResultResponse.getValue());
-
-        RepeatabilityHeaders repeatabilityHeaders = transferToParticipantCallOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -225,13 +217,12 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )
         )).getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        AddParticipantsResult addParticipantsResult = callConnectionAsync.addParticipants(
-            new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)))).block();
+        AddParticipantResult addParticipantsResult = callConnectionAsync.addParticipant(
+            new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID))).block();
 
         assertNotNull(addParticipantsResult);
         assertEquals(CALL_TARGET_ID, ((CommunicationUserIdentifier) addParticipantsResult
-            .getParticipants()
-            .get(0)
+            .getParticipant()
             .getIdentifier())
             .getId());
     }
@@ -244,32 +235,27 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )
         )).getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        AddParticipantsOptions addParticipantsOptions = new AddParticipantsOptions(new ArrayList<>(Collections.singletonList(
-            new CommunicationUserIdentifier(CALL_TARGET_ID))))
+        AddParticipantOptions addParticipantsOptions = new AddParticipantOptions(new CallInvite(
+            new CommunicationUserIdentifier(CALL_TARGET_ID)))
             .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<AddParticipantsResult> addParticipantsResultResponse = callConnectionAsync.addParticipantsWithResponse(addParticipantsOptions).block();
+        Response<AddParticipantResult> addParticipantsResultResponse = callConnectionAsync.addParticipantWithResponse(addParticipantsOptions).block();
 
         assertNotNull(addParticipantsResultResponse);
         assertEquals(202, addParticipantsResultResponse.getStatusCode());
         assertNotNull(addParticipantsResultResponse.getValue());
-
-        RepeatabilityHeaders repeatabilityHeaders = addParticipantsOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
     public void removeParticipants() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new RemoveParticipantsResponseInternal()
+                new SimpleEntry<>(serializeObject(new RemoveParticipantResponseInternal()
                     .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        RemoveParticipantsResult removeParticipantsResult = callConnectionAsync.removeParticipants(
-            new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)))).block();
+        RemoveParticipantResult removeParticipantsResult = callConnectionAsync.removeParticipant(
+            new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
 
         assertNotNull(removeParticipantsResult);
         assertEquals(CALL_OPERATION_CONTEXT, removeParticipantsResult.getOperationContext());
@@ -279,26 +265,21 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     public void removeParticipantsWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new RemoveParticipantsResponseInternal()
+                new SimpleEntry<>(serializeObject(new RemoveParticipantResponseInternal()
                     .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        RemoveParticipantsOptions removeParticipantsOptions = new RemoveParticipantsOptions(
-            new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID))))
+        RemoveParticipantOptions removeParticipantsOptions = new RemoveParticipantOptions(
+            new CommunicationUserIdentifier(CALL_TARGET_ID))
             .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<RemoveParticipantsResult> removeParticipantsResultResponse = callConnectionAsync.removeParticipantsWithResponse(
+        Response<RemoveParticipantResult> removeParticipantsResultResponse = callConnectionAsync.removeParticipantWithResponse(
             removeParticipantsOptions).block();
 
 
         assertNotNull(removeParticipantsResultResponse);
         assertEquals(202, removeParticipantsResultResponse.getStatusCode());
         assertNotNull(removeParticipantsResultResponse.getValue());
-
-        RepeatabilityHeaders repeatabilityHeaders = removeParticipantsOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -335,11 +316,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(muteParticipantsResultResponse);
         assertEquals(202, muteParticipantsResultResponse.getStatusCode());
         assertNotNull(muteParticipantsResultResponse.getValue());
-
-        RepeatabilityHeaders repeatabilityHeaders = muteParticipantsOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -444,11 +420,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(unmuteParticipantsResultResponse);
         assertEquals(202, unmuteParticipantsResultResponse.getStatusCode());
         assertNotNull(unmuteParticipantsResultResponse.getValue());
-
-        RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test

@@ -18,6 +18,10 @@ public final class FollowerDatabaseListResult {
     @JsonProperty(value = "value")
     private List<FollowerDatabaseDefinitionInner> value;
 
+    /** Creates an instance of FollowerDatabaseListResult class. */
+    public FollowerDatabaseListResult() {
+    }
+
     /**
      * Get the value property: The list of follower database result.
      *

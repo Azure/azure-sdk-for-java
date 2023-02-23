@@ -13,7 +13,7 @@ public interface BackupInstances {
     /**
      * Gets a backup instances belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface BackupInstances {
     /**
      * Gets a backup instances belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +38,7 @@ public interface BackupInstances {
     /**
      * Gets a backup instance with name in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
@@ -53,7 +53,7 @@ public interface BackupInstances {
     /**
      * Gets a backup instance with name in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +66,7 @@ public interface BackupInstances {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,7 +78,7 @@ public interface BackupInstances {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
@@ -91,7 +91,7 @@ public interface BackupInstances {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -106,7 +106,7 @@ public interface BackupInstances {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -126,7 +126,7 @@ public interface BackupInstances {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +140,7 @@ public interface BackupInstances {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -155,9 +155,9 @@ public interface BackupInstances {
     /**
      * Get result of backup instance creation operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,9 +171,9 @@ public interface BackupInstances {
     /**
      * Get result of backup instance creation operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -186,9 +186,9 @@ public interface BackupInstances {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -203,9 +203,9 @@ public interface BackupInstances {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +222,7 @@ public interface BackupInstances {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -237,7 +237,7 @@ public interface BackupInstances {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -257,9 +257,9 @@ public interface BackupInstances {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -269,9 +269,9 @@ public interface BackupInstances {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -282,9 +282,9 @@ public interface BackupInstances {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -294,9 +294,9 @@ public interface BackupInstances {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -307,9 +307,9 @@ public interface BackupInstances {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -319,9 +319,9 @@ public interface BackupInstances {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -333,9 +333,9 @@ public interface BackupInstances {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -346,9 +346,9 @@ public interface BackupInstances {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -360,9 +360,9 @@ public interface BackupInstances {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -375,9 +375,9 @@ public interface BackupInstances {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,7 +394,7 @@ public interface BackupInstances {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -409,7 +409,7 @@ public interface BackupInstances {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.

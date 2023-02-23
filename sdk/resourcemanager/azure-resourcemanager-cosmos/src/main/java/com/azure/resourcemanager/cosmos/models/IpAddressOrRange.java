@@ -19,6 +19,10 @@ public final class IpAddressOrRange {
     @JsonProperty(value = "ipAddressOrRange")
     private String ipAddressOrRange;
 
+    /** Creates an instance of IpAddressOrRange class. */
+    public IpAddressOrRange() {
+    }
+
     /**
      * Get the ipAddressOrRange property: A single IPv4 address or a single IPv4 address range in CIDR format. Provided
      * IPs must be well-formatted and cannot be contained in one of the following ranges: 10.0.0.0/8, 100.64.0.0/10,

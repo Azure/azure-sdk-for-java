@@ -7,25 +7,24 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentCost;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CommitmentCostTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CommitmentCost model =
             BinaryData
-                .fromString("{\"commitmentMeterId\":\"liourqhak\",\"overageMeterId\":\"hashsfwxosow\"}")
+                .fromString("{\"commitmentMeterId\":\"dmoizpostmg\",\"overageMeterId\":\"fbunrmfqjhhk\"}")
                 .toObject(CommitmentCost.class);
-        Assertions.assertEquals("liourqhak", model.commitmentMeterId());
-        Assertions.assertEquals("hashsfwxosow", model.overageMeterId());
+        Assertions.assertEquals("dmoizpostmg", model.commitmentMeterId());
+        Assertions.assertEquals("fbunrmfqjhhk", model.overageMeterId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CommitmentCost model =
-            new CommitmentCost().withCommitmentMeterId("liourqhak").withOverageMeterId("hashsfwxosow");
+            new CommitmentCost().withCommitmentMeterId("dmoizpostmg").withOverageMeterId("fbunrmfqjhhk");
         model = BinaryData.fromObject(model).toObject(CommitmentCost.class);
-        Assertions.assertEquals("liourqhak", model.commitmentMeterId());
-        Assertions.assertEquals("hashsfwxosow", model.overageMeterId());
+        Assertions.assertEquals("dmoizpostmg", model.commitmentMeterId());
+        Assertions.assertEquals("fbunrmfqjhhk", model.overageMeterId());
     }
 }

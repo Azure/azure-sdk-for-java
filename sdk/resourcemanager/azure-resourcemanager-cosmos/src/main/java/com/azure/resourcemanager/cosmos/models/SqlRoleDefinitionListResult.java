@@ -18,6 +18,10 @@ public final class SqlRoleDefinitionListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlRoleDefinitionGetResultsInner> value;
 
+    /** Creates an instance of SqlRoleDefinitionListResult class. */
+    public SqlRoleDefinitionListResult() {
+    }
+
     /**
      * Get the value property: List of Role Definitions and their properties.
      *

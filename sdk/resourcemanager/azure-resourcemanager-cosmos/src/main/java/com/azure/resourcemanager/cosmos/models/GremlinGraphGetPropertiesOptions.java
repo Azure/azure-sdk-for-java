@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The GremlinGraphGetPropertiesOptions model. */
 @Fluent
 public final class GremlinGraphGetPropertiesOptions extends OptionsResource {
+    /** Creates an instance of GremlinGraphGetPropertiesOptions class. */
+    public GremlinGraphGetPropertiesOptions() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public GremlinGraphGetPropertiesOptions withThroughput(Integer throughput) {

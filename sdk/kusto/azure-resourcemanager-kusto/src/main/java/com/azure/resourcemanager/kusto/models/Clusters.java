@@ -16,18 +16,6 @@ public interface Clusters {
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster.
-     */
-    Cluster getByResourceGroup(String resourceGroupName, String clusterName);
-
-    /**
-     * Gets a Kusto cluster.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,6 +23,18 @@ public interface Clusters {
      * @return a Kusto cluster along with {@link Response}.
      */
     Response<Cluster> getByResourceGroupWithResponse(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Gets a Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto cluster.
+     */
+    Cluster getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
      * Deletes a Kusto cluster.
@@ -254,18 +254,6 @@ public interface Clusters {
      *
      * @param location Azure location (region) name.
      * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    CheckNameResult checkNameAvailability(String location, ClusterCheckNameRequest clusterName);
-
-    /**
-     * Checks that the cluster name is valid and is not already in use.
-     *
-     * @param location Azure location (region) name.
-     * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -274,6 +262,18 @@ public interface Clusters {
      */
     Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String location, ClusterCheckNameRequest clusterName, Context context);
+
+    /**
+     * Checks that the cluster name is valid and is not already in use.
+     *
+     * @param location Azure location (region) name.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    CheckNameResult checkNameAvailability(String location, ClusterCheckNameRequest clusterName);
 
     /**
      * Returns the SKUs available for the provided resource.

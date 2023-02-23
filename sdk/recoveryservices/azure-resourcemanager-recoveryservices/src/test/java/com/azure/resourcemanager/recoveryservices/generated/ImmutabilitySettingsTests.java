@@ -8,18 +8,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.ImmutabilitySettings;
 import com.azure.resourcemanager.recoveryservices.models.ImmutabilityState;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImmutabilitySettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImmutabilitySettings model =
             BinaryData.fromString("{\"state\":\"Unlocked\"}").toObject(ImmutabilitySettings.class);
         Assertions.assertEquals(ImmutabilityState.UNLOCKED, model.state());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImmutabilitySettings model = new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED);
         model = BinaryData.fromObject(model).toObject(ImmutabilitySettings.class);
         Assertions.assertEquals(ImmutabilityState.UNLOCKED, model.state());

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tasks List. */
 public final class TasksListSamples {
     /*
@@ -22,6 +20,6 @@ public final class TasksListSamples {
             .manager()
             .serviceClient()
             .getTasks()
-            .list("myResourceGroup", "myRegistry", Context.NONE);
+            .list("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }
 }
