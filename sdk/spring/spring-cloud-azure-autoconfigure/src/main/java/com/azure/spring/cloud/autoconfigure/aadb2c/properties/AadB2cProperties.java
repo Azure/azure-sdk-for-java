@@ -119,11 +119,11 @@ public class AadB2cProperties implements InitializingBean {
 
     /**
      * The OAuth2 authorization clients, contains the authorization grant type(only support client credentials) and scope.
-     * The clients will be converted to OAuth2 ClientRegistration, the other information inherits from the OAuth2 login client(sign-in user flow).
-     * For instance, 'webapi:
-     *                   authorization-grant-type: client_credentials
-     *                   scopes:
-     *                       - ${WEB_API_APP_ID_URL}/.default'
+     * The clients will be converted to OAuth2 ClientRegistration, the other ClientRegistration information(such as client id, client secret) inherits from the OAuth2 login client(sign-in user flow).
+     * For instance, '
+     * authorization-clients.webapi.authorization-grant-type=client_credentials,
+     * authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/.default
+     * '.
      */
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 

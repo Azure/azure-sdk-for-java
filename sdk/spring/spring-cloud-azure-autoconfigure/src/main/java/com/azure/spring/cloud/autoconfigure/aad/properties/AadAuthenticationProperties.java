@@ -138,13 +138,13 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     /**
      * The OAuth2 authorization clients, contains the authorization grant type, client authentication method and scope.
-     * The clients will be converted to OAuth2 ClientRegistration, the other information inherits from the delegated OAuth2 login client 'azure'.
-     * For instance, 'webapi:
-     *                   authorization-grant-type: on_behalf_of
-     *                   client-authentication-method: client_secret_post
-     *                   scopes:
-     *                      - ${WEB_API_APP_ID_URL}/WebApi.ExampleScope1
-     *                      - ${WEB_API_APP_ID_URL}/WebApi.ExampleScope2'
+     * The clients will be converted to OAuth2 ClientRegistration, the other ClientRegistration information(such as client id, client secret) inherits from the delegated OAuth2 login client 'azure'.
+     * For instance,'
+     * authorization-clients.webapi.authorization-grant-type=on_behalf_of,
+     * authorization-clients.webapi.client-authentication-method=client_secret_post,
+     * authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope1,
+     * authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope2
+     * '.
      */
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
