@@ -123,61 +123,7 @@ public final class TableServiceClientBuilder implements
      */
     public TableServiceClient buildClient() {
         TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
-
-        validateCredentials(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, connectionString,
-            logger);
-
-        AzureNamedKeyCredential namedKeyCredential = null;
-
-        // If 'connectionString' was provided, extract the endpoint and sasToken.
-        if (connectionString != null) {
-            StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
-            StorageEndpoint storageConnectionStringTableEndpoint = storageConnectionString.getTableEndpoint();
-
-            if (storageConnectionStringTableEndpoint == null
-                || storageConnectionStringTableEndpoint.getPrimaryUri() == null) {
-
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "'connectionString' is missing the required settings to derive a Tables endpoint."));
-            }
-
-            String connectionStringEndpoint = storageConnectionStringTableEndpoint.getPrimaryUri();
-
-            // If no 'endpoint' was provided, use the one in the 'connectionString'. Else, verify they are the same.
-            if (endpoint == null) {
-                endpoint = connectionStringEndpoint;
-            } else {
-                if (endpoint.endsWith("/")) {
-                    endpoint = endpoint.substring(0, endpoint.length() - 1);
-                }
-
-                if (connectionStringEndpoint.endsWith("/")) {
-                    connectionStringEndpoint =
-                        connectionStringEndpoint.substring(0, connectionStringEndpoint.length() - 1);
-                }
-
-                if (!endpoint.equals(connectionStringEndpoint)) {
-                    throw logger.logExceptionAsError(new IllegalStateException(
-                        "'endpoint' points to a different tables endpoint than 'connectionString'."));
-                }
-            }
-
-            StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
-
-            if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
-                namedKeyCredential = (azureNamedKeyCredential != null) ? azureNamedKeyCredential
-                    : new AzureNamedKeyCredential(authSettings.getAccount().getName(),
-                    authSettings.getAccount().getAccessKey());
-            } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
-                sasToken = (sasToken != null) ? sasToken : authSettings.getSasToken();
-            }
-        }
-
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
-            tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
-            perCallPolicies, perRetryPolicies, configuration, logger, enableTenantDiscovery);
-
+        HttpPipeline pipeline = prepareClient();
         return new TableServiceClient(pipeline, endpoint, serviceVersion, serializerAdapter);
     }
 
@@ -197,7 +143,11 @@ public final class TableServiceClientBuilder implements
      */
     public TableServiceAsyncClient buildAsyncClient() {
         TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
+        HttpPipeline pipeline = prepareClient();
+        return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
+    }
 
+    private HttpPipeline prepareClient() {
         validateCredentials(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, connectionString,
             logger);
 
@@ -251,8 +201,8 @@ public final class TableServiceClientBuilder implements
             namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
             tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
             perCallPolicies, perRetryPolicies, configuration, logger, enableTenantDiscovery);
-
-        return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
+        
+        return pipeline;
     }
 
     /**
