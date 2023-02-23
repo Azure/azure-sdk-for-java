@@ -32,6 +32,7 @@ import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.io.Closeable;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
@@ -65,6 +66,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private EventHubConsumerAsyncClient consumer;
     private EventHubConsumerClient consumerSync;
     private EventProcessorClient processor;
+    private List<AutoCloseable> toClose;
     private Instant testStartTime;
     private EventData data;
 
@@ -74,15 +76,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
+        GlobalOpenTelemetry.resetForTest();
         spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName());
-
-        // For the first integration test run, the tracing provider may be already set because we import
-        if (GlobalOpenTelemetry.get() != null) {
-            logger.info("Global telemetry was not null. Manually resetting.");
-
-            GlobalOpenTelemetry.resetForTest();
-        }
-
         OpenTelemetrySdk.builder()
             .setTracerProvider(
                 SdkTracerProvider.builder()
@@ -97,6 +92,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     private void createClients(OpenTelemetrySdk otel) {
+        closeClients();
         ClientOptions options = new ClientOptions();
         if (otel != null) {
             options.setTracingOptions(new OpenTelemetryTracingOptions().setProvider(otel.getTracerProvider()));
@@ -121,19 +117,27 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .clientOptions(options)
             .consumerGroup("$Default")
             .buildConsumerClient();
+
+        toClose.add(producer);
+        toClose.add(consumer);
+        toClose.add(consumerSync);
+    }
+
+    private void closeClients() {
+        if (processor != null) {
+            processor.stop();
+        }
+        try {
+            dispose(toClose.toArray(new Closeable[0]));
+        } catch (Exception e) {
+            logger.warning("Error occurred when draining queue.", e);
+        }
     }
 
     @Override
     protected void afterTest() {
         GlobalOpenTelemetry.resetForTest();
-        if (processor != null) {
-            processor.stop();
-        }
-        try {
-            dispose(consumer, producer, consumerSync);
-        } catch (Exception e) {
-            logger.warning("Error occurred when draining queue.", e);
-        }
+        closeClients();
     }
 
     @Test
@@ -281,6 +285,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .maxWaitTime(Duration.ofSeconds(5))
             .buildAsyncClient();
 
+        toClose.add(bufferedProducer);
+
         EventData event1 = new EventData("1");
         EventData event2 = new EventData("2");
 
@@ -423,6 +429,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .clientOptions(new ClientOptions().setTracingOptions(new TracingOptions().setEnabled(false)))
             .buildAsyncProducerClient();
 
+        toClose.add(notInstrumentedProducer);
         EventData message1 = new EventData(CONTENTS_BYTES);
         EventData message2 = new EventData(CONTENTS_BYTES);
         List<EventData> received = new ArrayList<>();
@@ -668,11 +675,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
             assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.name")));
 
+            spans.add(readableSpan);
             Consumer<ReadableSpan> filter = notifier.get();
             if (filter != null) {
                 filter.accept(readableSpan);
             }
-            spans.add(readableSpan);
         }
 
         public void notifyIfCondition(CountDownLatch countDownLatch, Predicate<ReadableSpan> filter) {
