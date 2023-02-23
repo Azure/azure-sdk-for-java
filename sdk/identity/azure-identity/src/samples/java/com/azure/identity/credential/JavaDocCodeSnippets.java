@@ -6,7 +6,28 @@ package com.azure.identity.credential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
-import com.azure.identity.*;
+import com.azure.identity.AzureCliCredential;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.ClientCertificateCredential;
+import com.azure.identity.ClientCertificateCredentialBuilder;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.ChainedTokenCredential;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.DeviceCodeCredential;
+import com.azure.identity.DeviceCodeCredentialBuilder;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredential;
+import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.InteractiveBrowserCredential;
+import com.azure.identity.InteractiveBrowserCredentialBuilder;
+import com.azure.identity.IntelliJCredential;
+import com.azure.identity.IntelliJCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.UsernamePasswordCredential;
+import com.azure.identity.UsernamePasswordCredentialBuilder;
 
 import java.net.InetSocketAddress;
 
@@ -118,13 +139,27 @@ public final class JavaDocCodeSnippets {
      * Method to insert code snippets for {@link ManagedIdentityCredential}
      */
     public void managedIdentityCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.managedidentitycredential.userassigned.construct
+        TokenCredential managedIdentityCredentialUserAssigned = new ManagedIdentityCredentialBuilder()
+            .clientId(clientId) // specify client id of user-assigned managed identity.
+            .build();
+        // END: com.azure.identity.credential.managedidentitycredential.userassigned.construct
+
         // BEGIN: com.azure.identity.credential.managedidentitycredential.construct
         TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
-            .clientId(clientId) // specify client id only if targeting a user-assigned managed identity.
             .build();
         // END: com.azure.identity.credential.managedidentitycredential.construct
     }
 
+    /**
+     * Method to insert code snippets for {@link EnvironmentCredential}
+     */
+    public void environmentCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.environmentcredential.construct
+        TokenCredential environmentCredential = new EnvironmentCredentialBuilder()
+            .build();
+        // END: com.azure.identity.credential.environmentcredential.construct
+    }
 
     /**
      * Method to insert code snippets for {@link AzureCliCredential}
@@ -146,4 +181,29 @@ public final class JavaDocCodeSnippets {
         // END: com.azure.identity.credential.intellijcredential.construct
     }
 
+    /**
+     * Method to insert code snippets for {@link DeviceCodeCredential}
+     */
+    public void deviceCodeCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.devicecodecredential.construct
+        TokenCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
+            .challengeConsumer(challenge -> {
+                // Lets the user know about the challenge.
+                System.out.println(challenge.getMessage());
+            }).build();
+        // END: com.azure.identity.credential.devicecodecredential.construct
+    }
+
+    /**
+     * Method to insert code snippets for {@link UsernamePasswordCredential}
+     */
+    public void usernamePasswordCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.usernamepasswordcredential.construct
+        TokenCredential deviceCodeCredential = new UsernamePasswordCredentialBuilder()
+            .clientId("<your app client ID>")
+            .username("<your username>")
+            .password("<your password>")
+            .build();
+        // END: com.azure.identity.credential.usernamepasswordcredential.construct
+    }
 }

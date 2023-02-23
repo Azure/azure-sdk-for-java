@@ -21,9 +21,26 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * An AAD credential that acquires a token with a username and a password. Users with 2FA/MFA (Multi-factored auth)
- * turned on will not be able to use this credential. Please use {@link DeviceCodeCredential} or {@link
- * InteractiveBrowserCredential} instead, or create a service principal if you want to authenticate silently.
+ * <p>The UsernamePasswordCredential authenticates a public client application and acquires a token using the
+ * user credentials that don't require 2FA/MFA (Multi-factored) authentication.
+ * For more information refer to the <a href="https://aka.ms/azsdk/java/identity/usernamepasswordcredential/docs">conceptual knowledge and configuration details</a>.</p>
+ *
+ * <p>In the scenario where 2FA/MFA (Multi-factored) authentication is turned on, please use
+ * {@link DeviceCodeCredential} or {@link InteractiveBrowserCredential} instead.</p>
+ *
+ * <p><strong>Sample: Construct DeviceCodeCredential</strong></p>
+ * <!-- src_embed com.azure.identity.credential.usernamepasswordcredential.construct -->
+ * <pre>
+ * TokenCredential deviceCodeCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
+ *     .clientId&#40;&quot;&lt;your app client ID&gt;&quot;&#41;
+ *     .username&#40;&quot;&lt;your username&gt;&quot;&#41;
+ *     .password&#40;&quot;&lt;your password&gt;&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.usernamepasswordcredential.construct -->
+ *
+ * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication.
+ * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for AAD authentication.</p>
  */
 @Immutable
 public class UsernamePasswordCredential implements TokenCredential {

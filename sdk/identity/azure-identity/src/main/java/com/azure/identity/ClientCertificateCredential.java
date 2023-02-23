@@ -52,7 +52,7 @@ import java.util.Objects;
  * <!-- end com.azure.identity.credential.clientcertificatecredential.constructwithproxy -->
  *
  * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication. The TokenCredential instantiated
- * above can be passed into most of the Azure SDK client builders to for AAD authentication.</p>
+ * above can be passed into most of the Azure SDK client builders for AAD authentication.</p>
  */
 @Immutable
 public class ClientCertificateCredential implements TokenCredential {
@@ -62,7 +62,7 @@ public class ClientCertificateCredential implements TokenCredential {
     private final IdentitySyncClient identitySyncClient;
 
     /**
-     * Creates a ClientSecretCredential with default identity client options.
+     * Creates a ClientCertificateCredential with default identity client options.
      * @param tenantId the tenant ID of the application
      * @param clientId the client ID of the application
      * @param certificatePath the PEM file or PFX file containing the certificate

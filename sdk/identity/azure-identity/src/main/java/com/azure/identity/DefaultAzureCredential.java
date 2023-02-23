@@ -9,7 +9,6 @@ import com.azure.core.credential.TokenCredential;
 import java.util.List;
 
 /**
- *
  * <p>The DefaultAzureCredential is appropriate for most scenarios where the application ultimately runs in the Azure Cloud.
  * DefaultAzureCredential combines credentials that are commonly used to authenticate when deployed,
  * with credentials that are used to authenticate in a development environment. The DefaultAzureCredential will
@@ -54,7 +53,7 @@ import java.util.List;
  * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  *
  * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication. The TokenCredential instantiated
- * above can be passed into most of the Azure SDK client builders to for AAD authentication.</p>
+ * above can be passed into most of the Azure SDK client builders for AAD authentication.</p>
  *
  * @see com.azure.identity
  * @see com.azure.identity.ManagedIdentityCredential

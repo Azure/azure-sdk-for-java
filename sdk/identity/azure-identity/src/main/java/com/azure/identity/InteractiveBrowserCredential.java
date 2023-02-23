@@ -20,13 +20,45 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * An AAD credential that acquires a token for an AAD application by prompting the login in the default browser. When
- * authenticated, the oauth2 flow will notify the credential of the authentication code through the reply URL.
+ * <p>This credential interactively authenticates a user and acquires a token with the default system browser and offers
+ * a smooth authentication experience by letting you use you own credentials to authenticate your application. When
+ * authenticated, the oauth2 flow notifies the credential of the authentication code through the reply URL.
+ * For more information refer to the <a href="https://aka.ms/azsdk/java/identity/interactivebrowsercredential/docs">conceptual knowledge and configuration details</a>.</p>
+
+ * <p><strong>Required configuration:</strong></p>
+ * <p>To use InteractiveBrowserCredential, you need to register an application in Azure Active Directory with
+ * permissions to log in on behalf of a user. Follow the steps below to configure your registered application.</p>
+ ** <ol>
+ *     <li>Go to Azure Active Directory in Azure portal and find your app registration.</li>
+ *     <li>Navigate to the Authentication section.</li>
+ *     <li>Under Suggested Redirected URIs, check the URI that ends with /common/oauth2/nativeclient.</li>
+ *     <li>Under Default Client Type, select yes for Treat application as a public client.</li>
+ * </ol>
+ * <p>These steps will let the application authenticate, but it still won't have permission to log you into
+ * Active Directory, or access resources on your behalf. To address this issue, navigate to API Permissions, and enable
+ * Microsoft Graph and the resources you want to access, such as Azure Service Management, Key Vault, and so on.
  *
- * <p>
- * The application to authenticate to must have delegated user login permissions and have {@code
- * http://localhost:{port}}
- * listed as a valid reply URL.
+ * You also need to be the admin of your tenant to grant consent to your application when you log in for the first time.
+ *
+ * In {@link InteractiveBrowserCredentialBuilder#redirectUrl(String)}, a redirect URL can be specified. It configures
+ * the Redirect URL where STS will callback the application with the security code. It is required if a custom
+ * client id is specified via {@link InteractiveBrowserCredentialBuilder#clientId(String)} and must match the
+ * redirect URL specified during the application registration.
+ * You can add the redirect URL to the Redirect URIs subsection under the Authentication section of your registered
+ * Azure AD application.</p>
+ *
+ * <p><strong>Sample: Construct InteractiveBrowserCredential</strong></p>
+ * <!-- src_embed com.azure.identity.credential.interactivebrowsercredential.construct -->
+ * <pre>
+ * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .redirectUrl&#40;&quot;http:&#47;&#47;localhost:8765&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.interactivebrowsercredential.construct -->
+ *
+ * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication.
+ * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for AAD authentication.</p>
  */
 @Immutable
 public class InteractiveBrowserCredential implements TokenCredential {
