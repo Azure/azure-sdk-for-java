@@ -7,8 +7,6 @@ import com.azure.core.util.BinaryData;
 
 import java.util.Objects;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.convertToJson;
-
 /**
  * Options for configuring the upload manifest operation.
  */
@@ -32,7 +30,7 @@ public final class UploadManifestOptions {
     public UploadManifestOptions(OciManifest ociManifest) {
         Objects.requireNonNull(ociManifest, "'ociManifest' can't be null.");
 
-        this.manifest = BinaryData.fromString(convertToJson(ociManifest));
+        this.manifest = BinaryData.fromObject(ociManifest);
     }
 
     /**

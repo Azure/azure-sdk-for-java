@@ -53,13 +53,7 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -468,18 +462,6 @@ public final class UtilsImpl {
         }
 
         throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid content-range header in response -" + contentRangeHeader));
-    }
-
-    public static String convertToJson(JsonSerializable<?> jsonSerializable) {
-        StringBuilder builder = new StringBuilder();
-        try (Writer writer = new StringBuilderWriter(builder);
-             JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
-            jsonSerializable.toJson(jsonWriter);
-            jsonWriter.flush();
-            return builder.toString();
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
     }
 
     /**

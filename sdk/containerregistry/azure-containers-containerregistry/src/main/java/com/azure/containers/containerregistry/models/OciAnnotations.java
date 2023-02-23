@@ -9,9 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
@@ -25,80 +22,67 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6)
      */
-    @JsonProperty(value = "org.opencontainers.image.created")
     private OffsetDateTime created;
 
     /*
      * Contact details of the people or organization responsible for the image.
      */
-    @JsonProperty(value = "org.opencontainers.image.authors")
     private String authors;
 
     /*
      * URL to find more information on the image.
      */
-    @JsonProperty(value = "org.opencontainers.image.url")
     private String url;
 
     /*
      * URL to get documentation on the image.
      */
-    @JsonProperty(value = "org.opencontainers.image.documentation")
     private String documentation;
 
     /*
      * URL to get source code for building the image.
      */
-    @JsonProperty(value = "org.opencontainers.image.source")
     private String source;
 
     /*
      * Version of the packaged software. The version MAY match a label or tag in the source code repository, may also
      * be Semantic versioning-compatible
      */
-    @JsonProperty(value = "org.opencontainers.image.version")
     private String version;
 
     /*
      * Source control revision identifier for the packaged software.
      */
-    @JsonProperty(value = "org.opencontainers.image.revision")
     private String revision;
 
     /*
      * Name of the distributing entity, organization or individual.
      */
-    @JsonProperty(value = "org.opencontainers.image.vendor")
     private String vendor;
 
     /*
      * License(s) under which contained software is distributed as an SPDX License Expression.
      */
-    @JsonProperty(value = "org.opencontainers.image.licenses")
     private String licenses;
 
     /*
      * Name of the reference for a target.
      */
-    @JsonProperty(value = "org.opencontainers.image.ref.name")
     private String name;
 
     /*
      * Human-readable title of the image
      */
-    @JsonProperty(value = "org.opencontainers.image.title")
     private String title;
 
     /*
      * Human-readable description of the software packaged in the image
      */
-    @JsonProperty(value = "org.opencontainers.image.description")
     private String description;
 
     /*
      * Additional information provided through arbitrary metadata.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /** Creates an instance of OciAnnotations class. */
