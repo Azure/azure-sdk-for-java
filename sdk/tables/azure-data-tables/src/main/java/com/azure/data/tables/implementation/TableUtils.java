@@ -3,15 +3,11 @@
 package com.azure.data.tables.implementation;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.models.AccessPolicy;
 import com.azure.data.tables.implementation.models.CorsRule;
@@ -20,14 +16,12 @@ import com.azure.data.tables.implementation.models.Logging;
 import com.azure.data.tables.implementation.models.Metrics;
 import com.azure.data.tables.implementation.models.RetentionPolicy;
 import com.azure.data.tables.implementation.models.SignedIdentifier;
-import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataError;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataErrorMessage;
 import com.azure.data.tables.implementation.models.TableServiceStats;
 import com.azure.data.tables.models.TableServiceProperties;
 import com.azure.data.tables.models.TableAccessPolicy;
-import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceCorsRule;
 import com.azure.data.tables.models.TableServiceError;
 import com.azure.data.tables.models.TableServiceException;
@@ -47,9 +41,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.time.Duration;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.OptionalLong;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -218,8 +212,8 @@ public final class TableUtils {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
-    public static Long setTimeout(Duration timeout) {
-        return timeout != null ? timeout.toMillis() : Duration.ofDays(1).toMillis();
+    public static OptionalLong setTimeout(Duration timeout) {
+        return timeout != null ? OptionalLong.of(timeout.toMillis()) : OptionalLong.empty();
     }
 
     /**
@@ -536,7 +530,7 @@ public final class TableUtils {
             TableServiceGeoReplicationStatus.fromString(geoReplication.getStatus().toString()),
             geoReplication.getLastSyncTime());
     }
-   
+
     // Single quotes in OData queries should be escaped by using two consecutive single quotes characters.
     // Source: http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#sec_URLSyntax.
     public static String escapeSingleQuotes(String input) {

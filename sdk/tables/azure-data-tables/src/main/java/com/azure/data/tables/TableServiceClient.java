@@ -6,9 +6,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -16,7 +14,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
@@ -26,14 +23,9 @@ import com.azure.data.tables.implementation.TableAccountSasGenerator;
 import com.azure.data.tables.implementation.TablePaged;
 import com.azure.data.tables.implementation.TableSasUtils;
 import com.azure.data.tables.implementation.TableUtils;
-import com.azure.data.tables.implementation.models.CorsRule;
-import com.azure.data.tables.implementation.models.GeoReplication;
-import com.azure.data.tables.implementation.models.Logging;
-import com.azure.data.tables.implementation.models.Metrics;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
-import com.azure.data.tables.implementation.models.RetentionPolicy;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
@@ -41,20 +33,15 @@ import com.azure.data.tables.implementation.models.TableServiceStats;
 import com.azure.data.tables.implementation.models.TablesQueryHeaders;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
-import com.azure.data.tables.models.TableServiceCorsRule;
 import com.azure.data.tables.models.TableServiceException;
-import com.azure.data.tables.models.TableServiceGeoReplication;
-import com.azure.data.tables.models.TableServiceGeoReplicationStatus;
-import com.azure.data.tables.models.TableServiceLogging;
-import com.azure.data.tables.models.TableServiceMetrics;
 import com.azure.data.tables.models.TableServiceProperties;
-import com.azure.data.tables.models.TableServiceRetentionPolicy;
 import com.azure.data.tables.models.TableServiceStatistics;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 
 import java.net.URI;
 import java.time.Duration;
 import java.util.List;
+import java.util.OptionalLong;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -247,10 +234,12 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableWithResponse(String tableName, Duration timeout, Context context) {
-        long timeoutInMillis = TableUtils.setTimeout(timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableClient>> callable = () -> createTableWithResponse(tableName, context);
         try {
-            return THREAD_POOL.submit(callable).get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
         }
@@ -318,10 +307,12 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
                                                                     Context context) {
-        long timeoutInMillis = TableUtils.setTimeout(timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableClient>> callable = () -> createTableIfNotExistsWithResponse(tableName, context);
         try {
-            return THREAD_POOL.submit(callable).get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
@@ -397,9 +388,12 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
-        long timeoutInMillis = TableUtils.setTimeout(timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<Void>> callable = () -> deleteTableWithResponse(tableName, context);
         try {
-            return THREAD_POOL.submit(() -> deleteTableWithResponse(tableName, context)).get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
         } catch (Exception e) {
             Exception exception = (Exception) TableUtils.mapThrowableToTableServiceException(e);
             if (exception instanceof TableServiceException
@@ -472,9 +466,12 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
-        long timeoutInMillis = TableUtils.setTimeout(timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<PagedIterable<TableItem>> callable = () -> listTables(options, context);
         try {
-            return THREAD_POOL.submit(() -> listTables(options, context)).get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
@@ -577,9 +574,12 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        long timeoutInMillis = TableUtils.setTimeout(timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<TableServiceProperties>> callable = () -> getPropertiesWithResponse(context);
         try {
-            return THREAD_POOL.submit(() -> getPropertiesWithResponse(context)).get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
         }
@@ -670,9 +670,12 @@ public final class TableServiceClient {
     public Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Duration timeout,
                                                     Context context) {
 
-        long timeoutInMillis = TableUtils.setTimeout(timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<Void>> callable = () -> setPropertiesWithResponse(tableServiceProperties, context);
         try {
-            return THREAD_POOL.submit(() -> setPropertiesWithResponse(tableServiceProperties, context)).get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
@@ -740,9 +743,12 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
-        long timeoutInMillis = TableUtils.setTimeout(timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<TableServiceStatistics>> callable = () -> getStatisticsWithResponse(context);
         try {
-            return THREAD_POOL.submit(() -> getStatisticsWithResponse(context)).get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
