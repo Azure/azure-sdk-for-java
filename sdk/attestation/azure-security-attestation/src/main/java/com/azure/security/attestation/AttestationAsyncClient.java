@@ -535,60 +535,32 @@ public final class AttestationAsyncClient {
             });
     }
 
-    /** Performs TPM attestation.
+    /**
+     * @brief Performs TPM attestation.
      *
-     * Processes attestation evidence from a VBS enclave, producing an attestation result.
-     * <p>The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
-     * <p>Unlike OpenEnclave reports and SGX enclave quotes, TPM attestation is implemented using JSON encoded
-     * strings. </p><p>The client formats a string serialized JSON request to the service, which responds with a
-     * JSON response. The serialized JSON object exchange continues until the service responds with a JSON string
-     * with a property named {@code "report"}, whose value will be an attestation result token.</p>
-     * <p><strong>Perform the first leg of a TPM attestation operation</strong></p>
-     * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestTpmWithResponse -->
-     * <pre>
-     * &#47;&#47; The initial payload for TPM attestation is a JSON object with a property named &quot;payload&quot;,
-     * &#47;&#47; containing an object with a property named &quot;type&quot; whose value is &quot;aikcert&quot;.
-     *
-     * String attestInitialPayload = &quot;&#123;&#92;&quot;payload&#92;&quot;: &#123; &#92;&quot;type&#92;&quot;: &#92;&quot;aikcert&#92;&quot; &#125; &#125;&quot;;
-     * Mono&lt;Response&lt;String&gt;&gt; responseMono = client.attestTpmWithResponse&#40;attestInitialPayload&#41;;
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestTpmWithResponse -->
+     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException    thrown if the request is rejected by server.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TpmAttestationResult>> attestTpmWithResponse(BinaryData request) {
         return withContext(context -> this.attestTpmWithResponse(request, context));
     }
 
-    /** Performs TPM attestation.
+    /**
+     * @brief Performs TPM attestation.
      *
-     * Processes attestation evidence from a VBS enclave, producing an attestation result.
-     * <p>The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
-     * <p>Unlike OpenEnclave reports and SGX enclave quotes, TPM attestation is implemented using JSON encoded
-     * strings. </p><p>The client formats a string serialized JSON request to the service, which responds with a
-     * JSON response. The serialized JSON object exchange continues until the service responds with a JSON string
-     * with a property named {@code "report"}, whose value will be an attestation result token.</p>
-     * <p><strong>Perform the first leg of a TPM attestation operation</strong></p>
-     * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestTpm -->
-     * <pre>
-     * &#47;&#47; The initial payload for TPM attestation is a JSON object with a property named &quot;payload&quot;,
-     * &#47;&#47; containing an object with a property named &quot;type&quot; whose value is &quot;aikcert&quot;.
-     *
-     * String attestInitialPayload = &quot;&#123;&#92;&quot;payload&#92;&quot;: &#123; &#92;&quot;type&#92;&quot;: &#92;&quot;aikcert&#92;&quot; &#125; &#125;&quot;;
-     * Mono&lt;String&gt; tpmResponse = client.attestTpm&#40;attestInitialPayload&#41;;
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestTpm -->
+     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException    thrown if the request is rejected by server.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TpmAttestationResult> attestTpm(BinaryData request) {

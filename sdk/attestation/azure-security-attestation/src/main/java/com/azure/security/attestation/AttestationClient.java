@@ -440,18 +440,9 @@ public final class AttestationClient {
     }
 
     /**
-     * Performs TPM attestation.
-     * <p>
-     * Processes attestation evidence from a VBS enclave, producing an attestation result.
-     * <p>The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
-     * <p><strong>Perform the first leg of a TPM attestation operation</strong></p>
-     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestTpm -->
-     * <pre>
-     * &#47;&#47; The initial payload for TPM attestation is a JSON object with a property named &quot;payload&quot;,
-     * &#47;&#47; containing an object with a property named &quot;type&quot; whose value is &quot;aikcert&quot;.
+     * @brief Performs TPM attestation.
      *
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationClient.attestTpm -->
+     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
@@ -464,25 +455,16 @@ public final class AttestationClient {
         return asyncClient.attestTpm(request).block();
     }
 
-    /** Performs TPM attestation.
+    /**
+     * @brief Performs TPM attestation.
      *
-     * Processes attestation evidence from a VBS enclave, producing an attestation result.
-     * <p>The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
-     * <p><strong>Perform the first leg of a TPM attestation operation</strong></p>
-     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestTpmWithResponse -->
-     * <pre>
-     * &#47;&#47; The initial payload for TPM attestation is a JSON object with a property named &quot;payload&quot;,
-     * &#47;&#47; containing an object with a property named &quot;type&quot; whose value is &quot;aikcert&quot;.
-     *
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationClient.attestTpmWithResponse -->
+     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
-     * @param context Context for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException    thrown if the request is rejected by server.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TpmAttestationResult> attestTpmWithResponse(BinaryData request, Context context) {
