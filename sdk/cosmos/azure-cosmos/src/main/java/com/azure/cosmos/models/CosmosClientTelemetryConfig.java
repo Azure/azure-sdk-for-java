@@ -206,7 +206,9 @@ public final class CosmosClientTelemetryConfig {
     }
 
     List<CosmosDiagnosticsHandler> getDiagnosticHandlers() {
-        return this.diagnosticHandlers;
+        ArrayList<CosmosDiagnosticsHandler> snapshot = new ArrayList<>(this.diagnosticHandlers);
+        snapshot.addAll(this.customDiagnosticHandlers);
+        return snapshot;
     }
 
     /**
