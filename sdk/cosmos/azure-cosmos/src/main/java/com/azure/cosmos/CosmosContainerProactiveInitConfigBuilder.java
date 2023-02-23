@@ -42,7 +42,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
      * @param numProactiveConnectionRegions the no of proactive connection regions
      * @return Current {@link CosmosContainerProactiveInitConfigBuilder}
      */
-    public CosmosContainerProactiveInitConfigBuilder setProactiveConnectionRegions(int numProactiveConnectionRegions) {
+    public CosmosContainerProactiveInitConfigBuilder setProactiveConnectionRegionsCount(int numProactiveConnectionRegions) {
         checkArgument(
             numProactiveConnectionRegions > 0 &&
 

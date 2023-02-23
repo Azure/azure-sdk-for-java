@@ -144,20 +144,6 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner get(String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets information about a database.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -167,6 +153,20 @@ public interface DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseInner> getWithResponse(
         String resourceGroupName, String serverName, String databaseName, Context context);
+
+    /**
+     * Gets information about a database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseInner get(String resourceGroupName, String serverName, String databaseName);
 
     /**
      * List all the databases in a given server.

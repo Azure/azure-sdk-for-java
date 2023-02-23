@@ -9,12 +9,16 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
 import com.azure.resourcemanager.monitor.models.LogSettings;
 import com.azure.resourcemanager.monitor.models.MetricSettings;
+import com.azure.resourcemanager.monitor.models.RetentionPolicy;
+import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.models.Sku;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -192,6 +196,61 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         } finally {
             monitorManager.diagnosticSettings().deleteById(setting.id());
         }
+    }
+
+    @Test
+    public void canCRUDDiagnosticSettingsLogsCategoryGroup() {
+        Region region = Region.US_WEST;
+
+        String wpsName = generateRandomResourceName("jMonitorWps", 18);
+
+        // resource (webpubsub) to monitor
+        GenericResource wpsResource = monitorManager.resourceManager().genericResources()
+            .define(wpsName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withResourceType("WebPubSub")
+            .withProviderNamespace("Microsoft.SignalRService")
+            .withoutPlan()
+            .withSku(new Sku().withName("Free_F1").withTier("Free").withSize("F1").withCapacity(1))
+            .withApiVersion("2021-10-01")
+            .create();
+
+        // storage account to store diagnostic data
+        StorageAccount sa = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withTag("tag1", "value1")
+            .create();
+
+        // diagnostic setting
+        DiagnosticSetting setting = monitorManager.diagnosticSettings()
+            .define(dsName)
+            .withResource(wpsResource.id())
+            .withStorageAccount(sa.id())
+            .withLog("Security", 7)
+            .create();
+
+        // add category group "audit" to log settings
+        DiagnosticSettingsResourceInner inner = setting.innerModel();
+        inner.logs().add(new LogSettings().withCategoryGroup("audit").withEnabled(true).withRetentionPolicy(new RetentionPolicy().withEnabled(false)));
+        monitorManager.serviceClient().getDiagnosticSettingsOperations().createOrUpdate(wpsResource.id(), dsName, inner);
+
+        // verify category group "audit"
+        setting = monitorManager.diagnosticSettings().listByResource(wpsResource.id()).iterator().next();
+        Assertions.assertTrue(setting.logs().stream().anyMatch(ls -> "audit".equals(ls.categoryGroup())));
+
+        // update to add metric
+        setting.update()
+            .withMetric("AllMetrics", Duration.ofMinutes(5), 7)
+            .apply();
+
+        // verify category group "audit"
+        setting = monitorManager.diagnosticSettings().listByResource(wpsResource.id()).iterator().next();
+        Assertions.assertTrue(setting.logs().stream().anyMatch(ls -> "audit".equals(ls.categoryGroup())));
+        // verify metric "AllMetrics"
+        Assertions.assertTrue(setting.metrics().stream().anyMatch(ms -> "AllMetrics".equals(ms.category())));
     }
 
     private void checkDiagnosticSettingValues(DiagnosticSetting expected, DiagnosticSetting actual) {

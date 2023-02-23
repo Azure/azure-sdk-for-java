@@ -684,7 +684,7 @@ public class CosmosClientBuilder implements
     /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
-     * obtained from the first <em>k</em> preferred regions where <em>k</em> evaluates to {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()}.
+     * obtained from the first <em>k</em> preferred regions where <em>k</em> evaluates to {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}.
      *
      * <p>
      *     Use the {@link CosmosContainerProactiveInitConfigBuilder} class to instantiate {@link CosmosContainerProactiveInitConfig} class
@@ -912,7 +912,7 @@ public class CosmosClientBuilder implements
 
         if (proactiveContainerInitConfig != null) {
             Preconditions.checkArgument(preferredRegions != null, "preferredRegions cannot be null when proactiveContainerInitConfig has been set");
-            Preconditions.checkArgument(this.proactiveContainerInitConfig.getNumProactiveConnectionRegions() <= this.preferredRegions.size(), "no. of regions to proactively connect to " +
+            Preconditions.checkArgument(this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() <= this.preferredRegions.size(), "no. of regions to proactively connect to " +
                     "cannot be greater than the no.of preferred regions");
         }
 

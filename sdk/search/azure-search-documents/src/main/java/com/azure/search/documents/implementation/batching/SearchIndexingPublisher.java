@@ -313,7 +313,7 @@ public final class SearchIndexingPublisher<T> {
                 return Mono.just(new IndexBatchResponse(statusCode, null, actions.size(), true));
             })
             // General catch all to allow operation to continue.
-            .onErrorResume(Throwable.class, ignored ->
+            .onErrorResume(Exception.class, ignored ->
                 Mono.just(new IndexBatchResponse(0, null, actions.size(), true)));
     }
 

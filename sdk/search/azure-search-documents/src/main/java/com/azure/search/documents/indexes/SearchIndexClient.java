@@ -15,7 +15,6 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.converters.AnalyzeRequestConverter;
-import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
@@ -166,8 +165,7 @@ public final class SearchIndexClient {
     public Response<SearchIndex> createIndexWithResponse(SearchIndex index, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Objects.requireNonNull(index, "'Index' cannot be null");
-            return MappingUtils.mappingExternalSearchIndex(restClient.getIndexes()
-                .createWithResponse(SearchIndexConverter.map(index), null, Utility.enableSyncRestProxy(context)));
+            return restClient.getIndexes().createWithResponse(index, null, Utility.enableSyncRestProxy(context));
         });
     }
 
@@ -218,8 +216,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> getIndexWithResponse(String indexName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalSearchIndex(restClient.getIndexes()
-            .getWithResponse(indexName, null, Utility.enableSyncRestProxy(context))));
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
+            .getWithResponse(indexName, null, Utility.enableSyncRestProxy(context)));
     }
 
 
@@ -330,8 +328,8 @@ public final class SearchIndexClient {
     }
 
     private PagedResponse<SearchIndex> listIndexesWithResponse(String select, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingListingSearchIndex(restClient.getIndexes()
-            .listSinglePage(select, null, Utility.enableSyncRestProxy(context))));
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
+            .listSinglePage(select, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -449,9 +447,8 @@ public final class SearchIndexClient {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Objects.requireNonNull(index, "'Index' cannot null.");
             String ifMatch = onlyIfUnchanged ? index.getETag() : null;
-            return MappingUtils.mappingExternalSearchIndex(restClient.getIndexes()
-                .createOrUpdateWithResponse(index.getName(), SearchIndexConverter.map(index),
-                    allowIndexDowntime, ifMatch, null, null, Utility.enableSyncRestProxy(context)));
+            return restClient.getIndexes().createOrUpdateWithResponse(index.getName(), index, allowIndexDowntime,
+                ifMatch, null, null, Utility.enableSyncRestProxy(context));
         });
     }
 

@@ -43,7 +43,7 @@ If you want to take dependency on a particular version of the library that is no
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>4.4.3</version>
+    <version>4.4.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

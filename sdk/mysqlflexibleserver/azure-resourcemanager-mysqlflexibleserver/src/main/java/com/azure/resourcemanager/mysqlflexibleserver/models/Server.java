@@ -206,6 +206,13 @@ public interface Server {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner object.
      *
      * @return the inner object.
@@ -467,6 +474,7 @@ public interface Server {
             UpdateStages.WithIdentity,
             UpdateStages.WithSku,
             UpdateStages.WithAdministratorLoginPassword,
+            UpdateStages.WithVersion,
             UpdateStages.WithStorage,
             UpdateStages.WithBackup,
             UpdateStages.WithHighAvailability,
@@ -529,6 +537,16 @@ public interface Server {
              * @return the next definition stage.
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
+        }
+        /** The stage of the Server update allowing to specify version. */
+        interface WithVersion {
+            /**
+             * Specifies the version property: Server version..
+             *
+             * @param version Server version.
+             * @return the next definition stage.
+             */
+            Update withVersion(ServerVersion version);
         }
         /** The stage of the Server update allowing to specify storage. */
         interface WithStorage {
