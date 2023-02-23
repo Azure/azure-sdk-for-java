@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where IP-style URLs wouldn't have a host part when used as a `URI`. ([#33673](https://github.com/Azure/azure-sdk-for-java/pull/33673))
+
 ### Other Changes
 
 ## 1.13.0 (2023-02-01)
