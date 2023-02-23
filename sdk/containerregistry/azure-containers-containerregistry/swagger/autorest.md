@@ -59,7 +59,6 @@ autorest --java --use:@autorest/java@4.1.*
 use: '@autorest/java@4.1.13'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
-use: '@autorest/java@4.1.13'
 output-folder: ./..
 generate-client-as-impl: true
 namespace: com.azure.containers.containerregistry
