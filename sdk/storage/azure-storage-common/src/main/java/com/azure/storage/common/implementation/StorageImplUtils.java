@@ -307,15 +307,6 @@ public class StorageImplUtils {
     }
 
     /**
-     * Given a Content-Range header, will parse out the length of the whole content.
-     * @param header Response header.
-     * @return Parsed content length.
-     */
-    public static Long parseContentLengthFromContentRangeHeader(String header) {
-        return Long.parseLong(header.split("/")[1]);
-    }
-
-    /**
      * Given a String representing a date in a form of the ISO8601 pattern, generates a Date representing it with up to
      * millisecond precision.
      *

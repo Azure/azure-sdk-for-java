@@ -39,17 +39,13 @@ import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
-import com.azure.storage.file.share.options.ShareFileSeekableByteChannelReadOptions;
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
@@ -185,39 +181,13 @@ public class ShareFileClient {
 
     /**
      * Creates and opens a {@link SeekableByteChannel} to read data from the file.
-     * @param options Options for opening the channel.
+     * @param conditions requestConditions for reading from Storage.
      * @return The opened channel.
      */
-    public final SeekableByteChannel getFileSeekableByteChannelRead(ShareFileSeekableByteChannelReadOptions options) {
+    public final SeekableByteChannel getFileSeekableByteChannelRead(ShareRequestConditions conditions) {
         // TODO (jaschrep): make max put range an accessible constant (how is it not already??)
-        int bufferSize = 4 * Constants.MB;
-        ByteBuffer bb = ByteBuffer.allocate(bufferSize);
-
-        ShareFileDownloadResponse response = null;
-        Long fileSize = null;
-        long initialGetOffset = options.getInitialChannelPosition() != null
-            ? options.getInitialChannelPosition() : 0;
-        try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(bb)) {
-            response = this.downloadWithResponse(dstStream,
-                new ShareFileDownloadOptions()
-                    .setRange(new ShareFileRange(initialGetOffset, initialGetOffset + bb.remaining() - 1))
-                    .setRequestConditions(options.getConditions()),
-                null, null);
-            fileSize = StorageImplUtils.parseContentLengthFromContentRangeHeader(
-                response.getDeserializedHeaders().getContentRange());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        bb.limit(bb.position());
-        bb.rewind();
-
-        StorageSeekableByteChannelShareFileReadBehavior behavior = new StorageSeekableByteChannelShareFileReadBehavior(
-            this, options.getConditions());
-        behavior.setCachedLength(fileSize);
-        behavior.setCachedReadValue(bb, initialGetOffset);
-
-        return new StorageSeekableByteChannel(bufferSize, behavior, null /*writeBehavior*/);
+        return new StorageSeekableByteChannel(4 * Constants.MB,
+            new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/);
     }
 
     /**

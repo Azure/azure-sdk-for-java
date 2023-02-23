@@ -161,27 +161,4 @@ class StorageSeekableByteChannelShareFileReadBehaviorTests extends APISpec {
         buffer.position() == buffer.capacity()
         buffer.array() as List<Byte> == data[length..-1]
     }
-
-    def "Cached read is used over client"() {
-        given:
-        def data = getRandomByteArray(Constants.KB)
-        ShareFileClient client = Mock()
-
-        def behavior = new StorageSeekableByteChannelShareFileReadBehavior(client, null)
-        behavior.setCachedLength(Constants.MB)
-        behavior.setCachedReadValue(ByteBuffer.wrap(data), offset)
-
-        when:
-        ByteBuffer bb = ByteBuffer.allocate(data.length)
-        behavior.read(bb, offset)
-
-        then:
-        bb.array() == data
-        0 * client._
-
-        where:
-        _ | offset
-        _ | 0
-        _ | 100
-    }
 }
