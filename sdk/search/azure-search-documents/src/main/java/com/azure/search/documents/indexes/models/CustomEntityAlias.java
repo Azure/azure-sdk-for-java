@@ -7,34 +7,35 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A complex object that can be used to specify alternative spellings or synonyms to the root entity name. */
 @Fluent
-public final class CustomEntityAlias {
+public final class CustomEntityAlias implements JsonSerializable<CustomEntityAlias> {
     /*
      * The text of the alias.
      */
-    @JsonProperty(value = "text", required = true)
-    private String text;
+    private final String text;
 
     /*
      * Determine if the alias is case sensitive.
      */
-    @JsonProperty(value = "caseSensitive")
     private Boolean caseSensitive;
 
     /*
      * Determine if the alias is accent sensitive.
      */
-    @JsonProperty(value = "accentSensitive")
     private Boolean accentSensitive;
 
     /*
      * Determine the fuzzy edit distance of the alias.
      */
-    @JsonProperty(value = "fuzzyEditDistance")
     private Integer fuzzyEditDistance;
 
     /**
@@ -42,8 +43,7 @@ public final class CustomEntityAlias {
      *
      * @param text the text value to set.
      */
-    @JsonCreator
-    public CustomEntityAlias(@JsonProperty(value = "text", required = true) String text) {
+    public CustomEntityAlias(String text) {
         this.text = text;
     }
 
@@ -114,5 +114,67 @@ public final class CustomEntityAlias {
     public CustomEntityAlias setFuzzyEditDistance(Integer fuzzyEditDistance) {
         this.fuzzyEditDistance = fuzzyEditDistance;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeBooleanField("caseSensitive", this.caseSensitive);
+        jsonWriter.writeBooleanField("accentSensitive", this.accentSensitive);
+        jsonWriter.writeNumberField("fuzzyEditDistance", this.fuzzyEditDistance);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomEntityAlias from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomEntityAlias if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomEntityAlias.
+     */
+    public static CustomEntityAlias fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean textFound = false;
+                    String text = null;
+                    Boolean caseSensitive = null;
+                    Boolean accentSensitive = null;
+                    Integer fuzzyEditDistance = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("text".equals(fieldName)) {
+                            text = reader.getString();
+                            textFound = true;
+                        } else if ("caseSensitive".equals(fieldName)) {
+                            caseSensitive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("accentSensitive".equals(fieldName)) {
+                            accentSensitive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("fuzzyEditDistance".equals(fieldName)) {
+                            fuzzyEditDistance = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (textFound) {
+                        CustomEntityAlias deserializedValue = new CustomEntityAlias(text);
+                        deserializedValue.caseSensitive = caseSensitive;
+                        deserializedValue.accentSensitive = accentSensitive;
+                        deserializedValue.fuzzyEditDistance = fuzzyEditDistance;
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!textFound) {
+                        missingProperties.add("text");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

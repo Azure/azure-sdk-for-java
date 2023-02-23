@@ -47,7 +47,6 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Initializes a new instance of the ConfigurationClient type.
@@ -58,8 +57,6 @@ public final class ConfigurationClientImpl {
     private static final String ETAG_ANY = "*";
 
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-
-    private static final String APP_CONFIG_TRACING_NAMESPACE_VALUE = "Microsoft.AppConfiguration";
 
     /**
      * The proxy service used to perform REST calls.
@@ -372,7 +369,7 @@ public final class ConfigurationClientImpl {
                 setting,
                 null,
                 getETagValue(ETAG_ANY),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                context)
             .doOnSubscribe(ignoredValue -> logger.verbose("Adding ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.verbose("Added ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to add ConfigurationSetting - {}", setting, error));
@@ -394,8 +391,7 @@ public final class ConfigurationClientImpl {
             setting,
             null,
             getETagValue(ETAG_ANY),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
-                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
+            context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
     }
 
     public Mono<Response<ConfigurationSetting>> setConfigurationSettingWithResponseAsync(ConfigurationSetting setting,
@@ -420,7 +416,7 @@ public final class ConfigurationClientImpl {
                 setting,
                 ifMatchETag,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                context)
             .doOnSubscribe(ignoredValue -> logger.verbose("Setting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.verbose("Set ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
@@ -448,8 +444,7 @@ public final class ConfigurationClientImpl {
             setting,
             ifMatchETag,
             null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
-                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
+            context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
     }
 
     public Mono<Response<ConfigurationSetting>> getConfigurationSettingWithResponseAsync(ConfigurationSetting setting,
@@ -469,7 +464,7 @@ public final class ConfigurationClientImpl {
                 acceptDateTime == null ? null : acceptDateTime.toString(),
                 null,
                 ifNoneMatchETag,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                context)
             .onErrorResume(HttpResponseException.class,
                 (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
                     final HttpResponseException e = (HttpResponseException) throwable;
@@ -502,9 +497,7 @@ public final class ConfigurationClientImpl {
                 acceptDateTime == null ? null : acceptDateTime.toString(),
                 null,
                 ifNoneMatchETag,
-                context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        APP_CONFIG_TRACING_NAMESPACE_VALUE)
-                    .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
+                context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
         } catch (HttpResponseException ex) {
             final HttpResponse httpResponse = ex.getResponse();
             if (httpResponse.getStatusCode() == 304) {
@@ -529,7 +522,7 @@ public final class ConfigurationClientImpl {
                 this.getApiVersion(),
                 ifMatchETag,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                context)
             .doOnSubscribe(ignoredValue -> logger.verbose("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.verbose("Deleted ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
@@ -549,8 +542,7 @@ public final class ConfigurationClientImpl {
             this.getApiVersion(),
             ifMatchETag,
             null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
-                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
+            context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
     }
 
     public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponseAsync(ConfigurationSetting setting,
@@ -566,7 +558,7 @@ public final class ConfigurationClientImpl {
                     this.getApiVersion(),
                     null,
                     null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
                 .doOnSuccess(response -> logger.verbose("Set read only ConfigurationSetting - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting,
@@ -578,7 +570,7 @@ public final class ConfigurationClientImpl {
                     this.getApiVersion(),
                     null,
                     null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnSubscribe(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
                 .doOnSuccess(
                     response -> logger.verbose("Cleared read only ConfigurationSetting - {}", response.getValue()))
@@ -599,13 +591,11 @@ public final class ConfigurationClientImpl {
                 this.getApiVersion(),
                 null,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
-                    .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
+                context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
         } else {
             return this.service.unlockKeyValue(this.getEndpoint(), setting.getKey(), setting.getLabel(),
                 this.getApiVersion(), null, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
-                    .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
+                context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
         }
     }
 
@@ -668,7 +658,7 @@ public final class ConfigurationClientImpl {
         Mono<PagedResponse<ConfigurationSetting>> result
             = this.service.listKeyValuesAsync(this.getEndpoint(),
                 nextPageLink,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -692,7 +682,7 @@ public final class ConfigurationClientImpl {
                         this.getApiVersion(),
                         null,
                         null,
-                        context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                        context)
                     .doOnRequest(ignoredValue -> logger.verbose("Listing all ConfigurationSettings"))
                     .doOnSuccess(response -> logger.verbose("Listed all ConfigurationSettings"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
@@ -708,7 +698,7 @@ public final class ConfigurationClientImpl {
                     this.getApiVersion(),
                     fields,
                     selector.getAcceptDateTime(),
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnSubscribe(ignoredValue -> logger.verbose("Listing ConfigurationSettings - {}", selector))
                 .doOnSuccess(response -> logger.verbose("Listed ConfigurationSettings - {}", selector))
                 .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
@@ -726,7 +716,7 @@ public final class ConfigurationClientImpl {
 
             return this.service.listKeyValuesAsync(this.getEndpoint(),
                     continuationToken,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnSubscribe(
                     ignoredValue -> logger.verbose("Retrieving the next listing page - Page {}", continuationToken))
                 .doOnSuccess(response -> logger.verbose("Retrieved the next listing page - Page {}", continuationToken))
@@ -747,7 +737,7 @@ public final class ConfigurationClientImpl {
                     this.getApiVersion(),
                     null,
                     null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+                    context);
         }
 
         final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
@@ -760,7 +750,7 @@ public final class ConfigurationClientImpl {
                 this.getApiVersion(),
                 fields,
                 selector.getAcceptDateTime(),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+                context);
     }
 
     private PagedResponse<ConfigurationSetting> listConfigurationSettingsNextPage(String continuationToken,
@@ -770,9 +760,7 @@ public final class ConfigurationClientImpl {
             return null;
         }
 
-        return this.service.listKeyValues(this.getEndpoint(), continuationToken,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
-
+        return this.service.listKeyValues(this.getEndpoint(), continuationToken, context);
     }
 
     private Mono<PagedResponse<ConfigurationSetting>> listRevisionsFirstPageAsync(SettingSelector selector,
@@ -792,7 +780,7 @@ public final class ConfigurationClientImpl {
                         fields,
                         selector.getAcceptDateTime(),
                         null,
-                        context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                        context)
                     .doOnRequest(ignoredValue -> logger.verbose("Listing ConfigurationSetting revisions - {}",
                         selector))
                     .doOnSuccess(response -> logger.verbose("Listed ConfigurationSetting revisions - {}", selector))
@@ -806,7 +794,7 @@ public final class ConfigurationClientImpl {
                         null,
                         null,
                         null,
-                        context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                        context)
                     .doOnRequest(ignoredValue -> logger.verbose("Listing ConfigurationSetting revisions"))
                     .doOnSuccess(response -> logger.verbose("Listed ConfigurationSetting revisions"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
@@ -822,7 +810,7 @@ public final class ConfigurationClientImpl {
             return this.service
                 .listKeyValuesAsync(this.getEndpoint(),
                     nextPageLink,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
                 .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
                 .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -848,7 +836,7 @@ public final class ConfigurationClientImpl {
                     fields,
                     selector.getAcceptDateTime(),
                     null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+                    context);
         } else {
             result = this.service.listKeyValueRevisions(this.getEndpoint(),
                     null,
@@ -857,16 +845,12 @@ public final class ConfigurationClientImpl {
                     null,
                     null,
                     null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+                    context);
         }
         return result;
     }
 
     private PagedResponse<ConfigurationSetting> listRevisionsNextPage(String nextPageLink, Context context) {
-        return this.service
-            .listKeyValues(this.getEndpoint(),
-                nextPageLink,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
-
+        return this.service.listKeyValues(this.getEndpoint(), nextPageLink, context);
     }
 }

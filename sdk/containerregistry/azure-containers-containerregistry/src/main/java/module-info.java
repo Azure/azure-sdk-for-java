@@ -3,6 +3,8 @@
 
 module com.azure.containers.containerregistry {
     requires transitive com.azure.core;
+    requires transitive com.azure.json;
+
     exports com.azure.containers.containerregistry;
     exports com.azure.containers.containerregistry.models;
 

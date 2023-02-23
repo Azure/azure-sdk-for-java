@@ -35,6 +35,7 @@ import java.util.List;
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.convertToJson;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -181,7 +182,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
         client = getBlobClient("oci-artifact", httpClient);
         uploadManifestPrerequisites();
         OciManifest manifest = createManifest();
-        BinaryData manifestData = BinaryData.fromObject(manifest);
+        BinaryData manifestData = BinaryData.fromString(convertToJson(manifest));
 
         UploadManifestResult result = client.uploadManifest(new UploadManifestOptions(manifestData));
         assertNotNull(result);

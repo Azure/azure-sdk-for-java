@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.models.PrimingJobIdParameter;
 
 /** Samples for Caches PausePrimingJob. */
 public final class CachesPausePrimingJobSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/PausePrimingJob.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/PausePrimingJob.json
      */
     /**
      * Sample code: PausePrimingJob.
@@ -21,6 +20,9 @@ public final class CachesPausePrimingJobSamples {
         manager
             .caches()
             .pausePrimingJob(
-                "scgroup", "sc1", new PrimingJobIdParameter().withPrimingJobId("00000000000_0000000000"), Context.NONE);
+                "scgroup",
+                "sc1",
+                new PrimingJobIdParameter().withPrimingJobId("00000000000_0000000000"),
+                com.azure.core.util.Context.NONE);
     }
 }

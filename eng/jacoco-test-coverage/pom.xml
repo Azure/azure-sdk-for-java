@@ -288,7 +288,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>11.6.0-beta.5</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.6.0-beta.6</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -318,17 +318,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.20.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.21.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-batch</artifactId>
-      <version>12.17.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+      <version>12.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -338,7 +338,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
-      <version>12.20.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+      <version>12.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -348,22 +348,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.17.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+      <version>12.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
-      <version>12.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+      <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-internal-avro</artifactId>
-      <version>12.6.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+      <version>12.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.16.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+      <version>12.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -566,6 +566,26 @@
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-actuator-autoconfigure</artifactId>
       <version>4.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator-autoconfigure;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+      <version>4.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
+      <version>4.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-feature-management</artifactId>
+      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-feature-management-web</artifactId>
+      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

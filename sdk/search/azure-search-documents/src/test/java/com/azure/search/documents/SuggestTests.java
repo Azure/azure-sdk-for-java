@@ -26,6 +26,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -590,8 +591,8 @@ public class SuggestTests extends SearchTestBase {
         SearchDocument result = suggestResultPagedResponse.getValue().get(0).getDocument(SearchDocument.class);
 
         assertEquals("Secret Point Motel", result.get("HotelName"));
-        assertEquals(4, result.get("Rating"));
-        assertEquals("New York", ((Map<?, ?>) result.get("Address")).get("City"));
+        assertEquals(4, ((Number) result.get("Rating")).intValue());
+        assertEquals("New York", ((LinkedHashMap<?, ?>) result.get("Address")).get("City"));
         assertEquals(Arrays.asList("Budget Room", "Budget Room"),
             ((List<Map<String, String>>) result.get("Rooms"))
                 .stream()

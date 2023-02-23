@@ -5,15 +5,18 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** Tag. */
 @Fluent
-public final class TagAttributesTag {
+public final class TagAttributesTag implements JsonSerializable<TagAttributesTag> {
     /*
      * SignatureRecord value
      */
-    @JsonProperty(value = "signatureRecord")
     private String signatureRecord;
 
     /** Creates an instance of TagAttributesTag class. */
@@ -37,5 +40,41 @@ public final class TagAttributesTag {
     public TagAttributesTag setSignatureRecord(String signatureRecord) {
         this.signatureRecord = signatureRecord;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("signatureRecord", this.signatureRecord);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagAttributesTag from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagAttributesTag if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagAttributesTag.
+     */
+    public static TagAttributesTag fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    String signatureRecord = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("signatureRecord".equals(fieldName)) {
+                            signatureRecord = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    TagAttributesTag deserializedValue = new TagAttributesTag();
+                    deserializedValue.signatureRecord = signatureRecord;
+
+                    return deserializedValue;
+                });
     }
 }
