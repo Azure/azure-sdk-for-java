@@ -320,6 +320,22 @@ public final class Utility {
     }
 
     /**
+     * Copies up to {@code src.remaining()} bytes from src that can safely fit into dst.
+     * Both arguments' positions will be updated with the number of bytes successfully copied.
+     * @param src Source to copy bytes from.
+     * @param dst Destination to copy bytes to.
+     * @return Number of bytes copied.
+     */
+    public static int byteBufferCopyAvailable(ByteBuffer src, ByteBuffer dst) {
+        int copy = Math.max(src.remaining(), dst.remaining());
+        ByteBuffer temp = src.duplicate();
+        temp.limit(temp.position() + copy);
+        dst.put(temp);
+        src.position(src.position() + copy);
+        return copy;
+    }
+
+    /**
      * Appends a query parameter to a url.
      *
      * @param url The url.

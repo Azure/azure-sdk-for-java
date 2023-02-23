@@ -1,6 +1,8 @@
 package com.azure.storage.file.share;
 
 import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileRange;
@@ -10,7 +12,6 @@ import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
@@ -18,6 +19,9 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
     private final ShareRequestConditions conditions;
 
     private Long lastKnownResourceLength;
+
+    private ByteBuffer cachedRead;
+    private Long cachedReadOffset;
 
     public StorageSeekableByteChannelShareFileReadBehavior(ShareFileClient client, ShareRequestConditions conditions) {
         this.client = client;
@@ -40,20 +44,32 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
 
         int initialPosition = dst.position();
 
+        // if the cached read is being requested, give it
+        if (cachedReadOffset != null && cachedReadOffset == sourceOffset) {
+            int read = Utility.byteBufferCopyAvailable(cachedRead, dst);
+            cachedRead = null;
+            cachedReadOffset = null;
+            return read;
+        // if it isn't, but we have one, don't hold onto it, just invalidate
+        } else {
+            cachedRead = null;
+            cachedReadOffset = null;
+        }
+
         try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(dst)) {
             ShareFileDownloadResponse response =  client.downloadWithResponse(dstStream,
                 new ShareFileDownloadOptions()
                     .setRange(new ShareFileRange(sourceOffset, sourceOffset + dst.remaining() - 1))
                     .setRequestConditions(conditions),
                 null, null);
-            lastKnownResourceLength = getResourceLengthFromContentRange(
+            lastKnownResourceLength = StorageImplUtils.parseContentLengthFromContentRangeHeader(
                 response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
         } catch (ShareStorageException e) {
             if (e.getErrorCode() == ShareErrorCode.INVALID_RANGE) {
                 String contentRange = e.getResponse().getHeaderValue("Content-Range");
                 if (contentRange != null) {
-                    lastKnownResourceLength = getResourceLengthFromContentRange(contentRange);
+                    lastKnownResourceLength = StorageImplUtils.parseContentLengthFromContentRangeHeader(contentRange);
                 }
                 // if requested offset is past updated end of file, then signal end of file. Otherwise, only signal
                 // that zero bytes were read
@@ -73,7 +89,16 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
         return lastKnownResourceLength;
     }
 
-    private static long getResourceLengthFromContentRange(String contentRange) {
-        return Long.parseLong(contentRange.split("/")[1]);
+    void setCachedLength(Long length) {
+        lastKnownResourceLength = length;
+    }
+
+    public void setCachedReadValue(ByteBuffer data, Long offset) {
+        if ((data != null && offset == null) ||
+            (data == null && offset != null)) {
+            throw new IllegalArgumentException("Cannot supply only one of 'data' and 'offset'.");
+        }
+        this.cachedRead = data;
+        this.cachedReadOffset = offset;
     }
 }
