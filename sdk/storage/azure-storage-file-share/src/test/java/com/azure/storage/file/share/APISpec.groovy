@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share
 
-
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
@@ -84,6 +83,16 @@ class APISpec extends StorageSpec {
                 shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
             }
         }
+    }
+
+    def getNonRecordingShareLeaseClient(String shareName, String leaseId) {
+        def nonRecordingServiceClient = new ShareServiceClientBuilder()
+            .httpClient(getHttpClient())
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .buildClient()
+
+        return createLeaseClient(nonRecordingServiceClient.getShareClient(shareName), leaseId)
     }
 
     def generateShareName() {

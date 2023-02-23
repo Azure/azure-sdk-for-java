@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.nio
 
-import com.azure.core.test.utils.TestUtils
+
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.specialized.BlobOutputStream
 import org.mockito.Mockito
@@ -56,14 +56,15 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         when:
         while (count < sourceFileSize) {
-            def buffer = ByteBuffer.allocate(rand.nextInt(100 * 1024, 1024 * 1024))
+            def buffer = ByteBuffer.allocate(rand.nextInt(1024 * 1024))
             int readAmount = readByteChannel.read(buffer)
             os.write(buffer.array(), 0, readAmount) // limit the write in case we allocated more than we needed
             count += readAmount
         }
+        assertArraysEqual(fileContent, os.toByteArray())
 
         then:
-        TestUtils.assertArraysEqual(fileContent, os.toByteArray())
+        noExceptionThrown()
     }
 
     def "Read loop until EOF"() {
@@ -76,16 +77,17 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         when:
         while (System.currentTimeMillis() < timeLimit) { // ensures test duration is bounded
-            def buffer = ByteBuffer.allocate(rand.nextInt(100 * 1024, 1024 * 1024))
+            def buffer = ByteBuffer.allocate(rand.nextInt(1024 * 1024))
             int readAmount = readByteChannel.read(buffer)
             if (readAmount == -1) {
-                break; // reached EOF
+                break // reached EOF
             }
             os.write(buffer.array(), 0, readAmount) // limit the write in case we allocated more than we needed
         }
+        assertArraysEqual(fileContent, os.toByteArray())
 
         then:
-        TestUtils.assertArraysEqual(fileContent, os.toByteArray())
+        noExceptionThrown()
         System.currentTimeMillis() < timeLimit // else potential inf. loop if read() always returns 0
     }
 

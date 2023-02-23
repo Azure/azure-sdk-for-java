@@ -7,7 +7,6 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.specialized.AppendBlobClient
-import org.mockito.Mockito
 import spock.lang.Unroll
 
 import java.nio.file.Files
@@ -46,8 +45,7 @@ class AzureResourceTest extends APISpec {
 
     def "Instance type"() {
         when:
-        def path = Mockito.mock(Path.class)
-        new AzureResource(path)
+        new AzureResource(Mock(Path))
 
         then:
         thrown(IllegalArgumentException)

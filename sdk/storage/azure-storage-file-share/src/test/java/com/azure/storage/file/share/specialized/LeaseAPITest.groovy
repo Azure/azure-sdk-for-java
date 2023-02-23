@@ -3,7 +3,7 @@
 
 package com.azure.storage.file.share.specialized
 
-
+import com.azure.core.test.TestMode
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.APISpec
 import com.azure.storage.file.share.ShareClient
@@ -393,7 +393,10 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(breakLeaseResponse.getHeaders())
 
         when:
-        leaseClient.breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ZERO), null, null)
+        if (environment.testMode != TestMode.PLAYBACK) {
+            getNonRecordingShareLeaseClient(shareName, leaseClient.getLeaseId())
+                .breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ZERO), null, null)
+        }
 
         then:
         notThrown(ShareStorageException)

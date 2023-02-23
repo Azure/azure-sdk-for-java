@@ -5,7 +5,6 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.FixedDelayOptions
 import com.azure.core.http.policy.RetryOptions
-import com.azure.core.test.utils.TestUtils
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
@@ -35,7 +34,7 @@ class BlobOutputStreamTest extends APISpec {
 
         then:
         blockBlobClient.getProperties().getBlobSize() == data.length
-        TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(blockBlobClient.openInputStream(), data.length))
+        assertArraysEqual(data, convertInputStreamToByteArray(blockBlobClient.openInputStream(), data.length))
     }
 
     @LiveOnly
@@ -61,7 +60,7 @@ class BlobOutputStreamTest extends APISpec {
         assert etag == blockBlobClient.getProperties().getETag()
 
         blockBlobClient.getProperties().getBlobSize() == data.length
-        TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(blockBlobClient.openInputStream(), data.length))
+        assertArraysEqual(data, convertInputStreamToByteArray(blockBlobClient.openInputStream(), data.length))
     }
 
     @LiveOnly
@@ -118,7 +117,7 @@ class BlobOutputStreamTest extends APISpec {
 
         then:
         blockBlobClient.getProperties().getBlobSize() == randomData.length
-        TestUtils.assertArraysEqual(randomData, convertInputStreamToByteArray(blockBlobClient.openInputStream(), randomData.length))
+        assertArraysEqual(randomData, convertInputStreamToByteArray(blockBlobClient.openInputStream(), randomData.length))
     }
 
     @Unroll
@@ -179,7 +178,7 @@ class BlobOutputStreamTest extends APISpec {
 
         then:
         blockBlobClient.getProperties().getBlobSize() == data.length
-        TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(blockBlobClient.openInputStream(), data.length))
+        assertArraysEqual(data, convertInputStreamToByteArray(blockBlobClient.openInputStream(), data.length))
     }
 
     @LiveOnly
@@ -196,7 +195,7 @@ class BlobOutputStreamTest extends APISpec {
         outputStream.close()
 
         then:
-        TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(pageBlobClient.openInputStream(), data.length))
+        assertArraysEqual(data, convertInputStreamToByteArray(pageBlobClient.openInputStream(), data.length))
     }
 
     // Test is failing, need to investigate.
@@ -216,7 +215,7 @@ class BlobOutputStreamTest extends APISpec {
 
         then:
         appendBlobClient.getProperties().getBlobSize() == data.length
-        TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(appendBlobClient.openInputStream(), data.length))
+        assertArraysEqual(data, convertInputStreamToByteArray(appendBlobClient.openInputStream(), data.length))
     }
 
     @LiveOnly
@@ -232,7 +231,7 @@ class BlobOutputStreamTest extends APISpec {
         outputStream.close()
 
         then:
-        TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(appendBlobClient.openInputStream(), data.length))
+        assertArraysEqual(data, convertInputStreamToByteArray(appendBlobClient.openInputStream(), data.length))
 
         when:
         def data2 = getRandomByteArray(FOUR_MB)
@@ -243,7 +242,7 @@ class BlobOutputStreamTest extends APISpec {
 
         then:
         appendBlobClient.getProperties().getBlobSize() == data2.length
-        TestUtils.assertArraysEqual(data2, convertInputStreamToByteArray(appendBlobClient.openInputStream(), data2.length))
+        assertArraysEqual(data2, convertInputStreamToByteArray(appendBlobClient.openInputStream(), data2.length))
     }
 
     @LiveOnly
@@ -259,7 +258,7 @@ class BlobOutputStreamTest extends APISpec {
         outputStream.close()
 
         then:
-        TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(appendBlobClient.openInputStream(), data.length))
+        assertArraysEqual(data, convertInputStreamToByteArray(appendBlobClient.openInputStream(), data.length))
 
         when:
         def data2 = getRandomByteArray(Constants.MB)
@@ -271,7 +270,7 @@ class BlobOutputStreamTest extends APISpec {
         def finalData = new byte[2 * Constants.MB]
         System.arraycopy(data, 0, finalData, 0, data.length)
         System.arraycopy(data2, 0, finalData, data.length, data2.length)
-        TestUtils.assertArraysEqual(finalData, convertInputStreamToByteArray(appendBlobClient.openInputStream(), finalData.length))
+        assertArraysEqual(finalData, convertInputStreamToByteArray(appendBlobClient.openInputStream(), finalData.length))
     }
 
     static def convertInputStreamToByteArray(InputStream inputStream, int expectedSize) {

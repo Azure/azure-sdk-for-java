@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.test.utils.TestUtils
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 
@@ -42,7 +41,7 @@ class StorageFileInputOutputStreamTests extends APISpec {
             throw new UncheckedIOException(ex)
         }
         byte[] randomBytes2 = outputStream.toByteArray()
-        TestUtils.assertArraysEqual(randomBytes, randomBytes2)
+        assertArraysEqual(randomBytes, randomBytes2)
     }
 
 
@@ -69,6 +68,6 @@ class StorageFileInputOutputStreamTests extends APISpec {
             throw new UncheckedIOException(ex)
         }
         byte[] randomBytes2 = outputStream.toByteArray()
-        TestUtils.assertArraysEqual(Arrays.copyOfRange(randomBytes, 2 * Constants.MB, 9 * Constants.MB), randomBytes2)
+        assertArraysEqual(Arrays.copyOfRange(randomBytes, 2 * Constants.MB, 9 * Constants.MB), randomBytes2)
     }
 }

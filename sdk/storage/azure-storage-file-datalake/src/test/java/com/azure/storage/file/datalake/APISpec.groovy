@@ -1,6 +1,5 @@
 package com.azure.storage.file.datalake
 
-
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
@@ -102,6 +101,16 @@ class APISpec extends StorageSpec {
                 fileSystemClient.delete()
             }
         }
+    }
+
+    def getNonRecordingFileSystemLeaseClient(String fileSystemName, String leaseId) {
+        def nonRecordingServiceClient = new DataLakeServiceClientBuilder()
+            .httpClient(getHttpClient())
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .buildClient()
+
+        return createLeaseClient(nonRecordingServiceClient.getFileSystemClient(fileSystemName), leaseId)
     }
 
     //TODO: Should this go in core.

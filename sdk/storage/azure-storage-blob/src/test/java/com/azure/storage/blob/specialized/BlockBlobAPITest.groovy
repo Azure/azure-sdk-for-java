@@ -11,7 +11,6 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.test.utils.TestUtils
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
@@ -1596,7 +1595,7 @@ class BlockBlobAPITest extends APISpec {
         // Due to memory issues, this check only runs on small to medium sized data sets.
         if (dataSize < 100 * 1024 * 1024) {
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.download(), data.length))
-            .assertNext({ TestUtils.assertArraysEqual(data, it) })
+            .assertNext({ assertArraysEqual(data, it) })
             .verifyComplete()
         }
 

@@ -176,8 +176,8 @@ org.springframework.cloud:spring-cloud-stream;3.2.6
 pl.pragmatists:JUnitParams;1.1.1
 
 ## Test dependency versions
-org.objenesis:objenesis;3.1
-cglib:cglib-nodep;3.2.7
+org.objenesis:objenesis;3.3
+cglib:cglib-nodep;3.3.0
 com.github.docker-java:docker-java;3.2.1
 com.github.tomakehurst:wiremock-standalone;2.24.1
 com.github.tomakehurst:wiremock-jre8;2.33.2

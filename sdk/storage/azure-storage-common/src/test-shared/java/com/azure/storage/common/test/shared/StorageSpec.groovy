@@ -19,6 +19,7 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.test.shared.policy.NoOpHttpPipelinePolicy
 import okhttp3.ConnectionPool
+import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
 
 import java.time.Duration
@@ -109,6 +110,20 @@ class StorageSpec extends Specification {
         } else {
             return interceptorManager.getPlaybackClient()
         }
+    }
+
+    static def assertArraysEqual(byte[] expected, byte[] actual) {
+        // Replace with TestUtils.assertArraysEquals after March 2023 release, there was a bug.
+        if (expected.length != actual.length) {
+            throw new RuntimeException("Actual array length didn't match expected array length. Actual length: "
+                + actual.length + ", Expected length: " + expected.length)
+        }
+        if (!Arrays.equals(expected, actual)) {
+            Assertions.assertArrayEquals(expected, actual)
+        }
+
+        // Needed in
+        return true
     }
 
     private static String getAuthToken() {

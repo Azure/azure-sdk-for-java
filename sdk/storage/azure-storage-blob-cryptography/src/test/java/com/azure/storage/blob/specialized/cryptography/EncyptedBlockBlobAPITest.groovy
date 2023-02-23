@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestUtils
 import com.azure.core.util.BinaryData
 import com.azure.core.util.ProgressListener
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -1892,7 +1891,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        TestUtils.assertArraysEqual(randomData, os.toByteArray())
+        assertArraysEqual(randomData, os.toByteArray())
     }
 
     @Unroll

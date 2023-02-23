@@ -1,6 +1,5 @@
 package com.azure.storage.blob.specialized.cryptography
 
-import com.azure.core.test.utils.TestUtils
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
@@ -69,7 +68,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         outputStream.close()
 
         then:
-        TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(bec.openInputStream(), data.length))
+        assertArraysEqual(data, convertInputStreamToByteArray(bec.openInputStream(), data.length))
     }
 
     @LiveOnly
@@ -122,7 +121,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         outputStream.close()
 
         then:
-        TestUtils.assertArraysEqual(randomData, convertInputStreamToByteArray(bec.openInputStream(), randomData.length))
+        assertArraysEqual(randomData, convertInputStreamToByteArray(bec.openInputStream(), randomData.length))
     }
 
     static def convertInputStreamToByteArray(InputStream inputStream, int expectedSize) {
