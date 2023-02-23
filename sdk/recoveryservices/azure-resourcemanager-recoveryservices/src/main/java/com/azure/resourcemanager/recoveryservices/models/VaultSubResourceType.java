@@ -20,6 +20,15 @@ public final class VaultSubResourceType extends ExpandableStringEnum<VaultSubRes
     public static final VaultSubResourceType AZURE_SITE_RECOVERY = fromString("AzureSiteRecovery");
 
     /**
+     * Creates a new instance of VaultSubResourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VaultSubResourceType() {
+    }
+
+    /**
      * Creates or finds a VaultSubResourceType from its string representation.
      *
      * @param name a name to look for.

@@ -18,6 +18,10 @@ public final class RestorableMongodbDatabasesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableMongodbDatabaseGetResultInner> value;
 
+    /** Creates an instance of RestorableMongodbDatabasesListResult class. */
+    public RestorableMongodbDatabasesListResult() {
+    }
+
     /**
      * Get the value property: List of MongoDB database events and their properties.
      *

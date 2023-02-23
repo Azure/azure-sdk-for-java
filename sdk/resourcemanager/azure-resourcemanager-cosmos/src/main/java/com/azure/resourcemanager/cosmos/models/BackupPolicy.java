@@ -29,6 +29,10 @@ public class BackupPolicy {
     @JsonProperty(value = "migrationState")
     private BackupPolicyMigrationState migrationState;
 
+    /** Creates an instance of BackupPolicy class. */
+    public BackupPolicy() {
+    }
+
     /**
      * Get the migrationState property: The object representing the state of the migration between the backup policies.
      *

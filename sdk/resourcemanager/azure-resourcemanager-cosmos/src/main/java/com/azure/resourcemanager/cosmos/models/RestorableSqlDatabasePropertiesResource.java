@@ -46,6 +46,10 @@ public final class RestorableSqlDatabasePropertiesResource {
     @JsonProperty(value = "database")
     private RestorableSqlDatabasePropertiesResourceDatabase database;
 
+    /** Creates an instance of RestorableSqlDatabasePropertiesResource class. */
+    public RestorableSqlDatabasePropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

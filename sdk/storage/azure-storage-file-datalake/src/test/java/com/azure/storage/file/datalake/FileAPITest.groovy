@@ -1525,6 +1525,8 @@ class FileAPITest extends APISpec {
         headers.getValue("x-ms-blob-committed-block-count") == null
         headers.getValue("x-ms-server-encrypted") != null
         headers.getValue("x-ms-blob-content-md5") == null
+        headers.getValue("x-ms-creation-time") != null
+        response.getDeserializedHeaders().getCreationTime() != null
     }
 
     def "Read empty file"() {

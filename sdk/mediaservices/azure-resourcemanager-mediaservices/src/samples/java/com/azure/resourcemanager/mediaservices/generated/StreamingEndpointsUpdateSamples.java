@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for StreamingEndpoints Update. */
 public final class StreamingEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/streamingendpoint-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-11-01/examples/streamingendpoint-update.json
      */
     /**
      * Sample code: Update a streaming endpoint.

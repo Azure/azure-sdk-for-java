@@ -17,65 +17,65 @@ public final class ContentKeyPolicyPlayReadyPlayRightTests {
         ContentKeyPolicyPlayReadyPlayRight model =
             BinaryData
                 .fromString(
-                    "{\"firstPlayExpiration\":\"PT162H10M15S\",\"scmsRestriction\":1597087074,\"agcAndColorStripeRestriction\":396051915,\"explicitAnalogTelevisionOutputRestriction\":{\"bestEffort\":true,\"configurationData\":567336942},\"digitalVideoOnlyContentRestriction\":true,\"imageConstraintForAnalogComponentVideoRestriction\":true,\"imageConstraintForAnalogComputerMonitorRestriction\":false,\"allowPassingVideoContentToUnknownOutput\":\"Allowed\",\"uncompressedDigitalVideoOpl\":544140289,\"compressedDigitalVideoOpl\":237896817,\"analogVideoOpl\":2102044737,\"compressedDigitalAudioOpl\":1151770828,\"uncompressedDigitalAudioOpl\":133724472}")
+                    "{\"firstPlayExpiration\":\"PT233H43M50S\",\"scmsRestriction\":1811866943,\"agcAndColorStripeRestriction\":616874585,\"explicitAnalogTelevisionOutputRestriction\":{\"bestEffort\":false,\"configurationData\":81583943},\"digitalVideoOnlyContentRestriction\":false,\"imageConstraintForAnalogComponentVideoRestriction\":false,\"imageConstraintForAnalogComputerMonitorRestriction\":true,\"allowPassingVideoContentToUnknownOutput\":\"Allowed\",\"uncompressedDigitalVideoOpl\":2098917747,\"compressedDigitalVideoOpl\":211422779,\"analogVideoOpl\":1426151715,\"compressedDigitalAudioOpl\":1010837093,\"uncompressedDigitalAudioOpl\":537781185}")
                 .toObject(ContentKeyPolicyPlayReadyPlayRight.class);
-        Assertions.assertEquals(Duration.parse("PT162H10M15S"), model.firstPlayExpiration());
-        Assertions.assertEquals(1597087074, model.scmsRestriction());
-        Assertions.assertEquals(396051915, model.agcAndColorStripeRestriction());
-        Assertions.assertEquals(true, model.explicitAnalogTelevisionOutputRestriction().bestEffort());
-        Assertions.assertEquals(567336942, model.explicitAnalogTelevisionOutputRestriction().configurationData());
-        Assertions.assertEquals(true, model.digitalVideoOnlyContentRestriction());
-        Assertions.assertEquals(true, model.imageConstraintForAnalogComponentVideoRestriction());
-        Assertions.assertEquals(false, model.imageConstraintForAnalogComputerMonitorRestriction());
+        Assertions.assertEquals(Duration.parse("PT233H43M50S"), model.firstPlayExpiration());
+        Assertions.assertEquals(1811866943, model.scmsRestriction());
+        Assertions.assertEquals(616874585, model.agcAndColorStripeRestriction());
+        Assertions.assertEquals(false, model.explicitAnalogTelevisionOutputRestriction().bestEffort());
+        Assertions.assertEquals(81583943, model.explicitAnalogTelevisionOutputRestriction().configurationData());
+        Assertions.assertEquals(false, model.digitalVideoOnlyContentRestriction());
+        Assertions.assertEquals(false, model.imageConstraintForAnalogComponentVideoRestriction());
+        Assertions.assertEquals(true, model.imageConstraintForAnalogComputerMonitorRestriction());
         Assertions
             .assertEquals(
                 ContentKeyPolicyPlayReadyUnknownOutputPassingOption.ALLOWED,
                 model.allowPassingVideoContentToUnknownOutput());
-        Assertions.assertEquals(544140289, model.uncompressedDigitalVideoOpl());
-        Assertions.assertEquals(237896817, model.compressedDigitalVideoOpl());
-        Assertions.assertEquals(2102044737, model.analogVideoOpl());
-        Assertions.assertEquals(1151770828, model.compressedDigitalAudioOpl());
-        Assertions.assertEquals(133724472, model.uncompressedDigitalAudioOpl());
+        Assertions.assertEquals(2098917747, model.uncompressedDigitalVideoOpl());
+        Assertions.assertEquals(211422779, model.compressedDigitalVideoOpl());
+        Assertions.assertEquals(1426151715, model.analogVideoOpl());
+        Assertions.assertEquals(1010837093, model.compressedDigitalAudioOpl());
+        Assertions.assertEquals(537781185, model.uncompressedDigitalAudioOpl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContentKeyPolicyPlayReadyPlayRight model =
             new ContentKeyPolicyPlayReadyPlayRight()
-                .withFirstPlayExpiration(Duration.parse("PT162H10M15S"))
-                .withScmsRestriction(1597087074)
-                .withAgcAndColorStripeRestriction(396051915)
+                .withFirstPlayExpiration(Duration.parse("PT233H43M50S"))
+                .withScmsRestriction(1811866943)
+                .withAgcAndColorStripeRestriction(616874585)
                 .withExplicitAnalogTelevisionOutputRestriction(
                     new ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction()
-                        .withBestEffort(true)
-                        .withConfigurationData(567336942))
-                .withDigitalVideoOnlyContentRestriction(true)
-                .withImageConstraintForAnalogComponentVideoRestriction(true)
-                .withImageConstraintForAnalogComputerMonitorRestriction(false)
+                        .withBestEffort(false)
+                        .withConfigurationData(81583943))
+                .withDigitalVideoOnlyContentRestriction(false)
+                .withImageConstraintForAnalogComponentVideoRestriction(false)
+                .withImageConstraintForAnalogComputerMonitorRestriction(true)
                 .withAllowPassingVideoContentToUnknownOutput(
                     ContentKeyPolicyPlayReadyUnknownOutputPassingOption.ALLOWED)
-                .withUncompressedDigitalVideoOpl(544140289)
-                .withCompressedDigitalVideoOpl(237896817)
-                .withAnalogVideoOpl(2102044737)
-                .withCompressedDigitalAudioOpl(1151770828)
-                .withUncompressedDigitalAudioOpl(133724472);
+                .withUncompressedDigitalVideoOpl(2098917747)
+                .withCompressedDigitalVideoOpl(211422779)
+                .withAnalogVideoOpl(1426151715)
+                .withCompressedDigitalAudioOpl(1010837093)
+                .withUncompressedDigitalAudioOpl(537781185);
         model = BinaryData.fromObject(model).toObject(ContentKeyPolicyPlayReadyPlayRight.class);
-        Assertions.assertEquals(Duration.parse("PT162H10M15S"), model.firstPlayExpiration());
-        Assertions.assertEquals(1597087074, model.scmsRestriction());
-        Assertions.assertEquals(396051915, model.agcAndColorStripeRestriction());
-        Assertions.assertEquals(true, model.explicitAnalogTelevisionOutputRestriction().bestEffort());
-        Assertions.assertEquals(567336942, model.explicitAnalogTelevisionOutputRestriction().configurationData());
-        Assertions.assertEquals(true, model.digitalVideoOnlyContentRestriction());
-        Assertions.assertEquals(true, model.imageConstraintForAnalogComponentVideoRestriction());
-        Assertions.assertEquals(false, model.imageConstraintForAnalogComputerMonitorRestriction());
+        Assertions.assertEquals(Duration.parse("PT233H43M50S"), model.firstPlayExpiration());
+        Assertions.assertEquals(1811866943, model.scmsRestriction());
+        Assertions.assertEquals(616874585, model.agcAndColorStripeRestriction());
+        Assertions.assertEquals(false, model.explicitAnalogTelevisionOutputRestriction().bestEffort());
+        Assertions.assertEquals(81583943, model.explicitAnalogTelevisionOutputRestriction().configurationData());
+        Assertions.assertEquals(false, model.digitalVideoOnlyContentRestriction());
+        Assertions.assertEquals(false, model.imageConstraintForAnalogComponentVideoRestriction());
+        Assertions.assertEquals(true, model.imageConstraintForAnalogComputerMonitorRestriction());
         Assertions
             .assertEquals(
                 ContentKeyPolicyPlayReadyUnknownOutputPassingOption.ALLOWED,
                 model.allowPassingVideoContentToUnknownOutput());
-        Assertions.assertEquals(544140289, model.uncompressedDigitalVideoOpl());
-        Assertions.assertEquals(237896817, model.compressedDigitalVideoOpl());
-        Assertions.assertEquals(2102044737, model.analogVideoOpl());
-        Assertions.assertEquals(1151770828, model.compressedDigitalAudioOpl());
-        Assertions.assertEquals(133724472, model.uncompressedDigitalAudioOpl());
+        Assertions.assertEquals(2098917747, model.uncompressedDigitalVideoOpl());
+        Assertions.assertEquals(211422779, model.compressedDigitalVideoOpl());
+        Assertions.assertEquals(1426151715, model.analogVideoOpl());
+        Assertions.assertEquals(1010837093, model.compressedDigitalAudioOpl());
+        Assertions.assertEquals(537781185, model.uncompressedDigitalAudioOpl());
     }
 }

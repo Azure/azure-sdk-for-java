@@ -14,16 +14,16 @@ public final class AssetContainerSasInnerTests {
     public void testDeserialize() throws Exception {
         AssetContainerSasInner model =
             BinaryData
-                .fromString("{\"assetContainerSasUrls\":[\"gx\",\"fsm\"]}")
+                .fromString("{\"assetContainerSasUrls\":[\"xywnytnrsynlqidy\"]}")
                 .toObject(AssetContainerSasInner.class);
-        Assertions.assertEquals("gx", model.assetContainerSasUrls().get(0));
+        Assertions.assertEquals("xywnytnrsynlqidy", model.assetContainerSasUrls().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssetContainerSasInner model =
-            new AssetContainerSasInner().withAssetContainerSasUrls(Arrays.asList("gx", "fsm"));
+            new AssetContainerSasInner().withAssetContainerSasUrls(Arrays.asList("xywnytnrsynlqidy"));
         model = BinaryData.fromObject(model).toObject(AssetContainerSasInner.class);
-        Assertions.assertEquals("gx", model.assetContainerSasUrls().get(0));
+        Assertions.assertEquals("xywnytnrsynlqidy", model.assetContainerSasUrls().get(0));
     }
 }

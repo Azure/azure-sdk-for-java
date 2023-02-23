@@ -4,8 +4,12 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.ArtifactManifestPropertiesHelper;
+import com.azure.containers.containerregistry.implementation.ArtifactTagPropertiesHelper;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
+import com.azure.containers.containerregistry.implementation.models.ArtifactManifestPropertiesInternal;
+import com.azure.containers.containerregistry.implementation.models.ArtifactTagPropertiesInternal;
 import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
@@ -22,6 +26,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -217,7 +222,11 @@ public final class RegistryArtifact extends RegistryArtifactBase {
     public Response<ArtifactManifestProperties> getManifestPropertiesWithResponse(Context context) {
         String res = this.getDigest();
         try {
-            return this.serviceClient.getManifestPropertiesWithResponse(getRepositoryName(), res, enableSync(context));
+            Response<ArtifactManifestPropertiesInternal> internalResponse = this.serviceClient
+                .getManifestPropertiesWithResponse(getRepositoryName(), res, enableSync(context));
+
+            return new SimpleResponse<>(internalResponse,
+                ArtifactManifestPropertiesHelper.create(internalResponse.getValue()));
         } catch (HttpResponseException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -283,7 +292,11 @@ public final class RegistryArtifact extends RegistryArtifactBase {
         }
 
         try {
-            return this.serviceClient.getTagPropertiesWithResponse(getRepositoryName(), tag, enableSync(context));
+            Response<ArtifactTagPropertiesInternal> internalResponse = this.serviceClient
+                .getTagPropertiesWithResponse(getRepositoryName(), tag, enableSync(context));
+
+            return new SimpleResponse<>(internalResponse,
+                ArtifactTagPropertiesHelper.create(internalResponse.getValue()));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -496,8 +509,11 @@ public final class RegistryArtifact extends RegistryArtifactBase {
             .setWriteEnabled(tagProperties.isWriteEnabled());
 
         try {
-            return this.serviceClient.updateTagAttributesWithResponse(getRepositoryName(), tag, writeableProperties,
-                enableSync(context));
+            Response<ArtifactTagPropertiesInternal> internalResponse = this.serviceClient
+                .updateTagAttributesWithResponse(getRepositoryName(), tag, writeableProperties, enableSync(context));
+
+            return new SimpleResponse<>(internalResponse,
+                ArtifactTagPropertiesHelper.create(internalResponse.getValue()));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -557,7 +573,8 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      * @throws ResourceNotFoundException thrown if the given {@code digest} was not found.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
+    public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(
+        ArtifactManifestProperties manifestProperties, Context context) {
         Objects.requireNonNull(manifestProperties, "'manifestProperties' cannot be null.");
 
         ManifestWriteableProperties writeableProperties = new ManifestWriteableProperties()
@@ -568,7 +585,12 @@ public final class RegistryArtifact extends RegistryArtifactBase {
 
         String res = getDigest();
         try {
-            return this.serviceClient.updateManifestPropertiesWithResponse(getRepositoryName(), res, writeableProperties, enableSync(context));
+            Response<ArtifactManifestPropertiesInternal> internalResponse = this.serviceClient
+                .updateManifestPropertiesWithResponse(getRepositoryName(), res, writeableProperties,
+                    enableSync(context));
+
+            return new SimpleResponse<>(internalResponse,
+                ArtifactManifestPropertiesHelper.create(internalResponse.getValue()));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }

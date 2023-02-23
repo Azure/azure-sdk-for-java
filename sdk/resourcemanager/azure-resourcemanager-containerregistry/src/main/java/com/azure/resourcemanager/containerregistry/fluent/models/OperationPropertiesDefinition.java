@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.OperationServiceSpecificationDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of Azure Monitoring properties. */
 @Fluent
 public final class OperationPropertiesDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationPropertiesDefinition.class);
-
     /*
      * The definition of Azure Monitoring service.
      */
     @JsonProperty(value = "serviceSpecification")
     private OperationServiceSpecificationDefinition serviceSpecification;
+
+    /** Creates an instance of OperationPropertiesDefinition class. */
+    public OperationPropertiesDefinition() {
+    }
 
     /**
      * Get the serviceSpecification property: The definition of Azure Monitoring service.

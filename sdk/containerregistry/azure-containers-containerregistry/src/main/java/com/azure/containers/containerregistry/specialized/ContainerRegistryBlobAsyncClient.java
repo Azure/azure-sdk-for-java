@@ -4,14 +4,13 @@
 package com.azure.containers.containerregistry.specialized;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryBlobsImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestHeaders;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsCompleteUploadHeaders;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsGetChunkResponse;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsGetChunkHeaders;
 import com.azure.containers.containerregistry.implementation.models.ManifestWrapper;
 import com.azure.containers.containerregistry.models.BlobDownloadAsyncResult;
 import com.azure.containers.containerregistry.models.DownloadManifestOptions;
@@ -63,7 +62,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = ContainerRegistryBlobClientBuilder.class, isAsync = true)
 public class ContainerRegistryBlobAsyncClient {
-    private final AzureContainerRegistryImpl registryImplClient;
     private final ContainerRegistryBlobsImpl blobsImpl;
     private final ContainerRegistriesImpl registriesImpl;
     private final String endpoint;
@@ -74,13 +72,9 @@ public class ContainerRegistryBlobAsyncClient {
     ContainerRegistryBlobAsyncClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
         this.repositoryName = repositoryName;
         this.endpoint = endpoint;
-        this.registryImplClient = new AzureContainerRegistryImplBuilder()
-            .url(endpoint)
-            .pipeline(httpPipeline)
-            .apiVersion(version)
-            .buildClient();
-        this.blobsImpl = this.registryImplClient.getContainerRegistryBlobs();
-        this.registriesImpl = this.registryImplClient.getContainerRegistries();
+        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version);
+        this.blobsImpl = registryImplClient.getContainerRegistryBlobs();
+        this.registriesImpl = registryImplClient.getContainerRegistries();
     }
 
     /**
@@ -334,11 +328,12 @@ public class ContainerRegistryBlobAsyncClient {
         return Mono.just(ConstructorAccessors.createBlobDownloadResult(digest, content));
     }
 
-    private Flux<ContainerRegistryBlobsGetChunkResponse> getAllChunks(ContainerRegistryBlobsGetChunkResponse firstResponse, String digest, Context context) {
+    private Flux<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>> getAllChunks(
+        ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData> firstResponse, String digest, Context context) {
         validateResponseHeaderDigest(digest, firstResponse.getHeaders());
 
         long blobSize = getBlobSize(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
-        List<Mono<ContainerRegistryBlobsGetChunkResponse>> others = new ArrayList<>();
+        List<Mono<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>>> others = new ArrayList<>();
         others.add(Mono.just(firstResponse));
         for (long p = firstResponse.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
             HttpRange range = new HttpRange(p, (long) CHUNK_SIZE);

@@ -14,15 +14,15 @@ public final class UtcClipTimeTests {
     public void testDeserialize() throws Exception {
         UtcClipTime model =
             BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.UtcClipTime\",\"time\":\"2021-06-25T19:45:47Z\"}")
+                .fromString("{\"@odata.type\":\"#Microsoft.Media.UtcClipTime\",\"time\":\"2021-10-22T01:52:24Z\"}")
                 .toObject(UtcClipTime.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T19:45:47Z"), model.time());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T01:52:24Z"), model.time());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UtcClipTime model = new UtcClipTime().withTime(OffsetDateTime.parse("2021-06-25T19:45:47Z"));
+        UtcClipTime model = new UtcClipTime().withTime(OffsetDateTime.parse("2021-10-22T01:52:24Z"));
         model = BinaryData.fromObject(model).toObject(UtcClipTime.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T19:45:47Z"), model.time());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T01:52:24Z"), model.time());
     }
 }

@@ -19,8 +19,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
@@ -31,6 +29,8 @@ import java.util.function.Function;
 public class GlobalEndpointManager implements AutoCloseable {
     private static final Logger logger = LoggerFactory.getLogger(GlobalEndpointManager.class);
 
+    private static final CosmosDaemonThreadFactory theadFactory = new CosmosDaemonThreadFactory("cosmos-global-endpoint-mgr");
+
     private final int backgroundRefreshLocationTimeIntervalInMS;
     private final LocationCache locationCache;
     private final URI defaultEndpoint;
@@ -39,8 +39,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final DatabaseAccountManagerInternal owner;
     private final AtomicBoolean isRefreshing;
     private final AtomicBoolean refreshInBackground;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final Scheduler scheduler = Schedulers.fromExecutor(executor);
+    private final Scheduler scheduler = Schedulers.newSingle(theadFactory);
     private volatile boolean isClosed;
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
@@ -127,7 +126,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public void close() {
         this.isClosed = true;
-        this.executor.shutdown();
+        this.scheduler.dispose();
         logger.debug("GlobalEndpointManager closed.");
     }
 

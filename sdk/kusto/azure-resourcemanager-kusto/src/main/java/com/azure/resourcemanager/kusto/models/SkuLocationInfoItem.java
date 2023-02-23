@@ -24,6 +24,16 @@ public final class SkuLocationInfoItem {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
+    /*
+     * Gets details of capabilities available to a SKU in specific zones.
+     */
+    @JsonProperty(value = "zoneDetails")
+    private List<ResourceSkuZoneDetails> zoneDetails;
+
+    /** Creates an instance of SkuLocationInfoItem class. */
+    public SkuLocationInfoItem() {
+    }
+
     /**
      * Get the location property: The available location of the SKU.
      *
@@ -65,6 +75,26 @@ public final class SkuLocationInfoItem {
     }
 
     /**
+     * Get the zoneDetails property: Gets details of capabilities available to a SKU in specific zones.
+     *
+     * @return the zoneDetails value.
+     */
+    public List<ResourceSkuZoneDetails> zoneDetails() {
+        return this.zoneDetails;
+    }
+
+    /**
+     * Set the zoneDetails property: Gets details of capabilities available to a SKU in specific zones.
+     *
+     * @param zoneDetails the zoneDetails value to set.
+     * @return the SkuLocationInfoItem object itself.
+     */
+    public SkuLocationInfoItem withZoneDetails(List<ResourceSkuZoneDetails> zoneDetails) {
+        this.zoneDetails = zoneDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -74,6 +104,9 @@ public final class SkuLocationInfoItem {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model SkuLocationInfoItem"));
+        }
+        if (zoneDetails() != null) {
+            zoneDetails().forEach(e -> e.validate());
         }
     }
 

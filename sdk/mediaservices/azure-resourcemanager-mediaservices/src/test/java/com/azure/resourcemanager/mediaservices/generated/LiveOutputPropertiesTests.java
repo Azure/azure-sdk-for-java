@@ -16,35 +16,35 @@ public final class LiveOutputPropertiesTests {
         LiveOutputProperties model =
             BinaryData
                 .fromString(
-                    "{\"description\":\"rtuzqogs\",\"assetName\":\"xnevfdnwn\",\"archiveWindowLength\":\"PT8H53M24S\",\"rewindWindowLength\":\"PT5H3M28S\",\"manifestName\":\"syyceuzsoibjud\",\"hls\":{\"fragmentsPerTsSegment\":1491374594},\"outputSnapTime\":8911276597305800674,\"created\":\"2021-01-08T14:01:25Z\",\"lastModified\":\"2021-02-11T18:30:37Z\",\"provisioningState\":\"tdwkqbrq\",\"resourceState\":\"Creating\"}")
+                    "{\"description\":\"wygzlvdnkfxusem\",\"assetName\":\"wzrmuh\",\"archiveWindowLength\":\"PT117H40M54S\",\"rewindWindowLength\":\"PT222H26M1S\",\"manifestName\":\"dpsqx\",\"hls\":{\"fragmentsPerTsSegment\":902301118},\"outputSnapTime\":6741848328412634292,\"created\":\"2021-06-04T12:32:06Z\",\"lastModified\":\"2021-06-18T08:14:24Z\",\"provisioningState\":\"elvezrypq\",\"resourceState\":\"Running\"}")
                 .toObject(LiveOutputProperties.class);
-        Assertions.assertEquals("rtuzqogs", model.description());
-        Assertions.assertEquals("xnevfdnwn", model.assetName());
-        Assertions.assertEquals(Duration.parse("PT8H53M24S"), model.archiveWindowLength());
-        Assertions.assertEquals(Duration.parse("PT5H3M28S"), model.rewindWindowLength());
-        Assertions.assertEquals("syyceuzsoibjud", model.manifestName());
-        Assertions.assertEquals(1491374594, model.hls().fragmentsPerTsSegment());
-        Assertions.assertEquals(8911276597305800674L, model.outputSnapTime());
+        Assertions.assertEquals("wygzlvdnkfxusem", model.description());
+        Assertions.assertEquals("wzrmuh", model.assetName());
+        Assertions.assertEquals(Duration.parse("PT117H40M54S"), model.archiveWindowLength());
+        Assertions.assertEquals(Duration.parse("PT222H26M1S"), model.rewindWindowLength());
+        Assertions.assertEquals("dpsqx", model.manifestName());
+        Assertions.assertEquals(902301118, model.hls().fragmentsPerTsSegment());
+        Assertions.assertEquals(6741848328412634292L, model.outputSnapTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LiveOutputProperties model =
             new LiveOutputProperties()
-                .withDescription("rtuzqogs")
-                .withAssetName("xnevfdnwn")
-                .withArchiveWindowLength(Duration.parse("PT8H53M24S"))
-                .withRewindWindowLength(Duration.parse("PT5H3M28S"))
-                .withManifestName("syyceuzsoibjud")
-                .withHls(new Hls().withFragmentsPerTsSegment(1491374594))
-                .withOutputSnapTime(8911276597305800674L);
+                .withDescription("wygzlvdnkfxusem")
+                .withAssetName("wzrmuh")
+                .withArchiveWindowLength(Duration.parse("PT117H40M54S"))
+                .withRewindWindowLength(Duration.parse("PT222H26M1S"))
+                .withManifestName("dpsqx")
+                .withHls(new Hls().withFragmentsPerTsSegment(902301118))
+                .withOutputSnapTime(6741848328412634292L);
         model = BinaryData.fromObject(model).toObject(LiveOutputProperties.class);
-        Assertions.assertEquals("rtuzqogs", model.description());
-        Assertions.assertEquals("xnevfdnwn", model.assetName());
-        Assertions.assertEquals(Duration.parse("PT8H53M24S"), model.archiveWindowLength());
-        Assertions.assertEquals(Duration.parse("PT5H3M28S"), model.rewindWindowLength());
-        Assertions.assertEquals("syyceuzsoibjud", model.manifestName());
-        Assertions.assertEquals(1491374594, model.hls().fragmentsPerTsSegment());
-        Assertions.assertEquals(8911276597305800674L, model.outputSnapTime());
+        Assertions.assertEquals("wygzlvdnkfxusem", model.description());
+        Assertions.assertEquals("wzrmuh", model.assetName());
+        Assertions.assertEquals(Duration.parse("PT117H40M54S"), model.archiveWindowLength());
+        Assertions.assertEquals(Duration.parse("PT222H26M1S"), model.rewindWindowLength());
+        Assertions.assertEquals("dpsqx", model.manifestName());
+        Assertions.assertEquals(902301118, model.hls().fragmentsPerTsSegment());
+        Assertions.assertEquals(6741848328412634292L, model.outputSnapTime());
     }
 }

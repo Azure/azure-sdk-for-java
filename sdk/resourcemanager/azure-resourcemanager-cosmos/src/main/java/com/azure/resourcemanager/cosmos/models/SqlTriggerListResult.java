@@ -18,6 +18,10 @@ public final class SqlTriggerListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlTriggerGetResultsInner> value;
 
+    /** Creates an instance of SqlTriggerListResult class. */
+    public SqlTriggerListResult() {
+    }
+
     /**
      * Get the value property: List of triggers and their properties.
      *

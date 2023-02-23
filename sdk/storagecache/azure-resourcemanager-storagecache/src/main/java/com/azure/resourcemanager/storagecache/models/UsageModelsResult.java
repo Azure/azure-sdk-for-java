@@ -24,6 +24,10 @@ public final class UsageModelsResult {
     @JsonProperty(value = "value")
     private List<UsageModelInner> value;
 
+    /** Creates an instance of UsageModelsResult class. */
+    public UsageModelsResult() {
+    }
+
     /**
      * Get the nextLink property: The URI to fetch the next page of Cache usage models.
      *

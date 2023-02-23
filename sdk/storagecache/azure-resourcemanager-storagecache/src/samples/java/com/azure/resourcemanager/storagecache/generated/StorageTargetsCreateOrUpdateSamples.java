@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for StorageTargets CreateOrUpdate. */
 public final class StorageTargetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/StorageTargets_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/StorageTargets_CreateOrUpdate.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate.
@@ -40,12 +40,12 @@ public final class StorageTargetsCreateOrUpdateSamples {
                             .withNfsExport("exp2")
                             .withNfsAccessPolicy("rootSquash")))
             .withTargetType(StorageTargetType.NFS3)
-            .withNfs3(new Nfs3Target().withTarget("10.0.44.44").withUsageModel("READ_HEAVY_INFREQ"))
+            .withNfs3(new Nfs3Target().withTarget("10.0.44.44").withUsageModel("READ_ONLY").withVerificationTimer(30))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/StorageTargets_CreateOrUpdate_BlobNfs.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/StorageTargets_CreateOrUpdate_BlobNfs.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate_BlobNfs.
@@ -64,12 +64,14 @@ public final class StorageTargetsCreateOrUpdateSamples {
                 new BlobNfsTarget()
                     .withTarget(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Storage/storageAccounts/blofnfs/blobServices/default/containers/blobnfs")
-                    .withUsageModel("WRITE_WORKLOAD_15"))
+                    .withUsageModel("READ_WRITE")
+                    .withVerificationTimer(28800)
+                    .withWriteBackTimer(3600))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/StorageTargets_CreateOrUpdate_NoJunctions.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/StorageTargets_CreateOrUpdate_NoJunctions.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate_NoJunctions.
@@ -83,7 +85,7 @@ public final class StorageTargetsCreateOrUpdateSamples {
             .define("st1")
             .withExistingCache("scgroup", "sc1")
             .withTargetType(StorageTargetType.NFS3)
-            .withNfs3(new Nfs3Target().withTarget("10.0.44.44").withUsageModel("READ_HEAVY_INFREQ"))
+            .withNfs3(new Nfs3Target().withTarget("10.0.44.44").withUsageModel("READ_ONLY").withVerificationTimer(30))
             .create();
     }
 }

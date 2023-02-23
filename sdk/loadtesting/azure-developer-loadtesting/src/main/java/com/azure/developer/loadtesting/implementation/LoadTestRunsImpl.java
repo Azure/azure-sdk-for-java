@@ -197,7 +197,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMetricNamespaces(
+        Mono<Response<BinaryData>> getMetricNamespaces(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -217,7 +217,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMetricDefinitions(
+        Mono<Response<BinaryData>> getMetricDefinitions(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("metricNamespace") String metricNamespace,
@@ -241,7 +241,7 @@ public final class LoadTestRunsImpl {
         Mono<Response<BinaryData>> listMetrics(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
-                @QueryParam("metricname") String metricname,
+                @QueryParam("metricname") String metricName,
                 @QueryParam("metricNamespace") String metricNamespace,
                 @QueryParam("timespan") String timespan,
                 @QueryParam("api-version") String apiVersion,
@@ -265,7 +265,7 @@ public final class LoadTestRunsImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @PathParam("name") String name,
-                @QueryParam("metricname") String metricname,
+                @QueryParam("metricname") String metricName,
                 @QueryParam("metricNamespace") String metricNamespace,
                 @QueryParam("timespan") String timespan,
                 @QueryParam("api-version") String apiVersion,
@@ -2934,12 +2934,12 @@ public final class LoadTestRunsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricNamespacesWithResponseAsync(
+    public Mono<Response<BinaryData>> getMetricNamespacesWithResponseAsync(
             String testRunId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.listMetricNamespaces(
+                        service.getMetricNamespaces(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -2976,10 +2976,10 @@ public final class LoadTestRunsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricNamespacesWithResponseAsync(
+    public Mono<Response<BinaryData>> getMetricNamespacesWithResponseAsync(
             String testRunId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.listMetricNamespaces(
+        return service.getMetricNamespaces(
                 this.client.getEndpoint(),
                 testRunId,
                 this.client.getServiceVersion().getVersion(),
@@ -3014,8 +3014,8 @@ public final class LoadTestRunsImpl {
      * @return represents collection of metric namespaces along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricNamespacesWithResponse(String testRunId, RequestOptions requestOptions) {
-        return listMetricNamespacesWithResponseAsync(testRunId, requestOptions).block();
+    public Response<BinaryData> getMetricNamespacesWithResponse(String testRunId, RequestOptions requestOptions) {
+        return getMetricNamespacesWithResponseAsync(testRunId, requestOptions).block();
     }
 
     /**
@@ -3063,12 +3063,12 @@ public final class LoadTestRunsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricDefinitionsWithResponseAsync(
+    public Mono<Response<BinaryData>> getMetricDefinitionsWithResponseAsync(
             String testRunId, String metricNamespace, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.listMetricDefinitions(
+                        service.getMetricDefinitions(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 metricNamespace,
@@ -3124,10 +3124,10 @@ public final class LoadTestRunsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricDefinitionsWithResponseAsync(
+    public Mono<Response<BinaryData>> getMetricDefinitionsWithResponseAsync(
             String testRunId, String metricNamespace, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.listMetricDefinitions(
+        return service.getMetricDefinitions(
                 this.client.getEndpoint(),
                 testRunId,
                 metricNamespace,
@@ -3181,9 +3181,9 @@ public final class LoadTestRunsImpl {
      * @return represents collection of metric definitions along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricDefinitionsWithResponse(
+    public Response<BinaryData> getMetricDefinitionsWithResponse(
             String testRunId, String metricNamespace, RequestOptions requestOptions) {
-        return listMetricDefinitionsWithResponseAsync(testRunId, metricNamespace, requestOptions).block();
+        return getMetricDefinitionsWithResponseAsync(testRunId, metricNamespace, requestOptions).block();
     }
 
     /**
@@ -3241,7 +3241,7 @@ public final class LoadTestRunsImpl {
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -3256,7 +3256,7 @@ public final class LoadTestRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listMetricsSinglePageAsync(
             String testRunId,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
@@ -3266,7 +3266,7 @@ public final class LoadTestRunsImpl {
                                 service.listMetrics(
                                         this.client.getEndpoint(),
                                         testRunId,
-                                        metricname,
+                                        metricName,
                                         metricNamespace,
                                         timespan,
                                         this.client.getServiceVersion().getVersion(),
@@ -3339,7 +3339,7 @@ public final class LoadTestRunsImpl {
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -3355,7 +3355,7 @@ public final class LoadTestRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listMetricsSinglePageAsync(
             String testRunId,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions,
@@ -3364,7 +3364,7 @@ public final class LoadTestRunsImpl {
         return service.listMetrics(
                         this.client.getEndpoint(),
                         testRunId,
-                        metricname,
+                        metricName,
                         metricNamespace,
                         timespan,
                         this.client.getServiceVersion().getVersion(),
@@ -3437,7 +3437,7 @@ public final class LoadTestRunsImpl {
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -3451,7 +3451,7 @@ public final class LoadTestRunsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listMetricsAsync(
             String testRunId,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
@@ -3461,7 +3461,7 @@ public final class LoadTestRunsImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listMetricsSinglePageAsync(testRunId, metricname, metricNamespace, timespan, requestOptions),
+                () -> listMetricsSinglePageAsync(testRunId, metricName, metricNamespace, timespan, requestOptions),
                 nextLink -> listMetricsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
@@ -3520,7 +3520,7 @@ public final class LoadTestRunsImpl {
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -3535,7 +3535,7 @@ public final class LoadTestRunsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listMetricsAsync(
             String testRunId,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions,
@@ -3548,7 +3548,7 @@ public final class LoadTestRunsImpl {
         return new PagedFlux<>(
                 () ->
                         listMetricsSinglePageAsync(
-                                testRunId, metricname, metricNamespace, timespan, requestOptions, context),
+                                testRunId, metricName, metricNamespace, timespan, requestOptions, context),
                 nextLink -> listMetricsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
@@ -3607,7 +3607,7 @@ public final class LoadTestRunsImpl {
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -3621,11 +3621,11 @@ public final class LoadTestRunsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listMetrics(
             String testRunId,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
-        return new PagedIterable<>(listMetricsAsync(testRunId, metricname, metricNamespace, timespan, requestOptions));
+        return new PagedIterable<>(listMetricsAsync(testRunId, metricName, metricNamespace, timespan, requestOptions));
     }
 
     /**
@@ -3655,7 +3655,7 @@ public final class LoadTestRunsImpl {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
      * @param name Dimension name.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -3670,7 +3670,7 @@ public final class LoadTestRunsImpl {
     public Mono<PagedResponse<BinaryData>> listMetricDimensionValuesSinglePageAsync(
             String testRunId,
             String name,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
@@ -3681,7 +3681,7 @@ public final class LoadTestRunsImpl {
                                         this.client.getEndpoint(),
                                         testRunId,
                                         name,
-                                        metricname,
+                                        metricName,
                                         metricNamespace,
                                         timespan,
                                         this.client.getServiceVersion().getVersion(),
@@ -3726,7 +3726,7 @@ public final class LoadTestRunsImpl {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
      * @param name Dimension name.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -3742,7 +3742,7 @@ public final class LoadTestRunsImpl {
     public Mono<PagedResponse<BinaryData>> listMetricDimensionValuesSinglePageAsync(
             String testRunId,
             String name,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions,
@@ -3752,7 +3752,7 @@ public final class LoadTestRunsImpl {
                         this.client.getEndpoint(),
                         testRunId,
                         name,
-                        metricname,
+                        metricName,
                         metricNamespace,
                         timespan,
                         this.client.getServiceVersion().getVersion(),
@@ -3797,7 +3797,7 @@ public final class LoadTestRunsImpl {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
      * @param name Dimension name.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -3812,7 +3812,7 @@ public final class LoadTestRunsImpl {
     public PagedFlux<BinaryData> listMetricDimensionValuesAsync(
             String testRunId,
             String name,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
@@ -3824,7 +3824,7 @@ public final class LoadTestRunsImpl {
         return new PagedFlux<>(
                 () ->
                         listMetricDimensionValuesSinglePageAsync(
-                                testRunId, name, metricname, metricNamespace, timespan, requestOptions),
+                                testRunId, name, metricName, metricNamespace, timespan, requestOptions),
                 nextLink -> listMetricDimensionValuesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
@@ -3855,7 +3855,7 @@ public final class LoadTestRunsImpl {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
      * @param name Dimension name.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -3871,7 +3871,7 @@ public final class LoadTestRunsImpl {
     public PagedFlux<BinaryData> listMetricDimensionValuesAsync(
             String testRunId,
             String name,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions,
@@ -3884,7 +3884,7 @@ public final class LoadTestRunsImpl {
         return new PagedFlux<>(
                 () ->
                         listMetricDimensionValuesSinglePageAsync(
-                                testRunId, name, metricname, metricNamespace, timespan, requestOptions, context),
+                                testRunId, name, metricName, metricNamespace, timespan, requestOptions, context),
                 nextLink -> listMetricDimensionValuesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
@@ -3915,7 +3915,7 @@ public final class LoadTestRunsImpl {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
      * @param name Dimension name.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -3930,12 +3930,12 @@ public final class LoadTestRunsImpl {
     public PagedIterable<BinaryData> listMetricDimensionValues(
             String testRunId,
             String name,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
         return new PagedIterable<>(
-                listMetricDimensionValuesAsync(testRunId, name, metricname, metricNamespace, timespan, requestOptions));
+                listMetricDimensionValuesAsync(testRunId, name, metricName, metricNamespace, timespan, requestOptions));
     }
 
     /**

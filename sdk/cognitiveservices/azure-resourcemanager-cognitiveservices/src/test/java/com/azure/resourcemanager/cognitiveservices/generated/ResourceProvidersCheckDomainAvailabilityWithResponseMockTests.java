@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilityParameter;
 import com.azure.resourcemanager.cognitiveservices.models.DomainAvailability;
@@ -33,7 +32,7 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"isSubdomainAvailable\":false,\"reason\":\"fpwpjylwbt\",\"subdomainName\":\"flsjc\",\"type\":\"szfjvfbgofelja\",\"kind\":\"qmqhldvriii\"}";
+            "{\"isSubdomainAvailable\":true,\"reason\":\"fssnrbgyefrymsga\",\"subdomainName\":\"fmwncotmrfh\",\"type\":\"ctymoxoftp\",\"kind\":\"iwyczuh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,14 +64,17 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
             manager
                 .resourceProviders()
                 .checkDomainAvailabilityWithResponse(
-                    new CheckDomainAvailabilityParameter().withSubdomainName("rgz").withType("frl").withKind("szrnwo"),
-                    Context.NONE)
+                    new CheckDomainAvailabilityParameter()
+                        .withSubdomainName("bomvzzbtdcqv")
+                        .withType("niyujv")
+                        .withKind("l"),
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(false, response.isSubdomainAvailable());
-        Assertions.assertEquals("fpwpjylwbt", response.reason());
-        Assertions.assertEquals("flsjc", response.subdomainName());
-        Assertions.assertEquals("szfjvfbgofelja", response.type());
-        Assertions.assertEquals("qmqhldvriii", response.kind());
+        Assertions.assertEquals(true, response.isSubdomainAvailable());
+        Assertions.assertEquals("fssnrbgyefrymsga", response.reason());
+        Assertions.assertEquals("fmwncotmrfh", response.subdomainName());
+        Assertions.assertEquals("ctymoxoftp", response.type());
+        Assertions.assertEquals("iwyczuh", response.kind());
     }
 }

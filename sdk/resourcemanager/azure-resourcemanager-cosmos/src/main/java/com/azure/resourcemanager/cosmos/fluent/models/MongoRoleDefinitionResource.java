@@ -46,6 +46,10 @@ public final class MongoRoleDefinitionResource {
     @JsonProperty(value = "roles")
     private List<Role> roles;
 
+    /** Creates an instance of MongoRoleDefinitionResource class. */
+    public MongoRoleDefinitionResource() {
+    }
+
     /**
      * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      *

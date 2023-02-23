@@ -7,16 +7,20 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /** Parameter group. */
 @Fluent
-public final class RequestOptions {
+public final class RequestOptions implements JsonSerializable<RequestOptions> {
     /*
      * The tracking ID sent with the request to help with debugging.
      */
-    @JsonProperty(value = "x-ms-client-request-id")
     private UUID xMsClientRequestId;
 
     /** Creates an instance of RequestOptions class. */
@@ -40,5 +44,42 @@ public final class RequestOptions {
     public RequestOptions setXMsClientRequestId(UUID xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("x-ms-client-request-id", Objects.toString(this.xMsClientRequestId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RequestOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequestOptions if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RequestOptions.
+     */
+    public static RequestOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    UUID xMsClientRequestId = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("x-ms-client-request-id".equals(fieldName)) {
+                            xMsClientRequestId =
+                                    reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    RequestOptions deserializedValue = new RequestOptions();
+                    deserializedValue.xMsClientRequestId = xMsClientRequestId;
+
+                    return deserializedValue;
+                });
     }
 }

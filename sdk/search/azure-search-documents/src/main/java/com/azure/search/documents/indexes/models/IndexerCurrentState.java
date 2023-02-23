@@ -7,54 +7,52 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /** Represents all of the state that defines and dictates the indexer's current execution. */
 @Immutable
-public final class IndexerCurrentState {
+public final class IndexerCurrentState implements JsonSerializable<IndexerCurrentState> {
     /*
      * The mode the indexer is running in.
      */
-    @JsonProperty(value = "mode", access = JsonProperty.Access.WRITE_ONLY)
     private IndexingMode mode;
 
     /*
      * Change tracking state used when indexing starts on all documents in the datasource.
      */
-    @JsonProperty(value = "allDocsInitialChangeTrackingState", access = JsonProperty.Access.WRITE_ONLY)
     private String allDocsInitialChangeTrackingState;
 
     /*
      * Change tracking state value when indexing finishes on all documents in the datasource.
      */
-    @JsonProperty(value = "allDocsFinalChangeTrackingState", access = JsonProperty.Access.WRITE_ONLY)
     private String allDocsFinalChangeTrackingState;
 
     /*
      * Change tracking state used when indexing starts on select, reset documents in the datasource.
      */
-    @JsonProperty(value = "resetDocsInitialChangeTrackingState", access = JsonProperty.Access.WRITE_ONLY)
     private String resetDocsInitialChangeTrackingState;
 
     /*
      * Change tracking state value when indexing finishes on select, reset documents in the datasource.
      */
-    @JsonProperty(value = "resetDocsFinalChangeTrackingState", access = JsonProperty.Access.WRITE_ONLY)
     private String resetDocsFinalChangeTrackingState;
 
     /*
      * The list of document keys that have been reset. The document key is the document's unique identifier for the
      * data in the search index. The indexer will prioritize selectively re-ingesting these keys.
      */
-    @JsonProperty(value = "resetDocumentKeys", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> resetDocumentKeys;
 
     /*
      * The list of datasource document ids that have been reset. The datasource document id is the unique identifier
      * for the data in the datasource. The indexer will prioritize selectively re-ingesting these ids.
      */
-    @JsonProperty(value = "resetDatasourceDocumentIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> resetDatasourceDocumentIds;
 
     /** Creates an instance of IndexerCurrentState class. */
@@ -129,5 +127,75 @@ public final class IndexerCurrentState {
      */
     public List<String> getResetDatasourceDocumentIds() {
         return this.resetDatasourceDocumentIds;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", Objects.toString(this.mode, null));
+        jsonWriter.writeStringField("allDocsInitialChangeTrackingState", this.allDocsInitialChangeTrackingState);
+        jsonWriter.writeStringField("allDocsFinalChangeTrackingState", this.allDocsFinalChangeTrackingState);
+        jsonWriter.writeStringField("resetDocsInitialChangeTrackingState", this.resetDocsInitialChangeTrackingState);
+        jsonWriter.writeStringField("resetDocsFinalChangeTrackingState", this.resetDocsFinalChangeTrackingState);
+        jsonWriter.writeArrayField(
+                "resetDocumentKeys", this.resetDocumentKeys, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "resetDatasourceDocumentIds",
+                this.resetDatasourceDocumentIds,
+                (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IndexerCurrentState from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IndexerCurrentState if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IndexerCurrentState.
+     */
+    public static IndexerCurrentState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    IndexingMode mode = null;
+                    String allDocsInitialChangeTrackingState = null;
+                    String allDocsFinalChangeTrackingState = null;
+                    String resetDocsInitialChangeTrackingState = null;
+                    String resetDocsFinalChangeTrackingState = null;
+                    List<String> resetDocumentKeys = null;
+                    List<String> resetDatasourceDocumentIds = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("mode".equals(fieldName)) {
+                            mode = IndexingMode.fromString(reader.getString());
+                        } else if ("allDocsInitialChangeTrackingState".equals(fieldName)) {
+                            allDocsInitialChangeTrackingState = reader.getString();
+                        } else if ("allDocsFinalChangeTrackingState".equals(fieldName)) {
+                            allDocsFinalChangeTrackingState = reader.getString();
+                        } else if ("resetDocsInitialChangeTrackingState".equals(fieldName)) {
+                            resetDocsInitialChangeTrackingState = reader.getString();
+                        } else if ("resetDocsFinalChangeTrackingState".equals(fieldName)) {
+                            resetDocsFinalChangeTrackingState = reader.getString();
+                        } else if ("resetDocumentKeys".equals(fieldName)) {
+                            resetDocumentKeys = reader.readArray(reader1 -> reader1.getString());
+                        } else if ("resetDatasourceDocumentIds".equals(fieldName)) {
+                            resetDatasourceDocumentIds = reader.readArray(reader1 -> reader1.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    IndexerCurrentState deserializedValue = new IndexerCurrentState();
+                    deserializedValue.mode = mode;
+                    deserializedValue.allDocsInitialChangeTrackingState = allDocsInitialChangeTrackingState;
+                    deserializedValue.allDocsFinalChangeTrackingState = allDocsFinalChangeTrackingState;
+                    deserializedValue.resetDocsInitialChangeTrackingState = resetDocsInitialChangeTrackingState;
+                    deserializedValue.resetDocsFinalChangeTrackingState = resetDocsFinalChangeTrackingState;
+                    deserializedValue.resetDocumentKeys = resetDocumentKeys;
+                    deserializedValue.resetDatasourceDocumentIds = resetDatasourceDocumentIds;
+
+                    return deserializedValue;
+                });
     }
 }

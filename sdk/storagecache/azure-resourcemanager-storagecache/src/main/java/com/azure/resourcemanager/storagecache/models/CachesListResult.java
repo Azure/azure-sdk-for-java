@@ -24,6 +24,10 @@ public final class CachesListResult {
     @JsonProperty(value = "value")
     private List<CacheInner> value;
 
+    /** Creates an instance of CachesListResult class. */
+    public CachesListResult() {
+    }
+
     /**
      * Get the nextLink property: URL to get the next set of Cache list results, if there are any.
      *
