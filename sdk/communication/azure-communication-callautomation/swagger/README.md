@@ -161,7 +161,7 @@ directive:
     to: CollectTonesResultInternal
 - rename-model:
     from: ChoiceResult
-    to: CollectChoiceResultInternal
+    to: ChoiceResultInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
