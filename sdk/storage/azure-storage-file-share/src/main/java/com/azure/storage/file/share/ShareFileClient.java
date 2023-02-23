@@ -161,12 +161,11 @@ public class ShareFileClient {
     }
 
     /**
-     * Opens a {@link SeekableByteChannel} to write data to the file.
+     * Creates and opens a {@link SeekableByteChannel} to write data to the file.
      * @param options Options for opening the channel.
      * @return The opened channel.
      */
     public final SeekableByteChannel getFileSeekableByteChannelWrite(ShareFileSeekableByteChannelWriteOptions options) {
-        // TODO (jaschrep): make max put range an accessible constant (how is it not already??)
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (options.getChannelMode() == ShareFileSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
@@ -174,7 +173,7 @@ public class ShareFileClient {
             create(options.getFileSize());
         }
 
-        return new StorageSeekableByteChannel(4 * Constants.MB, null /*readBehavior*/,
+        return new StorageSeekableByteChannel((int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE, null /*readBehavior*/,
             new StorageSeekableByteChannelShareFileWriteBehavior(this, options.getRequestConditions(),
                 options.getFileLastWrittenMode()));
     }
@@ -186,7 +185,7 @@ public class ShareFileClient {
      */
     public final SeekableByteChannel getFileSeekableByteChannelRead(ShareRequestConditions conditions) {
         // TODO (jaschrep): make max put range an accessible constant (how is it not already??)
-        return new StorageSeekableByteChannel(4 * Constants.MB,
+        return new StorageSeekableByteChannel((int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE,
             new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/);
     }
 
