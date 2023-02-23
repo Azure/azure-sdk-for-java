@@ -55,8 +55,8 @@ class EventHubsProducerInstrumentation {
 
     private Context startSpanWithLinks(String spanName, EventDataBatch batch, Context context) {
         StartSpanOptions startOptions = tracer.createStartOption(SpanKind.CLIENT, EventHubsTracer.OperationName.PUBLISH);
-        startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, batch.getCount());
         if (batch != null) {
+            startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, batch.getCount());
             for (EventData event : batch.getEvents()) {
                 startOptions.addLink(tracer.createLink(event.getProperties(), null, event.getContext()));
             }
