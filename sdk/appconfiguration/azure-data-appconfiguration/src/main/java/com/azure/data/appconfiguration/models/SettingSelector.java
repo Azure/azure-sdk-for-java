@@ -36,6 +36,7 @@ public class SettingSelector {
     private String labelFilter;
     private SettingFields[] fields;
     private String acceptDatetime;
+    private String snapshotName;
 
     /**
      * Creates a setting selector that will populate responses with all of the {@link ConfigurationSetting
@@ -143,6 +144,27 @@ public class SettingSelector {
      */
     public SettingSelector setFields(SettingFields... fields) {
         this.fields = fields;
+        return this;
+    }
+
+    /**
+     * Gets the snapshot name.
+     *
+     * @return the snapshot name.
+     */
+    public String getSnapshotName() {
+        return snapshotName;
+    }
+
+    /**
+     * Sets the snapshot name.
+     *
+     * @param name the snapshot name.
+     *
+     * @return The updated SettingSelector object.
+     */
+    public SettingSelector setSnapshotName(String name) {
+        this.snapshotName = name;
         return this;
     }
 

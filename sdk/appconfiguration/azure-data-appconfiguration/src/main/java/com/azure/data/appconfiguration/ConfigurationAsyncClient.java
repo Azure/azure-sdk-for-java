@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -945,7 +946,6 @@ public final class ConfigurationAsyncClient {
                        toConfigurationSettingSnapshot(response.getValue())));
     }
 
-
     /**
      * Gets snapshot
      *
@@ -954,24 +954,25 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSettingSnapshot> getSnapshot(String name) {
-        return getSnapshotWithResponse(name, null, false).map(Response::getValue);
+        final ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(null);
+        // private field value setter
+        // ConfigurationSettingSnapshotPropertiesHelper.setName();
+        return getSnapshotWithResponse(snapshot, false).map(Response::getValue);
     }
 
     /**
-     * Gets snapshot
+     * Gets a snapshot
      *
-     * @param name name of snapshot
      * @param snapshot snapshots
      * @param ifChanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
      * used as a If-None-Match header.
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSettingSnapshot>> getSnapshotWithResponse(String name,
+    public Mono<Response<ConfigurationSettingSnapshot>> getSnapshotWithResponse(
         ConfigurationSettingSnapshot snapshot, boolean ifChanged) {
-        return serviceClient.getSnapshotWithResponseAsync(name == null ? snapshot.getName() : name,
-            null, getIfNoneMatchETagSnapshot(ifChanged, snapshot),
-            null, Context.NONE)
+        return serviceClient.getSnapshotWithResponseAsync(snapshot.getName(),
+            null, getIfNoneMatchETagSnapshot(ifChanged, snapshot), null, Context.NONE)
                    .map(response -> new SimpleResponse<>(response,
                        toConfigurationSettingSnapshot(response.getValue())));
 
@@ -985,23 +986,22 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSettingSnapshot> archiveSnapshot(String name) {
-        return archiveSnapshotWithResponse(name, null, false).map(Response::getValue);
+        return archiveSnapshotWithResponse(null, false).map(Response::getValue);
     }
 
     /**
      * Archiving snapshot from Ready status.
      *
-     * @param name name of snapshot
      * @param snapshot snapshots
      * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
      * used as a IF-MATCH header.
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSettingSnapshot>> archiveSnapshotWithResponse(String name,
+    public Mono<Response<ConfigurationSettingSnapshot>> archiveSnapshotWithResponse(
         ConfigurationSettingSnapshot snapshot, boolean ifUnchanged) {
         // validate name and snapshot.getName can be null. Has to be one of
-        return serviceClient.updateSnapshotWithResponseAsync(name == null ? snapshot.getName() : name,
+        return serviceClient.updateSnapshotWithResponseAsync(snapshot.getName(),
             new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
             getIfMatchETagSnapshot(ifUnchanged, snapshot), null)
                    .map(response -> new SimpleResponse<>(response,
@@ -1016,22 +1016,21 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSettingSnapshot> recoverSnapshot(String name) {
-        return recoverSnapshotWithResponse(name, null, false).map(Response::getValue);
+        return recoverSnapshotWithResponse(null, false).map(Response::getValue);
     }
 
     /**
      * recovering snapshot from archived status.
      *
-     * @param name name of snapshot
      * @param snapshot snapshots
      * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
      * used as a IF-MATCH header.
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSettingSnapshot>> recoverSnapshotWithResponse(String name,
+    public Mono<Response<ConfigurationSettingSnapshot>> recoverSnapshotWithResponse(
         ConfigurationSettingSnapshot snapshot, boolean ifUnchanged) {
-        return serviceClient.updateSnapshotWithResponseAsync(name == null ? snapshot.getName() : name,
+        return serviceClient.updateSnapshotWithResponseAsync(snapshot.getName(),
             new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
             getIfMatchETagSnapshot(ifUnchanged, snapshot), null)
                    .map(response -> new SimpleResponse<>(response,

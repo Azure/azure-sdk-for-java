@@ -972,7 +972,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSettingSnapshot getSnapShot(String name) {
-        return getSnapShotWithResponse(name, null,false, Context.NONE).getValue();
+        return getSnapShotWithResponse(null,false, Context.NONE).getValue();
     }
 
     /**
@@ -985,10 +985,10 @@ public final class ConfigurationClient {
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingSnapshot> getSnapShotWithResponse(String name,
+    public Response<ConfigurationSettingSnapshot> getSnapShotWithResponse(
         ConfigurationSettingSnapshot snapshot, boolean ifChanged, Context context) {
         final ResponseBase<GetSnapshotHeaders, Snapshot> response = serviceClient.getSnapshotWithResponse(
-            name, null,
+            snapshot.getName(), null,
             getIfNoneMatchETagSnapshot(ifChanged, snapshot), null, context);
         return new SimpleResponse<>(response,
             toConfigurationSettingSnapshot(response.getValue()));
@@ -1003,10 +1003,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSettingSnapshot archiveSnapshot(String name) {
-        return archiveSnapshotWithResponse(name, new ConfigurationSettingSnapshot(null),
+        return archiveSnapshotWithResponse(new ConfigurationSettingSnapshot(null),
             false, Context.NONE).getValue();
     }
-
 
     /**
      * Archiving snapshot from Ready status.
@@ -1018,11 +1017,10 @@ public final class ConfigurationClient {
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingSnapshot> archiveSnapshotWithResponse(String name,
-        ConfigurationSettingSnapshot snapshot, boolean ifUnchanged, Context context) {
+    public Response<ConfigurationSettingSnapshot> archiveSnapshotWithResponse(ConfigurationSettingSnapshot snapshot,
+        boolean ifUnchanged, Context context) {
         final ResponseBase<UpdateSnapshotHeaders, Snapshot> response = serviceClient.updateSnapshotWithResponse(
-            name == null ? snapshot.getName() : name,
-            new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
+            snapshot.getName(), new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
             getIfMatchETagSnapshot(ifUnchanged, snapshot), null, context);
         return new SimpleResponse<>(response, toConfigurationSettingSnapshot(response.getValue()));
     }
@@ -1036,13 +1034,12 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSettingSnapshot recoverSnapshot(String name) {
-        return recoverSnapshotWithResponse(name, null, false, Context.NONE).getValue();
+        return recoverSnapshotWithResponse(null, false, Context.NONE).getValue();
     }
 
     /**
      * recovering snapshot from archived status.
      *
-     * @param name the name of snapshots.
      * @param snapshot snapshots.
      * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
      * used as a IF-MATCH header.
@@ -1050,15 +1047,13 @@ public final class ConfigurationClient {
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingSnapshot> recoverSnapshotWithResponse(String name,
-        ConfigurationSettingSnapshot snapshot, boolean ifUnchanged, Context context) {
+    public Response<ConfigurationSettingSnapshot> recoverSnapshotWithResponse(ConfigurationSettingSnapshot snapshot,
+        boolean ifUnchanged, Context context) {
         final ResponseBase<UpdateSnapshotHeaders, Snapshot> response = serviceClient.updateSnapshotWithResponse(
-            name == null ? snapshot.getName() : name,
-            new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
+            snapshot.getName(), new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
             getIfMatchETagSnapshot(ifUnchanged, snapshot), null, context);
         return new SimpleResponse<>(response, toConfigurationSettingSnapshot(response.getValue()));
     }
-
 
     /**
      * Listing snapshots

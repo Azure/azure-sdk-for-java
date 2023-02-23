@@ -15,6 +15,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SnapshotFilter;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,14 +33,14 @@ public class Utility {
         return new ConfigurationSettingSnapshot(toSnapshotFilters(snapshot.getFilters()))
             .setTags(snapshot.getTags())
             .setCompositionType(com.azure.data.appconfiguration.models.CompositionType.fromString(snapshot.getCompositionType().toString()))
-            .setRetentionPeriod(snapshot.getRetentionPeriod());
+            .setRetentionPeriod(Duration.ofSeconds(snapshot.getRetentionPeriod()));
     }
 
     public static Snapshot toSnapshot(ConfigurationSettingSnapshot configurationSettingSnapshot) {
         return new Snapshot().setFilters(toKeyValueFilter(configurationSettingSnapshot.getFilters()))
             .setCompositionType(CompositionType.fromString(configurationSettingSnapshot.getCompositionType().toString()))
             .setTags(configurationSettingSnapshot.getTags())
-            .setRetentionPeriod(configurationSettingSnapshot.getRetentionPeriod());
+            .setRetentionPeriod(configurationSettingSnapshot.getRetentionPeriod().getSeconds());
     }
 
 
