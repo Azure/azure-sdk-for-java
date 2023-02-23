@@ -172,6 +172,7 @@ class ShareAPITests extends APISpec {
         setup:
         def serviceClient = fileServiceBuilderHelper().allowTrailingDot(allowTrailingDot).buildClient()
         def shareClient = serviceClient.getShareClient(shareName)
+        shareClient.create()
         def rootDirectory = shareClient.getRootDirectoryClient()
         def dirName = generatePathName()
         def dirNameWithDot = dirName + "."
