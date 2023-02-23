@@ -3,10 +3,13 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.common.StorageSeekableByteChannel;
 import com.azure.storage.common.implementation.ByteBufferMarkableInputStream;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
@@ -19,6 +22,8 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
     private final ShareFileClient client;
     private final ShareRequestConditions conditions;
     private final FileLastWrittenMode lastWrittenMode;
+
+    private Long fileSize;
 
     public StorageSeekableByteChannelShareFileWriteBehavior(ShareFileClient client, ShareRequestConditions conditions,
         FileLastWrittenMode lastWrittenMode) {
@@ -40,7 +45,7 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
     }
 
     @Override
-    public void write(ByteBuffer src, long destOffset){
+    public void write(ByteBuffer src, long destOffset) {
         try (InputStream uploadStream = new ByteBufferMarkableInputStream(src)) {
             client.uploadRangeWithResponse(
                 new ShareFileUploadRangeOptions(uploadStream, src.remaining())
@@ -54,5 +59,18 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
     @Override
     public void commit(long totalLength) {
         // no-op
+    }
+
+    @Override
+    public boolean canSeek(long position) {
+        if (fileSize == null) {
+            fileSize = client.getProperties().getContentLength();
+        }
+        return 0 <= position && position <= fileSize;
+    }
+
+    @Override
+    public void resize(long newSize) {
+        throw new UnsupportedOperationException();
     }
 }

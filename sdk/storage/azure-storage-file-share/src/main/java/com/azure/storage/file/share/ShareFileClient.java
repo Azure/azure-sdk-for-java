@@ -39,7 +39,7 @@ import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
-import com.azure.storage.file.share.options.ShareFileSeekableByteChannelOptions;
+import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
@@ -161,17 +161,33 @@ public class ShareFileClient {
     }
 
     /**
-     * Creats and opens a {@link SeekableByteChannel} to transfer data to/from the file.
+     * Opens a {@link SeekableByteChannel} to write data to the file.
      * @param options Options for opening the channel.
      * @return The opened channel.
      */
-    public final SeekableByteChannel getFileSeekableByteChannel(ShareFileSeekableByteChannelOptions options) {
+    public final SeekableByteChannel getFileSeekableByteChannelWrite(ShareFileSeekableByteChannelWriteOptions options) {
         // TODO (jaschrep): make max put range an accessible constant (how is it not already??)
         Objects.requireNonNull(options, "'options' cannot be null.");
-        return new StorageSeekableByteChannel(4 * Constants.MB, options.getChannelMode(),
-            new StorageSeekableByteChannelShareFileReadBehavior(this, options.getRequestConditions()),
+
+        if (options.getChannelMode() == ShareFileSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
+            Objects.requireNonNull(options.getFileSize(), "'options.getFileSize()' cannot return null.");
+            create(options.getFileSize());
+        }
+
+        return new StorageSeekableByteChannel(4 * Constants.MB, null /*readBehavior*/,
             new StorageSeekableByteChannelShareFileWriteBehavior(this, options.getRequestConditions(),
                 options.getFileLastWrittenMode()));
+    }
+
+    /**
+     * Creates and opens a {@link SeekableByteChannel} to read data from the file.
+     * @param conditions requestConditions for reading from Storage.
+     * @return The opened channel.
+     */
+    public final SeekableByteChannel getFileSeekableByteChannelRead(ShareRequestConditions conditions) {
+        // TODO (jaschrep): make max put range an accessible constant (how is it not already??)
+        return new StorageSeekableByteChannel(4 * Constants.MB,
+            new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/);
     }
 
     /**

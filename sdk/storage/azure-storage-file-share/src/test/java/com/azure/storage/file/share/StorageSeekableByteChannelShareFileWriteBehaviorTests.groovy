@@ -3,7 +3,9 @@
 
 package com.azure.storage.file.share
 
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.FileLastWrittenMode
+import com.azure.storage.file.share.models.ShareFileProperties
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import spock.lang.Unroll
@@ -31,5 +33,38 @@ class StorageSeekableByteChannelShareFileWriteBehaviorTests extends APISpec {
         50     | null                         | null
         0      | new ShareRequestConditions() | null
         0      | null                         | FileLastWrittenMode.PRESERVE
+    }
+
+    def "WriteBehavior canSeek anywhere in file range"() {
+        given:
+        ShareFileClient client = Mock()
+        def behavior = new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null)
+
+        when: "WriteBehavior.canSeek() is called"
+        boolean result = behavior.canSeek(position)
+
+        then: "Expected behavior"
+        result == expected
+        1 * client.getProperties() >> new ShareFileProperties(null, null, null, null, fileSize as Long, null, null,
+            null, null, null, null, null, null, null, null, null, null, null)
+
+        where:
+        fileSize     | position         | expected
+        Constants.KB | 0                | true
+        Constants.KB | 500              | true
+        Constants.KB | Constants.KB     | true
+        Constants.KB | Constants.KB + 1 | false
+        Constants.KB | -1               | false
+    }
+
+    def "WriteBehavior truncate unsupported"(){
+        given:
+        def behavior = new StorageSeekableByteChannelShareFileWriteBehavior(Mock(ShareFileClient), null, null)
+
+        when:
+        behavior.resize(10)
+
+        then:
+        thrown(UnsupportedOperationException)
     }
 }

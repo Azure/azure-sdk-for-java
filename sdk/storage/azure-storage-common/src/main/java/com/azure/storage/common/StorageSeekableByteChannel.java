@@ -11,7 +11,6 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NonReadableChannelException;
 import java.nio.channels.NonWritableChannelException;
 import java.nio.channels.SeekableByteChannel;
-import java.util.Objects;
 
 /**
  * StorageSeekableByteChannel allows for uploading and downloading data to and from an Azure Storage service using the
@@ -39,10 +38,10 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         int read(ByteBuffer dst, long sourceOffset);
 
         /**
-         * Gets the last known length of the resource.
-         * @return The length in bytes. Null if not yet known.
+         * Gets the last known length of the resource. If no value is cached, fetches the value.
+         * @return The length in bytes.
          */
-        Long getCachedLength();
+        long getCachedLength();
     }
 
     /**
@@ -61,11 +60,25 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
          * @param totalLength Total length of the bytes being committed (necessary for some resource types).
          */
         void commit(long totalLength);
+
+        /**
+         * Determines whether the write behavior can support a random seek to this position. May fetch information
+         * from the service to determine if possible.
+         * @param position Desired seek position.
+         * @return Whether the resource supports this.
+         */
+        boolean canSeek(long position);
+
+        /**
+         * Changes the size of the backing resource, if supported.
+         * @param newSize New size of backing resource.
+         * @throws UnsupportedOperationException If operation is not supported by the backing resource.
+         */
+        void resize(long newSize);
     }
 
     private final ReadBehavior readBehavior;
     private final WriteBehavior writeBehavior;
-    private final StorageChannelMode mode;
 
     private boolean isClosed;
 
@@ -77,19 +90,22 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
     /**
      * Constructs an instance of this class.
      * @param chunkSize Size of the internal channel buffer to use for data transfer, and for individual REST transfers.
-     * @param mode Mode to open this channel in.
      * @param readBehavior Behavior for reading from the backing Storage resource.
      * @param writeBehavior Behavior for writing to the backing Storage resource.
+     * @throws IllegalArgumentException If both read and write behavior are given.
      */
-    public StorageSeekableByteChannel(int chunkSize, StorageChannelMode mode, ReadBehavior readBehavior,
-        WriteBehavior writeBehavior) {
-        this.mode = Objects.requireNonNull(mode);
+    public StorageSeekableByteChannel(int chunkSize, ReadBehavior readBehavior, WriteBehavior writeBehavior) {
+        if (readBehavior != null && writeBehavior != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "StorageSeekableByteChannel can have only one of readBehavior or writeBehavior."));
+        }
+
         buffer = ByteBuffer.allocate(chunkSize);
         this.readBehavior = readBehavior;
         this.writeBehavior = writeBehavior;
 
         bufferAbsolutePosition = 0;
-        if (this.mode == StorageChannelMode.READ) {
+        if (readBehavior != null) {
             buffer.limit(0);
         }
     }
@@ -184,8 +200,17 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
     @Override
     public SeekableByteChannel position(long newPosition) throws IOException {
         assertOpen();
-        assertCanSeek();
 
+        if (readBehavior != null) {
+            readModeSeek(newPosition);
+        } else {
+            writeModeSeek(newPosition);
+        }
+
+        return this;
+    }
+
+    private void readModeSeek(long newPosition) {
         // seek exited the bounds of the internal buffer, invalidate it
         if (newPosition < bufferAbsolutePosition || newPosition > bufferAbsolutePosition + buffer.limit()) {
             buffer.clear();
@@ -194,17 +219,24 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         } else {
             buffer.position((int) (newPosition - bufferAbsolutePosition));
         }
-
         absolutePosition = newPosition;
+    }
 
-        return this;
+    private void writeModeSeek(long newPosition) {
+        if (!writeBehavior.canSeek(newPosition)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "The backing resource does not support this position change."));
+        }
+
+        flushWriteBuffer();
+        absolutePosition = newPosition;
+        bufferAbsolutePosition = newPosition;
     }
 
     @Override
     public long size() throws IOException {
         assertOpen();
-        if (mode == StorageChannelMode.READ) {
-            // TODO (jaschrep): what if no cached length yet?
+        if (readBehavior != null) {
             return readBehavior.getCachedLength();
         } else {
             return absolutePosition;
@@ -214,7 +246,8 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
     @Override
     public SeekableByteChannel truncate(long size) throws IOException {
         assertOpen();
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException());
+        writeBehavior.resize(size);
+        return this;
     }
 
     @Override
@@ -224,7 +257,7 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
 
     @Override
     public void close() throws IOException {
-        if (mode == StorageChannelMode.WRITE) {
+        if (writeBehavior != null) {
             flushWriteBuffer();
             writeBehavior.commit(absolutePosition);
         }
@@ -234,19 +267,14 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         buffer = null;
     }
 
-    private void assertCanSeek() {
-        // only support seeking in read mode; most Storage resources do not allow random access write.
-        assertCanRead();
-    }
-
     private void assertCanRead() {
-        if (mode != StorageChannelMode.READ) {
+        if (readBehavior == null) {
             throw LOGGER.logExceptionAsError(new NonReadableChannelException());
         }
     }
 
     private void assertCanWrite() {
-        if (mode != StorageChannelMode.WRITE) {
+        if (writeBehavior == null) {
             throw LOGGER.logExceptionAsError(new NonWritableChannelException());
         }
     }

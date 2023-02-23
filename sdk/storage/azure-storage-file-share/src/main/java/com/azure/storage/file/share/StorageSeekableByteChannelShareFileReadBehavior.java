@@ -66,7 +66,10 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
     }
 
     @Override
-    public Long getCachedLength() {
+    public long getCachedLength() {
+        if (lastKnownResourceLength == null) {
+            lastKnownResourceLength = client.getProperties().getContentLength();
+        }
         return lastKnownResourceLength;
     }
 
