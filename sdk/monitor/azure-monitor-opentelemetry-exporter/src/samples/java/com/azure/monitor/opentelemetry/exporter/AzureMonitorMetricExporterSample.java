@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.http.HttpClient;
@@ -13,7 +16,6 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
-
 import java.net.InetSocketAddress;
 
 public class AzureMonitorMetricExporterSample {
