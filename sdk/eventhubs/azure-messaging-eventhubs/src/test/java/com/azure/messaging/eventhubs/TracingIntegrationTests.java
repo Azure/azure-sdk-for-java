@@ -44,8 +44,10 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.TRACEPARENT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -190,7 +192,16 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .receive()
                 .take(messageCount)
                 .doOnNext(pe -> {
-                    String traceparent = (String) pe.getData().getProperties().get("traceparent");
+                    String traceparent = (String) pe.getData().getProperties().get(TRACEPARENT_KEY);
+
+                    assertNotNull(traceparent, () -> {
+                        String properties = pe.getData().getProperties().entrySet().stream().map(entry -> {
+                            return entry.getKey() + ": " + entry.getValue();
+                        }).collect(Collectors.joining("\n"));
+
+                        return "There was no traceparent. Properties were:\n" + properties;
+                    });
+
                     String traceId = Span.current().getSpanContext().getTraceId();
 
                     // context created for the message and current are the same
