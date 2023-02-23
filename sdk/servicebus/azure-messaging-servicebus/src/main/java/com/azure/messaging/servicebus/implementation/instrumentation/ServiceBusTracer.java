@@ -27,6 +27,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
@@ -39,7 +41,8 @@ public class ServiceBusTracer {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusTracer.class);
     private static final String TRACEPARENT_KEY = "traceparent";
     private static final String MESSAGING_SYSTEM_ATTRIBUTE_NAME = "messaging.system";
-    public static final String MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME = "messaging.eventhubs.message.enqueued_time";
+    public static final String MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME = "messaging.servicebus.message.enqueued_time";
+    private static final String MESSAGING_OPERATION_ATTRIBUTE_NAME = "messaging.operation";
     protected static final boolean IS_TRACING_DISABLED = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED, false);
     protected final Tracer tracer;
     protected final String fullyQualifiedName;
@@ -78,7 +81,7 @@ public class ServiceBusTracer {
                     }
                 })
                 .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY,
-                    tracer.start(spanName, createStartOption(SpanKind.CLIENT), Context.NONE)));
+                    tracer.start(spanName, createStartOption(SpanKind.CLIENT, null), Context.NONE)));
         }
 
         return publisher;
@@ -96,7 +99,7 @@ public class ServiceBusTracer {
                         endSpan(signal.getThrowable(), span, null);
                     }
                 })
-                .contextWrite(ctx -> ctx.put(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpanWithLink(spanName, message, messageContext, Context.NONE)));
+                .contextWrite(ctx -> ctx.put(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpanWithLink(spanName, null, message, messageContext, Context.NONE)));
         }
 
         return publisher;
@@ -106,33 +109,20 @@ public class ServiceBusTracer {
      * Traces arbitrary mono that operates with sent message as input, e.g. schedule. No special send or receive semantics is applied.
      */
     public <T> Mono<T> traceMonoWithLink(String spanName, Mono<T> publisher, ServiceBusMessage message, Context messageContext) {
-        if (tracer != null) {
-            return publisher
-                .doOnEach(signal -> {
-                    if (signal.isOnComplete() || signal.isOnError()) {
-                        Context span = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
-                        endSpan(signal.getThrowable(), span, null);
-                    }
-                })
-                .contextWrite(ctx -> {
-                    StartSpanOptions startSpanOptions = createStartOption(SpanKind.CLIENT);
-                    if (message != null) {
-                        reportMessageSpan(message, messageContext);
-                        startSpanOptions.addLink(createLink(message.getApplicationProperties(), null, messageContext));
-                    }
+        return traceMonoWithLink(spanName, null, publisher, message, messageContext);
+    }
 
-                    Context span = tracer.start(spanName, startSpanOptions, Context.NONE);
-                    return ctx.put(REACTOR_PARENT_TRACE_CONTEXT_KEY, span);
-                });
-        }
-
-        return publisher;
+    /**
+     * Traces arbitrary mono that operates with sent message as input, e.g. schedule. No special send or receive semantics is applied.
+     */
+    public <T> Mono<T> traceScheduleMono(String spanName, Mono<T> publisher, ServiceBusMessage message, Context messageContext) {
+        return traceMonoWithLink(spanName, OperationName.PUBLISH, publisher, message, messageContext);
     }
 
     /**
      * Traces arbitrary mono that operates with batch of sent message as input, e.g. schedule. No special send or receive semantics is applied.
      */
-    public <T> Flux<T> traceFluxWithLinks(String spanName, Flux<T> publisher, List<ServiceBusMessage> batch, Function<ServiceBusMessage, Context> getContext) {
+    public <T> Flux<T> traceScheduleFlux(String spanName, Flux<T> publisher, List<ServiceBusMessage> batch, Function<ServiceBusMessage, Context> getContext) {
         if (tracer != null) {
             return publisher
                 .doOnEach(signal -> {
@@ -141,7 +131,7 @@ public class ServiceBusTracer {
                         endSpan(signal.getThrowable(), span, null);
                     }
                 })
-                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpanWithLinks(spanName, batch, getContext, Context.NONE)));
+                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpanWithLinks(spanName, OperationName.PUBLISH, batch, getContext, Context.NONE)));
         }
         return publisher;
     }
@@ -186,7 +176,7 @@ public class ServiceBusTracer {
         }
 
         // Starting the span makes the sampling decision (nothing is logged at this time)
-        StartSpanOptions startOptions = createStartOption(SpanKind.PRODUCER);
+        StartSpanOptions startOptions = createStartOption(SpanKind.PRODUCER, null);
 
         Context eventSpanContext = tracer.start("ServiceBus.message", startOptions, messageContext);
         tracer.injectContext((key, value) -> {
@@ -221,7 +211,7 @@ public class ServiceBusTracer {
                     ServiceBusReceivedMessage msg = message.get();
                     Context messageContext = msg == null ? null : getMessageContext.apply(msg);
 
-                    StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT);
+                    StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE);
                     if (msg != null) {
                         startOptions.addLink(createLink(msg.getApplicationProperties(), msg.getEnqueuedTime(), messageContext));
                         startOptions.setStartTimestamp(startTime.get());
@@ -246,25 +236,25 @@ public class ServiceBusTracer {
      */
     public Flux<ServiceBusReceivedMessage> traceSyncReceive(String spanName, Flux<ServiceBusReceivedMessage> messages) {
         if (tracer != null) {
-            AtomicReference<StartSpanOptions> startOptions = new AtomicReference<>();
+            AtomicReference<StartSpanOptions> startOptions = new AtomicReference<>(createStartOption(SpanKind.CLIENT, OperationName.RECEIVE));
             return messages
                 .doOnEach(signal -> {
-                    if (signal.hasValue()) {
-                        ServiceBusReceivedMessage message = signal.get();
+                    ServiceBusReceivedMessage message = signal.get();
+                    if (message != null) {
                         startOptions.get().addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), Context.NONE));
                     } else if (signal.isOnComplete() || signal.isOnError()) {
                         Context span = tracer.start(spanName, startOptions.get(), Context.NONE);
                         endSpan(signal.getThrowable(), span, null);
                     }
                 })
-                .doOnSubscribe((ignored) -> startOptions.set(createStartOption(SpanKind.CLIENT).setStartTimestamp(Instant.now())));
+                .doOnSubscribe((ignored) -> startOptions.get().setStartTimestamp(Instant.now()));
         }
         return messages;
     }
 
-    public Context startSpanWithLinks(String spanName, List<ServiceBusMessage> batch, Function<ServiceBusMessage, Context> getMessageContext, Context parent) {
+    public Context startSpanWithLinks(String spanName, OperationName operationName, List<ServiceBusMessage> batch, Function<ServiceBusMessage, Context> getMessageContext, Context parent) {
         if (tracer != null) {
-            StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT);
+            StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, operationName);
             for (ServiceBusMessage message : batch) {
                 startOptions.addLink(createLink(message.getApplicationProperties(), null, getMessageContext.apply(message)));
             }
@@ -275,10 +265,26 @@ public class ServiceBusTracer {
         return parent;
     }
 
-    Context startSpanWithLink(String spanName, ServiceBusReceivedMessage message, Context messageContext, Context parent) {
+    Context startSpanWithLink(String spanName, OperationName operationName, ServiceBusReceivedMessage message, Context messageContext, Context parent) {
         if (tracer != null) {
-            StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT);
+            StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, operationName);
             startOptions.addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), messageContext));
+            return tracer.start(spanName, startOptions, parent);
+        }
+
+        return parent;
+    }
+
+    /**
+     * Starts span. Used by ServiceBus*Instrumentations.
+     */
+    Context startProcessSpan(String spanName, ServiceBusReceivedMessage message, Context parent) {
+        if (tracer != null) {
+            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS)
+                .setRemoteParent(extractContext(message.getApplicationProperties()));
+
+            startOptions.setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, message.getEnqueuedTime());
+
             return tracer.start(spanName, startOptions, parent);
         }
 
@@ -316,22 +322,6 @@ public class ServiceBusTracer {
         });
     }
 
-    /**
-     * Starts span. Used by ServiceBus*Instrumentations.
-     */
-    Context startProcessSpan(String spanName, ServiceBusReceivedMessage message, Context parent) {
-        if (tracer != null) {
-            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER)
-                .setRemoteParent(extractContext(message.getApplicationProperties()));
-
-            startOptions.setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, message.getEnqueuedTime());
-
-            return tracer.start(spanName, startOptions, parent);
-        }
-
-        return parent;
-    }
-
     private static String getTraceparent(Map<String, Object> applicationProperties) {
         Object diagnosticId = applicationProperties.get(DIAGNOSTIC_ID_KEY);
         if (diagnosticId == null) {
@@ -341,11 +331,57 @@ public class ServiceBusTracer {
         return diagnosticId == null ? null : diagnosticId.toString();
     }
 
-    private StartSpanOptions createStartOption(SpanKind kind) {
-        return new StartSpanOptions(kind)
+    private StartSpanOptions createStartOption(SpanKind kind, OperationName operationName) {
+        StartSpanOptions startOptions = new StartSpanOptions(kind)
             .setAttribute(MESSAGING_SYSTEM_ATTRIBUTE_NAME, "servicebus")
-            .setAttribute(Tracer.ENTITY_PATH_KEY, entityPath)
-            .setAttribute(Tracer.HOST_NAME_KEY, fullyQualifiedName);
+            .setAttribute(ENTITY_PATH_KEY, entityPath)
+            .setAttribute(HOST_NAME_KEY, fullyQualifiedName);
+
+        if (operationName != null) {
+            startOptions.setAttribute(MESSAGING_OPERATION_ATTRIBUTE_NAME, operationName.toString());
+        }
+
+        return startOptions;
     }
 
+    private <T> Mono<T> traceMonoWithLink(String spanName, OperationName operationName, Mono<T> publisher, ServiceBusMessage message, Context messageContext) {
+        if (tracer != null) {
+            return publisher
+                .doOnEach(signal -> {
+                    if (signal.isOnComplete() || signal.isOnError()) {
+                        Context span = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
+                        endSpan(signal.getThrowable(), span, null);
+                    }
+                })
+                .contextWrite(ctx -> {
+                    StartSpanOptions startSpanOptions = createStartOption(SpanKind.CLIENT, operationName);
+                    if (message != null) {
+                        reportMessageSpan(message, messageContext);
+                        startSpanOptions.addLink(createLink(message.getApplicationProperties(), null, messageContext));
+                    }
+
+                    Context span = tracer.start(spanName, startSpanOptions, Context.NONE);
+                    return ctx.put(REACTOR_PARENT_TRACE_CONTEXT_KEY, span);
+                });
+        }
+
+        return publisher;
+    }
+
+    public enum OperationName {
+        PUBLISH("publish"),
+        RECEIVE("receive"),
+        SETTLE("settle"),
+        PROCESS("process");
+
+        private final String operationName;
+        OperationName(String operationName) {
+            this.operationName = operationName;
+        }
+
+        @Override
+        public String toString() {
+            return operationName;
+        }
+    }
 }

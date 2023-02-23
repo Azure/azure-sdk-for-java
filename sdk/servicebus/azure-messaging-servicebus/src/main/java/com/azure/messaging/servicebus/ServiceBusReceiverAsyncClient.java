@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -1195,7 +1196,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return tracer.traceMono("ServiceBus.commitTransaction", connectionProcessor
                     .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
-                    .flatMap(transactionSession -> transactionSession.createTransaction())
+                    .flatMap(AmqpSession::createTransaction)
                     .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId())))
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
