@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -22,7 +23,7 @@ import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUM
 /**
  * Unit test for construct a configuration client by using AAD token credential.
  */
-public class AadCredentialTest extends TestBase {
+public class AadCredentialTest extends TestProxyTestBase {
     private static ConfigurationClient client;
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     static String connectionString;
