@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.TestProxyTestServer;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
@@ -96,6 +97,20 @@ public class TestProxyTests extends TestProxyTestBase {
         // this proves that regardless of where in your test method you might try and get a variable it works.
         String name = testResourceNamer.randomName("test", 10);
         assertEquals("test32950", name);
+    }
+
+    @Test
+    @Tag("Record")
+    @DoNotRecord
+    public void testDoNotRecord() {
+
+    }
+
+    @Test
+    @Tag("Playback")
+    @DoNotRecord
+    public void testDoNotPlayback() {
+
     }
 
     @Test

@@ -325,7 +325,7 @@ public class InterceptorManager implements AutoCloseable {
                         new UncheckedIOException("Unable to write data to playback file.", ex));
                 }
             }
-        } else if (isPlaybackMode() && testProxyEnabled) {
+        } else if (isPlaybackMode() && testProxyEnabled && allowedToReadRecordedValues) {
             testProxyPlaybackClient.stopPlayback();
         }
     }
