@@ -3,56 +3,34 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
-
-import java.time.Instant;
-import java.util.UUID;
 
 /**
  * The options for adding participants.
  */
 @Fluent
 public class TransferToParticipantCallOptions {
+    
     /**
-     * A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * Iformation for TranferTarget
      */
-    private final CommunicationIdentifier targetParticipant;
+    private final CallInvite targetCallInvite;
 
     /**
      * The operational context
      */
     private String operationContext;
 
-    /**
-     * A {@link PhoneNumberIdentifier} representing the caller ID of the transferee, if transferring to a pstn number.
-     */
-    private PhoneNumberIdentifier transfereeCallerId;
-
-    /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
 
     /**
      * Constructor
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param targetCallInvite {@link CallInvite}contains information for TranferTarget.
      */
-    public TransferToParticipantCallOptions(CommunicationIdentifier targetParticipant) {
-        this.targetParticipant = targetParticipant;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
+    public TransferToParticipantCallOptions(CallInvite targetCallInvite) {
+        this.targetCallInvite = targetCallInvite;
     }
 
-    /**
-     * Get the target participant.
-     *
-     * @return the target participant.
-     */
-    public CommunicationIdentifier getTargetParticipant() {
-        return targetParticipant;
-    }
 
     /**
      * Get the operationContext.
@@ -61,24 +39,6 @@ public class TransferToParticipantCallOptions {
      */
     public String  getOperationContext() {
         return operationContext;
-    }
-
-    /**
-     * Get the transfereeCallerId.
-     *
-     * @return the transfereeCallerId.
-     */
-    public PhoneNumberIdentifier getTransfereeCallerId() {
-        return transfereeCallerId;
-    }
-
-    /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
     }
 
     /**
@@ -91,27 +51,13 @@ public class TransferToParticipantCallOptions {
         this.operationContext = operationContext;
         return this;
     }
-
+    
     /**
-     * Set the transfereeCallerId.
-     *
-     * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
-     *                           if transferring to a pstn number.
-     * @return the TransferToParticipantCallOptions object itself.
+     * Get the call information to transfer target
+     * @return a {@link CallInvite} with information to transfer target
      */
-    public TransferToParticipantCallOptions setSourceCallerId(PhoneNumberIdentifier transfereeCallerId) {
-        this.transfereeCallerId = transfereeCallerId;
-        return this;
+    public CallInvite getTargetCallInvite() {
+        return targetCallInvite;
     }
-
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the TransferToParticipantCallOptions object itself.
-     */
-    public TransferToParticipantCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
-        return this;
-    }
+    
 }

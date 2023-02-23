@@ -71,6 +71,10 @@ public final class SqlPoolBlobAuditingPolicyImpl
         return this.innerModel().isAzureMonitorTargetEnabled();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SqlPoolBlobAuditingPolicyInner innerModel() {
         return this.innerObject;
     }

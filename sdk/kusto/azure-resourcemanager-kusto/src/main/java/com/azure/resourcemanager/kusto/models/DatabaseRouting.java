@@ -20,6 +20,15 @@ public final class DatabaseRouting extends ExpandableStringEnum<DatabaseRouting>
     public static final DatabaseRouting MULTI = fromString("Multi");
 
     /**
+     * Creates a new instance of DatabaseRouting value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseRouting() {
+    }
+
+    /**
      * Creates or finds a DatabaseRouting from its string representation.
      *
      * @param name a name to look for.

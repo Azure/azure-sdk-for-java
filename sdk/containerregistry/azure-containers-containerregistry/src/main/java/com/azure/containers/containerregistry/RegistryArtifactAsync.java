@@ -4,6 +4,8 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.ArtifactManifestPropertiesHelper;
+import com.azure.containers.containerregistry.implementation.ArtifactTagPropertiesHelper;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
@@ -20,15 +22,14 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides a helper type that contains all the operations for artifacts in a given repository.
@@ -72,14 +73,12 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
             return Mono.just(digest);
         }
 
-        Mono<String> getTagMono = isDigest(tagOrDigest)
-            ? Mono.just(tagOrDigest)
-            : this.getTagProperties(tagOrDigest).map(a -> a.getDigest());
+        if (isDigest(tagOrDigest)) {
+            return Mono.just(tagOrDigest);
+        }
 
-        return getTagMono.flatMap(res -> {
-            this.digest = res;
-            return Mono.just(res);
-        });
+        return this.getTagProperties(tagOrDigest)
+            .map(a -> a.getDigest());
     }
 
     /**
@@ -107,7 +106,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
     private Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
             return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.deleteManifestWithResponseAsync(getRepositoryName(), res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
+                .flatMap(res -> this.serviceClient.deleteManifestWithResponseAsync(getRepositoryName(), res, context))
                 .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
@@ -164,14 +163,15 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
     }
 
     private Mono<Response<Void>> deleteTagWithResponse(String tag, Context context) {
+        if (tag == null) {
+            return monoError(LOGGER, new NullPointerException("'tag' cannot be null"));
+        }
+        if (tag.isEmpty()) {
+            return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
+        }
+
         try {
-            if (tag == null) {
-                return monoError(LOGGER, new NullPointerException("'tag' cannot be null"));
-            }
-            if (tag.isEmpty()) {
-                return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
-            }
-            return this.serviceClient.deleteTagWithResponseAsync(getRepositoryName(), tag, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.deleteTagWithResponseAsync(getRepositoryName(), tag, context)
                 .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
@@ -238,7 +238,9 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
     private  Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse(Context context) {
         try {
             return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.getManifestPropertiesWithResponseAsync(getRepositoryName(), res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
+                .flatMap(res -> this.serviceClient.getManifestPropertiesWithResponseAsync(getRepositoryName(), res, context))
+                .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                    ArtifactManifestPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -313,7 +315,9 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
                 return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
             }
 
-            return this.serviceClient.getTagPropertiesWithResponseAsync(getRepositoryName(), tag, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.getTagPropertiesWithResponseAsync(getRepositoryName(), tag, context)
+                .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                    ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -425,7 +429,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
             final String orderString = order.equals(ArtifactTagOrder.NONE) ? null : order.toString();
 
             return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(getRepositoryName(), null, pageSize, orderString, res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
+                .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(getRepositoryName(), null, pageSize, orderString, res, context))
                 .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
                     baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())))
                 .onErrorMap(UtilsImpl::mapException);
@@ -436,7 +440,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
 
     private Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
-            return this.serviceClient.getTagsNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.getTagsNextSinglePageAsync(nextLink, context)
                 .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
                     baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())));
         } catch (RuntimeException e) {
@@ -497,7 +501,9 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
                 .setReadEnabled(tagProperties.isReadEnabled())
                 .setWriteEnabled(tagProperties.isWriteEnabled());
 
-            return this.serviceClient.updateTagAttributesWithResponseAsync(getRepositoryName(), tag, writeableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.updateTagAttributesWithResponseAsync(getRepositoryName(), tag, writeableProperties, context)
+                .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                    ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
@@ -562,7 +568,8 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
         return withContext(context -> this.updateManifestPropertiesWithResponse(manifestProperties, context));
     }
 
-    private Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
+    private Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(
+        ArtifactManifestProperties manifestProperties, Context context) {
         try {
             if (manifestProperties == null) {
                 return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
@@ -575,7 +582,10 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
                 .setReadEnabled(manifestProperties.isReadEnabled());
 
             return getDigestMono()
-                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(getRepositoryName(), res, writeableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
+                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(getRepositoryName(), res,
+                    writeableProperties, context))
+                .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                    ArtifactManifestPropertiesHelper.create(internalResponse.getValue())))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);

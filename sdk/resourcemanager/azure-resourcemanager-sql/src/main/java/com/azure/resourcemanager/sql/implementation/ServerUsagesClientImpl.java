@@ -55,7 +55,7 @@ public final class ServerUsagesClientImpl implements ServerUsagesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerUsagesService {
+    public interface ServerUsagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

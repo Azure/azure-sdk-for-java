@@ -12,7 +12,7 @@ import com.azure.resourcemanager.redis.models.PrivateLinkServiceConnectionState;
 /** Samples for PrivateEndpointConnections Put. */
 public final class PrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCachePutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCachePutPrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisCachePutPrivateEndpointConnection.

@@ -61,6 +61,10 @@ public final class OperationResourceInner {
     @JsonProperty(value = "percentComplete")
     private Float percentComplete;
 
+    /** Creates an instance of OperationResourceInner class. */
+    public OperationResourceInner() {
+    }
+
     /**
      * Get the id property: Operation ID.
      *

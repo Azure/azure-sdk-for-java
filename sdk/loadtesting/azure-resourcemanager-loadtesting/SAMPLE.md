@@ -84,8 +84,6 @@ public final class LoadTestsCreateOrUpdateSamples {
 ### LoadTests_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for LoadTests Delete. */
 public final class LoadTestsDeleteSamples {
     /*
@@ -97,7 +95,7 @@ public final class LoadTestsDeleteSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void loadTestsDelete(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().delete("dummyrg", "myLoadTest", Context.NONE);
+        manager.loadTests().delete("dummyrg", "myLoadTest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -105,8 +103,6 @@ public final class LoadTestsDeleteSamples {
 ### LoadTests_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for LoadTests GetByResourceGroup. */
 public final class LoadTestsGetByResourceGroupSamples {
     /*
@@ -118,7 +114,7 @@ public final class LoadTestsGetByResourceGroupSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void loadTestsGet(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().getByResourceGroupWithResponse("dummyrg", "myLoadTest", Context.NONE);
+        manager.loadTests().getByResourceGroupWithResponse("dummyrg", "myLoadTest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -126,8 +122,6 @@ public final class LoadTestsGetByResourceGroupSamples {
 ### LoadTests_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for LoadTests List. */
 public final class LoadTestsListSamples {
     /*
@@ -139,7 +133,7 @@ public final class LoadTestsListSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void loadTestsListBySubscription(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().list(Context.NONE);
+        manager.loadTests().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -147,8 +141,6 @@ public final class LoadTestsListSamples {
 ### LoadTests_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for LoadTests ListByResourceGroup. */
 public final class LoadTestsListByResourceGroupSamples {
     /*
@@ -160,7 +152,7 @@ public final class LoadTestsListByResourceGroupSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void loadTestsListByResourceGroup(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().listByResourceGroup("dummyrg", Context.NONE);
+        manager.loadTests().listByResourceGroup("dummyrg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -168,8 +160,6 @@ public final class LoadTestsListByResourceGroupSamples {
 ### LoadTests_ListOutboundNetworkDependenciesEndpoints
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for LoadTests ListOutboundNetworkDependenciesEndpoints. */
 public final class LoadTestsListOutboundNetworkDependenciesEndpointsSamples {
     /*
@@ -184,7 +174,7 @@ public final class LoadTestsListOutboundNetworkDependenciesEndpointsSamples {
         manager
             .loadTests()
             .listOutboundNetworkDependenciesEndpoints(
-                "default-azureloadtest-japaneast", "sampleloadtest", Context.NONE);
+                "default-azureloadtest-japaneast", "sampleloadtest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -192,7 +182,6 @@ public final class LoadTestsListOutboundNetworkDependenciesEndpointsSamples {
 ### LoadTests_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loadtesting.models.EncryptionProperties;
 import com.azure.resourcemanager.loadtesting.models.EncryptionPropertiesIdentity;
 import com.azure.resourcemanager.loadtesting.models.LoadTestResource;
@@ -215,7 +204,10 @@ public final class LoadTestsUpdateSamples {
      */
     public static void loadTestsUpdate(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
         LoadTestResource resource =
-            manager.loadTests().getByResourceGroupWithResponse("dummyrg", "myLoadTest", Context.NONE).getValue();
+            manager
+                .loadTests()
+                .getByResourceGroupWithResponse("dummyrg", "myLoadTest", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withTags(mapOf("Division", "LT", "Team", "Dev Exp"))
@@ -250,8 +242,6 @@ public final class LoadTestsUpdateSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -263,7 +253,7 @@ public final class OperationsListSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void operationsList(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -271,7 +261,6 @@ public final class OperationsListSamples {
 ### Quotas_CheckAvailability
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequest;
 import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequestPropertiesDimensions;
 
@@ -299,7 +288,7 @@ public final class QuotasCheckAvailabilitySamples {
                         new QuotaBucketRequestPropertiesDimensions()
                             .withSubscriptionId("testsubscriptionId")
                             .withLocation("westus")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -307,8 +296,6 @@ public final class QuotasCheckAvailabilitySamples {
 ### Quotas_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Quotas Get. */
 public final class QuotasGetSamples {
     /*
@@ -320,7 +307,7 @@ public final class QuotasGetSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void quotasGet(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.quotas().getWithResponse("westus", "testQuotaBucket", Context.NONE);
+        manager.quotas().getWithResponse("westus", "testQuotaBucket", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -328,8 +315,6 @@ public final class QuotasGetSamples {
 ### Quotas_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Quotas List. */
 public final class QuotasListSamples {
     /*
@@ -341,7 +326,7 @@ public final class QuotasListSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void quotasList(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.quotas().list("westus", Context.NONE);
+        manager.quotas().list("westus", com.azure.core.util.Context.NONE);
     }
 }
 ```

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ClusterPrincipalAssignments Delete. */
 public final class ClusterPrincipalAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoClusterPrincipalAssignmentsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoClusterPrincipalAssignmentsDelete.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsDelete.
@@ -17,6 +15,8 @@ public final class ClusterPrincipalAssignmentsDeleteSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterPrincipalAssignmentsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.clusterPrincipalAssignments().delete("kustorptest", "kustoCluster", "kustoprincipal1", Context.NONE);
+        manager
+            .clusterPrincipalAssignments()
+            .delete("kustorptest", "kustoCluster", "kustoprincipal1", com.azure.core.util.Context.NONE);
     }
 }

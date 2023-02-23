@@ -29,6 +29,10 @@ public final class CassandraSchema {
     @JsonProperty(value = "clusterKeys")
     private List<ClusterKey> clusterKeys;
 
+    /** Creates an instance of CassandraSchema class. */
+    public CassandraSchema() {
+    }
+
     /**
      * Get the columns property: List of Cassandra table columns.
      *

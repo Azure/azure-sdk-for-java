@@ -1,5 +1,25 @@
 # Release History
 
+## 7.14.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.13.2 (2023-02-20)
+
+### Bugs Fixed
+- Added filter to filter out the closed `ServiceBusReceiveLink` before passing to `ServiceBusReceiveLinkProcessor`. ([#32919](https://github.com/Azure/azure-sdk-for-java/issues/32919))
+- Enabled session processor recovery when broker detaches the link that is waiting to be ACTIVE without an error condition. ([#33313](https://github.com/Azure/azure-sdk-for-java/issues/33313)) 
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+- Upgraded `azure-core-amqp` from `2.8.1` to `2.8.2`.
+- Upgraded `azure-identity` from `1.7.3` to `1.8.0`.
 ## 7.13.1 (2023-01-20)
 
 ### Bugs Fixed

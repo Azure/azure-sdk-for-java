@@ -17,6 +17,9 @@ public final class EntityWithResolution extends Entity {
     @JsonProperty(value = "resolutions")
     private List<BaseResolution> resolutions;
 
+    /** Creates an instance of EntityWithResolution class. */
+    public EntityWithResolution() {}
+
     /**
      * Get the resolutions property: The collection of entity resolution objects.
      *

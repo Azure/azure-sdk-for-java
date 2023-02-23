@@ -64,7 +64,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
-    private interface RestorePointsService {
+    public interface RestorePointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

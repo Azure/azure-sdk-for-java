@@ -23,6 +23,10 @@ public final class KeyVaultKeyReference {
     @JsonProperty(value = "sourceVault", required = true)
     private KeyVaultKeyReferenceSourceVault sourceVault;
 
+    /** Creates an instance of KeyVaultKeyReference class. */
+    public KeyVaultKeyReference() {
+    }
+
     /**
      * Get the keyUrl property: The URL referencing a key encryption key in Key Vault.
      *

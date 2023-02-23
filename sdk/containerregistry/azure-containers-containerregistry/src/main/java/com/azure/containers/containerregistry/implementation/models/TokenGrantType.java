@@ -4,9 +4,6 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Grant type is expected to be refresh_token. */
 public enum TokenGrantType {
     /** Enum value refresh_token. */
@@ -28,7 +25,6 @@ public enum TokenGrantType {
      * @param value the serialized value to parse.
      * @return the parsed TokenGrantType object, or null if unable to parse.
      */
-    @JsonCreator
     public static TokenGrantType fromString(String value) {
         if (value == null) {
             return null;
@@ -43,7 +39,6 @@ public enum TokenGrantType {
     }
 
     /** {@inheritDoc} */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

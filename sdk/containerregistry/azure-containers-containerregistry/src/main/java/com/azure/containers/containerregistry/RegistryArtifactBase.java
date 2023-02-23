@@ -5,13 +5,13 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 class RegistryArtifactBase {
     private static final ClientLogger LOGGER = new ClientLogger(RegistryArtifactBase.class);
@@ -35,27 +35,15 @@ class RegistryArtifactBase {
     protected String digest;
 
     RegistryArtifactBase(String repositoryName, String tagOrDigest, HttpPipeline httpPipeline, String endpoint, String version) {
-        if (repositoryName == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'repositoryName' can't be null"));
-        }
-
+        Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null.");
         if (repositoryName.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty"));
         }
 
-        if (tagOrDigest == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'digest' can't be null"));
-        }
-
+        Objects.requireNonNull(tagOrDigest, "'tagOrDigest' cannot be null.");
         if (tagOrDigest.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'digest' can't be empty"));
         }
-
-        AzureContainerRegistryImpl registryImpl = new AzureContainerRegistryImplBuilder()
-            .pipeline(httpPipeline)
-            .url(endpoint)
-            .apiVersion(version)
-            .buildClient();
 
         this.endpoint = endpoint;
         this.repositoryName = repositoryName;
@@ -69,7 +57,7 @@ class RegistryArtifactBase {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
-        this.serviceClient = registryImpl.getContainerRegistries();
+        this.serviceClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version).getContainerRegistries();
     }
 
     /**

@@ -28,15 +28,6 @@ public final class WorkspaceManagedIdentitySqlControlSettingsImpl
         this.serviceManager = serviceManager;
     }
 
-    public ManagedIdentitySqlControlSettingsModel get(String resourceGroupName, String workspaceName) {
-        ManagedIdentitySqlControlSettingsModelInner inner = this.serviceClient().get(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new ManagedIdentitySqlControlSettingsModelImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ManagedIdentitySqlControlSettingsModel> getWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         Response<ManagedIdentitySqlControlSettingsModelInner> inner =
@@ -47,6 +38,15 @@ public final class WorkspaceManagedIdentitySqlControlSettingsImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ManagedIdentitySqlControlSettingsModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ManagedIdentitySqlControlSettingsModel get(String resourceGroupName, String workspaceName) {
+        ManagedIdentitySqlControlSettingsModelInner inner = this.serviceClient().get(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new ManagedIdentitySqlControlSettingsModelImpl(inner, this.manager());
         } else {
             return null;
         }

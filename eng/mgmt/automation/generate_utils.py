@@ -54,12 +54,8 @@ def generate(
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/test/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
-    if os.path.exists(os.path.join(output_dir, 'src/samples/README.md')):
-        # samples contains hand-written code
-        shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
-                      ignore_errors=True)
-    else:
-        shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors=True)
+    shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
+                  ignore_errors=True)
 
     if re.match(r'https?://', spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)
@@ -295,3 +291,9 @@ def get_suffix_from_api_specs(api_specs_file: str, spec: str):
         return api_spec.get('suffix')
 
     return None
+
+
+def update_spec(spec: str, subspec: str) -> str:
+    if subspec:
+        spec = spec + subspec
+    return spec

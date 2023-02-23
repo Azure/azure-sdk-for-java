@@ -64,7 +64,7 @@ public final class DataWarehouseUserActivitiesOperationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DataWarehouseUserActivitiesOperationsService {
+    public interface DataWarehouseUserActivitiesOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

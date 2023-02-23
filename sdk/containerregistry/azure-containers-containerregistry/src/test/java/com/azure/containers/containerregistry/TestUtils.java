@@ -8,10 +8,12 @@ import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -24,6 +26,7 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class TestUtils {
@@ -67,7 +70,7 @@ public class TestUtils {
     public static final String AZURE_GLOBAL_AUTHENTICATION_SCOPE;
     public static final String AZURE_GOV_AUTHENTICATION_SCOPE;
     public static final String CONTAINERREGISTRY_CLIENT_SECRET;
-
+    public static final BiFunction<HttpRequest, Context, Boolean> SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
     static {
         CONFIGURATION = Configuration.getGlobalConfiguration().clone();
         ALPINE_REPOSITORY_NAME = "library/alpine";
@@ -82,7 +85,7 @@ public class TestUtils {
         TAG_TO_DELETE = "v4";
         TAG_TO_UPDATE = "test-update-properties";
         TAG_UNKNOWN = "unknowntag";
-        DIGEST_UNKNOWN = "unknown:digest";
+        DIGEST_UNKNOWN = "sha256:fffffffffffffffffffffffffffffff";
         PAGESIZE_2 = 2;
         PAGESIZE_1 = 1;
         ARM64_ARCHITECTURE = "arm64";
@@ -108,6 +111,7 @@ public class TestUtils {
         HTTP_STATUS_CODE_202 = 202;
         AZURE_GLOBAL_AUTHENTICATION_SCOPE = "https://management.azure.com/.default";
         AZURE_GOV_AUTHENTICATION_SCOPE = "https://management.usgovcloudapi.net/.default";
+        SKIP_AUTH_TOKEN_REQUEST_FUNCTION = (request, context) -> request.getUrl().toString().contains("oauth2");
     }
 
     static class FakeCredentials implements TokenCredential {
@@ -147,7 +151,7 @@ public class TestUtils {
             return new FakeCredentials();
         }
 
-        if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
+        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(authority)) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
             return new ClientSecretCredentialBuilder()
@@ -233,7 +237,6 @@ public class TestUtils {
 
         int index = 0;
         do {
-
             try {
                 manager.serviceClient().getRegistries().importImage(
                     RESOURCE_GROUP,

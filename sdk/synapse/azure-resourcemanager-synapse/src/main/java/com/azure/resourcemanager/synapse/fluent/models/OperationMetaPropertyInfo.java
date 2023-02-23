@@ -17,6 +17,10 @@ public final class OperationMetaPropertyInfo {
     @JsonProperty(value = "serviceSpecification")
     private OperationMetaServiceSpecification serviceSpecification;
 
+    /** Creates an instance of OperationMetaPropertyInfo class. */
+    public OperationMetaPropertyInfo() {
+    }
+
     /**
      * Get the serviceSpecification property: Operation service specification.
      *

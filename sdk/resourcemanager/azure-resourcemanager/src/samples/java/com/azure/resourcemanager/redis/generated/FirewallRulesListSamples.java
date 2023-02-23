@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for FirewallRules List. */
 public final class FirewallRulesListSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheFirewallRulesList.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheFirewallRulesList.json
      */
     /**
      * Sample code: RedisCacheFirewallRulesList.

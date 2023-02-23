@@ -10,7 +10,7 @@ import com.azure.resourcemanager.dataprotection.models.SyncType;
 /** Samples for BackupInstances SyncBackupInstance. */
 public final class BackupInstancesSyncBackupInstanceSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/BackupInstanceOperations/SyncBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/BackupInstanceOperations/SyncBackupInstance.json
      */
     /**
      * Sample code: Sync BackupInstance.

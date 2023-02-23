@@ -73,6 +73,10 @@ public final class ServerSecurityAlertPolicyImpl
         return this.innerModel().creationTime();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServerSecurityAlertPolicyInner innerModel() {
         return this.innerObject;
     }

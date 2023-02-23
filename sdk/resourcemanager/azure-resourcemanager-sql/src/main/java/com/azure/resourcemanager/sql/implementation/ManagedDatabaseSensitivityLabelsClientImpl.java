@@ -68,7 +68,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedDatabaseSensitivityLabelsService {
+    public interface ManagedDatabaseSensitivityLabelsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

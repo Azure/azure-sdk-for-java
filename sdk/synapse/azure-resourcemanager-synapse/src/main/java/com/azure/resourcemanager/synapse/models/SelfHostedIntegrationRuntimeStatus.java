@@ -27,6 +27,10 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties =
         new SelfHostedIntegrationRuntimeStatusTypeProperties();
 
+    /** Creates an instance of SelfHostedIntegrationRuntimeStatus class. */
+    public SelfHostedIntegrationRuntimeStatus() {
+    }
+
     /**
      * Get the innerTypeProperties property: Self-hosted integration runtime status type properties.
      *
@@ -268,6 +272,24 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
         }
         this.innerTypeProperties().withNewerVersions(newerVersions);
         return this;
+    }
+
+    /**
+     * Get the osType property: The osType property.
+     *
+     * @return the osType value.
+     */
+    public Integer osType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().osType();
+    }
+
+    /**
+     * Get the targetFramework property: The targetFramework property.
+     *
+     * @return the targetFramework value.
+     */
+    public Integer targetFramework() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().targetFramework();
     }
 
     /**

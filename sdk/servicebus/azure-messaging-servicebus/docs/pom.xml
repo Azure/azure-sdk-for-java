@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-servicebus</artifactId>
-            <version>7.13.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+            <version>7.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
         </dependency>
 
         <!-- Dependencies required for Log4j2 -->
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-jsr223</artifactId>
-            <version>3.0.13</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
+            <version>3.0.14</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
             <scope>runtime</scope>
         </dependency>
 

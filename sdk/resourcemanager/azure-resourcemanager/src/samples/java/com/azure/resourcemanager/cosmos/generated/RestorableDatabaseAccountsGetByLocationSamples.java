@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RestorableDatabaseAccounts GetByLocation. */
 public final class RestorableDatabaseAccountsGetByLocationSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBRestorableDatabaseAccountGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBRestorableDatabaseAccountGet.json
      */
     /**
      * Sample code: CosmosDBRestorableDatabaseAccountGet.
@@ -22,6 +20,7 @@ public final class RestorableDatabaseAccountsGetByLocationSamples {
             .manager()
             .serviceClient()
             .getRestorableDatabaseAccounts()
-            .getByLocationWithResponse("West US", "d9b26648-2f53-4541-b3d8-3044f4f9810d", Context.NONE);
+            .getByLocationWithResponse(
+                "West US", "d9b26648-2f53-4541-b3d8-3044f4f9810d", com.azure.core.util.Context.NONE);
     }
 }

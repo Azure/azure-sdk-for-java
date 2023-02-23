@@ -58,6 +58,6 @@ public final class MediaservicesDeleteByResourceGroupWithResponseMockTests {
 
         manager
             .mediaservices()
-            .deleteByResourceGroupWithResponse("lyjt", "vofqzhvfc", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("eb", "ybpmzznrtffyaq", com.azure.core.util.Context.NONE);
     }
 }

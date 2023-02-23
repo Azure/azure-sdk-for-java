@@ -57,9 +57,9 @@ public final class DevCentersImpl {
      * The interface defining all the services for DevCenterDevCenters to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("https://{tenantId}-{devCenter}.{devCenterDnsSuffix}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "DevCenterDevCenters")
-    private interface DevCentersService {
+    public interface DevCentersService {
         @Get("/projects")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -73,9 +73,7 @@ public final class DevCentersImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listProjects(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -94,9 +92,7 @@ public final class DevCentersImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getProject(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("projectName") String projectName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -116,9 +112,7 @@ public final class DevCentersImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllDevBoxes(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -137,9 +131,7 @@ public final class DevCentersImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllDevBoxesByUser(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("userId") String userId,
                 @HeaderParam("Accept") String accept,
@@ -160,9 +152,7 @@ public final class DevCentersImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listProjectsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -181,9 +171,7 @@ public final class DevCentersImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllDevBoxesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -202,9 +190,7 @@ public final class DevCentersImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllDevBoxesByUserNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -247,9 +233,7 @@ public final class DevCentersImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listProjects(
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -368,9 +352,7 @@ public final class DevCentersImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getProject(
-                                this.client.getTenantId(),
-                                this.client.getDevCenter(),
-                                this.client.getDevCenterDnsSuffix(),
+                                this.client.getEndpoint(),
                                 projectName,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -424,6 +406,7 @@ public final class DevCentersImpl {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -470,9 +453,7 @@ public final class DevCentersImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listAllDevBoxes(
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -509,6 +490,7 @@ public final class DevCentersImpl {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -582,6 +564,7 @@ public final class DevCentersImpl {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -648,6 +631,7 @@ public final class DevCentersImpl {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -697,9 +681,7 @@ public final class DevCentersImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listAllDevBoxesByUser(
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         userId,
                                         accept,
@@ -737,6 +719,7 @@ public final class DevCentersImpl {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -812,6 +795,7 @@ public final class DevCentersImpl {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -888,13 +872,7 @@ public final class DevCentersImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listProjectsNext(
-                                        nextLink,
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        accept,
-                                        requestOptions,
-                                        context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -916,6 +894,7 @@ public final class DevCentersImpl {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -965,13 +944,7 @@ public final class DevCentersImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listAllDevBoxesNext(
-                                        nextLink,
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        accept,
-                                        requestOptions,
-                                        context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -993,6 +966,7 @@ public final class DevCentersImpl {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -1042,13 +1016,7 @@ public final class DevCentersImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listAllDevBoxesByUserNext(
-                                        nextLink,
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        accept,
-                                        requestOptions,
-                                        context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

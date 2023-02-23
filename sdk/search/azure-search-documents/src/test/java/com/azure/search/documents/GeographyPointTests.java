@@ -7,6 +7,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -108,7 +109,7 @@ public class GeographyPointTests extends SearchTestBase {
 
         compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals);
 
-        actualDocuments = searchClient.search("Tourist location", new SearchOptions().setOrderBy("id"), null).stream()
+        actualDocuments = searchClient.search("Tourist location", new SearchOptions().setOrderBy("id"), Context.NONE).stream()
             .map(doc -> doc.getDocument(SimpleDocument.class))
             .collect(Collectors.toMap(SimpleDocument::getId, Function.identity()));
 

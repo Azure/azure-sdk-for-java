@@ -56,6 +56,9 @@ public final class AssetFiltersDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.assetFilters().deleteWithResponse("vodhtn", "irudh", "m", "es", com.azure.core.util.Context.NONE);
+        manager
+            .assetFilters()
+            .deleteWithResponse(
+                "cxwaxfewz", "kjexfdeqvhp", "ylkkshkbffmbm", "zjrgyww", com.azure.core.util.Context.NONE);
     }
 }

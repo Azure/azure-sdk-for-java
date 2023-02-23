@@ -20,6 +20,10 @@ public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private GremlinGraphGetProperties innerProperties;
 
+    /** Creates an instance of GremlinGraphGetResultsInner class. */
+    public GremlinGraphGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB Gremlin graph.
      *

@@ -20,6 +20,15 @@ public final class BackupStorageVersion extends ExpandableStringEnum<BackupStora
     public static final BackupStorageVersion UNASSIGNED = fromString("Unassigned");
 
     /**
+     * Creates a new instance of BackupStorageVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupStorageVersion() {
+    }
+
+    /**
      * Creates or finds a BackupStorageVersion from its string representation.
      *
      * @param name a name to look for.

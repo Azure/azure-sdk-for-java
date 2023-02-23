@@ -23,6 +23,9 @@ public final class AbstractiveSummary {
     @JsonProperty(value = "contexts")
     private List<SummaryContext> contexts;
 
+    /** Creates an instance of AbstractiveSummary class. */
+    public AbstractiveSummary() {}
+
     /**
      * Get the text property: The text of the summary.
      *

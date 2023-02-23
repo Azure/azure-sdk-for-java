@@ -16,6 +16,10 @@ public final class TrustedExternalTenant {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of TrustedExternalTenant class. */
+    public TrustedExternalTenant() {
+    }
+
     /**
      * Get the value property: GUID representing an external tenant.
      *

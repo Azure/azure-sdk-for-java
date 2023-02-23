@@ -46,10 +46,6 @@ public final class StorageTargetsImpl implements StorageTargets {
         return Utils.mapPage(inner, inner1 -> new StorageTargetImpl(inner1, this.manager()));
     }
 
-    public void delete(String resourceGroupName, String cacheName, String storageTargetName, String force) {
-        this.serviceClient().delete(resourceGroupName, cacheName, storageTargetName, force);
-    }
-
     public void delete(String resourceGroupName, String cacheName, String storageTargetName) {
         this.serviceClient().delete(resourceGroupName, cacheName, storageTargetName);
     }
@@ -57,15 +53,6 @@ public final class StorageTargetsImpl implements StorageTargets {
     public void delete(
         String resourceGroupName, String cacheName, String storageTargetName, String force, Context context) {
         this.serviceClient().delete(resourceGroupName, cacheName, storageTargetName, force, context);
-    }
-
-    public StorageTarget get(String resourceGroupName, String cacheName, String storageTargetName) {
-        StorageTargetInner inner = this.serviceClient().get(resourceGroupName, cacheName, storageTargetName);
-        if (inner != null) {
-            return new StorageTargetImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<StorageTarget> getWithResponse(
@@ -81,6 +68,23 @@ public final class StorageTargetsImpl implements StorageTargets {
         } else {
             return null;
         }
+    }
+
+    public StorageTarget get(String resourceGroupName, String cacheName, String storageTargetName) {
+        StorageTargetInner inner = this.serviceClient().get(resourceGroupName, cacheName, storageTargetName);
+        if (inner != null) {
+            return new StorageTargetImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void restoreDefaults(String resourceGroupName, String cacheName, String storageTargetName) {
+        this.serviceClient().restoreDefaults(resourceGroupName, cacheName, storageTargetName);
+    }
+
+    public void restoreDefaults(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
+        this.serviceClient().restoreDefaults(resourceGroupName, cacheName, storageTargetName, context);
     }
 
     public StorageTarget getById(String id) {

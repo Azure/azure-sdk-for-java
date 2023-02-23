@@ -5,9 +5,9 @@ package com.azure.communication.callautomation.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.core.annotation.Fluent;
 
-/** The ChoiceResult model. */
+/** The CollectChoiceResult model. */
 @Fluent
-public final class ChoiceResult {
+public final class ChoiceResult extends RecognizeResult {
     /*
      * Label is the primary identifier for the choice detected
      */

@@ -6,10 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for StopwordsList. */
+/** Identifies a predefined list of language-specific stopwords. */
 public enum StopwordsList {
     /** Enum value arabic. */
     ARABIC("arabic"),
@@ -117,7 +114,6 @@ public enum StopwordsList {
      * @param value the serialized value to parse.
      * @return the parsed StopwordsList object, or null if unable to parse.
      */
-    @JsonCreator
     public static StopwordsList fromString(String value) {
         if (value == null) {
             return null;
@@ -131,7 +127,7 @@ public enum StopwordsList {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;
