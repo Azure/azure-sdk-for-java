@@ -54,6 +54,7 @@ import static com.azure.storage.file.share.FileTestHelper.createFileRanges
 import static com.azure.storage.file.share.FileTestHelper.createRandomFileWithLength
 import static com.azure.storage.file.share.FileTestHelper.deleteFileIfExists
 import static com.azure.storage.file.share.FileTestHelper.getRandomBuffer
+import static com.azure.storage.file.share.FileTestHelper.getRandomByteBuffer
 import static com.azure.storage.file.share.FileTestHelper.getRandomFile
 
 class FileAPITests extends APISpec {
@@ -233,6 +234,38 @@ class FileAPITests extends APISpec {
         filePermissionKey   | permission
         "filePermissionKey" | filePermission
         null                | new String(getRandomBuffer(9 * Constants.KB))
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    @Unroll
+    def "Create file trailing dot"() {
+        setup:
+        shareClient = getShareClient(shareName, allowTrailingDot, null)
+
+        def rootDirectory = shareClient.getRootDirectoryClient()
+        def fileName = generatePathName()
+        def fileNameWithDot = fileName + "."
+        def fileClient = rootDirectory.getFileClient(fileNameWithDot)
+        fileClient.create(1024)
+
+        when:
+        def foundFiles = [] as Set
+        for (def fileRef : rootDirectory.listFilesAndDirectories()) {
+            foundFiles << fileRef.getName()
+        }
+
+        then:
+        foundFiles.size() == 1
+        if (allowTrailingDot) {
+            foundFiles[0] == fileNameWithDot
+        } else {
+            foundFiles[0] == fileName
+        }
+
+        where:
+        allowTrailingDot | _
+        true             | _
+        false            | _
     }
 
     def "Upload and download data"() {
@@ -511,6 +544,23 @@ class FileAPITests extends APISpec {
         bodyStr == data.defaultText
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Download trailing dot"() {
+        setup:
+        def shareFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+
+        shareFileClient.create(data.defaultDataSizeLong)
+        shareFileClient.uploadRange(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        shareFileClient.download(outStream)
+
+        then:
+        def downloadedData = outStream.toString()
+        downloadedData == data.defaultText
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Upload Range 4TB"() {
         given:
@@ -545,6 +595,23 @@ class FileAPITests extends APISpec {
         _ || 4 * Constants.MB // max put range
         _ || 5 * Constants.MB
 
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Upload range trailing dot"() {
+        given:
+        primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+        primaryFileClient.create(data.defaultDataSizeLong)
+
+        when:
+        def options = new ShareFileUploadRangeOptions(data.defaultInputStream, data.defaultDataSizeLong)
+        def uploadResponse = primaryFileClient.uploadRangeWithResponse(options, null, null)
+        def downloadResponse = primaryFileClient.downloadWithResponse(new ByteArrayOutputStream(), null, null, null)
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 200)
+        downloadResponse.getDeserializedHeaders().getContentLength() == data.defaultDataSizeLong
     }
 
     @Unroll
@@ -669,6 +736,16 @@ class FileAPITests extends APISpec {
         for (def b : stream.toByteArray()) {
             b == 0
         }
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Clear range trailing dot"() {
+        given:
+        def primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+        primaryFileClient.create(data.defaultDataSizeLong)
+
+        expect:
+        assertResponseStatusCode(primaryFileClient.clearRangeWithResponse(data.defaultDataSizeLong, 0, null, null), 201)
     }
 
     def "Clear range error"() {
@@ -981,6 +1058,61 @@ class FileAPITests extends APISpec {
         FileLastWrittenMode.PRESERVE | _
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Upload range from Url trailing dot"() {
+        setup:
+        shareClient = getShareClient(shareName, true, true)
+
+        def directoryClient = shareClient.getRootDirectoryClient()
+        def sourceClient = directoryClient.getFileClient(generatePathName() + ".")
+        sourceClient.create(Constants.KB)
+
+        def destinationClient = directoryClient.getFileClient(generatePathName() + ".")
+        destinationClient.create(Constants.KB)
+
+        sourceClient.uploadRange(new ByteArrayInputStream(getRandomBuffer(Constants.KB)), Constants.KB)
+
+        def permissions = new ShareFileSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+        def sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
+        def sasToken = shareClient.generateSas(sasValues)
+
+        when:
+        def res = destinationClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(Constants.KB,
+            sourceClient.getFileUrl() + "?" + sasToken), null, null)
+
+        then:
+        assertResponseStatusCode(res, 201)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Upload range from Url trailing dot fail"() {
+        setup:
+        shareClient = getShareClient(shareName, true, false)
+
+        def directoryClient = shareClient.getRootDirectoryClient()
+        def sourceClient = directoryClient.getFileClient(generatePathName() + ".")
+        sourceClient.create(data.defaultDataSizeLong)
+
+        def destinationClient = directoryClient.getFileClient(generatePathName() + ".")
+        destinationClient.create(data.defaultDataSizeLong)
+
+        sourceClient.uploadRange(data.defaultInputStream, data.defaultDataSizeLong)
+
+        when:
+        destinationClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(data.defaultDataSizeLong,
+            sourceClient.getFileUrl()), null, null)
+
+        then:
+        // error thrown: CannotVerifyCopySource
+        thrown(ShareStorageException)
+    }
+
     def "Open input stream with range"() {
         setup:
         primaryFileClient.create(1024)
@@ -1054,6 +1186,49 @@ class FileAPITests extends APISpec {
         false                | true              | false          | false               | PermissionCopyModeType.OVERRIDE
         false                | false             | true           | false               | PermissionCopyModeType.SOURCE
         false                | false             | false          | true                | PermissionCopyModeType.SOURCE
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Start copy trailing dot"() {
+        given:
+        shareClient = getShareClient(shareName, true, true)
+
+        def sourceClient = shareClient.getFileClient(generatePathName() + ".")
+        sourceClient.create(1024)
+
+        def destClient = shareClient.getFileClient(generatePathName() + ".")
+        destClient.create(1024)
+
+        def data = getRandomBuffer(Constants.KB)
+        def inputStream = new ByteArrayInputStream(data)
+
+        sourceClient.uploadRange(inputStream, Constants.KB)
+
+        expect:
+        def poller = destClient.beginCopy(sourceClient.getFileUrl(), null, null)
+        poller.waitForCompletion()
+        poller.poll().getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Start copy trailing dot fail"() {
+        setup:
+        shareClient = getShareClient(shareName, true, false)
+
+        def sourceClient = shareClient.getFileClient(generatePathName() + ".")
+        sourceClient.create(1024)
+
+        def destClient = shareClient.getFileClient(generatePathName() + ".")
+        destClient.create(1024)
+
+        sourceClient.uploadRange(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        destClient.beginCopy(sourceClient.getFileUrl(), null, null)
+
+        then:
+        def e = thrown(ShareStorageException)
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
     @Ignore("There is a race condition in Poller where it misses the first observed event if there is a gap between the time subscribed and the time we start observing events.")
@@ -1438,6 +1613,36 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Abort copy trailing dot"() {
+        given:
+        def data = new ByteArrayInputStream(new byte[Constants.MB])
+        def fileName = generatePathName() + "."
+        def primaryFileClient = getFileClient(shareName, fileName, true, null)
+
+        primaryFileClient.create(Constants.MB)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data), null, null)
+
+        def sourceURL = primaryFileClient.getFileUrl()
+
+        def dest = fileBuilderHelper(shareName, fileName).buildFileClient()
+        dest.create(Constants.MB)
+
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(sourceURL, null, null)
+
+        def pollResponse = poller.poll()
+
+        assert pollResponse != null
+        assert pollResponse.getValue() != null
+        dest.abortCopy(pollResponse.getValue().getCopyId())
+
+        then:
+        // This exception is intentional. It is difficult to test abortCopy in a deterministic way.
+        // Exception thrown: "NoPendingCopyOperation"
+        thrown(ShareStorageException)
+    }
+
     def "Abort copy error"() {
         when:
         primaryFileClient.abortCopy("randomId")
@@ -1453,6 +1658,17 @@ class FileAPITests extends APISpec {
 
         expect:
         assertResponseStatusCode(primaryFileClient.deleteWithResponse(null, null), 202)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Delete file trailing dot"() {
+        given:
+        def shareFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+
+        shareFileClient.create(1024)
+
+        expect:
+        assertResponseStatusCode(shareFileClient.deleteWithResponse(null, null), 202)
     }
 
     def "Delete file error"() {
@@ -1513,6 +1729,32 @@ class FileAPITests extends APISpec {
         smbProperties.setFileCreationTime(namer.getUtcNow())
             .setFileLastWriteTime(namer.getUtcNow())
         def resp = primaryFileClient.getPropertiesWithResponse(null, null)
+
+        then:
+        assertResponseStatusCode(resp, 200)
+        resp.getValue().getETag()
+        resp.getValue().getLastModified()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Get properties trailing dot"() {
+        given:
+        def shareFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+
+        shareFileClient.create(1024)
+
+        when:
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
+        def resp = shareFileClient.getPropertiesWithResponse(null, null)
 
         then:
         assertResponseStatusCode(resp, 200)
@@ -1596,6 +1838,21 @@ class FileAPITests extends APISpec {
         compareDatesWithPrecision(primaryFileClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Set httpHeaders trailing dot"() {
+        setup:
+        def shareFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+
+        shareFileClient.create(1024)
+        def changeTime = namer.getUtcNow()
+
+        when:
+        shareFileClient.setProperties(512, null, new FileSmbProperties().setFileChangeTime(changeTime), null)
+
+        then:
+        compareDatesWithPrecision(shareFileClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
+    }
+
     def "Set httpHeaders error"() {
         given:
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
@@ -1622,6 +1879,25 @@ class FileAPITests extends APISpec {
         updatedMetadata == getPropertiesAfter.getMetadata()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Set metadata trailing dot"() {
+        given:
+        def shareFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+
+        shareFileClient.createWithResponse(1024, httpHeaders, null, null, testMetadata, null, null)
+        def updatedMetadata = Collections.singletonMap("update", "value")
+
+        when:
+        def getPropertiesBefore = shareFileClient.getProperties()
+        def setPropertiesResponse = shareFileClient.setMetadataWithResponse(updatedMetadata, null, null)
+        def getPropertiesAfter = shareFileClient.getProperties()
+
+        then:
+        testMetadata == getPropertiesBefore.getMetadata()
+        assertResponseStatusCode(setPropertiesResponse, 200)
+        updatedMetadata == getPropertiesAfter.getMetadata()
+    }
+
     def "Set metadata error"() {
         given:
         primaryFileClient.create(1024)
@@ -1639,6 +1915,26 @@ class FileAPITests extends APISpec {
         given:
         def fileName = namer.getRandomName(60)
         primaryFileClient.create(1024)
+        def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
+        primaryFileClient.uploadFromFile(uploadFile)
+
+        expect:
+        primaryFileClient.listRanges().each {
+            assert it.getStart() == 0
+            assert it.getEnd() == 1023
+        }
+
+        cleanup:
+        deleteFileIfExists(testFolder.getPath(), fileName)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "List ranges trailing dot"() {
+        given:
+        def primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+        primaryFileClient.create(1024)
+
+        def fileName = namer.getRandomName(60) + "."
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
 
@@ -1814,6 +2110,32 @@ class FileAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "List ranges diff trailing dot"() {
+        given:
+        def primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+
+        def fileNameWithDot = namer.getRandomName(60) + "."
+        primaryFileClient.create(1024 + data.defaultDataSizeLong)
+        def uploadFile = createRandomFileWithLength(1024, testFolder, fileNameWithDot)
+        primaryFileClient.uploadFromFile(uploadFile)
+
+        def snapInfo = shareClient.createSnapshot()
+
+        def options = new ShareFileUploadRangeOptions(data.defaultInputStream, data.defaultDataSizeLong).setOffset(1024)
+        primaryFileClient.uploadRangeWithResponse(options, null, null)
+
+        when:
+        def range = primaryFileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRange(new ShareFileRange(1025, 1026)), null, null).getValue().getRanges().get(0)
+
+        then:
+        range.getStart() == 1025
+        range.getEnd() == 1026
+
+        cleanup:
+        deleteFileIfExists(testFolder.getPath(), fileNameWithDot)
+    }
+
     def "List ranges diff lease fail"() {
         given:
         def fileName = namer.getRandomName(60)
@@ -1868,6 +2190,16 @@ class FileAPITests extends APISpec {
         primaryFileClient.listHandles(2, null, null).size() == 0
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "List handles trailing dot"() {
+        given:
+        def primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+        primaryFileClient.create(1024)
+
+        expect:
+        primaryFileClient.listHandles().size() == 0
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
@@ -1891,6 +2223,21 @@ class FileAPITests extends APISpec {
 
         then:
         thrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Force close handle trailing dot"() {
+        given:
+        def primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+        primaryFileClient.create(512)
+
+        when:
+        def handlesClosedInfo = primaryFileClient.forceCloseHandle("1")
+
+        then:
+        handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
+        notThrown(ShareStorageException)
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
@@ -2110,6 +2457,23 @@ class FileAPITests extends APISpec {
 
         then:
         updatedMetadata == getPropertiesAfter.getMetadata()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Rename trailing dot"() {
+        setup:
+        shareClient = getShareClient(shareName, true, true)
+
+        def rootDirectory = shareClient.getRootDirectoryClient()
+        def primaryFileClient = rootDirectory.getFileClient(generatePathName() + ".")
+        primaryFileClient.create(1024)
+
+        when:
+        def response = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName() + "."), null, null)
+
+        then:
+        assertResponseStatusCode(response, 200)
+        notThrown(ShareStorageException)
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")

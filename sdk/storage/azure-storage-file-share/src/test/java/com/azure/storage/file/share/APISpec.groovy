@@ -153,6 +153,13 @@ class APISpec extends StorageSpec {
         return shareBuilderHelper(shareName, null)
     }
 
+    ShareClient getShareClient(final String shareName, Boolean allowTrailingDot, Boolean allowSourceTrailingDot) {
+        def builder = shareBuilderHelper(shareName, null)
+        if (allowTrailingDot != null) builder.allowTrailingDot(allowTrailingDot)
+        if (allowSourceTrailingDot != null) builder.allowSourceTrailingDot(allowSourceTrailingDot)
+        return builder.buildClient()
+    }
+
     def shareBuilderHelper(final String shareName, final String snapshot) {
         ShareClientBuilder builder = instrument(new ShareClientBuilder())
         return builder.connectionString(environment.primaryAccount.connectionString)
@@ -206,6 +213,13 @@ class APISpec extends StorageSpec {
             builder.sasToken(sasToken)
         }
 
+        return builder.buildFileClient()
+    }
+
+    ShareFileClient getFileClient(final String shareName, final String fileName, Boolean allowTrailingDot, Boolean allowSourceTrailingDot) {
+        def builder = fileBuilderHelper(shareName, fileName)
+        if (allowTrailingDot != null) builder.allowTrailingDot(allowTrailingDot)
+        if (allowSourceTrailingDot != null) builder.allowSourceTrailingDot(allowSourceTrailingDot)
         return builder.buildFileClient()
     }
 
