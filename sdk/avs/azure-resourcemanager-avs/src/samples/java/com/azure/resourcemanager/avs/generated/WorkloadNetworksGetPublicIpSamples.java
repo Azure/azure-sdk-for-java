@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetPublicIp. */
 public final class WorkloadNetworksGetPublicIpSamples {
     /*
@@ -17,6 +15,8 @@ public final class WorkloadNetworksGetPublicIpSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetPublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getPublicIpWithResponse("group1", "cloud1", "publicIP1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getPublicIpWithResponse("group1", "cloud1", "publicIP1", com.azure.core.util.Context.NONE);
     }
 }

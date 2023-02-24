@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServer;
 
@@ -20,7 +19,10 @@ public final class WorkloadNetworksUpdateDhcpSamples {
      */
     public static void workloadNetworksUpdateDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkDhcp resource =
-            manager.workloadNetworks().getDhcpWithResponse("group1", "dhcp1", "cloud1", Context.NONE).getValue();
+            manager
+                .workloadNetworks()
+                .getDhcpWithResponse("group1", "dhcp1", "cloud1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withProperties(
