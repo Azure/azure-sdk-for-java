@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -37,6 +38,7 @@ import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.RestoreStatusInner;
 import com.azure.resourcemanager.netapp.models.BackupPatch;
+import com.azure.resourcemanager.netapp.models.BackupRestoreFiles;
 import com.azure.resourcemanager.netapp.models.BackupsList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -66,7 +68,7 @@ public final class BackupsClientImpl implements BackupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
-    private interface BackupsService {
+    public interface BackupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
@@ -190,6 +192,25 @@ public final class BackupsClientImpl implements BackupsClient {
             @PathParam("backupName") String backupName,
             @QueryParam("api-version") String apiVersion,
             Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
+                + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/backups/{backupName}"
+                + "/restoreFiles")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> restoreFiles(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName,
+            @PathParam("volumeName") String volumeName,
+            @PathParam("backupName") String backupName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BackupRestoreFiles body,
+            Context context);
     }
 
     /**
@@ -197,7 +218,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Get the status of the backup for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -258,7 +279,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Get the status of the backup for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -317,7 +338,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Get the status of the backup for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -338,27 +359,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Get the status of the backup for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the backup for a volume.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupStatusInner getStatus(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        return getStatusAsync(resourceGroupName, accountName, poolName, volumeName).block();
-    }
-
-    /**
-     * Get volume's backup status
-     *
-     * <p>Get the status of the backup for a volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -375,11 +376,31 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the backup for a volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupStatusInner getStatus(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        return getStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE).getValue();
+    }
+
+    /**
      * Get volume's restore status
      *
      * <p>Get the status of the restore for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -440,7 +461,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Get the status of the restore for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -499,7 +520,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Get the status of the restore for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -520,27 +541,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Get the status of the restore for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestoreStatusInner getVolumeRestoreStatus(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        return getVolumeRestoreStatusAsync(resourceGroupName, accountName, poolName, volumeName).block();
-    }
-
-    /**
-     * Get volume's restore status
-     *
-     * <p>Get the status of the restore for a volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -558,11 +559,32 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the restore for a volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RestoreStatusInner getVolumeRestoreStatus(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        return getVolumeRestoreStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * List Backups
      *
      * <p>List all backups for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -626,7 +648,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>List all backups for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -688,7 +710,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>List all backups for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -708,7 +730,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>List all backups for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -730,7 +752,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>List all backups for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -750,7 +772,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>List all backups for a volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -771,7 +793,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Gets the specified backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -836,7 +858,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Gets the specified backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -904,7 +926,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Gets the specified backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -926,28 +948,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Gets the specified backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup of the volume.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupInner get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String backupName) {
-        return getAsync(resourceGroupName, accountName, poolName, volumeName, backupName).block();
-    }
-
-    /**
-     * Get a backup
-     *
-     * <p>Gets the specified backup of the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -970,11 +971,33 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified backup of the volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInner get(
+        String resourceGroupName, String accountName, String poolName, String volumeName, String backupName) {
+        return getWithResponse(resourceGroupName, accountName, poolName, volumeName, backupName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Create a backup
      *
      * <p>Create a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1051,7 +1074,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Create a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1127,7 +1150,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Create a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1159,7 +1182,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Create a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1194,7 +1217,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Create a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1213,7 +1236,9 @@ public final class BackupsClientImpl implements BackupsClient {
         String volumeName,
         String backupName,
         BackupInner body) {
-        return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body)
+            .getSyncPoller();
     }
 
     /**
@@ -1221,7 +1246,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Create a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1242,7 +1267,8 @@ public final class BackupsClientImpl implements BackupsClient {
         String backupName,
         BackupInner body,
         Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body, context)
+        return this
+            .beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body, context)
             .getSyncPoller();
     }
 
@@ -1251,7 +1277,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Create a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1280,7 +1306,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Create a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1311,7 +1337,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Create a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1338,7 +1364,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Create a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1367,7 +1393,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Patch a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1442,7 +1468,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Patch a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1516,7 +1542,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Patch a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1548,7 +1574,34 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Patch a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup of a Volume.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BackupInner>, BackupInner> beginUpdateAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName, String backupName) {
+        final BackupPatch body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body);
+        return this
+            .client
+            .<BackupInner, BackupInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BackupInner.class, BackupInner.class, this.client.getContext());
+    }
+
+    /**
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1583,12 +1636,11 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Patch a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param backupName The name of the backup.
-     * @param body Backup object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1596,42 +1648,10 @@ public final class BackupsClientImpl implements BackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String backupName,
-        BackupPatch body) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body).getSyncPoller();
-    }
-
-    /**
-     * Patch a backup
-     *
-     * <p>Patch a backup for the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param backupName The name of the backup.
-     * @param body Backup object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backup of a Volume.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String backupName,
-        BackupPatch body,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body, context)
+        String resourceGroupName, String accountName, String poolName, String volumeName, String backupName) {
+        final BackupPatch body = null;
+        return this
+            .beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body)
             .getSyncPoller();
     }
 
@@ -1640,7 +1660,38 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Patch a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup of a Volume.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupPatch body,
+        Context context) {
+        return this
+            .beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1669,7 +1720,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Patch a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1693,7 +1744,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Patch a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1724,34 +1775,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Patch a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param backupName The name of the backup.
-     * @param body Backup object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup of a Volume.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String backupName,
-        BackupPatch body) {
-        return updateAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body).block();
-    }
-
-    /**
-     * Patch a backup
-     *
-     * <p>Patch a backup for the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1773,7 +1797,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Patch a backup for the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1802,7 +1826,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Delete a backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1865,7 +1889,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Delete a backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1931,7 +1955,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Delete a backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1957,7 +1981,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Delete a backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1989,7 +2013,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Delete a backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -2002,7 +2026,7 @@ public final class BackupsClientImpl implements BackupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName, String volumeName, String backupName) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, backupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, backupName).getSyncPoller();
     }
 
     /**
@@ -2010,7 +2034,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Delete a backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -2029,7 +2053,8 @@ public final class BackupsClientImpl implements BackupsClient {
         String volumeName,
         String backupName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, backupName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, backupName, context)
             .getSyncPoller();
     }
 
@@ -2038,7 +2063,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Delete a backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -2061,7 +2086,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Delete a backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -2090,7 +2115,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Delete a backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -2110,7 +2135,7 @@ public final class BackupsClientImpl implements BackupsClient {
      *
      * <p>Delete a backup of the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -2129,5 +2154,395 @@ public final class BackupsClientImpl implements BackupsClient {
         String backupName,
         Context context) {
         deleteAsync(resourceGroupName, accountName, poolName, volumeName, backupName, context).block();
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> restoreFilesWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .restoreFiles(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            poolName,
+                            volumeName,
+                            backupName,
+                            this.client.getApiVersion(),
+                            body,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> restoreFilesWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .restoreFiles(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                poolName,
+                volumeName,
+                backupName,
+                this.client.getApiVersion(),
+                body,
+                context);
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRestoreFilesAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            restoreFilesWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRestoreFilesAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            restoreFilesWithResponseAsync(
+                resourceGroupName, accountName, poolName, volumeName, backupName, body, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRestoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body) {
+        return this
+            .beginRestoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRestoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body,
+        Context context) {
+        return this
+            .beginRestoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> restoreFilesAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body) {
+        return beginRestoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> restoreFilesAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body,
+        Context context) {
+        return beginRestoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body) {
+        restoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body).block();
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body,
+        Context context) {
+        restoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, backupName, body, context).block();
     }
 }

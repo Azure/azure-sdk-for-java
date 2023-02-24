@@ -65,7 +65,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
-    private interface VolumeQuotaRulesService {
+    public interface VolumeQuotaRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
@@ -147,7 +147,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
                 + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules"
                 + "/{volumeQuotaRuleName}")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -166,7 +166,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>List all quota rules associated with the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -230,7 +230,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>List all quota rules associated with the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -292,7 +292,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>List all quota rules associated with the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -312,7 +312,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>List all quota rules associated with the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -334,7 +334,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>List all quota rules associated with the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -354,7 +354,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>List all quota rules associated with the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -375,7 +375,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Get details of the specified quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -441,7 +441,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Get details of the specified quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -510,7 +510,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Get details of the specified quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -532,28 +532,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Get details of the specified quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified quota rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeQuotaRuleInner get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
-        return getAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName).block();
-    }
-
-    /**
-     * Describe a quota rule
-     *
-     * <p>Get details of the specified quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -577,11 +556,33 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
     }
 
     /**
+     * Describe a quota rule
+     *
+     * <p>Get details of the specified quota rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param volumeQuotaRuleName The name of volume quota rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified quota rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VolumeQuotaRuleInner get(
+        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
+        return getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Create a quota rule
      *
      * <p>Create the specified quota rule within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -659,7 +660,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Create the specified quota rule within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -736,7 +737,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Create the specified quota rule within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -772,7 +773,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Create the specified quota rule within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -808,7 +809,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Create the specified quota rule within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -827,7 +828,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         String volumeName,
         String volumeQuotaRuleName,
         VolumeQuotaRuleInner body) {
-        return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
+        return this
+            .beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
             .getSyncPoller();
     }
 
@@ -836,7 +838,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Create the specified quota rule within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -857,8 +859,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         String volumeQuotaRuleName,
         VolumeQuotaRuleInner body,
         Context context) {
-        return beginCreateAsync(
-                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
+        return this
+            .beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
             .getSyncPoller();
     }
 
@@ -867,7 +869,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Create the specified quota rule within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -896,7 +898,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Create the specified quota rule within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -928,7 +930,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Create the specified quota rule within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -955,7 +957,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Create the specified quota rule within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -985,7 +987,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Patch a quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1063,7 +1065,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Patch a quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1140,7 +1142,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Patch a quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1176,7 +1178,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Patch a quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1212,7 +1214,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Patch a quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1231,7 +1233,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         String volumeName,
         String volumeQuotaRuleName,
         VolumeQuotaRulePatch body) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
+        return this
+            .beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
             .getSyncPoller();
     }
 
@@ -1240,7 +1243,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Patch a quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1261,8 +1264,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         String volumeQuotaRuleName,
         VolumeQuotaRulePatch body,
         Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
             .getSyncPoller();
     }
 
@@ -1271,7 +1274,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Patch a quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1300,7 +1303,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Patch a quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1332,7 +1335,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Patch a quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1359,7 +1362,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Patch a quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1389,7 +1392,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Delete quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1453,7 +1456,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Delete quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1520,7 +1523,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Delete quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1546,7 +1549,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Delete quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1578,7 +1581,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Delete quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1591,7 +1594,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName)
+        return this
+            .beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName)
             .getSyncPoller();
     }
 
@@ -1600,7 +1604,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Delete quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1619,7 +1623,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         String volumeName,
         String volumeQuotaRuleName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
             .getSyncPoller();
     }
 
@@ -1628,7 +1633,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Delete quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1651,7 +1656,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Delete quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1680,7 +1685,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Delete quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1700,7 +1705,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      *
      * <p>Delete quota rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
