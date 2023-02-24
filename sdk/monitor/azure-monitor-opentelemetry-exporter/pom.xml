@@ -38,7 +38,6 @@
       --add-opens com.azure.monitor.opentelemetry.exporter/com.azure.monitor.opentelemetry.exporter=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
-    <opentelemetry.version>1.23.0</opentelemetry.version>
   </properties>
 
   <dependencies>
