@@ -4,14 +4,14 @@
 package com.azure.storage.file.share.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
-import com.azure.storage.file.share.ShareClientBuilder;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceVersion;
-import com.azure.storage.file.share.models.ShareFileRequestIntent;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 
 import java.net.URL;
 import java.util.Objects;
@@ -81,7 +81,7 @@ public final class ShareLeaseClientBuilder {
     private boolean isShareFile;
     private String accountName;
     private ShareServiceVersion serviceVersion;
-    private ShareFileRequestIntent fileRequestIntent;
+    private ShareTokenIntent shareTokenIntent;
 
     /**
      * Creates a {@link ShareLeaseClient} based on the configurations set in the builder.
@@ -100,7 +100,7 @@ public final class ShareLeaseClientBuilder {
     public ShareLeaseAsyncClient buildAsyncClient() {
         ShareServiceVersion version = (serviceVersion == null) ? ShareServiceVersion.getLatest() : serviceVersion;
         return new ShareLeaseAsyncClient(pipeline, url, shareName, shareSnapshot, resourcePath, getLeaseId(),
-            isShareFile, accountName, version.getVersion(), fileRequestIntent);
+            isShareFile, accountName, version.getVersion(), shareTokenIntent);
     }
 
     /**
@@ -201,13 +201,14 @@ public final class ShareLeaseClientBuilder {
     }
 
     /**
-     * Sets the {@link ShareFileRequestIntent} that specifies whether there is intent for a file to be backed up.
+     * Sets the {@link ShareTokenIntent} that specifies whether there is intent for a file to be backed up.
+     * This is currently required when using {@link TokenCredential}.
      *
-     * @param fileRequestIntent the {@link ShareFileRequestIntent} value.
+     * @param shareTokenIntent the {@link ShareTokenIntent} value.
      * @return the updated ShareLeaseClientBuilder object
      */
-    public ShareLeaseClientBuilder fileRequestIntent(ShareFileRequestIntent fileRequestIntent) {
-        this.fileRequestIntent = fileRequestIntent;
+    public ShareLeaseClientBuilder shareTokenIntent(ShareTokenIntent shareTokenIntent) {
+        this.shareTokenIntent = shareTokenIntent;
         return this;
     }
 }

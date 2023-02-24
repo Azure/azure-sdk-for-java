@@ -37,7 +37,7 @@ import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
-import com.azure.storage.file.share.models.ShareFileRequestIntent;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -181,7 +181,7 @@ public class ShareFileClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private ShareServiceVersion version;
-    private ShareFileRequestIntent fileRequestIntent;
+    private ShareTokenIntent shareTokenIntent;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareFileClient FileClients} and {@link
@@ -210,7 +210,7 @@ public class ShareFileClientBuilder implements
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
-            .fileRequestIntent(fileRequestIntent)
+            .fileRequestIntent(shareTokenIntent)
             .buildClient();
     }
 
@@ -686,13 +686,14 @@ public class ShareFileClientBuilder implements
     }
 
     /**
-     * Sets the {@link ShareFileRequestIntent} that specifies whether there is intent for a file to be backed up.
+     * Sets the {@link ShareTokenIntent} that specifies whether there is intent for a file to be backed up.
+     * This is currently required when using {@link TokenCredential}.
      *
-     * @param fileRequestIntent the {@link ShareFileRequestIntent} value.
+     * @param shareTokenIntent the {@link ShareTokenIntent} value.
      * @return the updated ShareFileClientBuilder object
      */
-    public ShareFileClientBuilder fileRequestIntent(ShareFileRequestIntent fileRequestIntent) {
-        this.fileRequestIntent = fileRequestIntent;
+    public ShareFileClientBuilder shareTokenIntent(ShareTokenIntent shareTokenIntent) {
+        this.shareTokenIntent = shareTokenIntent;
         return this;
     }
 }

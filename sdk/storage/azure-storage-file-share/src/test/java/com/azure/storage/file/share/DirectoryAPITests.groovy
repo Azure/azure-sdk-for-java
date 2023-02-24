@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.http.HttpHeaderName
 import com.azure.core.http.policy.ExponentialBackoffOptions
 import com.azure.core.http.policy.RetryOptions
 import com.azure.core.util.HttpClientOptions
@@ -16,11 +15,10 @@ import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareFileItem
-import com.azure.storage.file.share.models.ShareFileRequestIntent
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
-import com.azure.storage.file.share.options.ShareCreateOptions
+import com.azure.storage.file.share.models.ShareTokenIntent
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import com.azure.storage.file.share.options.ShareFileRenameOptions
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions
@@ -243,7 +241,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Create directory oAuth"() {
         setup:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirName = generatePathName()
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName)
 
@@ -390,7 +388,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Delete directory oAuth"() {
         setup:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirName = generatePathName()
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName)
         dirClient.create()
@@ -479,7 +477,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Get properties oAuth"() {
         setup:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirName = generatePathName()
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName)
 
@@ -564,7 +562,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Set httpHeaders oAuth"() {
         given:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirName = generatePathName()
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName)
         dirClient.create()
@@ -610,7 +608,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Set metadata oAuth"() {
         given:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirName = generatePathName()
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName)
         dirClient.createWithResponse(null, null, testMetadata, null, null)
@@ -869,7 +867,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "List files and directories oAuth"() {
         setup:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
         dirClient.create()
 
@@ -951,7 +949,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "List handles oAuth"() {
         given:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
         dirClient.create()
 
@@ -996,7 +994,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Force close handle oAuth"() {
         given:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
         dirClient.create()
 
@@ -1203,7 +1201,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename oAuth"() {
         setup:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
         dirClient.create()
 

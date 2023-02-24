@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share.specialized
 
-import com.azure.core.http.rest.Response
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.APISpec
@@ -14,8 +13,8 @@ import com.azure.storage.file.share.ShareServiceVersion
 import com.azure.storage.file.share.models.LeaseDurationType
 import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ShareErrorCode
-import com.azure.storage.file.share.models.ShareFileRequestIntent
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.models.ShareTokenIntent
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions
 import spock.lang.Unroll
@@ -63,7 +62,7 @@ class LeaseAPITest extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Acquire and release file lease oAuth"() {
         given:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
         dirClient.create()
         def fileClient = dirClient.getFileClient(generatePathName())
@@ -72,7 +71,7 @@ class LeaseAPITest extends APISpec {
         when:
         def leaseClient = new ShareLeaseClientBuilder()
             .fileClient(fileClient)
-            .fileRequestIntent(ShareFileRequestIntent.BACKUP)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
             .buildClient()
 
         def acquireResponse = leaseClient.acquireLeaseWithResponse(null, null)
@@ -158,7 +157,7 @@ class LeaseAPITest extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Break file lease oAuth"() {
         setup:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
         dirClient.create()
         def fileClient = dirClient.getFileClient(generatePathName())
@@ -166,7 +165,7 @@ class LeaseAPITest extends APISpec {
 
         def leaseClient = new ShareLeaseClientBuilder()
             .fileClient(fileClient)
-            .fileRequestIntent(ShareFileRequestIntent.BACKUP)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
             .buildClient()
         leaseClient.acquireLease()
 
@@ -217,7 +216,7 @@ class LeaseAPITest extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Change file lease oAuth"() {
         setup:
-        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
         dirClient.create()
         def fileClient = dirClient.getFileClient(generatePathName())
@@ -225,7 +224,7 @@ class LeaseAPITest extends APISpec {
 
         def leaseClient = new ShareLeaseClientBuilder()
             .fileClient(fileClient)
-            .fileRequestIntent(ShareFileRequestIntent.BACKUP)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
             .buildClient()
 
         def leaseID = leaseClient.acquireLease()

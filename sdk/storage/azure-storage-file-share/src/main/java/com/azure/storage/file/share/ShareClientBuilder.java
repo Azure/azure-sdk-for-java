@@ -36,8 +36,8 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
-import com.azure.storage.file.share.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -164,7 +164,7 @@ public class ShareClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private ShareServiceVersion version;
-    private ShareFileRequestIntent fileRequestIntent;
+    private ShareTokenIntent shareTokenIntent;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareClient ShareClients} and {@link
@@ -209,7 +209,7 @@ public class ShareClientBuilder implements
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
-            .fileRequestIntent(fileRequestIntent)
+            .fileRequestIntent(shareTokenIntent)
             .buildClient();
 
         return new ShareAsyncClient(azureFileStorage, shareName, snapshot, accountName, serviceVersion,
@@ -618,13 +618,14 @@ public class ShareClientBuilder implements
     }
 
     /**
-     * Sets the {@link ShareFileRequestIntent} that specifies whether there is intent for a file to be backed up.
+     * Sets the {@link ShareTokenIntent} that specifies whether there is intent for a file to be backed up.
+     * This is currently required when using {@link TokenCredential}.
      *
-     * @param fileRequestIntent the {@link ShareFileRequestIntent} value.
+     * @param shareTokenIntent the {@link ShareTokenIntent} value.
      * @return the updated ShareClientBuilder object
      */
-    public ShareClientBuilder fileRequestIntent(ShareFileRequestIntent fileRequestIntent) {
-        this.fileRequestIntent = fileRequestIntent;
+    public ShareClientBuilder shareTokenIntent(ShareTokenIntent shareTokenIntent) {
+        this.shareTokenIntent = shareTokenIntent;
         return this;
     }
 }
