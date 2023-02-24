@@ -15,7 +15,7 @@ public final class PrivateLinkResourceListResultInnerTests {
         PrivateLinkResourceListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"hfiqscjeypvhe\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"gqhcjrefovg\",\"name\":\"kqsleyyvxy\",\"type\":\"jpkcattpng\"},{\"properties\":{\"groupId\":\"cczsq\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"vmdajvnysou\",\"name\":\"q\",\"type\":\"canoaeupf\"},{\"properties\":{\"groupId\":\"ltrpmopj\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"atuokthfuiu\",\"name\":\"odsfcpkvxodpuozm\",\"type\":\"zydagfuaxbezyiuo\"}]}")
+                    "{\"value\":[{\"properties\":{\"groupId\":\"ysou\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"canoaeupf\",\"name\":\"yhltrpmopjmcm\",\"type\":\"tuo\"},{\"properties\":{\"groupId\":\"fu\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"odsfcpkvxodpuozm\",\"name\":\"zydagfuaxbezyiuo\",\"type\":\"ktwh\"},{\"properties\":{\"groupId\":\"wz\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"sm\",\"name\":\"surex\",\"type\":\"moryocfsfksym\"}]}")
                 .toObject(PrivateLinkResourceListResultInner.class);
     }
 

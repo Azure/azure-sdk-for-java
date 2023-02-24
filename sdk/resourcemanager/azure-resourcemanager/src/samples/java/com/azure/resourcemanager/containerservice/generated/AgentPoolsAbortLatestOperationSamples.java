@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for AgentPools AbortLatestOperation. */
 public final class AgentPoolsAbortLatestOperationSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsAbortOperation.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsAbortOperation.json
      */
     /**
      * Sample code: Abort operation on agent pool.

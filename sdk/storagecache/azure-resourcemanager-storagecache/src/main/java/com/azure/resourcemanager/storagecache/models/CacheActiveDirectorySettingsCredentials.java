@@ -12,18 +12,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CacheActiveDirectorySettingsCredentials {
     /*
-     * Username of the Active Directory domain administrator. This value is
-     * stored encrypted and not returned on response.
+     * Username of the Active Directory domain administrator. This value is stored encrypted and not returned on
+     * response.
      */
     @JsonProperty(value = "username", required = true)
     private String username;
 
     /*
-     * Plain text password of the Active Directory domain administrator. This
-     * value is stored encrypted and not returned on response.
+     * Plain text password of the Active Directory domain administrator. This value is stored encrypted and not
+     * returned on response.
      */
     @JsonProperty(value = "password", required = true)
     private String password;
+
+    /** Creates an instance of CacheActiveDirectorySettingsCredentials class. */
+    public CacheActiveDirectorySettingsCredentials() {
+    }
 
     /**
      * Get the username property: Username of the Active Directory domain administrator. This value is stored encrypted

@@ -32,10 +32,10 @@ public final class ListOperationsAsync {
 
     public static void listTests() {
         // BEGIN: java-listOperationsAsync-sample-listTests
-        LoadTestAdministrationAsyncClient client = new LoadTestingClientBuilder()
+        LoadTestAdministrationAsyncClient client = new LoadTestAdministrationClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestAdministrationAsyncClient();
+                .buildAsyncClient();
 
         RequestOptions reqOpts = new RequestOptions()
                 .addQueryParam("orderBy", "lastModifiedDateTime")
@@ -58,10 +58,10 @@ public final class ListOperationsAsync {
 
     public static void listTestRuns() {
         // BEGIN: java-listOperationsAsync-sample-listTestRuns
-        LoadTestRunAsyncClient client = new LoadTestingClientBuilder()
+        LoadTestRunAsyncClient client = new LoadTestRunClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestRunAsyncClient();
+                .buildAsyncClient();
 
         RequestOptions reqOpts = new RequestOptions()
                 .addQueryParam("search", "scenario1")
@@ -87,10 +87,10 @@ public final class ListOperationsAsync {
 
     public static void listTestFiles() {
         // BEGIN: java-listOperationsAsync-sample-listTestFiles
-        LoadTestAdministrationAsyncClient client = new LoadTestingClientBuilder()
+        LoadTestAdministrationAsyncClient client = new LoadTestAdministrationClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestAdministrationAsyncClient();
+                .buildAsyncClient();
 
         String inputTestId = "12345678-1234-1234-1234-123456789abc";
 

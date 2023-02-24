@@ -478,7 +478,7 @@ public class CosmosAsyncContainer {
 
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(this.database.getId(), this.id);
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
-                    .setProactiveConnectionRegions(1)
+                    .setProactiveConnectionRegionsCount(1)
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig)
@@ -538,7 +538,7 @@ public class CosmosAsyncContainer {
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(database.getId(), this.id);
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
                 new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
-                    .setProactiveConnectionRegions(numProactiveConnectionRegions)
+                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig)

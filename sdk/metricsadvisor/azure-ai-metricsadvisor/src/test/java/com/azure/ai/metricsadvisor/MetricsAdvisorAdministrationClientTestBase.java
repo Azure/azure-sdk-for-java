@@ -13,6 +13,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import static com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilderTest.PLAYBACK_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 
 public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBase {
@@ -24,6 +25,12 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBas
     MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
         return getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true);
+    }
+
+    static MetricsAdvisorAdministrationClientBuilder getNonRecordAdminClient() {
+        return new MetricsAdvisorAdministrationClientBuilder()
+            .endpoint(PLAYBACK_ENDPOINT)
+            .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
     }
 
     MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,

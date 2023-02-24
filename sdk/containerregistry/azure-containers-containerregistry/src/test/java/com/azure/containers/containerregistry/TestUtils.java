@@ -151,7 +151,7 @@ public class TestUtils {
             return new FakeCredentials();
         }
 
-        if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
+        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(authority)) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
             return new ClientSecretCredentialBuilder()
@@ -237,7 +237,6 @@ public class TestUtils {
 
         int index = 0;
         do {
-
             try {
                 manager.serviceClient().getRegistries().importImage(
                     RESOURCE_GROUP,

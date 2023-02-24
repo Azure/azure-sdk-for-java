@@ -9,8 +9,10 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
@@ -23,6 +25,10 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosMetricCategory;
+import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosMetricTagName;
+import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -44,7 +50,9 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -61,6 +69,8 @@ public class ClientMetricsTest extends BatchTestBase {
     private String containerId;
     private MeterRegistry meterRegistry;
     private String preferredRegion;
+    private CosmosClientTelemetryConfig inputClientTelemetryConfig;
+    private CosmosMicrometerMetricsOptions inputMetricsOptions;
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public ClientMetricsTest(CosmosClientBuilder clientBuilder) {
@@ -68,18 +78,35 @@ public class ClientMetricsTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    public void beforeTest() {
+    private EnumSet<MetricCategory> getEffectiveMetricCategories() {
+        return ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getMetricCategories(this.inputClientTelemetryConfig);
+    }
+
+    public void beforeTest(CosmosMetricCategory... metricCategories) {
         assertThat(this.client).isNull();
         assertThat(this.meterRegistry).isNull();
 
         this.meterRegistry = ConsoleLoggingRegistryFactory.create(1);
 
-        CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
-            .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(this.meterRegistry));
+        this.inputMetricsOptions = new CosmosMicrometerMetricsOptions()
+            .meterRegistry(this.meterRegistry)
+            .setMetricCategories(metricCategories);
+        this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
+            .metricsOptions(this.inputMetricsOptions);
 
         this.client = getClientBuilder()
-            .clientTelemetryConfig(telemetryConfig)
+            .clientTelemetryConfig(inputClientTelemetryConfig)
             .buildClient();
+
+        assertThat(
+            ImplementationBridgeHelpers
+                .CosmosAsyncClientHelper
+                .getCosmosAsyncClientAccessor()
+                .getMetricCategories(this.client.asyncClient())
+        ).isSameAs(this.getEffectiveMetricCategories());
 
         AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(this.client.asyncClient());
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
@@ -119,7 +146,7 @@ public class ClientMetricsTest extends BatchTestBase {
         // Expected behavior is that higher values than the expected max value can still be recorded
         // it would only result in getting less accurate "estimates" for percentile histograms
 
-        this.beforeTest();
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
 
         try {
             Tag dummyOperationTag = Tag.of(TagName.Operation.toString(), "TestDummy");
@@ -156,40 +183,127 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createItem() throws Exception {
-        this.beforeTest();
-        try {
-            InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-            CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
-            assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
-            validateItemResponse(properties, itemResponse);
+        boolean[] disableLatencyMeterTestCases = { false, true };
 
-            properties = getDocumentDefinition(UUID.randomUUID().toString());
-            CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
-            validateItemResponse(properties, itemResponse1);
+        for (boolean disableLatencyMeter: disableLatencyMeterTestCases) {
 
-            this.validateMetrics(
-                Tag.of(TagName.OperationStatusCode.toString(), "201"),
-                Tag.of(TagName.RequestStatusCode.toString(), "201/0"),
-                1,
-                100
-            );
+            this.beforeTest(CosmosMetricCategory.DEFAULT);
 
-            this.validateMetrics(
-                Tag.of(
-                    TagName.Operation.toString(), "Document/Create"),
-                Tag.of(TagName.RequestOperationType.toString(), "Document/Create"),
-                1,
-                100
-            );
+            if (disableLatencyMeter) {
+                this.inputMetricsOptions
+                    .configureMeter(
+                        CosmosMetricName.fromString(CosmosMetricName.OPERATION_SUMMARY_LATENCY.toString().toUpperCase(Locale.ROOT)),
+                        new CosmosMicrometerMeterOptions().setEnabled(false));
+            }
 
-        } finally {
-            this.afterTest();
+            try {
+                InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+                CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+                assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+                validateItemResponse(properties, itemResponse);
+
+                properties = getDocumentDefinition(UUID.randomUUID().toString());
+                CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
+                validateItemResponse(properties, itemResponse1);
+
+                Tag expectedOperationTag = Tag.of(TagName.OperationStatusCode.toString(), "201");
+                // Latency meter can be disabled
+                this.assertMetrics("cosmos.client.op.latency", !disableLatencyMeter, expectedOperationTag);
+
+                // Calls meter is never disabled - should always show up
+                this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
+
+                if (!disableLatencyMeter) {
+                    this.validateMetrics(
+                        expectedOperationTag,
+                        Tag.of(TagName.RequestStatusCode.toString(), "201/0"),
+                        1,
+                        300
+                    );
+
+                    this.validateMetrics(
+                        Tag.of(
+                            TagName.Operation.toString(), "Document/Create"),
+                        Tag.of(TagName.RequestOperationType.toString(), "Document/Create"),
+                        1,
+                        300
+                    );
+                }
+
+            } finally {
+                this.afterTest();
+            }
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void createItemWithAllMetrics() throws Exception {
+
+        boolean[] suppressConsistencyLevelTagTestCases = { false, true };
+
+        for (boolean suppressConsistencyLevelTag: suppressConsistencyLevelTagTestCases) {
+
+            this.beforeTest(CosmosMetricCategory.ALL);
+            this
+                .inputMetricsOptions
+                .configureDefaultTagNames(CosmosMetricTagName.ALL);
+
+            if (suppressConsistencyLevelTag) {
+                this
+                    .inputMetricsOptions
+                    .configureMeter(
+                        CosmosMetricName.OPERATION_SUMMARY_LATENCY,
+                        new CosmosMicrometerMeterOptions()
+                            .suppressTagNames(CosmosMetricTagName.fromString("ConsistencyLevel"))
+                            .enableHistograms(false)
+                            .configurePercentiles(0.99, 0.999));
+            }
+
+            try {
+                InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+                CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+                assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+                validateItemResponse(properties, itemResponse);
+
+                properties = getDocumentDefinition(UUID.randomUUID().toString());
+                CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
+                validateItemResponse(properties, itemResponse1);
+
+                this.validateMetrics(
+                    Tag.of(TagName.OperationStatusCode.toString(), "201"),
+                    Tag.of(TagName.RequestStatusCode.toString(), "201/0"),
+                    1,
+                    300
+                );
+
+                this.validateMetrics(
+                    Tag.of(
+                        TagName.Operation.toString(), "Document/Create"),
+                    Tag.of(TagName.RequestOperationType.toString(), "Document/Create"),
+                    1,
+                    300
+                );
+
+                Tag expectedConsistencyTag = Tag.of(TagName.ConsistencyLevel.toString(), "Session");
+                this.assertMetrics(
+                    "cosmos.client.op.latency",
+                    !suppressConsistencyLevelTag,
+                    expectedConsistencyTag);
+
+                this.assertMetrics(
+                    "cosmos.client.op.calls",
+                    true,
+                    expectedConsistencyTag);
+
+            } finally {
+                this.afterTest();
+            }
         }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readItem() throws Exception {
-        this.beforeTest();
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -204,7 +318,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                50
+                500
             );
 
             this.validateMetrics(
@@ -212,7 +326,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/Read"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
                 1,
-                50
+                500
             );
 
             Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
@@ -225,7 +339,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceItem() throws Exception {
-        this.beforeTest();
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
@@ -263,7 +377,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteItem() throws Exception {
-        this.beforeTest();
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -295,7 +409,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAllItems() throws Exception {
-        this.beforeTest();
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -310,7 +424,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                100
+                3000
             );
 
             this.validateMetrics(
@@ -318,7 +432,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId()),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
                 1,
-                1000
+                10000
             );
 
             this.validateItemCountMetrics(
@@ -331,8 +445,54 @@ public class ClientMetricsTest extends BatchTestBase {
             this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
             this.assertMetrics("cosmos.client.req.gw.requests", true, queryPlanTag);
             this.assertMetrics("cosmos.client.req.gw.RUs", false, queryPlanTag);
-            this.assertMetrics("cosmos.client.req.gw.timeline", true, queryPlanTag);
+        } finally {
+            this.afterTest();
+        }
+    }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readAllItemsWithDetailMetrics() throws Exception {
+        this.beforeTest(
+            CosmosMetricCategory.DEFAULT,
+            CosmosMetricCategory.OPERATION_DETAILS,
+            CosmosMetricCategory.REQUEST_DETAILS);
+        try {
+            InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+            container.createItem(properties);
+
+            CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+            CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
+                container.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
+            assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                1,
+                10000
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId()),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
+                1,
+                10000
+            );
+
+            this.validateItemCountMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId())
+            );
+
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw", true, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.gw.requests", true, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.gw.RUs", false, queryPlanTag);
+
+            this.assertMetrics("cosmos.client.req.gw.timeline", true, queryPlanTag);
             this.assertMetrics("cosmos.client.op.maxItemCount", true);
         } finally {
             this.afterTest();
@@ -341,7 +501,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryItems() throws Exception {
-        this.beforeTest();
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -364,7 +524,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                10000
+                100000
             );
 
             this.validateMetrics(
@@ -372,7 +532,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/Query/queryItems." + container.getId()),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
                 1,
-                10000
+                100000
             );
 
             this.validateItemCountMetrics(
@@ -390,7 +550,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT * 100)
     public void itemPatchSuccess() {
-        this.beforeTest();
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             PatchTest.ToDoActivity testItem = PatchTest.ToDoActivity.createRandomItem(this.container);
             PatchTest.ToDoActivity testItem1 = PatchTest.ToDoActivity.createRandomItem(this.container);
@@ -442,7 +602,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                100
+                3000
             );
 
             this.validateMetrics(
@@ -450,7 +610,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/Patch"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Patch"),
                 1,
-                100
+                3000
             );
         } finally {
             this.afterTest();
@@ -459,7 +619,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createItem_withBulk() {
-        this.beforeTest();
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             int totalRequest = 5;
 
@@ -496,7 +656,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                1000
+                10000
             );
 
             this.validateMetrics(
@@ -504,7 +664,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/Batch"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Batch"),
                 1,
-                1000
+                10000
             );
         } finally {
             this.afterTest();
@@ -513,7 +673,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchMultipleItemExecution() {
-        this.beforeTest();
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
             TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
@@ -558,7 +718,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                100
+                3000
             );
 
             this.validateMetrics(
@@ -566,11 +726,308 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/Batch"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Batch"),
                 1,
-                100
+                3000
             );
         } finally {
             this.afterTest();
         }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void effectiveMetricCategoriesForDefault() {
+        this.beforeTest(CosmosMetricCategory.fromString("DeFAult"));
+        try {
+            assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(5);
+
+            EnumSet<MetricCategory> clientMetricCategories = ImplementationBridgeHelpers
+                .CosmosAsyncClientHelper
+                .getCosmosAsyncClientAccessor()
+                .getMetricCategories(client.asyncClient());
+            assertThat(clientMetricCategories).isEqualTo(this.getEffectiveMetricCategories());
+
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectChannels)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectRequests)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.System)).isEqualTo(true);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void effectiveMetricCategoriesForDefaultPlusDetails() {
+        this.beforeTest(
+            CosmosMetricCategory.DEFAULT,
+            CosmosMetricCategory.fromString("RequestDetails"),
+            CosmosMetricCategory.fromString("OperationDETAILS"));
+        try {
+            assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(7);
+
+            EnumSet<MetricCategory> clientMetricCategories = ImplementationBridgeHelpers
+                .CosmosAsyncClientHelper
+                .getCosmosAsyncClientAccessor()
+                .getMetricCategories(client.asyncClient());
+            assertThat(clientMetricCategories).isEqualTo(this.getEffectiveMetricCategories());
+
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestDetails)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectChannels)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectRequests)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.System)).isEqualTo(true);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void effectiveMetricCategoriesInvalidCategory() {
+        String badCategoryName = "InvalidCategory";
+        try {
+            this.beforeTest(
+                CosmosMetricCategory.DEFAULT,
+                CosmosMetricCategory.fromString(badCategoryName));
+
+            fail("Should have thrown exception");
+        } catch (IllegalArgumentException argError) {
+            assertThat(argError.getMessage()).contains(badCategoryName);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void effectiveMetricCategoriesForAll() {
+        this.beforeTest(CosmosMetricCategory.ALL);
+        try {
+            assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(10);
+
+            EnumSet<MetricCategory> clientMetricCategories = ImplementationBridgeHelpers
+                .CosmosAsyncClientHelper
+                .getCosmosAsyncClientAccessor()
+                .getMetricCategories(client.asyncClient());
+            assertThat(clientMetricCategories).isEqualTo(this.getEffectiveMetricCategories());
+
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestDetails)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectChannels)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectRequests)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectEndpoints)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.System)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.Legacy)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.AddressResolutions)).isEqualTo(true);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void effectiveMetricCategoriesForAllLatebound() {
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
+        try {
+
+            assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(5);
+
+            EnumSet<MetricCategory> clientMetricCategories = ImplementationBridgeHelpers
+                .CosmosAsyncClientHelper
+                .getCosmosAsyncClientAccessor()
+                .getMetricCategories(client.asyncClient());
+            assertThat(clientMetricCategories).isEqualTo(this.getEffectiveMetricCategories());
+
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectChannels)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectRequests)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.System)).isEqualTo(true);
+            
+            // Now change the metricCategories on the config passed into the CosmosClientBuilder 
+            // and validate that these changes take effect immediately on the client build via the builder
+            this.inputMetricsOptions
+                .setMetricCategories(CosmosMetricCategory.ALL)
+                .removeMetricCategories(CosmosMetricCategory.OPERATION_DETAILS)
+                .addMetricCategories(CosmosMetricCategory.OPERATION_DETAILS, CosmosMetricCategory.REQUEST_DETAILS)
+                .configureDefaultPercentiles(0.9)
+                .enableHistogramsByDefault(false)
+                .setEnabled(true);
+            
+            assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(10);
+
+            clientMetricCategories = ImplementationBridgeHelpers
+                .CosmosAsyncClientHelper
+                .getCosmosAsyncClientAccessor()
+                .getMetricCategories(client.asyncClient());
+            assertThat(clientMetricCategories).isEqualTo(this.getEffectiveMetricCategories());
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void invalidMeterNameThrows() {
+        try {
+            CosmosMetricName.fromString("InvalidMeterName");
+            fail("Should have thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage()).contains("InvalidMeterName");
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void invalidMeterCategoryThrows() {
+        try {
+            CosmosMetricCategory.fromString("InvalidMeterCategory");
+            fail("Should have thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage()).contains("InvalidMeterCategory");
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void invalidMeterTagNameThrows() {
+        try {
+            CosmosMetricTagName.fromString("InvalidMeterTagName");
+            fail("Should have thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage()).contains("InvalidMeterTagName");
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void meterTagNameFromStringConversion() {
+        assertThat(CosmosMetricTagName.fromString("aLl  "))
+            .isSameAs(CosmosMetricTagName.ALL);
+        assertThat(CosmosMetricTagName.fromString("Default"))
+            .isSameAs(CosmosMetricTagName.DEFAULT);
+        assertThat(CosmosMetricTagName.fromString("minimum"))
+            .isSameAs(CosmosMetricTagName.MINIMUM);
+        assertThat(CosmosMetricTagName.fromString("IsForceCollectionRoutingMapRefresh"))
+            .isSameAs(CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH);
+        assertThat(CosmosMetricTagName.fromString("isForcerefresh"))
+            .isSameAs(CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH);
+        assertThat(CosmosMetricTagName.fromString("ClientCorrelationID"))
+            .isSameAs(CosmosMetricTagName.CLIENT_CORRELATION_ID);
+        assertThat(CosmosMetricTagName.fromString("container"))
+            .isSameAs(CosmosMetricTagName.CONTAINER);
+        assertThat(CosmosMetricTagName.fromString(" ConsistencyLevel"))
+            .isSameAs(CosmosMetricTagName.CONSISTENCY_LEVEL);
+        assertThat(CosmosMetricTagName.fromString("operation"))
+            .isSameAs(CosmosMetricTagName.OPERATION);
+        assertThat(CosmosMetricTagName.fromString("OperationStatusCode"))
+            .isSameAs(CosmosMetricTagName.OPERATION_STATUS_CODE);
+        assertThat(CosmosMetricTagName.fromString("PartitionKeyRangeId"))
+            .isSameAs(CosmosMetricTagName.PARTITION_KEY_RANGE_ID);
+        assertThat(CosmosMetricTagName.fromString("regionname"))
+            .isSameAs(CosmosMetricTagName.REGION_NAME);
+        assertThat(CosmosMetricTagName.fromString("RequestOperationType"))
+            .isSameAs(CosmosMetricTagName.REQUEST_OPERATION_TYPE);
+        assertThat(CosmosMetricTagName.fromString("requestStatusCode"))
+            .isSameAs(CosmosMetricTagName.REQUEST_STATUS_CODE);
+        assertThat(CosmosMetricTagName.fromString("serviceaddress"))
+            .isSameAs(CosmosMetricTagName.SERVICE_ADDRESS);
+        assertThat(CosmosMetricTagName.fromString("serviceEndpoint"))
+            .isSameAs(CosmosMetricTagName.SERVICE_ENDPOINT);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void meterCategoryFromStringConversion() {
+        assertThat(CosmosMetricCategory.fromString("aLl  "))
+            .isSameAs(CosmosMetricCategory.ALL);
+        assertThat(CosmosMetricCategory.fromString("Default"))
+            .isSameAs(CosmosMetricCategory.DEFAULT);
+        assertThat(CosmosMetricCategory.fromString("minimum"))
+            .isSameAs(CosmosMetricCategory.MINIMUM);
+        assertThat(CosmosMetricCategory.fromString("operationsummary "))
+            .isSameAs(CosmosMetricCategory.OPERATION_SUMMARY);
+        assertThat(CosmosMetricCategory.fromString("operationDetails"))
+            .isSameAs(CosmosMetricCategory.OPERATION_DETAILS);
+        assertThat(CosmosMetricCategory.fromString("RequestSummary"))
+            .isSameAs(CosmosMetricCategory.REQUEST_SUMMARY);
+        assertThat(CosmosMetricCategory.fromString("RequestDetails"))
+            .isSameAs(CosmosMetricCategory.REQUEST_DETAILS);
+        assertThat(CosmosMetricCategory.fromString("DirectChannels"))
+            .isSameAs(CosmosMetricCategory.DIRECT_CHANNELS);
+        assertThat(CosmosMetricCategory.fromString("DirectRequests"))
+            .isSameAs(CosmosMetricCategory.DIRECT_REQUESTS);
+        assertThat(CosmosMetricCategory.fromString("DirectEndpoints"))
+            .isSameAs(CosmosMetricCategory.DIRECT_ENDPOINTS);
+        assertThat(CosmosMetricCategory.fromString("DirectAddressResolutions"))
+            .isSameAs(CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS);
+        assertThat(CosmosMetricCategory.fromString("system"))
+            .isSameAs(CosmosMetricCategory.SYSTEM);
+        assertThat(CosmosMetricCategory.fromString("Legacy"))
+            .isSameAs(CosmosMetricCategory.LEGACY);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void meterNameFromStringConversion() {
+        assertThat(CosmosMetricName.fromString("cosmos.client.op.laTency"))
+            .isSameAs(CosmosMetricName.OPERATION_SUMMARY_LATENCY);
+        assertThat(CosmosMetricName.fromString("cosmos.client.op.cAlls"))
+            .isSameAs(CosmosMetricName.OPERATION_SUMMARY_CALLS);
+        assertThat(CosmosMetricName.fromString("cosmos.client.op.rus"))
+            .isSameAs(CosmosMetricName.OPERATION_SUMMARY_REQUEST_CHARGE);
+        assertThat(CosmosMetricName.fromString("cosmos.client.OP.actualItemCount"))
+            .isSameAs(CosmosMetricName.OPERATION_DETAILS_ACTUAL_ITEM_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.op.MAXItemCount"))
+            .isSameAs(CosmosMetricName.OPERATION_DETAILS_MAX_ITEM_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.op.REGIONScontacted"))
+            .isSameAs(CosmosMetricName.OPERATION_DETAILS_REGIONS_CONTACTED);
+
+        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.backendLatency"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY);
+        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.LAtency"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_LATENCY);
+        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.RUS"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUEST_CHARGE);
+        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.ReQUEsts"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUESTS);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.TIMEline"))
+            .isSameAs(CosmosMetricName.REQUEST_DETAILS_DIRECT_TIMELINE);
+
+        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.LAtency"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
+        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.RUS"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
+        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.ReQUEsts"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.tiMELine"))
+            .isSameAs(CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE);
+
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.addressResolution.latency"))
+            .isSameAs(CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_LATENCY);
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.addressResolution.requests"))
+            .isSameAs(CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_REQUESTS);
+
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.channels.acquired.COUNT"))
+            .isSameAs(CosmosMetricName.DIRECT_CHANNELS_ACQUIRED_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.channels.available.COUNT"))
+            .isSameAs(CosmosMetricName.DIRECT_CHANNELS_AVAILABLE_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.channels.closed.COUNT"))
+            .isSameAs(CosmosMetricName.DIRECT_CHANNELS_CLOSED_COUNT);
+
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.endpoints.COUNT"))
+            .isSameAs(CosmosMetricName.DIRECT_ENDPOINTS_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.endpoints.evicted"))
+            .isSameAs(CosmosMetricName.DIRECT_ENDPOINTS_EVICTED);
+
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.concurrent.count"))
+            .isSameAs(CosmosMetricName.DIRECT_REQUEST_CONCURRENT_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.LAtency"))
+            .isSameAs(CosmosMetricName.DIRECT_REQUEST_LATENCY);
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.FAIled.latency"))
+            .isSameAs(CosmosMetricName.DIRECT_REQUEST_LATENCY_FAILED);
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.successful.latency"))
+            .isSameAs(CosmosMetricName.DIRECT_REQUEST_LATENCY_SUCCESS);
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.queued.count"))
+            .isSameAs(CosmosMetricName.DIRECT_REQUEST_QUEUED_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.req.RSPsize"))
+            .isSameAs(CosmosMetricName.DIRECT_REQUEST_SIZE_RESPONSE);
+        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.req.reqsize"))
+            .isSameAs(CosmosMetricName.DIRECT_REQUEST_SIZE_REQUEST);
     }
 
     private InternalObjectNode getDocumentDefinition(String documentId) {
@@ -593,48 +1050,11 @@ public class ClientMetricsTest extends BatchTestBase {
             .isEqualTo(containerProperties.getId());
     }
 
-    private void validateMetrics(int minRu, int maxRu) {
-        this.assertMetrics("cosmos.client.op.latency", true);
-        this.assertMetrics("cosmos.client.op.calls", true);
-        Meter reportedOpRequestCharge = this.assertMetrics("cosmos.client.op.RUs", true);
-        validateReasonableRUs(reportedOpRequestCharge, minRu, maxRu);
-        this.assertMetrics("cosmos.client.op.regionsContacted", true);
-        this.assertMetrics(
-            "cosmos.client.op.regionsContacted",
-            true,
-            Tag.of(TagName.RegionName.toString(), this.preferredRegion));
-
-        if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
-            this.assertMetrics("cosmos.client.req.rntbd.latency", true);
-            this.assertMetrics(
-                "cosmos.client.req.rntbd.latency",
-                true,
-                Tag.of(TagName.RegionName.toString(), this.preferredRegion));
-            this.assertMetrics("cosmos.client.req.rntbd.backendLatency", true);
-            this.assertMetrics("cosmos.client.req.rntbd.requests", true);
-            Meter reportedRntbdRequestCharge =
-                this.assertMetrics("cosmos.client.req.rntbd.RUs", true);
-            validateReasonableRUs(reportedRntbdRequestCharge, minRu, maxRu);
-            this.assertMetrics("cosmos.client.req.rntbd.timeline", true);
-        } else {
-            this.assertMetrics("cosmos.client.req.gw.latency", true);
-            this.assertMetrics(
-                "cosmos.client.req.gw.latency",
-                true,
-                Tag.of(TagName.RegionName.toString(), this.preferredRegion));
-            this.assertMetrics("cosmos.client.req.gw.backendLatency", false);
-            this.assertMetrics("cosmos.client.req.gw.requests", true);
-            Meter reportedGatewayRequestCharge =
-                this.assertMetrics("cosmos.client.req.gw.RUs", true);
-            validateReasonableRUs(reportedGatewayRequestCharge, minRu, maxRu);
-            this.assertMetrics("cosmos.client.req.gw.timeline", true);
-            this.assertMetrics("cosmos.client.req.rntbd", false);
-        }
-    }
-
     private void validateItemCountMetrics(Tag expectedOperationTag) {
-        this.assertMetrics("cosmos.client.op.maxItemCount", true, expectedOperationTag);
-        this.assertMetrics("cosmos.client.op.actualItemCount", true, expectedOperationTag);
+        if (this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)) {
+            this.assertMetrics("cosmos.client.op.maxItemCount", true, expectedOperationTag);
+            this.assertMetrics("cosmos.client.op.actualItemCount", true, expectedOperationTag);
+        }
     }
 
     private void validateReasonableRUs(Meter reportedRequestChargeMeter, int expectedMinRu, int expectedMaxRu) {
@@ -654,12 +1074,14 @@ public class ClientMetricsTest extends BatchTestBase {
             "cosmos.client.op.RUs", true, expectedOperationTag);
         validateReasonableRUs(reportedOpRequestCharge, minRu, maxRu);
 
-        this.assertMetrics("cosmos.client.op.regionsContacted", true, expectedOperationTag);
+        if (this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)) {
+            this.assertMetrics("cosmos.client.op.regionsContacted", true, expectedOperationTag);
 
-        this.assertMetrics(
-            "cosmos.client.op.regionsContacted",
-            true,
-            Tag.of(TagName.RegionName.toString(), this.preferredRegion));
+            this.assertMetrics(
+                "cosmos.client.op.regionsContacted",
+                true,
+                Tag.of(TagName.RegionName.toString(), this.preferredRegion));
+        }
 
         if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
             this.assertMetrics("cosmos.client.req.rntbd.latency", true, expectedRequestTag);
@@ -672,19 +1094,29 @@ public class ClientMetricsTest extends BatchTestBase {
             Meter reportedRntbdRequestCharge =
                 this.assertMetrics("cosmos.client.req.rntbd.RUs", true, expectedRequestTag);
             validateReasonableRUs(reportedRntbdRequestCharge, minRu, maxRu);
-            this.assertMetrics("cosmos.client.req.rntbd.timeline", true, expectedRequestTag);
+
+            if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestDetails)) {
+                this.assertMetrics("cosmos.client.req.rntbd.timeline", true, expectedRequestTag);
+            }
         } else {
             this.assertMetrics("cosmos.client.req.gw.latency", true, expectedRequestTag);
-            this.assertMetrics(
-                "cosmos.client.req.gw.latency",
-                true,
-                Tag.of(TagName.RegionName.toString(), this.preferredRegion));
+
+            if (this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)) {
+                this.assertMetrics(
+                    "cosmos.client.req.gw.latency",
+                    true,
+                    Tag.of(TagName.RegionName.toString(), this.preferredRegion));
+            }
             this.assertMetrics("cosmos.client.req.gw.backendLatency", false, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.gw.requests", true, expectedRequestTag);
             Meter reportedGatewayRequestCharge =
                 this.assertMetrics("cosmos.client.req.gw.RUs", true, expectedRequestTag);
             validateReasonableRUs(reportedGatewayRequestCharge, minRu, maxRu);
-            this.assertMetrics("cosmos.client.req.gw.timeline", true, expectedRequestTag);
+
+            if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestDetails)) {
+                this.assertMetrics("cosmos.client.req.gw.timeline", true, expectedRequestTag);
+            }
+
             this.assertMetrics("cosmos.client.req.rntbd", false);
         }
     }

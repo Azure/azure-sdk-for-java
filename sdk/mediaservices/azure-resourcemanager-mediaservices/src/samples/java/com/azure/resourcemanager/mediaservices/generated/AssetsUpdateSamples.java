@@ -20,7 +20,7 @@ public final class AssetsUpdateSamples {
         Asset resource =
             manager
                 .assets()
-                .getWithResponse("contoso", "contosomedia", "ClimbingMountBaker", com.azure.core.util.Context.NONE)
+                .getWithResponse("contosorg", "contosomedia", "ClimbingMountBaker", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withDescription("A documentary showing the ascent of Mount Baker in HD").apply();
     }

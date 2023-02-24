@@ -89,8 +89,7 @@ public final class CacheProperties {
     private CacheDirectorySettings directoryServicesSettings;
 
     /*
-     * Availability zones for resources. This field should only contain a
-     * single element in the array.
+     * Availability zones for resources. This field should only contain a single element in the array.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -102,11 +101,14 @@ public final class CacheProperties {
     private List<PrimingJob> primingJobs;
 
     /*
-     * Specifies the space allocation percentage for each storage target in the
-     * cache.
+     * Specifies the space allocation percentage for each storage target in the cache.
      */
     @JsonProperty(value = "spaceAllocation", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageTargetSpaceAllocation> spaceAllocation;
+
+    /** Creates an instance of CacheProperties class. */
+    public CacheProperties() {
+    }
 
     /**
      * Get the cacheSizeGB property: The size of this Cache, in GB.

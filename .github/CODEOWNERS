@@ -43,8 +43,9 @@
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                               @mssfang @alzimmermsft
 # PRLabel: %azure-spring
-/sdk/appconfiguration/azure-spring-cloud-*/          @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/appconfiguration/spring-cloud-azure-*/          @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
 
 # PRLabel: %Attestation
@@ -84,6 +85,9 @@
 
 # PRLabel: %Communication - Resource Manager
 /sdk/communication/sdk/communication/azure-resourcemanager-communication/
+
+# PRLabel: %Communication - Rooms
+/sdk/communication/azure-communication-rooms/       @minnieliu @paolamvhz @alexokun @Mrayyan @shwali-msft @allchiang-msft @mikehang-msft
 
 # PRLabel: %Container Registry
 /sdk/containerregistry/                              @lmolkova @alzimmermsft

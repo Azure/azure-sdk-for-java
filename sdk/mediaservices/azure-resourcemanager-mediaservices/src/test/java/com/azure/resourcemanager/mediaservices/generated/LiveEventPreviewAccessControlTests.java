@@ -17,11 +17,11 @@ public final class LiveEventPreviewAccessControlTests {
         LiveEventPreviewAccessControl model =
             BinaryData
                 .fromString(
-                    "{\"ip\":{\"allow\":[{\"name\":\"x\",\"address\":\"u\",\"subnetPrefixLength\":443622503},{\"name\":\"ywggx\",\"address\":\"lla\",\"subnetPrefixLength\":1870481937},{\"name\":\"wuipiccjzkzivg\",\"address\":\"c\",\"subnetPrefixLength\":192957128}]}}")
+                    "{\"ip\":{\"allow\":[{\"name\":\"kzivgvvcnayrh\",\"address\":\"nxxmueedndrdv\",\"subnetPrefixLength\":928139019},{\"name\":\"qqtch\",\"address\":\"lmfmtdaay\",\"subnetPrefixLength\":76843266}]}}")
                 .toObject(LiveEventPreviewAccessControl.class);
-        Assertions.assertEquals("x", model.ip().allow().get(0).name());
-        Assertions.assertEquals("u", model.ip().allow().get(0).address());
-        Assertions.assertEquals(443622503, model.ip().allow().get(0).subnetPrefixLength());
+        Assertions.assertEquals("kzivgvvcnayrh", model.ip().allow().get(0).name());
+        Assertions.assertEquals("nxxmueedndrdv", model.ip().allow().get(0).address());
+        Assertions.assertEquals(928139019, model.ip().allow().get(0).subnetPrefixLength());
     }
 
     @org.junit.jupiter.api.Test
@@ -33,18 +33,17 @@ public final class LiveEventPreviewAccessControlTests {
                         .withAllow(
                             Arrays
                                 .asList(
-                                    new IpRange().withName("x").withAddress("u").withSubnetPrefixLength(443622503),
                                     new IpRange()
-                                        .withName("ywggx")
-                                        .withAddress("lla")
-                                        .withSubnetPrefixLength(1870481937),
+                                        .withName("kzivgvvcnayrh")
+                                        .withAddress("nxxmueedndrdv")
+                                        .withSubnetPrefixLength(928139019),
                                     new IpRange()
-                                        .withName("wuipiccjzkzivg")
-                                        .withAddress("c")
-                                        .withSubnetPrefixLength(192957128))));
+                                        .withName("qqtch")
+                                        .withAddress("lmfmtdaay")
+                                        .withSubnetPrefixLength(76843266))));
         model = BinaryData.fromObject(model).toObject(LiveEventPreviewAccessControl.class);
-        Assertions.assertEquals("x", model.ip().allow().get(0).name());
-        Assertions.assertEquals("u", model.ip().allow().get(0).address());
-        Assertions.assertEquals(443622503, model.ip().allow().get(0).subnetPrefixLength());
+        Assertions.assertEquals("kzivgvvcnayrh", model.ip().allow().get(0).name());
+        Assertions.assertEquals("nxxmueedndrdv", model.ip().allow().get(0).address());
+        Assertions.assertEquals(928139019, model.ip().allow().get(0).subnetPrefixLength());
     }
 }
