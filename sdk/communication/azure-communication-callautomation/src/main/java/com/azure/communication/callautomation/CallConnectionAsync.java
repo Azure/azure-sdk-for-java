@@ -266,7 +266,6 @@ public class CallConnectionAsync {
 
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetCallInvite().getTarget()))
-                .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTargetCallInvite().getSourceCallIdNumber()))
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
             CallInvite callInvite = transferToParticipantCallOptions.getTargetCallInvite();

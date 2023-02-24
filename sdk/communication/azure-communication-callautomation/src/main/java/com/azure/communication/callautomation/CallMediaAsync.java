@@ -197,6 +197,10 @@ public class CallMediaAsync {
                     playSourceInternal = translatePlaySourceToPlaySourceInternal(playSource);
                 }
 
+                if (choiceRecognizeOptions.getSpeechLanguage() != null & !choiceRecognizeOptions.getSpeechLanguage().isEmpty()) {
+                    recognizeOptionsInternal.setSpeechLanguage(choiceRecognizeOptions.getSpeechLanguage());
+                }
+
                 RecognizeRequest recognizeRequest = new RecognizeRequest()
                     .setRecognizeInputType(RecognizeInputTypeInternal.fromString(choiceRecognizeOptions.getRecognizeInputType().toString()))
                     .setInterruptCallMediaOperation(choiceRecognizeOptions.isInterruptCallMediaOperation())
