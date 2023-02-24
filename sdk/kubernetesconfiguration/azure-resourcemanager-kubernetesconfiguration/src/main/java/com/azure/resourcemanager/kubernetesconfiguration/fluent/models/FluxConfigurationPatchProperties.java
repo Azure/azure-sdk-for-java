@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.kubernetesconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.kubernetesconfiguration.models.AzureBlobPatchDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.BucketPatchDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.GitRepositoryPatchDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.KustomizationPatchDefinition;
@@ -23,8 +24,7 @@ public final class FluxConfigurationPatchProperties {
     private SourceKindType sourceKind;
 
     /*
-     * Whether this configuration should suspend its reconciliation of its
-     * kustomizations and sources.
+     * Whether this configuration should suspend its reconciliation of its kustomizations and sources.
      */
     @JsonProperty(value = "suspend")
     private Boolean suspend;
@@ -42,20 +42,28 @@ public final class FluxConfigurationPatchProperties {
     private BucketPatchDefinition bucket;
 
     /*
-     * Array of kustomizations used to reconcile the artifact pulled by the
-     * source type on the cluster.
+     * Parameters to reconcile to the AzureBlob source kind type.
+     */
+    @JsonProperty(value = "azureBlob")
+    private AzureBlobPatchDefinition azureBlob;
+
+    /*
+     * Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster.
      */
     @JsonProperty(value = "kustomizations")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KustomizationPatchDefinition> kustomizations;
 
     /*
-     * Key-value pairs of protected configuration settings for the
-     * configuration
+     * Key-value pairs of protected configuration settings for the configuration
      */
     @JsonProperty(value = "configurationProtectedSettings")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> configurationProtectedSettings;
+
+    /** Creates an instance of FluxConfigurationPatchProperties class. */
+    public FluxConfigurationPatchProperties() {
+    }
 
     /**
      * Get the sourceKind property: Source Kind to pull the configuration data from.
@@ -140,6 +148,26 @@ public final class FluxConfigurationPatchProperties {
     }
 
     /**
+     * Get the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
+     *
+     * @return the azureBlob value.
+     */
+    public AzureBlobPatchDefinition azureBlob() {
+        return this.azureBlob;
+    }
+
+    /**
+     * Set the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
+     *
+     * @param azureBlob the azureBlob value to set.
+     * @return the FluxConfigurationPatchProperties object itself.
+     */
+    public FluxConfigurationPatchProperties withAzureBlob(AzureBlobPatchDefinition azureBlob) {
+        this.azureBlob = azureBlob;
+        return this;
+    }
+
+    /**
      * Get the kustomizations property: Array of kustomizations used to reconcile the artifact pulled by the source type
      * on the cluster.
      *
@@ -196,6 +224,9 @@ public final class FluxConfigurationPatchProperties {
         }
         if (bucket() != null) {
             bucket().validate();
+        }
+        if (azureBlob() != null) {
+            azureBlob().validate();
         }
         if (kustomizations() != null) {
             kustomizations()

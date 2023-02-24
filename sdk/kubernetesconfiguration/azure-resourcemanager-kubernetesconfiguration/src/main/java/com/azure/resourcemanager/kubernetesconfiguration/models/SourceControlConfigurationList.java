@@ -27,6 +27,10 @@ public final class SourceControlConfigurationList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SourceControlConfigurationList class. */
+    public SourceControlConfigurationList() {
+    }
+
     /**
      * Get the value property: List of Source Control Configurations within a Kubernetes cluster.
      *

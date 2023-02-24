@@ -65,7 +65,7 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "SourceControlConfigu")
-    private interface FluxConfigurationsService {
+    public interface FluxConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}"
@@ -110,7 +110,7 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}"
                 + "/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations"
                 + "/{fluxConfigurationName}")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
@@ -338,39 +338,7 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         String fluxConfigurationName) {
         return getWithResponseAsync(
                 resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName)
-            .flatMap(
-                (Response<FluxConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets details of the Flux Configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param fluxConfigurationName Name of the Flux Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the Flux Configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FluxConfigurationInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName) {
-        return getAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -400,6 +368,33 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         return getWithResponseAsync(
                 resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, context)
             .block();
+    }
+
+    /**
+     * Gets details of the Flux Configuration.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
+     *     Microsoft.HybridContainerService.
+     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
+     *     provisionedClusters.
+     * @param clusterName The name of the kubernetes cluster.
+     * @param fluxConfigurationName Name of the Flux Configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the Flux Configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FluxConfigurationInner get(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String fluxConfigurationName) {
+        return getWithResponse(
+                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -675,7 +670,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         String clusterName,
         String fluxConfigurationName,
         FluxConfigurationInner fluxConfiguration) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 clusterRp,
                 clusterResourceName,
@@ -711,7 +707,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         String fluxConfigurationName,
         FluxConfigurationInner fluxConfiguration,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 clusterRp,
                 clusterResourceName,
@@ -1143,7 +1140,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         String clusterName,
         String fluxConfigurationName,
         FluxConfigurationPatch fluxConfigurationPatch) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName,
                 clusterRp,
                 clusterResourceName,
@@ -1179,7 +1177,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         String fluxConfigurationName,
         FluxConfigurationPatch fluxConfigurationPatch,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName,
                 clusterRp,
                 clusterResourceName,
@@ -1530,6 +1529,39 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String fluxConfigurationName) {
+        final Boolean forceDelete = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(
+                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * This will delete the YAML file used to set up the Flux Configuration, thus stopping future sync from the source
+     * repo.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
+     *     Microsoft.HybridContainerService.
+     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
+     *     provisionedClusters.
+     * @param clusterName The name of the kubernetes cluster.
+     * @param fluxConfigurationName Name of the Flux Configuration.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1572,7 +1604,6 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
-     * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1584,9 +1615,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         String clusterRp,
         String clusterResourceName,
         String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete) {
-        return beginDeleteAsync(
+        String fluxConfigurationName) {
+        final Boolean forceDelete = null;
+        return this
+            .beginDeleteAsync(
                 resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete)
             .getSyncPoller();
     }
@@ -1618,7 +1650,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         String fluxConfigurationName,
         Boolean forceDelete,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName,
                 clusterRp,
                 clusterResourceName,
@@ -1727,34 +1760,6 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
                 context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * This will delete the YAML file used to set up the Flux Configuration, thus stopping future sync from the source
-     * repo.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param fluxConfigurationName Name of the Flux Configuration.
-     * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete) {
-        deleteAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete)
-            .block();
     }
 
     /**
@@ -2050,7 +2055,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2086,7 +2092,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

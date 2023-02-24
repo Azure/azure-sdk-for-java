@@ -6,6 +6,7 @@ package com.azure.resourcemanager.kubernetesconfiguration.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.FluxConfigurationInner;
+import com.azure.resourcemanager.kubernetesconfiguration.models.AzureBlobDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.BucketDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.FluxComplianceState;
 import com.azure.resourcemanager.kubernetesconfiguration.models.FluxConfiguration;
@@ -70,6 +71,10 @@ public final class FluxConfigurationImpl implements FluxConfiguration {
 
     public BucketDefinition bucket() {
         return this.innerModel().bucket();
+    }
+
+    public AzureBlobDefinition azureBlob() {
+        return this.innerModel().azureBlob();
     }
 
     public Map<String, KustomizationDefinition> kustomizations() {

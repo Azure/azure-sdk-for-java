@@ -30,8 +30,8 @@ public final class ObjectStatusDefinition {
     private String kind;
 
     /*
-     * Compliance state of the applied object showing whether the applied
-     * object has come into a ready state on the cluster.
+     * Compliance state of the applied object showing whether the applied object has come into a ready state on the
+     * cluster.
      */
     @JsonProperty(value = "complianceState")
     private FluxComplianceState complianceState;
@@ -49,11 +49,14 @@ public final class ObjectStatusDefinition {
     private List<ObjectStatusConditionDefinition> statusConditions;
 
     /*
-     * Additional properties that are provided from objects of the HelmRelease
-     * kind
+     * Additional properties that are provided from objects of the HelmRelease kind
      */
     @JsonProperty(value = "helmReleaseProperties")
     private HelmReleasePropertiesDefinition helmReleaseProperties;
+
+    /** Creates an instance of ObjectStatusDefinition class. */
+    public ObjectStatusDefinition() {
+    }
 
     /**
      * Get the name property: Name of the applied object.

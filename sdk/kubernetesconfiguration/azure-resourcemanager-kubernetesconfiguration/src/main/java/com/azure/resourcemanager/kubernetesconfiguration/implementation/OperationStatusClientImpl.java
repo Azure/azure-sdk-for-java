@@ -55,7 +55,7 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SourceControlConfigu")
-    private interface OperationStatusService {
+    public interface OperationStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}"
@@ -281,42 +281,7 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
         String operationId) {
         return getWithResponseAsync(
                 resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, operationId)
-            .flatMap(
-                (Response<OperationStatusResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get Async Operation status.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param extensionName Name of the Extension.
-     * @param operationId operation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return async Operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId) {
-        return getAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, operationId)
-            .block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -348,6 +313,41 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
         return getWithResponseAsync(
                 resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, operationId, context)
             .block();
+    }
+
+    /**
+     * Get Async Operation status.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
+     *     Microsoft.HybridContainerService.
+     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
+     *     provisionedClusters.
+     * @param clusterName The name of the kubernetes cluster.
+     * @param extensionName Name of the Extension.
+     * @param operationId operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return async Operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner get(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String extensionName,
+        String operationId) {
+        return getWithResponse(
+                resourceGroupName,
+                clusterRp,
+                clusterResourceName,
+                clusterName,
+                extensionName,
+                operationId,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -579,7 +579,8 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -615,7 +616,8 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

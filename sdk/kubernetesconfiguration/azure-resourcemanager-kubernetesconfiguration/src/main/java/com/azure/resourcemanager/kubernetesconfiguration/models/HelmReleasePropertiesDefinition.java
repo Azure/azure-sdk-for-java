@@ -17,8 +17,7 @@ public final class HelmReleasePropertiesDefinition {
     private Long lastRevisionApplied;
 
     /*
-     * The reference to the HelmChart object used as the source to this
-     * HelmRelease
+     * The reference to the HelmChart object used as the source to this HelmRelease
      */
     @JsonProperty(value = "helmChartRef")
     private ObjectReferenceDefinition helmChartRef;
@@ -40,6 +39,10 @@ public final class HelmReleasePropertiesDefinition {
      */
     @JsonProperty(value = "upgradeFailureCount")
     private Long upgradeFailureCount;
+
+    /** Creates an instance of HelmReleasePropertiesDefinition class. */
+    public HelmReleasePropertiesDefinition() {
+    }
 
     /**
      * Get the lastRevisionApplied property: The revision number of the last released object change.

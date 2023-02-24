@@ -11,6 +11,7 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ExtensionPropertiesAksAssignedIdentity;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ExtensionStatus;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Identity;
+import com.azure.resourcemanager.kubernetesconfiguration.models.Plan;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ProvisioningState;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Scope;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,6 +39,16 @@ public final class ExtensionInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The plan information.
+     */
+    @JsonProperty(value = "plan")
+    private Plan plan;
+
+    /** Creates an instance of ExtensionInner class. */
+    public ExtensionInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of an Extension resource.
@@ -76,6 +87,26 @@ public final class ExtensionInner extends ProxyResource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the plan property: The plan information.
+     *
+     * @return the plan value.
+     */
+    public Plan plan() {
+        return this.plan;
+    }
+
+    /**
+     * Set the plan property: The plan information.
+     *
+     * @param plan the plan value to set.
+     * @return the ExtensionInner object itself.
+     */
+    public ExtensionInner withPlan(Plan plan) {
+        this.plan = plan;
+        return this;
     }
 
     /**
@@ -252,12 +283,12 @@ public final class ExtensionInner extends ProxyResource {
     }
 
     /**
-     * Get the installedVersion property: Installed version of the extension.
+     * Get the currentVersion property: Currently installed version of the extension.
      *
-     * @return the installedVersion value.
+     * @return the currentVersion value.
      */
-    public String installedVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().installedVersion();
+    public String currentVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentVersion();
     }
 
     /**
@@ -343,6 +374,15 @@ public final class ExtensionInner extends ProxyResource {
     }
 
     /**
+     * Get the isSystemExtension property: Flag to note if this extension is a system extension.
+     *
+     * @return the isSystemExtension value.
+     */
+    public Boolean isSystemExtension() {
+        return this.innerProperties() == null ? null : this.innerProperties().isSystemExtension();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -353,6 +393,9 @@ public final class ExtensionInner extends ProxyResource {
         }
         if (identity() != null) {
             identity().validate();
+        }
+        if (plan() != null) {
+            plan().validate();
         }
     }
 }

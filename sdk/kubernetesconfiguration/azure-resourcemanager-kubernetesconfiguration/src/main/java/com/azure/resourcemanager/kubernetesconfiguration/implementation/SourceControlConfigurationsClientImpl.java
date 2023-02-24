@@ -65,7 +65,7 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
      */
     @Host("{$host}")
     @ServiceInterface(name = "SourceControlConfigu")
-    private interface SourceControlConfigurationsService {
+    public interface SourceControlConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}"
@@ -324,40 +324,7 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
         String sourceControlConfigurationName) {
         return getWithResponseAsync(
                 resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName)
-            .flatMap(
-                (Response<SourceControlConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets details of the Source Control Configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the Source Control Configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlConfigurationInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName) {
-        return getAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName)
-            .block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -387,6 +354,38 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
         return getWithResponseAsync(
                 resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, context)
             .block();
+    }
+
+    /**
+     * Gets details of the Source Control Configuration.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
+     *     Microsoft.HybridContainerService.
+     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
+     *     provisionedClusters.
+     * @param clusterName The name of the kubernetes cluster.
+     * @param sourceControlConfigurationName Name of the Source Control Configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the Source Control Configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlConfigurationInner get(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String sourceControlConfigurationName) {
+        return getWithResponse(
+                resourceGroupName,
+                clusterRp,
+                clusterResourceName,
+                clusterName,
+                sourceControlConfigurationName,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -590,48 +589,7 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
                 clusterName,
                 sourceControlConfigurationName,
                 sourceControlConfiguration)
-            .flatMap(
-                (Response<SourceControlConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create a new Kubernetes Source Control Configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SourceControl Configuration object returned in Get &amp; Put response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        SourceControlConfigurationInner sourceControlConfiguration) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                sourceControlConfigurationName,
-                sourceControlConfiguration)
-            .block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -669,6 +627,41 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
                 sourceControlConfiguration,
                 context)
             .block();
+    }
+
+    /**
+     * Create a new Kubernetes Source Control Configuration.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
+     *     Microsoft.HybridContainerService.
+     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
+     *     provisionedClusters.
+     * @param clusterName The name of the kubernetes cluster.
+     * @param sourceControlConfigurationName Name of the Source Control Configuration.
+     * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SourceControl Configuration object returned in Get &amp; Put response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String sourceControlConfigurationName,
+        SourceControlConfigurationInner sourceControlConfiguration) {
+        return createOrUpdateWithResponse(
+                resourceGroupName,
+                clusterRp,
+                clusterResourceName,
+                clusterName,
+                sourceControlConfigurationName,
+                sourceControlConfiguration,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -912,7 +905,8 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
         String clusterResourceName,
         String clusterName,
         String sourceControlConfigurationName) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName)
             .getSyncPoller();
     }
@@ -942,7 +936,8 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
         String clusterName,
         String sourceControlConfigurationName,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, context)
             .getSyncPoller();
     }
@@ -1293,7 +1288,8 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1329,7 +1325,8 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

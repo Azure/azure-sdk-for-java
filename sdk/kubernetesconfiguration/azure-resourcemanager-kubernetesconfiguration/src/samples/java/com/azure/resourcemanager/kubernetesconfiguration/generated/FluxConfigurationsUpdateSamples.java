@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.kubernetesconfiguration.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kubernetesconfiguration.models.FluxConfigurationPatch;
 import com.azure.resourcemanager.kubernetesconfiguration.models.GitRepositoryPatchDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.KustomizationPatchDefinition;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for FluxConfigurations Update. */
 public final class FluxConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/PatchFluxConfiguration.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/PatchFluxConfiguration.json
      */
     /**
      * Sample code: Patch Flux Configuration.
@@ -48,7 +47,7 @@ public final class FluxConfigurationsUpdateSamples {
                             new KustomizationPatchDefinition()
                                 .withPath("./test/another-path")
                                 .withSyncIntervalInSeconds(300L))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

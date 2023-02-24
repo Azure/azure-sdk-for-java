@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kubernetesconfiguration.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Extensions Delete. */
 public final class ExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/DeleteExtension.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/DeleteExtension.json
      */
     /**
      * Sample code: Delete Extension.
@@ -27,6 +25,6 @@ public final class ExtensionsDeleteSamples {
                 "clusterName1",
                 "ClusterMonitor",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -25,29 +25,6 @@ public interface SourceControlConfigurationsClient {
      *     provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the Source Control Configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlConfigurationInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName);
-
-    /**
-     * Gets details of the Source Control Configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,7 +41,7 @@ public interface SourceControlConfigurationsClient {
         Context context);
 
     /**
-     * Create a new Kubernetes Source Control Configuration.
+     * Gets details of the Source Control Configuration.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
@@ -73,20 +50,18 @@ public interface SourceControlConfigurationsClient {
      *     provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SourceControl Configuration object returned in Get &amp; Put response.
+     * @return details of the Source Control Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlConfigurationInner createOrUpdate(
+    SourceControlConfigurationInner get(
         String resourceGroupName,
         String clusterRp,
         String clusterResourceName,
         String clusterName,
-        String sourceControlConfigurationName,
-        SourceControlConfigurationInner sourceControlConfiguration);
+        String sourceControlConfigurationName);
 
     /**
      * Create a new Kubernetes Source Control Configuration.
@@ -114,6 +89,31 @@ public interface SourceControlConfigurationsClient {
         String sourceControlConfigurationName,
         SourceControlConfigurationInner sourceControlConfiguration,
         Context context);
+
+    /**
+     * Create a new Kubernetes Source Control Configuration.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
+     *     Microsoft.HybridContainerService.
+     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
+     *     provisionedClusters.
+     * @param clusterName The name of the kubernetes cluster.
+     * @param sourceControlConfigurationName Name of the Source Control Configuration.
+     * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SourceControl Configuration object returned in Get &amp; Put response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SourceControlConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String sourceControlConfigurationName,
+        SourceControlConfigurationInner sourceControlConfiguration);
 
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from

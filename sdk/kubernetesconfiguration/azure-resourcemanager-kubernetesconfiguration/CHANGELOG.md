@@ -1,14 +1,61 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0 (2023-02-24)
 
-### Features Added
+- Azure Resource Manager SourceControlConfiguration client library for Java. This package contains Microsoft Azure SDK for SourceControlConfiguration Management SDK. KubernetesConfiguration Client. Package tag package-2022-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.FluxConfigurations` was modified
 
-### Other Changes
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean)` was removed
+
+#### `models.Extension` was modified
+
+* `installedVersion()` was removed
+
+#### `models.Extensions` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean)` was removed
+
+### Features Added
+
+* `models.Plan` was added
+
+* `models.ManagedIdentityDefinition` was added
+
+* `models.ServicePrincipalDefinition` was added
+
+* `models.AzureBlobPatchDefinition` was added
+
+* `models.AzureBlobDefinition` was added
+
+* `models.ServicePrincipalPatchDefinition` was added
+
+* `models.ManagedIdentityPatchDefinition` was added
+
+#### `SourceControlConfigurationManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `SourceControlConfigurationManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.FluxConfiguration` was modified
+
+* `azureBlob()` was added
+
+#### `models.Extension` was modified
+
+* `currentVersion()` was added
+* `isSystemExtension()` was added
+* `plan()` was added
+
+#### `models.FluxConfigurationPatch` was modified
+
+* `azureBlob()` was added
+* `withAzureBlob(models.AzureBlobPatchDefinition)` was added
 
 ## 1.0.0-beta.3 (2022-03-24)
 

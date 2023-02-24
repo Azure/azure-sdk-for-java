@@ -31,6 +31,10 @@ public final class SourceControlConfigurationInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of SourceControlConfigurationInner class. */
+    public SourceControlConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create a Source Control Configuration resource.
      *

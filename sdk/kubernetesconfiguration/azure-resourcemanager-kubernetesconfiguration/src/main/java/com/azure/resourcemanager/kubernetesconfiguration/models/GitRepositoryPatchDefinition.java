@@ -17,15 +17,13 @@ public final class GitRepositoryPatchDefinition {
     private String url;
 
     /*
-     * The maximum time to attempt to reconcile the cluster git repository
-     * source with the remote.
+     * The maximum time to attempt to reconcile the cluster git repository source with the remote.
      */
     @JsonProperty(value = "timeoutInSeconds")
     private Long timeoutInSeconds;
 
     /*
-     * The interval at which to re-reconcile the cluster git repository source
-     * with the remote.
+     * The interval at which to re-reconcile the cluster git repository source with the remote.
      */
     @JsonProperty(value = "syncIntervalInSeconds")
     private Long syncIntervalInSeconds;
@@ -37,33 +35,33 @@ public final class GitRepositoryPatchDefinition {
     private RepositoryRefDefinition repositoryRef;
 
     /*
-     * Base64-encoded known_hosts value containing public SSH keys required to
-     * access private git repositories over SSH
+     * Base64-encoded known_hosts value containing public SSH keys required to access private git repositories over SSH
      */
     @JsonProperty(value = "sshKnownHosts")
     private String sshKnownHosts;
 
     /*
-     * Plaintext HTTPS username used to access private git repositories over
-     * HTTPS
+     * Plaintext HTTPS username used to access private git repositories over HTTPS
      */
     @JsonProperty(value = "httpsUser")
     private String httpsUser;
 
     /*
-     * Base64-encoded HTTPS certificate authority contents used to access git
-     * private git repositories over HTTPS
+     * Base64-encoded HTTPS certificate authority contents used to access git private git repositories over HTTPS
      */
     @JsonProperty(value = "httpsCACert")
     private String httpsCACert;
 
     /*
-     * Name of a local secret on the Kubernetes cluster to use as the
-     * authentication secret rather than the managed or user-provided
-     * configuration secrets.
+     * Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or
+     * user-provided configuration secrets.
      */
     @JsonProperty(value = "localAuthRef")
     private String localAuthRef;
+
+    /** Creates an instance of GitRepositoryPatchDefinition class. */
+    public GitRepositoryPatchDefinition() {
+    }
 
     /**
      * Get the url property: The URL to sync for the flux configuration git repository.

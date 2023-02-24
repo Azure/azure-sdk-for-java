@@ -28,6 +28,10 @@ public class ExtensionPropertiesAksAssignedIdentity {
     @JsonProperty(value = "type")
     private AksIdentityType type;
 
+    /** Creates an instance of ExtensionPropertiesAksAssignedIdentity class. */
+    public ExtensionPropertiesAksAssignedIdentity() {
+    }
+
     /**
      * Get the principalId property: The principal ID of resource identity.
      *

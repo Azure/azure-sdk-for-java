@@ -52,7 +52,7 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
      */
     @Host("{$host}")
     @ServiceInterface(name = "SourceControlConfigu")
-    private interface FluxConfigOperationStatusService {
+    public interface FluxConfigOperationStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}"
@@ -253,43 +253,7 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
         String operationId) {
         return getWithResponseAsync(
                 resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, operationId)
-            .flatMap(
-                (Response<OperationStatusResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get Async Operation status.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param fluxConfigurationName Name of the Flux Configuration.
-     * @param operationId operation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return async Operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId) {
-        return getAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, operationId)
-            .block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -327,5 +291,40 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
                 operationId,
                 context)
             .block();
+    }
+
+    /**
+     * Get Async Operation status.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
+     *     Microsoft.HybridContainerService.
+     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
+     *     provisionedClusters.
+     * @param clusterName The name of the kubernetes cluster.
+     * @param fluxConfigurationName Name of the Flux Configuration.
+     * @param operationId operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return async Operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner get(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String fluxConfigurationName,
+        String operationId) {
+        return getWithResponse(
+                resourceGroupName,
+                clusterRp,
+                clusterResourceName,
+                clusterName,
+                fluxConfigurationName,
+                operationId,
+                Context.NONE)
+            .getValue();
     }
 }

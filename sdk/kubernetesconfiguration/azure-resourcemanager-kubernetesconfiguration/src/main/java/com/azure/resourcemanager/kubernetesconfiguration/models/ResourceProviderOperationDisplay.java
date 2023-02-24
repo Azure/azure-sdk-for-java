@@ -34,6 +34,10 @@ public final class ResourceProviderOperationDisplay {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ResourceProviderOperationDisplay class. */
+    public ResourceProviderOperationDisplay() {
+    }
+
     /**
      * Get the provider property: Resource provider: Microsoft KubernetesConfiguration.
      *

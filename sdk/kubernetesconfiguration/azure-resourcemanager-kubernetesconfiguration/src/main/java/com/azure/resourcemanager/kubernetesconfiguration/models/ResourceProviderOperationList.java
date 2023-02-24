@@ -24,6 +24,10 @@ public final class ResourceProviderOperationList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ResourceProviderOperationList class. */
+    public ResourceProviderOperationList() {
+    }
+
     /**
      * Get the value property: List of operations supported by this resource provider.
      *
