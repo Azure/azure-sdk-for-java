@@ -23,6 +23,15 @@ public final class ScriptOutputStreamType extends ExpandableStringEnum<ScriptOut
     public static final ScriptOutputStreamType ERROR = fromString("Error");
 
     /**
+     * Creates a new instance of ScriptOutputStreamType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptOutputStreamType() {
+    }
+
+    /**
      * Creates or finds a ScriptOutputStreamType from its string representation.
      *
      * @param name a name to look for.

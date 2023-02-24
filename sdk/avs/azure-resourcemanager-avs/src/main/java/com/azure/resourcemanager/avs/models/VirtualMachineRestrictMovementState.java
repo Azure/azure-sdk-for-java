@@ -18,6 +18,15 @@ public final class VirtualMachineRestrictMovementState
     public static final VirtualMachineRestrictMovementState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of VirtualMachineRestrictMovementState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualMachineRestrictMovementState() {
+    }
+
+    /**
      * Creates or finds a VirtualMachineRestrictMovementState from its string representation.
      *
      * @param name a name to look for.
