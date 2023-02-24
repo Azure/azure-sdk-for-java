@@ -288,7 +288,7 @@ com.azure.resourcemanager:azure-resourcemanager-databoxedge;1.0.0-beta.2;1.0.0-b
 com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0-beta.2;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.21;1.0.0-beta.22
 com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.6;1.0.0-beta.7
