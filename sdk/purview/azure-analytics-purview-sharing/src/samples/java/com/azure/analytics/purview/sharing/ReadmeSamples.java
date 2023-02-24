@@ -248,7 +248,7 @@ public final class ReadmeSamples {
 
         Optional<BinaryData> detachedReceivedShare = listResponse.stream().findFirst();
 
-        if (detachedReceivedShare.isEmpty()) {
+        if (!detachedReceivedShare.isPresent()) {
             return;
         }
 
@@ -306,7 +306,7 @@ public final class ReadmeSamples {
 
         Optional<BinaryData> receivedShare = response.stream().findFirst();
         
-        if (receivedShare.isEmpty()) {
+        if (!receivedShare.isPresent()) {
             return;
         }
 

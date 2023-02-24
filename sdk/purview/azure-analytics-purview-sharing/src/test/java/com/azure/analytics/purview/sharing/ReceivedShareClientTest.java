@@ -107,7 +107,7 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
 
         Optional<BinaryData> detachedReceivedShare = listResponse.stream().findFirst();
 
-        if (detachedReceivedShare.isEmpty()) {
+        if (!detachedReceivedShare.isPresent()) {
             fail("ReceivedShare not found.");
         }
         
