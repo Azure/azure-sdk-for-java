@@ -3,13 +3,9 @@
 
 package com.azure.storage.file.share;
 
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
 import com.azure.storage.common.StorageSeekableByteChannel;
 import com.azure.storage.common.implementation.ByteBufferMarkableInputStream;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
-import com.azure.storage.file.share.models.ShareFileHttpHeaders;
-import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 

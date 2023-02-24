@@ -16,7 +16,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
@@ -184,7 +183,6 @@ public class ShareFileClient {
      * @return The opened channel.
      */
     public final SeekableByteChannel getFileSeekableByteChannelRead(ShareRequestConditions conditions) {
-        // TODO (jaschrep): make max put range an accessible constant (how is it not already??)
         return new StorageSeekableByteChannel((int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE,
             new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/);
     }
