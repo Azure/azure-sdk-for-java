@@ -11,7 +11,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.storage.file.share.models.ShareFileRequestIntent;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 
 /** Initializes a new instance of the AzureFileStorage type. */
 public final class AzureFileStorageImpl {
@@ -28,14 +28,14 @@ public final class AzureFileStorageImpl {
     }
 
     /** Valid value is backup. */
-    private final ShareFileRequestIntent fileRequestIntent;
+    private final ShareTokenIntent fileRequestIntent;
 
     /**
      * Gets Valid value is backup.
      *
      * @return the fileRequestIntent value.
      */
-    public ShareFileRequestIntent getFileRequestIntent() {
+    public ShareTokenIntent getFileRequestIntent() {
         return this.fileRequestIntent;
     }
 
@@ -158,7 +158,7 @@ public final class AzureFileStorageImpl {
      */
     AzureFileStorageImpl(
             String version,
-            ShareFileRequestIntent fileRequestIntent,
+            ShareTokenIntent fileRequestIntent,
             String url,
             boolean allowTrailingDot,
             boolean allowSourceTrailingDot) {
@@ -187,7 +187,7 @@ public final class AzureFileStorageImpl {
     AzureFileStorageImpl(
             HttpPipeline httpPipeline,
             String version,
-            ShareFileRequestIntent fileRequestIntent,
+            ShareTokenIntent fileRequestIntent,
             String url,
             boolean allowTrailingDot,
             boolean allowSourceTrailingDot) {
@@ -216,7 +216,7 @@ public final class AzureFileStorageImpl {
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String version,
-            ShareFileRequestIntent fileRequestIntent,
+            ShareTokenIntent fileRequestIntent,
             String url,
             boolean allowTrailingDot,
             boolean allowSourceTrailingDot) {
