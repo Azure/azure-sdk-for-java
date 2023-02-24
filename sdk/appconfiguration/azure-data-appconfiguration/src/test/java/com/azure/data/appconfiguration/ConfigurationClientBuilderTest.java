@@ -6,7 +6,6 @@ package com.azure.data.appconfiguration;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -190,7 +189,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
                 () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
         }
         HttpClient defaultHttpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
-            : new NettyAsyncHttpClientBuilder().wiretap(true).build();
+            : HttpClient.createDefault();
 
         clientBuilder.pipeline(null).httpClient(defaultHttpClient);
 
