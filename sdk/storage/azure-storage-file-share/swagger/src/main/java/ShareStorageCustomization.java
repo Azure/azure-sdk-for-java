@@ -30,6 +30,9 @@ public class ShareStorageCustomization extends Customization {
         // Replace JacksonXmlRootElement annotations that are causing a semantic breaking change.
         changeJacksonXmlRootElementName(models.getClass("ShareFileHttpHeaders"), "share-file-http-headers");
         changeJacksonXmlRootElementName(models.getClass("SourceModifiedAccessConditions"), "source-modified-access-conditions");
+
+        ClassCustomization shareTokenIntent = models.getClass("ShareTokenIntent");
+        shareTokenIntent.getJavadoc().setDescription("The request intent for whether the file should be backed up.");
     }
 
     /*
