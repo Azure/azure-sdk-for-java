@@ -592,7 +592,7 @@ public final class TableUtils {
             TableTransactionFailedException failedException = (TableTransactionFailedException) cause;
             return failedException;
         } else {
-            return new RuntimeException(mapThrowableToTableServiceException(exception));
+            return (RuntimeException) mapThrowableToTableServiceException(exception);
         }
     }
 }
