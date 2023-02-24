@@ -3,15 +3,10 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.slf4j.event.EventConstants;
+import org.slf4j.event.Level;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -21,8 +16,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
     private final static Logger logger = LoggerFactory.getLogger(CosmosDiagnosticsLogger.class);
-    private final static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
 
     private final CosmosDiagnosticsLoggerConfig config;
 
@@ -60,11 +53,9 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
             return false;
         }
 
-        if (diagnosticsContext.isFailure()) {
-            return true;
-        }
-
-        return diagnosticsContext.isThresholdViolated();
+        return diagnosticsContext.isFailure() ||
+            diagnosticsContext.isThresholdViolated() ||
+            isEnabledForLevel(this.config.getLevelForSuccessfulOperations());
     }
 
     /**
@@ -73,7 +64,22 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
      */
     protected void log(CosmosDiagnosticsContext ctx) {
         if (ctx.isFailure()) {
-            logger.warn(
+            Level levelForFailedOps = this.config.getLevelForFailures();
+            if (isEnabledForLevel(levelForFailedOps)) {
+                logAtLevel(
+                    levelForFailedOps,
+                    "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
+                    ctx.getAccountName(),
+                    ctx.getDatabaseName(),
+                    ctx.getCollectionName(),
+                    ctx.getStatusCode(),
+                    ctx.getSubStatusCode(),
+                    ctx);
+            }
+        } else if (ctx.isThresholdViolated()) {
+            Level levelForThresholdViolations = this.config.getLevelForThresholdViolations();
+            logAtLevel(
+                levelForThresholdViolations,
                 "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
                 ctx.getAccountName(),
                 ctx.getDatabaseName(),
@@ -81,8 +87,9 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                 ctx.getStatusCode(),
                 ctx.getSubStatusCode(),
                 ctx);
-        } else {
-            logger.info(
+        } else if (isEnabledForLevel(this.config.getLevelForSuccessfulOperationsWithRequestDiagnostics())) {
+            logAtLevel(
+                this.config.getLevelForSuccessfulOperationsWithRequestDiagnostics(),
                 "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
                 ctx.getAccountName(),
                 ctx.getDatabaseName(),
@@ -90,6 +97,58 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                 ctx.getStatusCode(),
                 ctx.getSubStatusCode(),
                 ctx);
+        } else if (isEnabledForLevel(this.config.getLevelForSuccessfulOperations())) {
+            logAtLevel(
+                this.config.getLevelForSuccessfulOperations(),
+                "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{}, Latency: {}, Request charge: {}",
+                ctx.getAccountName(),
+                ctx.getDatabaseName(),
+                ctx.getCollectionName(),
+                ctx.getStatusCode(),
+                ctx.getSubStatusCode(),
+                ctx.getDuration(),
+                ctx.getTotalRequestCharge());
+        }
+    }
+
+    private static boolean isEnabledForLevel(Level level) {
+        int levelInt = level.toInt();
+        switch (levelInt) {
+            case (EventConstants.TRACE_INT):
+                return logger.isTraceEnabled();
+            case (EventConstants.DEBUG_INT):
+                return logger.isDebugEnabled();
+            case (EventConstants.INFO_INT):
+                return logger.isInfoEnabled();
+            case (EventConstants.WARN_INT):
+                return logger.isWarnEnabled();
+            case (EventConstants.ERROR_INT):
+                return logger.isErrorEnabled();
+            default:
+                throw new IllegalArgumentException("Level [" + level + "] not recognized.");
+        }
+    }
+
+    private static void logAtLevel(Level level, String template, Object... args) {
+        int levelInt = level.toInt();
+        switch (levelInt) {
+            case (EventConstants.TRACE_INT):
+                logger.trace(template, args);
+                return;
+            case (EventConstants.DEBUG_INT):
+                logger.debug(template, args);
+                return;
+            case (EventConstants.INFO_INT):
+                logger.info(template, args);
+                return;
+            case (EventConstants.WARN_INT):
+                logger.warn(template, args);
+                return;
+            case (EventConstants.ERROR_INT):
+                logger.error(template, args);
+                return;
+            default:
+                throw new IllegalArgumentException("Level [" + level + "] not recognized.");
         }
     }
 }
