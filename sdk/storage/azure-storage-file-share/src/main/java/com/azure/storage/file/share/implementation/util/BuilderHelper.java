@@ -35,7 +35,6 @@ import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
-import com.azure.storage.file.share.ShareClientBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -231,6 +229,14 @@ public final class BuilderHelper {
         }
     }
 
+    /**
+     * Parses the given endpoint url into a ShareUrlParts.
+     *
+     * @param endpoint The endpoint url to be parsed.
+     * @param logger {@link ClientLogger}
+     * @return A {@link ShareUrlParts} object containing all the components of a ShareURL.
+     * @throws IllegalArgumentException If the endpoint is malformed.
+     */
     public static ShareUrlParts parseEndpoint(String endpoint, ClientLogger logger) {
         Objects.requireNonNull(endpoint);
         try {
@@ -291,10 +297,20 @@ public final class BuilderHelper {
         }
     }
 
+    /**
+     * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
+     *
+     * @param authority The authority of a URL.
+     * @throws MalformedURLException If the authority is malformed.
+     * @return Whether the authority is IP style.
+     */
     public static boolean determineAuthorityIsIpStyle(String authority) throws MalformedURLException {
         return new URL("http://" +  authority).getPort() != -1;
     }
 
+    /**
+     * This class represents the components that make up an Azure Storage Share URL.
+     */
     public static class ShareUrlParts {
         private String scheme;
         private String endpoint;
@@ -302,46 +318,100 @@ public final class BuilderHelper {
         private String shareName;
         private String sasToken;
 
+        /**
+         * Gets the URL scheme, ex. "https".
+         *
+         * @return the URL scheme.
+         */
         public String getScheme() {
             return scheme;
         }
 
+        /**
+         * Sets the URL scheme, ex. "https".
+         *
+         * @param scheme The URL scheme.
+         * @return the updated ShareUrlParts object.
+         */
         public ShareUrlParts setScheme(String scheme) {
             this.scheme = scheme;
             return this;
         }
 
+        /**
+         * Gets the endpoint for the share service based on the parsed URL.
+         *
+         * @return The endpoint for the share service.
+         */
         public String getEndpoint() {
             return endpoint;
         }
 
+        /**
+         * Sets the endpoint for the share service.
+         *
+         * @return the updated ShareUrlParts object.
+         */
         public ShareUrlParts setEndpoint(String endpoint) {
             this.endpoint = endpoint;
             return this;
         }
 
+        /**
+         * Gets the accountname, ex. "myaccountname".
+         *
+         * @return the account name.
+         */
         public String getAccountName() {
             return accountName;
         }
 
+        /**
+         * Sets the account name.
+         *
+         * @param accountName The account name.
+         * @return the updated ShareUrlParts object.
+         */
         public ShareUrlParts setAccountName(String accountName) {
             this.accountName = accountName;
             return this;
         }
 
+        /**
+         * Gets the share name that will be used as part of the URL path.
+         *
+         * @return the share name.
+         */
         public String getShareName() {
             return shareName;
         }
 
+        /**
+         * Sets the share name that will be used as part of the URL path.
+         *
+         * @param shareName The share nme.
+         * @return the updated ShareUrlParts object.
+         */
         ShareUrlParts setShareName(String shareName) {
             this.shareName = shareName;
             return this;
         }
 
+        /**
+         * Gets the sas token that will be used as part of the URL path.
+         *
+         * @return the sas token.
+         */
         public String getSasToken() {
             return sasToken;
         }
 
+        /**
+         * Sets the sas token that will be used as part of the URL path.
+         *
+         * @param sasToken the sas token.
+         * @return the updated ShareUrlParts object.
+         */
         public ShareUrlParts setSasToken(String sasToken) {
             this.sasToken = sasToken;
             return this;

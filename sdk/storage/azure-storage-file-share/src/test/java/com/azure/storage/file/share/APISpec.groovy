@@ -13,7 +13,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.identity.EnvironmentCredentialBuilder
-import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount

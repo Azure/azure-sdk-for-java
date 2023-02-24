@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.http.HttpHeaderName
 import com.azure.core.http.policy.ExponentialBackoffOptions
 import com.azure.core.http.policy.RetryOptions
 import com.azure.core.util.HttpClientOptions
