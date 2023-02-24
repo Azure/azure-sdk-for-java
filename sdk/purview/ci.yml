@@ -55,6 +55,8 @@ parameters:
     default: false
   - name: release_azureanalyticspurviewsharing
     displayName: azure-analytics-purview-sharing
+    type: boolean
+    default: true
   - name: release_azureanalyticspurviewworkflow
     displayName: azure-analytics-purview-workflow
     type: boolean
