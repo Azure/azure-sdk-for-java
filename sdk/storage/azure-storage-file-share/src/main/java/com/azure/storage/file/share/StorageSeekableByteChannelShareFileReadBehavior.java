@@ -1,5 +1,6 @@
 package com.azure.storage.file.share;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSeekableByteChannel;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
@@ -13,28 +14,29 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
+    private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannelShareFileReadBehavior.class);
     private final ShareFileClient client;
     private final ShareRequestConditions conditions;
 
     private Long lastKnownResourceLength;
 
-    public StorageSeekableByteChannelShareFileReadBehavior(ShareFileClient client, ShareRequestConditions conditions) {
+    StorageSeekableByteChannelShareFileReadBehavior(ShareFileClient client, ShareRequestConditions conditions) {
         this.client = client;
         this.conditions = conditions;
     }
 
-    public ShareFileClient getClient() {
+    ShareFileClient getClient() {
         return this.client;
     }
 
-    public ShareRequestConditions getRequestConditions() {
+    ShareRequestConditions getRequestConditions() {
         return this.conditions;
     }
 
     @Override
     public int read(ByteBuffer dst, long sourceOffset) {
         if (dst.remaining() <= 0) {
-            throw new IllegalArgumentException("'dst.remaining()' must be positive.");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'dst.remaining()' must be positive."));
         }
 
         int initialPosition = dst.position();
@@ -60,7 +62,7 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
             }
             throw e;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 

@@ -21,22 +21,22 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
 
     private Long fileSize;
 
-    public StorageSeekableByteChannelShareFileWriteBehavior(ShareFileClient client, ShareRequestConditions conditions,
+    StorageSeekableByteChannelShareFileWriteBehavior(ShareFileClient client, ShareRequestConditions conditions,
         FileLastWrittenMode lastWrittenMode) {
         this.client = Objects.requireNonNull(client, "'client' cannot be null.");
         this.conditions = conditions;
         this.lastWrittenMode = lastWrittenMode;
     }
 
-    public ShareFileClient getClient() {
+    ShareFileClient getClient() {
         return this.client;
     }
 
-    public ShareRequestConditions getRequestConditions() {
+    ShareRequestConditions getRequestConditions() {
         return this.conditions;
     }
 
-    public FileLastWrittenMode getLastWrittenMode() {
+    FileLastWrittenMode getLastWrittenMode() {
         return this.lastWrittenMode;
     }
 
