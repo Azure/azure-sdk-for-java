@@ -37,6 +37,8 @@ Various documentation is available to help you get started
 
 [Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
 
+## Key concepts
+
 ## Examples
 
 ### Create a Sent Share Client
@@ -310,6 +312,16 @@ ReceivedSharesClient receivedSharesClient =
 receivedSharesClient.beginDeleteReceivedShare("<received-share-id", new RequestOptions()); 
 ```
 
+## Troubleshooting
+
+## Next steps
+
+### Enabling Logging
+
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
@@ -331,3 +343,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [create_azure_purview_account]: https://docs.microsoft.com/azure/purview/create-catalog-portal
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
