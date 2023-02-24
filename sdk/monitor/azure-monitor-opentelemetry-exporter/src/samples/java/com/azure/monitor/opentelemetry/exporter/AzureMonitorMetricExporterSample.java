@@ -3,9 +3,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -16,7 +13,6 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
-import java.net.InetSocketAddress;
 
 public class AzureMonitorMetricExporterSample {
 
@@ -30,7 +26,6 @@ public class AzureMonitorMetricExporterSample {
         try {
             MetricExporter exporter = new AzureMonitorExporterBuilder()
                     .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                    .httpClient(getHttpClientUsingProxy())
                     .buildMetricExporter();
             PeriodicMetricReader periodicMetricReader = PeriodicMetricReader
                     .builder(exporter)
@@ -57,7 +52,6 @@ public class AzureMonitorMetricExporterSample {
         try {
             MetricExporter exporter = new AzureMonitorExporterBuilder()
                     .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                    .httpClient(getHttpClientUsingProxy())
                     .buildMetricExporter();
             PeriodicMetricReader periodicMetricReader = PeriodicMetricReader
                     .builder(exporter)
@@ -92,7 +86,6 @@ public class AzureMonitorMetricExporterSample {
         try {
             MetricExporter exporter = new AzureMonitorExporterBuilder()
                     .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                    .httpClient(getHttpClientUsingProxy())
                     .buildMetricExporter();
             PeriodicMetricReader periodicMetricReader = PeriodicMetricReader
                     .builder(exporter)
@@ -116,12 +109,5 @@ public class AzureMonitorMetricExporterSample {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    // enable proxy via Fiddler
-    private static HttpClient getHttpClientUsingProxy() {
-        return new NettyAsyncHttpClientBuilder()
-                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-                .build();
     }
 }
