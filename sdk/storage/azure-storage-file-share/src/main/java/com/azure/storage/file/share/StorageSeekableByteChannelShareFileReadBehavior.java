@@ -15,6 +15,7 @@ import java.nio.ByteBuffer;
 
 class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
     private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannelShareFileReadBehavior.class);
+
     private final ShareFileClient client;
     private final ShareRequestConditions conditions;
 
@@ -60,7 +61,7 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
                 // that zero bytes were read
                 return sourceOffset < lastKnownResourceLength ? 0 : -1;
             }
-            throw e;
+            throw LOGGER.logExceptionAsError(e);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }

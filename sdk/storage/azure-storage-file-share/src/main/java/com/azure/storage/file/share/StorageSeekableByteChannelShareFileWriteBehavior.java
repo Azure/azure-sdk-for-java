@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSeekableByteChannel;
 import com.azure.storage.common.implementation.ByteBufferMarkableInputStream;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
@@ -15,6 +16,8 @@ import java.nio.ByteBuffer;
 import java.util.Objects;
 
 class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekableByteChannel.WriteBehavior {
+    private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannelShareFileWriteBehavior.class);
+
     private final ShareFileClient client;
     private final ShareRequestConditions conditions;
     private final FileLastWrittenMode lastWrittenMode;
@@ -48,7 +51,7 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
                     .setOffset(destOffset).setRequestConditions(conditions).setLastWrittenMode(lastWrittenMode),
                 null, null);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -67,6 +70,6 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
 
     @Override
     public void resize(long newSize) {
-        throw new UnsupportedOperationException();
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException());
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share.options;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
@@ -11,6 +12,8 @@ import java.util.Objects;
  * Options for obtaining a {@link java.nio.channels.SeekableByteChannel} backed by an Azure Storage Share File.
  */
 public final class ShareFileSeekableByteChannelWriteOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(ShareFileSeekableByteChannelWriteOptions.class);
+
     /**
      * Mode to open the channel for writing.
      */
@@ -60,10 +63,12 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     /**
      * @param fileSize New size of the target file.
      * @return The updated instance.
+     * @throws UnsupportedOperationException When setting a file size on options that don't create a new file.
      */
     public ShareFileSeekableByteChannelWriteOptions setFileSize(Long fileSize) {
         if (channelMode != WriteMode.OVERWRITE) {
-            throw new UnsupportedOperationException("Cannot set 'fileSize' unless creating a new file.");
+            throw LOGGER.logExceptionAsError(
+                new UnsupportedOperationException("Cannot set 'fileSize' unless creating a new file."));
         }
         this.fileSize = fileSize;
         return this;
