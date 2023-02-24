@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import java.util.List;
 
 /**
- * Properties for an oauth2 client.
+ * Properties for an OAuth2 client.
  */
 public class AuthorizationClientProperties {
 

@@ -24,7 +24,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
-import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
@@ -37,7 +36,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.toDetectLanguage
 import static com.azure.ai.textanalytics.implementation.Utility.toLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing detect language endpoint.
@@ -106,8 +104,7 @@ class DetectLanguageUtilClient {
                         .setAnalysisInput(new LanguageDetectionAnalysisInput()
                             .setDocuments(toLanguageInput(documents))),
                     options.isIncludeStatistics(),
-                    getNotNullContext(context)
-                        .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                    getNotNullContext(context))
                 .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
                     getDocumentCount(documents)))
                 .doOnSuccess(response -> LOGGER.info("Detected languages for a batch of documents - {}",
@@ -122,7 +119,7 @@ class DetectLanguageUtilClient {
             options.getModelVersion(),
             options.isIncludeStatistics(),
             options.isServiceLogsDisabled(),
-            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            getNotNullContext(context))
             .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
                 getDocumentCount(documents)))
             .doOnSuccess(response -> LOGGER.info("Detected languages for a batch of documents - {}",
@@ -146,8 +143,7 @@ class DetectLanguageUtilClient {
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
-        context = enableSyncRestProxy(getNotNullContext(context)
-            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE));
+        context = enableSyncRestProxy(getNotNullContext(context));
         options = options == null ? new TextAnalyticsRequestOptions() : options;
 
         try {

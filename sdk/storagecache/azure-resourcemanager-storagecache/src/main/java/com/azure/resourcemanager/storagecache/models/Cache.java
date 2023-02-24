@@ -578,16 +578,6 @@ public interface Cache {
     /**
      * Create a priming job. This operation is only allowed when the cache is healthy.
      *
-     * @param primingjob Object containing the definition of a priming job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void startPrimingJob(PrimingJob primingjob);
-
-    /**
-     * Create a priming job. This operation is only allowed when the cache is healthy.
-     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -603,16 +593,6 @@ public interface Cache {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void startPrimingJob(PrimingJob primingjob, Context context);
-
-    /**
-     * Schedule a priming job for deletion.
-     *
-     * @param primingJobId Object containing the priming job ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void stopPrimingJob(PrimingJobIdParameter primingJobId);
 
     /**
      * Schedule a priming job for deletion.
@@ -636,16 +616,6 @@ public interface Cache {
     /**
      * Schedule a priming job to be paused.
      *
-     * @param primingJobId Object containing the priming job ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void pausePrimingJob(PrimingJobIdParameter primingJobId);
-
-    /**
-     * Schedule a priming job to be paused.
-     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -661,16 +631,6 @@ public interface Cache {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void pausePrimingJob(PrimingJobIdParameter primingJobId, Context context);
-
-    /**
-     * Resumes a paused priming job.
-     *
-     * @param primingJobId Object containing the priming job ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void resumePrimingJob(PrimingJobIdParameter primingJobId);
 
     /**
      * Resumes a paused priming job.

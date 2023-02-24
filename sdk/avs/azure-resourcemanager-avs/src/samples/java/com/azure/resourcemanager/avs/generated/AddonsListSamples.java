@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Addons List. */
 public final class AddonsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class AddonsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().list("group1", "cloud1", Context.NONE);
+        manager.addons().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

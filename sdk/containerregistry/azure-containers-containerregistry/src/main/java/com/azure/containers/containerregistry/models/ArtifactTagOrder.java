@@ -5,7 +5,6 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Sort options for ordering tags in a collection. */
@@ -20,12 +19,19 @@ public final class ArtifactTagOrder extends ExpandableStringEnum<ArtifactTagOrde
     public static final ArtifactTagOrder LAST_UPDATED_ON_ASCENDING = fromString("timeasc");
 
     /**
+     * Creates a new instance of ArtifactTagOrder value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArtifactTagOrder() {}
+
+    /**
      * Creates or finds a ArtifactTagOrder from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding ArtifactTagOrder.
      */
-    @JsonCreator
     public static ArtifactTagOrder fromString(String name) {
         return fromString(name, ArtifactTagOrder.class);
     }
