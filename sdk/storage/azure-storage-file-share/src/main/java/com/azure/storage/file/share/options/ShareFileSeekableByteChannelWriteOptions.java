@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Options for obtaining a {@link java.nio.channels.SeekableByteChannel} backed by an Azure Storage Share File.
  */
-public class ShareFileSeekableByteChannelWriteOptions {
+public final class ShareFileSeekableByteChannelWriteOptions {
     /**
      * Mode to open the channel for writing.
      */

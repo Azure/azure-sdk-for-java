@@ -19,7 +19,7 @@ import java.nio.channels.SeekableByteChannel;
  * Storage channels are opened for read OR write access, not both. Not all APIs are supported depending on the channel
  * mode and storage resource type (e.g. blob).
  */
-public class StorageSeekableByteChannel implements SeekableByteChannel {
+public final class StorageSeekableByteChannel implements SeekableByteChannel {
     private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannel.class);
 
     /**
