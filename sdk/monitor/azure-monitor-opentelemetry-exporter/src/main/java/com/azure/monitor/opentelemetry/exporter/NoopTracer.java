@@ -18,23 +18,28 @@ class NoopTracer implements Tracer {
     NoopTracer() {
     }
 
+    @Override
     public Context start(String spanName, Context context) {
         Objects.requireNonNull(spanName, "'spanName' cannot be null");
         return context;
     }
 
+    @Override
     public void end(String statusMessage, Throwable error, Context context) {
     }
 
+    @Override
     public void setAttribute(String key, String value, Context context) {
         Objects.requireNonNull(key, "'key' cannot be null");
         Objects.requireNonNull(value, "'value' cannot be null");
     }
 
+    @Override
     public boolean isEnabled() {
         return false;
     }
 
+    @Override
     public AutoCloseable makeSpanCurrent(Context context) {
         return NOOP_CLOSEABLE;
     }

@@ -14,6 +14,8 @@ import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
 
+import static java.util.concurrent.TimeUnit.MINUTES;
+
 public class AzureMonitorMetricExporterSample {
 
     private static final String APPINSIGHTS_CONNECTION_STRING = "<YOUR_CONNECTION_STRING>";
@@ -42,7 +44,9 @@ public class AzureMonitorMetricExporterSample {
             histogram.record(1.0);
             histogram.record(100.0);
             histogram.record(30.0);
-            Thread.sleep(300000);
+
+            // metrics are exported every 60 seconds by default
+            MINUTES.sleep(5);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -76,7 +80,8 @@ public class AzureMonitorMetricExporterSample {
             myFruitCounter.add(5, Attributes.of(AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
             myFruitCounter.add(4, Attributes.of(AttributeKey.stringKey("name"), "lemon", AttributeKey.stringKey("color"), "yellow"));
 
-            Thread.sleep(300000);
+            // metrics are exported every 60 seconds by default
+            MINUTES.sleep(5);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -105,7 +110,8 @@ public class AzureMonitorMetricExporterSample {
                                 observableMeasurement.record(randomNumber, Attributes.of(AttributeKey.stringKey("testKey"), "testValue"));
                             });
 
-            Thread.sleep(300000);
+            // metrics are exported every 60 seconds by default
+            MINUTES.sleep(5);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
