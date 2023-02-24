@@ -54,8 +54,8 @@ import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileRangeList;
-import com.azure.storage.file.share.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -113,7 +113,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -143,7 +143,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -160,7 +160,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -177,7 +177,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -193,7 +193,7 @@ public final class FilesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -209,7 +209,7 @@ public final class FilesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -224,7 +224,7 @@ public final class FilesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -239,7 +239,7 @@ public final class FilesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -268,7 +268,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -297,7 +297,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -318,7 +318,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -340,7 +340,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -362,7 +362,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/octet-stream") BinaryData optionalbody,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -384,7 +384,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/octet-stream") BinaryData optionalbody,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -402,7 +402,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -419,7 +419,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -438,7 +438,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -457,7 +457,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -475,7 +475,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -493,7 +493,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -512,7 +512,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -531,7 +531,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -549,7 +549,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -567,7 +567,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -638,7 +638,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -657,7 +657,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -684,7 +684,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -711,7 +711,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -729,7 +729,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -747,7 +747,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -765,7 +765,7 @@ public final class FilesImpl {
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -783,7 +783,7 @@ public final class FilesImpl {
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -801,7 +801,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-handle-id") String handleId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -819,7 +819,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-handle-id") String handleId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -848,7 +848,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-content-type") String contentType,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -877,7 +877,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-content-type") String contentType,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }

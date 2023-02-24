@@ -44,10 +44,10 @@ import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyH
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesHeaders;
 import com.azure.storage.file.share.models.ShareAccessTier;
-import com.azure.storage.file.share.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -383,7 +383,7 @@ public final class SharesImpl {
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/json") SharePermission sharePermission,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -398,7 +398,7 @@ public final class SharesImpl {
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/json") SharePermission sharePermission,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -414,7 +414,7 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -429,7 +429,7 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 

@@ -31,7 +31,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.storage.file.share.models.ShareFileRequestIntent;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -164,7 +164,7 @@ public final class AzureFileStorageImplBuilder
     /*
      * Valid value is backup
      */
-    @Generated private ShareFileRequestIntent fileRequestIntent;
+    @Generated private ShareTokenIntent fileRequestIntent;
 
     /**
      * Sets Valid value is backup.
@@ -173,7 +173,7 @@ public final class AzureFileStorageImplBuilder
      * @return the AzureFileStorageImplBuilder.
      */
     @Generated
-    public AzureFileStorageImplBuilder fileRequestIntent(ShareFileRequestIntent fileRequestIntent) {
+    public AzureFileStorageImplBuilder fileRequestIntent(ShareTokenIntent fileRequestIntent) {
         this.fileRequestIntent = fileRequestIntent;
         return this;
     }
