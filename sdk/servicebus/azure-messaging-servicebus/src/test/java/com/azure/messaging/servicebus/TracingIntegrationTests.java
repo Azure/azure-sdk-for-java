@@ -27,6 +27,7 @@ import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.io.Closeable;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -53,10 +54,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Execution(ExecutionMode.SAME_THREAD)
 public class TracingIntegrationTests extends IntegrationTestBase {
     private TestSpanProcessor spanProcessor;
+    private List<AutoCloseable> toClose = new ArrayList<>();
     private ServiceBusSenderAsyncClient sender;
-    ServiceBusReceiverAsyncClient receiver;
-    ServiceBusReceiverClient receiverSync;
-    ServiceBusProcessorClient processor;
+    private ServiceBusReceiverAsyncClient receiver;
+    private ServiceBusReceiverClient receiverSync;
+    private ServiceBusProcessorClient processor;
 
     public TracingIntegrationTests() {
         super(new ClientLogger(TracingIntegrationTests.class));
@@ -90,6 +92,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .receiver()
             .queueName(getQueueName(0))
             .buildClient();
+        toClose.add(sender);
+        toClose.add(receiver);
+        toClose.add(receiverSync);
 
         StepVerifier.setDefaultTimeout(TIMEOUT);
     }
@@ -98,8 +103,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     protected void afterTest() {
         GlobalOpenTelemetry.resetForTest();
         sharedBuilder = null;
+
+        if (processor != null)
+        {
+            toClose.add(processor);
+        }
+
         try {
-            dispose(receiver, sender, processor, receiverSync);
+            dispose(toClose.toArray(new AutoCloseable[0]));
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
         }
@@ -255,6 +266,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .queueName(getQueueName(0))
             .buildAsyncClient();
 
+        toClose.add(receiverAutoComplete);
         StepVerifier.create(
                 receiverAutoComplete.receiveMessages()
                 .take(messageCount)
@@ -515,7 +527,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             })
             .processError(e -> fail("unexpected error", e.getException()))
             .buildProcessorClient();
-
         processor.start();
         assertTrue(processedFound.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -561,7 +572,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             })
             .processError(e -> fail("unexpected error", e.getException()))
             .buildProcessorClient();
-
         processor.start();
         assertTrue(completedFound.await(20, TimeUnit.SECONDS));
         processor.stop();
@@ -605,7 +615,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             })
             .processError(e -> { })
             .buildProcessorClient();
-
         processor.start();
         assertTrue(messageProcessed.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -760,11 +769,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
             assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.name")));
 
+            spans.add(readableSpan);
             Consumer<ReadableSpan> filter = notifier.get();
             if (filter != null) {
                 filter.accept(readableSpan);
             }
-            spans.add(readableSpan);
         }
 
         public void notifyIfCondition(CountDownLatch countDownLatch, Predicate<ReadableSpan> filter) {
