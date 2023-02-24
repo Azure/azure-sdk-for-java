@@ -9,7 +9,7 @@ steps:
   - task: Cache@2
     inputs:
       key: 'jdk | "$(JavaTestVersion)" | "$(CacheSalt)" | "$(Agent.OS)"'
-      path: $(Agent.BuildDirectory)/jdk-${{ parameters.LatestJdkFeatureVersion }}
+      path: $(Agent.BuildDirectory)/graalvm-${{ parameters.GraalVMJdkVersion }}
     displayName: 'Cache GraalVM JDK'
 
   - task: PowerShell@2
