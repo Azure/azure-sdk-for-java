@@ -164,7 +164,7 @@ public class ShareFileClient {
      * @param options Options for opening the channel.
      * @return The opened channel.
      */
-    public final SeekableByteChannel getFileSeekableByteChannelWrite(ShareFileSeekableByteChannelWriteOptions options) {
+    public SeekableByteChannel getFileSeekableByteChannelWrite(ShareFileSeekableByteChannelWriteOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (options.getChannelMode() == ShareFileSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
@@ -182,7 +182,7 @@ public class ShareFileClient {
      * @param conditions requestConditions for reading from Storage.
      * @return The opened channel.
      */
-    public final SeekableByteChannel getFileSeekableByteChannelRead(ShareRequestConditions conditions) {
+    public SeekableByteChannel getFileSeekableByteChannelRead(ShareRequestConditions conditions) {
         return new StorageSeekableByteChannel((int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE,
             new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/);
     }
