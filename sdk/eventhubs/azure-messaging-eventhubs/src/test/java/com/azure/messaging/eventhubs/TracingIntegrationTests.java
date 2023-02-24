@@ -76,6 +76,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
+        toClose = new ArrayList<>();
         GlobalOpenTelemetry.resetForTest();
         spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName());
         OpenTelemetrySdk.builder()
@@ -215,6 +216,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     .build())
             .build();
 
+        closeClients();
         createClients(otel);
 
         CountDownLatch latch = new CountDownLatch(2);
@@ -287,13 +289,18 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         toClose.add(bufferedProducer);
 
+        Instant start = Instant.now();
         EventData event1 = new EventData("1");
         EventData event2 = new EventData("2");
 
+        AtomicReference<String> partitionIdRef = new AtomicReference<>();
         StepVerifier.create(
                 bufferedProducer
                     .getPartitionIds().take(1)
-                    .map(partitionId -> new SendOptions().setPartitionId(partitionId))
+                    .map(partitionId -> {
+                        partitionIdRef.compareAndSet(null, partitionId);
+                        return new SendOptions().setPartitionId(partitionId);
+                    })
                     .flatMap(sendOpts ->
                         bufferedProducer.enqueueEvent(event1, sendOpts)
                             .then(bufferedProducer.enqueueEvent(event2, sendOpts))))
@@ -301,7 +308,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .verifyComplete();
 
         StepVerifier.create(consumer
-                .receive()
+                .receiveFromPartition(partitionIdRef.get(), EventPosition.fromEnqueuedTime(start))
                 .take(2))
             .expectNextCount(2)
             .verifyComplete();
