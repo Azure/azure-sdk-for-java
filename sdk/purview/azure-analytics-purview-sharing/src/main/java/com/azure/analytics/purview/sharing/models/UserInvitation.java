@@ -25,7 +25,7 @@ public class UserInvitation extends SentShareInvitation {
     private OffsetDateTime expirationDate;
 
     /*
-     * Whether or not the recipient was notfied via email.
+     * Whether or not the recipient was notified via email.
      */
     @JsonProperty(value = "properties.notify")
     private Boolean notify;
@@ -96,7 +96,7 @@ public class UserInvitation extends SentShareInvitation {
     }
 
     /**
-     * Get the notify property: Whether or not the recipient was notfied via email.
+     * Get the notify property: Whether or not the recipient was notified via email.
      *
      * @return the notify value.
      */
@@ -105,7 +105,7 @@ public class UserInvitation extends SentShareInvitation {
     }
 
     /**
-     * Set the notify property: Whether or not the recipient was notfied via email.
+     * Set the notify property: Whether or not the recipient was notified via email.
      *
      * @param notify the notify value to set.
      * @return the UserInvitation object itself.
