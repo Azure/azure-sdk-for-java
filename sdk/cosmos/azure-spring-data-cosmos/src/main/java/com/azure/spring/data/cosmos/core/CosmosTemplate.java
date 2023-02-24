@@ -1074,7 +1074,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                       @NonNull String containerName,
                                       @NonNull Class<T> domainType) {
         String finalContainerName = getContainerNameOverride(containerName);
-        return findItemsAsFlux(query, containerName, domainType)
+        return findItemsAsFlux(query, finalContainerName, domainType)
             .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, finalContainerName, jsonNode))
             .toIterable();
     }
