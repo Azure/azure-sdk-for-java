@@ -30,6 +30,15 @@ public final class WorkloadNetworkDhcpProvisioningState
     public static final WorkloadNetworkDhcpProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of WorkloadNetworkDhcpProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadNetworkDhcpProvisioningState() {
+    }
+
+    /**
      * Creates or finds a WorkloadNetworkDhcpProvisioningState from its string representation.
      *
      * @param name a name to look for.
