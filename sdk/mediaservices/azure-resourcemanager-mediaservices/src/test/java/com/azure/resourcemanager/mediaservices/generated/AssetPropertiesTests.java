@@ -14,26 +14,26 @@ public final class AssetPropertiesTests {
         AssetProperties model =
             BinaryData
                 .fromString(
-                    "{\"assetId\":\"78d90213-e6b1-4539-bd1a-69a338ee45c9\",\"created\":\"2021-02-25T02:38:24Z\",\"lastModified\":\"2021-06-30T10:33:02Z\",\"alternateId\":\"vuujq\",\"description\":\"dokgjl\",\"container\":\"oxgvclt\",\"storageAccountName\":\"sncghkjeszz\",\"storageEncryptionFormat\":\"None\"}")
+                    "{\"assetId\":\"71511f50-bf1d-47e9-abd7-6a96e9e8a4c6\",\"created\":\"2021-04-23T17:49:38Z\",\"lastModified\":\"2021-11-02T05:09:13Z\",\"alternateId\":\"arbu\",\"description\":\"cvpnazzmhjrunmpx\",\"container\":\"dbhrbnlankxm\",\"storageAccountName\":\"k\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"}")
                 .toObject(AssetProperties.class);
-        Assertions.assertEquals("vuujq", model.alternateId());
-        Assertions.assertEquals("dokgjl", model.description());
-        Assertions.assertEquals("oxgvclt", model.container());
-        Assertions.assertEquals("sncghkjeszz", model.storageAccountName());
+        Assertions.assertEquals("arbu", model.alternateId());
+        Assertions.assertEquals("cvpnazzmhjrunmpx", model.description());
+        Assertions.assertEquals("dbhrbnlankxm", model.container());
+        Assertions.assertEquals("k", model.storageAccountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssetProperties model =
             new AssetProperties()
-                .withAlternateId("vuujq")
-                .withDescription("dokgjl")
-                .withContainer("oxgvclt")
-                .withStorageAccountName("sncghkjeszz");
+                .withAlternateId("arbu")
+                .withDescription("cvpnazzmhjrunmpx")
+                .withContainer("dbhrbnlankxm")
+                .withStorageAccountName("k");
         model = BinaryData.fromObject(model).toObject(AssetProperties.class);
-        Assertions.assertEquals("vuujq", model.alternateId());
-        Assertions.assertEquals("dokgjl", model.description());
-        Assertions.assertEquals("oxgvclt", model.container());
-        Assertions.assertEquals("sncghkjeszz", model.storageAccountName());
+        Assertions.assertEquals("arbu", model.alternateId());
+        Assertions.assertEquals("cvpnazzmhjrunmpx", model.description());
+        Assertions.assertEquals("dbhrbnlankxm", model.container());
+        Assertions.assertEquals("k", model.storageAccountName());
     }
 }

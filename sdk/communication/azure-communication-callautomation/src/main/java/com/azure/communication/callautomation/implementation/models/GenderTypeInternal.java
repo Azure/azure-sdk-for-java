@@ -27,7 +27,11 @@ public final class GenderTypeInternal extends ExpandableStringEnum<GenderTypeInt
         return fromString(name, GenderTypeInternal.class);
     }
 
-    /** @return known GenderTypeInternal values. */
+    /**
+     * Gets known GenderTypeInternal values.
+     *
+     * @return known GenderTypeInternal values.
+     */
     public static Collection<GenderTypeInternal> values() {
         return values(GenderTypeInternal.class);
     }

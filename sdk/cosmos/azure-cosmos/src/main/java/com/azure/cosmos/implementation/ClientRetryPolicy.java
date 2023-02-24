@@ -33,8 +33,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     final static int RetryIntervalInMS = 1000; //Once we detect failover wait for 1 second before retrying request.
     final static int MaxRetryCount = 120;
     private final static int MaxServiceUnavailableRetryCount = 1;
-    //  Query Plan and Address Refresh will be re-tried 3 times, please check the if condition carefully :)
-    private final static int MAX_QUERY_PLAN_AND_ADDRESS_RETRY_COUNT = 2;
+    // Address Refresh will be re-tried 3 times, please check the if condition carefully :)
+    private final static int MAX_ADDRESS_REFRESH_RETRY_COUNT = 2;
 
     private final DocumentClientRetryPolicy throttlingRetry;
     private final GlobalEndpointManager globalEndpointManager;
@@ -50,7 +50,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private CosmosDiagnostics cosmosDiagnostics;
     private AtomicInteger cnt = new AtomicInteger(0);
     private int serviceUnavailableRetryCount;
-    private int queryPlanAddressRefreshCount;
+    private int addressRefreshCount;
     private RxDocumentServiceRequest request;
     private RxCollectionCache rxCollectionCache;
 
@@ -126,7 +126,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 WebExceptionUtility.isReadTimeoutException(clientException) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
 
-                boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(request, clientException);
+                boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(request);
 
                 //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
                 if(canFailoverOnTimeout) {
@@ -135,7 +135,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
                 // if operationType AddressRefresh then just retry
                 if (this.request.isAddressRefresh()) {
-                    return shouldRetryQueryPlanAndAddress();
+                    return shouldRetryAddressRefresh();
                 }
             } else {
                 logger.warn("Backend endpoint not reachable. ", e);
@@ -160,7 +160,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return this.throttlingRetry.shouldRetry(e);
     }
 
-      private boolean canGatewayRequestFailoverOnTimeout(RxDocumentServiceRequest request, CosmosException clientException) {
+      private boolean canGatewayRequestFailoverOnTimeout(RxDocumentServiceRequest request) {
         //Query Plan requests
         if(request.getOperationType() == OperationType.QueryPlan) {
             return true;
@@ -186,22 +186,22 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return false;
     }
 
-    private Mono<ShouldRetryResult> shouldRetryQueryPlanAndAddress() {
+    private Mono<ShouldRetryResult> shouldRetryAddressRefresh() {
 
-        if (this.queryPlanAddressRefreshCount++ > MAX_QUERY_PLAN_AND_ADDRESS_RETRY_COUNT) {
+        if (this.addressRefreshCount++ > MAX_ADDRESS_REFRESH_RETRY_COUNT) {
             logger
                 .warn(
-                    "shouldRetryQueryPlanAndAddress() No more retrying on endpoint {}, operationType = {}, count = {}, " +
+                    "shouldRetryAddressRefresh() No more retrying on endpoint {}, operationType = {}, count = {}, " +
                         "isAddressRefresh = {}",
-                    this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount, this.request.isAddressRefresh());
+                    this.locationEndpoint, this.request.getOperationType(), this.addressRefreshCount, this.request.isAddressRefresh());
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
         logger
-            .warn("shouldRetryQueryPlanAndAddress() Retrying on endpoint {}, operationType = {}, count = {}, " +
+            .warn("shouldRetryAddressRefresh() Retrying on endpoint {}, operationType = {}, count = {}, " +
                       "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
                       "shouldForceCollectionRoutingMapRefresh = {}",
-                  this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount,
+                  this.locationEndpoint, this.request.getOperationType(), this.addressRefreshCount,
                 this.request.isAddressRefresh(),
                 this.request.shouldForceAddressRefresh(),
                 this.request.forceCollectionRoutingMapRefresh);

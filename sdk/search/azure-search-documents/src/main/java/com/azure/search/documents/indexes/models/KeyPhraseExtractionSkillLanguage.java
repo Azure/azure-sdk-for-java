@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The language codes supported for input text by KeyPhraseExtractionSkill. */
@@ -61,12 +60,19 @@ public final class KeyPhraseExtractionSkillLanguage extends ExpandableStringEnum
     public static final KeyPhraseExtractionSkillLanguage SV = fromString("sv");
 
     /**
+     * Creates a new instance of KeyPhraseExtractionSkillLanguage value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyPhraseExtractionSkillLanguage() {}
+
+    /**
      * Creates or finds a KeyPhraseExtractionSkillLanguage from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding KeyPhraseExtractionSkillLanguage.
      */
-    @JsonCreator
     public static KeyPhraseExtractionSkillLanguage fromString(String name) {
         return fromString(name, KeyPhraseExtractionSkillLanguage.class);
     }

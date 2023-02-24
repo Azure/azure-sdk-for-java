@@ -11,7 +11,7 @@ public final class ArmStreamingEndpointSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArmStreamingEndpointSku model =
-            BinaryData.fromString("{\"name\":\"lmdjrkvfgbvfvpdb\"}").toObject(ArmStreamingEndpointSku.class);
+            BinaryData.fromString("{\"name\":\"kdl\"}").toObject(ArmStreamingEndpointSku.class);
     }
 
     @org.junit.jupiter.api.Test

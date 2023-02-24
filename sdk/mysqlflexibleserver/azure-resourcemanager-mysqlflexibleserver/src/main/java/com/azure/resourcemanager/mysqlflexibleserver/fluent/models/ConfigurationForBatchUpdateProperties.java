@@ -22,6 +22,10 @@ public final class ConfigurationForBatchUpdateProperties {
     @JsonProperty(value = "source")
     private String source;
 
+    /** Creates an instance of ConfigurationForBatchUpdateProperties class. */
+    public ConfigurationForBatchUpdateProperties() {
+    }
+
     /**
      * Get the value property: Value of the configuration.
      *

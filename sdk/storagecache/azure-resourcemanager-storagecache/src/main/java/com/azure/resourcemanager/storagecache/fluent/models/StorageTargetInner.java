@@ -26,6 +26,10 @@ public final class StorageTargetInner extends StorageTargetResource {
     @JsonProperty(value = "properties")
     private StorageTargetProperties innerProperties;
 
+    /** Creates an instance of StorageTargetInner class. */
+    public StorageTargetInner() {
+    }
+
     /**
      * Get the innerProperties property: StorageTarget properties.
      *

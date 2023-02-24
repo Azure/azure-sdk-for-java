@@ -674,7 +674,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String deploymentName, DeploymentInner deployment) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, deploymentName, deployment).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, deploymentName, deployment)
+            .getSyncPoller();
     }
 
     /**
@@ -697,7 +699,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String deploymentName,
         DeploymentInner deployment,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, deploymentName, deployment, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, deploymentName, deployment, context)
             .getSyncPoller();
     }
 
@@ -949,7 +952,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String deploymentName) {
-        return beginDeleteAsync(resourceGroupName, accountName, deploymentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, deploymentName).getSyncPoller();
     }
 
     /**
@@ -967,7 +970,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String deploymentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, deploymentName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, deploymentName, context).getSyncPoller();
     }
 
     /**

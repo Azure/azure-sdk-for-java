@@ -5,7 +5,6 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
@@ -61,7 +60,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         } else {
-            httpClient = new NettyAsyncHttpClientBuilder().build();
+            httpClient = HttpClient.createDefault();
         }
 
         registryClient = getContainerRegistryClient(httpClient);

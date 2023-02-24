@@ -4,17 +4,14 @@
 package com.azure.containers.containerregistry.specialized;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryBlobsImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestHeaders;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsCompleteUploadHeaders;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsCompleteUploadResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsStartUploadResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsUploadChunkResponse;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsStartUploadHeaders;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsUploadChunkHeaders;
 import com.azure.containers.containerregistry.implementation.models.ManifestWrapper;
 import com.azure.containers.containerregistry.models.DownloadManifestOptions;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
@@ -78,11 +75,7 @@ public class ContainerRegistryBlobClient {
     ContainerRegistryBlobClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
         this.repositoryName = repositoryName;
         this.endpoint = endpoint;
-        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImplBuilder()
-            .url(endpoint)
-            .pipeline(httpPipeline)
-            .apiVersion(version)
-            .buildClient();
+        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version);
         this.blobsImpl = registryImplClient.getContainerRegistryBlobs();
         this.registriesImpl = registryImplClient.getContainerRegistries();
     }
@@ -162,16 +155,11 @@ public class ContainerRegistryBlobClient {
         BinaryData data = options.getManifest().toReplayableBinaryData();
         String tagOrDigest = options.getTag() != null ? options.getTag() : UtilsImpl.computeDigest(data.toByteBuffer());
         try {
-            ContainerRegistriesCreateManifestResponse
-                response = this.registriesImpl.createManifestWithResponse(
-                repositoryName,
-                tagOrDigest,
-                data,
-                data.getLength(),
-                UtilsImpl.OCI_MANIFEST_MEDIA_TYPE,
-                enableSync(context));
+            ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> response = this.registriesImpl
+                .createManifestWithResponse(repositoryName, tagOrDigest, data, data.getLength(),
+                    UtilsImpl.OCI_MANIFEST_MEDIA_TYPE, enableSync(context));
 
-            return new ResponseBase<ContainerRegistriesCreateManifestHeaders, UploadManifestResult>(
+            return new ResponseBase<>(
                 response.getRequest(),
                 response.getStatusCode(),
                 response.getHeaders(),
@@ -221,19 +209,19 @@ public class ContainerRegistryBlobClient {
 
         String digest = UtilsImpl.computeDigest(data.toByteBuffer());
         try {
-            ContainerRegistryBlobsStartUploadResponse
-                startUploadResponse = this.blobsImpl.startUploadWithResponse(repositoryName, context);
+            ResponseBase<ContainerRegistryBlobsStartUploadHeaders, Void> startUploadResponse = this.blobsImpl
+                .startUploadWithResponse(repositoryName, context);
 
-            ContainerRegistryBlobsUploadChunkResponse
-                uploadChunkResponse = this.blobsImpl.uploadChunkWithResponse(
-                trimNextLink(startUploadResponse.getDeserializedHeaders().getLocation()), data, data.getLength(),
-                context);
-            ContainerRegistryBlobsCompleteUploadResponse
-                completeUploadResponse = this.blobsImpl.completeUploadWithResponse(digest,
-                trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), (BinaryData) null, 0L,
-                context);
+            ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void> uploadChunkResponse = this.blobsImpl
+                .uploadChunkWithResponse(trimNextLink(startUploadResponse.getDeserializedHeaders().getLocation()), data,
+                    data.getLength(), context);
 
-            return new ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, UploadBlobResult>(
+            ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void> completeUploadResponse = this.blobsImpl
+                .completeUploadWithResponse(digest,
+                    trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), (BinaryData) null, 0L,
+                    context);
+
+            return new ResponseBase<>(
                 completeUploadResponse.getRequest(),
                 completeUploadResponse.getStatusCode(),
                 completeUploadResponse.getHeaders(),

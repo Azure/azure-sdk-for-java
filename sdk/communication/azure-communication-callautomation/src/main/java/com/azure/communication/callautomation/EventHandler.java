@@ -3,8 +3,8 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.events.AddParticipantsFailed;
-import com.azure.communication.callautomation.models.events.AddParticipantsSucceeded;
+import com.azure.communication.callautomation.models.events.AddParticipantFailed;
+import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
@@ -97,10 +97,10 @@ public final class EventHandler {
                 ret = mapper.convertValue(eventData, CallConnected.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallDisconnected")) {
                 ret = mapper.convertValue(eventData, CallDisconnected.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsFailed")) {
-                ret = mapper.convertValue(eventData, AddParticipantsFailed.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsSucceeded")) {
-                ret = mapper.convertValue(eventData, AddParticipantsSucceeded.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantFailed")) {
+                ret = mapper.convertValue(eventData, AddParticipantFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantSucceeded")) {
+                ret = mapper.convertValue(eventData, AddParticipantSucceeded.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferAccepted")) {
                 ret = mapper.convertValue(eventData, CallTransferAccepted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferFailed")) {

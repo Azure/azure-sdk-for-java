@@ -98,14 +98,14 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         if (numProactiveConnectionRegions > 5) {
             try {
                 new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                    .setProactiveConnectionRegions(numProactiveConnectionRegions)
+                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
                     .build();
                 fail("Should have thrown exception");
             } catch (IllegalArgumentException illegalArgEx) {}
 
         } else {
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                .setProactiveConnectionRegions(numProactiveConnectionRegions)
+                .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
                 .build();
 
             try {
@@ -140,7 +140,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             }
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                    .setProactiveConnectionRegions(numProactiveConnectionRegions)
+                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
                     .build();
 
             clientWithOpenConnections = new CosmosClientBuilder()
@@ -165,7 +165,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                 0,
-                Math.min(readEndpoints.size(), proactiveContainerInitConfig.getNumProactiveConnectionRegions()));
+                Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
 
@@ -252,7 +252,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                    .setProactiveConnectionRegions(numProactiveConnectionRegions)
+                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
                     .build();
 
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(asyncClient);
@@ -272,7 +272,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                 0,
-                Math.min(readEndpoints.size(),proactiveContainerInitConfig.getNumProactiveConnectionRegions()));
+                Math.min(readEndpoints.size(),proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
 
             Mono<CosmosAsyncContainer> asyncContainerMono = Mono.just(cosmosAsyncContainer);
 

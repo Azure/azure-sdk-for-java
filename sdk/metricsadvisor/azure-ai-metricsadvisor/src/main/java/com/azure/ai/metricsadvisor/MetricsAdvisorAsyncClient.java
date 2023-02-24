@@ -87,7 +87,6 @@ import java.util.stream.Collectors;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.parseOperationId;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Metrics Advisor.
@@ -107,8 +106,6 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 @ServiceClient(builder = MetricsAdvisorClientBuilder.class, isAsync = true)
 public final class MetricsAdvisorAsyncClient {
-
-    private static final String METRICS_ADVISOR_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     final ClientLogger logger = new ClientLogger(MetricsAdvisorAsyncClient.class);
     private final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service;
 
@@ -572,14 +569,13 @@ public final class MetricsAdvisorAsyncClient {
         }
         final EnrichmentStatusQueryOption enrichmentStatusQueryOption =
             new EnrichmentStatusQueryOption().setStartTime(startTime).setEndTime(endTime);
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.getEnrichmentStatusByMetricSinglePageAsync(
             UUID.fromString(metricId),
             enrichmentStatusQueryOption,
             options.getSkip(),
             options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing all metric enrichment status values for a metric"))
             .doOnSuccess(response -> logger.info("Listed all metric enrichment status values for a metric - {}",
                 response))
@@ -604,10 +600,9 @@ public final class MetricsAdvisorAsyncClient {
 
         final EnrichmentStatusQueryOption enrichmentStatusQueryOption =
             new EnrichmentStatusQueryOption().setStartTime(startTime).setEndTime(endTime);
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.getEnrichmentStatusByMetricNextSinglePageAsync(nextPageLink, enrichmentStatusQueryOption,
-            withTracing)
+            context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -718,12 +713,10 @@ public final class MetricsAdvisorAsyncClient {
             .setStartTime(startTime)
             .setEndTime(endTime);
 
-        final Context withTracing
-            = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getSeriesByAnomalyDetectionConfigurationWithResponseAsync(
             UUID.fromString(detectionConfigurationId),
             query,
-            withTracing)
+            context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the EnrichedSeries"))
             .doOnSuccess(response -> logger.info("Retrieved the EnrichedSeries {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve EnrichedSeries", error))
@@ -869,13 +862,12 @@ public final class MetricsAdvisorAsyncClient {
             }
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
             UUID.fromString(detectionConfigurationId),
             query,
             options.getSkip(),
             options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing anomalies detected"))
             .doOnSuccess(response -> logger.info("Listed anomalies {}", response))
             .doOnError(error -> logger.warning("Failed to list the anomalies detected", error))
@@ -906,10 +898,7 @@ public final class MetricsAdvisorAsyncClient {
             }
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
-        return service.getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink,
-            query,
-            withTracing)
+        return service.getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink, query, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink,
@@ -1053,12 +1042,11 @@ public final class MetricsAdvisorAsyncClient {
             }
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getIncidentsByAnomalyDetectionConfigurationSinglePageAsync(
             UUID.fromString(detectionConfigurationId),
             query,
             options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing incidents detected"))
             .doOnSuccess(response -> logger.info("Listed incidents {}", response))
             .doOnError(error -> logger.warning("Failed to list the incidents detected", error))
@@ -1070,8 +1058,7 @@ public final class MetricsAdvisorAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
-        return service.getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink, withTracing)
+        return service.getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink,
@@ -1197,10 +1184,10 @@ public final class MetricsAdvisorAsyncClient {
         Objects.requireNonNull(anomalyIncident.getDetectionConfigurationId(),
             "'anomalyIncident.detectionConfigurationId' is required.");
         Objects.requireNonNull(anomalyIncident.getId(), "'anomalyIncident.id' is required");
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
+
         return service.getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
             UUID.fromString(anomalyIncident.getDetectionConfigurationId()),
-            anomalyIncident.getId(), withTracing)
+            anomalyIncident.getId(), context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieved the IncidentRootCauses - {}",
                 anomalyIncident.getDetectionConfigurationId()))
             .doOnSuccess(response -> logger.info("Retrieved the IncidentRootCauses - {}", response))
@@ -1350,13 +1337,12 @@ public final class MetricsAdvisorAsyncClient {
                 .setDimension(options.getDimensionToFilter().asMap()));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
             UUID.fromString(detectionConfigurationId),
             query,
             options.getSkip(),
             options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing dimension values with anomalies"))
             .doOnSuccess(response -> logger.info("Listed dimension values with anomalies {}", response))
             .doOnError(error -> logger.warning("Failed to list the dimension values with anomalies", error));
@@ -1380,10 +1366,9 @@ public final class MetricsAdvisorAsyncClient {
                 .setDimension(options.getDimensionToFilter().asMap()));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink,
             query,
-            withTracing)
+            context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -1501,13 +1486,12 @@ public final class MetricsAdvisorAsyncClient {
         query.setEndTime(endTime);
         query.setTimeMode(options.getTimeMode());
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
             UUID.fromString(alertConfigurationId),
             query,
             options.getSkip(),
             options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing alerts"))
             .doOnSuccess(response -> logger.info("Listed alerts {}", response))
             .doOnError(error -> logger.warning("Failed to list the alerts", error));
@@ -1526,10 +1510,9 @@ public final class MetricsAdvisorAsyncClient {
         query.setEndTime(endTime);
         query.setTimeMode(options.getTimeMode());
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink,
             query,
-            withTracing)
+            context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -1652,13 +1635,12 @@ public final class MetricsAdvisorAsyncClient {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
         Objects.requireNonNull(alertId, "'alertId' is required.");
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
             UUID.fromString(alertConfigurationId),
             alertId,
             options == null ? null : options.getSkip(),
             options == null ? null : options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing anomalies for alert"))
             .doOnSuccess(response -> logger.info("Listed anomalies {}", response))
             .doOnError(error -> logger.warning("Failed to list the anomalies for alert", error))
@@ -1671,9 +1653,8 @@ public final class MetricsAdvisorAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
-        return service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink,
-            withTracing)
+
+        return service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink,
@@ -1804,13 +1785,12 @@ public final class MetricsAdvisorAsyncClient {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
         Objects.requireNonNull(alertId, "'alertId' is required.");
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
             UUID.fromString(alertConfigurationId),
             alertId,
             options == null ? null : options.getSkip(),
             options == null ? null : options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing incidents for alert"))
             .doOnSuccess(response -> logger.info("Listed incidents {}", response))
             .doOnError(error -> logger.warning("Failed to list the incidents for alert", error))
@@ -1823,9 +1803,8 @@ public final class MetricsAdvisorAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
-        return service.getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink,
-            withTracing)
+
+        return service.getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -2228,9 +2207,8 @@ public final class MetricsAdvisorAsyncClient {
 
     private Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksSinglePage(MetricFeedbackFilter metricFeedbackFilter,
         Integer maxPageSize, Integer skip, Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
-        return service.listMetricFeedbacksSinglePageAsync(metricFeedbackFilter, skip, maxPageSize, withTracing)
+        return service.listMetricFeedbacksSinglePageAsync(metricFeedbackFilter, skip, maxPageSize, context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all metric feedbacks"))
             .doOnSuccess(response -> logger.info("Listed metric feedbacks - {}", response))
             .doOnError(error -> logger.warning("Failed to list all metric feedbacks information", error))
@@ -2248,9 +2226,8 @@ public final class MetricsAdvisorAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
-        return service.listMetricFeedbacksNextSinglePageAsync(nextPageLink, metricFeedbackFilter, withTracing)
+        return service.listMetricFeedbacksNextSinglePageAsync(nextPageLink, metricFeedbackFilter, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
