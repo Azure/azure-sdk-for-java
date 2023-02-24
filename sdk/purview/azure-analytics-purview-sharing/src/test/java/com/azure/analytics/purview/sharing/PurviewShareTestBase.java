@@ -55,7 +55,7 @@ class PurviewShareTestBase extends TestBase {
         this.initializeSentShareClient();
         this.initializeReceivedShareClient();
 
-        clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID","6a2919d0-880a-4ed8-B50d-7abe4d74291c");
+        clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID", "6a2919d0-880a-4ed8-B50d-7abe4d74291c");
         targetActiveDirectoryId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID", "4653a7b2-02ff-4155-8e55-2d0c7f3178a1");
         targetObjectId = Configuration.getGlobalConfiguration().get("TARGET_OBJECT_ID", "68700464-b46c-4ec0-88ff-6061da36da69");
         providerStorageAccountResourceId = Configuration.getGlobalConfiguration().get("PROVIDER_STORAGE_RESOURCE_ID", "/subscriptions/8af54e97-8629-48cd-A92e-24753982bf92/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/providerstorage");

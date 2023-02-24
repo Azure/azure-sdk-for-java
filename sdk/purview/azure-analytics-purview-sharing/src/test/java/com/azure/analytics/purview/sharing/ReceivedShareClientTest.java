@@ -22,7 +22,6 @@ import com.azure.analytics.purview.sharing.models.Sink;
 import com.azure.analytics.purview.sharing.models.StoreReference;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
