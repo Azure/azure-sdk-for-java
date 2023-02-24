@@ -14,12 +14,15 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -97,6 +100,8 @@ public class CosmosClientBuilder implements
     TokenCredentialTrait<CosmosClientBuilder>,
     AzureKeyCredentialTrait<CosmosClientBuilder>,
     EndpointTrait<CosmosClientBuilder> {
+
+    private final static Logger logger = LoggerFactory.getLogger(CosmosClientBuilder.class);
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
@@ -121,6 +126,7 @@ public class CosmosClientBuilder implements
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
+    private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -430,6 +436,15 @@ public class CosmosClientBuilder implements
     }
 
     /**
+     * Gets the {@link CosmosContainerProactiveInitConfig} to be used
+     *
+     * @return {@link CosmosContainerProactiveInitConfig}
+     * */
+    CosmosContainerProactiveInitConfig getProactiveContainerInitConfig() {
+        return proactiveContainerInitConfig;
+    }
+
+    /**
      * Sets the {@link AzureKeyCredential} to be used
      *
      * @param credential {@link AzureKeyCredential}
@@ -643,20 +658,6 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
-            ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor();
-
-        Boolean explicitlySetInConfig = accessor.isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
-
-        if (explicitlySetInConfig != null) {
-            CosmosClientTelemetryConfig newTelemetryConfig = accessor
-                .createSnapshot(this.clientTelemetryConfig, clientTelemetryEnabled);
-            accessor.resetIsSendClientTelemetryToServiceEnabled(newTelemetryConfig);
-            this.clientTelemetryConfig = newTelemetryConfig;
-        }
-
         this.clientTelemetryEnabledOverride = clientTelemetryEnabled;
         return this;
     }
@@ -677,6 +678,23 @@ public class CosmosClientBuilder implements
      */
     public CosmosClientBuilder readRequestsFallbackEnabled(boolean readRequestsFallbackEnabled) {
         this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
+        return this;
+    }
+
+    /**
+     * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
+     * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
+     * obtained from the first <em>k</em> preferred regions where <em>k</em> evaluates to {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}.
+     *
+     * <p>
+     *     Use the {@link CosmosContainerProactiveInitConfigBuilder} class to instantiate {@link CosmosContainerProactiveInitConfig} class
+     * </p>
+     * @param proactiveContainerInitConfig which encapsulates a list of container identities and no of
+     *                                     proactive connection regions
+     * @return current CosmosClientBuilder
+     * */
+    public CosmosClientBuilder openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        this.proactiveContainerInitConfig = proactiveContainerInitConfig;
         return this;
     }
 
@@ -764,8 +782,6 @@ public class CosmosClientBuilder implements
             .getCosmosClientTelemetryConfigAccessor()
             .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
 
-        assert(this.clientTelemetryEnabledOverride == null || explicitlySetInConfig == null);
-
         if (this.clientTelemetryEnabledOverride != null) {
             return this.clientTelemetryEnabledOverride;
         }
@@ -829,9 +845,14 @@ public class CosmosClientBuilder implements
      * @return CosmosAsyncClient
      */
     public CosmosAsyncClient buildAsyncClient() {
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
         validateConfig();
         buildConnectionPolicy();
-        return new CosmosAsyncClient(this);
+        CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
+        cosmosAsyncClient.openConnectionsAndInitCaches();
+        logStartupInfo(stopwatch, cosmosAsyncClient);
+        return cosmosAsyncClient;
     }
 
     /**
@@ -840,10 +861,14 @@ public class CosmosClientBuilder implements
      * @return CosmosClient
      */
     public CosmosClient buildClient() {
-
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
         validateConfig();
         buildConnectionPolicy();
-        return new CosmosClient(this);
+        CosmosClient cosmosClient = new CosmosClient(this);
+        cosmosClient.openConnectionsAndInitCaches();
+        logStartupInfo(stopwatch, cosmosClient.asyncClient());
+        return cosmosClient;
     }
 
     //  Connection policy has to be built before it can be used by this builder
@@ -885,6 +910,12 @@ public class CosmosClientBuilder implements
             );
         }
 
+        if (proactiveContainerInitConfig != null) {
+            Preconditions.checkArgument(preferredRegions != null, "preferredRegions cannot be null when proactiveContainerInitConfig has been set");
+            Preconditions.checkArgument(this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() <= this.preferredRegions.size(), "no. of regions to proactively connect to " +
+                    "cannot be greater than the no.of preferred regions");
+        }
+
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
@@ -913,6 +944,23 @@ public class CosmosClientBuilder implements
     private void ifThrowIllegalArgException(boolean value, String error) {
         if (value) {
             throw new IllegalArgumentException(error);
+        }
+    }
+
+    private void logStartupInfo(StopWatch stopwatch, CosmosAsyncClient client) {
+        stopwatch.stop();
+
+        if (logger.isInfoEnabled()) {
+            long time = stopwatch.getTime();
+            // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
+            logger.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
+                    "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], " +
+                    "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
+                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}].",
+                client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(),
+                getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
+                isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
+                isClientTelemetryEnabled(), getProactiveContainerInitConfig());
         }
     }
 

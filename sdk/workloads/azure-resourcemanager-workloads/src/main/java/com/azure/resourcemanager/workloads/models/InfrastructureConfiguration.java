@@ -25,11 +25,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class InfrastructureConfiguration {
     /*
-     * The application resource group where SAP system resources will be
-     * deployed.
+     * The application resource group where SAP system resources will be deployed.
      */
     @JsonProperty(value = "appResourceGroup", required = true)
     private String appResourceGroup;
+
+    /** Creates an instance of InfrastructureConfiguration class. */
+    public InfrastructureConfiguration() {
+    }
 
     /**
      * Get the appResourceGroup property: The application resource group where SAP system resources will be deployed.

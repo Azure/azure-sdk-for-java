@@ -10,20 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Libraries. */
 public interface Libraries {
     /**
-     * Get library by name in a workspace.
+     * Get library by name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param libraryName Library name.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
-     */
-    LibraryResource get(String resourceGroupName, String libraryName, String workspaceName);
-
-    /**
-     * Get library by name in a workspace.
+     * <p>Get library by name in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
@@ -36,4 +25,19 @@ public interface Libraries {
      */
     Response<LibraryResource> getWithResponse(
         String resourceGroupName, String libraryName, String workspaceName, Context context);
+
+    /**
+     * Get library by name.
+     *
+     * <p>Get library by name in a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param libraryName Library name.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return library by name in a workspace.
+     */
+    LibraryResource get(String resourceGroupName, String libraryName, String workspaceName);
 }

@@ -11,8 +11,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A token service for obtaining tokens to be used by the container registry service.
@@ -21,7 +22,7 @@ public class ContainerRegistryTokenService implements TokenCredential {
     private AccessTokenCacheImpl refreshTokenCache;
     private TokenServiceImpl tokenService;
     private boolean isAnonymousAccess;
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryTokenService.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryTokenService.class);
 
     /**
      * Creates an instance of AccessTokenCache with default scheme "Bearer".
@@ -30,12 +31,11 @@ public class ContainerRegistryTokenService implements TokenCredential {
      * @param url the container registry endpoint.
      * @param serviceVersion the service api version being targeted by the client.
      * @param pipeline the pipeline to be used for the rest calls to the service.
-     * @param serializerAdapter the serializer adapter to be used for the rest calls to the service.
      */
     public ContainerRegistryTokenService(TokenCredential aadTokenCredential, ContainerRegistryAudience audience,
                                          String url, ContainerRegistryServiceVersion serviceVersion,
-                                         HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
-        this.tokenService = new TokenServiceImpl(url, serviceVersion, pipeline, serializerAdapter);
+                                         HttpPipeline pipeline) {
+        this.tokenService = new TokenServiceImpl(url, serviceVersion, pipeline);
 
         if (aadTokenCredential != null) {
             this.refreshTokenCache = new AccessTokenCacheImpl(
@@ -68,8 +68,7 @@ public class ContainerRegistryTokenService implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
         if (!(tokenRequestContext instanceof ContainerRegistryTokenRequestContext)) {
-            logger.info("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext");
-            return Mono.empty();
+            return monoError(LOGGER, new IllegalArgumentException("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext"));
         }
 
         ContainerRegistryTokenRequestContext requestContext =
@@ -78,15 +77,13 @@ public class ContainerRegistryTokenService implements TokenCredential {
         String scope = requestContext.getScope();
         String serviceName = requestContext.getServiceName();
 
-        return Mono.defer(() -> {
-            if (this.isAnonymousAccess) {
-                return this.tokenService.getAcrAccessTokenAsync(null, scope, serviceName, TokenGrantType.PASSWORD);
-            }
+        if (this.isAnonymousAccess) {
+            return this.tokenService.getAcrAccessTokenAsync(null, scope, serviceName, TokenGrantType.PASSWORD);
+        }
 
-            return this.refreshTokenCache.getToken(requestContext)
-                .flatMap(refreshToken -> this.tokenService.getAcrAccessTokenAsync(refreshToken.getToken(), scope,
-                    serviceName, TokenGrantType.REFRESH_TOKEN));
-        }).doOnError(err -> logger.error("Could not fetch the ACR error token.", err));
+        return this.refreshTokenCache.getToken(requestContext)
+            .flatMap(refreshToken -> this.tokenService.getAcrAccessTokenAsync(refreshToken.getToken(), scope,
+                serviceName, TokenGrantType.REFRESH_TOKEN));
     }
 
     public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RestorableMongodbResources List. */
 public final class RestorableMongodbResourcesListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBRestorableMongodbResourceList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBRestorableMongodbResourceList.json
      */
     /**
      * Sample code: CosmosDBRestorableMongodbResourceList.
@@ -22,6 +20,11 @@ public final class RestorableMongodbResourcesListSamples {
             .manager()
             .serviceClient()
             .getRestorableMongodbResources()
-            .list("WestUS", "d9b26648-2f53-4541-b3d8-3044f4f9810d", "WestUS", "06/01/2022 4:56", Context.NONE);
+            .list(
+                "WestUS",
+                "d9b26648-2f53-4541-b3d8-3044f4f9810d",
+                "WestUS",
+                "06/01/2022 4:56",
+                com.azure.core.util.Context.NONE);
     }
 }

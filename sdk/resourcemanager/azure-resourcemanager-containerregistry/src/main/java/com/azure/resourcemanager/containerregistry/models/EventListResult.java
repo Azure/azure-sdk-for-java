@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.EventInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of a request to list events for a webhook. */
 @Fluent
 public final class EventListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventListResult.class);
-
     /*
-     * The list of events. Since this list may be incomplete, the nextLink
-     * field should be used to request the next list of events.
+     * The list of events. Since this list may be incomplete, the nextLink field should be used to request the next
+     * list of events.
      */
     @JsonProperty(value = "value")
     private List<EventInner> value;
@@ -28,6 +24,10 @@ public final class EventListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of EventListResult class. */
+    public EventListResult() {
+    }
 
     /**
      * Get the value property: The list of events. Since this list may be incomplete, the nextLink field should be used

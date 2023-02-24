@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GremlinResources ListGremlinDatabases. */
 public final class GremlinResourcesListGremlinDatabasesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinDatabaseList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBGremlinDatabaseList.json
      */
     /**
      * Sample code: CosmosDBGremlinDatabaseList.
@@ -22,6 +20,6 @@ public final class GremlinResourcesListGremlinDatabasesSamples {
             .manager()
             .serviceClient()
             .getGremlinResources()
-            .listGremlinDatabases("rgName", "ddb1", Context.NONE);
+            .listGremlinDatabases("rgName", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

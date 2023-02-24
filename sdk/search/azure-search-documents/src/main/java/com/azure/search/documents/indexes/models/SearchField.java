@@ -7,25 +7,27 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /** Represents a field in an index definition, which describes the name, data type, and search behavior of a field. */
 @Fluent
-public final class SearchField {
+public final class SearchField implements JsonSerializable<SearchField> {
     /*
      * The name of the field, which must be unique within the fields collection of the index or parent field.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The data type of the field.
      */
-    @JsonProperty(value = "type", required = true)
-    private SearchFieldDataType type;
+    private final SearchFieldDataType type;
 
     /*
      * A value indicating whether the field uniquely identifies documents in the index. Exactly one top-level field in
@@ -33,7 +35,6 @@ public final class SearchField {
      * documents directly and update or delete specific documents. Default is false for simple fields and null for
      * complex fields.
      */
-    @JsonProperty(value = "key")
     private Boolean key;
 
     /*
@@ -42,7 +43,6 @@ public final class SearchField {
      * as a filter, for sorting, or for scoring. This property can also be changed on existing fields and enabling it
      * does not cause an increase in index storage requirements.
      */
-    @JsonProperty(value = "retrievable")
     private Boolean hidden;
 
     /*
@@ -55,7 +55,6 @@ public final class SearchField {
      * value for full-text searches. If you want to save space in your index and you don't need a field to be included
      * in searches, set searchable to false.
      */
-    @JsonProperty(value = "searchable")
     private Boolean searchable;
 
     /*
@@ -65,7 +64,6 @@ public final class SearchField {
      * to "sunny day", $filter=f eq 'sunny' will find no matches, but $filter=f eq 'sunny day' will. This property must
      * be null for complex fields. Default is true for simple fields and null for complex fields.
      */
-    @JsonProperty(value = "filterable")
     private Boolean filterable;
 
     /*
@@ -78,7 +76,6 @@ public final class SearchField {
      * and the sortable property must be null for such fields. The default for sortable is true for single-valued
      * simple fields, false for multi-valued simple fields, and null for complex fields.
      */
-    @JsonProperty(value = "sortable")
     private Boolean sortable;
 
     /*
@@ -88,7 +85,6 @@ public final class SearchField {
      * type Edm.GeographyPoint or Collection(Edm.GeographyPoint) cannot be facetable. Default is true for all other
      * simple fields.
      */
-    @JsonProperty(value = "facetable")
     private Boolean facetable;
 
     /*
@@ -96,7 +92,6 @@ public final class SearchField {
      * be set together with either searchAnalyzer or indexAnalyzer. Once the analyzer is chosen, it cannot be changed
      * for the field. Must be null for complex fields.
      */
-    @JsonProperty(value = "analyzer")
     private LexicalAnalyzerName analyzerName;
 
     /*
@@ -105,7 +100,6 @@ public final class SearchField {
      * cannot be set to the name of a language analyzer; use the analyzer property instead if you need a language
      * analyzer. This analyzer can be updated on an existing field. Must be null for complex fields.
      */
-    @JsonProperty(value = "searchAnalyzer")
     private LexicalAnalyzerName searchAnalyzerName;
 
     /*
@@ -115,7 +109,6 @@ public final class SearchField {
      * language analyzer. Once the analyzer is chosen, it cannot be changed for the field. Must be null for complex
      * fields.
      */
-    @JsonProperty(value = "indexAnalyzer")
     private LexicalAnalyzerName indexAnalyzerName;
 
     /*
@@ -123,7 +116,6 @@ public final class SearchField {
      * sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for the field. Must be null
      * for complex fields.
      */
-    @JsonProperty(value = "normalizer")
     private LexicalNormalizerName normalizerName;
 
     /*
@@ -132,14 +124,12 @@ public final class SearchField {
      * query terms targeting that field are expanded at query-time using the rules in the synonym map. This attribute
      * can be changed on existing fields. Must be null or an empty collection for complex fields.
      */
-    @JsonProperty(value = "synonymMaps")
     private List<String> synonymMapNames;
 
     /*
      * A list of sub-fields if this is a field of type Edm.ComplexType or Collection(Edm.ComplexType). Must be null or
      * empty for simple fields.
      */
-    @JsonProperty(value = "fields")
     private List<SearchField> fields;
 
     /**
@@ -148,10 +138,7 @@ public final class SearchField {
      * @param name the name value to set.
      * @param type the type value to set.
      */
-    @JsonCreator
-    public SearchField(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "type", required = true) SearchFieldDataType type) {
+    public SearchField(String name, SearchFieldDataType type) {
         this.name = name;
         this.type = type;
     }
@@ -480,7 +467,6 @@ public final class SearchField {
      * @param synonymMapNames the synonymMapNames value to set.
      * @return the SearchField object itself.
      */
-    @JsonSetter
     public SearchField setSynonymMapNames(List<String> synonymMapNames) {
         this.synonymMapNames = synonymMapNames;
         return this;
@@ -503,10 +489,126 @@ public final class SearchField {
      * @param fields the fields value to set.
      * @return the SearchField object itself.
      */
-    @JsonSetter
     public SearchField setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", Objects.toString(this.type, null));
+        jsonWriter.writeBooleanField("key", this.key);
+        jsonWriter.writeBooleanField("retrievable", this.hidden);
+        jsonWriter.writeBooleanField("searchable", this.searchable);
+        jsonWriter.writeBooleanField("filterable", this.filterable);
+        jsonWriter.writeBooleanField("sortable", this.sortable);
+        jsonWriter.writeBooleanField("facetable", this.facetable);
+        jsonWriter.writeStringField("analyzer", Objects.toString(this.analyzerName, null));
+        jsonWriter.writeStringField("searchAnalyzer", Objects.toString(this.searchAnalyzerName, null));
+        jsonWriter.writeStringField("indexAnalyzer", Objects.toString(this.indexAnalyzerName, null));
+        jsonWriter.writeStringField("normalizer", Objects.toString(this.normalizerName, null));
+        jsonWriter.writeArrayField(
+                "synonymMaps", this.synonymMapNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchField from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchField if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchField.
+     */
+    public static SearchField fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean typeFound = false;
+                    SearchFieldDataType type = null;
+                    Boolean key = null;
+                    Boolean hidden = null;
+                    Boolean searchable = null;
+                    Boolean filterable = null;
+                    Boolean sortable = null;
+                    Boolean facetable = null;
+                    LexicalAnalyzerName analyzerName = null;
+                    LexicalAnalyzerName searchAnalyzerName = null;
+                    LexicalAnalyzerName indexAnalyzerName = null;
+                    LexicalNormalizerName normalizerName = null;
+                    List<String> synonymMapNames = null;
+                    List<SearchField> fields = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("type".equals(fieldName)) {
+                            type = SearchFieldDataType.fromString(reader.getString());
+                            typeFound = true;
+                        } else if ("key".equals(fieldName)) {
+                            key = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("retrievable".equals(fieldName)) {
+                            hidden = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("searchable".equals(fieldName)) {
+                            searchable = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("filterable".equals(fieldName)) {
+                            filterable = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("sortable".equals(fieldName)) {
+                            sortable = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("facetable".equals(fieldName)) {
+                            facetable = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("analyzer".equals(fieldName)) {
+                            analyzerName = LexicalAnalyzerName.fromString(reader.getString());
+                        } else if ("searchAnalyzer".equals(fieldName)) {
+                            searchAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
+                        } else if ("indexAnalyzer".equals(fieldName)) {
+                            indexAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
+                        } else if ("normalizer".equals(fieldName)) {
+                            normalizerName = LexicalNormalizerName.fromString(reader.getString());
+                        } else if ("synonymMaps".equals(fieldName)) {
+                            synonymMapNames = reader.readArray(reader1 -> reader1.getString());
+                        } else if ("fields".equals(fieldName)) {
+                            fields = reader.readArray(reader1 -> SearchField.fromJson(reader1));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound && typeFound) {
+                        SearchField deserializedValue = new SearchField(name, type);
+                        deserializedValue.key = key;
+                        deserializedValue.hidden = hidden;
+                        deserializedValue.searchable = searchable;
+                        deserializedValue.filterable = filterable;
+                        deserializedValue.sortable = sortable;
+                        deserializedValue.facetable = facetable;
+                        deserializedValue.analyzerName = analyzerName;
+                        deserializedValue.searchAnalyzerName = searchAnalyzerName;
+                        deserializedValue.indexAnalyzerName = indexAnalyzerName;
+                        deserializedValue.normalizerName = normalizerName;
+                        deserializedValue.synonymMapNames = synonymMapNames;
+                        deserializedValue.fields = fields;
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!typeFound) {
+                        missingProperties.add("type");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**

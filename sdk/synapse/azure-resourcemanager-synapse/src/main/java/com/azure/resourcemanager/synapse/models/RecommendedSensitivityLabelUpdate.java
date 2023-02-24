@@ -18,6 +18,10 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
     @JsonProperty(value = "properties")
     private RecommendedSensitivityLabelUpdateProperties innerProperties;
 
+    /** Creates an instance of RecommendedSensitivityLabelUpdate class. */
+    public RecommendedSensitivityLabelUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

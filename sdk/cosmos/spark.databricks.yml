@@ -11,6 +11,20 @@ parameters:
     type: string
   - name: ClusterName
     type: string
+  - name: SubscriptionId
+    type: string
+  - name: TenantId
+    type: string
+  - name: ResourceGroupName
+    type: string
+  - name: ClientId
+    type: string
+  - name: ClientSecret
+    type: string
+  - name: CosmosContainerName
+    type: string
+  - name: CosmosDatabaseName
+    type: string
 
 stages:
   - stage:
@@ -21,6 +35,7 @@ stages:
       timeoutInMinutes: 40
 
       pool:
+        name: 'azsdk-pool-mms-ubuntu-2004-general'
         vmImage: 'ubuntu-20.04'
 
       steps:
@@ -67,4 +82,4 @@ stages:
         displayName: Importing and executing notebooks
         inputs:
           filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-notebooks-install.sh
-          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }}
+          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }} ${{ parameters.SubscriptionId }} ${{ parameters.TenantId }} ${{ parameters.ResourceGroupName }} ${{ parameters.ClientId }} ${{ parameters.ClientSecret }} ${{ parameters.CosmosContainerName }} ${{ parameters.CosmosDatabaseName }}

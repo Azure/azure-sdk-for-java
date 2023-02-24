@@ -7,54 +7,53 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /** Parameters for filtering, sorting, faceting, paging, and other search query behaviors. */
 @Fluent
-public final class SearchRequest {
+public final class SearchRequest implements JsonSerializable<SearchRequest> {
     /*
      * A value that specifies whether to fetch the total count of results. Default is false. Setting this value to true
      * may have a performance impact. Note that the count returned is an approximation.
      */
-    @JsonProperty(value = "count")
     private Boolean includeTotalResultCount;
 
     /*
      * The list of facet expressions to apply to the search query. Each facet expression contains a field name,
      * optionally followed by a comma-separated list of name:value pairs.
      */
-    @JsonProperty(value = "facets")
     private List<String> facets;
 
     /*
      * The OData $filter expression to apply to the search query.
      */
-    @JsonProperty(value = "filter")
     private String filter;
 
     /*
      * The comma-separated list of field names to use for hit highlights. Only searchable fields can be used for hit
      * highlighting.
      */
-    @JsonProperty(value = "highlight")
     private String highlightFields;
 
     /*
      * A string tag that is appended to hit highlights. Must be set with highlightPreTag. Default is &lt;/em&gt;.
      */
-    @JsonProperty(value = "highlightPostTag")
     private String highlightPostTag;
 
     /*
      * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. Default is &lt;em&gt;.
      */
-    @JsonProperty(value = "highlightPreTag")
     private String highlightPreTag;
 
     /*
@@ -62,7 +61,6 @@ public final class SearchRequest {
      * order for the query to be reported as a success. This parameter can be useful for ensuring search availability
      * even for services with only one replica. The default is 100.
      */
-    @JsonProperty(value = "minimumCoverage")
     private Double minimumCoverage;
 
     /*
@@ -72,14 +70,12 @@ public final class SearchRequest {
      * will be broken by the match scores of documents. If no $orderby is specified, the default sort order is
      * descending by document match score. There can be at most 32 $orderby clauses.
      */
-    @JsonProperty(value = "orderby")
     private String orderBy;
 
     /*
      * A value that specifies the syntax of the search query. The default is 'simple'. Use 'full' if your query uses
      * the Lucene query syntax.
      */
-    @JsonProperty(value = "queryType")
     private QueryType queryType;
 
     /*
@@ -88,7 +84,6 @@ public final class SearchRequest {
      * scoring statistics globally before scoring. Using global scoring statistics can increase latency of search
      * queries.
      */
-    @JsonProperty(value = "scoringStatistics")
     private ScoringStatistics scoringStatistics;
 
     /*
@@ -98,7 +93,6 @@ public final class SearchRequest {
      * adversely affect the performance of the search service. The value used as sessionId cannot start with a '_'
      * character.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
@@ -106,25 +100,21 @@ public final class SearchRequest {
      * format name-values. For example, if the scoring profile defines a function with a parameter called 'mylocation'
      * the parameter string would be "mylocation--122.2,44.8" (without the quotes).
      */
-    @JsonProperty(value = "scoringParameters")
     private List<String> scoringParameters;
 
     /*
      * The name of a scoring profile to evaluate match scores for matching documents in order to sort the results.
      */
-    @JsonProperty(value = "scoringProfile")
     private String scoringProfile;
 
     /*
      * The name of a semantic configuration that will be used when processing documents for queries of type semantic.
      */
-    @JsonProperty(value = "semanticConfiguration")
     private String semanticConfiguration;
 
     /*
      * A full-text search query expression; Use "*" or omit this parameter to match all documents.
      */
-    @JsonProperty(value = "search")
     private String searchText;
 
     /*
@@ -132,26 +122,22 @@ public final class SearchRequest {
      * (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression take
      * precedence over any field names listed in this parameter.
      */
-    @JsonProperty(value = "searchFields")
     private String searchFields;
 
     /*
      * A value that specifies whether any or all of the search terms must be matched in order to count the document as
      * a match.
      */
-    @JsonProperty(value = "searchMode")
     private SearchMode searchMode;
 
     /*
      * A value that specifies the language of the search query.
      */
-    @JsonProperty(value = "queryLanguage")
     private QueryLanguage queryLanguage;
 
     /*
      * A value that specified the type of the speller to use to spell-correct individual search query terms.
      */
-    @JsonProperty(value = "speller")
     private QuerySpellerType speller;
 
     /*
@@ -160,14 +146,12 @@ public final class SearchRequest {
      * pipe character '|' followed by the 'count-<number of answers>' option after the answers parameter value, such as
      * 'extractive|count-3'. Default count is 1.
      */
-    @JsonProperty(value = "answers")
     private String answers;
 
     /*
      * The comma-separated list of fields to retrieve. If unspecified, all fields marked as retrievable in the schema
      * are included.
      */
-    @JsonProperty(value = "select")
     private String select;
 
     /*
@@ -175,7 +159,6 @@ public final class SearchRequest {
      * in sequence, but cannot use skip due to this limitation, consider using orderby on a totally-ordered key and
      * filter with a range query instead.
      */
-    @JsonProperty(value = "skip")
     private Integer skip;
 
     /*
@@ -183,7 +166,6 @@ public final class SearchRequest {
      * paging of search results. If results are truncated due to server-side paging, the response will include a
      * continuation token that can be used to issue another Search request for the next page of results.
      */
-    @JsonProperty(value = "top")
     private Integer top;
 
     /*
@@ -192,14 +174,15 @@ public final class SearchRequest {
      * default, and can be configured by appending the pipe character '|' followed by the 'highlight-<true/false>'
      * option, such as 'extractive|highlight-true'. Defaults to 'None'.
      */
-    @JsonProperty(value = "captions")
     private String captions;
 
     /*
      * The comma-separated list of field names used for semantic search.
      */
-    @JsonProperty(value = "semanticFields")
     private String semanticFields;
+
+    /** Creates an instance of SearchRequest class. */
+    public SearchRequest() {}
 
     /**
      * Get the includeTotalResultCount property: A value that specifies whether to fetch the total count of results.
@@ -779,5 +762,162 @@ public final class SearchRequest {
     public SearchRequest setSemanticFields(String semanticFields) {
         this.semanticFields = semanticFields;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("count", this.includeTotalResultCount);
+        jsonWriter.writeArrayField("facets", this.facets, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("filter", this.filter);
+        jsonWriter.writeStringField("highlight", this.highlightFields);
+        jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag);
+        jsonWriter.writeStringField("highlightPreTag", this.highlightPreTag);
+        jsonWriter.writeNumberField("minimumCoverage", this.minimumCoverage);
+        jsonWriter.writeStringField("orderby", this.orderBy);
+        jsonWriter.writeStringField("queryType", Objects.toString(this.queryType, null));
+        jsonWriter.writeStringField("scoringStatistics", Objects.toString(this.scoringStatistics, null));
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeArrayField(
+                "scoringParameters", this.scoringParameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("scoringProfile", this.scoringProfile);
+        jsonWriter.writeStringField("semanticConfiguration", this.semanticConfiguration);
+        jsonWriter.writeStringField("search", this.searchText);
+        jsonWriter.writeStringField("searchFields", this.searchFields);
+        jsonWriter.writeStringField("searchMode", Objects.toString(this.searchMode, null));
+        jsonWriter.writeStringField("queryLanguage", Objects.toString(this.queryLanguage, null));
+        jsonWriter.writeStringField("speller", Objects.toString(this.speller, null));
+        jsonWriter.writeStringField("answers", this.answers);
+        jsonWriter.writeStringField("select", this.select);
+        jsonWriter.writeNumberField("skip", this.skip);
+        jsonWriter.writeNumberField("top", this.top);
+        jsonWriter.writeStringField("captions", this.captions);
+        jsonWriter.writeStringField("semanticFields", this.semanticFields);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchRequest if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchRequest.
+     */
+    public static SearchRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    Boolean includeTotalResultCount = null;
+                    List<String> facets = null;
+                    String filter = null;
+                    String highlightFields = null;
+                    String highlightPostTag = null;
+                    String highlightPreTag = null;
+                    Double minimumCoverage = null;
+                    String orderBy = null;
+                    QueryType queryType = null;
+                    ScoringStatistics scoringStatistics = null;
+                    String sessionId = null;
+                    List<String> scoringParameters = null;
+                    String scoringProfile = null;
+                    String semanticConfiguration = null;
+                    String searchText = null;
+                    String searchFields = null;
+                    SearchMode searchMode = null;
+                    QueryLanguage queryLanguage = null;
+                    QuerySpellerType speller = null;
+                    String answers = null;
+                    String select = null;
+                    Integer skip = null;
+                    Integer top = null;
+                    String captions = null;
+                    String semanticFields = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("count".equals(fieldName)) {
+                            includeTotalResultCount = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("facets".equals(fieldName)) {
+                            facets = reader.readArray(reader1 -> reader1.getString());
+                        } else if ("filter".equals(fieldName)) {
+                            filter = reader.getString();
+                        } else if ("highlight".equals(fieldName)) {
+                            highlightFields = reader.getString();
+                        } else if ("highlightPostTag".equals(fieldName)) {
+                            highlightPostTag = reader.getString();
+                        } else if ("highlightPreTag".equals(fieldName)) {
+                            highlightPreTag = reader.getString();
+                        } else if ("minimumCoverage".equals(fieldName)) {
+                            minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                        } else if ("orderby".equals(fieldName)) {
+                            orderBy = reader.getString();
+                        } else if ("queryType".equals(fieldName)) {
+                            queryType = QueryType.fromString(reader.getString());
+                        } else if ("scoringStatistics".equals(fieldName)) {
+                            scoringStatistics = ScoringStatistics.fromString(reader.getString());
+                        } else if ("sessionId".equals(fieldName)) {
+                            sessionId = reader.getString();
+                        } else if ("scoringParameters".equals(fieldName)) {
+                            scoringParameters = reader.readArray(reader1 -> reader1.getString());
+                        } else if ("scoringProfile".equals(fieldName)) {
+                            scoringProfile = reader.getString();
+                        } else if ("semanticConfiguration".equals(fieldName)) {
+                            semanticConfiguration = reader.getString();
+                        } else if ("search".equals(fieldName)) {
+                            searchText = reader.getString();
+                        } else if ("searchFields".equals(fieldName)) {
+                            searchFields = reader.getString();
+                        } else if ("searchMode".equals(fieldName)) {
+                            searchMode = SearchMode.fromString(reader.getString());
+                        } else if ("queryLanguage".equals(fieldName)) {
+                            queryLanguage = QueryLanguage.fromString(reader.getString());
+                        } else if ("speller".equals(fieldName)) {
+                            speller = QuerySpellerType.fromString(reader.getString());
+                        } else if ("answers".equals(fieldName)) {
+                            answers = reader.getString();
+                        } else if ("select".equals(fieldName)) {
+                            select = reader.getString();
+                        } else if ("skip".equals(fieldName)) {
+                            skip = reader.getNullable(JsonReader::getInt);
+                        } else if ("top".equals(fieldName)) {
+                            top = reader.getNullable(JsonReader::getInt);
+                        } else if ("captions".equals(fieldName)) {
+                            captions = reader.getString();
+                        } else if ("semanticFields".equals(fieldName)) {
+                            semanticFields = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SearchRequest deserializedValue = new SearchRequest();
+                    deserializedValue.includeTotalResultCount = includeTotalResultCount;
+                    deserializedValue.facets = facets;
+                    deserializedValue.filter = filter;
+                    deserializedValue.highlightFields = highlightFields;
+                    deserializedValue.highlightPostTag = highlightPostTag;
+                    deserializedValue.highlightPreTag = highlightPreTag;
+                    deserializedValue.minimumCoverage = minimumCoverage;
+                    deserializedValue.orderBy = orderBy;
+                    deserializedValue.queryType = queryType;
+                    deserializedValue.scoringStatistics = scoringStatistics;
+                    deserializedValue.sessionId = sessionId;
+                    deserializedValue.scoringParameters = scoringParameters;
+                    deserializedValue.scoringProfile = scoringProfile;
+                    deserializedValue.semanticConfiguration = semanticConfiguration;
+                    deserializedValue.searchText = searchText;
+                    deserializedValue.searchFields = searchFields;
+                    deserializedValue.searchMode = searchMode;
+                    deserializedValue.queryLanguage = queryLanguage;
+                    deserializedValue.speller = speller;
+                    deserializedValue.answers = answers;
+                    deserializedValue.select = select;
+                    deserializedValue.skip = skip;
+                    deserializedValue.top = top;
+                    deserializedValue.captions = captions;
+                    deserializedValue.semanticFields = semanticFields;
+
+                    return deserializedValue;
+                });
     }
 }

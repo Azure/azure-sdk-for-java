@@ -20,6 +20,28 @@ public final class PrometheusOSProviderInstanceProperties extends ProviderSpecif
     @JsonProperty(value = "prometheusUrl")
     private String prometheusUrl;
 
+    /*
+     * Gets or sets certificate preference if secure communication is enabled.
+     */
+    @JsonProperty(value = "sslPreference")
+    private SslPreference sslPreference;
+
+    /*
+     * Gets or sets the blob URI to SSL certificate for the prometheus node exporter.
+     */
+    @JsonProperty(value = "sslCertificateUri")
+    private String sslCertificateUri;
+
+    /*
+     * Gets or sets the SAP System Identifier
+     */
+    @JsonProperty(value = "sapSid")
+    private String sapSid;
+
+    /** Creates an instance of PrometheusOSProviderInstanceProperties class. */
+    public PrometheusOSProviderInstanceProperties() {
+    }
+
     /**
      * Get the prometheusUrl property: URL of the Node Exporter endpoint.
      *
@@ -37,6 +59,68 @@ public final class PrometheusOSProviderInstanceProperties extends ProviderSpecif
      */
     public PrometheusOSProviderInstanceProperties withPrometheusUrl(String prometheusUrl) {
         this.prometheusUrl = prometheusUrl;
+        return this;
+    }
+
+    /**
+     * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @return the sslPreference value.
+     */
+    public SslPreference sslPreference() {
+        return this.sslPreference;
+    }
+
+    /**
+     * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @param sslPreference the sslPreference value to set.
+     * @return the PrometheusOSProviderInstanceProperties object itself.
+     */
+    public PrometheusOSProviderInstanceProperties withSslPreference(SslPreference sslPreference) {
+        this.sslPreference = sslPreference;
+        return this;
+    }
+
+    /**
+     * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the prometheus node
+     * exporter.
+     *
+     * @return the sslCertificateUri value.
+     */
+    public String sslCertificateUri() {
+        return this.sslCertificateUri;
+    }
+
+    /**
+     * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the prometheus node
+     * exporter.
+     *
+     * @param sslCertificateUri the sslCertificateUri value to set.
+     * @return the PrometheusOSProviderInstanceProperties object itself.
+     */
+    public PrometheusOSProviderInstanceProperties withSslCertificateUri(String sslCertificateUri) {
+        this.sslCertificateUri = sslCertificateUri;
+        return this;
+    }
+
+    /**
+     * Get the sapSid property: Gets or sets the SAP System Identifier.
+     *
+     * @return the sapSid value.
+     */
+    public String sapSid() {
+        return this.sapSid;
+    }
+
+    /**
+     * Set the sapSid property: Gets or sets the SAP System Identifier.
+     *
+     * @param sapSid the sapSid value to set.
+     * @return the PrometheusOSProviderInstanceProperties object itself.
+     */
+    public PrometheusOSProviderInstanceProperties withSapSid(String sapSid) {
+        this.sapSid = sapSid;
         return this;
     }
 

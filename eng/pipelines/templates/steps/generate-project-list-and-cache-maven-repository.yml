@@ -18,6 +18,9 @@ parameters:
   - name: JobType
     type: string
     default: test
+  - name: UseCache
+    type: boolean
+    default: true
 
 steps:
   # Create the ProjectList and ProjectListSha256 variables.
@@ -47,10 +50,13 @@ steps:
     Write-Host "##vso[task.setvariable variable=ProjectListSha256;]$projectListSha256"
   displayName: Initialize project list variable
 
-- task: Cache@2
-  inputs:
-  # Note: CacheSalt is only intended to be used in special cases, as a build is queued, to force a cache miss.
-  # This would be set as a variable in the UI when the run is queued.
-    key: 'maven | "$(CacheSalt)" | "$(Agent.OS)" | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt | "$(ProjectListSha256)" | "${{ parameters.JobType }}" | "$(TestFromSource)"'
-    path: $(MAVEN_CACHE_FOLDER)
-  displayName: Cache Maven local repo
+# The Cache task, when restoring, can have a miss and still pass but, if nothing is built, the
+# Post-Job Cache will fail because there's no .m2/repository
+- ${{ if eq(parameters.UseCache, 'true') }}:
+  - task: Cache@2
+    inputs:
+    # Note: CacheSalt is only intended to be used in special cases, as a build is queued, to force a cache miss.
+    # This would be set as a variable in the UI when the run is queued.
+      key: 'maven | "$(CacheSalt)" | "$(Agent.OS)" | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt | "$(ProjectListSha256)" | "${{ parameters.JobType }}" | "$(TestFromSource)"'
+      path: $(MAVEN_CACHE_FOLDER)
+    displayName: Cache Maven local repo

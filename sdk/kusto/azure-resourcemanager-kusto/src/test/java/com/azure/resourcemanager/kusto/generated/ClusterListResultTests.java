@@ -20,126 +20,120 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"Standard_E64i_v3\",\"capacity\":1868038426,\"tier\":\"Basic\"},\"zones\":[\"mryw\",\"uzoqft\"],\"identity\":{\"principalId\":\"zrnkcqvyxlwh\",\"tenantId\":\"sicohoqqnwvlry\",\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"state\":\"Unavailable\",\"provisioningState\":\"Running\",\"uri\":\"mqhgyxzkonocuk\",\"dataIngestionUri\":\"lyaxuc\",\"stateReason\":\"uqszfk\",\"trustedExternalTenants\":[],\"enableDiskEncryption\":true,\"enableStreamingIngest\":true,\"enablePurge\":false,\"enableDoubleEncryption\":true,\"publicNetworkAccess\":\"Enabled\",\"allowedIpRangeList\":[],\"engineType\":\"V2\",\"acceptedAudiences\":[],\"enableAutoStop\":true,\"restrictOutboundNetworkAccess\":\"Disabled\",\"allowedFqdnList\":[],\"publicIPType\":\"IPv4\",\"virtualClusterGraduationProperties\":\"frzpwvlqdqgb\",\"privateEndpointConnections\":[]},\"etag\":\"lihkaetcktvfc\",\"location\":\"vf\",\"tags\":{\"xerf\":\"ymuctqhjfbebrj\",\"phxepcyvahf\":\"wutttxfvjrbi\",\"gidokgjljyoxgvcl\":\"ljkyqxjvuuj\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\"},\"id\":\"mpvecxgodebfqk\",\"name\":\"rbmpukgri\",\"type\":\"flz\"},{\"sku\":{\"name\":\"Standard_E16as_v4+4TB_PS\",\"capacity\":294567134,\"tier\":\"Standard\"},\"zones\":[\"ycispnqzahmgkb\",\"pyydhi\"],\"identity\":{\"principalId\":\"qqkpikadrg\",\"tenantId\":\"qagnbuyn\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"state\":\"Unavailable\",\"provisioningState\":\"Deleting\",\"uri\":\"siarbutrcvpn\",\"dataIngestionUri\":\"zmhjrunmp\",\"stateReason\":\"tdbhrbnla\",\"trustedExternalTenants\":[],\"enableDiskEncryption\":false,\"enableStreamingIngest\":false,\"enablePurge\":true,\"enableDoubleEncryption\":true,\"publicNetworkAccess\":\"Enabled\",\"allowedIpRangeList\":[],\"engineType\":\"V2\",\"acceptedAudiences\":[],\"enableAutoStop\":false,\"restrictOutboundNetworkAccess\":\"Enabled\",\"allowedFqdnList\":[],\"publicIPType\":\"DualStack\",\"virtualClusterGraduationProperties\":\"qidybyx\",\"privateEndpointConnections\":[]},\"etag\":\"clha\",\"location\":\"xdbabphlwr\",\"tags\":{\"azt\":\"ktsthsucocmny\"},\"id\":\"bt\",\"name\":\"wrqpue\",\"type\":\"ckzywbiexzfeyue\"}]}")
+                    "{\"value\":[{\"sku\":{\"name\":\"Standard_E16a_v4\",\"capacity\":1569477308,\"tier\":\"Basic\"},\"zones\":[\"ybcibvyvdcsit\",\"nnaamdectehfiqsc\"],\"identity\":{\"principalId\":\"pvhez\",\"tenantId\":\"gqhcjrefovg\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"state\":\"Creating\",\"provisioningState\":\"Moving\",\"uri\":\"xyqj\",\"dataIngestionUri\":\"cattpngjcrcczsq\",\"stateReason\":\"hvmdajvnysounq\",\"trustedExternalTenants\":[],\"enableDiskEncryption\":true,\"enableStreamingIngest\":true,\"enablePurge\":false,\"enableDoubleEncryption\":false,\"publicNetworkAccess\":\"Enabled\",\"allowedIpRangeList\":[],\"engineType\":\"V3\",\"acceptedAudiences\":[],\"enableAutoStop\":true,\"restrictOutboundNetworkAccess\":\"Enabled\",\"allowedFqdnList\":[],\"publicIPType\":\"IPv4\",\"virtualClusterGraduationProperties\":\"kthfui\",\"privateEndpointConnections\":[]},\"etag\":\"dsfcpkvxodpuoz\",\"location\":\"yzydagfuaxbezyi\",\"tags\":{\"dxwzywqsmbsurexi\":\"ktwh\",\"yocf\":\"o\",\"uxh\":\"fksymddystki\"},\"id\":\"yudxorrqnbp\",\"name\":\"czvyifq\",\"type\":\"vkd\"},{\"sku\":{\"name\":\"Standard_E4a_v4\",\"capacity\":711383541,\"tier\":\"Basic\"},\"zones\":[\"vdfwatkpn\",\"ulexxbczwtr\",\"wiqzbqjvsovmyo\",\"acspkwl\"],\"identity\":{\"principalId\":\"obpxjmflbvvn\",\"tenantId\":\"rkcciwwzjuqk\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"state\":\"Starting\",\"provisioningState\":\"Succeeded\",\"uri\":\"ofoskghs\",\"dataIngestionUri\":\"uimjmvx\",\"stateReason\":\"duugidyjr\",\"trustedExternalTenants\":[],\"enableDiskEncryption\":false,\"enableStreamingIngest\":true,\"enablePurge\":true,\"enableDoubleEncryption\":false,\"publicNetworkAccess\":\"Disabled\",\"allowedIpRangeList\":[],\"engineType\":\"V3\",\"acceptedAudiences\":[],\"enableAutoStop\":true,\"restrictOutboundNetworkAccess\":\"Enabled\",\"allowedFqdnList\":[],\"publicIPType\":\"DualStack\",\"virtualClusterGraduationProperties\":\"eggzfb\",\"privateEndpointConnections\":[]},\"etag\":\"mvfaxkffeiith\",\"location\":\"vmezy\",\"tags\":{\"grxwbu\":\"xmzsbbzogg\",\"dptkoenkouk\":\"vjxxjnsp\",\"pocipazyxoegu\":\"vudwtiukbldng\",\"npiucgygevqznty\":\"g\"},\"id\":\"mrbpizcdrqj\",\"name\":\"dpydn\",\"type\":\"yhxdeoejzicwi\"}]}")
                 .toObject(ClusterListResult.class);
-        Assertions.assertEquals("vf", model.value().get(0).location());
-        Assertions.assertEquals("ymuctqhjfbebrj", model.value().get(0).tags().get("xerf"));
-        Assertions.assertEquals(AzureSkuName.STANDARD_E64I_V3, model.value().get(0).sku().name());
-        Assertions.assertEquals(1868038426, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("yzydagfuaxbezyi", model.value().get(0).location());
+        Assertions.assertEquals("ktwh", model.value().get(0).tags().get("dxwzywqsmbsurexi"));
+        Assertions.assertEquals(AzureSkuName.STANDARD_E16A_V4, model.value().get(0).sku().name());
+        Assertions.assertEquals(1569477308, model.value().get(0).sku().capacity());
         Assertions.assertEquals(AzureSkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals("mryw", model.value().get(0).zones().get(0));
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("ybcibvyvdcsit", model.value().get(0).zones().get(0));
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
         Assertions.assertEquals(true, model.value().get(0).enableDiskEncryption());
         Assertions.assertEquals(true, model.value().get(0).enableStreamingIngest());
         Assertions.assertEquals(false, model.value().get(0).enablePurge());
-        Assertions.assertEquals(true, model.value().get(0).enableDoubleEncryption());
+        Assertions.assertEquals(false, model.value().get(0).enableDoubleEncryption());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.value().get(0).publicNetworkAccess());
-        Assertions.assertEquals(EngineType.V2, model.value().get(0).engineType());
+        Assertions.assertEquals(EngineType.V3, model.value().get(0).engineType());
         Assertions.assertEquals(true, model.value().get(0).enableAutoStop());
-        Assertions
-            .assertEquals(ClusterNetworkAccessFlag.DISABLED, model.value().get(0).restrictOutboundNetworkAccess());
+        Assertions.assertEquals(ClusterNetworkAccessFlag.ENABLED, model.value().get(0).restrictOutboundNetworkAccess());
         Assertions.assertEquals(PublicIpType.IPV4, model.value().get(0).publicIpType());
-        Assertions.assertEquals("frzpwvlqdqgb", model.value().get(0).virtualClusterGraduationProperties());
+        Assertions.assertEquals("kthfui", model.value().get(0).virtualClusterGraduationProperties());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClusterListResult model =
             new ClusterListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new ClusterInner()
-                                .withLocation("vf")
-                                .withTags(
-                                    mapOf(
-                                        "xerf",
-                                        "ymuctqhjfbebrj",
-                                        "phxepcyvahf",
-                                        "wutttxfvjrbi",
-                                        "gidokgjljyoxgvcl",
-                                        "ljkyqxjvuuj",
-                                        "jhtxfvgxbfsmxne",
-                                        "bgsncghkjeszzhb"))
+                                .withLocation("yzydagfuaxbezyi")
+                                .withTags(mapOf("dxwzywqsmbsurexi", "ktwh", "yocf", "o", "uxh", "fksymddystki"))
                                 .withSku(
                                     new AzureSku()
-                                        .withName(AzureSkuName.STANDARD_E64I_V3)
-                                        .withCapacity(1868038426)
+                                        .withName(AzureSkuName.STANDARD_E16A_V4)
+                                        .withCapacity(1569477308)
                                         .withTier(AzureSkuTier.BASIC))
-                                .withZones(Arrays.asList("mryw", "uzoqft"))
-                                .withIdentity(
-                                    new Identity()
-                                        .withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withTrustedExternalTenants(Arrays.asList())
-                                .withEnableDiskEncryption(true)
-                                .withEnableStreamingIngest(true)
-                                .withEnablePurge(false)
-                                .withEnableDoubleEncryption(true)
-                                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                                .withAllowedIpRangeList(Arrays.asList())
-                                .withEngineType(EngineType.V2)
-                                .withAcceptedAudiences(Arrays.asList())
-                                .withEnableAutoStop(true)
-                                .withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag.DISABLED)
-                                .withAllowedFqdnList(Arrays.asList())
-                                .withPublicIpType(PublicIpType.IPV4)
-                                .withVirtualClusterGraduationProperties("frzpwvlqdqgb"),
-                            new ClusterInner()
-                                .withLocation("xdbabphlwr")
-                                .withTags(mapOf("azt", "ktsthsucocmny"))
-                                .withSku(
-                                    new AzureSku()
-                                        .withName(AzureSkuName.STANDARD_E16AS_V4_4TB_PS)
-                                        .withCapacity(294567134)
-                                        .withTier(AzureSkuTier.STANDARD))
-                                .withZones(Arrays.asList("ycispnqzahmgkb", "pyydhi"))
+                                .withZones(Arrays.asList("ybcibvyvdcsit", "nnaamdectehfiqsc"))
                                 .withIdentity(
                                     new Identity()
                                         .withType(IdentityType.USER_ASSIGNED)
                                         .withUserAssignedIdentities(mapOf()))
                                 .withTrustedExternalTenants(Arrays.asList())
-                                .withEnableDiskEncryption(false)
-                                .withEnableStreamingIngest(false)
-                                .withEnablePurge(true)
-                                .withEnableDoubleEncryption(true)
+                                .withEnableDiskEncryption(true)
+                                .withEnableStreamingIngest(true)
+                                .withEnablePurge(false)
+                                .withEnableDoubleEncryption(false)
                                 .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                                 .withAllowedIpRangeList(Arrays.asList())
-                                .withEngineType(EngineType.V2)
+                                .withEngineType(EngineType.V3)
                                 .withAcceptedAudiences(Arrays.asList())
-                                .withEnableAutoStop(false)
+                                .withEnableAutoStop(true)
+                                .withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag.ENABLED)
+                                .withAllowedFqdnList(Arrays.asList())
+                                .withPublicIpType(PublicIpType.IPV4)
+                                .withVirtualClusterGraduationProperties("kthfui"),
+                            new ClusterInner()
+                                .withLocation("vmezy")
+                                .withTags(
+                                    mapOf(
+                                        "grxwbu",
+                                        "xmzsbbzogg",
+                                        "dptkoenkouk",
+                                        "vjxxjnsp",
+                                        "pocipazyxoegu",
+                                        "vudwtiukbldng",
+                                        "npiucgygevqznty",
+                                        "g"))
+                                .withSku(
+                                    new AzureSku()
+                                        .withName(AzureSkuName.STANDARD_E4A_V4)
+                                        .withCapacity(711383541)
+                                        .withTier(AzureSkuTier.BASIC))
+                                .withZones(Arrays.asList("vdfwatkpn", "ulexxbczwtr", "wiqzbqjvsovmyo", "acspkwl"))
+                                .withIdentity(
+                                    new Identity().withType(IdentityType.NONE).withUserAssignedIdentities(mapOf()))
+                                .withTrustedExternalTenants(Arrays.asList())
+                                .withEnableDiskEncryption(false)
+                                .withEnableStreamingIngest(true)
+                                .withEnablePurge(true)
+                                .withEnableDoubleEncryption(false)
+                                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                                .withAllowedIpRangeList(Arrays.asList())
+                                .withEngineType(EngineType.V3)
+                                .withAcceptedAudiences(Arrays.asList())
+                                .withEnableAutoStop(true)
                                 .withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag.ENABLED)
                                 .withAllowedFqdnList(Arrays.asList())
                                 .withPublicIpType(PublicIpType.DUAL_STACK)
-                                .withVirtualClusterGraduationProperties("qidybyx")));
+                                .withVirtualClusterGraduationProperties("eggzfb")));
         model = BinaryData.fromObject(model).toObject(ClusterListResult.class);
-        Assertions.assertEquals("vf", model.value().get(0).location());
-        Assertions.assertEquals("ymuctqhjfbebrj", model.value().get(0).tags().get("xerf"));
-        Assertions.assertEquals(AzureSkuName.STANDARD_E64I_V3, model.value().get(0).sku().name());
-        Assertions.assertEquals(1868038426, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("yzydagfuaxbezyi", model.value().get(0).location());
+        Assertions.assertEquals("ktwh", model.value().get(0).tags().get("dxwzywqsmbsurexi"));
+        Assertions.assertEquals(AzureSkuName.STANDARD_E16A_V4, model.value().get(0).sku().name());
+        Assertions.assertEquals(1569477308, model.value().get(0).sku().capacity());
         Assertions.assertEquals(AzureSkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals("mryw", model.value().get(0).zones().get(0));
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("ybcibvyvdcsit", model.value().get(0).zones().get(0));
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
         Assertions.assertEquals(true, model.value().get(0).enableDiskEncryption());
         Assertions.assertEquals(true, model.value().get(0).enableStreamingIngest());
         Assertions.assertEquals(false, model.value().get(0).enablePurge());
-        Assertions.assertEquals(true, model.value().get(0).enableDoubleEncryption());
+        Assertions.assertEquals(false, model.value().get(0).enableDoubleEncryption());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.value().get(0).publicNetworkAccess());
-        Assertions.assertEquals(EngineType.V2, model.value().get(0).engineType());
+        Assertions.assertEquals(EngineType.V3, model.value().get(0).engineType());
         Assertions.assertEquals(true, model.value().get(0).enableAutoStop());
-        Assertions
-            .assertEquals(ClusterNetworkAccessFlag.DISABLED, model.value().get(0).restrictOutboundNetworkAccess());
+        Assertions.assertEquals(ClusterNetworkAccessFlag.ENABLED, model.value().get(0).restrictOutboundNetworkAccess());
         Assertions.assertEquals(PublicIpType.IPV4, model.value().get(0).publicIpType());
-        Assertions.assertEquals("frzpwvlqdqgb", model.value().get(0).virtualClusterGraduationProperties());
+        Assertions.assertEquals("kthfui", model.value().get(0).virtualClusterGraduationProperties());
     }
 
     @SuppressWarnings("unchecked")

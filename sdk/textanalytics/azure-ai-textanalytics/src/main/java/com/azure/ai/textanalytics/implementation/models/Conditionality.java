@@ -7,7 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for Conditionality. */
+/** Describes any conditionality on the entity. */
 public enum Conditionality {
     /** Enum value hypothetical. */
     HYPOTHETICAL("hypothetical"),
@@ -42,6 +42,7 @@ public enum Conditionality {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

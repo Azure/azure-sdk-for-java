@@ -55,7 +55,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageCacheManageme")
-    private interface StorageTargetOperationsService {
+    public interface StorageTargetOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches"
@@ -295,7 +295,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(
         String resourceGroupName, String cacheName, String storageTargetName) {
-        return beginFlushAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
+        return this.beginFlushAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
     }
 
     /**
@@ -315,7 +315,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        return beginFlushAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
+        return this.beginFlushAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
     }
 
     /**
@@ -565,7 +565,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String cacheName, String storageTargetName) {
-        return beginSuspendAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
+        return this.beginSuspendAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
     }
 
     /**
@@ -584,7 +584,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        return beginSuspendAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
+        return this.beginSuspendAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
     }
 
     /**
@@ -830,7 +830,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String cacheName, String storageTargetName) {
-        return beginResumeAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
     }
 
     /**
@@ -849,7 +849,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        return beginResumeAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
     }
 
     /**
@@ -1100,7 +1100,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInvalidate(
         String resourceGroupName, String cacheName, String storageTargetName) {
-        return beginInvalidateAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
+        return this.beginInvalidateAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
     }
 
     /**
@@ -1120,7 +1120,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInvalidate(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        return beginInvalidateAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
+        return this.beginInvalidateAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
     }
 
     /**

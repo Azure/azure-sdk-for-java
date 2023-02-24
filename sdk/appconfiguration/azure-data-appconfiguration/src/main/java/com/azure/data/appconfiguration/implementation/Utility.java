@@ -4,18 +4,11 @@
 package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.IterableStream;
-import com.azure.data.appconfiguration.implementation.models.CompositionType;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
-import com.azure.data.appconfiguration.implementation.models.KeyValueFilter;
-import com.azure.data.appconfiguration.implementation.models.Snapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
-import com.azure.data.appconfiguration.models.SnapshotFilter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -27,43 +20,6 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 public class Utility {
     public static final String APP_CONFIG_TRACING_NAMESPACE_VALUE = "Microsoft.AppConfiguration";
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-
-    public static ConfigurationSettingSnapshot toConfigurationSettingSnapshot(Snapshot snapshot) {
-        return new ConfigurationSettingSnapshot(toSnapshotFilters(snapshot.getFilters()))
-            .setTags(snapshot.getTags())
-            .setCompositionType(com.azure.data.appconfiguration.models.CompositionType.fromString(snapshot.getCompositionType().toString()))
-            .setRetentionPeriod(snapshot.getRetentionPeriod());
-    }
-
-    public static Snapshot toSnapshot(ConfigurationSettingSnapshot configurationSettingSnapshot) {
-        return new Snapshot().setFilters(toKeyValueFilter(configurationSettingSnapshot.getFilters()))
-            .setCompositionType(CompositionType.fromString(configurationSettingSnapshot.getCompositionType().toString()))
-            .setTags(configurationSettingSnapshot.getTags())
-            .setRetentionPeriod(configurationSettingSnapshot.getRetentionPeriod());
-    }
-
-
-    public static IterableStream<SnapshotFilter> toSnapshotFilters(Iterable<KeyValueFilter> filters) {
-        List<SnapshotFilter> result = new ArrayList<>();
-        for (KeyValueFilter filter : filters) {
-            final SnapshotFilter snapshotFilter = new SnapshotFilter(filter.getKey());
-            snapshotFilter.setLabel(filter.getLabel());
-            result.add(snapshotFilter);
-        }
-        return IterableStream.of(result);
-    }
-
-    public static List<KeyValueFilter> toKeyValueFilter(Iterable<SnapshotFilter> filters) {
-        List<KeyValueFilter> result = new ArrayList<>();
-        for (SnapshotFilter filter : filters) {
-            final KeyValueFilter keyValueFilter = new KeyValueFilter();
-            keyValueFilter.setKey(filter.getKey());
-            keyValueFilter.setLabel(filter.getLabel());
-            result.add(keyValueFilter);
-        }
-        return result;
-    }
-
 
     public static KeyValue toKeyValue(ConfigurationSetting setting) {
         return new KeyValue()
@@ -156,17 +112,8 @@ public class Utility {
         return ifUnchanged ? getETagValue(setting.getETag()) : null;
     }
 
-    public static String getIfMatchETagSnapshot(boolean ifUnchanged, ConfigurationSettingSnapshot snapshot) {
-        return ifUnchanged ? getETagValue(snapshot.getETag()) : null;
-    }
-
-
     public static String getIfNoneMatchETag(boolean onlyIfChanged, ConfigurationSetting setting) {
         return onlyIfChanged ? getETagValue(setting.getETag()) : null;
-    }
-
-    public static String getIfNoneMatchETagSnapshot(boolean onlyIfChanged, ConfigurationSettingSnapshot snapshot) {
-        return onlyIfChanged ? getETagValue(snapshot.getETag()) : null;
     }
 
     /*

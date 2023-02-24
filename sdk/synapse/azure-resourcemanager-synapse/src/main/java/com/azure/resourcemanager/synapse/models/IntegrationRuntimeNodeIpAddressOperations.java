@@ -10,22 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of IntegrationRuntimeNodeIpAddressOperations. */
 public interface IntegrationRuntimeNodeIpAddressOperations {
     /**
-     * Get the IP address of an integration runtime node.
+     * Get integration runtime node IP address
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @param nodeName Integration runtime node name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP address of an integration runtime node.
-     */
-    IntegrationRuntimeNodeIpAddress get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName);
-
-    /**
-     * Get the IP address of an integration runtime node.
+     * <p>Get the IP address of an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -43,4 +30,21 @@ public interface IntegrationRuntimeNodeIpAddressOperations {
         String integrationRuntimeName,
         String nodeName,
         Context context);
+
+    /**
+     * Get integration runtime node IP address
+     *
+     * <p>Get the IP address of an integration runtime node.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @param nodeName Integration runtime node name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the IP address of an integration runtime node.
+     */
+    IntegrationRuntimeNodeIpAddress get(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName);
 }

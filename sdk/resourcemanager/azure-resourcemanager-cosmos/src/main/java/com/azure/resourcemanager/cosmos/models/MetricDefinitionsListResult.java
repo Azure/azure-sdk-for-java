@@ -18,6 +18,10 @@ public final class MetricDefinitionsListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricDefinitionInner> value;
 
+    /** Creates an instance of MetricDefinitionsListResult class. */
+    public MetricDefinitionsListResult() {
+    }
+
     /**
      * Get the value property: The list of metric definitions for the account.
      *

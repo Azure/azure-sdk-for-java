@@ -27,7 +27,11 @@ public final class RecognitionTypeInternal extends ExpandableStringEnum<Recognit
         return fromString(name, RecognitionTypeInternal.class);
     }
 
-    /** @return known RecognitionTypeInternal values. */
+    /**
+     * Gets known RecognitionTypeInternal values.
+     *
+     * @return known RecognitionTypeInternal values.
+     */
     public static Collection<RecognitionTypeInternal> values() {
         return values(RecognitionTypeInternal.class);
     }

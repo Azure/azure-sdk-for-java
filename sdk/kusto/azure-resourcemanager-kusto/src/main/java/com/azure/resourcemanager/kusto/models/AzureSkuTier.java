@@ -17,6 +17,15 @@ public final class AzureSkuTier extends ExpandableStringEnum<AzureSkuTier> {
     public static final AzureSkuTier STANDARD = fromString("Standard");
 
     /**
+     * Creates a new instance of AzureSkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureSkuTier() {
+    }
+
+    /**
      * Creates or finds a AzureSkuTier from its string representation.
      *
      * @param name a name to look for.

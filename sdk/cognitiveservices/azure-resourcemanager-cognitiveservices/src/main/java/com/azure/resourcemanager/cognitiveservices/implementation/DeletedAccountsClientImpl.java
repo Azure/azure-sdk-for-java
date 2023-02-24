@@ -438,7 +438,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(
         String location, String resourceGroupName, String accountName) {
-        return beginPurgeAsync(location, resourceGroupName, accountName).getSyncPoller();
+        return this.beginPurgeAsync(location, resourceGroupName, accountName).getSyncPoller();
     }
 
     /**
@@ -456,7 +456,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(
         String location, String resourceGroupName, String accountName, Context context) {
-        return beginPurgeAsync(location, resourceGroupName, accountName, context).getSyncPoller();
+        return this.beginPurgeAsync(location, resourceGroupName, accountName, context).getSyncPoller();
     }
 
     /**

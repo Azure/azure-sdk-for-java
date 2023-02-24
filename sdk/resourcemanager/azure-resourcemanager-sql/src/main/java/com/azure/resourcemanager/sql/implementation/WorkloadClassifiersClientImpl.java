@@ -63,7 +63,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientW")
-    private interface WorkloadClassifiersService {
+    public interface WorkloadClassifiersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeleteDnsService. */
 public final class WorkloadNetworksDeleteDnsServiceSamples {
     /*
@@ -17,6 +15,8 @@ public final class WorkloadNetworksDeleteDnsServiceSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteDnsService(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deleteDnsService("group1", "dnsService1", "cloud1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .deleteDnsService("group1", "dnsService1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

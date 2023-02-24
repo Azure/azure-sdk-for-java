@@ -179,8 +179,7 @@ public class BarrierRequestHelperTest {
                 null,
                 null,
                 new CosmosClientTelemetryConfig().sendClientTelemetryToService(false),
-                null,
-                EnumSet.allOf(TagName.class));
+                null);
 
         ResourceType resourceType = ResourceType.DocumentCollection;
         OperationType operationType = OperationType.Read;

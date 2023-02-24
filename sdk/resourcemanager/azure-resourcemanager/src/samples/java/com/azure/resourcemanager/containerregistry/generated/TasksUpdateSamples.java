@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.AuthInfoUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.Credentials;
@@ -47,7 +46,7 @@ public final class TasksUpdateSamples {
                     .withTags(mapOf("testkey", "value"))
                     .withStatus(TaskStatus.ENABLED)
                     .withLogTemplate("acr/tasks:{{.Run.OS}}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -87,7 +86,7 @@ public final class TasksUpdateSamples {
                                                     .withSourceControlAuthProperties(
                                                         new AuthInfoUpdateParameters()
                                                             .withTokenType(TokenType.PAT)
-                                                            .withToken("xxxxx")))
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger"))))
                     .withCredentials(
@@ -96,7 +95,7 @@ public final class TasksUpdateSamples {
                                 mapOf(
                                     "myregistry.azurecr.io",
                                     new CustomRegistryCredentials().withIdentity("[system]")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -136,7 +135,7 @@ public final class TasksUpdateSamples {
                                                     .withSourceControlAuthProperties(
                                                         new AuthInfoUpdateParameters()
                                                             .withTokenType(TokenType.PAT)
-                                                            .withToken("xxxxx")))
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger"))))
                     .withCredentials(
@@ -154,7 +153,7 @@ public final class TasksUpdateSamples {
                                                 .withValue("https://myacbvault.vault.azure.net/secrets/password")
                                                 .withType(SecretObjectType.VAULTSECRET))
                                         .withIdentity("[system]")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -194,7 +193,7 @@ public final class TasksUpdateSamples {
                                                     .withSourceControlAuthProperties(
                                                         new AuthInfoUpdateParameters()
                                                             .withTokenType(TokenType.PAT)
-                                                            .withToken("xxxxx")))
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger"))))
                     .withCredentials(
@@ -211,7 +210,7 @@ public final class TasksUpdateSamples {
                                                 .withType(SecretObjectType.VAULTSECRET))
                                         .withIdentity("[system]"))))
                     .withLogTemplate("acr/tasks:{{.Run.OS}}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -251,7 +250,7 @@ public final class TasksUpdateSamples {
                                                     .withSourceControlAuthProperties(
                                                         new AuthInfoUpdateParameters()
                                                             .withTokenType(TokenType.PAT)
-                                                            .withToken("xxxxx")))
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger"))))
                     .withCredentials(
@@ -264,7 +263,7 @@ public final class TasksUpdateSamples {
                                             new SecretObject().withValue("username").withType(SecretObjectType.OPAQUE))
                                         .withPassword(
                                             new SecretObject().withValue("***").withType(SecretObjectType.OPAQUE))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

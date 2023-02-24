@@ -58,7 +58,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
-    private interface JobCredentialsService {
+    public interface JobCredentialsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

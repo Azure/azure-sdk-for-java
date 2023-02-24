@@ -1139,14 +1139,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             settings.add(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix));
         }
 
-        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setConfigurationSettingWithResponse(setting, false));
+            StepVerifier.create(client.setConfigurationSetting(setting))
+                .expectNextCount(1)
+                .verifyComplete();
         }
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
-
-        Flux.merge(results).blockLast();
         StepVerifier.create(client.listRevisions(filter))
             .expectNextCount(numberExpected)
             .verifyComplete();
@@ -1162,16 +1161,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
-        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (int value = 0; value < numberExpected; value++) {
             ConfigurationSetting setting = new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix);
             settings.add(setting);
-            results.add(client.setConfigurationSettingWithResponse(setting, false));
+            StepVerifier.create(client.setConfigurationSetting(setting))
+                .expectNextCount(1)
+                .verifyComplete();
         }
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
-
-        Flux.merge(results).blockLast();
 
         List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
         List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
@@ -1194,16 +1192,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
-        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (int value = 0; value < numberExpected; value++) {
             ConfigurationSetting setting = new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix);
             settings.add(setting);
-            results.add(client.setConfigurationSettingWithResponse(setting, false));
+            StepVerifier.create(client.setConfigurationSetting(setting)).expectNextCount(1).verifyComplete();
         }
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
-
-        Flux.merge(results).blockLast();
 
         List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
         List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
@@ -1230,14 +1225,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             settings.add(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix));
         }
 
-        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setConfigurationSettingWithResponse(setting, false));
+            StepVerifier.create(client.setConfigurationSetting(setting)).expectNextCount(1).verifyComplete();
         }
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix + "-*").setLabelFilter(labelPrefix);
 
-        Flux.merge(results).blockLast();
         StepVerifier.create(client.listConfigurationSettings(filter))
             .expectNextCount(numberExpected)
             .verifyComplete();

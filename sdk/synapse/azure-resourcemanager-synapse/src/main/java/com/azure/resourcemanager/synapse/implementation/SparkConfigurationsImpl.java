@@ -26,17 +26,6 @@ public final class SparkConfigurationsImpl implements SparkConfigurations {
         this.serviceManager = serviceManager;
     }
 
-    public SparkConfigurationResource get(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName) {
-        SparkConfigurationResourceInner inner =
-            this.serviceClient().get(resourceGroupName, sparkConfigurationName, workspaceName);
-        if (inner != null) {
-            return new SparkConfigurationResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SparkConfigurationResource> getWithResponse(
         String resourceGroupName, String sparkConfigurationName, String workspaceName, Context context) {
         Response<SparkConfigurationResourceInner> inner =
@@ -47,6 +36,17 @@ public final class SparkConfigurationsImpl implements SparkConfigurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SparkConfigurationResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SparkConfigurationResource get(
+        String resourceGroupName, String sparkConfigurationName, String workspaceName) {
+        SparkConfigurationResourceInner inner =
+            this.serviceClient().get(resourceGroupName, sparkConfigurationName, workspaceName);
+        if (inner != null) {
+            return new SparkConfigurationResourceImpl(inner, this.manager());
         } else {
             return null;
         }

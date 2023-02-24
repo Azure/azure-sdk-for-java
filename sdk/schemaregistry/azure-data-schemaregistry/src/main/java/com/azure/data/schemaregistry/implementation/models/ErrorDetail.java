@@ -12,7 +12,7 @@ import java.util.List;
 @Fluent
 public final class ErrorDetail {
     /*
-     * Type of error.
+     * Server-defined error code.
      */
     @JsonProperty(value = "code", required = true)
     private String code;
@@ -29,8 +29,11 @@ public final class ErrorDetail {
     @JsonProperty(value = "details")
     private List<ErrorDetail> details;
 
+    /** Creates an instance of ErrorDetail class. */
+    public ErrorDetail() {}
+
     /**
-     * Get the code property: Type of error.
+     * Get the code property: Server-defined error code.
      *
      * @return the code value.
      */
@@ -39,7 +42,7 @@ public final class ErrorDetail {
     }
 
     /**
-     * Set the code property: Type of error.
+     * Set the code property: Server-defined error code.
      *
      * @param code the code value to set.
      * @return the ErrorDetail object itself.

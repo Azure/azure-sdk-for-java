@@ -10,7 +10,7 @@ import java.util.List;
 
 /** The CollectTonesResult model. */
 @Fluent
-public final class CollectTonesResult {
+public final class CollectTonesResult extends RecognizeResult {
     /*
      * The tones property.
      */

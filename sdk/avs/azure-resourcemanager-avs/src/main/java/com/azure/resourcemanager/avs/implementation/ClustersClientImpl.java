@@ -66,7 +66,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientClusters")
-    private interface ClustersService {
+    public interface ClustersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
@@ -696,7 +696,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String clusterName, ClusterInner cluster) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, clusterName, cluster).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, clusterName, cluster).getSyncPoller();
     }
 
     /**
@@ -715,7 +715,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String clusterName, ClusterInner cluster, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, clusterName, cluster, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, clusterName, cluster, context)
             .getSyncPoller();
     }
 
@@ -988,7 +989,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String clusterName, ClusterUpdate clusterUpdate) {
-        return beginUpdateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate).getSyncPoller();
     }
 
     /**
@@ -1011,7 +1012,8 @@ public final class ClustersClientImpl implements ClustersClient {
         String clusterName,
         ClusterUpdate clusterUpdate,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate, context)
             .getSyncPoller();
     }
 
@@ -1266,7 +1268,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String clusterName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, clusterName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, clusterName).getSyncPoller();
     }
 
     /**
@@ -1284,7 +1286,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String clusterName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, context).getSyncPoller();
     }
 
     /**

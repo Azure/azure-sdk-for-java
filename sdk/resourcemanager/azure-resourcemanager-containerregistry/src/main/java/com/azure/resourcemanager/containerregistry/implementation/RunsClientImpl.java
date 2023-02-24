@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.RunsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RunsClient. */
 public final class RunsClientImpl implements RunsClient {
-    private final ClientLogger logger = new ClientLogger(RunsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RunsService service;
 
@@ -67,7 +64,7 @@ public final class RunsClientImpl implements RunsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerRegistryMan")
-    private interface RunsService {
+    public interface RunsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
@@ -172,7 +169,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the runs for a registry.
+     * @return all the runs for a registry along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunInner>> listSinglePageAsync(
@@ -236,7 +233,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the runs for a registry.
+     * @return all the runs for a registry along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunInner>> listSinglePageAsync(
@@ -296,7 +293,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the runs for a registry.
+     * @return all the runs for a registry as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RunInner> listAsync(String resourceGroupName, String registryName, String filter, Integer top) {
@@ -313,7 +310,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the runs for a registry.
+     * @return all the runs for a registry as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RunInner> listAsync(String resourceGroupName, String registryName) {
@@ -336,7 +333,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the runs for a registry.
+     * @return all the runs for a registry as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RunInner> listAsync(
@@ -354,7 +351,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the runs for a registry.
+     * @return all the runs for a registry as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RunInner> list(String resourceGroupName, String registryName) {
@@ -375,7 +372,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the runs for a registry.
+     * @return all the runs for a registry as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RunInner> list(
@@ -392,7 +389,8 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given run.
+     * @return the detailed information for a given run along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RunInner>> getWithResponseAsync(String resourceGroupName, String registryName, String runId) {
@@ -446,7 +444,8 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given run.
+     * @return the detailed information for a given run along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RunInner>> getWithResponseAsync(
@@ -497,19 +496,30 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given run.
+     * @return the detailed information for a given run on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RunInner> getAsync(String resourceGroupName, String registryName, String runId) {
         return getWithResponseAsync(resourceGroupName, registryName, runId)
-            .flatMap(
-                (Response<RunInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the detailed information for a given run.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the detailed information for a given run along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RunInner> getWithResponse(
+        String resourceGroupName, String registryName, String runId, Context context) {
+        return getWithResponseAsync(resourceGroupName, registryName, runId, context).block();
     }
 
     /**
@@ -525,25 +535,7 @@ public final class RunsClientImpl implements RunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunInner get(String resourceGroupName, String registryName, String runId) {
-        return getAsync(resourceGroupName, registryName, runId).block();
-    }
-
-    /**
-     * Gets the detailed information for a given run.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runId The run ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given run.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RunInner> getWithResponse(
-        String resourceGroupName, String registryName, String runId, Context context) {
-        return getWithResponseAsync(resourceGroupName, registryName, runId, context).block();
+        return getWithResponse(resourceGroupName, registryName, runId, Context.NONE).getValue();
     }
 
     /**
@@ -556,7 +548,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
+     * @return run resource properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -619,7 +611,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
+     * @return run resource properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -682,7 +674,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
+     * @return the {@link PollerFlux} for polling of run resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RunInner>, RunInner> beginUpdateAsync(
@@ -706,7 +698,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
+     * @return the {@link PollerFlux} for polling of run resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RunInner>, RunInner> beginUpdateAsync(
@@ -734,12 +726,12 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
+     * @return the {@link SyncPoller} for polling of run resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunInner>, RunInner> beginUpdate(
         String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, registryName, runId, runUpdateParameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, registryName, runId, runUpdateParameters).getSyncPoller();
     }
 
     /**
@@ -753,7 +745,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
+     * @return the {@link SyncPoller} for polling of run resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunInner>, RunInner> beginUpdate(
@@ -762,7 +754,9 @@ public final class RunsClientImpl implements RunsClient {
         String runId,
         RunUpdateParameters runUpdateParameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, registryName, runId, runUpdateParameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, registryName, runId, runUpdateParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -775,7 +769,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
+     * @return run resource properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RunInner> updateAsync(
@@ -796,7 +790,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
+     * @return run resource properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RunInner> updateAsync(
@@ -860,7 +854,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link to download the run logs.
+     * @return a link to download the run logs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RunGetLogResultInner>> getLogSasUrlWithResponseAsync(
@@ -915,7 +909,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link to download the run logs.
+     * @return a link to download the run logs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RunGetLogResultInner>> getLogSasUrlWithResponseAsync(
@@ -966,19 +960,30 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link to download the run logs.
+     * @return a link to download the run logs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RunGetLogResultInner> getLogSasUrlAsync(String resourceGroupName, String registryName, String runId) {
         return getLogSasUrlWithResponseAsync(resourceGroupName, registryName, runId)
-            .flatMap(
-                (Response<RunGetLogResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a link to download the run logs.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a link to download the run logs along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RunGetLogResultInner> getLogSasUrlWithResponse(
+        String resourceGroupName, String registryName, String runId, Context context) {
+        return getLogSasUrlWithResponseAsync(resourceGroupName, registryName, runId, context).block();
     }
 
     /**
@@ -994,25 +999,7 @@ public final class RunsClientImpl implements RunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunGetLogResultInner getLogSasUrl(String resourceGroupName, String registryName, String runId) {
-        return getLogSasUrlAsync(resourceGroupName, registryName, runId).block();
-    }
-
-    /**
-     * Gets a link to download the run logs.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runId The run ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link to download the run logs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RunGetLogResultInner> getLogSasUrlWithResponse(
-        String resourceGroupName, String registryName, String runId, Context context) {
-        return getLogSasUrlWithResponseAsync(resourceGroupName, registryName, runId, context).block();
+        return getLogSasUrlWithResponse(resourceGroupName, registryName, runId, Context.NONE).getValue();
     }
 
     /**
@@ -1024,7 +1011,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
@@ -1079,7 +1066,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
@@ -1130,7 +1117,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCancelAsync(
@@ -1152,7 +1139,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
@@ -1174,11 +1161,11 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String registryName, String runId) {
-        return beginCancelAsync(resourceGroupName, registryName, runId).getSyncPoller();
+        return this.beginCancelAsync(resourceGroupName, registryName, runId).getSyncPoller();
     }
 
     /**
@@ -1191,12 +1178,12 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(
         String resourceGroupName, String registryName, String runId, Context context) {
-        return beginCancelAsync(resourceGroupName, registryName, runId, context).getSyncPoller();
+        return this.beginCancelAsync(resourceGroupName, registryName, runId, context).getSyncPoller();
     }
 
     /**
@@ -1208,7 +1195,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String registryName, String runId) {
@@ -1227,7 +1214,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String registryName, String runId, Context context) {
@@ -1270,11 +1257,12 @@ public final class RunsClientImpl implements RunsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of runs.
+     * @return collection of runs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunInner>> listNextSinglePageAsync(String nextLink) {
@@ -1305,12 +1293,13 @@ public final class RunsClientImpl implements RunsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of runs.
+     * @return collection of runs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.fluent.models.TaskInner;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
@@ -92,7 +91,9 @@ public final class TasksCreateSamples {
                                                     .withRepositoryUrl("https://github.com/Azure/azure-rest-api-specs")
                                                     .withBranch("master")
                                                     .withSourceControlAuthProperties(
-                                                        new AuthInfo().withTokenType(TokenType.PAT).withToken("xxxxx")))
+                                                        new AuthInfo()
+                                                            .withTokenType(TokenType.PAT)
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger")))
                             .withBaseImageTrigger(
@@ -100,7 +101,7 @@ public final class TasksCreateSamples {
                                     .withBaseImageTriggerType(BaseImageTriggerType.RUNTIME)
                                     .withName("myBaseImageTrigger")))
                     .withIsSystemTask(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -161,7 +162,9 @@ public final class TasksCreateSamples {
                                                     .withRepositoryUrl("https://github.com/Azure/azure-rest-api-specs")
                                                     .withBranch("master")
                                                     .withSourceControlAuthProperties(
-                                                        new AuthInfo().withTokenType(TokenType.PAT).withToken("xxxxx")))
+                                                        new AuthInfo()
+                                                            .withTokenType(TokenType.PAT)
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger")))
                             .withBaseImageTrigger(
@@ -172,7 +175,7 @@ public final class TasksCreateSamples {
                                     .withName("myBaseImageTrigger")))
                     .withLogTemplate("acr/tasks:{{.Run.OS}}")
                     .withIsSystemTask(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -239,7 +242,9 @@ public final class TasksCreateSamples {
                                                     .withRepositoryUrl("https://github.com/Azure/azure-rest-api-specs")
                                                     .withBranch("master")
                                                     .withSourceControlAuthProperties(
-                                                        new AuthInfo().withTokenType(TokenType.PAT).withToken("xxxxx")))
+                                                        new AuthInfo()
+                                                            .withTokenType(TokenType.PAT)
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger")))
                             .withBaseImageTrigger(
@@ -249,7 +254,7 @@ public final class TasksCreateSamples {
                                     .withUpdateTriggerPayloadType(UpdateTriggerPayloadType.DEFAULT)
                                     .withName("myBaseImageTrigger")))
                     .withIsSystemTask(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -318,7 +323,9 @@ public final class TasksCreateSamples {
                                                     .withRepositoryUrl("https://github.com/Azure/azure-rest-api-specs")
                                                     .withBranch("master")
                                                     .withSourceControlAuthProperties(
-                                                        new AuthInfo().withTokenType(TokenType.PAT).withToken("xxxxx")))
+                                                        new AuthInfo()
+                                                            .withTokenType(TokenType.PAT)
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger")))
                             .withBaseImageTrigger(
@@ -328,7 +335,7 @@ public final class TasksCreateSamples {
                                     .withUpdateTriggerPayloadType(UpdateTriggerPayloadType.DEFAULT)
                                     .withName("myBaseImageTrigger")))
                     .withIsSystemTask(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -355,7 +362,7 @@ public final class TasksCreateSamples {
                     .withStatus(TaskStatus.ENABLED)
                     .withLogTemplate("acr/tasks:{{.Run.OS}}")
                     .withIsSystemTask(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

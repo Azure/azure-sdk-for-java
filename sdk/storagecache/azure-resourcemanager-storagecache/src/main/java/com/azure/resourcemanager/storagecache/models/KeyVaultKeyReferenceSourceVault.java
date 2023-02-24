@@ -16,6 +16,10 @@ public final class KeyVaultKeyReferenceSourceVault {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of KeyVaultKeyReferenceSourceVault class. */
+    public KeyVaultKeyReferenceSourceVault() {
+    }
+
     /**
      * Get the id property: Resource Id.
      *
