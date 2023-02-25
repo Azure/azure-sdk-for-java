@@ -19,7 +19,9 @@ import java.util.stream.Stream;
 
 
 public class EmailTestBase extends TestBase {
-    protected static final TestMode TEST_MODE = initializeTestMode();
+//    protected static final TestMode TEST_MODE = initializeTestMode();
+    protected static final TestMode TEST_MODE = TestMode.LIVE;
+
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING_EMAIL", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");

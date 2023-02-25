@@ -5,6 +5,7 @@
 package com.azure.communication.email.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,10 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class EmailsSendHeaders {
     /*
-     * The Repeatability-Result property.
+     * The retry-after property.
      */
-    @JsonProperty(value = "Repeatability-Result")
-    private String repeatabilityResult;
+    @JsonProperty(value = "retry-after")
+    private Integer retryAfter;
 
     /*
      * The Operation-Location property.
@@ -23,11 +24,7 @@ public final class EmailsSendHeaders {
     @JsonProperty(value = "Operation-Location")
     private String operationLocation;
 
-    /*
-     * The x-ms-request-id property.
-     */
-    @JsonProperty(value = "x-ms-request-id")
-    private String xMsRequestId;
+    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -36,28 +33,30 @@ public final class EmailsSendHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public EmailsSendHeaders(HttpHeaders rawHeaders) {
-        this.repeatabilityResult = rawHeaders.getValue("Repeatability-Result");
-        this.operationLocation = rawHeaders.getValue("Operation-Location");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
+        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
     }
 
     /**
-     * Get the repeatabilityResult property: The Repeatability-Result property.
+     * Get the retryAfter property: The retry-after property.
      *
-     * @return the repeatabilityResult value.
+     * @return the retryAfter value.
      */
-    public String getRepeatabilityResult() {
-        return this.repeatabilityResult;
+    public Integer getRetryAfter() {
+        return this.retryAfter;
     }
 
     /**
-     * Set the repeatabilityResult property: The Repeatability-Result property.
+     * Set the retryAfter property: The retry-after property.
      *
-     * @param repeatabilityResult the repeatabilityResult value to set.
+     * @param retryAfter the retryAfter value to set.
      * @return the EmailsSendHeaders object itself.
      */
-    public EmailsSendHeaders setRepeatabilityResult(String repeatabilityResult) {
-        this.repeatabilityResult = repeatabilityResult;
+    public EmailsSendHeaders setRetryAfter(Integer retryAfter) {
+        this.retryAfter = retryAfter;
         return this;
     }
 
@@ -78,26 +77,6 @@ public final class EmailsSendHeaders {
      */
     public EmailsSendHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     *
-     * @return the xMsRequestId value.
-     */
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     *
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the EmailsSendHeaders object itself.
-     */
-    public EmailsSendHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
         return this;
     }
 }

@@ -6,14 +6,15 @@ package com.azure.communication.email;
 import com.azure.communication.email.models.*;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 @Timeout(value = 2, unit = TimeUnit.MINUTES)
 public class EmailClientTests extends EmailTestBase {
 
@@ -29,14 +30,16 @@ public class EmailClientTests extends EmailTestBase {
     public void sendEmailToSingleRecipient(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
-        SendEmailResult response = emailClient.send(
-            SENDER_ADDRESS,
-            RECIPIENT_ADDRESS,
-            "test subject",
-            "<h1>test message</h1>"
-        );
+        EmailMessage message = new EmailMessage()
+            .setSenderAddress(SENDER_ADDRESS)
+            .setToRecipients(RECIPIENT_ADDRESS)
+            .setSubject("test subject")
+            .setBodyHtml("<h1>test message</h1>");
 
-        assertNotNull(response.getMessageId());
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
+
+        assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
     }
 
     @ParameterizedTest
@@ -44,100 +47,41 @@ public class EmailClientTests extends EmailTestBase {
     public void sendEmailToMultipleRecipients(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
-        EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
-        EmailAddress emailAddress2 = new EmailAddress(SECOND_RECIPIENT_ADDRESS);
+        EmailMessage message = new EmailMessage()
+            .setSenderAddress(SENDER_ADDRESS)
+            .setSubject("test subject")
+            .setBodyPlainText("test message")
+            .setToRecipients(RECIPIENT_ADDRESS, SECOND_RECIPIENT_ADDRESS)
+            .setCcRecipients(RECIPIENT_ADDRESS)
+            .setBccRecipients(RECIPIENT_ADDRESS);
 
-        ArrayList<EmailAddress> toAddressList = new ArrayList<>();
-        toAddressList.add(emailAddress);
-        toAddressList.add(emailAddress2);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
-        ArrayList<EmailAddress> ccAddressList = new ArrayList<>();
-        ccAddressList.add(emailAddress);
-
-        ArrayList<EmailAddress> bccAddressList = new ArrayList<>();
-        bccAddressList.add(emailAddress);
-
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(toAddressList)
-            .setCc(ccAddressList)
-            .setBcc(bccAddressList);
-
-        EmailContent content = new EmailContent("test subject")
-            .setPlainText("test message");
-
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-
-        SendEmailResult response = emailClient.send(emailMessage);
-        assertNotNull(response.getMessageId());
+        assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
     }
-    //
+
     @ParameterizedTest
     @MethodSource("getTestParameters")
     public void sendEmailWithAttachment(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
-        EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
-
-        ArrayList<EmailAddress> addressList = new ArrayList<>();
-        addressList.add(emailAddress);
-
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(addressList);
-
-        EmailContent content = new EmailContent("test subject")
-            .setPlainText("test message");
-
         EmailAttachment attachment = new EmailAttachment(
             "attachment.txt",
-            "TXT",
+            "text/plain",
             BinaryData.fromString("test")
         );
 
-        ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
-        attachmentList.add(attachment);
+        EmailMessage message = new EmailMessage()
+            .setSenderAddress(SENDER_ADDRESS)
+            .setToRecipients(RECIPIENT_ADDRESS)
+            .setSubject("test subject")
+            .setBodyHtml("<h1>test message</h1>")
+            .setAttachments(attachment);
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients)
-            .setAttachments(attachmentList);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
-        SendEmailResult response = emailClient.send(emailMessage);
-        assertNotNull(response.getMessageId());
-    }
-
-    @ParameterizedTest
-    @MethodSource("getTestParameters")
-    public void getMessageStatus(HttpClient httpClient) {
-        emailClient = getEmailClient(httpClient);
-
-        SendEmailResult sendEmailResult = emailClient.send(
-            SENDER_ADDRESS,
-            RECIPIENT_ADDRESS,
-            "test subject",
-            "<h1>test message</h1>"
-        );
-
-        SendStatusResult sendStatusResult = emailClient.getSendStatus(sendEmailResult.getMessageId());
-        assertNotNull(sendStatusResult.getStatus());
-    }
-
-    @ParameterizedTest
-    @MethodSource("getTestParameters")
-    public void sendEmailWithoutToRecipient(HttpClient httpClient) {
-        emailClient = getEmailClient(httpClient);
-
-        EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
-
-        ArrayList<EmailAddress> addressList = new ArrayList<>();
-        addressList.add(emailAddress);
-
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setCc(addressList);
-
-        EmailContent content = new EmailContent("test subject")
-            .setPlainText("test message");
-
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-
-        SendEmailResult response = emailClient.send(emailMessage);
-        assertNotNull(response.getMessageId());
+        assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
     }
 }

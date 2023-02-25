@@ -2,16 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.communication.email;
 
-import com.azure.communication.email.models.EmailAddress;
-import com.azure.communication.email.models.EmailContent;
-import com.azure.communication.email.models.EmailMessage;
-import com.azure.communication.email.models.EmailRecipients;
-import com.azure.communication.email.models.SendEmailResult;
-import com.azure.communication.email.models.SendStatusResult;
-import com.azure.communication.email.models.EmailAttachment;
+import com.azure.communication.email.implementation.models.EmailRecipients;
+import com.azure.communication.email.models.*;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.ArrayList;
@@ -59,40 +56,20 @@ public class ReadmeSamples {
         return emailClient;
     }
 
-    public void sendEmailSimple() {
-        EmailClient emailClient = createEmailClientWithConnectionString();
-
-        // BEGIN: readme-sample-sendEmailSimple
-        SendEmailResult response = emailClient.send(
-            "<sender-email-address>",
-            "recipient-email-address",
-            "test subject",
-            "<h1>test message</h1>"
-        );
-
-        System.out.println("Message Id: " + response.getMessageId());
-        // END: readme-sample-sendEmailSimple
-    }
-
     public void sendEmailToSingleRecipient() {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailToSingleRecipient
-        EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
+        EmailMessage message = new EmailMessage()
+            .setSenderAddress("<sender-email-address>")
+            .setToRecipients("<recipient-email-address>")
+            .setSubject("test subject")
+            .setBodyPlainText("test message");
 
-        ArrayList<EmailAddress> addressList = new ArrayList<>();
-        addressList.add(emailAddress);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(addressList);
-
-        EmailContent content = new EmailContent("test subject")
-            .setPlainText("test message");
-
-        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
-
-        SendEmailResult response = emailClient.send(emailMessage);
-        System.out.println("Message Id: " + response.getMessageId());
+        System.out.println("Operation Id: " + response.getValue().getId());
         // END: readme-sample-sendEmailToSingleRecipient
     }
 
@@ -100,32 +77,42 @@ public class ReadmeSamples {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailToMultipleRecipients
-        EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
-        EmailAddress emailAddress2 = new EmailAddress("<recipient-2-email-address>");
+        EmailMessage message = new EmailMessage()
+            .setSenderAddress("<sender-email-address>")
+            .setSubject("test subject")
+            .setBodyPlainText("test message")
+            .setToRecipients("<recipient-email-address>", "<recipient-2-email-address>")
+            .setCcRecipients("<cc-recipient-email-address>")
+            .setBccRecipients("<bcc-recipient-email-address>");
 
-        ArrayList<EmailAddress> toAddressList = new ArrayList<>();
-        toAddressList.add(emailAddress);
-        toAddressList.add(emailAddress2);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
-        ArrayList<EmailAddress> ccAddressList = new ArrayList<>();
-        ccAddressList.add(emailAddress);
-
-        ArrayList<EmailAddress> bccAddressList = new ArrayList<>();
-        bccAddressList.add(emailAddress);
-
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(toAddressList)
-            .setCc(ccAddressList)
-            .setBcc(bccAddressList);
-
-        EmailContent content = new EmailContent("test subject")
-            .setPlainText("test message");
-
-        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
-
-        SendEmailResult response = emailClient.send(emailMessage);
-        System.out.println("Message Id: " + response.getMessageId());
+        System.out.println("Operation Id: " + response.getValue().getId());
         // END: readme-sample-sendEmailToMultipleRecipients
+    }
+
+    public void sendEmailToMultipleRecipientsWithOptions() {
+        EmailClient emailClient = createEmailClientWithConnectionString();
+
+        // BEGIN: readme-sample-sendEmailToMultipleRecipientsWithOptions
+        EmailAddress toAddress1 = new EmailAddress("<recipient-email-address>")
+            .setDisplayName("Recipient");
+
+        EmailAddress toAddress2 = new EmailAddress("<recipient-2-email-address>")
+            .setDisplayName("Recipient 2");
+
+        EmailMessage message = new EmailMessage()
+            .setSenderAddress("<sender-email-address>")
+            .setSubject("test subject")
+            .setBodyPlainText("test message")
+            .setToRecipients(toAddress1, toAddress2);
+
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
+
+        System.out.println("Operation Id: " + response.getValue().getId());
+        // END: readme-sample-sendEmailToMultipleRecipientsWithOptions
     }
 
 
@@ -133,38 +120,24 @@ public class ReadmeSamples {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailWithAttachment
-        EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
-
-        ArrayList<EmailAddress> addressList = new ArrayList<>();
-        addressList.add(emailAddress);
-
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(addressList);
-
-        EmailContent content = new EmailContent("test subject")
-            .setPlainText("test message");
-
         BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
-        EmailAttachment attachment = new EmailAttachment("attachment.txt", "TXT", attachmentContent);
+        EmailAttachment attachment = new EmailAttachment(
+            "attachment.txt",
+            "text/plain",
+            attachmentContent
+        );
 
-        ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
-        attachmentList.add(attachment);
+        EmailMessage message = new EmailMessage()
+            .setSenderAddress("<sender-email-address>")
+            .setToRecipients("<recipient-email-address>")
+            .setSubject("test subject")
+            .setBodyPlainText("test message")
+            .setAttachments(attachment);
 
-        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients)
-            .setAttachments(attachmentList);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
-        SendEmailResult response = emailClient.send(emailMessage);
-        System.out.println("Message Id: " + response.getMessageId());
+        System.out.println("Operation Id: " + response.getValue().getId());
         // END: readme-sample-sendEmailWithAttachment
-    }
-
-
-    public void getMessageStatus() {
-        EmailClient emailClient = createEmailClientWithConnectionString();
-
-        // BEGIN: readme-sample-getMessageStatus
-        SendStatusResult response = emailClient.getSendStatus("<sent-message-id>");
-        System.out.println("Status: " + response.getStatus());
-        // END: readme-sample-getMessageStatus
     }
 }

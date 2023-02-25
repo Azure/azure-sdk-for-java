@@ -4,294 +4,113 @@
 
 package com.azure.communication.email;
 
-import com.azure.communication.email.models.*;
+import com.azure.communication.email.implementation.AzureCommunicationEmailServiceImpl;
 import com.azure.communication.email.implementation.EmailsImpl;
+import com.azure.communication.email.implementation.models.EmailContent;
+import com.azure.communication.email.implementation.models.EmailRecipients;
+import com.azure.communication.email.models.EmailAttachment;
 import com.azure.communication.email.models.EmailMessage;
-import com.azure.communication.email.models.SendEmailResult;
-import com.azure.communication.email.models.SendStatusResult;
+import com.azure.communication.email.implementation.models.ErrorResponseException;
+import com.azure.communication.email.models.EmailSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
-import reactor.core.publisher.Mono;
+import com.azure.core.util.Context;
+import com.azure.core.util.polling.DefaultPollingStrategy;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.serializer.TypeReference;
+
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Objects;
 
 /** Initializes a new instance of the asynchronous EmailAsyncClient type. */
 @ServiceClient(builder = EmailClientBuilder.class, isAsync = true)
 public final class EmailAsyncClient {
     private final EmailsImpl serviceClient;
+    private final AzureCommunicationEmailServiceImpl serviceImpl;
 
     /**
      * Initializes an instance of EmailAsyncClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param serviceImpl the service client implementation.
      */
-    EmailAsyncClient(EmailsImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    EmailAsyncClient(AzureCommunicationEmailServiceImpl serviceImpl) {
+        this.serviceImpl = serviceImpl;
+        this.serviceClient = serviceImpl.getEmails();
     }
 
     /**
-     * Gets the status of a message sent previously.
+     * Queues an email message to be sent to one or more recipients.
      *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     messageId: String (Required)
-     *     status: String(queued/outForDelivery/dropped) (Required)
-     * }
-     * }</pre>
-     *
-     * @param messageId System generated message id (GUID) returned from a previous call to send email.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of a message sent previously
+     * @param message Message payload for sending an email.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendStatusResult> getSendStatus(String messageId) {
-        return this.serviceClient.getSendStatusWithResponseAsync(messageId, null)
-            .flatMap((Response<BinaryData> response) -> {
-                return Mono.just(response.getValue().toObject(SendStatusResult.class));
-            });
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<EmailSendResult, EmailSendResult> beginSend(EmailMessage message) {
+        return beginSend(message, null);
     }
 
-    /**
-     * Gets the status of a message sent previously.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     messageId: String (Required)
-     *     status: String(queued/outForDelivery/dropped) (Required)
-     * }
-     * }</pre>
-     *
-     * @param messageId System generated message id (GUID) returned from a previous call to send email.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of a message sent previously along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendStatusResult>> getSendStatusWithResponse(String messageId, RequestOptions requestOptions) {
-        return this.serviceClient.getSendStatusWithResponseAsync(messageId, requestOptions)
-            .flatMap((Response<BinaryData> response) -> {
-                return Mono.just(new SimpleResponse<>(
-                    response,
-                    response.getValue().toObject(SendStatusResult.class)
+    PollerFlux<EmailSendResult, EmailSendResult> beginSend(EmailMessage message, Context context) {
+        Objects.requireNonNull(message.getSenderAddress(),"The message 'senderAddress' cannot be null.");
+        Objects.requireNonNull(message.getSubject(),"The message 'subject' cannot be null.");
+
+        if (message.getBodyHtml() == null && message.getBodyPlainText() == null) {
+            throw new NullPointerException("The message 'bodyHtml' and 'bodyPlainText' cannot both be null.");
+        }
+
+        if (message.getToRecipients() == null && message.getCcRecipients() == null
+                && message.getBccRecipients() == null) {
+            throw new NullPointerException(
+                "The message 'toRecipients', 'ccRecipients', and 'bccRecipients' cannot all be null.");
+        }
+
+        EmailContent content = new EmailContent(message.getSubject())
+            .setHtml(message.getBodyHtml())
+            .setPlainText(message.getBodyPlainText());
+
+        EmailRecipients recipients = new EmailRecipients()
+            .setTo(message.getToRecipients())
+            .setCc(message.getCcRecipients())
+            .setBCC(message.getBccRecipients());
+
+        List<com.azure.communication.email.implementation.models.EmailAttachment> attachmentsImpl = null;
+
+        if(message.getAttachments() != null) {
+            attachmentsImpl = new ArrayList<>();
+            for (EmailAttachment attachment: message.getAttachments()) {
+                attachmentsImpl.add(new com.azure.communication.email.implementation.models.EmailAttachment(
+                    attachment.getName(),
+                    attachment.getContentType(),
+                    Base64.getEncoder().encodeToString(attachment.getContent().toBytes())
                 ));
-            });
-    }
+            }
+        }
 
-    /**
-     * Queues an email message to be sent to one recipient
-     * @param senderEmail The sender email address from a verified domain.
-     * @param toRecipient The to email recipient address.
-     * @param subject The email subject.
-     * @param html The html version of the email message.
-     * @return the SendEmailResult
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendEmailResult> send(String senderEmail, String toRecipient, String subject, String html) {
-        EmailContent emailContent = new EmailContent(subject)
-            .setHtml(html);
+        com.azure.communication.email.implementation.models.EmailMessage messageImpl
+            = new com.azure.communication.email.implementation.models.EmailMessage(
+                message.getSenderAddress(), content, recipients);
 
-        ArrayList<EmailAddress> toAddressList = new ArrayList<>();
-        toAddressList.add(new EmailAddress(toRecipient));
+        messageImpl
+            .setHeaders(message.getHeaders())
+            .setAttachments(attachmentsImpl)
+            .setReplyTo(message.getReplyTo())
+            .setUserEngagementTrackingDisabled(message.isUserEngagementTrackingDisabled());
 
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(toAddressList);
 
-        EmailMessage emailMessage = new EmailMessage(senderEmail, emailContent, emailRecipients);
-
-        return send(emailMessage);
-    }
-
-    /**
-     * Queues an email message to be sent to one recipient
-     * @param senderEmail The sender email address from a verified domain.
-     * @param toRecipient The to email recipient address.
-     * @param subject The email subject.
-     * @param html The html version of the email message.
-     * @param plainText The plain text version of the email message.
-     * @return the SendEmailResult
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendEmailResult> send(String senderEmail, String toRecipient, String subject, String html, String plainText) {
-        EmailContent emailContent = new EmailContent(subject)
-            .setHtml(html)
-            .setPlainText(plainText);
-
-        ArrayList<EmailAddress> toAddressList = new ArrayList<>();
-        toAddressList.add(new EmailAddress(toRecipient));
-
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(toAddressList);
-
-        EmailMessage emailMessage = new EmailMessage(senderEmail, emailContent, emailRecipients);
-
-        return send(emailMessage);
-    }
-
-    /**
-     * Queues an email message to be sent to one or more recipients.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Tracking ID sent with the request to help with debugging.</td></tr>
-     *     <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
-     *     <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as HTTP-date</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     headers (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     senderEmail: String (Required)
-     *     content (Required): {
-     *         subject: String (Required)
-     *         plainText: String (Optional)
-     *         html: String (Optional)
-     *     }
-     *     recipients (Required): {
-     *         to (Required): [
-     *              (Required){
-     *                 email: String (Required)
-     *                 displayName: String (Optional)
-     *             }
-     *         ]
-     *         cc (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         bcc (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *     }
-     *     attachments (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             type: String (Required)
-     *             contentBytesBase64: String (Required)
-     *         }
-     *     ]
-     *     replyTo (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     disableUserEngagementTracking: Boolean (Optional)
-     * }
-     * }</pre>
-     *
-     * @param message Message payload for sending an email.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the SendEmailResult
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendEmailResult> send(EmailMessage message) {
-        return this.serviceClient.sendWithResponseAsync(BinaryData.fromObject(message), null)
-            .flatMap((Response<Void> response) -> {
-                SendEmailResult result = new SendEmailResult(
-                    response.getHeaders().getValue("x-ms-request-id")
-                );
-                return Mono.just(result);
-            });
-    }
-
-    /**
-     * Queues an email message to be sent to one or more recipients.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Tracking ID sent with the request to help with debugging.</td></tr>
-     *     <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
-     *     <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as HTTP-date</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     headers (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     senderEmail: String (Required)
-     *     content (Required): {
-     *         subject: String (Required)
-     *         plainText: String (Optional)
-     *         html: String (Optional)
-     *     }
-     *     recipients (Required): {
-     *         to (Required): [
-     *              (Required){
-     *                 email: String (Required)
-     *                 displayName: String (Optional)
-     *             }
-     *         ]
-     *         cc (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         bcc (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *     }
-     *     attachments (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             type: String (Required)
-     *             contentBytesBase64: String (Required)
-     *         }
-     *     ]
-     *     replyTo (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     disableUserEngagementTracking: Boolean (Optional)
-     * }
-     * }</pre>
-     *
-     * @param message Message payload for sending an email.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the SendEmailResult along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendEmailResult>> sendWithResponse(EmailMessage message, RequestOptions requestOptions) {
-        return this.serviceClient.sendWithResponseAsync(BinaryData.fromObject(message), requestOptions)
-            .flatMap((Response<Void> response) -> {
-                SendEmailResult result = new SendEmailResult(
-                    response.getHeaders().getValue("x-ms-request-id")
-                );
-                return Mono.just(new SimpleResponse<>(response, result));
-            });
+        return PollerFlux.create(
+            Duration.ofSeconds(1),
+            () -> serviceClient.sendWithResponseAsync(messageImpl, null, null, context),
+            new DefaultPollingStrategy<>(
+                this.serviceImpl.getHttpPipeline(),
+                "{endpoint}".replace("{endpoint}", this.serviceImpl.getEndpoint()),
+                null,
+                Context.NONE),
+            TypeReference.createInstance(EmailSendResult.class),
+            TypeReference.createInstance(EmailSendResult.class));
     }
 }

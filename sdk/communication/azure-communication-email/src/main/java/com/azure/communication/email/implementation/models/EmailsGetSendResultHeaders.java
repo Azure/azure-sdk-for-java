@@ -5,32 +5,34 @@
 package com.azure.communication.email.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EmailsGetSendStatusHeaders model. */
+/** The EmailsGetSendResultHeaders model. */
 @Fluent
-public final class EmailsGetSendStatusHeaders {
+public final class EmailsGetSendResultHeaders {
     /*
-     * The Retry-After property.
+     * The retry-after property.
      */
-    @JsonProperty(value = "Retry-After")
+    @JsonProperty(value = "retry-after")
     private Integer retryAfter;
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of EmailsGetSendStatusHeaders class.
+     * Creates an instance of EmailsGetSendResultHeaders class.
      *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public EmailsGetSendStatusHeaders(HttpHeaders rawHeaders) {
-        if (rawHeaders.getValue("Retry-After") != null) {
-            this.retryAfter = Integer.parseInt(rawHeaders.getValue("Retry-After"));
+    public EmailsGetSendResultHeaders(HttpHeaders rawHeaders) {
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
         }
     }
 
     /**
-     * Get the retryAfter property: The Retry-After property.
+     * Get the retryAfter property: The retry-after property.
      *
      * @return the retryAfter value.
      */
@@ -39,12 +41,12 @@ public final class EmailsGetSendStatusHeaders {
     }
 
     /**
-     * Set the retryAfter property: The Retry-After property.
+     * Set the retryAfter property: The retry-after property.
      *
      * @param retryAfter the retryAfter value to set.
-     * @return the EmailsGetSendStatusHeaders object itself.
+     * @return the EmailsGetSendResultHeaders object itself.
      */
-    public EmailsGetSendStatusHeaders setRetryAfter(Integer retryAfter) {
+    public EmailsGetSendResultHeaders setRetryAfter(Integer retryAfter) {
         this.retryAfter = retryAfter;
         return this;
     }
