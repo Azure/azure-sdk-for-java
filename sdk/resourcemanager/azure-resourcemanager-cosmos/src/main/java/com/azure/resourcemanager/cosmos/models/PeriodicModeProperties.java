@@ -28,6 +28,10 @@ public final class PeriodicModeProperties {
     @JsonProperty(value = "backupStorageRedundancy")
     private BackupStorageRedundancy backupStorageRedundancy;
 
+    /** Creates an instance of PeriodicModeProperties class. */
+    public PeriodicModeProperties() {
+    }
+
     /**
      * Get the backupIntervalInMinutes property: An integer representing the interval in minutes between two backups.
      *

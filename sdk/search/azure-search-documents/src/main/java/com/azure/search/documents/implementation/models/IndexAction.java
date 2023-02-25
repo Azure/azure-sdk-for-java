@@ -6,30 +6,32 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.models.IndexActionType;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /** Represents an index action that operates on a document. */
 @Fluent
-@JsonSerialize(using = IndexActionSerializer.class)
-public final class IndexAction {
+public final class IndexAction implements JsonSerializable<IndexAction> {
 
     /*
      * The operation to perform on a document in an indexing batch.
      */
-    @JsonProperty(value = "@search.action")
     private IndexActionType actionType;
 
     /*
      * Represents an index action that operates on a document.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IndexAction class. */
+    public IndexAction() {}
 
     /**
      * Get the actionType property: The operation to perform on a document in an indexing batch.
@@ -56,7 +58,6 @@ public final class IndexAction {
      *
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -72,30 +73,66 @@ public final class IndexAction {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@search.action", Objects.toString(this.actionType, null));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
     }
 
-    @JsonIgnore private String rawDocument;
+    /**
+     * Reads an instance of IndexAction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IndexAction if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IndexAction.
+     */
+    public static IndexAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    IndexActionType actionType = null;
+                    Map<String, Object> additionalProperties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@search.action".equals(fieldName)) {
+                            actionType = IndexActionType.fromString(reader.getString());
+                        } else {
+                            if (additionalProperties == null) {
+                                additionalProperties = new LinkedHashMap<>();
+                            }
+                            additionalProperties.put(fieldName, reader.readUntyped());
+                        }
+                    }
+                    IndexAction deserializedValue = new IndexAction();
+                    deserializedValue.actionType = actionType;
+                    deserializedValue.additionalProperties = additionalProperties;
+                    return deserializedValue;
+                });
+    }
+
+    private String rawDocument;
 
     /**
-     * Gets the raw JSON document.
+     * /** Gets the raw JSON document.
      *
-     * @return The raw JSON document.
+     * @return The raw JSON document. /
      */
     public String getRawDocument() {
-        return rawDocument;
+        return this.rawDocument;
     }
 
     /**
-     * Sets the raw JSON document.
+     * /** Sets the raw JSON document.
      *
      * @param rawDocument The raw JSON document.
-     * @return the IndexAction object itself.
+     * @return the IndexAction object itself. /
      */
     public IndexAction setRawDocument(String rawDocument) {
         this.rawDocument = rawDocument;

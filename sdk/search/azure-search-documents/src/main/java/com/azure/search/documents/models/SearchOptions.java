@@ -4,7 +4,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +18,6 @@ public final class SearchOptions {
      * Default is false. Setting this value to true may have a performance
      * impact. Note that the count returned is an approximation.
      */
-    @JsonProperty(value = "$count")
     private Boolean includeTotalCount;
 
     /*
@@ -27,34 +25,29 @@ public final class SearchOptions {
      * expression contains a field name, optionally followed by a
      * comma-separated list of name:value pairs.
      */
-    @JsonProperty(value = "facet")
     private List<String> facets;
 
     /*
      * The OData $filter expression to apply to the search query.
      */
-    @JsonProperty(value = "$filter")
     private String filter;
 
     /*
      * The list of field names to use for hit highlights. Only searchable
      * fields can be used for hit highlighting.
      */
-    @JsonProperty(value = "highlight")
     private List<String> highlightFields;
 
     /*
      * A string tag that is appended to hit highlights. Must be set with
      * highlightPreTag. Default is &lt;/em&gt;.
      */
-    @JsonProperty(value = "highlightPostTag")
     private String highlightPostTag;
 
     /*
      * A string tag that is prepended to hit highlights. Must be set with
      * highlightPostTag. Default is &lt;em&gt;.
      */
-    @JsonProperty(value = "highlightPreTag")
     private String highlightPreTag;
 
     /*
@@ -64,7 +57,6 @@ public final class SearchOptions {
      * availability even for services with only one replica. The default is
      * 100.
      */
-    @JsonProperty(value = "minimumCoverage")
     private Double minimumCoverage;
 
     /*
@@ -77,14 +69,12 @@ public final class SearchOptions {
      * descending by document match score. There can be at most 32 $orderby
      * clauses.
      */
-    @JsonProperty(value = "$orderby")
     private List<String> orderBy;
 
     /*
      * A value that specifies the syntax of the search query. The default is
      * 'simple'. Use 'full' if your query uses the Lucene query syntax.
      */
-    @JsonProperty(value = "queryType")
     private QueryType queryType;
 
     /*
@@ -94,21 +84,18 @@ public final class SearchOptions {
      * called 'mylocation' the parameter string would be
      * "mylocation--122.2,44.8" (without the quotes).
      */
-    @JsonProperty(value = "ScoringParameters")
     private List<ScoringParameter> scoringParameters;
 
     /*
      * The name of a scoring profile to evaluate match scores for matching
      * documents in order to sort the results.
      */
-    @JsonProperty(value = "scoringProfile")
     private String scoringProfile;
 
     /*
      * The name of the semantic configuration that lists which fields should be
      * used for semantic ranking, captions, highlights, and answers
      */
-    @JsonProperty(value = "semanticConfiguration")
     private String semanticConfigurationName;
 
     /*
@@ -117,19 +104,16 @@ public final class SearchOptions {
      * query, the field names of each fielded search expression take precedence
      * over any field names listed in this parameter.
      */
-    @JsonProperty(value = "searchFields")
     private List<String> searchFields;
 
     /*
      * The language of the query.
      */
-    @JsonProperty(value = "queryLanguage")
     private QueryLanguage queryLanguage;
 
     /*
      * Improve search recall by spell-correcting individual search query terms.
      */
-    @JsonProperty(value = "speller")
     private QuerySpellerType speller;
 
     /*
@@ -140,7 +124,6 @@ public final class SearchOptions {
      * answers>' option after the answers parameter value, such as
      * 'extractive|count-3'. Default count is 1.
      */
-    @JsonProperty(value = "answers")
     private QueryAnswerType answers;
 
     /*
@@ -157,7 +140,6 @@ public final class SearchOptions {
      * A value that specifies whether any or all of the search terms must be
      * matched in order to count the document as a match.
      */
-    @JsonProperty(value = "searchMode")
     private SearchMode searchMode;
 
     /*
@@ -165,7 +147,6 @@ public final class SearchOptions {
      * (such as document frequency) globally for more consistent scoring, or
      * locally, for lower latency.
      */
-    @JsonProperty(value = "scoringStatistics")
     private ScoringStatistics scoringStatistics;
 
     /*
@@ -177,14 +158,12 @@ public final class SearchOptions {
      * performance of the search service. The value used as sessionId cannot
      * start with a '_' character.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * The list of fields to retrieve. If unspecified, all fields marked as
      * retrievable in the schema are included.
      */
-    @JsonProperty(value = "$select")
     private List<String> select;
 
     /*
@@ -193,7 +172,6 @@ public final class SearchOptions {
      * due to this limitation, consider using $orderby on a totally-ordered key
      * and $filter with a range query instead.
      */
-    @JsonProperty(value = "$skip")
     private Integer skip;
 
     /*
@@ -203,7 +181,6 @@ public final class SearchOptions {
      * response will include a continuation token that can be used to issue
      * another Search request for the next page of results.
      */
-    @JsonProperty(value = "$top")
     private Integer top;
 
     /*
@@ -214,7 +191,6 @@ public final class SearchOptions {
      * character '|' followed by the 'highlight-<true/false>' option, such as
      * 'extractive|highlight-true'. Defaults to 'None'.
      */
-    @JsonProperty(value = "captions")
     private QueryCaptionType queryCaption;
 
     /*
@@ -230,7 +206,6 @@ public final class SearchOptions {
     /*
      * The list of field names used for semantic search.
      */
-    @JsonProperty(value = "semanticFields")
     private List<String> semanticFields;
 
     /**

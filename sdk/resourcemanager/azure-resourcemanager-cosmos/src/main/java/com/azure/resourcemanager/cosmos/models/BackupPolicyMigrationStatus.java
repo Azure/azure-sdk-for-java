@@ -23,6 +23,15 @@ public final class BackupPolicyMigrationStatus extends ExpandableStringEnum<Back
     public static final BackupPolicyMigrationStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of BackupPolicyMigrationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupPolicyMigrationStatus() {
+    }
+
+    /**
      * Creates or finds a BackupPolicyMigrationStatus from its string representation.
      *
      * @param name a name to look for.

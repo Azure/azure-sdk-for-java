@@ -43,7 +43,7 @@
     {
       "name": "azure.activedirectory.authenticate-additional-parameters",
       "type": "java.util.Map<java.lang.String,java.lang.Object>",
-      "description": "Add additional parameters to the Authorization URL.",
+      "description": "Add additional parameters to the Authorization URL. For instance, 'prompt: login'.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -89,7 +89,7 @@
     },
     {
       "name": "azure.activedirectory.b2c.authorization-clients",
-      "description": "Specify client configuration.",
+      "description": "Specify client configuration. For instance, 'authorizationGrantType: client_credentials'.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -129,7 +129,7 @@
     {
       "name": "azure.activedirectory.b2c.jwt-connect-timeout",
       "type": "java.lang.Integer",
-      "description": "Connection Timeout for the JWKSet Remote URL call.",
+      "description": "Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -138,7 +138,7 @@
     {
       "name": "azure.activedirectory.b2c.jwt-read-timeout",
       "type": "java.lang.Integer",
-      "description": "Read Timeout for the JWKSet Remote URL call.",
+      "description": "Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -147,7 +147,7 @@
     {
       "name": "azure.activedirectory.b2c.jwt-size-limit",
       "type": "java.lang.Integer",
-      "description": "Size limit in Bytes of the JWKSet Remote URL call.",
+      "description": "Size limit in Bytes of the JWKSet Remote URL call. The default value is `50*1024`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -156,7 +156,7 @@
     {
       "name": "spring.cloud.azure.active-directory.b2c.jwt-connect-timeout",
       "type": "java.lang.Integer",
-      "description": "Connection Timeout for the JWKSet Remote URL call.",
+      "description": "Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -165,7 +165,7 @@
     {
       "name": "spring.cloud.azure.active-directory.b2c.jwt-read-timeout",
       "type": "java.lang.Integer",
-      "description": "Read Timeout for the JWKSet Remote URL call.",
+      "description": "Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -174,7 +174,7 @@
     {
       "name": "spring.cloud.azure.active-directory.b2c.jwt-size-limit",
       "type": "java.lang.Integer",
-      "description": "Size limit in Bytes of the JWKSet Remote URL call.",
+      "description": "Size limit in Bytes of the JWKSet Remote URL call. The default value is `50*1024`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -300,7 +300,7 @@
     {
       "name": "azure.activedirectory.jwk-set-cache-lifespan",
       "type": "java.lang.Long",
-      "description": "The lifespan of the cached JWK set before it expires, default is 5 minutes.",
+      "description": "The lifespan(duration) of the cached JWK set before it expires.",
       "defaultValue": 5,
       "deprecation": {
         "level": "error",
@@ -311,7 +311,7 @@
     {
       "name": "azure.activedirectory.jwk-set-cache-refresh-time",
       "type": "java.lang.Long",
-      "description": "The refresh time of the cached JWK set before it expires, default is 5 minutes.",
+      "description": "The refresh time(duration) of the cached JWK set before it expires.",
       "defaultValue": 5,
       "deprecation": {
         "level": "error",
@@ -322,7 +322,7 @@
     {
       "name": "azure.activedirectory.jwt-connect-timeout",
       "type": "java.lang.Integer",
-      "description": "Connection Timeout for the JWKSet Remote URL call.",
+      "description": "Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -331,7 +331,7 @@
     {
       "name": "azure.activedirectory.jwt-read-timeout",
       "type": "java.lang.Integer",
-      "description": "Read Timeout for the JWKSet Remote URL call.",
+      "description": "Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -340,7 +340,7 @@
     {
       "name": "azure.activedirectory.jwt-size-limit",
       "type": "java.lang.Integer",
-      "description": "Size limit in Bytes of the JWKSet Remote URL call.",
+      "description": "Size limit in Bytes of the JWKSet Remote URL call. The default value is `51200`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -349,7 +349,7 @@
     {
       "name": "spring.cloud.azure.active-directory.jwt-connect-timeout",
       "type": "java.lang.Integer",
-      "description": "Connection Timeout for the JWKSet Remote URL call.",
+      "description": "Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -358,7 +358,7 @@
     {
       "name": "spring.cloud.azure.active-directory.jwt-read-timeout",
       "type": "java.lang.Integer",
-      "description": "Read Timeout for the JWKSet Remote URL call.",
+      "description": "Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -367,7 +367,7 @@
     {
       "name": "spring.cloud.azure.active-directory.jwt-size-limit",
       "type": "java.lang.Integer",
-      "description": "Size limit in Bytes of the JWKSet Remote URL call.",
+      "description": "Size limit in Bytes of the JWKSet Remote URL call. The default value is `51200`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -395,7 +395,7 @@
     {
       "name": "azure.activedirectory.resource-server.claim-to-authority-prefix-map",
       "type": "java.util.Map<java.lang.String,java.lang.String>",
-      "description": "Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value. Default value is: \"scp\" -> \"SCOPE_\", \"roles\" -> \"APPROLE_\". Example: If use the default value, and the access_token's \"scp\" scope value is \"testValue\", then GrantedAuthority with \"SCOPE_testValue\" will be created.",
+      "description": "Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value. Example: If use the default value, and the access_token's \"scp\" scope value is \"testValue\", then GrantedAuthority with \"SCOPE_testValue\" will be created. The default value is `\"scp\" -> \"SCOPE_\", \"roles\" -> \"APPROLE_\"`.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -405,7 +405,7 @@
     {
       "name": "azure.activedirectory.resource-server.principal-claim-name",
       "type": "java.lang.String",
-      "description": "Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Default value is \"sub\". Example: If use the default value, and the access_token's \"sub\" scope value is \"testValue\", then AuthenticatedPrincipal#getName will return \"testValue\".",
+      "description": "Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Example: If use the default value, and the access_token's \"sub\" scope value is \"testValue\", then AuthenticatedPrincipal#getName will return \"testValue\". The default value is `\"sub\"`.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -822,7 +822,7 @@
     {
       "name": "spring.cloud.azure.region",
       "type": "java.lang.String",
-      "description": "The region of an Azure resource. This is a legacy property.",
+      "description": "The region of an Azure resource. For instance, '\"eastus\"'. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all resource related under 'spring.cloud.azure.<azure-service>.resource' prefix."
@@ -850,7 +850,7 @@
     {
       "name": "spring.cloud.azure.servicebus.retry-options.delay",
       "type": "java.time.Duration",
-      "description": "Amount of time to wait between retry attempts. This is a legacy property.",
+      "description": "Amount of time(Duration) to wait between retry attempts. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
@@ -860,7 +860,7 @@
     {
       "name": "spring.cloud.azure.servicebus.retry-options.max-delay",
       "type": "java.time.Duration",
-      "description": "Maximum permissible amount of time between retry attempts. This is a legacy property.",
+      "description": "Maximum permissible amount of time(duration) between retry attempts. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
@@ -890,7 +890,7 @@
     {
       "name": "spring.cloud.azure.servicebus.transport-type",
       "type": "com.azure.core.amqp.AmqpTransportType",
-      "description": "Transport type for AMQP-based client. This is a legacy property.",
+      "description": "Transport type for AMQP-based client. Supported types are: AMQP, AMQP_WEB_SOCKETS. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
@@ -978,6 +978,30 @@
         "level": "error",
         "reason": "The 'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
         "replacement": "spring.cloud.stream.servicebus.bindings"
+      }
+    },
+    {
+      "name": "spring.jms.servicebus.password",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "The password can be parsed from the connection string, use 'spring.jms.servicebus.connection-string' instead."
+      }
+    },
+    {
+      "name": "spring.jms.servicebus.username",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "The username can be parsed from the connection string, use 'spring.jms.servicebus.connection-string' instead."
+      }
+    },
+    {
+      "name": "spring.jms.servicebus.remote-url",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "The remote URL can be constructed from the connection string, use 'spring.jms.servicebus.connection-string' instead."
       }
     },
     {
@@ -1143,13 +1167,13 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.connect-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time the request attempts to connect to the remote host and the connection is resolved.",
+      "description": "Amount of time(Duration) the request attempts to connect to the remote host and the connection is resolved.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.connection-idle-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time before an idle connection.",
+      "description": "Amount of time(Duration) before an idle connection.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
     },
     {
@@ -1167,25 +1191,25 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-header-names",
       "type": "java.util.Set<java.lang.String>",
-      "description": "Comma-delimited list of allowlist headers that should be logged.",
+      "description": "Comma-delimited list of allowlist headers that should be logged. The default value is `'x-ms-request-id','x-ms-client-request-id','x-ms-return-client-request-id','traceparent','MS-CV','Accept','Cache-Control','Connection','Content-Length','Content-Type','Date','ETag','Expires','If-Match','If-Modified-Since','If-None-Match','If-Unmodified-Since','Last-Modified','Pragma','Request-Id','Retry-After','Server','Transfer-Encoding','User-Agent','WWW-Authenticate'`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-query-param-names",
       "type": "java.util.Set<java.lang.String>",
-      "description": "Comma-delimited list of allowlist query parameters.",
+      "description": "Comma-delimited list of allowlist query parameters. The default value is `'api-version'`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.level",
       "type": "com.azure.core.http.policy.HttpLogDetailLevel",
-      "description": "The level of detail to log on HTTP messages.",
+      "description": "The level of detail to log on HTTP messages. Supported types are: NONE, BASIC, HEADERS, BODY, BODY_AND_HEADERS. The default value is `NONE`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.pretty-print-body",
       "type": "java.lang.Boolean",
-      "description": "Whether to pretty print the message bodies.",
+      "description": "Whether to pretty print the message bodies. The default value is `false`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
@@ -1197,19 +1221,19 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.read-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time used when reading the server response.",
+      "description": "Amount of time(Duration) used when reading the server response.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.response-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time used when waiting for a server to reply.",
+      "description": "Amount of time(Duration) used when waiting for a server to reply.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.write-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time each request being sent over the wire.",
+      "description": "Amount of time(Duration) each request being sent over the wire.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
     },
     {
@@ -1277,7 +1301,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.cloud-type",
       "type": "com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider$CloudType",
-      "description": "Name of the Azure cloud to connect to.",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
     },
     {
@@ -1433,7 +1457,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.type",
       "type": "java.lang.String",
-      "description": "Type of the proxy.",
+      "description": "Type of the proxy. For instance of http, 'http', 'socks4', 'socks5'. For instance of amqp, 'http', 'socks'.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
     },
     {
@@ -1445,7 +1469,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].resource.region",
       "type": "java.lang.String",
-      "description": "The region of an Azure resource.",
+      "description": "The region of an Azure resource. For instance, '\"eastus\"'.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.resourcemanager.AzureResourceMetadataConfigurationProperties"
     },
     {
@@ -1463,13 +1487,13 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.base-delay",
       "type": "java.time.Duration",
-      "description": "Amount of time to wait between retry attempts.",
+      "description": "Amount of time(Duration) to wait between retry attempts.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.ExponentialRetryConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.max-delay",
       "type": "java.time.Duration",
-      "description": "Maximum permissible amount of time between retry attempts.",
+      "description": "Maximum permissible amount of time(duration) between retry attempts.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.ExponentialRetryConfigurationProperties"
     },
     {
@@ -1481,7 +1505,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.fixed.delay",
       "type": "java.time.Duration",
-      "description": "Amount of time to wait between retry attempts.",
+      "description": "Amount of time(Duration) to wait between retry attempts.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.FixedRetryConfigurationProperties"
     },
     {
@@ -1493,7 +1517,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.mode",
       "type": "com.azure.spring.cloud.core.provider.RetryOptionsProvider$RetryMode",
-      "description": "Retry backoff mode.",
+      "description": "The retry backoff mode when retrying. Supported types are: FIXED, EXPONENTIAL.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties"
     },
     {
@@ -1566,13 +1590,81 @@
     {
       "name": "spring.datasource.azure.profile.cloud-type",
       "type": "java.lang.String",
-      "description": "Name of the Azure cloud to connect to.",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
     },
     {
       "name": "spring.datasource.azure.passwordless-enabled",
       "type": "java.lang.Boolean",
       "description": "Whether to enable passwordless connections to Azure databases by using OAuth2 Azure Active Directory token credentials.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.redis.azure.credential.client-id",
+      "type": "java.lang.String",
+      "description": "Client ID to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.client-secret",
+      "type": "java.lang.String",
+      "description": "Client secret to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.client-certificate-password",
+      "type": "java.lang.String",
+      "description": "Password of the certificate file.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.client-certificate-path",
+      "type": "java.lang.String",
+      "description": "Path of a PEM certificate file to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.username",
+      "type": "java.lang.String",
+      "description": "Username to use when performing username\/password authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.password",
+      "type": "java.lang.String",
+      "description": "Password to use when performing username\/password authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.managed-identity-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the client ID as user assigned managed identity client ID.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.redis.azure.profile.environment.active-directory-endpoint",
+      "type": "java.lang.String",
+      "description": "The Azure Active Directory endpoint to connect to.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.profile.tenant-id",
+      "type": "java.lang.String",
+      "description": "Tenant ID for Azure resources.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.profile.cloud-type",
+      "type": "java.lang.String",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.passwordless-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable passwordless connections to Azure Redis Cache by using OAuth2 Azure Active Directory token credentials.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties",
       "defaultValue": false
     },

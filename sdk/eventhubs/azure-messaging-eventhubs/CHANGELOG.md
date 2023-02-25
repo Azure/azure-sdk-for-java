@@ -8,10 +8,22 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 5.15.2 (2023-02-13)
+
+### Bugs Fixed
+
 - Fixed NullPointerException when deserializing AMQP message with null body. ([#32939](https://github.com/Azure/azure-sdk-for-java/issues/32939))
 - Added filter to filter out the closed `AmqpReceiveLink` before passing to `AmqpReceiveLinkProcessor`. ([#32919](https://github.com/Azure/azure-sdk-for-java/issues/32919))
+- Fixed usage of static AmqpAnnotatedMessage when creating empty EventData. ([#33327](https://github.com/Azure/azure-sdk-for-java/issues/33327))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.36.0`.
+- Upgraded `azure-core-amqp` to `2.8.2`.
 
 ## 5.15.1 (2023-01-18)
 

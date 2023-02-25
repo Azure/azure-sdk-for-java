@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResourceListResult;
 import java.nio.ByteBuffer;
@@ -30,7 +29,8 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"id\":\"lsttpkiwkkbnuj\",\"name\":\"ywvtylbfpnc\",\"type\":\"rd\"}]}";
+        String responseStr =
+            "{\"value\":[{\"id\":\"pwoqo\",\"name\":\"macjekn\",\"type\":\"zshq\"},{\"id\":\"impevf\",\"name\":\"mblrrilbywd\",\"type\":\"smiccwrwfscj\"},{\"id\":\"ynszquji\",\"name\":\"dvoqyt\",\"type\":\"byowbblgyavutp\"},{\"id\":\"joxoism\",\"name\":\"ksbpimlqoljx\",\"type\":\"cgxxlxs\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,9 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkResourceListResult response =
-            manager.privateLinkResources().listWithResponse("ypelmcu", "hixbjxyfwnyl", Context.NONE).getValue();
+            manager
+                .privateLinkResources()
+                .listWithResponse("hvcyyysfg", "otcubi", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

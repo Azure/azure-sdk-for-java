@@ -29,6 +29,15 @@ public final class DatabasePrincipalRole extends ExpandableStringEnum<DatabasePr
     public static final DatabasePrincipalRole VIEWER = fromString("Viewer");
 
     /**
+     * Creates a new instance of DatabasePrincipalRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabasePrincipalRole() {
+    }
+
+    /**
      * Creates or finds a DatabasePrincipalRole from its string representation.
      *
      * @param name a name to look for.

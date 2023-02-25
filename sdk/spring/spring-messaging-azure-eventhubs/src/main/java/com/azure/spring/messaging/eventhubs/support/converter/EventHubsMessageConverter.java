@@ -31,6 +31,8 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsMessageConverter.class);
 
+    static final String TARGET_PROTOCOL = "target-protocol";
+
     private static final Set<String> IGNORED_SPRING_MESSAGE_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         AzureHeaders.PARTITION_KEY,
         AzureHeaders.BATCH_CONVERTED_PARTITION_KEY,
@@ -92,6 +94,10 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
                 azureMessage.getProperties().put(key, value.toString());
             }
         });
+
+        if (azureMessage.getProperties().containsKey(TARGET_PROTOCOL)) {
+            azureMessage.getProperties().put(TARGET_PROTOCOL, "amqp");
+        }
 
         ignoredHeaders.forEach(header -> LOGGER.info("Message headers {} is not supported to be set and will be "
             + "ignored.", header));

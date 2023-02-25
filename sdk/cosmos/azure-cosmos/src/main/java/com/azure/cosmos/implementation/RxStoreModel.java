@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
@@ -52,11 +53,13 @@ public interface RxStoreModel {
      */
     void enableThroughputControl(ThroughputControlStore throughputControlStore);
 
-    /***
-     * Open connections and init caches.
+    /**
+     * Warm up caches and open connections for containers specified by
+     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
+     * {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()} preferred regions.
      *
-     * @param containerLink the container link.
-     * @return a flux of {@link OpenConnectionResponse}.
+     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
+     * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 }

@@ -230,16 +230,19 @@ public final class Utility {
      */
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
-            ErrorResponseException errorException = (ErrorResponseException) throwable;
-            final ErrorResponse errorResponse = errorException.getValue();
-            com.azure.ai.textanalytics.models.TextAnalyticsError textAnalyticsError = null;
-            if (errorResponse != null && errorResponse.getError() != null) {
-                textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
-            }
-            return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
-                textAnalyticsError);
+            return getHttpResponseException((ErrorResponseException) throwable);
         }
         return throwable;
+    }
+
+    public static HttpResponseException getHttpResponseException(ErrorResponseException errorException) {
+        final ErrorResponse errorResponse = errorException.getValue();
+        com.azure.ai.textanalytics.models.TextAnalyticsError textAnalyticsError = null;
+        if (errorResponse != null && errorResponse.getError() != null) {
+            textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
+        }
+        return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
+            textAnalyticsError);
     }
 
     /**
@@ -409,6 +412,18 @@ public final class Utility {
             return parameterMap;
         }
         return new HashMap<>();
+    }
+
+    public static Integer getTopContinuesToken(Map<String, Object> continuationTokenMap) {
+        return (Integer) continuationTokenMap.getOrDefault("$top", null);
+    }
+
+    public static Integer getSkipContinuesToken(Map<String, Object> continuationTokenMap) {
+        return (Integer) continuationTokenMap.getOrDefault("$skip", null);
+    }
+
+    public static Boolean getShowStatsContinuesToken(Map<String, Object> continuationTokenMap) {
+        return (Boolean) continuationTokenMap.getOrDefault("showStats", null);
     }
 
     // Sentiment Analysis
@@ -1561,9 +1576,13 @@ public final class Utility {
                     toTextAnalyticsError(documentError.getError())));
         }
 
-        return new AbstractSummaryResultCollection(summaryResults, abstractiveSummarizationResult.getModelVersion(),
+        final AbstractSummaryResultCollection resultCollection = new AbstractSummaryResultCollection(summaryResults);
+        AbstractSummaryResultCollectionPropertiesHelper.setModelVersion(resultCollection,
+            abstractiveSummarizationResult.getModelVersion());
+        AbstractSummaryResultCollectionPropertiesHelper.setStatistics(resultCollection,
             abstractiveSummarizationResult.getStatistics() == null ? null
                 : toBatchStatistics(abstractiveSummarizationResult.getStatistics()));
+        return resultCollection;
     }
 
     public static AbstractSummaryResult toAbstractiveSummaryResult(
@@ -1636,10 +1655,13 @@ public final class Utility {
             extractSummaryResults.add(new ExtractSummaryResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError())));
         }
-        return new ExtractSummaryResultCollection(extractSummaryResults,
-            extractiveSummarizationResult.getModelVersion(),
+        final ExtractSummaryResultCollection resultCollection = new ExtractSummaryResultCollection(extractSummaryResults);
+        ExtractSummaryResultCollectionPropertiesHelper.setModelVersion(resultCollection,
+            extractiveSummarizationResult.getModelVersion());
+        ExtractSummaryResultCollectionPropertiesHelper.setStatistics(resultCollection,
             extractiveSummarizationResult.getStatistics() == null ? null
                 : toBatchStatistics(extractiveSummarizationResult.getStatistics()));
+        return resultCollection;
     }
 
     private static ExtractSummaryResult toExtractSummaryResult(

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GremlinResources MigrateGremlinGraphToAutoscale. */
 public final class GremlinResourcesMigrateGremlinGraphToAutoscaleSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinGraphMigrateToAutoscale.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBGremlinGraphMigrateToAutoscale.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphMigrateToAutoscale.
@@ -22,6 +20,7 @@ public final class GremlinResourcesMigrateGremlinGraphToAutoscaleSamples {
             .manager()
             .serviceClient()
             .getGremlinResources()
-            .migrateGremlinGraphToAutoscale("rg1", "ddb1", "databaseName", "graphName", Context.NONE);
+            .migrateGremlinGraphToAutoscale(
+                "rg1", "ddb1", "databaseName", "graphName", com.azure.core.util.Context.NONE);
     }
 }

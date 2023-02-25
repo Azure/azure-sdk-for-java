@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.CustomerManagedKeyDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
 import com.azure.resourcemanager.synapse.models.ManagedIdentity;
@@ -33,7 +32,7 @@ public final class WorkspacesUpdateSamples {
         Workspace resource =
             manager
                 .workspaces()
-                .getByResourceGroupWithResponse("resourceGroup1", "workspace1", Context.NONE)
+                .getByResourceGroupWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -63,9 +62,7 @@ public final class WorkspacesUpdateSamples {
                     .withCmk(
                         new CustomerManagedKeyDetails()
                             .withKey(
-                                new WorkspaceKeyDetails()
-                                    .withName("default")
-                                    .withKeyVaultUrl("https://vault.azure.net/keys/key1"))))
+                                new WorkspaceKeyDetails().withName("default").withKeyVaultUrl("fakeTokenPlaceholder"))))
             .withPublicNetworkAccess(WorkspacePublicNetworkAccess.ENABLED)
             .apply();
     }

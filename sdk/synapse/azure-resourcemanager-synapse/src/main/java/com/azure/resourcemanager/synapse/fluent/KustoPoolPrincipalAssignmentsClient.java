@@ -24,25 +24,6 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param principalAssignmentName The name of the principal assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName);
-
-    /**
-     * Checks that the principal assignment name is valid and is not already in use.
-     *
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param principalAssignmentName The name of the principal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,6 +37,25 @@ public interface KustoPoolPrincipalAssignmentsClient {
         String resourceGroupName,
         ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName,
         Context context);
+
+    /**
+     * Checks that the principal assignment name is valid and is not already in use.
+     *
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param principalAssignmentName The name of the principal assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameResultInner checkNameAvailability(
+        String workspaceName,
+        String kustoPoolName,
+        String resourceGroupName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
      * Lists all Kusto pool principalAssignments.
@@ -97,22 +97,6 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto pool principalAssignment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterPrincipalAssignmentInner get(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName);
-
-    /**
-     * Gets a Kusto pool principalAssignment.
-     *
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param principalAssignmentName The name of the Kusto principalAssignment.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,6 +110,22 @@ public interface KustoPoolPrincipalAssignmentsClient {
         String principalAssignmentName,
         String resourceGroupName,
         Context context);
+
+    /**
+     * Gets a Kusto pool principalAssignment.
+     *
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param principalAssignmentName The name of the Kusto principalAssignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto pool principalAssignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterPrincipalAssignmentInner get(
+        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName);
 
     /**
      * Create a Kusto pool principalAssignment.

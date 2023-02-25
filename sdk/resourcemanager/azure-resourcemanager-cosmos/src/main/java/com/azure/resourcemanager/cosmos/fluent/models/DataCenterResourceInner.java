@@ -18,6 +18,10 @@ public final class DataCenterResourceInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private DataCenterResourceProperties properties;
 
+    /** Creates an instance of DataCenterResourceInner class. */
+    public DataCenterResourceInner() {
+    }
+
     /**
      * Get the properties property: Properties of a managed Cassandra data center.
      *

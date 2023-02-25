@@ -6,20 +6,19 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.SkuDescriptionInner;
-import org.junit.jupiter.api.Test;
 
 public final class SkuDescriptionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuDescriptionInner model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"bpg\",\"name\":\"ytxhp\",\"tier\":\"bzpfzab\",\"locations\":[\"uhxwtctyqiklbbov\"],\"locationInfo\":[{\"location\":\"zbhvgyuguosv\",\"zones\":[\"ss\",\"qukkfp\",\"gmgsxnkjzkde\"]},{\"location\":\"lpvlopw\",\"zones\":[\"ghxpkdw\",\"baiuebbaumny\"]},{\"location\":\"upedeojnabckhs\",\"zones\":[\"psiebtfhvpes\",\"pskrdqmh\",\"jdhtldwkyzxu\",\"tkncwsc\"]}],\"restrictions\":[]}")
+                    "{\"resourceType\":\"lihkaetcktvfc\",\"name\":\"fsnkymuctq\",\"tier\":\"fbebrjcxer\",\"locations\":[\"utttxfvjrbirp\",\"xepcyvahfn\",\"jky\"],\"locationInfo\":[{\"location\":\"vuujq\",\"zones\":[\"ok\",\"jljyoxgv\"],\"zoneDetails\":[]}],\"restrictions\":[\"datasncghkjeszz\",\"databijhtxfvgxbf\",\"datamxnehmp\"]}")
                 .toObject(SkuDescriptionInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuDescriptionInner model = new SkuDescriptionInner();
         model = BinaryData.fromObject(model).toObject(SkuDescriptionInner.class);
     }

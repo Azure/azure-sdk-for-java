@@ -7,36 +7,35 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Input field mapping for a skill. */
 @Fluent
-public final class InputFieldMappingEntry {
+public final class InputFieldMappingEntry implements JsonSerializable<InputFieldMappingEntry> {
     /*
      * The name of the input.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The source of the input.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * The source context used for selecting recursive inputs.
      */
-    @JsonProperty(value = "sourceContext")
     private String sourceContext;
 
     /*
      * The recursive inputs used when creating a complex type.
      */
-    @JsonProperty(value = "inputs")
     private List<InputFieldMappingEntry> inputs;
 
     /**
@@ -44,8 +43,7 @@ public final class InputFieldMappingEntry {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public InputFieldMappingEntry(@JsonProperty(value = "name", required = true) String name) {
+    public InputFieldMappingEntry(String name) {
         this.name = name;
     }
 
@@ -113,10 +111,71 @@ public final class InputFieldMappingEntry {
      * @param inputs the inputs value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    @JsonSetter
     public InputFieldMappingEntry setInputs(List<InputFieldMappingEntry> inputs) {
         this.inputs = inputs;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeStringField("sourceContext", this.sourceContext);
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InputFieldMappingEntry from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InputFieldMappingEntry if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InputFieldMappingEntry.
+     */
+    public static InputFieldMappingEntry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    String source = null;
+                    String sourceContext = null;
+                    List<InputFieldMappingEntry> inputs = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("source".equals(fieldName)) {
+                            source = reader.getString();
+                        } else if ("sourceContext".equals(fieldName)) {
+                            sourceContext = reader.getString();
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        InputFieldMappingEntry deserializedValue = new InputFieldMappingEntry(name);
+                        deserializedValue.source = source;
+                        deserializedValue.sourceContext = sourceContext;
+                        deserializedValue.inputs = inputs;
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**

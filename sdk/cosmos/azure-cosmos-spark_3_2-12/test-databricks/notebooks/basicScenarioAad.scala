@@ -13,9 +13,8 @@ val tenantId = dbutils.widgets.get("tenantId")
 val resourceGroupName = dbutils.widgets.get("resourceGroupName")
 val clientId = dbutils.widgets.get("clientId")
 val clientSecret = dbutils.widgets.get("clientSecret")
-
-val cosmosDatabaseName = "sampleDB"
-val cosmosContainerName = "sampleContainer"
+val cosmosContainerName = dbutils.widgets.get("cosmosContainerName")
+val cosmosDatabaseName = dbutils.widgets.get("cosmosDatabaseName")
 
 val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.auth.type" -> authType,
@@ -57,7 +56,11 @@ spark.sql(s"CREATE DATABASE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName};")
 
 // create a cosmos container
 spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.oltp " +
-    s"TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')")
+    s"TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '400')")
+
+// update the throughput
+spark.sql(s"ALTER TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} " +
+  s"SET TBLPROPERTIES('manualThroughput' = '1100')")
 
 // COMMAND ----------
 
@@ -96,3 +99,6 @@ df.filter(col("isAlive") === true)
     .show()
 
 // COMMAND ----------
+
+// cleanup
+spark.sql(s"DROP TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName};")

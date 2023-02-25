@@ -4,19 +4,15 @@
 package com.azure.containers.containerregistry.specialized;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryBlobsImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestHeaders;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsCompleteUploadHeaders;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsCompleteUploadResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsStartUploadResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsUploadChunkResponse;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsStartUploadHeaders;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsUploadChunkHeaders;
 import com.azure.containers.containerregistry.implementation.models.ManifestWrapper;
-import com.azure.containers.containerregistry.models.DownloadBlobResult;
 import com.azure.containers.containerregistry.models.DownloadManifestOptions;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.OciManifest;
@@ -29,7 +25,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
@@ -38,15 +36,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
+import java.security.MessageDigest;
 import java.util.Objects;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.OCI_MANIFEST_MEDIA_TYPE;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 
 /**
  * This class provides a client that exposes operations to push and pull images into container registry.
@@ -68,11 +75,7 @@ public class ContainerRegistryBlobClient {
     ContainerRegistryBlobClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
         this.repositoryName = repositoryName;
         this.endpoint = endpoint;
-        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImplBuilder()
-            .url(endpoint)
-            .pipeline(httpPipeline)
-            .apiVersion(version)
-            .buildClient();
+        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version);
         this.blobsImpl = registryImplClient.getContainerRegistryBlobs();
         this.registriesImpl = registryImplClient.getContainerRegistries();
     }
@@ -152,16 +155,11 @@ public class ContainerRegistryBlobClient {
         BinaryData data = options.getManifest().toReplayableBinaryData();
         String tagOrDigest = options.getTag() != null ? options.getTag() : UtilsImpl.computeDigest(data.toByteBuffer());
         try {
-            ContainerRegistriesCreateManifestResponse
-                response = this.registriesImpl.createManifestWithResponse(
-                repositoryName,
-                tagOrDigest,
-                data,
-                data.getLength(),
-                UtilsImpl.OCI_MANIFEST_MEDIA_TYPE,
-                enableSync(getTracingContext(context)));
+            ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> response = this.registriesImpl
+                .createManifestWithResponse(repositoryName, tagOrDigest, data, data.getLength(),
+                    UtilsImpl.OCI_MANIFEST_MEDIA_TYPE, enableSync(context));
 
-            return new ResponseBase<ContainerRegistriesCreateManifestHeaders, UploadManifestResult>(
+            return new ResponseBase<>(
                 response.getRequest(),
                 response.getStatusCode(),
                 response.getHeaders(),
@@ -207,23 +205,23 @@ public class ContainerRegistryBlobClient {
     public Response<UploadBlobResult> uploadBlobWithResponse(BinaryData data, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
 
-        context = enableSync(getTracingContext(context));
+        context = enableSync(context);
 
         String digest = UtilsImpl.computeDigest(data.toByteBuffer());
         try {
-            ContainerRegistryBlobsStartUploadResponse
-                startUploadResponse = this.blobsImpl.startUploadWithResponse(repositoryName, context);
+            ResponseBase<ContainerRegistryBlobsStartUploadHeaders, Void> startUploadResponse = this.blobsImpl
+                .startUploadWithResponse(repositoryName, context);
 
-            ContainerRegistryBlobsUploadChunkResponse
-                uploadChunkResponse = this.blobsImpl.uploadChunkWithResponse(
-                trimNextLink(startUploadResponse.getDeserializedHeaders().getLocation()), data, data.getLength(),
-                context);
-            ContainerRegistryBlobsCompleteUploadResponse
-                completeUploadResponse = this.blobsImpl.completeUploadWithResponse(digest,
-                trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), (BinaryData) null, 0L,
-                context);
+            ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void> uploadChunkResponse = this.blobsImpl
+                .uploadChunkWithResponse(trimNextLink(startUploadResponse.getDeserializedHeaders().getLocation()), data,
+                    data.getLength(), context);
 
-            return new ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, UploadBlobResult>(
+            ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void> completeUploadResponse = this.blobsImpl
+                .completeUploadWithResponse(digest,
+                    trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), (BinaryData) null, 0L,
+                    context);
+
+            return new ResponseBase<>(
                 completeUploadResponse.getRequest(),
                 completeUploadResponse.getStatusCode(),
                 completeUploadResponse.getHeaders(),
@@ -271,11 +269,11 @@ public class ContainerRegistryBlobClient {
         try {
             response =
                 this.registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest,
-                    OCI_MANIFEST_MEDIA_TYPE, enableSync(getTracingContext(context)));
+                    OCI_MANIFEST_MEDIA_TYPE, enableSync(context));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
-        String digest = UtilsImpl.getDigestFromHeader(response.getHeaders());
+        String digest = response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
         ManifestWrapper wrapper = response.getValue();
 
         // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
@@ -306,52 +304,63 @@ public class ContainerRegistryBlobClient {
      * Download the blob associated with the given digest.
      *
      * @param digest The digest for the given image layer.
-     * @return The image associated with the given digest.
+     * @param channel The channel to write content to.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
+     * @throws ServiceResponseException thrown if content hash does not match requested digest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DownloadBlobResult downloadBlob(String digest) {
-        return this.downloadBlobWithResponse(digest, Context.NONE).getValue();
+    public void downloadStream(String digest, WritableByteChannel channel) {
+        downloadBlobInternal(digest, channel, Context.NONE);
     }
 
     /**
      * Download the blob\layer associated with the given digest.
      *
      * @param digest The digest for the given image layer.
+     * @param channel The channel to write content to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The image associated with the given digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
+     * @throws ServiceResponseException thrown if content hash does not match requested digest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DownloadBlobResult> downloadBlobWithResponse(String digest, Context context) {
+    public void downloadStream(String digest, WritableByteChannel channel, Context context) {
+        downloadBlobInternal(digest, channel, context);
+    }
+
+    private void downloadBlobInternal(String digest, WritableByteChannel channel, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
-        context = enableSync(getTracingContext(context));
-        Response<BinaryData> streamResponse;
+        context = enableSync(context);
+        MessageDigest sha256 = createSha256();
         try {
-            streamResponse = this.blobsImpl.getBlobWithResponse(repositoryName, digest, context);
-        } catch (HttpResponseException exception) {
-            throw LOGGER.logExceptionAsError(new HttpResponseException(exception.getMessage(), exception.getResponse(),
-                exception));
+            Response<BinaryData> firstChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
+            validateResponseHeaderDigest(digest, firstChunk.getHeaders());
+
+            long blobSize = getBlobSize(firstChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
+            for (long p = firstChunk.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
+                readRange(digest, new HttpRange(p, (long) CHUNK_SIZE), channel, sha256, context);
+            }
+        } catch (AcrErrorsException exception) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
-        String resDigest = UtilsImpl.getDigestFromHeader(streamResponse.getHeaders());
 
-        BinaryData binaryData = streamResponse.getValue();
+        validateDigest(sha256, digest);
+    }
 
-        // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
-        // the contents returned by the service.
-        if (Objects.equals(resDigest, digest)) {
+    private Response<BinaryData> readRange(String digest, HttpRange range, WritableByteChannel channel, MessageDigest sha256, Context context) {
+        Response<BinaryData> response = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
 
-            return new SimpleResponse<>(
-                streamResponse.getRequest(),
-                streamResponse.getStatusCode(),
-                streamResponse.getHeaders(),
-                new DownloadBlobResult(resDigest, binaryData));
-        } else {
-            throw LOGGER.logExceptionAsError(new ServiceResponseException("The digest in the response does not match the expected digest."));
+        ByteBuffer buffer = response.getValue().toByteBuffer();
+        sha256.update(buffer.asReadOnlyBuffer());
+        try {
+            channel.write(buffer);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
+
+        return response;
     }
 
     /**
@@ -379,10 +388,10 @@ public class ContainerRegistryBlobClient {
     public Response<Void> deleteBlobWithResponse(String digest, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
-        context = enableSync(getTracingContext(context));
+        context = enableSync(context);
         try {
             Response<BinaryData> streamResponse =
-                this.blobsImpl.deleteBlobWithResponse(repositoryName, digest, enableSync(getTracingContext(context)));
+                this.blobsImpl.deleteBlobWithResponse(repositoryName, digest, enableSync(context));
             return deleteResponseToSuccess(streamResponse);
         } catch (HttpResponseException ex) {
             if (ex.getResponse().getStatusCode() == 404) {
@@ -425,10 +434,10 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteManifestWithResponse(String digest, Context context) {
-        context = enableSync(getTracingContext(context));
+        context = enableSync(context);
         try {
             Response<Void> response = this.registriesImpl.deleteManifestWithResponse(repositoryName, digest,
-                enableSync(getTracingContext(context)));
+                enableSync(context));
 
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
