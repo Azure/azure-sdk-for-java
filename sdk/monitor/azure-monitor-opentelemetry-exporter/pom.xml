@@ -154,7 +154,7 @@
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
-      <version>4.2.0</version>
+      <version>4.2.0</version> <!-- {x-version-update;org.awaitility:awaitility;dependency} -->
     </dependency>
   </dependencies>
 
