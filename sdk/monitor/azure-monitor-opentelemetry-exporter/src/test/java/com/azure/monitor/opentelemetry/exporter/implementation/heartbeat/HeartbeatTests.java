@@ -31,7 +31,7 @@ class HeartbeatTests {
         }, telemetryItemsConsumer);
 
         // some of the initialization above happens in a separate thread
-        Thread.sleep(500);
+        Thread.sleep(2000);
 
         // then
         MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
