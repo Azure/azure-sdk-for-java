@@ -19,8 +19,8 @@ import java.util.stream.Stream;
 
 
 public class EmailTestBase extends TestBase {
-//    protected static final TestMode TEST_MODE = initializeTestMode();
-    protected static final TestMode TEST_MODE = TestMode.LIVE;
+    protected static final TestMode TEST_MODE = initializeTestMode();
+//    protected static final TestMode TEST_MODE = TestMode.LIVE;
 
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
