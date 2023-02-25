@@ -151,7 +151,11 @@
       <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <version>4.2.0</version> <!-- {x-version-update;org.awaitility:awaitility;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
@@ -168,6 +172,7 @@
                 <include>io.opentelemetry:opentelemetry-sdk:[1.23.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.23.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+                <include>org.awaitility:awaitility:[4.2.0]</include> <!-- {x-include-update;org.awaitility:awaitility;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
