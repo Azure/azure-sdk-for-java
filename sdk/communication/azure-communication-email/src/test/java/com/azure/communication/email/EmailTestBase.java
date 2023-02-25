@@ -10,7 +10,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.params.provider.Arguments;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,6 @@ import java.util.stream.Stream;
 
 public class EmailTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
-//    protected static final TestMode TEST_MODE = TestMode.LIVE;
 
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
@@ -51,17 +49,9 @@ public class EmailTestBase extends TestBase {
         if (getTestMode() == TestMode.RECORD) {
             HttpPipelinePolicy recordPolicy = interceptorManager.getRecordPolicy();
             emailClientBuilder.addPolicy(recordPolicy);
-            emailClientBuilder.addPolicy(
-                (context, next) -> next.process().flatMap(response -> redactResponseHeaders(response, recordPolicy))
-            );
         }
 
         return emailClientBuilder;
-    }
-
-    private Mono<HttpResponse> redactResponseHeaders(HttpResponse response, HttpPipelinePolicy policy) {
-        response.getHeaders().set("Operation-Location", "REDACTED");
-        return Mono.just(response);
     }
 
     private static TestMode initializeTestMode() {
