@@ -161,11 +161,11 @@ function writeMarkdown() {
                 content +=
                     "    * [" +
                     sdk +
-                    "](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-" +
+                    "](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-" +
                     service +
                     "/" +
                     sdk +
-                    "/jar)\n";
+                    ")\n";
             }
         }
         content += "</details>\n";
