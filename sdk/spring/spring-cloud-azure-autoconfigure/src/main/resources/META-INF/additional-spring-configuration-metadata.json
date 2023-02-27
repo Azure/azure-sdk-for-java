@@ -1523,7 +1523,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].secret-keys",
       "type": "java.util.List<java.lang.String>",
-      "description": "The configured secret keys will be loaded from Azure Key Vaults secret, if configured nothing, then load all the secrets.",
+      "description": "The configured secret keys will be loaded from Azure Key Vaults secret, if configured nothing, then load all the secrets. Only support exact value for secret names, For example, if you configured secret key name `SecretKey1` in Key Vaults secret, you should configure 'SecretKey1' here.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties"
     },
     {
