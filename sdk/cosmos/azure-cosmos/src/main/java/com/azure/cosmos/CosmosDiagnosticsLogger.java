@@ -71,7 +71,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                     "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
                     ctx.getAccountName(),
                     ctx.getDatabaseName(),
-                    ctx.getCollectionName(),
+                    ctx.getContainerName(),
                     ctx.getStatusCode(),
                     ctx.getSubStatusCode(),
                     ctx);
@@ -83,7 +83,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                 "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
                 ctx.getAccountName(),
                 ctx.getDatabaseName(),
-                ctx.getCollectionName(),
+                ctx.getContainerName(),
                 ctx.getStatusCode(),
                 ctx.getSubStatusCode(),
                 ctx);
@@ -93,7 +93,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                 "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
                 ctx.getAccountName(),
                 ctx.getDatabaseName(),
-                ctx.getCollectionName(),
+                ctx.getContainerName(),
                 ctx.getStatusCode(),
                 ctx.getSubStatusCode(),
                 ctx);
@@ -103,7 +103,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                 "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{}, Latency: {}, Request charge: {}",
                 ctx.getAccountName(),
                 ctx.getDatabaseName(),
-                ctx.getCollectionName(),
+                ctx.getContainerName(),
                 ctx.getStatusCode(),
                 ctx.getSubStatusCode(),
                 ctx.getDuration(),

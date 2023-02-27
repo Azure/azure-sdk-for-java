@@ -74,7 +74,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         assertThat(ctx).isNotNull();
         assertThat(ctx.hasCompleted()).isEqualTo(true);
         assertThat(ctx.getDiagnostics()).isNotEmpty();
-        assertThat(ctx.getCollectionName()).isEqualTo(container.getId());
+        assertThat(ctx.getContainerName()).isEqualTo(container.getId());
         assertThat(ctx.getDatabaseName()).isEqualTo(container.asyncContainer.getDatabase().getId());
         assertThat(ctx.getDuration()).isNotNull();
         assertThat(ctx.getDuration()).isGreaterThan(Duration.ZERO);
@@ -260,7 +260,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                     "Account: %s -> DB: %s, Col:%s, StatusCode: %d:%d Diagnostics: %s",
                     ctx.getAccountName(),
                     ctx.getDatabaseName(),
-                    ctx.getCollectionName(),
+                    ctx.getContainerName(),
                     ctx.getStatusCode(),
                     ctx.getSubStatusCode(),
                     ctx.toString());

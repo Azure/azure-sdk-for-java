@@ -16,7 +16,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -107,10 +110,10 @@ public final class CosmosDiagnosticsContext {
     }
 
     /**
-     * The name of the collection related to the operation
+     * The name of the container related to the operation
      * @return the name of the collection related to the operation
      */
-    public String getCollectionName() {
+    public String getContainerName() {
         return this.collectionName;
     }
 
@@ -268,6 +271,36 @@ public final class CosmosDiagnosticsContext {
      */
     public float getTotalRequestCharge() {
         return this.totalRequestCharge;
+    }
+
+    /**
+     * Returns the set of contacted regions
+     * @return the set of contacted regions
+     */
+    public Set<String> getContactedRegionNames() {
+        TreeSet<String> regionsContacted = new TreeSet<>();
+        if (this.diagnostics == null) {
+            return regionsContacted;
+        }
+
+        for (CosmosDiagnostics d: this.diagnostics) {
+            regionsContacted.addAll(d.getContactedRegionNames());
+        }
+
+        return regionsContacted;
+    }
+
+
+    /**
+     * Returns the number of retries and/or attempts for speculative processing.
+     * @return the number of retries and/or attempts for speculative processing.
+     */
+    public int getRetryCount() {
+        if (this.diagnostics == null) {
+            return 0;
+        }
+
+        return Math.max(0, this.diagnostics.size() - 1);
     }
 
     void addRequestCharge(float requestCharge) {

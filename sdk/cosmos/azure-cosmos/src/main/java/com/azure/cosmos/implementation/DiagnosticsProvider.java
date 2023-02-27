@@ -28,7 +28,9 @@ import reactor.core.publisher.Operators;
 import reactor.core.publisher.Signal;
 import reactor.util.context.ContextView;
 
-import java.time.Duration;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -667,15 +670,120 @@ public final class DiagnosticsProvider {
     }
 
     private final static class OpenTelemetryCosmosTracer implements CosmosTracer {
+        private final Tracer tracer;
+
+        public OpenTelemetryCosmosTracer(Tracer tracer) {
+            checkNotNull(tracer, "Argument 'tracer' must not be null.");
+            this.tracer = tracer;
+        }
 
         @Override
         public Context startSpan(String spanName, CosmosDiagnosticsContext cosmosCtx, Context context) {
-            return null;
+
+            checkNotNull(spanName, "Argument 'spanName' must not be null.");
+            checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
+            Context local = Objects
+                .requireNonNull(context, "'context' cannot be null.")
+                .addData(COSMOS_DIAGNOSTICS_CONTEXT_KEY, cosmosCtx);
+
+            StartSpanOptions spanOptions = this.startSpanOptions(
+                spanName,
+                cosmosCtx);
+
+            // start the span and return the started span
+            return tracer.start(spanName, spanOptions, local);
+        }
+
+        private StartSpanOptions startSpanOptions(String spanName, CosmosDiagnosticsContext cosmosCtx) {
+            StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT)
+                .setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME)
+                .setAttribute("db.system","cosmosdb")
+                .setAttribute("db.operation",spanName)
+                .setAttribute("net.peer.name",cosmosCtx.getAccountName());
+
+            String databaseId = cosmosCtx.getDatabaseName();
+            if (databaseId != null) {
+                spanOptions.setAttribute("db.name", databaseId);
+            }
+
+            return spanOptions;
         }
 
         @Override
         public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context) {
 
+            String errorMessage = null;
+
+            if (cosmosCtx == null) {
+                return;
+            }
+
+            if (!cosmosCtx.hasCompleted()) {
+                tracer.end("CosmosCtx not completed yet.", null, context);
+            }
+
+            if (cosmosCtx.isFailure() || cosmosCtx.isThresholdViolated()) {
+                tracer.end(errorMessage, finalError, context);
+
+                Map<String, Object> attributes = new HashMap<>();
+            }
+
+
+            Throwable finalError = cosmosCtx.getFinalError();
+            if (finalError != null && cosmosCtx.isFailure()) {
+
+                if (finalError instanceof CosmosException) {
+                    CosmosException cosmosException = (CosmosException)finalError;
+                    errorMessage = cosmosException.getMessageWithoutDiagnostics();
+                } else {
+                    errorMessage = finalError.getMessage();
+                }
+
+                tracer.setAttribute("exception.type", finalError.getClass().getCanonicalName(), context);
+                tracer.setAttribute("exception.message", errorMessage, context);
+
+                StringWriter stackWriter = new StringWriter();
+                PrintWriter printWriter = new PrintWriter(stackWriter);
+                finalError.printStackTrace(printWriter);
+                printWriter.flush();
+                stackWriter.flush();
+                tracer.setAttribute("exception.stacktrace", stackWriter.toString(), context);
+                printWriter.close();
+
+                try {
+                    stackWriter.close();
+                } catch (IOException e) {
+                    LOGGER.warn("Error trying to close StringWriter.", e);
+                }
+            }
+
+            tracer.setAttribute("db.cosmosdb.operation_type",cosmosCtx.getOperationType(), context);
+            tracer.setAttribute("db.cosmosdb.container",cosmosCtx.getContainerName(), context);
+            tracer.setAttribute(
+                "db.cosmosdb.status_code",
+                Integer.toString(cosmosCtx.getStatusCode()),
+                context);
+            tracer.setAttribute(
+                "db.cosmosdb.sub_status_code",
+                Integer.toString(cosmosCtx.getSubStatusCode()),
+                context);
+            tracer.setAttribute(
+                "db.cosmosdb.request_charge",
+                Float.toString(cosmosCtx.getTotalRequestCharge()),
+                context);
+            tracer.setAttribute("db.cosmosdb.max_request_content_length",cosmosCtx.getMaxRequestPayloadSizeInBytes(), context);
+            tracer.setAttribute("db.cosmosdb.max_response_content_length_bytes",cosmosCtx.getMaxResponsePayloadSizeInBytes(), context);
+            tracer.setAttribute("db.cosmosdb.retry_count",cosmosCtx.getRetryCount() , context);
+
+            Set<String> regionsContacted = cosmosCtx.getContactedRegionNames();
+            if (regionsContacted != null && !regionsContacted.isEmpty()) {
+                tracer.setAttribute(
+                    "db.cosmosdb.regions_contacted",
+                    String.join(", ", regionsContacted),
+                    context);
+            }
+
+            tracer.end(errorMessage, finalError, context);
         }
     }
 

@@ -268,6 +268,16 @@ public class CosmosException extends AzureException {
     }
 
     /**
+     * Returns the error message without any diagnostics - using this method is only useful when
+     * also logging the {@link CosmosException#getDiagnostics()} separately. Without diagnostics it will often
+     * be impossible to determine the root cause of an error.
+     * @return the error message without any diagnostics
+     */
+    public String getMessageWithoutDiagnostics() {
+        return innerErrorMessage();
+    }
+
+    /**
      * Gets the activity ID associated with the request.
      *
      * @return the activity ID.
