@@ -1317,8 +1317,6 @@ class AnalyzeActionsUtilClient {
         if (!CoreUtils.isNullOrEmpty(errors)) {
             for (Error error : errors) {
                 if (error != null) {
-                    LOGGER.info("error target: " + error.getTarget());
-                    LOGGER.info("error message: " + error.getMessage());
                     final String[] targetPair = parseActionErrorTargetLanguageApi(error.getTarget(), error.getMessage());
                     final String taskName = targetPair[0];
                     final Integer taskIndex = Integer.valueOf(targetPair[1]);
