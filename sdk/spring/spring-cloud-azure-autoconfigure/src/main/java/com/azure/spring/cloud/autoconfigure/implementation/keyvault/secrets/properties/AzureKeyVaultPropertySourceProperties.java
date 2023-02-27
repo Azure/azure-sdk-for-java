@@ -35,7 +35,7 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
      */
     private boolean caseSensitive = false;
     /**
-     * The configured secret keys will be loaded from Azure Key Vaults secret, if configured nothing, then load all the secrets.
+     * The configured secret keys will be loaded from Azure Key Vaults secret, if configured nothing, then load all the secrets. Only support exact value for secret names, For example, if you configured secret key name `SecretKey1` in Key Vaults secret, you should configure 'SecretKey1' here.
      */
     private List<String> secretKeys;
     /**
