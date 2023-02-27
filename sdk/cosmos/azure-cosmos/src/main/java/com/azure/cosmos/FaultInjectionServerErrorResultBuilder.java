@@ -8,6 +8,8 @@ import com.azure.cosmos.models.FaultInjectionServerErrorType;
 
 import java.time.Duration;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class FaultInjectionServerErrorResultBuilder {
     private final FaultInjectionServerErrorType serverErrorType;
     private int times = Integer.MAX_VALUE;
@@ -17,6 +19,13 @@ public class FaultInjectionServerErrorResultBuilder {
         this.serverErrorType = serverErrorType;
     }
 
+    /**
+     * How many times the same fault injection rule can be applied per operation.
+     * By default, there is no limit.
+     *
+     * @param times the max times the same fault injection rule can be applied per operation.
+     * @return the builder.
+     */
     public FaultInjectionServerErrorResultBuilder times(int times) {
         if (this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY) {
             throw new IllegalArgumentException("Argument 'times' is not support for error type " + this.serverErrorType);
@@ -27,22 +36,26 @@ public class FaultInjectionServerErrorResultBuilder {
     }
 
     /***
-     * This is only used for Server_Delay error tye
+     * This is only used for Server_Response_Delay and Server_Connection_Delay error tye.
      *
-     * @param delay the delay added before returning the reponse
-     * @return the {@link FaultInjectionServerErrorResult}.
+     * For SERVER_RESPONSE_DELAY, it means the delay added before returning the response.
+     * For SERVER_CONNECTION_DELAY, it means the delay added before starting the connection.
+     *
+     * @param delay the delay.
+     * @return the builder.
      */
     public FaultInjectionServerErrorResultBuilder delay(Duration delay) {
+        checkNotNull(delay, "Argument 'delay' can not be null");
         if (this.serverErrorType != FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY
             && this.serverErrorType != FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY) {
-            throw new IllegalArgumentException("Argument 'delay' is not supported for error type " + this.serverErrorType);
         }
         this.delay = delay;
         return this;
     }
 
     public FaultInjectionServerErrorResult build() {
-        if (this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY && this.delay == null) {
+        if ((this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY
+            || this.serverErrorType == FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY) && this.delay == null) {
             throw new IllegalArgumentException("Argument 'delay' is required for server error type " + this.serverErrorType);
         }
 

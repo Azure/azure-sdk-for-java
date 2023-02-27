@@ -430,6 +430,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             if (event instanceof RntbdFaultInjectionConnectionCloseEvent) {
                 context.close(); // TODO: how to add a meaningful fault injection message
+                return;
             }
 
             context.fireUserEventTriggered(event);

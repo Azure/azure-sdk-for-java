@@ -185,4 +185,8 @@ class ChannelPromiseWithExpiryTime implements Promise<Channel> {
     public RntbdRequestRecord getRntbdRequestRecord() {
         return this.requestRecord;
     }
+
+    public RntbdChannelAcquisitionTimeline getChannelAcquisitionTimeline() {
+       return this.requestRecord == null ? null : this.requestRecord.getChannelAcquisitionTimeline();
+    }
 }

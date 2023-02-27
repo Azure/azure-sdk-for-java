@@ -14,7 +14,6 @@ import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUtils;
 import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConditionInternal;
 import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorRule;
@@ -36,7 +35,6 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,6 +64,13 @@ public class FaultInjectionRulesProcessor {
         GlobalEndpointManager globalEndpointManager,
         AddressSelector addressSelector) {
 
+        checkNotNull(connectionMode, "Argument 'connectionMode' can not be null");
+        checkNotNull(storeModel, "Argument 'storeModel' can not be null");
+        checkNotNull(gatewayStoreModel, "Argument 'gatewayStoreModel' can not be null");
+        checkNotNull(collectionCache, "Argument 'collectionCache' can not be null");
+        checkNotNull(globalEndpointManager, "Argument 'globalEndpointManager' can not be null");
+        checkNotNull(addressSelector, "Argument 'addressSelector' can not be null");
+
         this.connectionMode = connectionMode;
         this.storeModel = storeModel;
         this.gatewayStoreModel = gatewayStoreModel;
@@ -77,9 +82,12 @@ public class FaultInjectionRulesProcessor {
     /***
      * Main logic of the fault injection processor:
      * 1. Pre-populate all required information - serviceEndpoints, physical addresses
-     * @param rules
-     * @param containerNameLink
-     * @return
+     * 2. Create internal effective rule, and attach it to the original rule
+     * 3. Routing the effective rule to the corresponding components: rntbd layer or gateway
+     *
+     * @param rules the rules to be configured.
+     * @param containerNameLink the container name link.
+     * @return the mono.
      */
     public Mono<Void> processFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
         checkNotNull(rules, "Argument 'rules' can not be null");
@@ -126,6 +134,13 @@ public class FaultInjectionRulesProcessor {
             && this.connectionMode != ConnectionMode.DIRECT) {
             throw new IllegalArgumentException("Direct connection type rule is not supported when client is not in direct mode.");
         }
+
+        if (rule.getResult() instanceof FaultInjectionConnectionErrorResult
+             && (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.DIRECT
+                    && rule.getCondition().getEndpoints() == null)) {
+
+            throw new IllegalArgumentException("Endpoint is required on Connection error rule with direct connection type");
+        }
     }
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveRule(
@@ -160,7 +175,7 @@ public class FaultInjectionRulesProcessor {
                     effectiveCondition.setServiceEndpoint(
                         this.globalEndpointManager.resolveFaultInjectionServiceEndpoint(
                             rule.getCondition().getRegion(),
-                            this.isWriteOnlyRule(rule.getCondition())
+                            this.isWriteOnlyEndpoint(rule.getCondition())
                         ));
                 }
 
@@ -175,6 +190,8 @@ public class FaultInjectionRulesProcessor {
                         FaultInjectionServerErrorType errorType =
                             ((FaultInjectionServerErrorResult) rule.getResult()).getServerErrorType();
                         switch (errorType) {
+                            // Some server errors makes sense to only apply per partition/replica
+                            // but some makes more sense to apply by server endpoint.
                             case SERVER_RESPONSE_DELAY:
                             case SERVER_CONNECTION_DELAY:
                             case SERVER_GONE:
@@ -237,8 +254,15 @@ public class FaultInjectionRulesProcessor {
             });
     }
 
+    /***
+     * If region is defined in the condition, then only get the matching region service endpoint.
+     * Else get all available read/write region service endpoints.
+     *
+     * @param condition the fault injection condition.
+     * @return the region service endpoints.
+     */
     private List<URI> getServiceEndpoints(FaultInjectionCondition condition) {
-        boolean isWriteOnlyEndpoints = this.isWriteOnlyRule(condition);
+        boolean isWriteOnlyEndpoints = this.isWriteOnlyEndpoint(condition);
 
         if (StringUtils.isNotEmpty(condition.getRegion())) {
             return Arrays.asList(
@@ -258,6 +282,14 @@ public class FaultInjectionRulesProcessor {
                 return OperationType.Read;
             case CREATE:
                 return OperationType.Create;
+            case QUERY:
+                return OperationType.Query;
+            case UPSERT:
+                return OperationType.Upsert;
+            case REPLACE:
+                return OperationType.Replace;
+            case DELETE:
+                return OperationType.Delete;
             default:
                 throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");
         }
@@ -277,16 +309,16 @@ public class FaultInjectionRulesProcessor {
             .flatMap(serviceEndpoint -> {
                 RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                     null,
-                    this.getEffectiveOperationType(condition.getOperationType()),
+                    OperationType.Read,
                     containerResourceId,
-                    ResourceType.FaultInjection,
+                    ResourceType.Document,
                     Collections.emptyMap());
 
                 request.applyFeedRangeFilter(
                     FeedRangeInternal.convert(condition.getEndpoints().getFeedRange()));
                 request.requestContext.locationEndpointToRoute = serviceEndpoint;
 
-                if (this.isWriteOnlyRule(condition)) {
+                if (this.isWriteOnlyEndpoint(condition)) {
                     return this.addressSelector
                         .resolvePrimaryUriAsync(request, true)
                         .map(uri -> uri.getURI())
@@ -302,7 +334,7 @@ public class FaultInjectionRulesProcessor {
                         return addresses
                             .stream()
                             .map(uri -> uri.getURI())
-                            .sorted()
+                            .sorted() // important: will be used to make sure the same replica addresses will be used across different client instances
                             .limit(condition.getEndpoints().getReplicaCount())
                             .collect(Collectors.toList());
                     });
@@ -310,7 +342,7 @@ public class FaultInjectionRulesProcessor {
             .collectList();
     }
 
-    private boolean isWriteOnlyRule(FaultInjectionCondition condition) {
+    private boolean isWriteOnlyEndpoint(FaultInjectionCondition condition) {
         return condition.getOperationType() != null
             && this.getEffectiveOperationType(condition.getOperationType()).isWriteOperation();
     }

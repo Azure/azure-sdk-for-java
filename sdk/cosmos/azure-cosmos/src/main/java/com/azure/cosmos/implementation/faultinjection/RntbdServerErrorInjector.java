@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 
 public class RntbdServerErrorInjector {
 
-    // TODO: should the key be condition string?
     private final Map<String, FaultInjectionServerErrorRule> serverLatencyRuleMap = new ConcurrentHashMap<>();
     private final Map<String, FaultInjectionServerErrorRule> serverConnectionLatencyRuleMap = new ConcurrentHashMap<>();
     private final Map<String, FaultInjectionServerErrorRule> serverResponseErrorMap = new ConcurrentHashMap<>();
@@ -81,7 +80,7 @@ public class RntbdServerErrorInjector {
 
         for (FaultInjectionServerErrorRule serverResponseErrorRule : this.serverResponseErrorMap.values()) {
             if (serverResponseErrorRule.isApplicable(request)) {
-                CosmosException cause = serverResponseErrorRule.getInjectedServerError();
+                CosmosException cause = serverResponseErrorRule.getInjectedServerError(request);
                 requestRecord.completeExceptionally(cause);
                 request.faultInjectionRequestContext.applyFaultInjectionRule(serverResponseErrorRule);
                 return true;
@@ -91,16 +90,18 @@ public class RntbdServerErrorInjector {
         return false;
     }
 
-    public boolean applyServerConnectionLatencyErrorRule(
+    public boolean applyServerConnectionDelayRule(
         RntbdRequestRecord requestRecord,
-        Consumer<Duration> openConnectionWithFaultInjection) {
+        Consumer<Duration> openConnectionWithDelayConsumer) {
 
         RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
 
-        for (FaultInjectionServerErrorRule serverConnectionLatencyErrorRule : this.serverConnectionLatencyRuleMap.values()) {
-            if (serverConnectionLatencyErrorRule.isApplicable(request)) {
-                openConnectionWithFaultInjection.accept(serverConnectionLatencyErrorRule.getResult().getDelay());
-                request.faultInjectionRequestContext.applyFaultInjectionRule(serverConnectionLatencyErrorRule);
+        for (FaultInjectionServerErrorRule connectionDelayRule : this.serverConnectionLatencyRuleMap.values()) {
+            if (connectionDelayRule.isApplicable(request)) {
+
+                openConnectionWithDelayConsumer.accept(connectionDelayRule.getResult().getDelay());
+                request.faultInjectionRequestContext.applyFaultInjectionRule(connectionDelayRule);
+
                 return true;
             }
         }

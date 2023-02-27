@@ -1235,40 +1235,4 @@ public class ImplementationBridgeHelpers {
             void setEffectiveFaultInjectionRule(FaultInjectionRule rule, IFaultInjectionRuleInternal ruleInternal);
         }
     }
-
-    public static final class FaultInjectionConditionHelper {
-        private final static AtomicBoolean faultInjectionConditionClassLoaded = new AtomicBoolean(false);
-        private final static AtomicReference<FaultInjectionConditionAccessor> accessor = new AtomicReference<>();
-
-        private FaultInjectionConditionHelper() {
-        }
-
-        public static void setFaultInjectionConditionAccessor(final FaultInjectionConditionAccessor newAccessor) {
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("FaultInjectionConditionAccessor already initialized!");
-            } else {
-                logger.debug("Setting FaultInjectionConditionAccessor...");
-                faultInjectionConditionClassLoaded.set(true);
-            }
-        }
-
-        public static FaultInjectionConditionAccessor getFaultInjectionConditionAccessor() {
-            if (!faultInjectionConditionClassLoaded.get()) {
-                logger.debug("Initializing FaultInjectionConditionAccessor...");
-                initializeAllAccessors();
-            }
-
-            FaultInjectionConditionAccessor snapshot = accessor.get();
-            if (snapshot == null) {
-                logger.error("FaultInjectionConditionAccessor is not initialized yet!");
-                System.exit(9727); // Using a unique status code here to help debug the issue.
-            }
-
-            return snapshot;
-        }
-
-        public interface FaultInjectionConditionAccessor {
-            int getEffectiveReplicaCount(FaultInjectionCondition condition);
-        }
-    }
 }

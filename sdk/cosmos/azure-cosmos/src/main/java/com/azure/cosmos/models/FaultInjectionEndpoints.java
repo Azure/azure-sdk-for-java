@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+// TODO: should this also change into builder model
 public class FaultInjectionEndpoints {
     private static final int DEFAULT_FAULT_INJECTION_REPLICA_COUNT = 4;
     private static final boolean DEFAULT_FAULT_INJECTION_INCLUDE_PRIMARY = true;

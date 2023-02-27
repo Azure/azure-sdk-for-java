@@ -5,9 +5,9 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionCloseEvent;
 import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionResetEvent;
-import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -55,6 +55,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
@@ -209,7 +210,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Config config,
         final ClientTelemetry clientTelemetry,
         final RntbdConnectionStateListener connectionStateListener,
-        final RntbdServerErrorInjector rntbdFaultInjector) {
+        final RntbdServerErrorInjector rntbdServerErrorInjector) {
         this(
             endpoint,
             bootstrap,
@@ -217,7 +218,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             new RntbdClientChannelHealthChecker(config),
             clientTelemetry,
             connectionStateListener,
-            rntbdFaultInjector);
+            rntbdServerErrorInjector);
     }
 
     private RntbdClientChannelPool(
@@ -271,7 +272,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             public void onTimeout(AcquireListener task) {
                 task.originalPromise.setFailure(ACQUISITION_TIMEOUT);
                 RntbdChannelAcquisitionTimeline.startNewEvent(
-                    task.originalPromise.getRntbdRequestRecord().getChannelAcquisitionTimeline(),
+                    task.originalPromise.getChannelAcquisitionTimeline(),
                     RntbdChannelAcquisitionEventType.PENDING_TIME_OUT,
                     clientTelemetry);
             }
@@ -697,7 +698,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.ensureInEventLoop();
 
         reportIssueUnless(logger, promise != null, this, "Channel promise should not be null");
-        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline = promise.getRntbdRequestRecord().getChannelAcquisitionTimeline();
+        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline = promise.getChannelAcquisitionTimeline();
 
         if (this.isClosed()) {
             promise.setFailure(POOL_CLOSED_ON_ACQUIRE);
@@ -735,12 +736,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL,
                         clientTelemetry);
 
-                    if (this.serverErrorInjector != null
-                        && this.serverErrorInjector.applyServerConnectionLatencyErrorRule(
-                            promise.getRntbdRequestRecord(),
-                            (latencyDuration) -> this.openNewChannelWithFaultInjection(anotherPromise, latencyDuration)
-                        )) {
-                        return;
+                    if (this.serverErrorInjector != null) {
+                        Consumer<Duration> openConnectionConsumer =
+                            (delay) -> this.openNewChannelWithInjectedDelay(anotherPromise, delay);
+
+                        if (this.serverErrorInjector.applyServerConnectionDelayRule(
+                            promise.getRntbdRequestRecord(), openConnectionConsumer)) {
+                            return;
+                        }
                     }
 
                     final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
@@ -819,13 +822,15 @@ public final class RntbdClientChannelPool implements ChannelPool {
         return channelCount < channelLimit;
     }
 
-    private void openNewChannelWithFaultInjection(final Promise<Channel> promise, Duration latencyDuration) {
+    private void openNewChannelWithInjectedDelay(final Promise<Channel> promise, Duration latencyDuration) {
         this.ensureInEventLoop();
 
         long delayInMillis = Math.min(this.connectTimeoutInMillis, latencyDuration.toMillis());
+        // Reduce the connection timeout based on the injected delay
+        // The higher delay being injected, then less time left to open connection, then it is easier to get connectionTimeout exception.
+        // But we would not want to use a <0 for connectionTimeout setting as netty throw exceptions.
         long effectiveConnectTimeoutInMillis = Math.max(this.connectTimeoutInMillis - delayInMillis, 10);
 
-        // fault injection
         this.executor.schedule(
             () -> {
                 ChannelFuture channelFuture = this.bootstrap.clone().handler(new ChannelInitializer<Channel>() {
@@ -880,7 +885,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 promise.setFailure(TOO_MANY_PENDING_ACQUISITIONS);
             } else {
                 RntbdChannelAcquisitionTimeline.startNewEvent(
-                    promise.getRntbdRequestRecord().getChannelAcquisitionTimeline(),
+                    promise.getChannelAcquisitionTimeline(),
                     RntbdChannelAcquisitionEventType.ADD_TO_PENDING_QUEUE,
                     clientTelemetry);
             }
@@ -1259,7 +1264,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         } finally {
             if (promise instanceof ChannelPromiseWithExpiryTime) {
                 RntbdChannelAcquisitionTimeline.startNewEvent(
-                    ((ChannelPromiseWithExpiryTime) promise).getRntbdRequestRecord().getChannelAcquisitionTimeline(),
+                    ((ChannelPromiseWithExpiryTime) promise).getChannelAcquisitionTimeline(),
                     RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE,
                     clientTelemetry
                 );
@@ -1422,7 +1427,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void injectConnectionErrorsInternal(
         String faultInjectionRuleId,
         FaultInjectionConnectionErrorResult faultInjectionResult) {
+
+        // Calculate how many connections is going to be closed
         int channelsToBeClosed = (int) Math.ceil(this.channels(false) * faultInjectionResult.getThreshold());
+
+        // We will pick from acquired channel queues first as it means there are requests in flight on the channel
+        // and it will be easier to see the impact
         List<Channel> channelsToBeClosedList = this.acquiredChannels.values().stream().limit(channelsToBeClosed).collect(Collectors.toList());
 
         if (channelsToBeClosedList.size() < channelsToBeClosed) {
@@ -1435,11 +1445,15 @@ public final class RntbdClientChannelPool implements ChannelPool {
         for (Channel channel: channelsToBeClosedList) {
             switch (faultInjectionResult.getErrorTypes()) {
                 case CONNECTION_CLOSE:
-                    channel.pipeline().firstContext() // TODO: should I just got the RntbdRequestManager handler
-                            .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent(faultInjectionRuleId));
+                    channel
+                        .pipeline()
+                        .firstContext()
+                        .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent(faultInjectionRuleId));
                     break;
                 case CONNECTION_RESET:
-                    channel.pipeline().firstContext()
+                    channel
+                        .pipeline()
+                        .firstContext()
                         .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent(faultInjectionRuleId));
                     break;
                 default:

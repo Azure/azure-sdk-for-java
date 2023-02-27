@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 
+import java.net.URI;
 import java.time.Duration;
 
 public class FaultInjectionServerErrorResult implements IFaultInjectionResult{
@@ -40,7 +41,7 @@ public class FaultInjectionServerErrorResult implements IFaultInjectionResult{
         return this.times == null || request.faultInjectionRequestContext.getFaultInjectionRuleApplyCount(ruleId) < this.times;
     }
 
-    public CosmosException getInjectedServerError() {
+    public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
         // TODO: add more error handling
         switch (this.serverErrorType) {
             case SERVER_GONE:
@@ -48,11 +49,11 @@ public class FaultInjectionServerErrorResult implements IFaultInjectionResult{
                 goneException.setIsBasedOn410ResponseFromService();
                 return goneException;
             case SERVER_RETRY_WITH:
-                return new RetryWithException("FaultInjection SERVER_449", null);
+                return new RetryWithException("FaultInjection SERVER_449", request.requestContext.storePhysicalAddress);
             case TOO_MANY_REQUEST:
-                return new RequestRateTooLargeException("FaultInjection TOO_MANY_REQUEST", null);
+                return new RequestRateTooLargeException("FaultInjection TOO_MANY_REQUEST", request.requestContext.storePhysicalAddress);
             case SERVER_TIMEOUT:
-                return new RequestTimeoutException("FaultInjection SERVER_TIMEOUT", null);
+                return new RequestTimeoutException("FaultInjection SERVER_TIMEOUT", request.requestContext.storePhysicalAddress);
             case INTERNAL_SERVER_ERROR:
                 return new InternalServerErrorException("FaultInjection INTERNAL_SERVER_ERROR");
             default:

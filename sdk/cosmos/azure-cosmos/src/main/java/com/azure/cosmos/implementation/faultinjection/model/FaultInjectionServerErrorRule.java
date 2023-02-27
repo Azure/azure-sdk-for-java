@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation.faultinjection.model;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.text.StringEscapeUtils;
 import com.azure.cosmos.models.FaultInjectionServerErrorResult;
 
 import java.net.URI;
@@ -12,6 +14,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInternal {
     private final String id;
@@ -32,6 +37,11 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         Integer hitLimit,
         FaultInjectionConditionInternal condition,
         FaultInjectionServerErrorResult result) {
+
+        checkArgument(StringUtils.isNotEmpty(id), "Argument 'id' cannot be null nor empty");
+        checkNotNull(condition, "Argument 'condition' can not be null");
+        checkNotNull(result, "Argument 'result' can not be null");
+
         this.id = id;
         this.enabled = enabled;
         this.hitLimit = hitLimit;
@@ -54,8 +64,8 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         return false;
     }
 
-    public CosmosException getInjectedServerError() {
-        return this.result.getInjectedServerError();
+    public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
+        return this.result.getInjectedServerError(request);
     }
 
     public String getId() {

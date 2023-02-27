@@ -5,7 +5,11 @@ package com.azure.cosmos.models;
 
 public enum FaultInjectionOperationType {
     READ,
-    CREATE
+    QUERY,
+    CREATE,
+    UPSERT,
+    REPLACE,
+    DELETE
 
     // Add support for metadata request type
 }

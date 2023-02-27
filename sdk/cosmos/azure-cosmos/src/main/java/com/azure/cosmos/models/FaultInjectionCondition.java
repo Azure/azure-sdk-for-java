@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-
 public class FaultInjectionCondition {
     private final FaultInjectionEndpoints endpoints;
     private final FaultInjectionOperationType operationType;
@@ -37,23 +35,4 @@ public class FaultInjectionCondition {
     public String getRegion() {
         return this.region;
     }
-
-    int getEffectiveReplicaCount() {
-        return this.operationType == FaultInjectionOperationType.CREATE ? 1 : this.endpoints.getReplicaCount();
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
-        ImplementationBridgeHelpers.FaultInjectionConditionHelper.setFaultInjectionConditionAccessor(
-            new ImplementationBridgeHelpers.FaultInjectionConditionHelper.FaultInjectionConditionAccessor() {
-                @Override
-                public int getEffectiveReplicaCount(FaultInjectionCondition condition) {
-                    return condition.getEffectiveReplicaCount();
-                }
-            });
-    }
-
-    static { initialize(); }
 }

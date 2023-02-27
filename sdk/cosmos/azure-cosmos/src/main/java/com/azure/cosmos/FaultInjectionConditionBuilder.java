@@ -43,6 +43,7 @@ public class FaultInjectionConditionBuilder {
      * @return the builder.
      */
     public FaultInjectionConditionBuilder operationType(FaultInjectionOperationType operationType) {
+        checkNotNull(operationType, "Argument 'operationType' can not be null");
         this.operationType = operationType;
         return this;
     }
@@ -56,6 +57,7 @@ public class FaultInjectionConditionBuilder {
      * @return the builder.
      */
     public FaultInjectionConditionBuilder connectionType(FaultInjectionConnectionType connectionType) {
+        checkNotNull(connectionType, "Argument 'connectionType' can not be null");
         this.connectionType = connectionType;
         return this;
     }

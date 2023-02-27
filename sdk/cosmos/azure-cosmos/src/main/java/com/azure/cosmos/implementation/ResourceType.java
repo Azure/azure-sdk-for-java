@@ -64,9 +64,7 @@ public enum ResourceType {
     ClientEncryptionKey("ClientEncryptionKey", 141),
 
     //Adding client telemetry resource type, only meant for client side
-    ClientTelemetry("ClientTelemetry", 1001),
-    // Adding fault injection resource type, only meant for fault injection usage
-    FaultInjection("FaultInjection", 1002);
+    ClientTelemetry("ClientTelemetry", 1001);
 
     private final int value;
     private final String stringValue;
@@ -116,8 +114,7 @@ public enum ResourceType {
     public boolean isPartitioned() {
         return this == ResourceType.Document ||
                 this == ResourceType.Attachment ||
-                this == ResourceType.Conflict ||
-                this == ResourceType.FaultInjection; //  TODO: not good,change
+                this == ResourceType.Conflict;
     }
 
     public boolean isScript() {

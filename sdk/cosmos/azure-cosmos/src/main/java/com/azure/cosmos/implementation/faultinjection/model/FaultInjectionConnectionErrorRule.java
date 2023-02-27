@@ -1,5 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.faultinjection.model;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 
 import java.net.URI;
@@ -7,6 +11,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInternal {
     private final String id;
@@ -25,6 +32,10 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
         Duration duration,
         List<URI> addresses,
         FaultInjectionConnectionErrorResult result) {
+
+        checkArgument(StringUtils.isNotEmpty(id), "Argument 'id' cannot be null nor empty");
+        checkNotNull(addresses, "Argument 'addresses' can not be null");
+        checkNotNull(result, "Argument 'result' can not be null");
 
         this.id = id;
         this.enabled = enabled;
