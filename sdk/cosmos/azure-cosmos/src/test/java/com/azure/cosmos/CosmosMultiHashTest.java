@@ -32,6 +32,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -299,8 +300,8 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             .add(doc6.get("city").asText())
             .add(doc6.get("zipcode").asText())
             .build();
-        CosmosItemResponse<ObjectNode> x = createdMultiHashContainer.readItem(doc6.get("id").asText(), partitionKey, ObjectNode.class);
-        assertThat(x.getItem().get("version")).isEqualTo(version);
+        CosmosItemResponse<ObjectNode> readResponse = createdMultiHashContainer.readItem(doc6.get("id").asText(), partitionKey, ObjectNode.class);
+        assertThat(readResponse.getItem().get("version")).isEqualTo(version);
 
         // Query Tests
         for (int i = 0; i < docs.size(); i++) {
@@ -356,21 +357,31 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
         assertThat(feedResponseIterator.stream().count()).isEqualTo(2);
 
-        //Negative test - query option fails with incomplete partition key
-        //Not supported in query pipeline yet
-        query = String.format("SELECT * from c where c.city = '%s'", docs.get(0).get("city").asText());
+        // Partial partition key in query options tests
+        query = "SELECT * from c";
         partitionKey =
             new PartitionKeyBuilder()
                 .add("Redmond")
                 .build();
+        queryRequestOptions = new CosmosQueryRequestOptions();
         queryRequestOptions.setPartitionKey(partitionKey);
-        try {
-            feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
-            feedResponseIterator.stream().toArray();
-        } catch (CosmosException e) {
-            assertThat(e.getStatusCode()).isEqualTo(400);
-            assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.")).isTrue();
-        }
+        feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
+        assertThat(feedResponseIterator.stream().toArray().length).isEqualTo(3);
+
+        // Using Distinct
+        query = "Select distinct c.zipcode from c";
+        feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
+        assertThat(feedResponseIterator.stream().toArray().length).isEqualTo(2);
+
+        //Using continuation token
+
+
+        // Negative test - using non-prefix partial partition key returns no results
+        query = "SELECT * from c";
+        partitionKey = new PartitionKeyBuilder().add("98053").build(); //pk definition is state/zipcode
+        queryRequestOptions.setPartitionKey(partitionKey);
+        feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
+        assertThat(feedResponseIterator.stream().toArray().length).isEqualTo(0);
 
         //Delete Item
         CosmosItemResponse<?> deleteResponse = createdMultiHashContainer.deleteItem(doc1, new CosmosItemRequestOptions());

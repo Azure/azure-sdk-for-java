@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -44,6 +45,7 @@ import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -798,5 +800,13 @@ public final class BridgeInternal {
         CosmosException.initialize();
         DirectConnectionConfig.initialize();
         CosmosAsyncClient.initialize();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static boolean isPartialPartitionKeyQuery(DocumentCollection collection, PartitionKey partitionKey) {
+        PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(partitionKey);
+        return collection.getPartitionKey() != null && partitionKeyInternal != null
+            && collection.getPartitionKey().getKind().equals(PartitionKind.MULTI_HASH)
+            && collection.getPartitionKey().getPaths().size() > partitionKeyInternal.getComponents().size();
     }
 }

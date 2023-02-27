@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
@@ -58,10 +59,10 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
     }
 
     protected void initialize(
-            String collectionRid,
-            Map<FeedRangeEpkImpl, String> feedRangeToContinuationTokenMap,
-            int initialPageSize,
-            SqlQuerySpec querySpecForInit) {
+        DocumentCollection collection,
+        Map<FeedRangeEpkImpl, String> feedRangeToContinuationTokenMap,
+        int initialPageSize,
+        SqlQuerySpec querySpecForInit) {
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
         for (Map.Entry<FeedRangeEpkImpl, String> entry : feedRangeToContinuationTokenMap.entrySet()) {
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc = (feedRange,
@@ -73,12 +74,17 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
 
                 PartitionKeyInternal partitionKeyInternal = null;
                 if (cosmosQueryRequestOptions.getPartitionKey() != null && cosmosQueryRequestOptions.getPartitionKey() != PartitionKey.NONE) {
-                    partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
-                    headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
+                    // the next if statement is for the method `createDocumentServiceRequestWithFeedRange` below
+                    // with this added logic we don't have to remove the header (since the header never gets set) and
+                    // partitionKeyInternal gets passed as null which avoids the feedRange normalization.
+                    if (!BridgeInternal.isPartialPartitionKeyQuery(collection, cosmosQueryRequestOptions.getPartitionKey())) {
+                        partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
+                        headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
+                    }
                 }
 
                 return this.createDocumentServiceRequestWithFeedRange(headers, querySpecForInit, partitionKeyInternal, feedRange,
-                                                         collectionRid, cosmosQueryRequestOptions.getThroughputControlGroupName());
+                                                         collection.getResourceId(), cosmosQueryRequestOptions.getThroughputControlGroupName());
             };
 
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) ->  this.executeRequestAsync(
@@ -88,7 +94,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
             final String continuationToken = entry.getValue();
             DocumentProducer<T> dp =
                 createDocumentProducer(
-                    collectionRid,
+                    collection.getResourceId(),
                     continuationToken,
                     initialPageSize,
                     cosmosQueryRequestOptions,

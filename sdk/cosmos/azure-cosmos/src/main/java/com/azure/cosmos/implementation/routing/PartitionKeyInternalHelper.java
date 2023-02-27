@@ -195,4 +195,24 @@ public class PartitionKeyInternalHelper {
                 return toHexEncodedBinaryString(partitionKeyInternal.components);
         }
     }
+
+    static public Range<String> getEPKRangeForPrefixPartitionKey(
+        PartitionKeyInternal internalPartitionKey,
+        PartitionKeyDefinition partitionKeyDefinition)
+    {
+        if(partitionKeyDefinition.getKind() != PartitionKind.MULTI_HASH)
+        {
+            throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
+        }
+
+        if(internalPartitionKey.getComponents().size() >= partitionKeyDefinition.getPaths().size())
+        {
+            throw new IllegalArgumentException(RMResources.TooManyPartitionKeyComponents);
+        }
+
+        String minEPK = internalPartitionKey.getEffectivePartitionKeyString(internalPartitionKey, partitionKeyDefinition);
+        String maxEPK = minEPK + MaximumExclusiveEffectivePartitionKey;
+        return new Range<>(minEPK, maxEPK, true, false);
+    }
+
 }
