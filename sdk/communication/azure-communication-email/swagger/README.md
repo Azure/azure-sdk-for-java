@@ -1,7 +1,7 @@
 ## Generate autorest code
 
 ```yaml
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/communication/data-plane/Email/readme.md
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ac7f9d6f1003acf6e54682534f30a9f5ec7fc5d2/specification/communication/data-plane/Email/readme.md
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 title: Azure Communication Email Service
