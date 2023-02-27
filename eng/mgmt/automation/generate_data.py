@@ -63,8 +63,13 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                 pwd = os.getcwd()
                 os.chdir(cadl_dir)
                 try:
+                    # copy "eng/emitter-package.json" to "package.json" in current project
+                    shutil.copyfile(os.path.join(sdk_root, 'eng', 'emitter-package.json'),
+                                    os.path.join(cadl_dir, 'package.json'))
+
                     # install dependencies
-                    subprocess.run('npm install "@azure-tools/cadl-autorest@0.24.0" "@azure-tools/cadl-azure-core@0.24.0" "@cadl-lang/compiler@0.38.5" "@cadl-lang/eslint-config-cadl@0.5.0" "@cadl-lang/eslint-plugin@0.38.0" "@cadl-lang/library-linter@0.38.0" "@azure-tools/cadl-java@0.2.2"', shell=True, check=True)
+                    subprocess.run('npm install', shell=True, check=True)
+
                     # check client.cadl
                     cadl_source = '.'
                     if os.path.exists(os.path.join(cadl_dir, 'client.cadl')):
@@ -384,7 +389,7 @@ def generate(
 
 
 def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
-    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Drevapi.skip -pl {1}:{2} -am'.format(
+    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am'.format(
         sdk_root, group_id, module)
     logging.info(command)
     if os.system(command) != 0:

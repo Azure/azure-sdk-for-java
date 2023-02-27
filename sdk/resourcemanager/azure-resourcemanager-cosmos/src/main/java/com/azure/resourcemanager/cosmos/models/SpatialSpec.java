@@ -24,6 +24,10 @@ public final class SpatialSpec {
     @JsonProperty(value = "types")
     private List<SpatialType> types;
 
+    /** Creates an instance of SpatialSpec class. */
+    public SpatialSpec() {
+    }
+
     /**
      * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root
      * and end with wildcard (/path/*).

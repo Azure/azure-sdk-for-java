@@ -20,6 +20,15 @@ public final class DatabaseShareOrigin extends ExpandableStringEnum<DatabaseShar
     public static final DatabaseShareOrigin OTHER = fromString("Other");
 
     /**
+     * Creates a new instance of DatabaseShareOrigin value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseShareOrigin() {
+    }
+
+    /**
      * Creates or finds a DatabaseShareOrigin from its string representation.
      *
      * @param name a name to look for.

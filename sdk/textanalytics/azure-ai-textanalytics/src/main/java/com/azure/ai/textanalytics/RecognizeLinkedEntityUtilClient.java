@@ -18,7 +18,6 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -29,13 +28,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
-import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
+import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeLinkedEntitiesResultCollectionResponseLanguageApi;
@@ -43,7 +41,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeLinke
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing recognize linked entity endpoint.
@@ -132,8 +129,7 @@ class RecognizeLinkedEntityUtilClient {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
-        final Context finalContext = getNotNullContext(context)
-            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        final Context finalContext = getNotNullContext(context);
         final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
         final String finalModelVersion = options.getModelVersion();
         final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
@@ -189,8 +185,7 @@ class RecognizeLinkedEntityUtilClient {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
-        final Context finalContext = enableSyncRestProxy(getNotNullContext(context))
-            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        final Context finalContext = enableSyncRestProxy(getNotNullContext(context));
         final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
         final String finalModelVersion = options.getModelVersion();
         final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
@@ -217,7 +212,7 @@ class RecognizeLinkedEntityUtilClient {
                         finalStringIndexType,
                         finalContext));
         } catch (ErrorResponseException ex) {
-            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 

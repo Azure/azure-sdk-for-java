@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.ScriptOutputStreamType;
 import java.util.Arrays;
 
@@ -31,6 +30,6 @@ public final class ScriptExecutionsGetExecutionLogsSamples {
                         ScriptOutputStreamType.fromString("Warnings"),
                         ScriptOutputStreamType.fromString("Errors"),
                         ScriptOutputStreamType.OUTPUT),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,25 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleSettings;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentScaleSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DeploymentScaleSettings model =
             BinaryData
-                .fromString("{\"scaleType\":\"Standard\",\"capacity\":893686819,\"activeCapacity\":158092972}")
+                .fromString("{\"scaleType\":\"Standard\",\"capacity\":812505700,\"activeCapacity\":1391684752}")
                 .toObject(DeploymentScaleSettings.class);
         Assertions.assertEquals(DeploymentScaleType.STANDARD, model.scaleType());
-        Assertions.assertEquals(893686819, model.capacity());
+        Assertions.assertEquals(812505700, model.capacity());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DeploymentScaleSettings model =
-            new DeploymentScaleSettings().withScaleType(DeploymentScaleType.STANDARD).withCapacity(893686819);
+            new DeploymentScaleSettings().withScaleType(DeploymentScaleType.STANDARD).withCapacity(812505700);
         model = BinaryData.fromObject(model).toObject(DeploymentScaleSettings.class);
         Assertions.assertEquals(DeploymentScaleType.STANDARD, model.scaleType());
-        Assertions.assertEquals(893686819, model.capacity());
+        Assertions.assertEquals(812505700, model.capacity());
     }
 }

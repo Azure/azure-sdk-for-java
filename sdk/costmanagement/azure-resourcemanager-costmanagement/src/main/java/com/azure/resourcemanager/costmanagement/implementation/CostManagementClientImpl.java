@@ -23,12 +23,21 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.costmanagement.fluent.AlertsClient;
+import com.azure.resourcemanager.costmanagement.fluent.BenefitRecommendationsClient;
+import com.azure.resourcemanager.costmanagement.fluent.BenefitUtilizationSummariesClient;
 import com.azure.resourcemanager.costmanagement.fluent.CostManagementClient;
 import com.azure.resourcemanager.costmanagement.fluent.DimensionsClient;
 import com.azure.resourcemanager.costmanagement.fluent.ExportsClient;
 import com.azure.resourcemanager.costmanagement.fluent.ForecastsClient;
+import com.azure.resourcemanager.costmanagement.fluent.GenerateCostDetailsReportsClient;
+import com.azure.resourcemanager.costmanagement.fluent.GenerateDetailedCostReportOperationResultsClient;
+import com.azure.resourcemanager.costmanagement.fluent.GenerateDetailedCostReportOperationStatusClient;
+import com.azure.resourcemanager.costmanagement.fluent.GenerateDetailedCostReportsClient;
+import com.azure.resourcemanager.costmanagement.fluent.GenerateReservationDetailsReportsClient;
 import com.azure.resourcemanager.costmanagement.fluent.OperationsClient;
+import com.azure.resourcemanager.costmanagement.fluent.PriceSheetsClient;
 import com.azure.resourcemanager.costmanagement.fluent.QueriesClient;
+import com.azure.resourcemanager.costmanagement.fluent.ScheduledActionsClient;
 import com.azure.resourcemanager.costmanagement.fluent.ViewsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -42,6 +51,18 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the CostManagementClientImpl type. */
 @ServiceClient(builder = CostManagementClientBuilder.class)
 public final class CostManagementClientImpl implements CostManagementClient {
+    /** ETag of the Entity. Not required when creating an entity, but required when updating an entity. */
+    private final String ifMatch;
+
+    /**
+     * Gets ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+     *
+     * @return the ifMatch value.
+     */
+    public String getIfMatch() {
+        return this.ifMatch;
+    }
+
     /** server parameter. */
     private final String endpoint;
 
@@ -100,6 +121,18 @@ public final class CostManagementClientImpl implements CostManagementClient {
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
     }
 
     /** The ViewsClient object to access its operations. */
@@ -162,16 +195,16 @@ public final class CostManagementClientImpl implements CostManagementClient {
         return this.queries;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    /** The GenerateReservationDetailsReportsClient object to access its operations. */
+    private final GenerateReservationDetailsReportsClient generateReservationDetailsReports;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the GenerateReservationDetailsReportsClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the GenerateReservationDetailsReportsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public GenerateReservationDetailsReportsClient getGenerateReservationDetailsReports() {
+        return this.generateReservationDetailsReports;
     }
 
     /** The ExportsClient object to access its operations. */
@@ -186,6 +219,102 @@ public final class CostManagementClientImpl implements CostManagementClient {
         return this.exports;
     }
 
+    /** The GenerateCostDetailsReportsClient object to access its operations. */
+    private final GenerateCostDetailsReportsClient generateCostDetailsReports;
+
+    /**
+     * Gets the GenerateCostDetailsReportsClient object to access its operations.
+     *
+     * @return the GenerateCostDetailsReportsClient object.
+     */
+    public GenerateCostDetailsReportsClient getGenerateCostDetailsReports() {
+        return this.generateCostDetailsReports;
+    }
+
+    /** The GenerateDetailedCostReportsClient object to access its operations. */
+    private final GenerateDetailedCostReportsClient generateDetailedCostReports;
+
+    /**
+     * Gets the GenerateDetailedCostReportsClient object to access its operations.
+     *
+     * @return the GenerateDetailedCostReportsClient object.
+     */
+    public GenerateDetailedCostReportsClient getGenerateDetailedCostReports() {
+        return this.generateDetailedCostReports;
+    }
+
+    /** The GenerateDetailedCostReportOperationResultsClient object to access its operations. */
+    private final GenerateDetailedCostReportOperationResultsClient generateDetailedCostReportOperationResults;
+
+    /**
+     * Gets the GenerateDetailedCostReportOperationResultsClient object to access its operations.
+     *
+     * @return the GenerateDetailedCostReportOperationResultsClient object.
+     */
+    public GenerateDetailedCostReportOperationResultsClient getGenerateDetailedCostReportOperationResults() {
+        return this.generateDetailedCostReportOperationResults;
+    }
+
+    /** The GenerateDetailedCostReportOperationStatusClient object to access its operations. */
+    private final GenerateDetailedCostReportOperationStatusClient generateDetailedCostReportOperationStatus;
+
+    /**
+     * Gets the GenerateDetailedCostReportOperationStatusClient object to access its operations.
+     *
+     * @return the GenerateDetailedCostReportOperationStatusClient object.
+     */
+    public GenerateDetailedCostReportOperationStatusClient getGenerateDetailedCostReportOperationStatus() {
+        return this.generateDetailedCostReportOperationStatus;
+    }
+
+    /** The PriceSheetsClient object to access its operations. */
+    private final PriceSheetsClient priceSheets;
+
+    /**
+     * Gets the PriceSheetsClient object to access its operations.
+     *
+     * @return the PriceSheetsClient object.
+     */
+    public PriceSheetsClient getPriceSheets() {
+        return this.priceSheets;
+    }
+
+    /** The ScheduledActionsClient object to access its operations. */
+    private final ScheduledActionsClient scheduledActions;
+
+    /**
+     * Gets the ScheduledActionsClient object to access its operations.
+     *
+     * @return the ScheduledActionsClient object.
+     */
+    public ScheduledActionsClient getScheduledActions() {
+        return this.scheduledActions;
+    }
+
+    /** The BenefitRecommendationsClient object to access its operations. */
+    private final BenefitRecommendationsClient benefitRecommendations;
+
+    /**
+     * Gets the BenefitRecommendationsClient object to access its operations.
+     *
+     * @return the BenefitRecommendationsClient object.
+     */
+    public BenefitRecommendationsClient getBenefitRecommendations() {
+        return this.benefitRecommendations;
+    }
+
+    /** The BenefitUtilizationSummariesClient object to access its operations. */
+    private final BenefitUtilizationSummariesClient benefitUtilizationSummaries;
+
+    /**
+     * Gets the BenefitUtilizationSummariesClient object to access its operations.
+     *
+     * @return the BenefitUtilizationSummariesClient object.
+     */
+    public BenefitUtilizationSummariesClient getBenefitUtilizationSummaries() {
+        return this.benefitUtilizationSummaries;
+    }
+
     /**
      * Initializes an instance of CostManagementClient client.
      *
@@ -193,6 +322,7 @@ public final class CostManagementClientImpl implements CostManagementClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param endpoint server parameter.
      */
     CostManagementClientImpl(
@@ -200,19 +330,31 @@ public final class CostManagementClientImpl implements CostManagementClient {
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
         AzureEnvironment environment,
+        String ifMatch,
         String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
+        this.ifMatch = ifMatch;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-06-01";
+        this.apiVersion = "2022-10-01";
+        this.operations = new OperationsClientImpl(this);
         this.views = new ViewsClientImpl(this);
         this.alerts = new AlertsClientImpl(this);
         this.forecasts = new ForecastsClientImpl(this);
         this.dimensions = new DimensionsClientImpl(this);
         this.queries = new QueriesClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
+        this.generateReservationDetailsReports = new GenerateReservationDetailsReportsClientImpl(this);
         this.exports = new ExportsClientImpl(this);
+        this.generateCostDetailsReports = new GenerateCostDetailsReportsClientImpl(this);
+        this.generateDetailedCostReports = new GenerateDetailedCostReportsClientImpl(this);
+        this.generateDetailedCostReportOperationResults =
+            new GenerateDetailedCostReportOperationResultsClientImpl(this);
+        this.generateDetailedCostReportOperationStatus = new GenerateDetailedCostReportOperationStatusClientImpl(this);
+        this.priceSheets = new PriceSheetsClientImpl(this);
+        this.scheduledActions = new ScheduledActionsClientImpl(this);
+        this.benefitRecommendations = new BenefitRecommendationsClientImpl(this);
+        this.benefitUtilizationSummaries = new BenefitUtilizationSummariesClientImpl(this);
     }
 
     /**

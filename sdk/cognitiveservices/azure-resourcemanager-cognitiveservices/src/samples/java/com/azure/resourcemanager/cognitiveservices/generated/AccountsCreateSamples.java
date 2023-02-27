@@ -17,7 +17,7 @@ import java.util.Arrays;
 /** Samples for Accounts Create. */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/CreateAccountMin.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/CreateAccountMin.json
      */
     /**
      * Sample code: Create Account Min.
@@ -38,7 +38,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/CreateAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/CreateAccount.json
      */
     /**
      * Sample code: Create Account.

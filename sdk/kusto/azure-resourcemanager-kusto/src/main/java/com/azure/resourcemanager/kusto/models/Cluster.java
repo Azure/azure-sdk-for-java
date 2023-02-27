@@ -351,6 +351,7 @@ public interface Cluster {
                 DefinitionStages.WithVirtualNetworkConfiguration,
                 DefinitionStages.WithKeyVaultProperties,
                 DefinitionStages.WithEnablePurge,
+                DefinitionStages.WithLanguageExtensions,
                 DefinitionStages.WithEnableDoubleEncryption,
                 DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithAllowedIpRangeList,
@@ -479,6 +480,16 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withEnablePurge(Boolean enablePurge);
+        }
+        /** The stage of the Cluster definition allowing to specify languageExtensions. */
+        interface WithLanguageExtensions {
+            /**
+             * Specifies the languageExtensions property: List of the cluster's language extensions..
+             *
+             * @param languageExtensions List of the cluster's language extensions.
+             * @return the next definition stage.
+             */
+            WithCreate withLanguageExtensions(LanguageExtensionsList languageExtensions);
         }
         /** The stage of the Cluster definition allowing to specify enableDoubleEncryption. */
         interface WithEnableDoubleEncryption {
@@ -635,6 +646,7 @@ public interface Cluster {
             UpdateStages.WithVirtualNetworkConfiguration,
             UpdateStages.WithKeyVaultProperties,
             UpdateStages.WithEnablePurge,
+            UpdateStages.WithLanguageExtensions,
             UpdateStages.WithEnableDoubleEncryption,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithAllowedIpRangeList,
@@ -763,6 +775,16 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withEnablePurge(Boolean enablePurge);
+        }
+        /** The stage of the Cluster update allowing to specify languageExtensions. */
+        interface WithLanguageExtensions {
+            /**
+             * Specifies the languageExtensions property: List of the cluster's language extensions..
+             *
+             * @param languageExtensions List of the cluster's language extensions.
+             * @return the next definition stage.
+             */
+            Update withLanguageExtensions(LanguageExtensionsList languageExtensions);
         }
         /** The stage of the Cluster update allowing to specify enableDoubleEncryption. */
         interface WithEnableDoubleEncryption {

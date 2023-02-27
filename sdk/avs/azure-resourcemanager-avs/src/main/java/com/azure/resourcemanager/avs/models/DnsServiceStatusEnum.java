@@ -17,6 +17,15 @@ public final class DnsServiceStatusEnum extends ExpandableStringEnum<DnsServiceS
     public static final DnsServiceStatusEnum FAILURE = fromString("FAILURE");
 
     /**
+     * Creates a new instance of DnsServiceStatusEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DnsServiceStatusEnum() {
+    }
+
+    /**
      * Creates or finds a DnsServiceStatusEnum from its string representation.
      *
      * @param name a name to look for.

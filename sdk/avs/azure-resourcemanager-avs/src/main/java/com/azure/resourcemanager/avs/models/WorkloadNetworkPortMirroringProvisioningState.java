@@ -30,6 +30,15 @@ public final class WorkloadNetworkPortMirroringProvisioningState
     public static final WorkloadNetworkPortMirroringProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of WorkloadNetworkPortMirroringProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadNetworkPortMirroringProvisioningState() {
+    }
+
+    /**
      * Creates or finds a WorkloadNetworkPortMirroringProvisioningState from its string representation.
      *
      * @param name a name to look for.

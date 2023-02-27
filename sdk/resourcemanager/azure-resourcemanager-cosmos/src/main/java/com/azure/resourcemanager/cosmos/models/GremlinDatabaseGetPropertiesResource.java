@@ -28,6 +28,10 @@ public final class GremlinDatabaseGetPropertiesResource extends GremlinDatabaseR
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of GremlinDatabaseGetPropertiesResource class. */
+    public GremlinDatabaseGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

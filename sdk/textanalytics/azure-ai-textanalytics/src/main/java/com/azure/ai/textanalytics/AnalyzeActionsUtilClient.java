@@ -130,7 +130,6 @@ import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -157,12 +156,14 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
+import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
+import static com.azure.ai.textanalytics.implementation.Utility.getShowStatsContinuesToken;
+import static com.azure.ai.textanalytics.implementation.Utility.getSkipContinuesToken;
+import static com.azure.ai.textanalytics.implementation.Utility.getTopContinuesToken;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
@@ -182,7 +183,6 @@ import static com.azure.ai.textanalytics.implementation.models.State.NOT_STARTED
 import static com.azure.ai.textanalytics.implementation.models.State.RUNNING;
 import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 class AnalyzeActionsUtilClient {
     // Legacy Tasks
@@ -258,8 +258,7 @@ class AnalyzeActionsUtilClient {
                     TextAnalyticsServiceVersion.V3_1));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
-            final Context finalContext = getNotNullContext(context)
-                                             .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+            final Context finalContext = getNotNullContext(context);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
             if (service != null) {
@@ -332,8 +331,7 @@ class AnalyzeActionsUtilClient {
                     TextAnalyticsServiceVersion.V3_1));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
-            final Context finalContext = enableSyncRestProxy(getNotNullContext(context))
-                                             .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+            final Context finalContext = enableSyncRestProxy(getNotNullContext(context));
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
@@ -369,7 +367,7 @@ class AnalyzeActionsUtilClient {
                     operationId -> getAnalyzeOperationPageIterable(
                         operationId, null, null, finalIncludeStatistics, finalContext)));
         } catch (ErrorResponseException ex) {
-            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -937,9 +935,9 @@ class AnalyzeActionsUtilClient {
         Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-            top = (Integer) continuationTokenMap.getOrDefault("$top", null);
-            skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-            showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+            top = getTopContinuesToken(continuationTokenMap);
+            skip = getSkipContinuesToken(continuationTokenMap);
+            showStats = getShowStatsContinuesToken(continuationTokenMap);
         }
         return service != null
             ? toAnalyzeActionsResultPagedResponseLanguageApi(service.jobStatusWithResponse(
@@ -952,30 +950,17 @@ class AnalyzeActionsUtilClient {
         Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-            final Integer topValue = (Integer) continuationTokenMap.getOrDefault("$top", null);
-            final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-            final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
-
-            if (service != null) {
-                return service.jobStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue,
-                    context)
-                    .map(this::toAnalyzeActionsResultPagedResponseLanguageApi)
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-            }
-            return legacyService.analyzeStatusWithResponseAsync(operationId.toString(), showStatsValue, topValue, skipValue,
-                context)
-                .map(this::toAnalyzeActionsResultPagedResponseLegacyApi)
-                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-        } else {
-            if (service != null) {
-                return service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
-                    .map(this::toAnalyzeActionsResultPagedResponseLanguageApi)
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-            }
-            return legacyService.analyzeStatusWithResponseAsync(operationId.toString(), showStats, top, skip, context)
-                .map(this::toAnalyzeActionsResultPagedResponseLegacyApi)
-                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+            top = getTopContinuesToken(continuationTokenMap);
+            skip = getSkipContinuesToken(continuationTokenMap);
+            showStats = getShowStatsContinuesToken(continuationTokenMap);
         }
+        return service != null
+            ? service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
+                .map(this::toAnalyzeActionsResultPagedResponseLanguageApi)
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
+            : legacyService.analyzeStatusWithResponseAsync(operationId.toString(), showStats, top, skip, context)
+            .map(this::toAnalyzeActionsResultPagedResponseLegacyApi)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 
     private PagedResponse<AnalyzeActionsResult> toAnalyzeActionsResultPagedResponseLegacyApi(Response<AnalyzeJobState> response) {

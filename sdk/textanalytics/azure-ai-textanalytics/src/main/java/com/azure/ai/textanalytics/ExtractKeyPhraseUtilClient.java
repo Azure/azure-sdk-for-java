@@ -17,7 +17,6 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -28,13 +27,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
-import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
+import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toResultCollectionResponseLanguageApi;
@@ -42,7 +40,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.toResultCollecti
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing extract key phrase endpoint.
@@ -141,8 +138,7 @@ class ExtractKeyPhraseUtilClient {
                     .setAnalysisInput(
                         new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
                 options.isIncludeStatistics(),
-                getNotNullContext(context)
-                    .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                getNotNullContext(context))
                 .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
                     getDocumentCount(documents)))
                 .doOnSuccess(response -> LOGGER.info("A batch of key phrases output - {}", response.getValue()))
@@ -156,7 +152,7 @@ class ExtractKeyPhraseUtilClient {
             options.getModelVersion(),
             options.isIncludeStatistics(),
             options.isServiceLogsDisabled(),
-            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            getNotNullContext(context))
             .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of document with count - {}",
                 getDocumentCount(documents)))
             .doOnSuccess(response -> LOGGER.info("A batch of key phrases output - {}", response.getValue()))
@@ -180,8 +176,7 @@ class ExtractKeyPhraseUtilClient {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
-        context = enableSyncRestProxy(getNotNullContext(context))
-            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        context = enableSyncRestProxy(getNotNullContext(context));
         try {
             return (service != null)
                 ? toResultCollectionResponseLanguageApi(service.analyzeTextWithResponse(
@@ -201,7 +196,7 @@ class ExtractKeyPhraseUtilClient {
                     options.isServiceLogsDisabled(),
                     context));
         } catch (ErrorResponseException ex) {
-            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 

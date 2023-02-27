@@ -22,6 +22,10 @@ public final class MetadataSyncConfigProperties {
     @JsonProperty(value = "syncIntervalInMinutes")
     private Integer syncIntervalInMinutes;
 
+    /** Creates an instance of MetadataSyncConfigProperties class. */
+    public MetadataSyncConfigProperties() {
+    }
+
     /**
      * Get the enabled property: Indicates whether the metadata sync is enabled or disabled.
      *

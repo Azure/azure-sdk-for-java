@@ -7,21 +7,22 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurationsCheckNameRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AttachedDatabaseConfigurationsCheckNameRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AttachedDatabaseConfigurationsCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"cn\"}").toObject(AttachedDatabaseConfigurationsCheckNameRequest.class);
-        Assertions.assertEquals("cn", model.name());
+            BinaryData
+                .fromString("{\"name\":\"dckzywbiexz\"}")
+                .toObject(AttachedDatabaseConfigurationsCheckNameRequest.class);
+        Assertions.assertEquals("dckzywbiexz", model.name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AttachedDatabaseConfigurationsCheckNameRequest model =
-            new AttachedDatabaseConfigurationsCheckNameRequest().withName("cn");
+            new AttachedDatabaseConfigurationsCheckNameRequest().withName("dckzywbiexz");
         model = BinaryData.fromObject(model).toObject(AttachedDatabaseConfigurationsCheckNameRequest.class);
-        Assertions.assertEquals("cn", model.name());
+        Assertions.assertEquals("dckzywbiexz", model.name());
     }
 }

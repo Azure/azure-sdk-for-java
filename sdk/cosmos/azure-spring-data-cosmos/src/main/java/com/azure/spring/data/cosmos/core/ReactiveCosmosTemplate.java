@@ -174,7 +174,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
                 final CosmosContainerProperties cosmosContainerProperties =
-                    new CosmosContainerProperties(information.getContainerName(), information.getPartitionKeyPath());
+                    new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), information.getPartitionKeyPath());
                 cosmosContainerProperties.setDefaultTimeToLiveInSeconds(information.getTimeToLive());
                 cosmosContainerProperties.setIndexingPolicy(information.getIndexingPolicy());
                 final UniqueKeyPolicy uniqueKeyPolicy = information.getUniqueKeyPolicy();
@@ -226,6 +226,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     @Override
     public Mono<CosmosContainerProperties> getContainerProperties(String containerName) {
+        containerName = getContainerNameOverride(containerName);
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .read()
@@ -235,6 +236,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public Mono<CosmosContainerProperties> replaceContainerProperties(String containerName,
                                                                 CosmosContainerProperties properties) {
+        containerName = getContainerNameOverride(containerName);
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .replace(properties)
@@ -323,7 +325,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public <T> Mono<T> findById(String containerName, Object id, Class<T> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
-
+        containerName = getContainerNameOverride(containerName);
         final String query = "select * from root where root.id = @ROOT_ID";
         final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
         final SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, param);
@@ -419,7 +421,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                               PartitionKey partitionKey) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(objectToSave, "objectToSave should not be null");
-
+        containerName = getContainerNameOverride(containerName);
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
@@ -539,6 +541,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public <T> Mono<T> upsert(String containerName, T object) {
+        containerName = getContainerNameOverride(containerName);
         final Class<T> domainType = (Class<T>) object.getClass();
         markAuditedIfConfigured(object);
         final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
@@ -575,6 +578,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     private Mono<Void> deleteById(String containerName, Object id, PartitionKey partitionKey,
                                   CosmosItemRequestOptions cosmosItemRequestOptions) {
+        containerName = getContainerNameOverride(containerName);
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
         String idToDelete = CosmosUtils.getStringIDValue(id);
 
@@ -639,13 +643,14 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public <T> Flux<T> delete(CosmosQuery query, Class<T> domainType, String containerName) {
+        String finalContainerName = getContainerNameOverride(containerName);
         Assert.notNull(query, "DocumentQuery should not be null.");
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
 
-        final Flux<JsonNode> results = findItems(query, containerName, domainType);
+        final Flux<JsonNode> results = findItems(query, finalContainerName, domainType);
 
-        return results.flatMap(d -> deleteItem(d, containerName, domainType));
+        return results.flatMap(d -> deleteItem(d, finalContainerName, domainType));
     }
 
     /**
@@ -785,7 +790,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private Flux<FeedResponse<JsonNode>> executeQuery(SqlQuerySpec sqlQuerySpec,
                                                       String containerName,
                                                       CosmosQueryRequestOptions options) {
-
+        containerName = getContainerNameOverride(containerName);
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
                                 .getContainer(containerName)
                                 .queryItems(sqlQuerySpec, options, JsonNode.class)
@@ -802,6 +807,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public void deleteContainer(@NonNull String containerName) {
+        containerName = getContainerNameOverride(containerName);
         Assert.hasText(containerName, "containerName should have text.");
         this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
                          .getContainer(containerName)
@@ -815,16 +821,25 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                          .block();
     }
 
-    /**
-     * @param domainType the domain class
-     * @return the container name
-     */
+    @Override
     public String getContainerName(Class<?> domainType) {
         Assert.notNull(domainType, "domainType should not be null");
-
-        return CosmosEntityInformation.getInstance(domainType).getContainerName();
+        return getContainerNameOverride(CosmosEntityInformation.getInstance(domainType).getContainerName());
     }
 
+    /**
+     * Check if an overridden version of containerName is present, and if so, return it
+     *
+     * @param containerName Container name of database
+     * @return containerName
+     */
+    public String getContainerNameOverride(String containerName) {
+        if (this.cosmosFactory.overrideContainerName() != null) {
+            return this.cosmosFactory.overrideContainerName();
+        }
+        Assert.notNull(containerName, "containerName should not be null");
+        return containerName;
+    }
 
     private void markAuditedIfConfigured(Object object) {
         if (cosmosAuditingHandler != null) {
@@ -835,6 +850,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private <T> Flux<JsonNode> findItems(@NonNull CosmosQuery query,
                                          @NonNull String containerName,
                                          @NonNull Class<T> domainType) {
+        containerName = getContainerNameOverride(containerName);
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
@@ -866,6 +882,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private <T> Mono<T> deleteItem(@NonNull JsonNode jsonNode,
                                    String containerName,
                                    @NonNull Class<T> domainType) {
+        containerName = getContainerNameOverride(containerName);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(domainType, jsonNode, options);
 

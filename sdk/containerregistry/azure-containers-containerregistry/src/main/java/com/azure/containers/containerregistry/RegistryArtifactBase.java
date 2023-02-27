@@ -5,7 +5,6 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
@@ -46,12 +45,6 @@ class RegistryArtifactBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'digest' can't be empty"));
         }
 
-        AzureContainerRegistryImpl registryImpl = new AzureContainerRegistryImplBuilder()
-            .pipeline(httpPipeline)
-            .url(endpoint)
-            .apiVersion(version)
-            .buildClient();
-
         this.endpoint = endpoint;
         this.repositoryName = repositoryName;
         this.tagOrDigest = tagOrDigest;
@@ -64,7 +57,7 @@ class RegistryArtifactBase {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
-        this.serviceClient = registryImpl.getContainerRegistries();
+        this.serviceClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version).getContainerRegistries();
     }
 
     /**

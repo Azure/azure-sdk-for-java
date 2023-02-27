@@ -17,11 +17,14 @@ public final class CacheEncryptionSettings {
     private KeyVaultKeyReference keyEncryptionKey;
 
     /*
-     * Specifies whether the service will automatically rotate to the newest
-     * version of the key in the Key Vault.
+     * Specifies whether the service will automatically rotate to the newest version of the key in the Key Vault.
      */
     @JsonProperty(value = "rotationToLatestKeyVersionEnabled")
     private Boolean rotationToLatestKeyVersionEnabled;
+
+    /** Creates an instance of CacheEncryptionSettings class. */
+    public CacheEncryptionSettings() {
+    }
 
     /**
      * Get the keyEncryptionKey property: Specifies the location of the key encryption key in Key Vault.

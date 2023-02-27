@@ -17,6 +17,15 @@ public final class PlacementPolicyState extends ExpandableStringEnum<PlacementPo
     public static final PlacementPolicyState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of PlacementPolicyState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PlacementPolicyState() {
+    }
+
+    /**
      * Creates or finds a PlacementPolicyState from its string representation.
      *
      * @param name a name to look for.

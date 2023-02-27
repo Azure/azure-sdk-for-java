@@ -19,6 +19,15 @@ public final class BlobStorageEventType extends ExpandableStringEnum<BlobStorage
         fromString("Microsoft.Storage.BlobRenamed");
 
     /**
+     * Creates a new instance of BlobStorageEventType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobStorageEventType() {
+    }
+
+    /**
      * Creates or finds a BlobStorageEventType from its string representation.
      *
      * @param name a name to look for.

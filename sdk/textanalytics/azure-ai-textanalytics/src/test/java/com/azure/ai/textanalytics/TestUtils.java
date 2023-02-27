@@ -98,6 +98,7 @@ import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
@@ -107,9 +108,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -820,9 +819,8 @@ final class TestUtils {
     static AnalyzeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResultWithFhir1(String documentId) {
         AnalyzeHealthcareEntitiesResult recognizeHealthcareEntitiesResult1 =
             getRecognizeHealthcareEntitiesResult1(documentId);
-        Map<String, Object> fhir1 = new HashMap<>();
-        fhir1.put("dummyString", "dummyObject");
-        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult1, fhir1);
+        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult1,
+            BinaryData.fromString("{\n  \"string\": \"Hello World\"\n}"));
         return recognizeHealthcareEntitiesResult1;
     }
 
@@ -920,9 +918,8 @@ final class TestUtils {
 
     static AnalyzeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResultWithFhir2() {
         AnalyzeHealthcareEntitiesResult recognizeHealthcareEntitiesResult2 = getRecognizeHealthcareEntitiesResult2();
-        Map<String, Object> fhir2 = new HashMap<>();
-        fhir2.put("dummyString2", "dummyObject2");
-        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult2, fhir2);
+        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult2,
+            BinaryData.fromString("{\n  \"string\": \"Hello World\"\n}"));
         return recognizeHealthcareEntitiesResult2;
     }
 
@@ -1355,7 +1352,7 @@ final class TestUtils {
     static ExtractSummaryResultCollection getExpectedExtractSummaryResultCollection(
         ExtractSummaryResult extractSummaryResult) {
         final ExtractSummaryResultCollection expectResultCollection = new ExtractSummaryResultCollection(
-            asList(extractSummaryResult), null, null);
+            asList(extractSummaryResult));
         return expectResultCollection;
     }
 
