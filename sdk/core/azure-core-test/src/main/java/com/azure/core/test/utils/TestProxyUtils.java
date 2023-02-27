@@ -6,6 +6,7 @@ package com.azure.core.test.utils;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
@@ -15,8 +16,10 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -108,6 +111,23 @@ public class TestProxyUtils {
             return "test-proxy";
         } else {
             throw new UnsupportedOperationException();
+        }
+    }
+
+    /**
+     * Checks the return from a request through the test proxy for special error headers.
+     * @param httpResponse The {@link HttpResponse} from the test proxy.
+     */
+    public static void checkForTestProxyErrors(HttpResponse httpResponse) {
+        String error = httpResponse.getHeaderValue("x-request-mismatch-error");
+        if (error == null) {
+            error = httpResponse.getHeaderValue("x-request-known-exception-error");
+        }
+        if (error == null) {
+            error = httpResponse.getHeaderValue("x-request-exception-exception-error");
+        }
+        if (error != null) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Test proxy exception: " + new String(Base64.getDecoder().decode(error), StandardCharsets.UTF_8)));
         }
     }
 

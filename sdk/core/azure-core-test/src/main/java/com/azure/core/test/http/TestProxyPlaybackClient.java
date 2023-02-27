@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadMatchers;
@@ -65,6 +66,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", TestProxyUtils.getProxyUrl()))
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue("x-recording-id");
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
@@ -110,7 +112,10 @@ public class TestProxyPlaybackClient implements HttpClient {
             throw new RuntimeException("Playback was not started before a request was sent.");
         }
         TestProxyUtils.changeHeaders(request, xRecordingId, "playback");
-        return client.send(request);
+        return client.send(request).map(response -> {
+            TestProxyUtils.checkForTestProxyErrors(response);
+            return response;
+        });
     }
 
     /**

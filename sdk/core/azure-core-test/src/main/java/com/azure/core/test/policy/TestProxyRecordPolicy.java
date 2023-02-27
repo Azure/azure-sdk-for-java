@@ -97,14 +97,19 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         TestProxyUtils.changeHeaders(context.getHttpRequest(), xRecordingId, "record");
-        return next.processSync();
+        HttpResponse response = next.processSync();
+        TestProxyUtils.checkForTestProxyErrors(response);
+        return response;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         HttpRequest request = context.getHttpRequest();
         TestProxyUtils.changeHeaders(request, xRecordingId, "record");
-        return next.process();
+        return next.process().map(response -> {
+            TestProxyUtils.checkForTestProxyErrors(response);
+            return response;
+        });
     }
 
     /**

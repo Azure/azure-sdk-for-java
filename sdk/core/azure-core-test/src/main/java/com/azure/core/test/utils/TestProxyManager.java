@@ -58,6 +58,7 @@ public class TestProxyManager {
                     if (response != null && response.getStatusCode() == 200) {
                         return;
                     }
+                    TestProxyUtils.checkForTestProxyErrors(response);
                 } catch (Exception ignored) {
                 }
                 Thread.sleep(1000);

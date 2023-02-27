@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -111,6 +112,21 @@ public class TestProxyTests extends TestProxyTestBase {
     @DoNotRecord
     public void testDoNotPlayback() {
         testResourceNamer.now();
+    }
+
+    @Test
+    @Tag("Playback")
+    public void testMismatch() {
+        HttpClient client = interceptorManager.getPlaybackClient();
+        URL url = null;
+        try {
+            url = new UrlBuilder().setHost("localhost").setPort(3000).setScheme("http").setPath("first/path").toUrl();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> client.sendSync(request, Context.NONE));
+        assertTrue(thrown.getMessage().contains("Uri doesn't match"));
     }
 
     @Test
