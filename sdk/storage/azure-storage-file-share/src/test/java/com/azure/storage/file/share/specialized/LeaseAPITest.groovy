@@ -20,6 +20,7 @@ import com.azure.storage.file.share.options.ShareBreakLeaseOptions
 import spock.lang.Unroll
 
 import java.time.Duration
+import static com.azure.storage.file.share.FileTestHelper.assertResponseStatusCode
 
 import static com.azure.storage.file.share.FileTestHelper.assertResponseStatusCode
 
@@ -59,6 +60,7 @@ class LeaseAPITest extends APISpec {
         properties.getLeaseDuration() == LeaseDurationType.INFINITE
     }
 
+<<<<<<< HEAD
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Acquire and release file lease oAuth"() {
         given:
@@ -72,6 +74,18 @@ class LeaseAPITest extends APISpec {
         def leaseClient = new ShareLeaseClientBuilder()
             .fileClient(fileClient)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
+=======
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Acquire and release file lease trailing dot"() {
+        given:
+        def primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+        primaryFileClient.create(data.defaultDataSizeLong)
+
+        when:
+        def leaseClient = new ShareLeaseClientBuilder()
+            .fileClient(primaryFileClient)
+            .allowTrailingDot(true)
+>>>>>>> feature/storage/stg87base
             .buildClient()
 
         def acquireResponse = leaseClient.acquireLeaseWithResponse(null, null)
@@ -154,6 +168,7 @@ class LeaseAPITest extends APISpec {
         notThrown(ShareStorageException)
     }
 
+<<<<<<< HEAD
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Break file lease oAuth"() {
         setup:
@@ -166,12 +181,28 @@ class LeaseAPITest extends APISpec {
         def leaseClient = new ShareLeaseClientBuilder()
             .fileClient(fileClient)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
+=======
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Break file lease trailing dot"() {
+        setup:
+        def primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+
+        primaryFileClient.create(data.defaultDataSizeLong)
+
+        def leaseClient = new ShareLeaseClientBuilder()
+            .fileClient(primaryFileClient)
+            .allowTrailingDot(true)
+>>>>>>> feature/storage/stg87base
             .buildClient()
         leaseClient.acquireLease()
 
         when:
         leaseClient.breakLease()
+<<<<<<< HEAD
         def leaseState = fileClient.getProperties().getLeaseState()
+=======
+        def leaseState = primaryFileClient.getProperties().getLeaseState()
+>>>>>>> feature/storage/stg87base
 
         then:
         leaseState == LeaseStateType.BROKEN
@@ -213,6 +244,7 @@ class LeaseAPITest extends APISpec {
         notThrown(ShareStorageException)
     }
 
+<<<<<<< HEAD
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Change file lease oAuth"() {
         setup:
@@ -225,6 +257,17 @@ class LeaseAPITest extends APISpec {
         def leaseClient = new ShareLeaseClientBuilder()
             .fileClient(fileClient)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
+=======
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Change file lease trailing dot"() {
+        setup:
+        def primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null)
+        primaryFileClient.create(data.defaultDataSizeLong)
+
+        def leaseClient = new ShareLeaseClientBuilder()
+            .fileClient(primaryFileClient)
+            .allowTrailingDot(true)
+>>>>>>> feature/storage/stg87base
             .buildClient()
 
         def leaseID = leaseClient.acquireLease()

@@ -182,6 +182,8 @@ public class ShareFileClientBuilder implements
     private Configuration configuration;
     private ShareServiceVersion version;
     private ShareTokenIntent shareTokenIntent;
+    private boolean allowSourceTrailingDot;
+    private boolean allowTrailingDot;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareFileClient FileClients} and {@link
@@ -211,6 +213,8 @@ public class ShareFileClientBuilder implements
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .fileRequestIntent(shareTokenIntent)
+            .allowSourceTrailingDot(allowSourceTrailingDot)
+            .allowTrailingDot(allowTrailingDot)
             .buildClient();
     }
 
@@ -682,6 +686,34 @@ public class ShareFileClientBuilder implements
      */
     public ShareFileClientBuilder serviceVersion(ShareServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the source URI.
+     *
+     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
+     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
+     *
+     * @param allowSourceTrailingDot the allowSourceTrailingDot value.
+     * @return the updated ShareFileClientBuilder object
+     */
+    public ShareFileClientBuilder allowSourceTrailingDot(boolean allowSourceTrailingDot) {
+        this.allowSourceTrailingDot = allowSourceTrailingDot;
+        return this;
+    }
+
+    /**
+     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the target URI.
+     *
+     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
+     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
+     *
+     * @param allowTrailingDot the allowTrailingDot value.
+     * @return the updated ShareFileClientBuilder object
+     */
+    public ShareFileClientBuilder allowTrailingDot(boolean allowTrailingDot) {
+        this.allowTrailingDot = allowTrailingDot;
         return this;
     }
 

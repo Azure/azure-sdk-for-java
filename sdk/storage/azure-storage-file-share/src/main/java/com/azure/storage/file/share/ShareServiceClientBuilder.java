@@ -157,6 +157,8 @@ public final class ShareServiceClientBuilder implements
     private Configuration configuration;
     private ShareServiceVersion version;
     private ShareTokenIntent shareTokenIntent;
+    private boolean allowSourceTrailingDot;
+    private boolean allowTrailingDot;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareServiceClient FileServiceClients}
@@ -200,6 +202,8 @@ public final class ShareServiceClientBuilder implements
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .fileRequestIntent(shareTokenIntent)
+            .allowSourceTrailingDot(allowSourceTrailingDot)
+            .allowTrailingDot(allowTrailingDot)
             .buildClient();
 
         return new ShareServiceAsyncClient(azureFileStorage, accountName, serviceVersion,
@@ -293,7 +297,7 @@ public final class ShareServiceClientBuilder implements
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
      * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * Note: only Share-level operations that {@link TokenCredential} is compatible with are 
+     * Note: only Share-level operations that {@link TokenCredential} is compatible with are
      * {@link ShareClient#createPermission(String)} and {@link ShareClient#getPermission(String)}
      *
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
@@ -558,6 +562,34 @@ public final class ShareServiceClientBuilder implements
      */
     public ShareServiceClientBuilder serviceVersion(ShareServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the source URI.
+     *
+     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
+     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
+     *
+     * @param allowSourceTrailingDot the allowSourceTrailingDot value.
+     * @return the updated ShareServiceClientBuilder object
+     */
+    public ShareServiceClientBuilder allowSourceTrailingDot(boolean allowSourceTrailingDot) {
+        this.allowSourceTrailingDot = allowSourceTrailingDot;
+        return this;
+    }
+
+    /**
+     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the target URI.
+     *
+     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
+     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
+     *
+     * @param allowTrailingDot the allowTrailingDot value.
+     * @return the updated ShareServiceClientBuilder object
+     */
+    public ShareServiceClientBuilder allowTrailingDot(boolean allowTrailingDot) {
+        this.allowTrailingDot = allowTrailingDot;
         return this;
     }
 

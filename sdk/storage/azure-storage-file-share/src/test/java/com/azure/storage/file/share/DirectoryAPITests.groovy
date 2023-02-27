@@ -239,6 +239,38 @@ class DirectoryAPITests extends APISpec {
         null                | new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    @Unroll
+    def "Create trailing dot"() {
+        setup:
+        def shareClient = getShareClient(shareName, allowTrailingDot, null)
+
+        def rootDirectory = shareClient.getRootDirectoryClient()
+        def dirName = generatePathName()
+        def dirNameWithDot = dirName + "."
+        def dirClient = shareClient.getDirectoryClient(dirNameWithDot)
+        dirClient.create()
+
+        when:
+        def foundDirectories = [] as Set
+        for (def fileRef : rootDirectory.listFilesAndDirectories()) {
+            foundDirectories << fileRef.getName()
+        }
+
+        then:
+        foundDirectories.size() == 1
+        if (allowTrailingDot) {
+            foundDirectories[0] == dirNameWithDot
+        } else {
+            foundDirectories[0] == dirName
+        }
+
+        where:
+        allowTrailingDot | _
+        true             | _
+        false            | _
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Create directory oAuth"() {
         setup:
@@ -386,6 +418,18 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteWithResponse(null, null), 202)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Delete trailing dot"() {
+        given:
+        shareClient = getShareClient(shareName, true, null)
+
+        def directoryClient = shareClient.getDirectoryClient(generatePathName() + ".")
+        directoryClient.create()
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(directoryClient.deleteWithResponse(null, null), 202)
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Delete directory oAuth"() {
         setup:
@@ -474,6 +518,30 @@ class DirectoryAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileId()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Get properties trailing dot"() {
+        given:
+        shareClient = getShareClient(shareName, true, null)
+
+        def directoryClient = shareClient.getDirectoryClient(generatePathName() + ".")
+        def createResponse = directoryClient.createIfNotExists()
+        def propertiesResponse = directoryClient.getPropertiesWithResponse(null, null)
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(propertiesResponse, 200)
+        createResponse.getETag() == propertiesResponse.getValue().getETag()
+        createResponse.getLastModified() == propertiesResponse.getValue().getLastModified()
+
+        def createSmbProperties = createResponse.getSmbProperties()
+        def getPropertiesSmbProperties = propertiesResponse.getValue().getSmbProperties()
+        createSmbProperties.getFilePermissionKey() == getPropertiesSmbProperties.getFilePermissionKey()
+        createSmbProperties.getNtfsFileAttributes() == getPropertiesSmbProperties.getNtfsFileAttributes()
+        createSmbProperties.getFileLastWriteTime() == getPropertiesSmbProperties.getFileLastWriteTime()
+        createSmbProperties.getFileCreationTime() == getPropertiesSmbProperties.getFileCreationTime()
+        createSmbProperties.getFileChangeTime() == getPropertiesSmbProperties.getFileChangeTime()
+        createSmbProperties.getParentId() == getPropertiesSmbProperties.getParentId()
+        createSmbProperties.getFileId() == getPropertiesSmbProperties.getFileId()
+    }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Get properties oAuth"() {
@@ -560,6 +628,19 @@ class DirectoryAPITests extends APISpec {
         compareDatesWithPrecision(primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Set httpHeaders trailing dot"() {
+        given:
+        shareClient = getShareClient(shareName, true, null)
+
+        def directoryClient = shareClient.getDirectoryClient(generatePathName() + ".")
+        directoryClient.createIfNotExists()
+        def res = directoryClient.setPropertiesWithResponse(new FileSmbProperties(), null, null, null)
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(res, 200)
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Set httpHeaders oAuth"() {
         given:
@@ -599,6 +680,27 @@ class DirectoryAPITests extends APISpec {
         def getPropertiesBefore = primaryDirectoryClient.getProperties()
         def setPropertiesResponse = primaryDirectoryClient.setMetadataWithResponse(updatedMetadata, null, null)
         def getPropertiesAfter = primaryDirectoryClient.getProperties()
+
+        then:
+        testMetadata == getPropertiesBefore.getMetadata()
+        FileTestHelper.assertResponseStatusCode(setPropertiesResponse, 200)
+        updatedMetadata == getPropertiesAfter.getMetadata()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Set metadata trailing dot"() {
+        given:
+        shareClient = getShareClient(shareName, true, null)
+
+        def directoryClient = shareClient.getDirectoryClient(generatePathName() + ".")
+
+        directoryClient.createWithResponse(null, null, testMetadata, null, null)
+        def updatedMetadata = Collections.singletonMap("update", "value")
+
+        when:
+        def getPropertiesBefore = directoryClient.getProperties()
+        def setPropertiesResponse = directoryClient.setMetadataWithResponse(updatedMetadata, null, null)
+        def getPropertiesAfter = directoryClient.getProperties()
 
         then:
         testMetadata == getPropertiesBefore.getMetadata()
@@ -947,6 +1049,18 @@ class DirectoryAPITests extends APISpec {
         null      | false
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "List handles trailing dot"() {
+        given:
+        shareClient = getShareClient(shareName, true, null)
+
+        def directoryClient = shareClient.getDirectoryClient(generatePathName() + ".")
+        directoryClient.create()
+
+        expect:
+        directoryClient.listHandles(null, false, null, null).size() == 0
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "List handles oAuth"() {
         given:
@@ -1015,6 +1129,23 @@ class DirectoryAPITests extends APISpec {
 
         when:
         def handlesClosedInfo  = primaryDirectoryClient.forceCloseAllHandles(false, null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Force close all handles trailing dot"() {
+        given:
+        shareClient = getShareClient(shareName, true, null)
+
+        def directoryClient = shareClient.getDirectoryClient(generatePathName() + ".")
+        directoryClient.create()
+
+        when:
+        def handlesClosedInfo  = directoryClient.forceCloseAllHandles(false, null, null)
 
         then:
         notThrown(ShareStorageException)
@@ -1306,6 +1437,21 @@ class DirectoryAPITests extends APISpec {
         notThrown(ShareStorageException)
         destClient.getProperties()
         destClient.getDirectoryPath() == directoryName
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2022_11_02")
+    def "Rename trailing dot"() {
+        setup:
+        shareClient = getShareClient(shareName, true, true)
+
+        def directoryClient = shareClient.getDirectoryClient(generatePathName() + ".")
+        directoryClient.create()
+
+        when:
+        directoryClient.rename(generatePathName() + ".")
+
+        then:
+        notThrown(ShareStorageException)
     }
 
     def "Create sub directory"() {

@@ -61,8 +61,9 @@ public final class ShareLeaseAsyncClient {
 
     private volatile String leaseId;
 
-    ShareLeaseAsyncClient(HttpPipeline pipeline, String url, String shareName, String shareSnapshot, String resourcePath,
-        String leaseId, boolean isShareFile, String accountName, String serviceVersion, ShareTokenIntent shareTokenIntent) {
+    ShareLeaseAsyncClient(HttpPipeline pipeline, String url, String shareName, String shareSnapshot,
+        String resourcePath, String leaseId, boolean isShareFile, String accountName, String serviceVersion,
+        boolean allowTrailingDot, boolean allowSourceTrailingDot, ShareTokenIntent shareTokenIntent) {
         this.isShareFile = isShareFile;
         this.leaseId = leaseId;
         this.client = new AzureFileStorageImplBuilder()
@@ -70,6 +71,8 @@ public final class ShareLeaseAsyncClient {
             .url(url)
             .version(serviceVersion)
             .fileRequestIntent(shareTokenIntent)
+            .allowTrailingDot(allowTrailingDot)
+            .allowSourceTrailingDot(allowSourceTrailingDot)
             .buildClient();
         this.accountName = accountName;
         this.shareName = shareName;
