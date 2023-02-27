@@ -3,7 +3,7 @@
 
 package com.azure.storage.file.share
 
-
+import com.azure.core.http.HttpHeaderName
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
@@ -21,6 +21,7 @@ import com.azure.storage.file.share.models.ShareSignedIdentifier
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.models.ShareTokenIntent
 import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
@@ -164,6 +165,34 @@ class ShareAPITests extends APISpec {
         Collections.singletonMap("", "value")          | 1     | 400        | ShareErrorCode.EMPTY_METADATA_KEY
         Collections.singletonMap("metadata!", "value") | 1     | 400        | ShareErrorCode.INVALID_METADATA
         testMetadata                                   | 6000  | 400        | ShareErrorCode.INVALID_HEADER_VALUE
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Create file and directory oAuth"() {
+        setup:
+        primaryShareClient.create()
+        def oAuthShareClient = getOAuthShareClient(new ShareClientBuilder().shareName(shareName).shareTokenIntent(ShareTokenIntent.BACKUP))
+        def dirName = generatePathName()
+        def dirClient = oAuthShareClient.getDirectoryClient(dirName)
+
+        when:
+        def result = dirClient.createWithResponse(null, null, null, null, null)
+
+        then:
+        dirClient.getShareName() == shareName
+        dirClient.getDirectoryPath() == dirName
+        result.getValue().getETag() == result.getHeaders().getValue(HttpHeaderName.ETAG)
+
+        when:
+        def fileName = generatePathName()
+        def fileClient = dirClient.getFileClient(fileName)
+        result = fileClient.createWithResponse(Constants.KB, null, null, null, null, null, null)
+
+        then:
+        fileClient.getShareName() == shareName
+        def filePath = fileClient.getFilePath().split("/")
+        fileName == filePath[1] // compare with filename
+        result.getValue().getETag() == result.getHeaders().getValue(HttpHeaderName.ETAG)
     }
 
     def "Create if not exists share"() {
@@ -471,6 +500,21 @@ class ShareAPITests extends APISpec {
         then:
         def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Get properties oAuth error"() {
+        setup:
+        primaryShareClient.create()
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
+        def shareClient = oAuthServiceClient.getShareClient(shareName)
+
+        when:
+        shareClient.getProperties()
+
+        then:
+        // only APIs supported by Share with token authentication are createPermission and getPermission
+        thrown(ShareStorageException)
     }
 
     @Unroll
@@ -1202,6 +1246,21 @@ class ShareAPITests extends APISpec {
 
         when:
         def permission = primaryShareClient.getPermission(permissionKey)
+
+        then:
+        permission == filePermission
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Create and get permission oAuth"() {
+        setup:
+        primaryShareClient.create()
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
+        def shareClient = oAuthServiceClient.getShareClient(shareName)
+
+        when:
+        def permissionKey = shareClient.createPermission(filePermission)
+        def permission = shareClient.getPermission(permissionKey)
 
         then:
         permission == filePermission

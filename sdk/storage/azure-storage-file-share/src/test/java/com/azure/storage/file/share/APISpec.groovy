@@ -106,6 +106,25 @@ class APISpec extends StorageSpec {
         }
     }
 
+    def getOAuthShareClient(ShareClientBuilder builder) {
+        if (builder == null) builder = new ShareClientBuilder()
+        builder.endpoint(environment.primaryAccount.fileEndpoint)
+
+        instrument(builder)
+
+        return setOauthCredentials(builder).buildClient()
+    }
+
+    def setOauthCredentials(ShareClientBuilder builder) {
+        if (environment.testMode != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            return builder.credential(new EnvironmentCredentialBuilder().build())
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            return builder.credential(environment.primaryAccount.credential)
+        }
+    }
+
     def generateShareName() {
         generateResourceName(entityNo++)
     }

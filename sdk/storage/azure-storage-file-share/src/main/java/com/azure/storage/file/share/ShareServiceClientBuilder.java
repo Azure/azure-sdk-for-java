@@ -293,6 +293,9 @@ public final class ShareServiceClientBuilder implements
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
      * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
+     * Note: only Share-level operations that {@link TokenCredential} is compatible with are 
+     * {@link ShareClient#createPermission(String)} and {@link ShareClient#getPermission(String)}
+     *
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return the updated ShareServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
