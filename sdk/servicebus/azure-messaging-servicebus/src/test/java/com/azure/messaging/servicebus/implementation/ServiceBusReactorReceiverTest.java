@@ -4,7 +4,9 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -68,8 +70,7 @@ class ServiceBusReactorReceiverTest {
     private ReactorProvider reactorProvider;
     @Mock
     private ReactorDispatcher reactorDispatcher;
-    @Mock
-    private AmqpRetryPolicy retryPolicy;
+    private final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
     @Mock
     private ReceiveLinkHandler receiveLinkHandler;
     @Mock
