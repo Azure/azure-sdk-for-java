@@ -12,6 +12,11 @@ const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/;
 const pkgRegEx2 = /Package\s+tag\s+(.+)\.</;
 const data = {};
 const servicesInvalidUrl = [];
+const deprecatedArtifacts = [
+    "azure-resourcemanager-batchai",
+    "azure-resourcemanager-loadtestservice",
+    "azure-resourcemanager-machinelearningservices",
+];
 
 async function autocent() {
     console.log("[INFO] Automation task to update the mapping of services and API version tags.");
@@ -32,7 +37,9 @@ async function getArtifacts() {
     }
     var promises = [];
     for (var i in artifacts) {
-        promises.push(readMetadata(artifacts[i]));
+        if (!deprecatedArtifacts.includes(artifacts[i])) {
+            promises.push(readMetadata(artifacts[i]));
+        }
     }
     artiRegEx.lastIndex = 0;
 
