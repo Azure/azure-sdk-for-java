@@ -106,7 +106,9 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
                     String configName = FEATURE_MANAGEMENT_KEY
                         + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
 
-                    updateTelemetry(featureFlag, tracing);
+                    for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
+                        tracing.getFeatureFlagTracing().updateFeatureFilterTelemetry(filter.getName());
+                    }
 
                     properties.put(configName, createFeature(featureFlag));
                 }

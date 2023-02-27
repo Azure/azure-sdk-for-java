@@ -5,41 +5,37 @@ package com.azure.spring.cloud.config.implementation.http.policy;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.DEV_ENV_TRACING;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
 
-import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.config.implementation.HostType;
 import com.azure.spring.cloud.config.implementation.RequestTracingConstants;
 import com.azure.spring.cloud.config.implementation.RequestType;
 
 public class TracingInfo {
 
-    private boolean isDev = false;
+    private Boolean isDev = false;
 
-    private boolean isKeyVaultConfigured = false;
+    private Boolean isKeyVaultConfigured = false;
 
-    private int replicaCount;
+    private int replicaCount = 0;
 
-    private final FeatureFlagTracing featureFlagTracing;
-    
-    private final Configuration configuration;
+    private FeatureFlagTracing featureFlagTracing;
 
-    public TracingInfo(boolean isDev, boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
+    public TracingInfo(Boolean isDev, Boolean isKeyVaultConfigured, int replicaCount) {
         this.isDev = isDev;
         this.isKeyVaultConfigured = isKeyVaultConfigured;
         this.replicaCount = replicaCount;
         this.featureFlagTracing = new FeatureFlagTracing();
-        this.configuration = configuration;
     }
 
-    public String getValue(boolean watchRequests) {
-        String track = configuration.get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
-        if (track != null && Boolean.valueOf(track)) {
+    public String getValue(Boolean watchRequests) {
+        String track = System.getenv(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
+        if ("false".equalsIgnoreCase(track)) {
             return "";
         }
 
         RequestType requestTypeValue = watchRequests ? RequestType.WATCH : RequestType.STARTUP;
         StringBuilder sb = new StringBuilder();
 
-        sb.append(RequestTracingConstants.REQUEST_TYPE_KEY).append("=" + requestTypeValue);
+        sb.append(RequestTracingConstants.REQUEST_TYPE_KEY + "=" + requestTypeValue);
 
         if (featureFlagTracing != null && featureFlagTracing.usesAnyFilter()) {
             sb.append(",Filter=").append(featureFlagTracing.toString());
@@ -47,18 +43,18 @@ public class TracingInfo {
 
         String hostType = getHostType();
         if (!hostType.isEmpty()) {
-            sb.append(",").append(RequestTracingConstants.HOST_TYPE_KEY).append("=").append(hostType);
+            sb.append("," + RequestTracingConstants.HOST_TYPE_KEY + "=" + hostType);
         }
 
         if (isDev) {
-            sb.append(",Env=").append(DEV_ENV_TRACING);
+            sb.append(",Env=" + DEV_ENV_TRACING);
         }
         if (isKeyVaultConfigured) {
-            sb.append(",").append(KEY_VAULT_CONFIGURED_TRACING);
+            sb.append("," + KEY_VAULT_CONFIGURED_TRACING);
         }
 
         if (replicaCount > 0) {
-            sb.append(",").append(RequestTracingConstants.REPLICA_COUNT).append("=").append(replicaCount);
+            sb.append("," + RequestTracingConstants.REPLICA_COUNT + "=" + replicaCount);
         }
 
         return sb.toString();
@@ -78,8 +74,6 @@ public class TracingInfo {
             hostType = HostType.AZURE_WEB_APP;
         } else if (System.getenv(RequestTracingConstants.KUBERNETES_ENVIRONMENT_VARIABLE.toString()) != null) {
             hostType = HostType.KUBERNETES;
-        } else if (System.getenv(RequestTracingConstants.CONTAINER_APP_ENVIRONMENT_VARIABLE.toString()) != null) {
-            hostType = HostType.CONTAINER_APP;
         }
 
         return hostType.toString();
