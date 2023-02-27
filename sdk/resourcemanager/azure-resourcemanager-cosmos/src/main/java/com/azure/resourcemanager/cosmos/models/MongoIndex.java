@@ -22,6 +22,10 @@ public final class MongoIndex {
     @JsonProperty(value = "options")
     private MongoIndexOptions options;
 
+    /** Creates an instance of MongoIndex class. */
+    public MongoIndex() {
+    }
+
     /**
      * Get the key property: Cosmos DB MongoDB collection index keys.
      *

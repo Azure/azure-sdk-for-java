@@ -7,6 +7,8 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -15,6 +17,10 @@ import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.RequestR
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.SslContextUtils;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServer;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServerFactory;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListener;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListenerMetrics;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.ssl.SslContext;
 import org.mockito.Mockito;
@@ -23,6 +29,8 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.nio.channels.ClosedChannelException;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
@@ -50,6 +58,18 @@ public class ConnectionStateListenerTest {
             {false, RequestResponseType.CHANNEL_RST, false, false},
             {true, RequestResponseType.NONE, false, true}, // the request will be timed out, but the connection will be active. When tcp server shutdown, the connection will be closed gracefully
             {false, RequestResponseType.NONE, false, false},
+        };
+    }
+
+    @DataProvider(name = "connectionStateListenerExceptionProvider")
+    public Object[][] connectionStateListenerExceptionProvider() {
+        return new Object[][]{
+            // exception, canConnectionStateListenerHandleException
+            { new IOException(), true },
+            { new ClosedChannelException(), true },
+            { new RntbdRequestManager.UnhealthyChannelException("Test"), true },
+            { new NotFoundException(), false },
+            { new GoneException(), false }
         };
     }
 
@@ -111,6 +131,25 @@ public class ConnectionStateListenerTest {
             } else {
                 assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
             }
+        }
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "connectionStateListenerExceptionProvider")
+    public void connectionStateListenerOnException(Exception exception, boolean canHandle) {
+        RntbdEndpoint endpointMock = Mockito.mock(RntbdEndpoint.class);
+
+        Uri testRequestUri = new Uri("http://127.0.0.1:1");
+        testRequestUri.setConnected();
+        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock);
+        connectionStateListener.onBeforeSendRequest(testRequestUri);
+        connectionStateListener.onException(exception);
+        RntbdConnectionStateListenerMetrics metrics = connectionStateListener.getMetrics();
+        if (canHandle) {
+            assertThat(metrics.getLastActionableContext().getRight()).isEqualTo(1);
+            assertThat(testRequestUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+        } else {
+            assertThat(metrics.getLastActionableContext()).isNull();
+            assertThat(testRequestUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
         }
     }
 

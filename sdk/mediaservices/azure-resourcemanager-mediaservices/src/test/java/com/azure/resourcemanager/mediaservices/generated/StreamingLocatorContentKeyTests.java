@@ -15,9 +15,9 @@ public final class StreamingLocatorContentKeyTests {
         StreamingLocatorContentKey model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"89118e21-7b62-4f1e-922a-7517207a4213\",\"type\":\"CommonEncryptionCbcs\",\"labelReferenceInStreamingPolicy\":\"um\",\"value\":\"p\",\"policyName\":\"ebmnzbtbhjpglk\",\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]}]}")
+                    "{\"id\":\"3f672af9-ffd6-4688-835c-845126b962e5\",\"type\":\"CommonEncryptionCbcs\",\"labelReferenceInStreamingPolicy\":\"um\",\"value\":\"p\",\"policyName\":\"ebmnzbtbhjpglk\",\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]}]}")
                 .toObject(StreamingLocatorContentKey.class);
-        Assertions.assertEquals(UUID.fromString("89118e21-7b62-4f1e-922a-7517207a4213"), model.id());
+        Assertions.assertEquals(UUID.fromString("3f672af9-ffd6-4688-835c-845126b962e5"), model.id());
         Assertions.assertEquals("um", model.labelReferenceInStreamingPolicy());
         Assertions.assertEquals("p", model.value());
     }
@@ -26,11 +26,11 @@ public final class StreamingLocatorContentKeyTests {
     public void testSerialize() throws Exception {
         StreamingLocatorContentKey model =
             new StreamingLocatorContentKey()
-                .withId(UUID.fromString("89118e21-7b62-4f1e-922a-7517207a4213"))
+                .withId(UUID.fromString("3f672af9-ffd6-4688-835c-845126b962e5"))
                 .withLabelReferenceInStreamingPolicy("um")
                 .withValue("p");
         model = BinaryData.fromObject(model).toObject(StreamingLocatorContentKey.class);
-        Assertions.assertEquals(UUID.fromString("89118e21-7b62-4f1e-922a-7517207a4213"), model.id());
+        Assertions.assertEquals(UUID.fromString("3f672af9-ffd6-4688-835c-845126b962e5"), model.id());
         Assertions.assertEquals("um", model.labelReferenceInStreamingPolicy());
         Assertions.assertEquals("p", model.value());
     }

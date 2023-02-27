@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.Permission;
 import com.azure.resourcemanager.cosmos.models.RoleDefinitionType;
 import com.azure.resourcemanager.cosmos.models.SqlRoleDefinitionCreateUpdateParameters;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for SqlResources CreateUpdateSqlRoleDefinition. */
 public final class SqlResourcesCreateUpdateSqlRoleDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlRoleDefinitionCreateUpdate.
@@ -48,6 +47,6 @@ public final class SqlResourcesCreateUpdateSqlRoleDefinitionSamples {
                                                 "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/create",
                                                 "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/read"))
                                     .withNotDataActions(Arrays.asList()))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

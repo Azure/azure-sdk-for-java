@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -57,6 +56,6 @@ public final class DeletedAccountsPurgeMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.deletedAccounts().purge("zr", "rdgrtw", "enuuzkopbm", Context.NONE);
+        manager.deletedAccounts().purge("upkvipmdsc", "xqupevzhf", "totxhojujb", com.azure.core.util.Context.NONE);
     }
 }

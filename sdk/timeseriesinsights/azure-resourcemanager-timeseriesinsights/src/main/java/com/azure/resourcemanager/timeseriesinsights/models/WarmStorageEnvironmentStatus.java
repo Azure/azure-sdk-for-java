@@ -4,39 +4,31 @@
 
 package com.azure.resourcemanager.timeseriesinsights.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Immutable;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.WarmStoragePropertiesUsage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object that represents the status of warm storage on an environment. */
-@JsonFlatten
-@Fluent
-public class WarmStorageEnvironmentStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WarmStorageEnvironmentStatus.class);
-
+@Immutable
+public final class WarmStorageEnvironmentStatus {
     /*
-     * This string represents the state of warm storage properties usage. It
-     * can be "Ok", "Error", "Unknown".
+     * An object that contains the status of warm storage properties usage.
      */
-    @JsonProperty(value = "propertiesUsage.state")
-    private WarmStoragePropertiesState state;
+    @JsonProperty(value = "propertiesUsage", access = JsonProperty.Access.WRITE_ONLY)
+    private WarmStoragePropertiesUsage innerPropertiesUsage;
 
-    /*
-     * A value that represents the number of properties used by the environment
-     * for S1/S2 SKU and number of properties used by Warm Store for PAYG SKU
-     */
-    @JsonProperty(value = "propertiesUsage.stateDetails.currentCount")
-    private Integer currentCount;
+    /** Creates an instance of WarmStorageEnvironmentStatus class. */
+    public WarmStorageEnvironmentStatus() {
+    }
 
-    /*
-     * A value that represents the maximum number of properties used allowed by
-     * the environment for S1/S2 SKU and maximum number of properties allowed
-     * by Warm Store for PAYG SKU.
+    /**
+     * Get the innerPropertiesUsage property: An object that contains the status of warm storage properties usage.
+     *
+     * @return the innerPropertiesUsage value.
      */
-    @JsonProperty(value = "propertiesUsage.stateDetails.maxCount")
-    private Integer maxCount;
+    private WarmStoragePropertiesUsage innerPropertiesUsage() {
+        return this.innerPropertiesUsage;
+    }
 
     /**
      * Get the state property: This string represents the state of warm storage properties usage. It can be "Ok",
@@ -45,7 +37,7 @@ public class WarmStorageEnvironmentStatus {
      * @return the state value.
      */
     public WarmStoragePropertiesState state() {
-        return this.state;
+        return this.innerPropertiesUsage() == null ? null : this.innerPropertiesUsage().state();
     }
 
     /**
@@ -56,7 +48,10 @@ public class WarmStorageEnvironmentStatus {
      * @return the WarmStorageEnvironmentStatus object itself.
      */
     public WarmStorageEnvironmentStatus withState(WarmStoragePropertiesState state) {
-        this.state = state;
+        if (this.innerPropertiesUsage() == null) {
+            this.innerPropertiesUsage = new WarmStoragePropertiesUsage();
+        }
+        this.innerPropertiesUsage().withState(state);
         return this;
     }
 
@@ -67,19 +62,7 @@ public class WarmStorageEnvironmentStatus {
      * @return the currentCount value.
      */
     public Integer currentCount() {
-        return this.currentCount;
-    }
-
-    /**
-     * Set the currentCount property: A value that represents the number of properties used by the environment for S1/S2
-     * SKU and number of properties used by Warm Store for PAYG SKU.
-     *
-     * @param currentCount the currentCount value to set.
-     * @return the WarmStorageEnvironmentStatus object itself.
-     */
-    public WarmStorageEnvironmentStatus withCurrentCount(Integer currentCount) {
-        this.currentCount = currentCount;
-        return this;
+        return this.innerPropertiesUsage() == null ? null : this.innerPropertiesUsage().currentCount();
     }
 
     /**
@@ -89,19 +72,7 @@ public class WarmStorageEnvironmentStatus {
      * @return the maxCount value.
      */
     public Integer maxCount() {
-        return this.maxCount;
-    }
-
-    /**
-     * Set the maxCount property: A value that represents the maximum number of properties used allowed by the
-     * environment for S1/S2 SKU and maximum number of properties allowed by Warm Store for PAYG SKU.
-     *
-     * @param maxCount the maxCount value to set.
-     * @return the WarmStorageEnvironmentStatus object itself.
-     */
-    public WarmStorageEnvironmentStatus withMaxCount(Integer maxCount) {
-        this.maxCount = maxCount;
-        return this;
+        return this.innerPropertiesUsage() == null ? null : this.innerPropertiesUsage().maxCount();
     }
 
     /**
@@ -110,5 +81,8 @@ public class WarmStorageEnvironmentStatus {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerPropertiesUsage() != null) {
+            innerPropertiesUsage().validate();
+        }
     }
 }

@@ -56,6 +56,8 @@ public final class AccountFiltersDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.accountFilters().deleteWithResponse("ligovibrxkpm", "oaz", "ruocbgo", com.azure.core.util.Context.NONE);
+        manager
+            .accountFilters()
+            .deleteWithResponse("bwnhhtql", "ehgpp", "pifhpfeoajvgcxtx", com.azure.core.util.Context.NONE);
     }
 }

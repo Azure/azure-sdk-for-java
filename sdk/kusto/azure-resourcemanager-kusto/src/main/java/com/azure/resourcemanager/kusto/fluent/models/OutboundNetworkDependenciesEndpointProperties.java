@@ -32,6 +32,10 @@ public final class OutboundNetworkDependenciesEndpointProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of OutboundNetworkDependenciesEndpointProperties class. */
+    public OutboundNetworkDependenciesEndpointProperties() {
+    }
+
     /**
      * Get the category property: The type of service accessed by the Kusto Service Environment, e.g., Azure Storage,
      * Azure SQL Database, and Azure Active Directory.

@@ -31,6 +31,10 @@ public final class FailoverPolicy {
     @JsonProperty(value = "failoverPriority")
     private Integer failoverPriority;
 
+    /** Creates an instance of FailoverPolicy class. */
+    public FailoverPolicy() {
+    }
+
     /**
      * Get the id property: The unique identifier of the region in which the database account replicates to. Example:
      * &amp;lt;accountName&amp;gt;-&amp;lt;locationName&amp;gt;.

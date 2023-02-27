@@ -7,11 +7,10 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.SkuChangeInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuChangeInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuChangeInfo model =
             BinaryData
                 .fromString(
@@ -22,8 +21,8 @@ public final class SkuChangeInfoTests {
         Assertions.assertEquals("atscmd", model.lastChangeDate());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuChangeInfo model =
             new SkuChangeInfo()
                 .withCountOfDowngrades(94.32142F)

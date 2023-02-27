@@ -17,6 +17,15 @@ public final class PublicIpType extends ExpandableStringEnum<PublicIpType> {
     public static final PublicIpType DUAL_STACK = fromString("DualStack");
 
     /**
+     * Creates a new instance of PublicIpType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicIpType() {
+    }
+
+    /**
      * Creates or finds a PublicIpType from its string representation.
      *
      * @param name a name to look for.

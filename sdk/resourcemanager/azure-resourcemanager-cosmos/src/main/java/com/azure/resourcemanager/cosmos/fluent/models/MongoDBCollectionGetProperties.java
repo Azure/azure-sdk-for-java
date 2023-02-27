@@ -24,6 +24,10 @@ public final class MongoDBCollectionGetProperties {
     @JsonProperty(value = "options")
     private MongoDBCollectionGetPropertiesOptions options;
 
+    /** Creates an instance of MongoDBCollectionGetProperties class. */
+    public MongoDBCollectionGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

@@ -16,6 +16,10 @@ public final class ContinuousBackupRestoreLocation {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of ContinuousBackupRestoreLocation class. */
+    public ContinuousBackupRestoreLocation() {
+    }
+
     /**
      * Get the location property: The name of the continuous backup restore location.
      *

@@ -6,10 +6,8 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * The options for creating a call.
@@ -31,8 +29,6 @@ public class StartRecordingOptions {
 
     private List<CommunicationIdentifier> audioChannelParticipantOrdering;
 
-    private RepeatabilityHeaders repeatabilityHeaders;
-
     /**
      * Constructor
      *
@@ -41,7 +37,6 @@ public class StartRecordingOptions {
     public StartRecordingOptions(CallLocator callLocator) {
         Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
         this.callLocator = callLocator;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -158,27 +153,6 @@ public class StartRecordingOptions {
      */
     public StartRecordingOptions setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
-        return this;
-    }
-
-    /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
-
-
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the StartRecordingOptions object itself.
-     */
-    public StartRecordingOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
 }

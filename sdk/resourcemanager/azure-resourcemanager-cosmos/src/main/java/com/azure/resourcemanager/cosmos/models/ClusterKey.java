@@ -22,6 +22,10 @@ public final class ClusterKey {
     @JsonProperty(value = "orderBy")
     private String orderBy;
 
+    /** Creates an instance of ClusterKey class. */
+    public ClusterKey() {
+    }
+
     /**
      * Get the name property: Name of the Cosmos DB Cassandra table cluster key.
      *

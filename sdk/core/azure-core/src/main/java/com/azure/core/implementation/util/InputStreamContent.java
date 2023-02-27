@@ -132,6 +132,11 @@ public final class InputStreamContent extends BinaryDataContent {
             .map(is -> readAndBuffer(is, length));
     }
 
+    @Override
+    public BinaryDataContentType getContentType() {
+        return BinaryDataContentType.BINARY;
+    }
+
     private static boolean canMarkReset(InputStream inputStream, Long length) {
         return length != null && length < MAX_ARRAY_LENGTH && inputStream.markSupported();
     }

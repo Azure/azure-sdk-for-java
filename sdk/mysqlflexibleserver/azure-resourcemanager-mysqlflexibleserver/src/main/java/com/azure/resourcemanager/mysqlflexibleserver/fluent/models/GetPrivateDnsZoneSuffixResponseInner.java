@@ -16,6 +16,10 @@ public final class GetPrivateDnsZoneSuffixResponseInner {
     @JsonProperty(value = "privateDnsZoneSuffix")
     private String privateDnsZoneSuffix;
 
+    /** Creates an instance of GetPrivateDnsZoneSuffixResponseInner class. */
+    public GetPrivateDnsZoneSuffixResponseInner() {
+    }
+
     /**
      * Get the privateDnsZoneSuffix property: Represents the private DNS zone suffix.
      *

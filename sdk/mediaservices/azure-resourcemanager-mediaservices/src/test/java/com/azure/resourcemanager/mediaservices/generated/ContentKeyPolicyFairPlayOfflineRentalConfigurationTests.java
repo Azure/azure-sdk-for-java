@@ -14,20 +14,20 @@ public final class ContentKeyPolicyFairPlayOfflineRentalConfigurationTests {
         ContentKeyPolicyFairPlayOfflineRentalConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"playbackDurationSeconds\":5666619485240381449,\"storageDurationSeconds\":8322323616399062131}")
+                    "{\"playbackDurationSeconds\":6751784121052191451,\"storageDurationSeconds\":3372671534162877362}")
                 .toObject(ContentKeyPolicyFairPlayOfflineRentalConfiguration.class);
-        Assertions.assertEquals(5666619485240381449L, model.playbackDurationSeconds());
-        Assertions.assertEquals(8322323616399062131L, model.storageDurationSeconds());
+        Assertions.assertEquals(6751784121052191451L, model.playbackDurationSeconds());
+        Assertions.assertEquals(3372671534162877362L, model.storageDurationSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContentKeyPolicyFairPlayOfflineRentalConfiguration model =
             new ContentKeyPolicyFairPlayOfflineRentalConfiguration()
-                .withPlaybackDurationSeconds(5666619485240381449L)
-                .withStorageDurationSeconds(8322323616399062131L);
+                .withPlaybackDurationSeconds(6751784121052191451L)
+                .withStorageDurationSeconds(3372671534162877362L);
         model = BinaryData.fromObject(model).toObject(ContentKeyPolicyFairPlayOfflineRentalConfiguration.class);
-        Assertions.assertEquals(5666619485240381449L, model.playbackDurationSeconds());
-        Assertions.assertEquals(8322323616399062131L, model.storageDurationSeconds());
+        Assertions.assertEquals(6751784121052191451L, model.playbackDurationSeconds());
+        Assertions.assertEquals(3372671534162877362L, model.storageDurationSeconds());
     }
 }

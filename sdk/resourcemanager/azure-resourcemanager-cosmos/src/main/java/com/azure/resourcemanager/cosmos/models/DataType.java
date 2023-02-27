@@ -29,6 +29,15 @@ public final class DataType extends ExpandableStringEnum<DataType> {
     public static final DataType MULTI_POLYGON = fromString("MultiPolygon");
 
     /**
+     * Creates a new instance of DataType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataType() {
+    }
+
+    /**
      * Creates or finds a DataType from its string representation.
      *
      * @param name a name to look for.
