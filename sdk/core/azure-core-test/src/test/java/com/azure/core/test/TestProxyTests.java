@@ -103,14 +103,14 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Record")
     @DoNotRecord
     public void testDoNotRecord() {
-
+        testResourceNamer.now();
     }
 
     @Test
     @Tag("Playback")
     @DoNotRecord
     public void testDoNotPlayback() {
-
+        testResourceNamer.now();
     }
 
     @Test
