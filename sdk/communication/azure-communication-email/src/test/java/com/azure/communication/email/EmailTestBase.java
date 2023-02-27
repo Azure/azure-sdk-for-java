@@ -4,7 +4,6 @@
 package com.azure.communication.email;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;

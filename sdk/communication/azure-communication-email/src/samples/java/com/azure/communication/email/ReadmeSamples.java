@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.communication.email;
 
-import com.azure.communication.email.implementation.models.EmailRecipients;
-import com.azure.communication.email.models.*;
-
+import com.azure.communication.email.models.EmailAddress;
+import com.azure.communication.email.models.EmailAttachment;
+import com.azure.communication.email.models.EmailMessage;
+import com.azure.communication.email.models.EmailSendResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.util.ArrayList;
 import java.io.File;
 
 public class ReadmeSamples {

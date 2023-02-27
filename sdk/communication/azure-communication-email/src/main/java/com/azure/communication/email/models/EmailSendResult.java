@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.email.models;
 
 import com.azure.core.annotation.Fluent;
@@ -31,13 +34,16 @@ public final class EmailSendResult {
      *
      * @param id the id value to set.
      * @param status the status value to set.
+     * @param error the error value to set.
      */
     @JsonCreator
     public EmailSendResult(
         @JsonProperty(value = "id", required = true) String id,
-        @JsonProperty(value = "status", required = true) EmailSendStatus status) {
+        @JsonProperty(value = "status", required = true) EmailSendStatus status,
+        @JsonProperty(value = "error") ResponseError error) {
         this.id = id;
         this.status = status;
+        this.error = error;
     }
 
     /**
@@ -65,16 +71,5 @@ public final class EmailSendResult {
      */
     public ResponseError getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: Error details when status is a non-success terminal state.
-     *
-     * @param error the error value to set.
-     * @return the EmailSendResult object itself.
-     */
-    public EmailSendResult setError(ResponseError error) {
-        this.error = error;
-        return this;
     }
 }

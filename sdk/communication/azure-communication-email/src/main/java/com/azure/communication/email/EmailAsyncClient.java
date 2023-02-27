@@ -19,6 +19,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ import java.util.Objects;
 public final class EmailAsyncClient {
     private final EmailsImpl serviceClient;
     private final AzureCommunicationEmailServiceImpl serviceImpl;
+
+    private final ClientLogger logger = new ClientLogger(EmailAsyncClient.class);
 
     /**
      * Initializes an instance of EmailAsyncClient class.
@@ -56,17 +59,20 @@ public final class EmailAsyncClient {
     }
 
     PollerFlux<EmailSendResult, EmailSendResult> beginSend(EmailMessage message, Context context) {
-        Objects.requireNonNull(message.getSenderAddress(),"The message 'senderAddress' cannot be null.");
-        Objects.requireNonNull(message.getSubject(),"The message 'subject' cannot be null.");
+        Objects.requireNonNull(message.getSenderAddress(), "The message 'senderAddress' cannot be null.");
+        Objects.requireNonNull(message.getSubject(), "The message 'subject' cannot be null.");
 
         if (message.getBodyHtml() == null && message.getBodyPlainText() == null) {
-            throw new NullPointerException("The message 'bodyHtml' and 'bodyPlainText' cannot both be null.");
+            throw logger.logExceptionAsError(
+                new NullPointerException("The message 'bodyHtml' and 'bodyPlainText' cannot both be null."));
         }
 
         if (message.getToRecipients() == null && message.getCcRecipients() == null
                 && message.getBccRecipients() == null) {
-            throw new NullPointerException(
-                "The message 'toRecipients', 'ccRecipients', and 'bccRecipients' cannot all be null.");
+            throw logger.logExceptionAsError(
+                new NullPointerException(
+                    "The message 'toRecipients', 'ccRecipients', and 'bccRecipients' cannot all be null.")
+            );
         }
 
         EmailContent content = new EmailContent(message.getSubject())
@@ -80,7 +86,7 @@ public final class EmailAsyncClient {
 
         List<com.azure.communication.email.implementation.models.EmailAttachment> attachmentsImpl = null;
 
-        if(message.getAttachments() != null) {
+        if (message.getAttachments() != null) {
             attachmentsImpl = new ArrayList<>();
             for (EmailAttachment attachment: message.getAttachments()) {
                 attachmentsImpl.add(new com.azure.communication.email.implementation.models.EmailAttachment(

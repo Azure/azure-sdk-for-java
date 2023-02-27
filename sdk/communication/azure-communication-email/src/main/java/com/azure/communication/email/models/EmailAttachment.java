@@ -1,22 +1,26 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.email.models;
 
 import com.azure.core.util.BinaryData;
 
+/** Attachment to the email. */
 public final class EmailAttachment {
     /*
      * Name of the attachment
      */
-    private String name;
+    private final String name;
 
     /*
      * MIME type of the content being attached.
      */
-    private String contentType;
+    private final String contentType;
 
     /*
      * Base64 encoded contents of the attachment
      */
-    private BinaryData content;
+    private final BinaryData content;
 
     /**
      * Creates an instance of EmailAttachment class.
