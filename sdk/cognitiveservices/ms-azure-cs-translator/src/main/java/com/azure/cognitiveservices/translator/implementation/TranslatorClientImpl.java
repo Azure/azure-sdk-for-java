@@ -186,7 +186,7 @@ public final class TranslatorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> translate(
                 @HostParam("Endpoint") String endpoint,
-                @QueryParam("to") String to,
+                @QueryParam(value = "to", multipleQueryParams = true) List<String> to,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData content,
@@ -210,26 +210,6 @@ public final class TranslatorClientImpl {
                 @QueryParam("language") String language,
                 @QueryParam("fromScript") String fromScript,
                 @QueryParam("toScript") String toScript,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData content,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/detect")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> detect(
-                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData content,
@@ -584,14 +564,14 @@ public final class TranslatorClientImpl {
      *              (Required){
      *                 to: String (Required)
      *                 text: String (Required)
-     *                 transliteration (Required): {
+     *                 transliteration (Optional): {
      *                     script: String (Required)
      *                     text: String (Required)
      *                 }
-     *                 alignment (Required): {
+     *                 alignment (Optional): {
      *                     proj: String (Required)
      *                 }
-     *                 sentLen (Required): {
+     *                 sentLen (Optional): {
      *                     srcSentLen (Required): [
      *                         int (Required)
      *                     ]
@@ -601,7 +581,7 @@ public final class TranslatorClientImpl {
      *                 }
      *             }
      *         ]
-     *         sourceText (Required): {
+     *         sourceText (Optional): {
      *             text: String (Required)
      *         }
      *     }
@@ -624,7 +604,7 @@ public final class TranslatorClientImpl {
     public Mono<Response<BinaryData>> translateWithResponseAsync(
             List<String> to, BinaryData content, RequestOptions requestOptions) {
         final String accept = "application/json";
-        String toConverted = to.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        List<String> toConverted = to.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
                 context ->
                         service.translate(
@@ -714,14 +694,14 @@ public final class TranslatorClientImpl {
      *              (Required){
      *                 to: String (Required)
      *                 text: String (Required)
-     *                 transliteration (Required): {
+     *                 transliteration (Optional): {
      *                     script: String (Required)
      *                     text: String (Required)
      *                 }
-     *                 alignment (Required): {
+     *                 alignment (Optional): {
      *                     proj: String (Required)
      *                 }
-     *                 sentLen (Required): {
+     *                 sentLen (Optional): {
      *                     srcSentLen (Required): [
      *                         int (Required)
      *                     ]
@@ -731,7 +711,7 @@ public final class TranslatorClientImpl {
      *                 }
      *             }
      *         ]
-     *         sourceText (Required): {
+     *         sourceText (Optional): {
      *             text: String (Required)
      *         }
      *     }
@@ -877,125 +857,6 @@ public final class TranslatorClientImpl {
     }
 
     /**
-     * Detect Languages.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         text: String (Required)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         language: String (Required)
-     *         score: double (Required)
-     *         isTranslationSupported: boolean (Required)
-     *         isTransliterationSupported: boolean (Required)
-     *         alternatives (Required): [
-     *              (Required){
-     *                 language: String (Required)
-     *                 score: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param content Array of the text for which values the language detection will be applied.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectWithResponseAsync(BinaryData content, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.detect(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                content,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Detect Languages.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         text: String (Required)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         language: String (Required)
-     *         score: double (Required)
-     *         isTranslationSupported: boolean (Required)
-     *         isTransliterationSupported: boolean (Required)
-     *         alternatives (Required): [
-     *              (Required){
-     *                 language: String (Required)
-     *                 score: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param content Array of the text for which values the language detection will be applied.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectWithResponse(BinaryData content, RequestOptions requestOptions) {
-        return detectWithResponseAsync(content, requestOptions).block();
-    }
-
-    /**
      * Break Sentence.
      *
      * <p><strong>Query Parameters</strong>
@@ -1040,14 +901,9 @@ public final class TranslatorClientImpl {
      *             language: String (Required)
      *             score: double (Required)
      *         }
-     *         sentLen (Required): {
-     *             srcSentLen (Required): [
-     *                 int (Required)
-     *             ]
-     *             transSentLen (Required): [
-     *                 int (Required)
-     *             ]
-     *         }
+     *         sentLen (Required): [
+     *             int (Required)
+     *         ]
      *     }
      * ]
      * }</pre>
@@ -1120,14 +976,9 @@ public final class TranslatorClientImpl {
      *             language: String (Required)
      *             score: double (Required)
      *         }
-     *         sentLen (Required): {
-     *             srcSentLen (Required): [
-     *                 int (Required)
-     *             ]
-     *             transSentLen (Required): [
-     *                 int (Required)
-     *             ]
-     *         }
+     *         sentLen (Required): [
+     *             int (Required)
+     *         ]
      *     }
      * ]
      * }</pre>

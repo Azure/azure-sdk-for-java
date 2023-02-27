@@ -6,7 +6,6 @@ package com.azure.cognitiveservices.translator;
 
 import com.azure.cognitiveservices.translator.implementation.TranslatorClientImpl;
 import com.azure.cognitiveservices.translator.models.BreakSentenceElement;
-import com.azure.cognitiveservices.translator.models.DetectedLanguageWithAlternatives;
 import com.azure.cognitiveservices.translator.models.DictionaryExampleElement;
 import com.azure.cognitiveservices.translator.models.DictionaryExampleTextElement;
 import com.azure.cognitiveservices.translator.models.DictionaryLookupElement;
@@ -225,14 +224,14 @@ public final class TranslatorAsyncClient {
      *              (Required){
      *                 to: String (Required)
      *                 text: String (Required)
-     *                 transliteration (Required): {
+     *                 transliteration (Optional): {
      *                     script: String (Required)
      *                     text: String (Required)
      *                 }
-     *                 alignment (Required): {
+     *                 alignment (Optional): {
      *                     proj: String (Required)
      *                 }
-     *                 sentLen (Required): {
+     *                 sentLen (Optional): {
      *                     srcSentLen (Required): [
      *                         int (Required)
      *                     ]
@@ -242,7 +241,7 @@ public final class TranslatorAsyncClient {
      *                 }
      *             }
      *         ]
-     *         sourceText (Required): {
+     *         sourceText (Optional): {
      *             text: String (Required)
      *         }
      *     }
@@ -325,62 +324,6 @@ public final class TranslatorAsyncClient {
     }
 
     /**
-     * Detect Languages.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         text: String (Required)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         language: String (Required)
-     *         score: double (Required)
-     *         isTranslationSupported: boolean (Required)
-     *         isTransliterationSupported: boolean (Required)
-     *         alternatives (Required): [
-     *              (Required){
-     *                 language: String (Required)
-     *                 score: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param content Array of the text for which values the language detection will be applied.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectWithResponse(BinaryData content, RequestOptions requestOptions) {
-        return this.serviceClient.detectWithResponseAsync(content, requestOptions);
-    }
-
-    /**
      * Break Sentence.
      *
      * <p><strong>Query Parameters</strong>
@@ -425,14 +368,9 @@ public final class TranslatorAsyncClient {
      *             language: String (Required)
      *             score: double (Required)
      *         }
-     *         sentLen (Required): {
-     *             srcSentLen (Required): [
-     *                 int (Required)
-     *             ]
-     *             transSentLen (Required): [
-     *                 int (Required)
-     *             ]
-     *         }
+     *         sentLen (Required): [
+     *             int (Required)
+     *         ]
      *     }
      * ]
      * }</pre>
@@ -853,58 +791,6 @@ public final class TranslatorAsyncClient {
     }
 
     /**
-     * Detect Languages.
-     *
-     * @param content Array of the text for which values the language detection will be applied.
-     * @param clientTraceId A client-generated GUID to uniquely identify the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<DetectedLanguageWithAlternatives>> detect(List<InputTextElement> content, String clientTraceId) {
-        // Generated convenience method for detectWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (clientTraceId != null) {
-            requestOptions.setHeader("X-ClientTraceId", clientTraceId);
-        }
-        return detectWithResponse(BinaryData.fromObject(content), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(
-                        protocolMethodData ->
-                                protocolMethodData.toObject(TYPE_REFERENCE_LIST_DETECTED_LANGUAGE_WITH_ALTERNATIVES));
-    }
-
-    /**
-     * Detect Languages.
-     *
-     * @param content Array of the text for which values the language detection will be applied.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<DetectedLanguageWithAlternatives>> detect(List<InputTextElement> content) {
-        // Generated convenience method for detectWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return detectWithResponse(BinaryData.fromObject(content), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(
-                        protocolMethodData ->
-                                protocolMethodData.toObject(TYPE_REFERENCE_LIST_DETECTED_LANGUAGE_WITH_ALTERNATIVES));
-    }
-
-    /**
      * Break Sentence.
      *
      * @param content Array of the text for which values the sentence boundaries will be calculated.
@@ -1093,8 +979,4 @@ public final class TranslatorAsyncClient {
 
     private static final TypeReference<List<TransliteratedText>> TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT =
             new TypeReference<List<TransliteratedText>>() {};
-
-    private static final TypeReference<List<DetectedLanguageWithAlternatives>>
-            TYPE_REFERENCE_LIST_DETECTED_LANGUAGE_WITH_ALTERNATIVES =
-                    new TypeReference<List<DetectedLanguageWithAlternatives>>() {};
 }

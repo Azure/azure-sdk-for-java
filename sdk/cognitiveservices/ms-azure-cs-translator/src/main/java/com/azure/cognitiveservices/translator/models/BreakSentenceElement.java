@@ -7,6 +7,7 @@ package com.azure.cognitiveservices.translator.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Elemented containing break sentence result. */
 @Immutable
@@ -18,10 +19,11 @@ public final class BreakSentenceElement {
     private DetectedLanguage detectedLanguage;
 
     /*
-     * Sentence boundaries in the input and output texts.
+     * An integer array representing the lengths of the sentences in the input text.
+     * The length of the array is the number of sentences, and the values are the length of each sentence.
      */
     @JsonProperty(value = "sentLen", required = true)
-    private SentenceLength sentLen;
+    private List<Integer> sentLen;
 
     /**
      * Creates an instance of BreakSentenceElement class.
@@ -29,7 +31,7 @@ public final class BreakSentenceElement {
      * @param sentLen the sentLen value to set.
      */
     @JsonCreator
-    private BreakSentenceElement(@JsonProperty(value = "sentLen", required = true) SentenceLength sentLen) {
+    private BreakSentenceElement(@JsonProperty(value = "sentLen", required = true) List<Integer> sentLen) {
         this.sentLen = sentLen;
     }
 
@@ -44,11 +46,12 @@ public final class BreakSentenceElement {
     }
 
     /**
-     * Get the sentLen property: Sentence boundaries in the input and output texts.
+     * Get the sentLen property: An integer array representing the lengths of the sentences in the input text. The
+     * length of the array is the number of sentences, and the values are the length of each sentence.
      *
      * @return the sentLen value.
      */
-    public SentenceLength getSentLen() {
+    public List<Integer> getSentLen() {
         return this.sentLen;
     }
 }
