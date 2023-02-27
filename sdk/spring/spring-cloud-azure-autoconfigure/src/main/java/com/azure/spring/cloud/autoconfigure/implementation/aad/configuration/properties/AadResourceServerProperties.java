@@ -33,13 +33,12 @@ public class AadResourceServerProperties implements InitializingBean {
 
     /**
      *
-     * Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Default value is "sub".
+     * Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Example: If use the default value, and the access_token's "sub" scope value is "testValue", then AuthenticatedPrincipal#getName will return "testValue". The default value is `"sub"`.
      */
     private String principalClaimName;
 
     /**
-     * Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value.
-     * Default value is: "scp" -> "SCOPE_", "roles" -> "APPROLE_".
+     * Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value. Example: If use the default value, and the access_token's "scp" scope value is "testValue", then GrantedAuthority with "SCOPE_testValue" will be created. The default value is `"scp" -> "SCOPE_", "roles" -> "APPROLE_"`.
      */
     private Map<String, String> claimToAuthorityPrefixMap;
 
