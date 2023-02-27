@@ -1,14 +1,12 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0-beta.8 (2023-02-24)
 
-### Features Added
-
-### Breaking Changes
+### Dependency Update
+- Update OpenTelemetry Java Instrumentation to 1.23.0
 
 ### Bugs Fixed
-
-### Other Changes
+- [Fix GlobalOpenTelemetry usage](https://github.com/Azure/azure-sdk-for-java/pull/33678)
 
 ## 1.0.0-beta.7 (2023-02-09)
 

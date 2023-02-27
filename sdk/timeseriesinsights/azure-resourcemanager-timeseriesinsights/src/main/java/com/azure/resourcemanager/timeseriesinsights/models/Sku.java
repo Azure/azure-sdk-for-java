@@ -6,7 +6,6 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
      * The name of this SKU.
      */
@@ -24,12 +21,15 @@ public final class Sku {
     private SkuName name;
 
     /*
-     * The capacity of the sku. For Gen1 environments, this value can be
-     * changed to support scale out of environments after they have been
-     * created.
+     * The capacity of the sku. For Gen1 environments, this value can be changed to support scale out of environments
+     * after they have been created.
      */
     @JsonProperty(value = "capacity", required = true)
     private int capacity;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the name property: The name of this SKU.
@@ -80,8 +80,10 @@ public final class Sku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
 }

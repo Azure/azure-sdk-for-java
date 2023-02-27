@@ -63,6 +63,10 @@ public final class DatabasePrincipalProperties {
     @JsonProperty(value = "aadObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String aadObjectId;
 
+    /** Creates an instance of DatabasePrincipalProperties class. */
+    public DatabasePrincipalProperties() {
+    }
+
     /**
      * Get the principalId property: The principal ID assigned to the database principal. It can be a user email,
      * application ID, or security group name.

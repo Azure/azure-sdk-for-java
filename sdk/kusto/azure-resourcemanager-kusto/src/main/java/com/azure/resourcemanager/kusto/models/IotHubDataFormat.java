@@ -59,6 +59,15 @@ public final class IotHubDataFormat extends ExpandableStringEnum<IotHubDataForma
     public static final IotHubDataFormat W3CLOGFILE = fromString("W3CLOGFILE");
 
     /**
+     * Creates a new instance of IotHubDataFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IotHubDataFormat() {
+    }
+
+    /**
      * Creates or finds a IotHubDataFormat from its string representation.
      *
      * @param name a name to look for.

@@ -4,7 +4,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -33,7 +32,6 @@ public final class SearchAudience extends ExpandableStringEnum<SearchAudience> {
      * @param name a name to look for.
      * @return the corresponding SearchAudience.
      */
-    @JsonCreator
     public static SearchAudience fromString(String name) {
         return fromString(name, SearchAudience.class);
     }

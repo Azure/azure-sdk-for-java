@@ -38,6 +38,7 @@ import com.azure.resourcemanager.kusto.implementation.OperationsResultsLocations
 import com.azure.resourcemanager.kusto.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.kusto.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.kusto.implementation.ScriptsImpl;
+import com.azure.resourcemanager.kusto.implementation.SkusImpl;
 import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurations;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignments;
 import com.azure.resourcemanager.kusto.models.Clusters;
@@ -51,6 +52,7 @@ import com.azure.resourcemanager.kusto.models.OperationsResultsLocations;
 import com.azure.resourcemanager.kusto.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.kusto.models.PrivateLinkResources;
 import com.azure.resourcemanager.kusto.models.Scripts;
+import com.azure.resourcemanager.kusto.models.Skus;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -67,6 +69,8 @@ public final class KustoManager {
     private Clusters clusters;
 
     private ClusterPrincipalAssignments clusterPrincipalAssignments;
+
+    private Skus skus;
 
     private Databases databases;
 
@@ -255,7 +259,7 @@ public final class KustoManager {
                 .append("-")
                 .append("com.azure.resourcemanager.kusto")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0-beta.6");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -335,6 +339,18 @@ public final class KustoManager {
                 new ClusterPrincipalAssignmentsImpl(clientObject.getClusterPrincipalAssignments(), this);
         }
         return clusterPrincipalAssignments;
+    }
+
+    /**
+     * Gets the resource collection API of Skus.
+     *
+     * @return Resource collection API of Skus.
+     */
+    public Skus skus() {
+        if (this.skus == null) {
+            this.skus = new SkusImpl(clientObject.getSkus(), this);
+        }
+        return skus;
     }
 
     /**

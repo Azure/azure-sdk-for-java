@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Servers List. */
 public final class ServersListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServersList.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ServersList.json
      */
     /**
      * Sample code: List servers in a subscription.
@@ -17,6 +15,6 @@ public final class ServersListSamples {
      * @param manager Entry point to MySqlManager.
      */
     public static void listServersInASubscription(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.servers().list(Context.NONE);
+        manager.servers().list(com.azure.core.util.Context.NONE);
     }
 }

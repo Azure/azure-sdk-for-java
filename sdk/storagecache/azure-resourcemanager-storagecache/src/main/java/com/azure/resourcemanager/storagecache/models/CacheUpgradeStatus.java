@@ -18,16 +18,14 @@ public final class CacheUpgradeStatus {
     private String currentFirmwareVersion;
 
     /*
-     * True if there is a firmware update ready to install on this Cache. The
-     * firmware will automatically be installed after firmwareUpdateDeadline if
-     * not triggered earlier via the upgrade operation.
+     * True if there is a firmware update ready to install on this Cache. The firmware will automatically be installed
+     * after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
      */
     @JsonProperty(value = "firmwareUpdateStatus", access = JsonProperty.Access.WRITE_ONLY)
     private FirmwareStatusType firmwareUpdateStatus;
 
     /*
-     * Time at which the pending firmware update will automatically be
-     * installed on the Cache.
+     * Time at which the pending firmware update will automatically be installed on the Cache.
      */
     @JsonProperty(value = "firmwareUpdateDeadline", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime firmwareUpdateDeadline;
@@ -39,11 +37,14 @@ public final class CacheUpgradeStatus {
     private OffsetDateTime lastFirmwareUpdate;
 
     /*
-     * When firmwareUpdateAvailable is true, this field holds the version
-     * string for the update.
+     * When firmwareUpdateAvailable is true, this field holds the version string for the update.
      */
     @JsonProperty(value = "pendingFirmwareVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String pendingFirmwareVersion;
+
+    /** Creates an instance of CacheUpgradeStatus class. */
+    public CacheUpgradeStatus() {
+    }
 
     /**
      * Get the currentFirmwareVersion property: Version string of the firmware currently installed on this Cache.

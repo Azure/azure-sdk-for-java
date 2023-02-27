@@ -17,6 +17,15 @@ public final class EngineType extends ExpandableStringEnum<EngineType> {
     public static final EngineType V3 = fromString("V3");
 
     /**
+     * Creates a new instance of EngineType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EngineType() {
+    }
+
+    /**
      * Creates or finds a EngineType from its string representation.
      *
      * @param name a name to look for.

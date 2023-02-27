@@ -19,29 +19,30 @@ public final class DataEncryption {
     /*
      * Primary key uri
      */
-    @JsonProperty(value = "primaryKeyUri")
+    @JsonProperty(value = "primaryKeyURI")
     private String primaryKeyUri;
 
     /*
-     * Geo backup user identity resource id as identity can't cross region,
-     * need identity in same region as geo backup
+     * Geo backup user identity resource id as identity can't cross region, need identity in same region as geo backup
      */
     @JsonProperty(value = "geoBackupUserAssignedIdentityId")
     private String geoBackupUserAssignedIdentityId;
 
     /*
-     * Geo backup key uri as key vault can't cross region, need cmk in same
-     * region as geo backup
+     * Geo backup key uri as key vault can't cross region, need cmk in same region as geo backup
      */
-    @JsonProperty(value = "geoBackupKeyUri")
+    @JsonProperty(value = "geoBackupKeyURI")
     private String geoBackupKeyUri;
 
     /*
-     * The key type, AzureKeyVault for enable cmk, SystemManaged for disable
-     * cmk.
+     * The key type, AzureKeyVault for enable cmk, SystemManaged for disable cmk.
      */
     @JsonProperty(value = "type")
     private DataEncryptionType type;
+
+    /** Creates an instance of DataEncryption class. */
+    public DataEncryption() {
+    }
 
     /**
      * Get the primaryUserAssignedIdentityId property: Primary user identity resource id.

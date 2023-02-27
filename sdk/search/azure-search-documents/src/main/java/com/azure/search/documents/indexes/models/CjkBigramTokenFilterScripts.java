@@ -6,9 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Scripts that can be ignored by CjkBigramTokenFilter. */
 public enum CjkBigramTokenFilterScripts {
     /** Enum value han. */
@@ -36,7 +33,6 @@ public enum CjkBigramTokenFilterScripts {
      * @param value the serialized value to parse.
      * @return the parsed CjkBigramTokenFilterScripts object, or null if unable to parse.
      */
-    @JsonCreator
     public static CjkBigramTokenFilterScripts fromString(String value) {
         if (value == null) {
             return null;
@@ -51,7 +47,6 @@ public enum CjkBigramTokenFilterScripts {
     }
 
     /** {@inheritDoc} */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

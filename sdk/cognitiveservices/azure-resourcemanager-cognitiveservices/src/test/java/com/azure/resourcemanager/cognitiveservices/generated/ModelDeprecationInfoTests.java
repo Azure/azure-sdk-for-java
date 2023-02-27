@@ -7,24 +7,24 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.ModelDeprecationInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ModelDeprecationInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ModelDeprecationInfo model =
             BinaryData
-                .fromString("{\"fineTune\":\"enhwlrs\",\"inference\":\"rzpwvlqdqgbiq\"}")
+                .fromString("{\"fineTune\":\"rupqsxvnmicy\",\"inference\":\"ceoveilovno\"}")
                 .toObject(ModelDeprecationInfo.class);
-        Assertions.assertEquals("enhwlrs", model.fineTune());
-        Assertions.assertEquals("rzpwvlqdqgbiq", model.inference());
+        Assertions.assertEquals("rupqsxvnmicy", model.fineTune());
+        Assertions.assertEquals("ceoveilovno", model.inference());
     }
 
-    @Test
-    public void testSerialize() {
-        ModelDeprecationInfo model = new ModelDeprecationInfo().withFineTune("enhwlrs").withInference("rzpwvlqdqgbiq");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ModelDeprecationInfo model =
+            new ModelDeprecationInfo().withFineTune("rupqsxvnmicy").withInference("ceoveilovno");
         model = BinaryData.fromObject(model).toObject(ModelDeprecationInfo.class);
-        Assertions.assertEquals("enhwlrs", model.fineTune());
-        Assertions.assertEquals("rzpwvlqdqgbiq", model.inference());
+        Assertions.assertEquals("rupqsxvnmicy", model.fineTune());
+        Assertions.assertEquals("ceoveilovno", model.inference());
     }
 }

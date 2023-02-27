@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,22 +14,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class LocalTimestamp {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalTimestamp.class);
-
     /*
-     * An enum that represents the format of the local timestamp property that
-     * needs to be set.
+     * An enum that represents the format of the local timestamp property that needs to be set.
      */
     @JsonProperty(value = "format")
     private LocalTimestampFormat format;
 
     /*
-     * An object that represents the offset information for the local timestamp
-     * format specified. Should not be specified for LocalTimestampFormat -
-     * Embedded.
+     * An object that represents the offset information for the local timestamp format specified. Should not be
+     * specified for LocalTimestampFormat - Embedded.
      */
     @JsonProperty(value = "timeZoneOffset")
     private LocalTimestampTimeZoneOffset timeZoneOffset;
+
+    /** Creates an instance of LocalTimestamp class. */
+    public LocalTimestamp() {
+    }
 
     /**
      * Get the format property: An enum that represents the format of the local timestamp property that needs to be set.
