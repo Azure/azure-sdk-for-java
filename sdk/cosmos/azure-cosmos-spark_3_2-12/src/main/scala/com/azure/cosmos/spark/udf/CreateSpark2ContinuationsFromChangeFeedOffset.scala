@@ -112,7 +112,7 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
             pkRange.getId.toInt,
             // Spark 3 tracks the last LSN for which docs have been successfully processed
             // Spark 2 LSN is offset by 1 because in Spark 2 the next-to-be-sent-as-continuation LSN is tracked
-            Math.max(0, SparkBridgeImplementationInternal.toLsn(minLsn.get.getToken) - 1))
+            Math.max(0, SparkBridgeImplementationInternal.toLsn(minLsn.get.getToken) + 1))
         }
       })
 
