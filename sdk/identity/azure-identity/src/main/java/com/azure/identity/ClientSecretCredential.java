@@ -22,10 +22,14 @@ import java.util.Objects;
  * <p>The ClientSecretCredential acquires an access token with a client secret for a service principal/registered
  * AAD application. The tenantId, clientId and clientSecret of the service principal are required for this credential
  * to acquire an access token. It can be used both in Azure hosted and local development environments for authentication.
- * For more information refer to the <a href="https://aka.ms/azsdk/java/identity/clientsecretcredential/docs">conceptual knowledge and configuration details</a>.</p>
+ * For more information refer to the
+ * <a href="https://aka.ms/azsdk/java/identity/clientsecretcredential/docs">conceptual knowledge and configuration
+ * details</a>.</p>
  *
  * <p>As a pre-requisite, a service principal is required to use this authentication mechanism. If you don't have
- * a service principal, refer to <a href="https://aka.ms/azsdk/java/identity/serviceprincipal/create/docs">create a service principal with Azure CLI.</a></p>
+ * a service principal, refer to
+ * <a href="https://aka.ms/azsdk/java/identity/serviceprincipal/create/docs">create a service principal with Azure CLI.
+ * </a></p>
  *
  * <p><strong>Sample: Construct a simple ClientSecretCredential</strong></p>
  * <!-- src_embed com.azure.identity.credential.clientsecretcredential.construct -->
@@ -51,7 +55,11 @@ import java.util.Objects;
  * <!-- end com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
  *
  * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication.
- * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for AAD authentication.</p>
+ * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for
+ * AAD authentication.</p>
+ *
+ * @see com.azure.identity
+ * @see ClientSecretCredentialBuilder
  */
 @Immutable
 public class ClientSecretCredential implements TokenCredential {

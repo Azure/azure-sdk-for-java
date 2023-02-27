@@ -22,10 +22,12 @@ import java.time.Duration;
  * <p>The Managed Identity credential authenticates the configured managed identity (system or user assigned) of
  * an Azure resource. So, if the application is running inside an Azure resource that supports Managed Identity through
  * IDENTITY/MSI, IMDS endpoints, or both, then this credential will get your application authenticated, and offers a
- * great secretless authentication experience.
- * For more information refer to the <a href="https://aka.ms/azsdk/java/identity/managedidentitycredential/docs">conceptual knowledge and configuration details</a>.</p>
+ * great secretless authentication experience. For more information refer to the
+ * <a href="https://aka.ms/azsdk/java/identity/managedidentitycredential/docs">conceptual knowledge and configuration
+ * details</a>.</p>
  *
  * <p>The Managed Identity credential supports managed identity authentication for the following Azure Services:</p>
+ *
  * <ol>
  *     <li>Azure App Service</li>
  *     <li>Azure Arc</li>
@@ -38,6 +40,7 @@ import java.time.Duration;
  * </ol>
  *
  * <p><strong>Sample: Construct a simple ManagedIdentityCredential</strong></p>
+ *
  * <!-- src_embed com.azure.identity.credential.managedidentitycredential.construct -->
  * <pre>
  * TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder&#40;&#41;
@@ -46,6 +49,7 @@ import java.time.Duration;
  * <!-- end com.azure.identity.credential.managedidentitycredential.construct -->
  *
  * <p><strong>Sample: Construct a User Assigned ManagedIdentityCredential</strong></p>
+ *
  * <!-- src_embed com.azure.identity.credential.managedidentitycredential.userassigned.construct -->
  * <pre>
  * TokenCredential managedIdentityCredentialUserAssigned = new ManagedIdentityCredentialBuilder&#40;&#41;
@@ -55,7 +59,11 @@ import java.time.Duration;
  * <!-- end com.azure.identity.credential.managedidentitycredential.userassigned.construct -->
  *
  * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication.
- * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for AAD authentication.</p>
+ * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for
+ * AAD authentication.</p>
+ *
+ * @see com.azure.identity
+ * @see ManagedIdentityCredentialBuilder
  */
 @Immutable
 public final class ManagedIdentityCredential implements TokenCredential {

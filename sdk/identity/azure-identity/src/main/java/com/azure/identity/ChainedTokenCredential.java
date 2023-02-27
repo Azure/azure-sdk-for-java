@@ -21,6 +21,7 @@ import java.util.List;
  *
  * <p><strong>Sample: Construct a ChainedTokenCredential with silent username+password login tried first, then
  * interactive browser login as needed (e.g. when 2FA is turned on in the directory).</strong></p>
+ *
  * <!-- src_embed com.azure.identity.credential.chainedtokencredential.construct -->
  * <pre>
  * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
@@ -38,6 +39,9 @@ import java.util.List;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.chainedtokencredential.construct -->
+ *
+ * @see com.azure.identity
+ * @see ChainedTokenCredentialBuilder
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {

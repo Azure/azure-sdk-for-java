@@ -16,7 +16,8 @@
  * development environment. Note, this credential is intended to simplify getting started with the SDK by handling
  * common scenarios with reasonable default behaviors. Developers who want more control or whose scenario isn't
  * served by the default settings should use other credential types. For more information refer to the
- * <a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs">conceptual knowledge and configuration details</a>.</p>
+ * <a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs">conceptual knowledge and configuration
+ * details</a>.</p>
  *
  * <p><strong>Sample: Construct a simple DefaultAzureCredential</strong></p>
  *
@@ -46,7 +47,8 @@
  * supports Managed Identity through IDENTITY/MSI, IMDS endpoints, or both, then the
  * {@link com.azure.identity.ManagedIdentityCredential} will get your application authenticated, and offers a great
  * secretless authentication experience. For more information refer to the
- * <a href="https://aka.ms/azsdk/java/identity/managedidentity/docs">conceptual knowledge and configuration details</a>.</p>
+ * <a href="https://aka.ms/azsdk/java/identity/managedidentity/docs">conceptual knowledge and configuration
+ * details</a>.</p>
  *
  * <p><strong>Sample: Construct a Managed Identity Credential</strong></p>
  *
@@ -72,7 +74,8 @@
  *   <tbody>
  *     <tr>
  *       <td>{@link com.azure.identity.DefaultAzureCredential}</td>
- *       <td>Provides a simplified authentication experience to quickly start developing applications run in Azure.</td>
+ *       <td>Provides a simplified authentication experience to quickly start developing applications run in Azure.
+ *       </td>
  *     </tr>
  *     <tr>
  *       <td>{@link com.azure.identity.ChainedTokenCredential}</td>
@@ -80,7 +83,8 @@
  *     </tr>
  *     <tr>
  *       <td>{@link com.azure.identity.EnvironmentCredential}</td>
- *       <td>Authenticates a service principal or user via credential information specified in environment variables.</td>
+ *       <td>Authenticates a service principal or user via credential information specified in environment variables.
+ *       </td>
  *       <td></td>
  *     </tr>
  *     <tr>
@@ -92,7 +96,8 @@
  *
  * <br/>
  *
- * <p>Refer to the JavaDoc for each of these classes for more details about when these credential types should be used.</p>
+ * <p>Refer to the JavaDoc for each of these classes for more details about when these credential types should be used.
+ * </p>
  *
  * <hr/>
  *
