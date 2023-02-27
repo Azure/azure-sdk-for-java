@@ -278,6 +278,36 @@ class StorageSeekableByteChannelTest extends Specification {
         e.message == "The backing resource does not support this position change."
     }
 
+    def "Failed behavior write can resume where left off"() {
+        given: "Channel with behavior that throws first write attempt"
+        def testWriteDest = ByteBuffer.allocate(Constants.KB)
+        StorageSeekableByteChannel.WriteBehavior writeBehavior = Mock() {
+            2 * write(_,0) >> { throw new RuntimeException("mock behavior interrupt") } >> { ByteBuffer src, long offset -> testWriteDest.put(src) }
+            0 * write(_, _)
+        }
+        def channel = new StorageSeekableByteChannel(Constants.KB, null, writeBehavior)
+
+        when: "first attempt"
+        def data1 = ByteBuffer.wrap(getRandomData(Constants.KB))
+        channel.write(data1)
+
+        then: "failure; channel state unchanged"
+        def e = thrown(RuntimeException)
+        e.message == "mock behavior interrupt"
+        channel.position() == 0
+
+        when: "second attempt"
+        def data2 = ByteBuffer.wrap(getRandomData(Constants.KB))
+        def written = channel.write(data2)
+
+        then: "success; channel state updated, data correctly written"
+        notThrown(Throwable)
+        data2.position() == Constants.KB
+        written == Constants.KB
+        channel.position() == Constants.KB
+        testWriteDest.array() == data2.array()
+    }
+
     def "Write mode cannot read"() {
         setup:
         def channel = new StorageSeekableByteChannel(Constants.KB, null, Mock(StorageSeekableByteChannel.WriteBehavior))

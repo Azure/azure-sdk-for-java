@@ -171,16 +171,24 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         assertCanWrite();
 
         int write = Math.min(src.remaining(), buffer.remaining());
-        ByteBuffer temp = src.duplicate();
-        temp.limit(temp.position() + write);
-        buffer.put(temp);
-        src.position(src.position() + write);
-        absolutePosition += write;
-
-        if (buffer.remaining() == 0) {
-            flushWriteBuffer();
+        if (write > 0) {
+            ByteBuffer temp = src.duplicate();
+            temp.limit(temp.position() + write);
+            buffer.put(temp);
+            src.position(src.position() + write);
         }
 
+        if (buffer.remaining() == 0) {
+            try {
+                flushWriteBuffer();
+            } catch (Throwable t) {
+                // undo write on failed flush by rewinding buffer position the amount it was incremented
+                buffer.position(buffer.position() - write);
+                throw t;
+            }
+        }
+
+        absolutePosition += write;
         return write;
     }
 
@@ -188,9 +196,18 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         if (buffer.position() == 0) {
             return;
         }
+
+        int startingPosition = buffer.position();
         buffer.limit(buffer.position());
         buffer.rewind();
-        writeBehavior.write(buffer, bufferAbsolutePosition);
+        try {
+            writeBehavior.write(buffer, bufferAbsolutePosition);
+        } catch (Throwable t) {
+            // restore buffer state if write fails
+            buffer.limit(buffer.capacity());
+            buffer.position(startingPosition);
+            throw t;
+        }
         bufferAbsolutePosition += buffer.limit();
         buffer.clear();
     }
