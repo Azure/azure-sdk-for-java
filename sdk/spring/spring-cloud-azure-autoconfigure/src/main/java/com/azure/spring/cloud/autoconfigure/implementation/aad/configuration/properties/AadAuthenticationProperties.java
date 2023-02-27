@@ -78,42 +78,51 @@ public class AadAuthenticationProperties implements InitializingBean {
     private String redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
 
     /**
-     * App ID URI which might be used in the "aud" claim of an id_token.
+     * App ID URI which might be used in the "aud" claim of an id_token. For instance, 'api://{applicationId}'.
+     * See Microsoft doc about APP ID URL for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri
      */
     private String appIdUri;
 
     /**
-     * Add additional parameters to the Authorization URL.
+     * Additional parameters above the standard parameters defined in the OAuth 2.0 Authorization Framework. Would be added to the Authorization URL for customizing the Authorization Request. For instance, 'prompt: login'.
+     * See Microsoft doc about more additional parameters information: https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
     /**
-     * Connection Timeout for the JWKSet Remote URL call. Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
+     * @deprecated If you want to configure this, please provide a RestOperations bean.
      */
+    @Deprecated
     private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
-     * Read Timeout for the JWKSet Remote URL call. Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
+     * @deprecated If you want to configure this, please provide a RestOperations bean.
      */
+    @Deprecated
     private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
-     * Size limit in Bytes of the JWKSet Remote URL call. Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Size limit in Bytes of the JWKSet Remote URL call. The default value is `51200`.
+     * @deprecated If you want to configure this, please provide a RestOperations bean.
      */
+    @Deprecated
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
-     * The lifespan of the cached JWK set before it expires, default is 5 minutes.
+     * The lifespan(duration) of the cached JWK set before it expires. The default value is `5m`.
      */
     private Duration jwkSetCacheLifespan = Duration.ofMinutes(5);
 
     /**
-     * The refresh time of the cached JWK set before it expires, default is 5 minutes.
+     * The refresh time(duration) of the cached JWK set before it expires. The default value is `5m`.
      */
     private Duration jwkSetCacheRefreshTime = Duration.ofMinutes(5);
 
     /**
-     * The redirect uri after logout.
+     * The redirect uri after logout. For instance, 'http://localhost:8080/'.
+     * See Microsoft doc about Redirect URI for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#redirect-uri
      */
     private String postLogoutRedirectUri;
 
@@ -124,12 +133,19 @@ public class AadAuthenticationProperties implements InitializingBean {
     private Boolean sessionStateless = false;
 
     /**
-     * The OAuth2 authorization clients.
+     * The OAuth2 authorization clients, contains the authorization grant type, client authentication method and scope.
+     * The clients will be converted to OAuth2 ClientRegistration, the other ClientRegistration information(such as client id, client secret) inherits from the delegated OAuth2 login client 'azure'.
+     * For instance,'
+     * authorization-clients.webapi.authorization-grant-type=on_behalf_of,
+     * authorization-clients.webapi.client-authentication-method=client_secret_post,
+     * authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope1,
+     * authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope2
+     * '.
      */
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     /**
-     * Type of the Azure AD application.
+     * Type of the Azure AD application. Supported types are: WEB_APPLICATION, RESOURCE_SERVER, RESOURCE_SERVER_WITH_OBO, WEB_APPLICATION_AND_RESOURCE_SERVER. The value can be inferred by dependencies, only 'web_application_and_resource_server' must be configured manually.
      */
     private AadApplicationType applicationType;
 
@@ -181,7 +197,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         private Set<String> allowedGroupIds = new HashSet<>();
 
         /**
-         * If "true", use "v1.0/me/transitiveMemberOf" to get members. Otherwise, use "v1.0/me/memberOf".
+         * Whether to use transitive way to get members. If "true", use "v1.0/me/transitiveMemberOf" to get members. Otherwise, use "v1.0/me/memberOf". The default value is `false`.
          */
         private boolean useTransitiveMembers = false;
 
