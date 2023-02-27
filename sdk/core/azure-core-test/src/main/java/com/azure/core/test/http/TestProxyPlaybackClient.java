@@ -29,7 +29,6 @@ import java.util.Queue;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
-import static com.azure.core.test.utils.TestProxyUtils.loadMatchers;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
@@ -44,8 +43,6 @@ public class TestProxyPlaybackClient implements HttpClient {
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
 
-    private static final List<TestProxyRequestMatcher> DEFAULT_MATCHERS = loadMatchers();
-
     private final List<TestProxyRequestMatcher> matchers = new ArrayList<>();
 
     /**
@@ -53,7 +50,6 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public TestProxyPlaybackClient() {
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
-        this.matchers.addAll(DEFAULT_MATCHERS);
     }
 
     /**
@@ -116,6 +112,22 @@ public class TestProxyPlaybackClient implements HttpClient {
             TestProxyUtils.checkForTestProxyErrors(response);
             return response;
         });
+    }
+
+    /**
+     * Redirects the request to the test-proxy to retrieve the playback response synchronously.
+     * @param request The HTTP request to send.
+     * @return The HTTP response.
+     */
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        if (xRecordingId == null) {
+            throw new RuntimeException("Playback was not started before a request was sent.");
+        }
+        TestProxyUtils.changeHeaders(request, xRecordingId, "playback");
+        HttpResponse response = client.sendSync(request, context);
+        TestProxyUtils.checkForTestProxyErrors(response);
+        return response;
     }
 
     /**

@@ -3,7 +3,6 @@
 
 package com.azure.core.test.utils;
 
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 
