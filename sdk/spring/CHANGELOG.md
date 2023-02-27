@@ -18,7 +18,7 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Breaking Changes
-- Deprecated properties for AAD and AAD B2C. [#29471](https://github.com/Azure/azure-sdk-for-java/pull/33538).
+- Deprecated properties for AAD and AAD B2C. [#33538](https://github.com/Azure/azure-sdk-for-java/pull/33538).
   - Deprecated properties `spring.cloud.azure.active-directory.jwt-connect-timeout`, `spring.cloud.azure.active-directory.jwt-read-timeout`, `spring.cloud.azure.active-directory.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
   - Deprecated properties `spring.cloud.azure.active-directory.b2c.jwt-connect-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-read-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
 
