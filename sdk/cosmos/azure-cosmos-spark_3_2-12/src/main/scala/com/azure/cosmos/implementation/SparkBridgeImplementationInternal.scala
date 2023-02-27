@@ -277,7 +277,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
 
         // Spark 3 tracks the last LSN for which docs have been successfully processed
         // Spark 2 LSN is offset by 1 because in Spark 2 the next-to-be-sent-as-continuation LSN is tracked
-        val lsn: Long = token._2 + 1
+        val lsn: Long = token._2 - 1
 
         val range: Range[String] = if (pkRangesByPkRangeId.contains(pkRangeId)) {
           pkRangesByPkRangeId.get(pkRangeId).get.toRange
