@@ -160,7 +160,7 @@ public abstract class TestBase implements BeforeEachCallback {
             testResourceNamer = new TestResourceNamer(testContextManager,
                 interceptorManager.getProxyVariableConsumer(),
                 interceptorManager.getProxyVariableSupplier());
-            if (localTestMode == TestMode.PLAYBACK && !testContextManager.didTestRun()) {
+            if (localTestMode == TestMode.PLAYBACK && !testContextManager.doNotRecordTest()) {
                 // We create the playback client here, so that it is available for returning recorded variables
                 // in a shared @BeforeEach in a test class.
                 interceptorManager.getPlaybackClient();
