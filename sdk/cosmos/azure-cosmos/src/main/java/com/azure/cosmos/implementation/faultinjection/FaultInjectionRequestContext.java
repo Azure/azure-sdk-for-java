@@ -5,14 +5,11 @@ package com.azure.cosmos.implementation.faultinjection;
 
 import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FaultInjectionRequestContext {
     private final Map<String, Integer> hitCountByRuleMap = new ConcurrentHashMap<>();
-    private final List<IFaultInjectionRuleInternal> rules = new ArrayList<>();
 
     public void applyFaultInjectionRule(IFaultInjectionRuleInternal rule) {
         this.hitCountByRuleMap.compute(rule.getId(), (id, count) -> {
@@ -22,8 +19,6 @@ public class FaultInjectionRequestContext {
 
             return ++count;
         });
-
-        this.rules.add(rule);
     }
 
     public int getFaultInjectionRuleApplyCount(String ruleId) {

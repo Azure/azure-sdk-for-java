@@ -599,6 +599,10 @@ public final class CosmosAsyncClient implements Closeable {
 
     Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
         checkNotNull(rules, "Argument 'rules' can not be null");
+        checkArgument(
+            StringUtils.isNotEmpty(containerNameLink),
+            "Argument 'containerNameLink' can not be null nor empty");
+
         return this.asyncDocumentClient.configFaultInjectionRules(rules, containerNameLink);
     }
 

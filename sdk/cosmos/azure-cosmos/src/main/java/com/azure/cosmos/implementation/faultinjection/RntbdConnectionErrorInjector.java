@@ -35,13 +35,14 @@ public class RntbdConnectionErrorInjector {
     }
 
     public Mono<Void> injectConnectionErrorTask(FaultInjectionConnectionErrorRule rule) {
+
         return Mono.delay(rule.getResult().getInterval())
             .flatMapMany(t -> {
                 //check whether the rule still valid
                 if (this.isEffectiveRule(rule)) {
-                    return Flux.fromIterable(rule.getCondition().getPhysicalAddresses())
-                        .flatMap(addressUri -> {
-                            this.endpointProvider.get(addressUri.getURI()).injectConnectionErrors(rule.getId(), rule.getResult());
+                    return Flux.fromIterable(rule.getAddresses())
+                        .flatMap(addressURI -> {
+                            this.endpointProvider.get(addressURI).injectConnectionErrors(rule.getId(), rule.getResult());
                             return Mono.empty();
                         });
                 }

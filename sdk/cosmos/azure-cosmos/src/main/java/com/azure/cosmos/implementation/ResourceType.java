@@ -65,6 +65,7 @@ public enum ResourceType {
 
     //Adding client telemetry resource type, only meant for client side
     ClientTelemetry("ClientTelemetry", 1001),
+    // Adding fault injection resource type, only meant for fault injection usage
     FaultInjection("FaultInjection", 1002);
 
     private final int value;

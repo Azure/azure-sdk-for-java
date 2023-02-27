@@ -110,6 +110,10 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.resolveServiceEndpoint(request);
     }
 
+    public URI resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {
+        return this.locationCache.resolveFaultInjectionEndpoint(region, writeOnly);
+    }
+
     public void markEndpointUnavailableForRead(URI endpoint) {
         logger.debug("Marking endpoint {} unavailable for read",endpoint);
         this.locationCache.markEndpointUnavailableForRead(endpoint);;

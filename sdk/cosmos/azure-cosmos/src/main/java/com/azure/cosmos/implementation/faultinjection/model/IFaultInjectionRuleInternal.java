@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.implementation.faultinjection.model;
 
-import com.azure.cosmos.implementation.directconnectivity.Uri;
-
+import java.net.URI;
 import java.util.List;
 
 public interface IFaultInjectionRuleInternal {
+    void disable();
+    List<URI> getAddresses();
     boolean isValid();
-    List<Uri> getPhysicalAddresses();
     String getId();
 }

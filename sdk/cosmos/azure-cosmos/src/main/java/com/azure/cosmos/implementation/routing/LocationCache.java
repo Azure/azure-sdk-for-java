@@ -157,10 +157,6 @@ public class LocationCache {
             return request.requestContext.locationEndpointToRoute;
         }
 
-        if (request.getResourceType() == ResourceType.FaultInjection) {
-            return this.resolveFaultInjectionEndpointByLocation(request.requestContext.faultInjectionLocationToRoute);
-        }
-
         int locationIndex = Utils.getValueOrDefault(request.requestContext.locationIndexToRoute, 0);
 
         boolean usePreferredLocations = request.requestContext.usePreferredLocations != null ? request.requestContext.usePreferredLocations : true;
@@ -183,10 +179,15 @@ public class LocationCache {
         }
     }
 
-    public URI resolveFaultInjectionEndpointByLocation(String region) {
+    public URI resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
         Utils.ValueHolder<URI> endpointValueHolder = new Utils.ValueHolder<>();
-        if (Utils.tryGetValue(this.locationInfo.availableWriteEndpointByLocation, region, endpointValueHolder)
-        || Utils.tryGetValue(this.locationInfo.availableWriteEndpointByLocation, region, endpointValueHolder)) {
+        if (writeOnly) {
+            Utils.tryGetValue(this.locationInfo.availableWriteEndpointByLocation, region, endpointValueHolder);
+        } else {
+            Utils.tryGetValue(this.locationInfo.availableReadEndpointByLocation, region, endpointValueHolder);
+        }
+
+        if (endpointValueHolder.v != null) {
             return endpointValueHolder.v;
         }
 

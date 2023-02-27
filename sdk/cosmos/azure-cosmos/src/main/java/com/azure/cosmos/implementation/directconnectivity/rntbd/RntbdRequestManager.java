@@ -603,6 +603,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 record.setSendingRequestHasStarted();
                 this.timestamps.channelWriteAttempted();
 
+                if (this.serverErrorInjector != null
+                    && this.serverErrorInjector.applyServerResponseErrorRule(record)) {
+                    return;
+                }
+
                 context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
                     record.stage(RntbdRequestRecord.Stage.SENT);
                     if (completed.isSuccess()) {
@@ -860,9 +865,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
 
-            // should we also inject when a solid server error is being thrown
             if (this.serverErrorInjector != null
-                && this.serverErrorInjector.applyServerLatencyRule(requestRecord, storeResponse)) {
+                && this.serverErrorInjector.applyServerResponseLatencyRule(requestRecord, storeResponse)) {
                 return;
             }
 
@@ -986,6 +990,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
             }
             BridgeInternal.setResourceAddress(cause, resourceAddress);
+
+            if (this.serverErrorInjector != null
+                && this.serverErrorInjector.applyServerResponseLatencyRule(requestRecord, cause)) {
+                return;
+            }
 
             requestRecord.completeExceptionally(cause);
         }

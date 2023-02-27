@@ -6,40 +6,41 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class FaultInjectionRule {
     private final FaultInjectionCondition condition;
     private final IFaultInjectionResult result;
     private final Duration duration;
-    private final int requestHitLimit;
+    private final Duration startDelay;
+    private final Integer hitLimit;
     private final String id;
     private boolean enabled;
     private IFaultInjectionRuleInternal effectiveRule;
 
     public FaultInjectionRule(
         String id,
-        FaultInjectionCondition condition,
-        IFaultInjectionResult result,
+        Duration startDelay,
         Duration duration,
-        int requestHitLimit,
-        boolean enabled) {
+        Integer requestHitLimit,
+        boolean enabled,
+        FaultInjectionCondition condition,
+        IFaultInjectionResult result) {
 
         checkNotNull(condition, "Argument 'condition' can not be null");
         checkNotNull(result, "Argument 'result' can not be null");
-        checkArgument(requestHitLimit > 0, "Argument 'requestHitLimit' should be larger than 0");
 
         this.id = id;
+        this.startDelay = startDelay;
+        this.duration = duration;
+        this.hitLimit = requestHitLimit;
+        this.enabled = enabled;
         this.condition = condition;
         this.result = result;
-        this.duration = duration;
-        this.requestHitLimit = requestHitLimit;
-        this.enabled = enabled;
     }
 
     public void enabled(boolean enabled) {
@@ -58,8 +59,10 @@ public class FaultInjectionRule {
         return duration;
     }
 
-    public int getRequestHitLimit() {
-        return requestHitLimit;
+    public Duration getStartDelay() { return startDelay; }
+
+    public Integer getHitLimit() {
+        return hitLimit;
     }
 
     public String getId() {
@@ -70,14 +73,11 @@ public class FaultInjectionRule {
 
     public void disable() {
         this.enabled = false;
+        this.effectiveRule.disable();
     }
 
-    public List<String> getEndpointAddresses() {
-        return this.effectiveRule
-            .getPhysicalAddresses()
-            .stream()
-            .map(uri -> uri.getURI().getAuthority())
-            .collect(Collectors.toList());
+    public List<URI> getAddresses() {
+        return this.effectiveRule.getAddresses();
     }
 
     void setEffectiveFaultInjectionRule(IFaultInjectionRuleInternal effectiveRule) {
@@ -89,12 +89,7 @@ public class FaultInjectionRule {
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.FaultInjectionRuleHelper.setFaultInjectionRuleAccessor(
-            new ImplementationBridgeHelpers.FaultInjectionRuleHelper.FaultInjectionRuleAccessor() {
-                @Override
-                public void setEffectiveFaultInjectionRule(FaultInjectionRule rule, IFaultInjectionRuleInternal ruleInternal) {
-                    rule.setEffectiveFaultInjectionRule(ruleInternal);
-                }
-            });
+            (rule, ruleInternal) -> rule.setEffectiveFaultInjectionRule(ruleInternal));
     }
 
     static { initialize(); }

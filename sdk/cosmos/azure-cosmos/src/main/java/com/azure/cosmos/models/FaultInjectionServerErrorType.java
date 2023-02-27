@@ -4,13 +4,21 @@
 package com.azure.cosmos.models;
 
 public enum FaultInjectionServerErrorType {
-    // limit the error types which are related to the current improvements
+
+    /** 410 from server */
     SERVER_GONE,
+    /** 449 from server */
     SERVER_RETRY_WITH,
+    /** 500 from server */
     INTERNAL_SERVER_ERROR,
+    /** 429 from server */
     TOO_MANY_REQUEST,
+    /** 404-1002 from server */
     NOT_FOUND_READ_SESSION_NOT_AVAILABLE,
+    /** 408 from server */
     SERVER_TIMEOUT,
-    SERVER_DELAY,
-    SERVER_CONNECTION_UNRESPONSIVE // this is for high connection acquisition time
+    /** Response delay, when it is over request timeout, can simulate transit timeout */
+    SERVER_RESPONSE_DELAY,
+    /** simulate high channel acquisition, when it is over connection timeout, can simulate connectionTimeoutException */
+    SERVER_CONNECTION_DELAY
 }

@@ -257,6 +257,7 @@ public class RntbdTransportClient extends TransportClient {
         this.throwIfClosed();
 
         final URI address = addressUri.getURI();
+        request.requestContext.storePhysicalAddress = address;
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
 
@@ -360,6 +361,7 @@ public class RntbdTransportClient extends TransportClient {
 
     @Override
     public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+
         if (rule instanceof FaultInjectionServerErrorRule) {
             this.serverErrorInjector.configFaultInjectionRule((FaultInjectionServerErrorRule) rule);
         } else if (rule instanceof FaultInjectionConnectionErrorRule) {

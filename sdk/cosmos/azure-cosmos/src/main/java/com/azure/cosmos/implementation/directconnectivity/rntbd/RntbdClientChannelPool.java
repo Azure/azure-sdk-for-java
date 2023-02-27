@@ -18,6 +18,7 @@ import io.netty.buffer.PooledByteBufAllocatorMetric;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoop;
 import io.netty.channel.pool.ChannelHealthChecker;
@@ -161,6 +162,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private static final Logger logger = LoggerFactory.getLogger(RntbdClientChannelPool.class);
 
     private final long acquisitionTimeoutInNanos;
+    private final int connectTimeoutInMillis;
     private final Runnable acquisitionTimeoutTask;
     private final PooledByteBufAllocatorMetric allocatorMetric;
     private final Bootstrap bootstrap;
@@ -191,6 +193,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
     private final ClientTelemetry clientTelemetry;
+    private final RntbdServerErrorInjector serverErrorInjector;
 
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
@@ -235,12 +238,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener, serverErrorInjector);
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
+        this.serverErrorInjector = serverErrorInjector;
 
         this.bootstrap = bootstrap.clone().handler(new ChannelInitializer<Channel>() {
             @Override
             protected void initChannel(final Channel channel) throws Exception {
-            checkState(channel.eventLoop().inEventLoop());
-            RntbdClientChannelPool.this.poolHandler.channelCreated(channel);
+                checkState(channel.eventLoop().inEventLoop());
+                RntbdClientChannelPool.this.poolHandler.channelCreated(channel);
             }
         });
 
@@ -249,6 +253,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         //  entirely removed.
 
         this.acquisitionTimeoutInNanos = config.connectionAcquisitionTimeoutInNanos();
+        this.connectTimeoutInMillis = config.connectTimeoutInMillis();
         this.allocatorMetric = config.allocator().metric();
         this.maxChannels = config.maxChannelsPerEndpoint();
         this.maxRequestsPerChannel = config.maxRequestsPerChannel();
@@ -266,7 +271,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             public void onTimeout(AcquireListener task) {
                 task.originalPromise.setFailure(ACQUISITION_TIMEOUT);
                 RntbdChannelAcquisitionTimeline.startNewEvent(
-                    task.originalPromise.getChannelAcquisitionTimeline(),
+                    task.originalPromise.getRntbdRequestRecord().getChannelAcquisitionTimeline(),
                     RntbdChannelAcquisitionEventType.PENDING_TIME_OUT,
                     clientTelemetry);
             }
@@ -478,7 +483,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 new ChannelPromiseWithExpiryTime(
                         this.getNewChannelPromise(),
                         this.getNewPromiseExpiryTime(),
-                        requestRecord.getChannelAcquisitionTimeline()));
+                        requestRecord));
     }
 
     /***
@@ -692,7 +697,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.ensureInEventLoop();
 
         reportIssueUnless(logger, promise != null, this, "Channel promise should not be null");
-        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline = promise.getChannelAcquisitionTimeline();
+        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline = promise.getRntbdRequestRecord().getChannelAcquisitionTimeline();
 
         if (this.isClosed()) {
             promise.setFailure(POOL_CLOSED_ON_ACQUIRE);
@@ -729,6 +734,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         channelAcquisitionTimeline,
                         RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL,
                         clientTelemetry);
+
+                    if (this.serverErrorInjector != null
+                        && this.serverErrorInjector.applyServerConnectionLatencyErrorRule(
+                            promise.getRntbdRequestRecord(),
+                            (latencyDuration) -> this.openNewChannelWithFaultInjection(anotherPromise, latencyDuration)
+                        )) {
+                        return;
+                    }
 
                     final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
 
@@ -806,6 +819,36 @@ public final class RntbdClientChannelPool implements ChannelPool {
         return channelCount < channelLimit;
     }
 
+    private void openNewChannelWithFaultInjection(final Promise<Channel> promise, Duration latencyDuration) {
+        this.ensureInEventLoop();
+
+        long delayInMillis = Math.min(this.connectTimeoutInMillis, latencyDuration.toMillis());
+        long effectiveConnectTimeoutInMillis = Math.max(this.connectTimeoutInMillis - delayInMillis, 10);
+
+        // fault injection
+        this.executor.schedule(
+            () -> {
+                ChannelFuture channelFuture = this.bootstrap.clone().handler(new ChannelInitializer<Channel>() {
+                    @Override
+                    protected void initChannel(Channel channel) throws Exception {
+                        checkState(channel.eventLoop().inEventLoop());
+
+                        channel.config().setOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int)effectiveConnectTimeoutInMillis);
+                        RntbdClientChannelPool.this.poolHandler.channelCreated(channel);
+                    }
+                }).connect();
+
+                if (channelFuture.isDone()) {
+                    this.safeNotifyChannelConnect(channelFuture, promise);
+                } else {
+                    channelFuture.addListener(ignored -> this.safeNotifyChannelConnect(channelFuture, promise));
+                }
+            },
+            delayInMillis,
+            TimeUnit.MILLISECONDS
+        );
+    }
+
     /**
      * Add a task to the pending acquisition queue to fulfill the request for a {@link Channel channel} later.
      * <p>
@@ -837,7 +880,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 promise.setFailure(TOO_MANY_PENDING_ACQUISITIONS);
             } else {
                 RntbdChannelAcquisitionTimeline.startNewEvent(
-                    promise.getChannelAcquisitionTimeline(),
+                    promise.getRntbdRequestRecord().getChannelAcquisitionTimeline(),
                     RntbdChannelAcquisitionEventType.ADD_TO_PENDING_QUEUE,
                     clientTelemetry);
             }
@@ -1078,7 +1121,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         listener.acquired();
         anotherPromise.addListener(listener);
 
-        return new ChannelPromiseWithExpiryTime(anotherPromise, promise.getExpiryTimeInNanos(), promise.getChannelAcquisitionTimeline());
+        return new ChannelPromiseWithExpiryTime(anotherPromise, promise.getExpiryTimeInNanos(), promise.getRntbdRequestRecord());
     }
 
     private void newTimeout(
@@ -1216,7 +1259,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         } finally {
             if (promise instanceof ChannelPromiseWithExpiryTime) {
                 RntbdChannelAcquisitionTimeline.startNewEvent(
-                    ((ChannelPromiseWithExpiryTime) promise).getChannelAcquisitionTimeline(),
+                    ((ChannelPromiseWithExpiryTime) promise).getRntbdRequestRecord().getChannelAcquisitionTimeline(),
                     RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE,
                     clientTelemetry
                 );

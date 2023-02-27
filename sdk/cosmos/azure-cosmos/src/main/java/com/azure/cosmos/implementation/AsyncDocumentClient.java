@@ -1656,5 +1656,13 @@ public interface AsyncDocumentClient {
      * @return A flux of {@link OpenConnectionResponse}.
      */
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
+
+    /***
+     * Config fault injection rules.
+     *
+     * @param faultInjectionRules the fault injection rule list.
+     * @param containerNameLink the container name link.
+     * @return the mono.
+     */
     Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> faultInjectionRules, String containerNameLink);
 }

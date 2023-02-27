@@ -556,6 +556,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.storeModel,
                 this.gatewayProxy,
                 this.collectionCache,
+                this.globalEndpointManager,
                 new AddressSelector(this.addressResolver, this.configs.getProtocol()));
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
@@ -4305,7 +4306,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
         checkNotNull(rules, "Argument 'rules' can not be null");
-        return this.faultInjectionRulesProcessor.processFaultInjectionRule(rules, containerNameLink);
+        checkArgument(
+            StringUtils.isNotEmpty(containerNameLink),
+            "Argument 'containerNameLink' can not be null nor empty");
+        return this.faultInjectionRulesProcessor.processFaultInjectionRules(rules, containerNameLink);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

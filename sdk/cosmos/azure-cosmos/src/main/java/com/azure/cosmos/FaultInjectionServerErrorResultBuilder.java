@@ -18,7 +18,7 @@ public class FaultInjectionServerErrorResultBuilder {
     }
 
     public FaultInjectionServerErrorResultBuilder times(int times) {
-        if (this.serverErrorType == FaultInjectionServerErrorType.SERVER_DELAY) {
+        if (this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY) {
             throw new IllegalArgumentException("Argument 'times' is not support for error type " + this.serverErrorType);
         }
 
@@ -33,7 +33,8 @@ public class FaultInjectionServerErrorResultBuilder {
      * @return the {@link FaultInjectionServerErrorResult}.
      */
     public FaultInjectionServerErrorResultBuilder delay(Duration delay) {
-        if (this.serverErrorType != FaultInjectionServerErrorType.SERVER_DELAY) {
+        if (this.serverErrorType != FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY
+            && this.serverErrorType != FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY) {
             throw new IllegalArgumentException("Argument 'delay' is not supported for error type " + this.serverErrorType);
         }
         this.delay = delay;
@@ -41,7 +42,7 @@ public class FaultInjectionServerErrorResultBuilder {
     }
 
     public FaultInjectionServerErrorResult build() {
-        if (this.serverErrorType == FaultInjectionServerErrorType.SERVER_DELAY && this.delay == null) {
+        if (this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY && this.delay == null) {
             throw new IllegalArgumentException("Argument 'delay' is required for server error type " + this.serverErrorType);
         }
 

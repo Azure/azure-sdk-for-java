@@ -33,6 +33,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
     public volatile URI locationEndpointToRoute;
+    public volatile URI storePhysicalAddress;
     public volatile boolean performedBackgroundAddressRefresh;
     public volatile boolean performLocalRefreshOnGoneException;
     public volatile List<String> storeResponses;

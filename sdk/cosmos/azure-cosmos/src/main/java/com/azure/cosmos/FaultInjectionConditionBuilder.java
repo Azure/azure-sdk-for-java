@@ -19,11 +19,12 @@ public class FaultInjectionConditionBuilder {
     private String region;
     private FaultInjectionConnectionType connectionType = FaultInjectionConnectionType.DIRECT;
 
-    /**
-     * Optional.
+    /***
+     * Set the region of the rule. The rule will not be applicable if the request is targeting a different region.
      *
-     * @param region the region in which the fault injection rule will be applied.
+     * By default, it is null which means the rule can be applied in any region.
      *
+     * @param region the region of the rule.
      * @return the builder.
      */
     public FaultInjectionConditionBuilder region(String region) {
@@ -33,10 +34,12 @@ public class FaultInjectionConditionBuilder {
         return this;
     }
 
-    /**
-     * Optional.
+    /***
+     * Set the operation type of the rule. The rule will not be applicable if the request is targeting a different operation type.
      *
-     * @param operationType the operationType.
+     * By default, it is null which means the rule can be applied to any operation type.
+     *
+     * @param operationType the operation type.
      * @return the builder.
      */
     public FaultInjectionConditionBuilder operationType(FaultInjectionOperationType operationType) {
@@ -44,14 +47,23 @@ public class FaultInjectionConditionBuilder {
         return this;
     }
 
+    /***
+     * Set the connection type of the rule. The rule will not be applicable if the request is targeting a different connection type.
+     *
+     * By default, it is direct.
+     *
+     * @param connectionType the connection type.
+     * @return the builder.
+     */
     public FaultInjectionConditionBuilder connectionType(FaultInjectionConnectionType connectionType) {
         this.connectionType = connectionType;
         return this;
     }
 
     /***
-     * Optional. Can limit the endpoint down to a certain partition.
-     * @param endpoints the fault injection endpoints.
+     * Set the physical endpoints of the rule. Only applicable in direct connection type.
+     *
+     * @param endpoints the physical endpoints.
      * @return the builder.
      */
     public FaultInjectionConditionBuilder endpoints(FaultInjectionEndpoints endpoints) {
@@ -59,7 +71,6 @@ public class FaultInjectionConditionBuilder {
         this.endpoints = endpoints;
         return this;
     }
-
 
     public FaultInjectionCondition build() {
         return new FaultInjectionCondition(
