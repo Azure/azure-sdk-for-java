@@ -38,10 +38,11 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         int read(ByteBuffer dst, long sourceOffset);
 
         /**
-         * Gets the last known length of the resource. If no value is cached, fetches the value.
+         * Gets the length of the resource. The returned value may have been cached from previous operations on this
+         * instance.
          * @return The length in bytes.
          */
-        long getCachedLength();
+        long getResourceLength();
     }
 
     /**
@@ -137,7 +138,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         if (buffer.remaining() == 0) {
             if (refillReadBuffer(absolutePosition) == -1) {
                 // cap any position overshooting if channel is at end
-                absolutePosition = readBehavior.getCachedLength();
+                absolutePosition = readBehavior.getResourceLength();
                 return -1;
             }
         }
@@ -160,7 +161,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         int read = readBehavior.read(buffer, newBufferAbsolutePosition);
         buffer.rewind();
         buffer.limit(Math.max(read, 0));
-        bufferAbsolutePosition = Math.min(newBufferAbsolutePosition, readBehavior.getCachedLength());
+        bufferAbsolutePosition = Math.min(newBufferAbsolutePosition, readBehavior.getResourceLength());
         return read;
     }
 
@@ -237,7 +238,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
     public long size() throws IOException {
         assertOpen();
         if (readBehavior != null) {
-            return readBehavior.getCachedLength();
+            return readBehavior.getResourceLength();
         } else {
             return absolutePosition;
         }

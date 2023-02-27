@@ -32,7 +32,7 @@ class StorageSeekableByteChannelTest extends Specification {
                 dst.put(data, (int) sourceOffset, read)
                 return read
             }
-            getCachedLength() >> data.length
+            getResourceLength() >> data.length
         }
 
         def channel = new StorageSeekableByteChannel(chunkSize, behavior, null)
@@ -71,7 +71,7 @@ class StorageSeekableByteChannelTest extends Specification {
                 dst.put(data, (int)sourceOffset, read)
                 return read
             }
-            getCachedLength() >> data.length
+            getResourceLength() >> data.length
         }
         def channel = new StorageSeekableByteChannel(bufferLength, behavior, null)
 
@@ -99,7 +99,7 @@ class StorageSeekableByteChannelTest extends Specification {
         long[] seekIndices = [20, 500, 1, 6, 5]
 
         StorageSeekableByteChannel.ReadBehavior behavior = Mock {
-            getCachedLength() >> data.length
+            getResourceLength() >> data.length
         }
         def channel = new StorageSeekableByteChannel(bufferLength, behavior, null)
 
@@ -128,7 +128,7 @@ class StorageSeekableByteChannelTest extends Specification {
         long seekIndex = 345
 
         StorageSeekableByteChannel.ReadBehavior behavior = Mock {
-            getCachedLength() >> data.length
+            getResourceLength() >> data.length
         }
         def channel = new StorageSeekableByteChannel(bufferLength, behavior, null)
 
@@ -151,7 +151,7 @@ class StorageSeekableByteChannelTest extends Specification {
     def "Read past resource end"() {
         given:
         StorageSeekableByteChannel.ReadBehavior behavior = Stub {
-            getCachedLength() >> resourceSize
+            getResourceLength() >> resourceSize
             read(_,_) >> { ByteBuffer dst, long sourceOffset ->
                 def toRead = Math.min(dst.remaining(), resourceSize - sourceOffset)
                 if (toRead > 0) {

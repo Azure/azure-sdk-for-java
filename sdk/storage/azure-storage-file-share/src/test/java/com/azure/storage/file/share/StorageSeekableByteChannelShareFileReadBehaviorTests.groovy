@@ -87,7 +87,7 @@ class StorageSeekableByteChannelShareFileReadBehaviorTests extends APISpec {
         and: "correct amount read"
         read == expectedRead
         buffer.position() == Math.max(expectedRead, 0) //
-        behavior.getCachedLength().longValue() == fileSize
+        behavior.getResourceLength().longValue() == fileSize
 
         and: "if applicable, correct data read"
         if (offset < fileSize) {
@@ -126,7 +126,7 @@ class StorageSeekableByteChannelShareFileReadBehaviorTests extends APISpec {
 
         then: "channel state as expected"
         read == length
-        behavior.cachedLength.longValue() == length
+        behavior.resourceLength.longValue() == length
 
         and: "buffer correctly filled"
         buffer.position() == buffer.capacity()
@@ -139,7 +139,7 @@ class StorageSeekableByteChannelShareFileReadBehaviorTests extends APISpec {
         then: "gracefully signal end of file"
         notThrown(Throwable)
         read == -1
-        behavior.cachedLength.longValue() == length
+        behavior.resourceLength.longValue() == length
 
         and: "buffer unfilled"
         buffer.position() == 0
@@ -151,11 +151,11 @@ class StorageSeekableByteChannelShareFileReadBehaviorTests extends APISpec {
 
         and: "behavior reads at previous EOF"
         buffer.clear()
-        read = behavior.read(buffer, behavior.cachedLength.longValue())
+        read = behavior.read(buffer, behavior.resourceLength.longValue())
 
         then: "channel state has updated length"
         read == length
-        behavior.cachedLength.longValue() == 2 * length
+        behavior.resourceLength.longValue() == 2 * length
 
         and: "buffer correctly filled"
         buffer.position() == buffer.capacity()
