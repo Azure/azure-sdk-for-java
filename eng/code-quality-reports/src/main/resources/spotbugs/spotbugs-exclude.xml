@@ -763,10 +763,19 @@
 
   <!-- Returning null is correct in these cases as it represents the not-applicable case -->
   <Match>
-    <Class name="com.azure.storage.blob.nio.AzureBlobFileAttributes"/>
     <Or>
-      <Method name="isServerEncrypted"/>
-      <Method name="isAccessTierInferred"/>
+      <And>
+        <Class name="com.azure.storage.blob.nio.AzureBlobFileAttributes"/>
+        <Method name="isServerEncrypted"/>
+      </And>
+      <And>
+        <Class name="com.azure.storage.blob.nio.AzureBlobFileAttributes"/>
+        <Method name="isAccessTierInferred"/>
+      </And>
+      <And>
+        <Class name="com.azure.search.documents.indexes.models.EntityRecognitionSkill"/>
+        <Method name="areTypelessEntitiesIncluded"/>
+      </And>
     </Or>
     <Bug pattern="NP_BOOLEAN_RETURN_NULL"/>
   </Match>
@@ -2306,8 +2315,16 @@
 
   <!-- False positives -->
   <Match>
-    <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore"/>
-    <Method name="getFilenames"/>
+    <Or>
+      <And>
+        <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore"/>
+        <Method name="getFilenames"/>
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser"/>
+        <Method name="serialize"/>
+      </And>
+    </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
   <Match>
@@ -2327,6 +2344,22 @@
     <Class name="com.azure.core.amqp.models.AmqpMessageBody"/>
     <Field name="data"/>
     <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- The DispositionWork doesn't need to be serializable -->
+  <Match>
+    <Class
+        name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+  <Match>
+    <Class
+        name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
+    <Or>
+      <Field name="desiredState"/>
+      <Field name="mono"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
@@ -2533,8 +2566,7 @@
       <Field name="searchClient"/>
     </Or>
   </Match>
-
-<!-- Derived type changes this field as a marker. -->
+  <!-- Derived type changes this field as a marker. -->
   <Match>
     <Class name="com.azure.core.test.TestBase"/>
     <Field name="enableTestProxy"/>

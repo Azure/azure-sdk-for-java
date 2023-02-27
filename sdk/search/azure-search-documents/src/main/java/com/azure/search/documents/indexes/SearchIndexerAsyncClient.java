@@ -13,8 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
-import com.azure.search.documents.implementation.converters.SearchIndexerConverter;
-import com.azure.search.documents.implementation.converters.SearchIndexerDataSourceConverter;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
 import com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds;
@@ -207,10 +205,9 @@ public class SearchIndexerAsyncClient {
         }
         try {
             return restClient.getDataSources()
-                .createOrUpdateWithResponseAsync(dataSource.getName(), SearchIndexerDataSourceConverter.map(dataSource),
-                    ifMatch, null, ignoreResetRequirements, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalDataSource);
+                .createOrUpdateWithResponseAsync(dataSource.getName(), dataSource, ifMatch, null,
+                    ignoreResetRequirements, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -276,9 +273,8 @@ public class SearchIndexerAsyncClient {
         SearchIndexerDataSourceConnection dataSource, Context context) {
         try {
             return restClient.getDataSources()
-                .createWithResponseAsync(SearchIndexerDataSourceConverter.map(dataSource), null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalDataSource);
+                .createWithResponseAsync(dataSource, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -338,8 +334,7 @@ public class SearchIndexerAsyncClient {
         try {
             return restClient.getDataSources()
                 .getWithResponseAsync(dataSourceName, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalDataSource);
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -375,15 +370,6 @@ public class SearchIndexerAsyncClient {
         }
     }
 
-    PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections(Context context) {
-        try {
-            return new PagedFlux<>(() -> this.listDataSourceConnectionsWithResponse(null, context)
-                .map(MappingUtils::mappingPagingDataSource));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
     /**
      * List all DataSource names from an Azure Cognitive Search service.
      *
@@ -406,15 +392,6 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() ->
                 withContext(context -> this.listDataSourceConnectionsWithResponse("name", context))
                     .map(MappingUtils::mappingPagingDataSourceNames));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
-    PagedFlux<String> listDataSourceConnectionNames(Context context) {
-        try {
-            return new PagedFlux<>(() -> this.listDataSourceConnectionsWithResponse("name", context)
-                .map(MappingUtils::mappingPagingDataSourceNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -547,9 +524,8 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexer>> createIndexerWithResponse(SearchIndexer indexer, Context context) {
         try {
             return restClient.getIndexers()
-                .createWithResponseAsync(SearchIndexerConverter.map(indexer), null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndexer);
+                .createWithResponseAsync(indexer, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -668,10 +644,9 @@ public class SearchIndexerAsyncClient {
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
             return restClient.getIndexers()
-                .createOrUpdateWithResponseAsync(indexer.getName(), SearchIndexerConverter.map(indexer), ifMatch, null,
+                .createOrUpdateWithResponseAsync(indexer.getName(), indexer, ifMatch, null,
                     disableCacheReprocessingChangeDetection, ignoreResetRequirements, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndexer);
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -729,8 +704,7 @@ public class SearchIndexerAsyncClient {
         try {
             return restClient.getIndexers()
                 .getWithResponseAsync(indexerName, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndexer);
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -765,15 +739,6 @@ public class SearchIndexerAsyncClient {
         }
     }
 
-    PagedFlux<SearchIndexer> listIndexers(Context context) {
-        try {
-            return new PagedFlux<>(() -> this.listIndexersWithResponse(null, context)
-                .map(MappingUtils::mappingPagingSearchIndexer));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
      *
@@ -796,15 +761,6 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() ->
                 withContext(context -> this.listIndexersWithResponse("name", context))
                     .map(MappingUtils::mappingPagingSearchIndexerNames));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
-    PagedFlux<String> listIndexerNames(Context context) {
-        try {
-            return new PagedFlux<>(() -> this.listIndexersWithResponse("name", context)
-                .map(MappingUtils::mappingPagingSearchIndexerNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1324,15 +1280,6 @@ public class SearchIndexerAsyncClient {
         }
     }
 
-    PagedFlux<SearchIndexerSkillset> listSkillsets(Context context) {
-        try {
-            return new PagedFlux<>(() -> listSkillsetsWithResponse(null, context)
-                .map(MappingUtils::mappingPagingSkillset));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
     /**
      * Lists all skillset names for an Azure Cognitive Search service.
      *
@@ -1355,15 +1302,6 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() ->
                 withContext(context -> listSkillsetsWithResponse("name", context))
                     .map(MappingUtils::mappingPagingSkillsetNames));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
-    PagedFlux<String> listSkillsetNames(Context context) {
-        try {
-            return new PagedFlux<>(() -> listSkillsetsWithResponse("name", context)
-                .map(MappingUtils::mappingPagingSkillsetNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

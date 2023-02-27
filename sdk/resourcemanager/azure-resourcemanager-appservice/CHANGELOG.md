@@ -2,13 +2,10 @@
 
 ## 2.25.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- Fixed potential `NullPointerException`, when query tag on `WebApp` and `FunctionApp`. 
+
 
 ## 2.24.0 (2023-02-17)
 

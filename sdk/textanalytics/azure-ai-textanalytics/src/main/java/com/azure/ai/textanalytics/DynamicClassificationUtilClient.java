@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
@@ -34,7 +33,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.toDynamicClassif
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing dynamic classification endpoints.
@@ -85,7 +83,7 @@ class DynamicClassificationUtilClient {
                         .setLoggingOptOut(options.isServiceLogsDisabled()))
                 .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
                 options.isIncludeStatistics(),
-                getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                getNotNullContext(context))
 
             .doOnSubscribe(ignoredValue ->
                 LOGGER.info("A batch of documents with count - {}", getDocumentCount(documents)))
@@ -121,8 +119,7 @@ class DynamicClassificationUtilClient {
                             .setLoggingOptOut(options.isServiceLogsDisabled()))
                     .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
                 options.isIncludeStatistics(),
-                enableSyncRestProxy(getNotNullContext(context))
-                    .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)));
+                enableSyncRestProxy(getNotNullContext(context))));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }

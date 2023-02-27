@@ -63,7 +63,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientVirtualMach")
-    private interface VirtualMachinesService {
+    public interface VirtualMachinesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
@@ -733,7 +733,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         String clusterName,
         String virtualMachineId,
         VirtualMachineRestrictMovement restrictMovement) {
-        return beginRestrictMovementAsync(
+        return this
+            .beginRestrictMovementAsync(
                 resourceGroupName, privateCloudName, clusterName, virtualMachineId, restrictMovement)
             .getSyncPoller();
     }
@@ -760,7 +761,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         String virtualMachineId,
         VirtualMachineRestrictMovement restrictMovement,
         Context context) {
-        return beginRestrictMovementAsync(
+        return this
+            .beginRestrictMovementAsync(
                 resourceGroupName, privateCloudName, clusterName, virtualMachineId, restrictMovement, context)
             .getSyncPoller();
     }

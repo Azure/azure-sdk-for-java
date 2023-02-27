@@ -107,7 +107,6 @@ public final class TextAnalyticsAsyncClient {
 
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
-    static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     final DetectLanguageUtilClient detectLanguageUtilClient;
     final AnalyzeSentimentUtilClient analyzeSentimentUtilClient;
     final ExtractKeyPhraseUtilClient extractKeyPhraseUtilClient;

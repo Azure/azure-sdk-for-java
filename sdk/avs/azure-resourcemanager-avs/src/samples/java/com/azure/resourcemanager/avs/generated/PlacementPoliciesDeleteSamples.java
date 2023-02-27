@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PlacementPolicies Delete. */
 public final class PlacementPoliciesDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class PlacementPoliciesDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void placementPoliciesDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.placementPolicies().delete("group1", "cloud1", "cluster1", "policy1", Context.NONE);
+        manager.placementPolicies().delete("group1", "cloud1", "cluster1", "policy1", com.azure.core.util.Context.NONE);
     }
 }
