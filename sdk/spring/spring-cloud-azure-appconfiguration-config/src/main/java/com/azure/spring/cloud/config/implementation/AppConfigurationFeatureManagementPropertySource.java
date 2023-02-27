@@ -30,6 +30,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.implementation.feature.management.entity.Feature;
+import com.azure.spring.cloud.config.implementation.http.policy.TracingInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -99,18 +100,23 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
             settingSelector.setLabelFilter(label);
 
             List<ConfigurationSetting> features = replicaClient.listSettings(settingSelector);
+            TracingInfo tracing = replicaClient.getTracingInfo();
 
             // Reading In Features
             for (ConfigurationSetting setting : features) {
                 if (setting instanceof FeatureFlagConfigurationSetting
                     && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                     featureConfigurationSettings.add(setting);
-                    Object feature = createFeature((FeatureFlagConfigurationSetting) setting);
+                    FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
 
-                    String configName = FEATURE_MANAGEMENT_KEY      
+                    String configName = FEATURE_MANAGEMENT_KEY
                         + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
 
-                    properties.put(configName, feature);
+                    for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
+                        tracing.getFeatureFlagTracing().updateFeatureFilterTelemetry(filter.getName());
+                    }
+
+                    properties.put(configName, createFeature(featureFlag));
                 }
             }
         }

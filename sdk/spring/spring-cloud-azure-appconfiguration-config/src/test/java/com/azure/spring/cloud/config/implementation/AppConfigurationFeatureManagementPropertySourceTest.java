@@ -40,6 +40,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.spring.cloud.config.implementation.feature.management.entity.Feature;
 import com.azure.spring.cloud.config.implementation.feature.management.entity.FeatureSet;
+import com.azure.spring.cloud.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,7 +83,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
 
     @Mock
     private AppConfigurationReplicaClient clientMock;
-    
+
     private FeatureFlagStore featureFlagStore;
 
     @Mock
@@ -124,6 +125,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
         when(clientMock.listSettings(Mockito.any()))
             .thenReturn(featureListMock).thenReturn(featureListMock);
+        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0));
         featureFlagStore.setEnabled(true);
 
         propertySource.initProperties();
@@ -149,6 +151,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
     public void testFeatureFlagThrowError() {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
         when(clientMock.listSettings(Mockito.any())).thenReturn(featureListMock);
+        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0));
         try {
             propertySource.initProperties();
         } catch (Exception e) {
@@ -178,6 +181,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS_TARGETING.iterator());
         when(clientMock.listSettings(Mockito.any()))
             .thenReturn(featureListMock).thenReturn(featureListMock);
+        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0));
         featureFlagStore.setEnabled(true);
 
         propertySource.initProperties();

@@ -59,7 +59,7 @@ public class BaseAppConfigurationPolicyTest {
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(false, false, 0);
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(new TracingInfo(false, false, 0));
 
         when(contextMock.getHttpRequest()).thenReturn(request);
 
@@ -98,7 +98,7 @@ public class BaseAppConfigurationPolicyTest {
 
     @Test
     public void devIsConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(true, false, 0);
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(new TracingInfo(true, false, 0));
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
@@ -112,7 +112,7 @@ public class BaseAppConfigurationPolicyTest {
 
     @Test
     public void keyVaultIsConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(false, true, 0);
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(new TracingInfo(false, true, 0));
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
@@ -120,13 +120,13 @@ public class BaseAppConfigurationPolicyTest {
         when(contextMock.getHttpRequest()).thenReturn(request);
 
         policy.process(contextMock, nextMock);
-        assertEquals("RequestType=Startup,Env=" + KEY_VAULT_CONFIGURED_TRACING,
+        assertEquals("RequestType=Startup," + KEY_VAULT_CONFIGURED_TRACING,
             contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
     @Test
     public void devAndKeyVaultAreConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(true, true, 0);
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(new TracingInfo(true, true, 0));
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);

@@ -26,6 +26,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.config.ConfigurationClientCustomizer;
 import com.azure.spring.cloud.config.implementation.http.policy.BaseAppConfigurationPolicy;
+import com.azure.spring.cloud.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
@@ -72,7 +73,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     private boolean isDev = false;
 
     private boolean isKeyVaultConfigured = false;
-    
+
     private final boolean credentialConfigured;
 
     private final int defaultMaxRetries;
@@ -134,7 +135,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             throw new IllegalArgumentException(
                 "More than 1 Connection method was set for connecting to App Configuration.");
         }
-        
+
         boolean connectionStringIsPresent = configStore.getConnectionString() != null;
 
         if (credentialConfigured && connectionStringIsPresent) {
@@ -182,12 +183,13 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint,
         Integer replicaCount) {
-        builder.addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigured, replicaCount));
+        TracingInfo tracingInfo = new TracingInfo(isDev, isKeyVaultConfigured, replicaCount);
+        builder.addPolicy(new BaseAppConfigurationPolicy(tracingInfo));
 
         if (clientProvider != null) {
             clientProvider.customize(builder, endpoint);
         }
-        return new AppConfigurationReplicaClient(endpoint, builder.buildClient());
+        return new AppConfigurationReplicaClient(endpoint, builder.buildClient(), tracingInfo);
     }
 
     @Override

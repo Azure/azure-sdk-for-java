@@ -13,6 +13,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.spring.cloud.config.implementation.http.policy.TracingInfo;
 
 /**
  * Client for connecting to App Configuration when multiple replicas are in use.
@@ -27,16 +28,19 @@ class AppConfigurationReplicaClient {
 
     private int failedAttempts;
 
+    private final TracingInfo tracingInfo;
+
     /**
      * Holds Configuration Client and info needed to manage backoff.
      * @param endpoint client endpoint
      * @param client Configuration Client to App Configuration store
      */
-    AppConfigurationReplicaClient(String endpoint, ConfigurationClient client) {
+    AppConfigurationReplicaClient(String endpoint, ConfigurationClient client, TracingInfo tracingIngo) {
         this.endpoint = endpoint;
         this.client = client;
         this.backoffEndTime = Instant.now().minusMillis(1);
         this.failedAttempts = 0;
+        this.tracingInfo = tracingIngo;
     }
 
     /**
@@ -146,6 +150,10 @@ class AppConfigurationReplicaClient {
         if (StringUtils.hasText(syncToken)) {
             client.updateSyncToken(syncToken);
         }
+    }
+
+    TracingInfo getTracingInfo() {
+        return tracingInfo;
     }
 
 }
