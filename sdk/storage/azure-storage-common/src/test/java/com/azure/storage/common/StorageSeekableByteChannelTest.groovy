@@ -214,6 +214,70 @@ class StorageSeekableByteChannelTest extends Specification {
         100              | Constants.KB | Constants.KB // buffer larger than data
     }
 
+    def "Write mode seek"() {
+        given:
+        def bufferSize = Constants.KB
+        StorageSeekableByteChannel.WriteBehavior writeBehavior = Mock() {
+            canSeek(_) >> true
+        }
+        def channel = new StorageSeekableByteChannel(bufferSize, null, writeBehavior)
+
+        when: "Write partial data then seek"
+        channel.write(ByteBuffer.wrap(getRandomData(bufferSize - 5)))
+        channel.position(2048)
+
+        then: "behavior write correctly called once"
+        1 * writeBehavior.write({ ByteBuffer bb -> bb.limit() == bufferSize - 5 }, 0L)
+        0 * writeBehavior.write(_,_)
+
+        when: "Fill entire buffer"
+        channel.write(ByteBuffer.wrap(getRandomData(bufferSize)))
+        channel.position(0)
+
+        then: "behavior write correctly called once"
+        1 * writeBehavior.write({ ByteBuffer bb -> bb.limit() == bufferSize }, 2048L)
+        0 * writeBehavior.write(_,_)
+
+        when: "No data before seek"
+        channel.position(1000)
+
+        then: "behavior write not called"
+        0 * writeBehavior.write(_,_)
+    }
+
+    def "Write mode seek obeys behavior"() {
+        given: "Channel that allows you to seek in 512 byte increments"
+        StorageSeekableByteChannel.WriteBehavior writeBehavior = Mock() {
+            canSeek(_) >> { long index -> index % 512 == 0 }
+        }
+        def channel = new StorageSeekableByteChannel(Constants.KB, null, writeBehavior)
+
+        when: "Seek to 0"
+        channel.position(0)
+
+        then: "success"
+        channel.position() == 0
+
+        when: "Seek to 512"
+        channel.position(512)
+
+        then: "success"
+        channel.position() == 512
+
+        when: "Seek to 5 gigs"
+        channel.position(5 * Constants.GB)
+
+        then: "success"
+        channel.position() == 5 * Constants.GB
+
+        when: "Seek is invalid"
+        channel.position(100)
+
+        then: "failure"
+        def e = thrown(IllegalArgumentException)
+        e.message == "The backing resource does not support this position change."
+    }
+
     def "Write mode cannot read"() {
         setup:
         def channel = new StorageSeekableByteChannel(Constants.KB, null, Mock(StorageSeekableByteChannel.WriteBehavior))

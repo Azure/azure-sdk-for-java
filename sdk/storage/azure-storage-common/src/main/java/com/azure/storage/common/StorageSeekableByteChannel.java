@@ -185,6 +185,9 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
     }
 
     private void flushWriteBuffer() {
+        if (buffer.position() == 0) {
+            return;
+        }
         buffer.limit(buffer.position());
         buffer.rewind();
         writeBehavior.write(buffer, bufferAbsolutePosition);
