@@ -15,6 +15,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -42,7 +44,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
             return createHttpResponse(connection, request);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -62,7 +64,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
             connection.connect();
             return Mono.just(createHttpResponse(connection, request));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -91,7 +93,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -126,21 +128,31 @@ public class HttpURLConnectionHttpClient implements HttpClient {
          *
          * @param connection The {@link HttpURLConnection} to create a {@link HttpResponse} from.
          * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
-         * @throws RuntimeException if a failure occurs reading the body of the response.
+         * @throws UncheckedIOException if a failure occurs.
          */
         HttpURLResponse(HttpURLConnection connection, HttpRequest request) {
             super(request);
             this.connection = connection;
             try {
-                byte[] bytes = BinaryData.fromStream(connection.getInputStream()).toBytes();
-                this.body = ByteBuffer.wrap(bytes);
-            } catch (IOException e) {
-                String mismatch = this.connection.getHeaderField("x-request-mismatch-error");
-                if (mismatch != null) {
 
-                    throw new RuntimeException(new String(Base64.getDecoder().decode(mismatch), StandardCharsets.UTF_8), e);
+                byte[] bytes = null;
+                if (connection.getResponseCode() >= 100 && connection.getResponseCode() < 400) {
+                    bytes = BinaryData.fromStream(connection.getInputStream()).toBytes();
+                } else {
+                    InputStream inputStream = connection.getErrorStream();
+                    if (inputStream != null) {
+                        bytes = BinaryData.fromStream(inputStream).toBytes();
+                    }
                 }
-                throw new RuntimeException(e);
+                if (bytes != null) {
+                    this.body = ByteBuffer.wrap(bytes);
+                } else {
+                    this.body = null;
+                }
+            } catch (IOException e) {
+
+
+                throw new UncheckedIOException(e);
             }
 
         }
