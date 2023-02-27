@@ -1745,7 +1745,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/32906")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33555")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2209,6 +2209,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33555")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeActionsWithMultiSameKindActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2340,7 +2341,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/32906")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33555")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeActionsAutoDetectedLanguageCustomTexts(HttpClient httpClient,
@@ -2642,7 +2643,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/32906")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33555")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeCustomEntitiesAction(HttpClient httpClient,
