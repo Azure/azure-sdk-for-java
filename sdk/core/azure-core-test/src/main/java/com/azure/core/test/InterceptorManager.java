@@ -249,7 +249,11 @@ public class InterceptorManager implements AutoCloseable {
     public Supplier<String> getProxyVariableSupplier() {
         return () -> {
             Objects.requireNonNull(this.testProxyPlaybackClient, "Playback must be started to retrieve values");
-            return proxyVariableQueue.remove();
+            if (!CoreUtils.isNullOrEmpty(proxyVariableQueue)) {
+                return proxyVariableQueue.remove();
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException("'proxyVariableQueue' cannot be null or empty."));
+            }
         };
     }
 

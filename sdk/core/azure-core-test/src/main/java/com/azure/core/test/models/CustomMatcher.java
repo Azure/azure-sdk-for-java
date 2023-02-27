@@ -82,7 +82,7 @@ public class CustomMatcher extends TestProxyRequestMatcher {
     /**
      * Sets query ordering to a boolean value to sort query params alphabetically before comparing URIs when matching.
      *
-     * @param queryOrderingIgnored the ignore query ordering boolean value
+     * @param queryOrderingIgnored to ignore query ordering boolean value
      * @return The updated {@link CustomMatcher} object.
      */
     public CustomMatcher setQueryOrderingIgnored(boolean queryOrderingIgnored) {

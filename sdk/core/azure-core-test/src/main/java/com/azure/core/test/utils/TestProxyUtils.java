@@ -44,10 +44,6 @@ public class TestProxyUtils {
         "(?:User ID=)(?<secret>.*)(?:;)", "(?:<PrimaryKey>)(?<secret>.*)(?:</PrimaryKey>)",
         "(?:<SecondaryKey>)(?<secret>.*)(?:</SecondaryKey>)"));
 
-    // Should be removed once playback client is fixed
-    private static final List<String> EXCLUDED_HEADERS =
-        new ArrayList<>(Arrays.asList("Connection", "Content-Length"));
-
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     private static final List<String> HEADERS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key"));
     private static final String REDACTED_VALUE = "REDACTED";
@@ -142,20 +138,6 @@ public class TestProxyUtils {
         sanitizers.addAll(addDefaultBodySanitizers());
         sanitizers.addAll(addDefaultHeaderSanitizers());
         return sanitizers;
-    }
-
-    /**
-     * Registers the default set of matchers for matching requests on playback.
-     * @return The list of default matchers to be added.
-     */
-    public static List<TestProxyRequestMatcher> loadMatchers() {
-        List<TestProxyRequestMatcher> matchers = new ArrayList<>();
-        matchers.add(addDefaultCustomDefaultMatcher());
-        return matchers;
-    }
-
-    private static TestProxyRequestMatcher addDefaultCustomDefaultMatcher() {
-        return new CustomMatcher().setExcludedHeaders(EXCLUDED_HEADERS);
     }
 
     private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {

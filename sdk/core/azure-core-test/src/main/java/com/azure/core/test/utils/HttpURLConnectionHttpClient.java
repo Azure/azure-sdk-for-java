@@ -21,7 +21,6 @@ import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +76,6 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         if (connection == null) {
             return null;
         }
-
 
         return new HttpURLResponse(connection, request);
     }
@@ -150,8 +148,6 @@ public class HttpURLConnectionHttpClient implements HttpClient {
                     this.body = null;
                 }
             } catch (IOException e) {
-
-
                 throw new UncheckedIOException(e);
             }
 
@@ -201,5 +197,5 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         public Mono<String> getBodyAsString(Charset charset) {
             return Mono.just(new String(body.array(), charset));
         }
-    };
+    }
 }
