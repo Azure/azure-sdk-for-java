@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.faultinjection.model;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.apachecommons.text.StringEscapeUtils;
 import com.azure.cosmos.models.FaultInjectionServerErrorResult;
 
 import java.net.URI;
@@ -64,8 +63,8 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         return false;
     }
 
-    public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
-        return this.result.getInjectedServerError(request);
+    public CosmosException getInjectedServerError(RxDocumentServiceRequest request, String ruleId) {
+        return this.result.getInjectedServerError(request, ruleId);
     }
 
     public String getId() {

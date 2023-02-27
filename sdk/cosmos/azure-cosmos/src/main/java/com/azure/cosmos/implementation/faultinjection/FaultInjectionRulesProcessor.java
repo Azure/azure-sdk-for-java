@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.faultinjection;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
@@ -11,8 +12,10 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxGatewayStoreModel;
 import com.azure.cosmos.implementation.RxStoreModel;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUtils;
 import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConditionInternal;
@@ -20,6 +23,7 @@ import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnec
 import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorRule;
 import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.FaultInjectionCondition;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.azure.cosmos.models.FaultInjectionConnectionType;
@@ -54,6 +58,7 @@ public class FaultInjectionRulesProcessor {
     private final RxCollectionCache collectionCache;
 
     private final GlobalEndpointManager globalEndpointManager;
+    private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final AddressSelector addressSelector;
 
     public FaultInjectionRulesProcessor(
@@ -62,6 +67,7 @@ public class FaultInjectionRulesProcessor {
         RxGatewayStoreModel gatewayStoreModel,
         RxCollectionCache collectionCache,
         GlobalEndpointManager globalEndpointManager,
+        RxPartitionKeyRangeCache partitionKeyRangeCache,
         AddressSelector addressSelector) {
 
         checkNotNull(connectionMode, "Argument 'connectionMode' can not be null");
@@ -69,12 +75,14 @@ public class FaultInjectionRulesProcessor {
         checkNotNull(gatewayStoreModel, "Argument 'gatewayStoreModel' can not be null");
         checkNotNull(collectionCache, "Argument 'collectionCache' can not be null");
         checkNotNull(globalEndpointManager, "Argument 'globalEndpointManager' can not be null");
+        checkNotNull(partitionKeyRangeCache, "Argument 'partitionKeyRangeCache' can not be null");
         checkNotNull(addressSelector, "Argument 'addressSelector' can not be null");
 
         this.connectionMode = connectionMode;
         this.storeModel = storeModel;
         this.gatewayStoreModel = gatewayStoreModel;
         this.collectionCache = collectionCache;
+        this.partitionKeyRangeCache = partitionKeyRangeCache;
         this.globalEndpointManager = globalEndpointManager;
         this.addressSelector = addressSelector;
     }
@@ -105,7 +113,7 @@ public class FaultInjectionRulesProcessor {
                 return Flux.fromIterable(rules)
                     .flatMap(rule -> {
                         validateRule(rule);
-                        return this.getEffectiveRule(rule, collection.getResourceId())
+                        return this.getEffectiveRule(rule, collection)
                             .flatMap(effectiveRule -> {
                                 ImplementationBridgeHelpers
                                     .FaultInjectionRuleHelper
@@ -145,14 +153,14 @@ public class FaultInjectionRulesProcessor {
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveRule(
         FaultInjectionRule rule,
-        String containerResourceId) {
+        DocumentCollection documentCollection) {
 
         if (rule.getResult() instanceof FaultInjectionServerErrorResult) {
-            return this.getEffectiveServerErrorRule(rule, containerResourceId);
+            return this.getEffectiveServerErrorRule(rule, documentCollection);
         }
 
         if (rule.getResult() instanceof FaultInjectionConnectionErrorResult) {
-            return this.getEffectiveConnectionErrorRule(rule, containerResourceId);
+            return this.getEffectiveConnectionErrorRule(rule, documentCollection);
         }
 
         return Mono.error(new IllegalStateException("Result type " + rule.getResult().getClass() + " is not supported"));
@@ -160,12 +168,12 @@ public class FaultInjectionRulesProcessor {
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveServerErrorRule(
         FaultInjectionRule rule,
-        String containerResourceId) {
+        DocumentCollection documentCollection) {
 
         return Mono.just(rule)
             .flatMap(originalRule -> {
                 // get effective condition
-                FaultInjectionConditionInternal effectiveCondition = new FaultInjectionConditionInternal(containerResourceId);
+                FaultInjectionConditionInternal effectiveCondition = new FaultInjectionConditionInternal(documentCollection.getResourceId());
 
                 if (rule.getCondition().getOperationType() != null) {
                     effectiveCondition.setOperationType(this.getEffectiveOperationType(rule.getCondition().getOperationType()));
@@ -184,7 +192,7 @@ public class FaultInjectionRulesProcessor {
                 }
 
                 // Direct connection mode, populate physical addresses
-                return this.resolvePhysicalAddresses(rule.getCondition(), containerResourceId)
+                return this.resolvePhysicalAddresses(rule.getCondition(), documentCollection)
                     .map(addresses -> {
                         List<URI> effectiveAddresses = addresses;
                         FaultInjectionServerErrorType errorType =
@@ -225,7 +233,7 @@ public class FaultInjectionRulesProcessor {
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveConnectionErrorRule(
         FaultInjectionRule rule,
-        String containerResourceId) {
+        DocumentCollection documentCollection) {
 
         return Mono.just(rule)
             .flatMap(originalRule -> {
@@ -234,7 +242,7 @@ public class FaultInjectionRulesProcessor {
                     return Mono.just(this.getServiceEndpoints(rule.getCondition()));
                 }
 
-                return this.resolvePhysicalAddresses(rule.getCondition(), containerResourceId)
+                return this.resolvePhysicalAddresses(rule.getCondition(), documentCollection)
                     .map(addresses -> {
                         return addresses
                             .stream()
@@ -297,7 +305,7 @@ public class FaultInjectionRulesProcessor {
 
     private Mono<List<URI>> resolvePhysicalAddresses(
         FaultInjectionCondition condition,
-        String containerResourceId) {
+        DocumentCollection documentCollection) {
 
         if (condition.getEndpoints() == null) {
             return Mono.just(Arrays.asList());
@@ -307,36 +315,54 @@ public class FaultInjectionRulesProcessor {
 
         return Flux.fromIterable(serviceEndpoints)
             .flatMap(serviceEndpoint -> {
+                FeedRangeInternal feedRangeInternal = FeedRangeInternal.convert(condition.getEndpoints().getFeedRange());
                 RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                     null,
                     OperationType.Read,
-                    containerResourceId,
+                    documentCollection.getResourceId(),
                     ResourceType.Document,
                     Collections.emptyMap());
 
-                request.applyFeedRangeFilter(
-                    FeedRangeInternal.convert(condition.getEndpoints().getFeedRange()));
-                request.requestContext.locationEndpointToRoute = serviceEndpoint;
-
-                if (this.isWriteOnlyEndpoint(condition)) {
-                    return this.addressSelector
-                        .resolvePrimaryUriAsync(request, true)
-                        .map(uri -> uri.getURI())
-                        .flux();
-                }
-
-                return this.addressSelector
-                    .resolveAllUriAsync(
+                return feedRangeInternal
+                    .getPartitionKeyRanges(
+                        this.partitionKeyRangeCache,
                         request,
-                        condition.getEndpoints().isIncludePrimary(),
-                        true)
-                    .flatMapIterable(addresses -> {
-                        return addresses
-                            .stream()
-                            .map(uri -> uri.getURI())
-                            .sorted() // important: will be used to make sure the same replica addresses will be used across different client instances
-                            .limit(condition.getEndpoints().getReplicaCount())
-                            .collect(Collectors.toList());
+                        Mono.just(new Utils.ValueHolder<>(documentCollection))
+                    )
+                    .flatMapMany(pkRangeIdList -> {
+                        return Flux.fromIterable(pkRangeIdList)
+                            .flatMap(pkRangeId -> {
+                                RxDocumentServiceRequest faultInjectionAddressRequest = RxDocumentServiceRequest.create(
+                                    null,
+                                    OperationType.Read,
+                                    documentCollection.getResourceId(),
+                                    ResourceType.Document,
+                                    null);
+
+                                faultInjectionAddressRequest.requestContext.locationEndpointToRoute = serviceEndpoint;
+                                faultInjectionAddressRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(pkRangeId));
+
+                                if (this.isWriteOnlyEndpoint(condition)) {
+                                    return this.addressSelector
+                                        .resolvePrimaryUriAsync(faultInjectionAddressRequest, true)
+                                        .map(uri -> uri.getURI())
+                                        .flux();
+                                }
+
+                                return this.addressSelector
+                                    .resolveAllUriAsync(
+                                        faultInjectionAddressRequest,
+                                        condition.getEndpoints().isIncludePrimary(),
+                                        true)
+                                    .flatMapIterable(addresses -> {
+                                        return addresses
+                                            .stream()
+                                            .map(uri -> uri.getURI())
+                                            .sorted() // important: will be used to make sure the same replica addresses will be used across different client instances
+                                            .limit(condition.getEndpoints().getReplicaCount())
+                                            .collect(Collectors.toList());
+                                    });
+                            });
                     });
             })
             .collectList();

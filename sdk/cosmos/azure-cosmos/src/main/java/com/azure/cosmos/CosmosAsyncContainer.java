@@ -1887,7 +1887,13 @@ public class CosmosAsyncContainer {
         this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
     }
 
-    public Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> rules) {
+    /***
+     * Config fault injection rules.
+     *
+     * @param rules the rules to be configured.
+     * @return the mono.
+     */
+    Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> rules) {
         checkNotNull(rules, "Argument 'rules' can not be null");
         return this.database
             .getClient()

@@ -80,7 +80,7 @@ public class RntbdServerErrorInjector {
 
         for (FaultInjectionServerErrorRule serverResponseErrorRule : this.serverResponseErrorMap.values()) {
             if (serverResponseErrorRule.isApplicable(request)) {
-                CosmosException cause = serverResponseErrorRule.getInjectedServerError(request);
+                CosmosException cause = serverResponseErrorRule.getInjectedServerError(request, serverResponseErrorRule.getId());
                 requestRecord.completeExceptionally(cause);
                 request.faultInjectionRequestContext.applyFaultInjectionRule(serverResponseErrorRule);
                 return true;

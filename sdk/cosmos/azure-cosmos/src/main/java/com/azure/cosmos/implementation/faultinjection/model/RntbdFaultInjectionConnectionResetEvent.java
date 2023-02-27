@@ -8,4 +8,8 @@ public class RntbdFaultInjectionConnectionResetEvent {
     public RntbdFaultInjectionConnectionResetEvent(String ruleId) {
         this.ruleId = ruleId;
     }
+
+    public String getRuleId() {
+        return this.ruleId;
+    }
 }

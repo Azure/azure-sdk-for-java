@@ -424,7 +424,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             }
 
             if (event instanceof RntbdFaultInjectionConnectionResetEvent) {
-                this.exceptionCaught(context, new IOException("Fault Injection Connection Reset"));
+                String ruleId = ((RntbdFaultInjectionConnectionResetEvent)event).getRuleId();
+                this.exceptionCaught(context, new IOException("Fault Injection Connection Reset with ruleId " + ruleId));
                 return;
             }
 

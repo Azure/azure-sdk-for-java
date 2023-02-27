@@ -557,6 +557,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.gatewayProxy,
                 this.collectionCache,
                 this.globalEndpointManager,
+                this.partitionKeyRangeCache,
                 new AddressSelector(this.addressResolver, this.configs.getProtocol()));
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
