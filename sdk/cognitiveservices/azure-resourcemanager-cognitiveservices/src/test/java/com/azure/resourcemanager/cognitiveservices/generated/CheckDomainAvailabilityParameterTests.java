@@ -7,30 +7,29 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilityParameter;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckDomainAvailabilityParameterTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CheckDomainAvailabilityParameter model =
             BinaryData
-                .fromString("{\"subdomainName\":\"xcug\",\"type\":\"cjooxdjebwpucwwf\",\"kind\":\"vbvmeu\"}")
+                .fromString("{\"subdomainName\":\"bpvjymjhx\",\"type\":\"j\",\"kind\":\"gudivkrtswbxqz\"}")
                 .toObject(CheckDomainAvailabilityParameter.class);
-        Assertions.assertEquals("xcug", model.subdomainName());
-        Assertions.assertEquals("cjooxdjebwpucwwf", model.type());
-        Assertions.assertEquals("vbvmeu", model.kind());
+        Assertions.assertEquals("bpvjymjhx", model.subdomainName());
+        Assertions.assertEquals("j", model.type());
+        Assertions.assertEquals("gudivkrtswbxqz", model.kind());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CheckDomainAvailabilityParameter model =
             new CheckDomainAvailabilityParameter()
-                .withSubdomainName("xcug")
-                .withType("cjooxdjebwpucwwf")
-                .withKind("vbvmeu");
+                .withSubdomainName("bpvjymjhx")
+                .withType("j")
+                .withKind("gudivkrtswbxqz");
         model = BinaryData.fromObject(model).toObject(CheckDomainAvailabilityParameter.class);
-        Assertions.assertEquals("xcug", model.subdomainName());
-        Assertions.assertEquals("cjooxdjebwpucwwf", model.type());
-        Assertions.assertEquals("vbvmeu", model.kind());
+        Assertions.assertEquals("bpvjymjhx", model.subdomainName());
+        Assertions.assertEquals("j", model.type());
+        Assertions.assertEquals("gudivkrtswbxqz", model.kind());
     }
 }

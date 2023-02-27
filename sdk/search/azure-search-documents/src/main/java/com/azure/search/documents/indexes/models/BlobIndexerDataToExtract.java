@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -26,12 +25,19 @@ public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobInd
     public static final BlobIndexerDataToExtract CONTENT_AND_METADATA = fromString("contentAndMetadata");
 
     /**
+     * Creates a new instance of BlobIndexerDataToExtract value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobIndexerDataToExtract() {}
+
+    /**
      * Creates or finds a BlobIndexerDataToExtract from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding BlobIndexerDataToExtract.
      */
-    @JsonCreator
     public static BlobIndexerDataToExtract fromString(String name) {
         return fromString(name, BlobIndexerDataToExtract.class);
     }

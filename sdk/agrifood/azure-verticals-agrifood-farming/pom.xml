@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-verticals-agrifood-farming</artifactId>
-  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-verticals-agrifood-farming;current} -->
+  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-verticals-agrifood-farming;current} -->
 
   <name>Microsoft Azure client library for FarmBeats</name>
   <description>This package contains Microsoft Azure FarmBeats client library.</description>
@@ -31,7 +31,9 @@
 
   <properties>
     <!-- Anomaly detector temporarily skipping code coverage until tests are added -->
-    <jacoco.skip>true</jacoco.skip>
+    <jacoco.skip>false</jacoco.skip>
+    <jacoco.min.linecoverage>0.001</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.001</jacoco.min.branchcoverage> 
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>

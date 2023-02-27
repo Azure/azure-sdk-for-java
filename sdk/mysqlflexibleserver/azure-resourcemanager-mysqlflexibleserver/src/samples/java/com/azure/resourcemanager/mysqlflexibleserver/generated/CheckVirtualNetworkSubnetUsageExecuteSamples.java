@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
 
 /** Samples for CheckVirtualNetworkSubnetUsage Execute. */
 public final class CheckVirtualNetworkSubnetUsageExecuteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/CheckVirtualNetworkSubnetUsage.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/CheckVirtualNetworkSubnetUsage.json
      */
     /**
      * Sample code: CheckVirtualNetworkSubnetUsage.
@@ -26,6 +25,6 @@ public final class CheckVirtualNetworkSubnetUsageExecuteSamples {
                 new VirtualNetworkSubnetUsageParameter()
                     .withVirtualNetworkResourceId(
                         "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/testvnet"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

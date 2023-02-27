@@ -6,7 +6,10 @@ package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.OciBlobDescriptor;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /** Returns the requested Docker V2 Manifest file. */
@@ -15,19 +18,16 @@ public final class V2Manifest extends Manifest {
     /*
      * Media type for this Manifest
      */
-    @JsonProperty(value = "mediaType")
     private String mediaType;
 
     /*
      * V2 image config descriptor
      */
-    @JsonProperty(value = "config")
     private OciBlobDescriptor config;
 
     /*
      * List of V2 image layer information
      */
-    @JsonProperty(value = "layers")
     private List<OciBlobDescriptor> layers;
 
     /** Creates an instance of V2Manifest class. */
@@ -98,5 +98,56 @@ public final class V2Manifest extends Manifest {
     public V2Manifest setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("schemaVersion", getSchemaVersion());
+        jsonWriter.writeStringField("mediaType", this.mediaType);
+        jsonWriter.writeJsonField("config", this.config);
+        jsonWriter.writeArrayField("layers", this.layers, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of V2Manifest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of V2Manifest if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     * @throws IOException If an error occurs while reading the V2Manifest.
+     */
+    public static V2Manifest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    Integer schemaVersion = null;
+                    String mediaType = null;
+                    OciBlobDescriptor config = null;
+                    List<OciBlobDescriptor> layers = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("schemaVersion".equals(fieldName)) {
+                            schemaVersion = reader.getNullable(JsonReader::getInt);
+                        } else if ("mediaType".equals(fieldName)) {
+                            mediaType = reader.getString();
+                        } else if ("config".equals(fieldName)) {
+                            config = OciBlobDescriptor.fromJson(reader);
+                        } else if ("layers".equals(fieldName)) {
+                            layers = reader.readArray(reader1 -> OciBlobDescriptor.fromJson(reader1));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    V2Manifest deserializedValue = new V2Manifest();
+                    deserializedValue.setSchemaVersion(schemaVersion);
+                    deserializedValue.mediaType = mediaType;
+                    deserializedValue.config = config;
+                    deserializedValue.layers = layers;
+
+                    return deserializedValue;
+                });
     }
 }

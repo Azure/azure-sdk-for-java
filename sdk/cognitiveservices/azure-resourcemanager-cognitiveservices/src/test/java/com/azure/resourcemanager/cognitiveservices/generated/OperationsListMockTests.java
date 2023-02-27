@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.Operation;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"bodacizsjq\",\"isDataAction\":true,\"display\":{\"provider\":\"ibdeibq\",\"resource\":\"qkgh\",\"operation\":\"ndzwmkrefa\",\"description\":\"jorwkqnyhgbij\"},\"origin\":\"user\",\"actionType\":\"Internal\"}]}";
+            "{\"value\":[{\"name\":\"cx\",\"isDataAction\":false,\"display\":{\"provider\":\"sofbshrn\",\"resource\":\"buswdvzyy\",\"operation\":\"cnunvjsr\",\"description\":\"f\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +59,6 @@ public final class OperationsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Operation> response = manager.operations().list(Context.NONE);
+        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

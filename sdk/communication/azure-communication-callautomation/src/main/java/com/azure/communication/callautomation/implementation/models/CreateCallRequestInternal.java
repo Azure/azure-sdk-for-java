@@ -18,10 +18,24 @@ public final class CreateCallRequestInternal {
     private List<CommunicationIdentifierModel> targets;
 
     /*
-     * The source of the call.
+     * The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
+     * Required only when calling a PSTN callee.
      */
-    @JsonProperty(value = "source", required = true)
-    private CallSourceInternal source;
+    @JsonProperty(value = "sourceCallerIdNumber")
+    private PhoneNumberIdentifierModel sourceCallerIdNumber;
+
+    /*
+     * Display name of the call if dialing out to a pstn number
+     */
+    @JsonProperty(value = "sourceDisplayName")
+    private String sourceDisplayName;
+
+    /*
+     * The identifier of the source of the call
+     */
+    @JsonProperty(value = "sourceIdentity")
+    private CommunicationIdentifierModel sourceIdentity;
 
     /*
      * A customer set value used to track the answering of a call.
@@ -68,22 +82,64 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the source property: The source of the call.
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited. Required only when calling a PSTN callee.
      *
-     * @return the source value.
+     * @return the sourceCallerIdNumber value.
      */
-    public CallSourceInternal getSource() {
-        return this.source;
+    public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
+        return this.sourceCallerIdNumber;
     }
 
     /**
-     * Set the source property: The source of the call.
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited. Required only when calling a PSTN callee.
      *
-     * @param source the source value to set.
+     * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setSource(CallSourceInternal source) {
-        this.source = source;
+    public CreateCallRequestInternal setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
+        this.sourceCallerIdNumber = sourceCallerIdNumber;
+        return this;
+    }
+
+    /**
+     * Get the sourceDisplayName property: Display name of the call if dialing out to a pstn number.
+     *
+     * @return the sourceDisplayName value.
+     */
+    public String getSourceDisplayName() {
+        return this.sourceDisplayName;
+    }
+
+    /**
+     * Set the sourceDisplayName property: Display name of the call if dialing out to a pstn number.
+     *
+     * @param sourceDisplayName the sourceDisplayName value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setSourceDisplayName(String sourceDisplayName) {
+        this.sourceDisplayName = sourceDisplayName;
+        return this;
+    }
+
+    /**
+     * Get the sourceIdentity property: The identifier of the source of the call.
+     *
+     * @return the sourceIdentity value.
+     */
+    public CommunicationIdentifierModel getSourceIdentity() {
+        return this.sourceIdentity;
+    }
+
+    /**
+     * Set the sourceIdentity property: The identifier of the source of the call.
+     *
+     * @param sourceIdentity the sourceIdentity value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setSourceIdentity(CommunicationIdentifierModel sourceIdentity) {
+        this.sourceIdentity = sourceIdentity;
         return this;
     }
 

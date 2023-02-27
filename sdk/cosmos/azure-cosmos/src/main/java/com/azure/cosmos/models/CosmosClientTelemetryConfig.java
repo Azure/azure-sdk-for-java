@@ -107,7 +107,7 @@ public final class CosmosClientTelemetryConfig {
             !this.metricTagNamesOverride.equals(candidate.getDefaultTagNames())) {
 
             if (TagName.DEFAULT_TAGS.equals(candidate.getDefaultTagNames())) {
-                candidate.setDefaultTagNames(this.metricTagNamesOverride);
+                candidate.configureDefaultTagNames(this.metricTagNamesOverride);
             } else {
                 throw new IllegalArgumentException(
                     "Tags for meters cannot be specified via the deprecated CosmosClientTelemetryConfig " +
@@ -157,7 +157,7 @@ public final class CosmosClientTelemetryConfig {
      * @param tagNames - a comma-separated list of tag names that should be considered
      * @return current CosmosClientTelemetryConfig
      *
-     * @deprecated Use {@link CosmosMicrometerMetricsOptions#defaultTagNames(CosmosMetricTagName...)} or
+     * @deprecated Use {@link CosmosMicrometerMetricsOptions#configureDefaultTagNames(CosmosMetricTagName...)} or
      * {@link CosmosMicrometerMeterOptions#suppressTagNames(CosmosMetricTagName...)} instead.
      */
     @Deprecated

@@ -198,7 +198,7 @@ public class GlobalAddressResolverTest {
                 .thenReturn(Flux.fromIterable(openConnectionResponses));
 
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
-                .setProactiveConnectionRegions(1)
+                .setProactiveConnectionRegionsCount(1)
                 .build();
 
         StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig))

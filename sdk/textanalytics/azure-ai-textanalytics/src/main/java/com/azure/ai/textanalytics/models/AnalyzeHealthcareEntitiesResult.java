@@ -5,9 +5,8 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
-
-import java.util.Map;
 
 /**
  * The {@link AnalyzeHealthcareEntitiesResult} model.
@@ -18,7 +17,7 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     private IterableStream<TextAnalyticsWarning> warnings;
     private IterableStream<HealthcareEntity> entities;
     private IterableStream<HealthcareEntityRelation> entityRelations;
-    private Map<String, Object> fhirBundle;
+    private BinaryData fhirBundle;
 
     static {
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setAccessor(
@@ -48,8 +47,7 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
                 }
 
                 @Override
-                public void setFhirBundle(AnalyzeHealthcareEntitiesResult entitiesResult,
-                                          Map<String, Object> fhirBundle) {
+                public void setFhirBundle(AnalyzeHealthcareEntitiesResult entitiesResult, BinaryData fhirBundle) {
                     entitiesResult.setFhirBundle(fhirBundle);
                 }
             });
@@ -101,9 +99,9 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     /**
      * Gets the value of FHIR Bundle. See more information in https://www.hl7.org/fhir/overview.html.
      *
-     * @return The value of FHIR Bundle.
+     * @return The value of FHIR Bundle in BinaryData.
      */
-    public Map<String, Object> getFhirBundle() {
+    public BinaryData getFhirBundle() {
         return this.fhirBundle;
     }
 
@@ -133,7 +131,7 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
         this.entityRelations = entityRelations;
     }
 
-    private void setFhirBundle(Map<String, Object> fhirBundle) {
+    private void setFhirBundle(BinaryData fhirBundle) {
         this.fhirBundle = fhirBundle;
     }
 }

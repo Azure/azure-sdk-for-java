@@ -16,6 +16,10 @@ public final class DatabaseStatistics {
     @JsonProperty(value = "size")
     private Float size;
 
+    /** Creates an instance of DatabaseStatistics class. */
+    public DatabaseStatistics() {
+    }
+
     /**
      * Get the size property: The database size - the total size of compressed data and index in bytes.
      *

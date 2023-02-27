@@ -35,6 +35,15 @@ public final class PrivateCloudProvisioningState extends ExpandableStringEnum<Pr
     public static final PrivateCloudProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of PrivateCloudProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateCloudProvisioningState() {
+    }
+
+    /**
      * Creates or finds a PrivateCloudProvisioningState from its string representation.
      *
      * @param name a name to look for.

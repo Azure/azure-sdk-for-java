@@ -17,6 +17,15 @@ public final class DeploymentScaleType extends ExpandableStringEnum<DeploymentSc
     public static final DeploymentScaleType MANUAL = fromString("Manual");
 
     /**
+     * Creates a new instance of DeploymentScaleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentScaleType() {
+    }
+
+    /**
      * Creates or finds a DeploymentScaleType from its string representation.
      *
      * @param name a name to look for.

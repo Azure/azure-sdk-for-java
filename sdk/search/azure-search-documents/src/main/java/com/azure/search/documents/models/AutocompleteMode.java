@@ -6,9 +6,6 @@
 
 package com.azure.search.documents.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and
  * 'oneTermWithContext' to use the current context in producing autocomplete terms.
@@ -36,7 +33,6 @@ public enum AutocompleteMode {
      * @param value the serialized value to parse.
      * @return the parsed AutocompleteMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static AutocompleteMode fromString(String value) {
         if (value == null) {
             return null;
@@ -51,7 +47,6 @@ public enum AutocompleteMode {
     }
 
     /** {@inheritDoc} */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

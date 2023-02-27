@@ -29,6 +29,10 @@ public final class CacheHealth {
     @JsonProperty(value = "conditions", access = JsonProperty.Access.WRITE_ONLY)
     private List<Condition> conditions;
 
+    /** Creates an instance of CacheHealth class. */
+    public CacheHealth() {
+    }
+
     /**
      * Get the state property: List of Cache health states.
      *

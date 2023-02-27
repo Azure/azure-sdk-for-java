@@ -136,25 +136,6 @@ public interface DataConnectionsClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName);
-
-    /**
-     * Checks that the data connection name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param dataConnectionName The name of the data connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -170,7 +151,7 @@ public interface DataConnectionsClient {
         Context context);
 
     /**
-     * Returns a data connection.
+     * Checks that the data connection name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -179,11 +160,14 @@ public interface DataConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an data connection.
+     * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataConnectionInner get(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName);
+    CheckNameResultInner checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DataConnectionCheckNameRequest dataConnectionName);
 
     /**
      * Returns a data connection.
@@ -201,6 +185,22 @@ public interface DataConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataConnectionInner> getWithResponse(
         String resourceGroupName, String clusterName, String databaseName, String dataConnectionName, Context context);
+
+    /**
+     * Returns a data connection.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param dataConnectionName The name of the data connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing an data connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DataConnectionInner get(
+        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName);
 
     /**
      * Creates or updates a data connection.
