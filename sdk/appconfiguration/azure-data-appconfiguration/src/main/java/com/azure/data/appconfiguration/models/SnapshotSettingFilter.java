@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * SnapshotFilter
  */
 @Fluent
-public final class SnapshotFilter {
+public final class SnapshotSettingFilter {
     private String key;
     private String label;
 
@@ -18,7 +18,7 @@ public final class SnapshotFilter {
      *
      * @param key Filters key-values by their key field.
      */
-    public SnapshotFilter(String key) {
+    public SnapshotSettingFilter(String key) {
         this.key = key;
     }
 
@@ -46,7 +46,7 @@ public final class SnapshotFilter {
      * @param label the label value to set.
      * @return the KeyValueFilter object itself.
      */
-    public SnapshotFilter setLabel(String label) {
+    public SnapshotSettingFilter setLabel(String label) {
         this.label = label;
         return this;
     }

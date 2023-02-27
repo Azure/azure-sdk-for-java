@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -36,9 +35,8 @@ import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.data.appconfiguration.models.SnapshotFilter;
+import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
@@ -55,7 +53,6 @@ import static com.azure.data.appconfiguration.implementation.Utility.toConfigura
 import static com.azure.data.appconfiguration.implementation.Utility.toConfigurationSettingSnapshot;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
-import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFilter;
 import static com.azure.data.appconfiguration.implementation.Utility.toSnapshot;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
@@ -945,7 +942,7 @@ public final class ConfigurationClient {
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingSnapshot createSnapShot(String name, Iterable<SnapshotFilter> filters) {
+    public ConfigurationSettingSnapshot createSnapShot(String name, Iterable<SnapshotSettingFilter> filters) {
         return createSnapShotWithResponse(name, new ConfigurationSettingSnapshot(filters), Context.NONE).getValue();
     }
 
@@ -965,36 +962,30 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Create snapshots
+     * Get snapshot
      *
-     * @param name name of snapshots
-     * @return snapshots.
+     * @param name name of snapshot
+     * @return snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSettingSnapshot getSnapShot(String name) {
-        return getSnapShotWithResponse(null,false, Context.NONE).getValue();
+        return getSnapShotWithResponse(name, Context.NONE).getValue();
     }
 
     /**
-     * Create snapshots
+     * Get snapshot
      *
-     * @param snapshot snapshots
-     * @param ifChanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
-     * used as a If-None-Match header.
+     * @param name name of snapshot
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingSnapshot> getSnapShotWithResponse(
-        ConfigurationSettingSnapshot snapshot, boolean ifChanged, Context context) {
+    public Response<ConfigurationSettingSnapshot> getSnapShotWithResponse(String name, Context context) {
         final ResponseBase<GetSnapshotHeaders, Snapshot> response = serviceClient.getSnapshotWithResponse(
-            snapshot.getName(), null,
-            getIfNoneMatchETagSnapshot(ifChanged, snapshot), null, context);
-        return new SimpleResponse<>(response,
-            toConfigurationSettingSnapshot(response.getValue()));
+            name, null, null, null, context);
+        return new SimpleResponse<>(response, toConfigurationSettingSnapshot(response.getValue()));
     }
-
-
+    
     /**
      * Archiving snapshot from Ready status.
      *

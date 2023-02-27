@@ -13,7 +13,7 @@ import com.azure.data.appconfiguration.implementation.models.Snapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
-import com.azure.data.appconfiguration.models.SnapshotFilter;
+import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -44,19 +44,19 @@ public class Utility {
     }
 
 
-    public static IterableStream<SnapshotFilter> toSnapshotFilters(Iterable<KeyValueFilter> filters) {
-        List<SnapshotFilter> result = new ArrayList<>();
+    public static IterableStream<SnapshotSettingFilter> toSnapshotFilters(Iterable<KeyValueFilter> filters) {
+        List<SnapshotSettingFilter> result = new ArrayList<>();
         for (KeyValueFilter filter : filters) {
-            final SnapshotFilter snapshotFilter = new SnapshotFilter(filter.getKey());
-            snapshotFilter.setLabel(filter.getLabel());
-            result.add(snapshotFilter);
+            final SnapshotSettingFilter snapshotSettingFilter = new SnapshotSettingFilter(filter.getKey());
+            snapshotSettingFilter.setLabel(filter.getLabel());
+            result.add(snapshotSettingFilter);
         }
         return IterableStream.of(result);
     }
 
-    public static List<KeyValueFilter> toKeyValueFilter(Iterable<SnapshotFilter> filters) {
+    public static List<KeyValueFilter> toKeyValueFilter(Iterable<SnapshotSettingFilter> filters) {
         List<KeyValueFilter> result = new ArrayList<>();
-        for (SnapshotFilter filter : filters) {
+        for (SnapshotSettingFilter filter : filters) {
             final KeyValueFilter keyValueFilter = new KeyValueFilter();
             keyValueFilter.setKey(filter.getKey());
             keyValueFilter.setLabel(filter.getLabel());

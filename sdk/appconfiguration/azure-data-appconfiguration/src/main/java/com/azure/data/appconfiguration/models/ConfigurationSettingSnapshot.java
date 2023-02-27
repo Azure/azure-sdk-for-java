@@ -5,7 +5,6 @@ package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.IterableStream;
-import com.azure.data.appconfiguration.implementation.models.Snapshot;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -16,7 +15,7 @@ import java.util.Map;
  */
 @Fluent
 public final class ConfigurationSettingSnapshot {
-    private Iterable<SnapshotFilter> filters;
+    private Iterable<SnapshotSettingFilter> filters;
     private CompositionType compositionType;
     private Duration retentionPeriod;
     private Map<String, String> tags;
@@ -36,7 +35,7 @@ public final class ConfigurationSettingSnapshot {
      *
      * @param filters A list of filters used to filter the key-values included in the snapshot.
      */
-    public ConfigurationSettingSnapshot(Iterable<SnapshotFilter> filters) {
+    public ConfigurationSettingSnapshot(Iterable<SnapshotSettingFilter> filters) {
         this.filters = filters;
     }
 
@@ -54,7 +53,7 @@ public final class ConfigurationSettingSnapshot {
      *
      * @return the filters value.
      */
-    public IterableStream<SnapshotFilter> getFilters() {
+    public IterableStream<SnapshotSettingFilter> getFilters() {
         return IterableStream.of(filters);
     }
 

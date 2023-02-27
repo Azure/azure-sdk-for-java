@@ -11,7 +11,7 @@ import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.data.appconfiguration.models.SnapshotFilter;
+import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 
@@ -33,9 +33,9 @@ public class SnapshotSamples {
                                                .buildClient();
 
         // 1. Create
-        ArrayList<SnapshotFilter> filter = new ArrayList<>();
-        filter.add(new SnapshotFilter("key*"));
-        filter.add(new SnapshotFilter("2020-01-01"));
+        ArrayList<SnapshotSettingFilter> filter = new ArrayList<>();
+        filter.add(new SnapshotSettingFilter("key*"));
+        filter.add(new SnapshotSettingFilter("2020-01-01"));
 
         Map<String, String> tags = new HashMap<>();
         tags.put("tagName", "tagValue");
@@ -52,7 +52,7 @@ public class SnapshotSamples {
         // ConfigurationSetting Snapshots properties
         CompositionType compositionType = snapShot.getCompositionType();
         Duration retentionPeriod = snapShot.getRetentionPeriod();
-        IterableStream<SnapshotFilter> filters = snapShot.getFilters();
+        IterableStream<SnapshotSettingFilter> filters = snapShot.getFilters();
         Map<String, String> tags1 = snapShot.getTags();
         // Ready-only
         String name = snapShot.getName();
@@ -66,7 +66,7 @@ public class SnapshotSamples {
 
         // 2. Get single snapshot
         ConfigurationSettingSnapshot getSnapshotByName = client.getSnapShot(name);
-        Response<ConfigurationSettingSnapshot> getSnapshotWithETags = client.getSnapShotWithResponse(snapShot, true, Context.NONE);
+        Response<ConfigurationSettingSnapshot> getSnapshotWithETags = client.getSnapShotWithResponse(name, Context.NONE);
 
         // 3. Update snapshot
         // 3.1 archive snapshot

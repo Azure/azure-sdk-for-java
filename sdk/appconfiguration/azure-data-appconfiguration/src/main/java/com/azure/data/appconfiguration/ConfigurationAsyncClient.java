@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -27,12 +26,11 @@ import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.data.appconfiguration.models.SnapshotFilter;
+import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -51,7 +49,6 @@ import static com.azure.data.appconfiguration.implementation.Utility.toConfigura
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFilter;
-import static com.azure.data.appconfiguration.implementation.Utility.toSnapshotFilters;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
@@ -923,7 +920,7 @@ public final class ConfigurationAsyncClient {
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSettingSnapshot> createSnapShot(String name, Iterable<SnapshotFilter> filters) {
+    public Mono<ConfigurationSettingSnapshot> createSnapShot(String name, Iterable<SnapshotSettingFilter> filters) {
         return createSnapShotWithResponse(name, new ConfigurationSettingSnapshot(filters)).map(Response::getValue);
     }
 
@@ -954,28 +951,20 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSettingSnapshot> getSnapshot(String name) {
-        final ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(null);
-        // private field value setter
-        // ConfigurationSettingSnapshotPropertiesHelper.setName();
-        return getSnapshotWithResponse(snapshot, false).map(Response::getValue);
+        return getSnapshotWithResponse(name).map(Response::getValue);
     }
 
     /**
      * Gets a snapshot
      *
-     * @param snapshot snapshots
-     * @param ifChanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
-     * used as a If-None-Match header.
+     * @param name snapshots
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSettingSnapshot>> getSnapshotWithResponse(
-        ConfigurationSettingSnapshot snapshot, boolean ifChanged) {
-        return serviceClient.getSnapshotWithResponseAsync(snapshot.getName(),
-            null, getIfNoneMatchETagSnapshot(ifChanged, snapshot), null, Context.NONE)
+    public Mono<Response<ConfigurationSettingSnapshot>> getSnapshotWithResponse(String name) {
+        return serviceClient.getSnapshotWithResponseAsync(name, null, null, null, Context.NONE)
                    .map(response -> new SimpleResponse<>(response,
                        toConfigurationSettingSnapshot(response.getValue())));
-
     }
 
     /**
