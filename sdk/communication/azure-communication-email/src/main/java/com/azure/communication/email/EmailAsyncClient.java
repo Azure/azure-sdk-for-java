@@ -10,7 +10,6 @@ import com.azure.communication.email.implementation.models.EmailContent;
 import com.azure.communication.email.implementation.models.EmailRecipients;
 import com.azure.communication.email.models.EmailAttachment;
 import com.azure.communication.email.models.EmailMessage;
-import com.azure.communication.email.implementation.models.ErrorResponseException;
 import com.azure.communication.email.models.EmailSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -30,26 +29,25 @@ import java.util.Objects;
 /** Initializes a new instance of the asynchronous EmailAsyncClient type. */
 @ServiceClient(builder = EmailClientBuilder.class, isAsync = true)
 public final class EmailAsyncClient {
-    private final EmailsImpl serviceClient;
-    private final AzureCommunicationEmailServiceImpl serviceImpl;
+    private final EmailsImpl emailServiceClient;
+    private final AzureCommunicationEmailServiceImpl serviceClient;
 
-    private final ClientLogger logger = new ClientLogger(EmailAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EmailAsyncClient.class);
 
     /**
      * Initializes an instance of EmailAsyncClient class.
      *
-     * @param serviceImpl the service client implementation.
+     * @param serviceClient the service client implementation.
      */
-    EmailAsyncClient(AzureCommunicationEmailServiceImpl serviceImpl) {
-        this.serviceImpl = serviceImpl;
-        this.serviceClient = serviceImpl.getEmails();
+    EmailAsyncClient(AzureCommunicationEmailServiceImpl serviceClient) {
+        this.serviceClient = serviceClient;
+        this.emailServiceClient = serviceClient.getEmails();
     }
 
     /**
      * Queues an email message to be sent to one or more recipients.
      *
      * @param message Message payload for sending an email.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of status of the long running operation.
      */
@@ -59,19 +57,20 @@ public final class EmailAsyncClient {
     }
 
     PollerFlux<EmailSendResult, EmailSendResult> beginSend(EmailMessage message, Context context) {
-        Objects.requireNonNull(message.getSenderAddress(), "The message 'senderAddress' cannot be null.");
-        Objects.requireNonNull(message.getSubject(), "The message 'subject' cannot be null.");
+        Objects.requireNonNull(message, "'message' cannot be null.");
+        Objects.requireNonNull(message.getSenderAddress(), "'senderAddress' cannot be null.");
+        Objects.requireNonNull(message.getSubject(), "'subject' cannot be null.");
 
         if (message.getBodyHtml() == null && message.getBodyPlainText() == null) {
-            throw logger.logExceptionAsError(
-                new NullPointerException("The message 'bodyHtml' and 'bodyPlainText' cannot both be null."));
+            throw LOGGER.logExceptionAsError(
+                new NullPointerException("'bodyHtml' and 'bodyPlainText' cannot both be null."));
         }
 
         if (message.getToRecipients() == null && message.getCcRecipients() == null
                 && message.getBccRecipients() == null) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new NullPointerException(
-                    "The message 'toRecipients', 'ccRecipients', and 'bccRecipients' cannot all be null.")
+                    "'toRecipients', 'ccRecipients', and 'bccRecipients' cannot all be null.")
             );
         }
 
@@ -107,15 +106,14 @@ public final class EmailAsyncClient {
             .setReplyTo(message.getReplyTo())
             .setUserEngagementTrackingDisabled(message.isUserEngagementTrackingDisabled());
 
-
         return PollerFlux.create(
             Duration.ofSeconds(1),
-            () -> serviceClient.sendWithResponseAsync(messageImpl, null, null, context),
+            () -> emailServiceClient.sendWithResponseAsync(messageImpl, null, null, context),
             new DefaultPollingStrategy<>(
-                this.serviceImpl.getHttpPipeline(),
-                "{endpoint}".replace("{endpoint}", this.serviceImpl.getEndpoint()),
+                this.serviceClient.getHttpPipeline(),
+                "{endpoint}".replace("{endpoint}", this.serviceClient.getEndpoint()),
                 null,
-                Context.NONE),
+                context),
             TypeReference.createInstance(EmailSendResult.class),
             TypeReference.createInstance(EmailSendResult.class));
     }
