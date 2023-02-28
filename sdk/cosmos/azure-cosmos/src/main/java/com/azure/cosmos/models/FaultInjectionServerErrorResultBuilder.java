@@ -1,10 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
-
-import com.azure.cosmos.models.FaultInjectionServerErrorResult;
-import com.azure.cosmos.models.FaultInjectionServerErrorType;
+package com.azure.cosmos.models;
 
 import java.time.Duration;
 
@@ -15,7 +12,7 @@ public class FaultInjectionServerErrorResultBuilder {
     private int times = Integer.MAX_VALUE;
     private Duration delay;
 
-    public FaultInjectionServerErrorResultBuilder(FaultInjectionServerErrorType serverErrorType) {
+    FaultInjectionServerErrorResultBuilder(FaultInjectionServerErrorType serverErrorType) {
         this.serverErrorType = serverErrorType;
     }
 

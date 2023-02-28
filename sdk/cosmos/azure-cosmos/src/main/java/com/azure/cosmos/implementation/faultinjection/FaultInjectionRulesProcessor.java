@@ -68,7 +68,7 @@ public class FaultInjectionRulesProcessor {
     private final GlobalEndpointManager globalEndpointManager;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final AddressSelector addressSelector;
-    private final FaultInjectionRuleProcessorRetryPolicy retryPolicy;
+    private final ThrottlingRetryOptions retryOptions;
 
     public FaultInjectionRulesProcessor(
         ConnectionMode connectionMode,
@@ -96,12 +96,12 @@ public class FaultInjectionRulesProcessor {
         this.partitionKeyRangeCache = partitionKeyRangeCache;
         this.globalEndpointManager = globalEndpointManager;
         this.addressSelector = addressSelector;
-        this.retryPolicy = new FaultInjectionRuleProcessorRetryPolicy(retryOptions);
+        this.retryOptions = retryOptions;
     }
 
     /***
      * Main logic of the fault injection processor:
-     * 1. Pre-populate all required information - serviceEndpoints, physical addresses
+     * 1. Pre-populate all required information - regionEndpoints, physical addresses
      * 2. Create internal effective rule, and attach it to the original rule
      * 3. Routing the effective rule to the corresponding components: rntbd layer or gateway
      *
@@ -115,7 +115,6 @@ public class FaultInjectionRulesProcessor {
             StringUtils.isNotEmpty(containerNameLink),
             "Argument 'containerNameLink' can not be null nor empty.");
 
-        // TODO: add retry logic
         return this.collectionCache.resolveByNameAsync(null, containerNameLink, null)
             .flatMap(collection -> {
                 if (collection == null) {
@@ -197,7 +196,7 @@ public class FaultInjectionRulesProcessor {
                             rule.getCondition().getEndpoints(),
                             this.isWriteOnlyEndpoint(rule.getCondition()),
                             documentCollection),
-                        new WebExceptionRetryPolicy()
+                        new FaultInjectionRuleProcessorRetryPolicy(this.retryOptions)
                     )
                     .map(addresses -> {
                         List<URI> effectiveAddresses = addresses;
@@ -266,7 +265,7 @@ public class FaultInjectionRulesProcessor {
     }
 
     /***
-     * If region is defined in the condition, then only get the matching region service endpoint.
+     * If region is defined in the condition, then get the matching region service endpoint.
      * Else get all available read/write region service endpoints.
      *
      * @param condition the fault injection condition.
@@ -317,7 +316,7 @@ public class FaultInjectionRulesProcessor {
         }
 
         return Flux.fromIterable(regionEndpoints)
-            .flatMap(serviceEndpoint -> {
+            .flatMap(regionEndpoint -> {
                 FeedRangeInternal feedRangeInternal = FeedRangeInternal.convert(addressEndpoints.getFeedRange());
                 RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                     null,
@@ -342,7 +341,7 @@ public class FaultInjectionRulesProcessor {
                                     ResourceType.Document,
                                     null);
 
-                                faultInjectionAddressRequest.requestContext.locationEndpointToRoute = serviceEndpoint;
+                                faultInjectionAddressRequest.requestContext.locationEndpointToRoute = regionEndpoint;
                                 faultInjectionAddressRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(pkRangeId));
 
                                 if (isWriteOnly) {

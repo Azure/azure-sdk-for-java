@@ -22,7 +22,7 @@ public class FaultInjectionRule {
     private boolean enabled;
     private IFaultInjectionRuleInternal effectiveRule;
 
-    public FaultInjectionRule(
+    FaultInjectionRule(
         String id,
         Duration startDelay,
         Duration duration,

@@ -11,9 +11,10 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FaultInjectionBridgeInternal;
-import com.azure.cosmos.FaultInjectionConditionBuilder;
-import com.azure.cosmos.FaultInjectionResultBuilders;
-import com.azure.cosmos.FaultInjectionRuleBuilder;
+import com.azure.cosmos.models.FaultInjectionConditionBuilder;
+import com.azure.cosmos.models.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.models.FaultInjectionResultBuilders;
+import com.azure.cosmos.models.FaultInjectionRuleBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -255,7 +256,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(feedRangeRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .endpoints(new FaultInjectionEndpoints(feedRanges.get(0))) // by default setting on all replicas
+                        .endpoints(new FaultInjectionEndpointBuilder(feedRanges.get(0)).build()) // by default setting on all replicas
                         .build()
                 )
                 .result(

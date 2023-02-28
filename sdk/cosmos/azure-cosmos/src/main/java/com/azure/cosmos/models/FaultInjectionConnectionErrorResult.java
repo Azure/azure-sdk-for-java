@@ -10,7 +10,7 @@ public class FaultInjectionConnectionErrorResult implements IFaultInjectionResul
     private Duration interval;
     private double threshold;
 
-    public FaultInjectionConnectionErrorResult(
+    FaultInjectionConnectionErrorResult(
         FaultInjectionConnectionErrorType errorTypes,
         Duration interval,
         double threshold) {

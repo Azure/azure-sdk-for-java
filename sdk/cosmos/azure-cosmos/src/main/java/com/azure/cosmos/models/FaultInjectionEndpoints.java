@@ -12,15 +12,7 @@ public class FaultInjectionEndpoints {
     private boolean includePrimary;
     private int replicaCount;
 
-    public FaultInjectionEndpoints(FeedRange feedRange) {
-        this(feedRange, DEFAULT_FAULT_INJECTION_REPLICA_COUNT, DEFAULT_FAULT_INJECTION_INCLUDE_PRIMARY);
-    }
-
-    public FaultInjectionEndpoints(FeedRange feedRange, int replicaCount) {
-        this(feedRange, replicaCount, DEFAULT_FAULT_INJECTION_INCLUDE_PRIMARY);
-    }
-
-    public FaultInjectionEndpoints(FeedRange feedRange, int replicaCount, boolean includePrimary) {
+    FaultInjectionEndpoints(FeedRange feedRange, int replicaCount, boolean includePrimary) {
         this.feedRange = feedRange;
         this.replicaCount = replicaCount;
         this.includePrimary = includePrimary;

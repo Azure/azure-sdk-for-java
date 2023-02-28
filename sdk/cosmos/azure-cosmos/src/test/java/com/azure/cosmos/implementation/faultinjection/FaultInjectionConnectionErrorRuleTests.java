@@ -7,9 +7,10 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.FaultInjectionBridgeInternal;
-import com.azure.cosmos.FaultInjectionConditionBuilder;
-import com.azure.cosmos.FaultInjectionResultBuilders;
-import com.azure.cosmos.FaultInjectionRuleBuilder;
+import com.azure.cosmos.models.FaultInjectionConditionBuilder;
+import com.azure.cosmos.models.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.models.FaultInjectionResultBuilders;
+import com.azure.cosmos.models.FaultInjectionRuleBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -42,7 +43,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
     private CosmosAsyncContainer cosmosAsyncContainer;
     private DatabaseAccount databaseAccount;
 
-    @DataProvider(name = "connectionErrorTypeProvider")
+    @DataProvider(name = "faultInjectionConnectionErrorRuleTests")
     public static Object[][] connectionErrorTypeProvider() {
         return new Object[][]{
             { FaultInjectionConnectionErrorType.CONNECTION_CLOSE},
@@ -68,7 +69,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, dataProvider = "connectionErrorTypeProvider", timeOut = TIMEOUT)
-    public void faultInjectionConnectionErrorRuleTests_close(FaultInjectionConnectionErrorType errorType) throws InterruptedException {
+    public void faultInjectionConnectionErrorRuleTests(FaultInjectionConnectionErrorType errorType) throws InterruptedException {
         // using single partition here so that all write operations will be on the same physical partitions
         CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(client);
 
@@ -88,7 +89,10 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .operationType(FaultInjectionOperationType.CREATE)
-                        .endpoints(new FaultInjectionEndpoints(FeedRange.forLogicalPartition(new PartitionKey(createdItem.getMypk()))))
+                        .endpoints(
+                            new FaultInjectionEndpointBuilder(
+                                FeedRange.forLogicalPartition(new PartitionKey(createdItem.getMypk())))
+                            .build())
                         .build()
                 )
                 .result(

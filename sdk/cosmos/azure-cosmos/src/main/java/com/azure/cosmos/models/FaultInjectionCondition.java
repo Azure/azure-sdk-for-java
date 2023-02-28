@@ -9,7 +9,7 @@ public class FaultInjectionCondition {
     private final FaultInjectionConnectionType connectionType;
     private final String region;
 
-    public FaultInjectionCondition(
+    FaultInjectionCondition(
         FaultInjectionOperationType operationType,
         FaultInjectionConnectionType connectionType,
         String region,

@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.FaultInjectionCondition;
-import com.azure.cosmos.models.FaultInjectionRule;
-import com.azure.cosmos.models.IFaultInjectionResult;
 
 import java.time.Duration;
 

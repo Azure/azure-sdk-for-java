@@ -22,7 +22,7 @@ public class FaultInjectionServerErrorResult implements IFaultInjectionResult{
     private final Integer times;
     private final Duration delay;
 
-    public FaultInjectionServerErrorResult(FaultInjectionServerErrorType serverErrorTypes, Integer times, Duration delay) {
+    FaultInjectionServerErrorResult(FaultInjectionServerErrorType serverErrorTypes, Integer times, Duration delay) {
         this.serverErrorType = serverErrorTypes;
         this.times = times;
         this.delay = delay;
@@ -47,7 +47,6 @@ public class FaultInjectionServerErrorResult implements IFaultInjectionResult{
     public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
 
         CosmosException cosmosException;
-        // TODO: add more error handling
         switch (this.serverErrorType) {
             case SERVER_GONE:
                 GoneException goneException = new GoneException(this.getErrorMessage(RMResources.Gone));
