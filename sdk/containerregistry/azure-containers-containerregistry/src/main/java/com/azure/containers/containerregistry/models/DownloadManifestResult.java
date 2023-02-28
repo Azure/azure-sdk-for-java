@@ -2,26 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.containers.containerregistry.models;
 
+import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
 import com.azure.core.util.BinaryData;
 
 /**
  * The result from downloading an OCI manifest from the registry.
  */
 public class DownloadManifestResult {
+    static {
+        ConstructorAccessors.setManifestDownloadResultAccessor(DownloadManifestResult::new);
+    }
     private final String digest;
-    private final OciManifest manifest;
-    private final BinaryData manifestStream;
+    private OciManifest ociManifest;
+    private final ManifestMediaType mediaType;
+    private final BinaryData rawData;
 
-    /**
-     * Instantiate an instance of the DownloadManifestResult object.
-     * @param digest The digest of the manifest.
-     * @param manifest The OCIManifest object.
-     * @param manifestStream The manifest stream.
-     */
-    public DownloadManifestResult(String digest, OciManifest manifest, BinaryData manifestStream) {
+    DownloadManifestResult(String digest, ManifestMediaType mediaType, BinaryData rawData) {
         this.digest = digest;
-        this.manifest = manifest;
-        this.manifestStream = manifestStream;
+        this.mediaType = mediaType;
+        this.rawData = rawData;
     }
 
     /**
@@ -36,15 +35,29 @@ public class DownloadManifestResult {
      * The OCI manifest that was downloaded.
      * @return The OCIManifest object.
      */
-    public OciManifest getManifest() {
-        return this.manifest;
+    public OciManifest asOciManifest() {
+        if (ociManifest != null) {
+            return ociManifest;
+        }
+
+        ociManifest = rawData.toObject(OciManifest.class);
+
+        return ociManifest;
     }
 
     /**
      * The manifest stream that was downloaded.
      * @return The associated manifest stream.
      */
-    public BinaryData getManifestStream() {
-        return this.manifestStream;
+    public BinaryData getContent() {
+        return this.rawData;
+    }
+
+    /**
+     * Get manifest media type.
+     * @return Instance of {@link ManifestMediaType}
+     */
+    public ManifestMediaType getMediaType() {
+        return mediaType;
     }
 }

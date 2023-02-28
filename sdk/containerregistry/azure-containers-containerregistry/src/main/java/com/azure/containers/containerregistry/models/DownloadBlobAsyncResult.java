@@ -24,9 +24,9 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.va
  * containing the blob contents and its digest.
  */
 @Fluent
-public final class BlobDownloadAsyncResult {
+public final class DownloadBlobAsyncResult {
     static {
-        ConstructorAccessors.setBlobDownloadResultAccessor(BlobDownloadAsyncResult::new);
+        ConstructorAccessors.setBlobDownloadResultAccessor(DownloadBlobAsyncResult::new);
     }
 
     private final Flux<ByteBuffer> content;
@@ -37,7 +37,7 @@ public final class BlobDownloadAsyncResult {
      * @param digest The requested digest.
      * @param content The content of the blob.
      */
-    private BlobDownloadAsyncResult(String digest, Flux<ByteBuffer> content) {
+    private DownloadBlobAsyncResult(String digest, Flux<ByteBuffer> content) {
         this.sha256 = UtilsImpl.createSha256();
         this.content = content
             .doOnNext(buffer -> sha256.update(buffer.asReadOnlyBuffer()))

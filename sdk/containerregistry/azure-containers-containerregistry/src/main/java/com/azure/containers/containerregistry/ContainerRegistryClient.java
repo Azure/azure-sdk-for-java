@@ -123,7 +123,7 @@ public final class ContainerRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRepositoryNames(Context context) {
-        return new PagedIterable<String>(
+        return new PagedIterable<>(
             (pageSize) -> listRepositoryNamesSinglePageSync(pageSize, context),
             (token, pageSize) -> listRepositoryNamesNextSinglePageSync(token, context));
     }

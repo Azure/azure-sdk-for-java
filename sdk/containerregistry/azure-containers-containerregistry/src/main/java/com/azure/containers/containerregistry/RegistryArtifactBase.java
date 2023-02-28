@@ -13,6 +13,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.isDigest;
+
 class RegistryArtifactBase {
     private static final ClientLogger LOGGER = new ClientLogger(RegistryArtifactBase.class);
     private final String fullyQualifiedReference;
@@ -87,15 +89,5 @@ class RegistryArtifactBase {
      * */
     public String getRepositoryName() {
         return this.repositoryName;
-    }
-
-    /**
-     * Checks if string represents tag or digest.
-     *
-     * @param tagOrDigest string to check
-     * @return true if digest, false otherwise.
-     */
-    protected boolean isDigest(String tagOrDigest) {
-        return tagOrDigest.contains(":");
     }
 }
