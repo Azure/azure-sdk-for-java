@@ -9,8 +9,12 @@
 - Added the following types for the newly added methods
     - `AbstractSummaryOperationDetail`, `AbstractSummaryOptions`, `AbstractSummaryPagedFlux`, `AbstractSummaryPagedIterable`
     - `ExtractSummaryOperationDetail`, `ExtractSummaryOptions`, `ExtractSummaryPagedFlux`, `ExtractSummaryPagedIterable`
-- Rename `DateTimeSubKind` to `DateTimeResolutionKind`.
+
 ### Breaking Changes
+- Changed `dynamic classify categories` as a required parameter in dynamic text classification methods.
+- Renamed naming phrase `DynamicClassficationXXX` to `DynamicClassifyXXX` in class name, method name.
+- Changed `BaseResolution` to an abstract class.
+- Removed class `BooleanResolution`.
 
 ### Bugs Fixed
 
