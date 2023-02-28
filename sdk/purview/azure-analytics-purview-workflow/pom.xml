@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-workflow</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-purview-workflow;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-analytics-purview-workflow;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Purview Workflow</name>
