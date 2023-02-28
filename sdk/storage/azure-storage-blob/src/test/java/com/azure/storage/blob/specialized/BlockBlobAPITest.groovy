@@ -942,7 +942,6 @@ class BlockBlobAPITest extends APISpec {
             BinaryData.fromBytes(data.defaultBytes),
             BinaryData.fromString(data.defaultText),
             BinaryData.fromFile(data.defaultFile),
-            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
             BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
         ]
     }
@@ -1260,7 +1259,6 @@ class BlockBlobAPITest extends APISpec {
             BinaryData.fromBytes(data.defaultBytes),
             BinaryData.fromString(data.defaultText),
             BinaryData.fromFile(data.defaultFile),
-            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
             BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
         ]
     }

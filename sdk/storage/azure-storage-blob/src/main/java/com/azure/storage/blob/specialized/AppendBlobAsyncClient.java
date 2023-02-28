@@ -285,30 +285,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             });
     }
 
-    Response<AppendBlobItem> createWithResponseSync(AppendBlobCreateOptions options, Context context) {
-        options = (options == null) ? new AppendBlobCreateOptions() : options;
-
-        BlobRequestConditions requestConditions = options.getRequestConditions();
-        requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
-        context = context == null ? Context.NONE : context;
-        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
-            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
-
-        ResponseBase<AppendBlobsCreateHeaders, Void> responseBase = this.azureBlobStorage.getAppendBlobs().createWithResponse(containerName, blobName, 0, null,
-                options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-                tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-                options.hasLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
-                encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
-
-        AppendBlobsCreateHeaders hd = responseBase.getDeserializedHeaders();
-        AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-            null, null, hd.getXMsVersionId());
-        return new SimpleResponse<>(responseBase, item);
-    }
-
     /**
      * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
      *
@@ -382,26 +358,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
-        }
-    }
-
-    Response<AppendBlobItem> createIfNotExistsWithResponseSync(AppendBlobCreateOptions options, Context context) {
-        try {
-            options = options == null ? new AppendBlobCreateOptions() : options;
-            options.setRequestConditions(new AppendBlobRequestConditions()
-                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-            try {
-                return createWithResponseSync(options, context);
-            } catch (BlobStorageException ex) {
-                if (ex.getStatusCode() == 409) {
-                    HttpResponse response = ex.getResponse();
-                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null);
-                }
-                throw ex;
-            }
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
         }
     }
 
@@ -494,26 +450,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                     hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount());
                 return new SimpleResponse<>(rb, item);
             });
-    }
-
-    Response<AppendBlobItem> appendBlockWithResponseSync(InputStream data, long length, byte[] contentMd5,
-                                                               AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
-        appendBlobRequestConditions = appendBlobRequestConditions == null ? new AppendBlobRequestConditions()
-            : appendBlobRequestConditions;
-        context = context == null ? Context.NONE : context;
-        ResponseBase<AppendBlobsAppendBlockHeaders, Void> responseBase = this.azureBlobStorage.getAppendBlobs().appendBlockWithResponse(
-                containerName, blobName, length, BinaryData.fromStream(data), null, contentMd5, null, appendBlobRequestConditions.getLeaseId(),
-                appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
-                appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
-                appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(),
-                appendBlobRequestConditions.getTagsConditions(), null, getCustomerProvidedKey(), encryptionScope,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
-
-        AppendBlobsAppendBlockHeaders hd = responseBase.getDeserializedHeaders();
-        AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-            hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount());
-        return new SimpleResponse<>(responseBase, item);
     }
 
     /**
@@ -651,39 +587,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             });
     }
 
-    Response<AppendBlobItem> appendBlockFromUrlWithResponseSync(AppendBlobAppendBlockFromUrlOptions options, Context context) {
-        BlobRange sourceRange = (options.getSourceRange() == null) ? new BlobRange(0) : options.getSourceRange();
-        AppendBlobRequestConditions destRequestConditions = (options.getDestinationRequestConditions() == null)
-            ? new AppendBlobRequestConditions() : options.getDestinationRequestConditions();
-        RequestConditions sourceRequestConditions = (options.getSourceRequestConditions() == null)
-            ? new RequestConditions() : options.getSourceRequestConditions();
-
-        try {
-            new URL(options.getSourceUrl());
-        } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
-        }
-        context = context == null ? Context.NONE : context;
-        String sourceAuth = options.getSourceAuthorization() == null
-            ? null : options.getSourceAuthorization().toString();
-
-        ResponseBase<AppendBlobsAppendBlockFromUrlHeaders, Void> responseBase = this.azureBlobStorage.getAppendBlobs().appendBlockFromUrlWithResponse(containerName, blobName, options.getSourceUrl(), 0,
-                sourceRange.toString(), options.getSourceContentMd5(), null, null, null, destRequestConditions.getLeaseId(),
-                destRequestConditions.getMaxSize(), destRequestConditions.getAppendPosition(),
-                destRequestConditions.getIfModifiedSince(), destRequestConditions.getIfUnmodifiedSince(),
-                destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
-                destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
-                sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-                sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
-                encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
-
-        AppendBlobsAppendBlockFromUrlHeaders hd = responseBase.getDeserializedHeaders();
-        AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-            hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount());
-        return new SimpleResponse<>(responseBase, item);
-    }
-
     /**
      * Seals an append blob, making it read only. Any subsequent appends will fail.
      *
@@ -742,20 +645,5 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
-    }
-
-    Response<Void> sealWithResponseSync(AppendBlobSealOptions options, Context context) {
-        options = (options == null) ? new AppendBlobSealOptions() : options;
-
-        AppendBlobRequestConditions requestConditions = options.getRequestConditions();
-        requestConditions = (requestConditions == null) ? new AppendBlobRequestConditions() : requestConditions;
-        context = context == null ? Context.NONE : context;
-
-        ResponseBase<AppendBlobsSealHeaders, Void> responseBase = this.azureBlobStorage.getAppendBlobs().sealWithResponse(containerName, blobName, null, null,
-                requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
-        return new SimpleResponse<>(responseBase, null);
     }
 }
