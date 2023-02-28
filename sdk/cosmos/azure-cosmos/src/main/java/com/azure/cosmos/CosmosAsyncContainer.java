@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
@@ -62,10 +63,13 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -1072,9 +1076,24 @@ public class CosmosAsyncContainer {
         }
 
         options.setMaxDegreeOfParallelism(-1);
+        AtomicReference<Instant> startTime = new AtomicReference<>(Instant.now());
+
         return CosmosBridgeInternal
-            .getAsyncDocumentClient(this.getDatabase())
-            .readMany(itemIdentityList, BridgeInternal.getLink(this), options, classType);
+                .getAsyncDocumentClient(this.getDatabase())
+                .readMany(itemIdentityList, BridgeInternal.getLink(this), options, classType)
+                .doOnSubscribe(subscription -> startTime.set(Instant.now()))
+                .doOnSuccess(feedResponse -> {
+                            FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers
+                                    .CosmosDiagnosticsHelper
+                                    .getCosmosDiagnosticsAccessor()
+                                    .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics());
+
+                            Instant feedResponseCreationTime = feedResponseDiagnostics.getFeedResponseCreationTime();
+                            Instant subscriptionStartTime = startTime.get();
+
+                            feedResponseDiagnostics.recordFeedResponseLatency(Duration.between(subscriptionStartTime, feedResponseCreationTime));
+                        }
+                );
     }
 
     /**

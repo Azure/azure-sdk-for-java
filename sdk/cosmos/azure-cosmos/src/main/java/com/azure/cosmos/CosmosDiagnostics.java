@@ -90,7 +90,7 @@ public final class CosmosDiagnostics {
     public Duration getDuration() {
 
         if (this.feedResponseDiagnostics != null) {
-            return this.feedResponseDiagnostics.getFeedResponseCreationLatency();
+            return this.feedResponseDiagnostics.getFeedResponseLatency();
         }
 
         return this.clientSideRequestStatistics.getDuration();

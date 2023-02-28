@@ -219,6 +219,11 @@ public final class BridgeInternal {
             BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
                                                           cosmosDiagnostics.getFeedResponseDiagnostics()
                                                               .getClientSideRequestStatisticsList());
+
+            FeedResponseDiagnostics feedResponseDiagnostics = feedResponseWithQueryMetrics.getCosmosDiagnostics().getFeedResponseDiagnostics();
+
+            feedResponseDiagnostics.recordIsFirstFeedResponse(cosmosDiagnostics.getFeedResponseDiagnostics().isFirstFeedResponse());
+            feedResponseDiagnostics.recordFeedResponseCreationTime(cosmosDiagnostics.getFeedResponseDiagnostics().getFeedResponseCreationTime());
         }
 
         return feedResponseWithQueryMetrics;

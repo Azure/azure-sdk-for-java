@@ -178,6 +178,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         AtomicReference<Instant> startTime = new AtomicReference<>();
+        AtomicReference<Duration> preQueryDocumentRequestCreationLatency = new AtomicReference<>();
         AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
 
         Flux<FeedResponse<T>> result =
@@ -185,6 +186,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             .doOnSubscribe(ignoredValue -> {
                 startTime.set(Instant.now());
                 feedResponseConsumerLatencyInNanos.set(0);
+                preQueryDocumentRequestCreationLatency.set(Duration.ZERO);
             })
             .doOnEach(signal -> {
 
@@ -310,6 +312,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                 Duration.between(Instant.now(), feedResponseConsumerStart).toNanos());
                         }
 
+
                         CosmosDiagnostics diagnostics = feedResponse != null ?
                             feedResponse.getCosmosDiagnostics() : null;
 
@@ -321,10 +324,20 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         Duration effectiveLatency = Duration.between(startTime.get(), Instant.now()).minus(
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
-                        // record effective latency for feed response creation if not recorded before
-                        if (feedResponseDiagnostics.getFeedResponseCreationLatency() == Duration.ZERO) {
-                            feedResponseDiagnostics.recordFeedResponseCreationLatency(effectiveLatency);
+                        // compute latency for operation before the earliest query request
+                        // is prepared
+                        if (feedResponseDiagnostics.isFirstFeedResponse()) {
+                            Instant startTimeInstant = startTime.get();
+                            preQueryDocumentRequestCreationLatency.set(Duration.between(startTimeInstant, feedResponseDiagnostics.getMinRequestStartTime()));
                         }
+
+                        Instant minRequestTime = feedResponseDiagnostics.getMinRequestStartTime();
+                        Instant feedResponseCreationTime = feedResponseDiagnostics.getFeedResponseCreationTime();
+
+                        feedResponseDiagnostics.recordFeedResponseLatency(
+                                preQueryDocumentRequestCreationLatency.get()
+                                        .plus(Duration.between(minRequestTime, feedResponseCreationTime))
+                        );
 
                         if (clientTelemetryEnabled || clientMetricsEnabled) {
                             if (diagnosticsCapturedInPagedFluxByTracer || this.cosmosDiagnosticsAccessor

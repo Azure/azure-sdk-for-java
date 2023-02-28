@@ -942,6 +942,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         if (isFirstResponse.compareAndSet(true, false)) {
                             ModelBridgeInternal.addQueryPlanDiagnosticsContextToFeedResponse(tFeedResponse,
                                 finalQueryInfo.getQueryPlanDiagnosticsContext());
+
+                            FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers
+                                    .CosmosDiagnosticsHelper
+                                    .getCosmosDiagnosticsAccessor()
+                                    .getFeedResponseDiagnostics(tFeedResponse.getCosmosDiagnostics());
+
+                            feedResponseDiagnostics.recordIsFirstFeedResponse(true);
                         }
                     }
                     return tFeedResponse;
@@ -2313,15 +2320,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                     false,
                                                     aggregatedDiagnostics);
                                     return frp;
-                                })
-                                .doOnSubscribe(s -> startTime.set(Instant.now()))
-                                .doOnSuccess(feedResponse -> {
-                                    Duration feedResponseCreationLatency = Duration.between(startTime.get(), Instant.now());
-                                    ImplementationBridgeHelpers
-                                            .CosmosDiagnosticsHelper
-                                            .getCosmosDiagnosticsAccessor()
-                                            .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics())
-                                            .recordFeedResponseCreationLatency(feedResponseCreationLatency);
                                 });
                     });
                 }

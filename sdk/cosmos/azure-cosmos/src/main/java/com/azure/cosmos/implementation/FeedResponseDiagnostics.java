@@ -11,11 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -26,13 +28,17 @@ public class FeedResponseDiagnostics {
     private final static String EQUALS = "=";
     private final static String QUERY_PLAN = "QueryPlan";
     private final static String SPACE = " ";
-    private final static String FEED_RESPONSE_CREATION_LATENCY = "FeedResponseCreationLatency";
+    private final static String FEED_RESPONSE_LATENCY = "FeedResponseLatency";
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedResponseDiagnostics.class);
     private Map<String, QueryMetrics> queryMetricsMap;
     private QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext;
     private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
-    private final AtomicReference<Duration> feedResponseCreationLatency = new AtomicReference<>(Duration.ZERO);
+    private final AtomicReference<Instant> feedResponseCreationTime = new AtomicReference<>(Instant.now());
+    private final AtomicReference<Duration> feedResponseLatency = new AtomicReference<>(Duration.ZERO);
+    private final AtomicBoolean isFirstFeedResponse = new AtomicBoolean(false);
+    private Instant minRequestTime = Instant.MAX;
+    private Instant maxResponseTime = Instant.MIN;
 
     public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         this.queryMetricsMap = queryMetricsMap;
@@ -55,9 +61,11 @@ public class FeedResponseDiagnostics {
             );
         }
 
-        if (toBeCloned.feedResponseCreationLatency != null) {
-            this.feedResponseCreationLatency.set(toBeCloned.getFeedResponseCreationLatency());
-        }
+        this.isFirstFeedResponse.set(toBeCloned.isFirstFeedResponse.get());
+        this.maxResponseTime = toBeCloned.maxResponseTime;
+        this.minRequestTime = toBeCloned.minRequestTime;
+        this.feedResponseCreationTime.set(toBeCloned.feedResponseCreationTime.get());
+        this.feedResponseLatency.set(toBeCloned.feedResponseLatency.get());
     }
 
     public Map<String, QueryMetrics> getQueryMetricsMap() {
@@ -101,12 +109,6 @@ public class FeedResponseDiagnostics {
             }
         }
 
-        if (feedResponseCreationLatency != null) {
-            stringBuilder.append(FEED_RESPONSE_CREATION_LATENCY)
-                    .append(EQUALS)
-                    .append(feedResponseCreationLatency)
-                    .append(System.lineSeparator());
-        }
 
         if (queryMetricsMap != null && !queryMetricsMap.isEmpty()) {
             queryMetricsMap.forEach((key, value) -> stringBuilder.append(key)
@@ -143,19 +145,53 @@ public class FeedResponseDiagnostics {
 
     public void addClientSideRequestStatistics(List<ClientSideRequestStatistics> requestStatistics) {
         clientSideRequestStatisticsList.addAll(requestStatistics);
+        this.recordMinRequestTimeAndMaxResponseTime();
     }
 
-    public Duration getFeedResponseCreationLatency() {
-        return feedResponseCreationLatency.get();
+    public Instant getFeedResponseCreationTime() {
+        return feedResponseCreationTime.get();
     }
 
-    public void recordFeedResponseCreationLatency(Duration feedResponseCreationLatency) {
+    private void recordMinRequestTimeAndMaxResponseTime() {
+        Instant minStartInstant = Instant.MAX;
+        Instant maxEndInstant = Instant.MIN;
 
-        if (this.feedResponseCreationLatency.get() != Duration.ZERO) {
-            throw new IllegalStateException("The feed response latency has been recorded already.");
+        for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatisticsList) {
+
+            Instant requestStartTimeUTC = requestStatistics.getRequestStartTimeUTC();
+            Instant requestEndTimeUTC = requestStartTimeUTC.plus(requestStatistics.getDuration());
+
+            minStartInstant = requestStartTimeUTC.isBefore(minStartInstant) ? requestStartTimeUTC : minStartInstant;
+            maxEndInstant = requestEndTimeUTC.isAfter(maxEndInstant) ? requestEndTimeUTC : maxEndInstant;
         }
 
-        this.feedResponseCreationLatency.compareAndSet(Duration.ZERO, feedResponseCreationLatency);
+        this.minRequestTime = minStartInstant;
+        this.maxResponseTime = maxEndInstant;
     }
 
+    public void recordFeedResponseLatency(Duration feedResponseLatency) {
+        this.feedResponseLatency.compareAndSet(Duration.ZERO, feedResponseLatency);
+    }
+
+    public void recordIsFirstFeedResponse(boolean isFirstFeedResponse) {
+        this.isFirstFeedResponse.set(isFirstFeedResponse);
+    }
+
+    public boolean isFirstFeedResponse() {
+        return isFirstFeedResponse.get();
+    }
+
+    public Instant getMinRequestStartTime() {
+        return minRequestTime;
+    }
+
+    public Duration getFeedResponseLatency() {
+        return this.feedResponseLatency.get();
+    }
+
+    public void recordFeedResponseCreationTime(Instant feedResponseCreationTime) {
+        if (this.feedResponseCreationTime.get().isBefore(feedResponseCreationTime)) {
+            this.feedResponseCreationTime.set(feedResponseCreationTime);
+        }
+    }
 }
