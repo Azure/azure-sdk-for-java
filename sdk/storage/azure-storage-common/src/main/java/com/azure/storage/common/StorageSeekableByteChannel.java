@@ -181,10 +181,10 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         if (buffer.remaining() == 0) {
             try {
                 flushWriteBuffer();
-            } catch (Throwable t) {
+            } catch (RuntimeException e) {
                 // undo write on failed flush by rewinding buffer position the amount it was incremented
                 buffer.position(buffer.position() - write);
-                throw t;
+                throw LOGGER.logExceptionAsError(e);
             }
         }
 
@@ -202,11 +202,11 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         buffer.rewind();
         try {
             writeBehavior.write(buffer, bufferAbsolutePosition);
-        } catch (Throwable t) {
+        } catch (RuntimeException e) {
             // restore buffer state if write fails
             buffer.limit(buffer.capacity());
             buffer.position(startingPosition);
-            throw t;
+            throw LOGGER.logExceptionAsError(e);
         }
         bufferAbsolutePosition += buffer.limit();
         buffer.clear();
