@@ -118,7 +118,6 @@ public abstract class TestBase implements BeforeEachCallback {
      * Before tests are executed, determines the test mode by reading the {@code AZURE_TEST_MODE} environment variable.
      * If it is not set, {@link TestMode#PLAYBACK}
      */
-    @SuppressWarnings({"deprecation", "resource"})
     @BeforeAll
     public static void setupClass() {
         testMode = initializeTestMode();
