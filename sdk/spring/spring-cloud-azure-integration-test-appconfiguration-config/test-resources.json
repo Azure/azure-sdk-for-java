@@ -42,7 +42,7 @@
 		"secretValue": "From Key Vault",
 		"keyVaultContentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
 		"keyVaultSku": "Standard",
-		"keyVaultSecretReference": "[concat('{\"uri\":\"https://',variables('keyVaultName'),variables('keyVaultDomainSuffix'),'/secrets/',variables('secretName'),'\"}')]",
+		"keyVaultSecretReference": "[concat('{\"uri\":\"https://',variables('keyVaultName'),parameters('keyVaultDomainSuffix'),'/secrets/',variables('secretName'),'\"}')]",
 		"featureFlagNamePrefix": ".appconfig.featureflag~2F",
 		"featureFlagName": "[concat(variables('featureFlagNamePrefix'), 'Alpha')]",
 		"featureFlagContentType": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
