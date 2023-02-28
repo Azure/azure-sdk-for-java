@@ -154,7 +154,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>2.0.6</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
     </dependency>
 
   </dependencies>
