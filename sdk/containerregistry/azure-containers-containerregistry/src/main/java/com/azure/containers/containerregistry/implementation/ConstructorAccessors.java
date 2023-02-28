@@ -50,7 +50,7 @@ public final class ConstructorAccessors {
     public static DownloadManifestResult createManifestDownloadResult(String digest, ManifestMediaType mediaType, BinaryData rawData) {
         if (manifestDownloadAccessor == null) {
             try {
-                // it's possible that nobody yet created BlobDownloadAsyncResult, so we'll need to force its static section to run and set accessor.
+                // it's possible that nobody yet created DownloadBlobAsyncResult, so we'll need to force its static section to run and set accessor.
                 Class.forName(DownloadManifestResult.class.getName(), true, BlobDownloadAsyncResultConstructorAccessor.class.getClassLoader());
             } catch (ClassNotFoundException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
