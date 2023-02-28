@@ -77,7 +77,7 @@ javax.servlet:javax.servlet-api;4.0.1
 javax.websocket:javax.websocket-api;1.1
 org.apache.avro:avro;1.11.0
 org.apache.avro:avro-maven-plugin;1.11.0
-org.apache.commons:commons-compress;1.21
+org.apache.commons:commons-compress;1.22
 org.apache.commons:commons-lang3;3.12.0
 org.apache.httpcomponents:httpclient;4.5.14
 org.apache.kafka:kafka-clients;3.1.2
