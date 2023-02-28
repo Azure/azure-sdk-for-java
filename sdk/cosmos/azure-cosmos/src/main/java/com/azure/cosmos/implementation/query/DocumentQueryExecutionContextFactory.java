@@ -255,7 +255,7 @@ public class DocumentQueryExecutionContextFactory {
         PartitionKeyInternal partitionKeyInternal = ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
         for (FeedRangeEpkImpl feedRange : feedRanges) {
             if (partitionKeyInternal.getComponents().size() >= partitionKeyDefinition.getPaths().size()) {
-                feedRanges2.add(feedRange);
+                return feedRanges;
             } else {
                 feedRanges2.add(new FeedRangeEpkImpl(partitionKeyInternal
                     .getEPKRangeForPrefixPartitionKey(partitionKeyDefinition)));
@@ -387,7 +387,7 @@ public class DocumentQueryExecutionContextFactory {
         List<FeedRangeEpkImpl> feedRangeEpks = targetRanges.stream().map(FeedRangeEpkImpl::new)
                                                    .collect(Collectors.toList());
 
-        if (collection.getPartitionKey() != null
+        if (collection.getPartitionKey() != null && cosmosQueryRequestOptions.getPartitionKey() != null
             && collection.getPartitionKey().getKind().equals(PartitionKind.MULTI_HASH)) {
             feedRangeEpks = resolveFeedRangeBasedOnPrefixContainer(feedRangeEpks, collection.getPartitionKey(),
                 cosmosQueryRequestOptions.getPartitionKey());

@@ -77,7 +77,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     // the next if statement is for the method `createDocumentServiceRequestWithFeedRange` below
                     // with this added logic we don't have to remove the header (since the header never gets set) and
                     // partitionKeyInternal gets passed as null which avoids the feedRange normalization.
-                    if (!BridgeInternal.isPartialPartitionKeyQuery(collection, cosmosQueryRequestOptions.getPartitionKey())) {
+                    if (!PartitionKeyInternal.isPartialPartitionKeyQuery(collection, cosmosQueryRequestOptions.getPartitionKey())) {
                         partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
                         headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
                     }

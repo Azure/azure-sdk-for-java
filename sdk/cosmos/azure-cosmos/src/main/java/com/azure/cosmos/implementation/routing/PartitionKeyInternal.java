@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.implementation.routing;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.RMResources;
@@ -248,6 +251,13 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
     public Range<String> getEPKRangeForPrefixPartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
         return PartitionKeyInternalHelper.getEPKRangeForPrefixPartitionKey(this, partitionKeyDefinition);
+    }
+
+    public static boolean isPartialPartitionKeyQuery(DocumentCollection collection, PartitionKey partitionKey) {
+        PartitionKeyInternal partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
+        return collection.getPartitionKey() != null && partitionKeyInternal != null
+            && collection.getPartitionKey().getKind().equals(PartitionKind.MULTI_HASH)
+            && collection.getPartitionKey().getPaths().size() > partitionKeyInternal.getComponents().size();
     }
 
     @SuppressWarnings("serial")

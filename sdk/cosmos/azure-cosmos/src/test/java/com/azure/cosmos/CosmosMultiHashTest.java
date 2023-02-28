@@ -8,12 +8,12 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyBuilder;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -32,7 +32,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -368,17 +367,33 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
         assertThat(feedResponseIterator.stream().toArray().length).isEqualTo(3);
 
-        // Using Distinct
+        // Using distinct
         query = "Select distinct c.zipcode from c";
         feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
         assertThat(feedResponseIterator.stream().toArray().length).isEqualTo(2);
 
-        //Using continuation token
+        // Using paging/ order by
+        query = "SELECT * FROM c ORDER BY c.zipcode ASC";
+        CosmosPagedIterable<ObjectNode> cosmosPagedIterable = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
+        Iterable<FeedResponse<ObjectNode>> feedResponses = cosmosPagedIterable.iterableByPage(2);
+        FeedResponse<ObjectNode> feedResponse = feedResponses.iterator().next();
+        String continuation = feedResponse.getContinuationToken();
+        assertThat(feedResponse.getResults().size()).isEqualTo(2);
+        assertThat(feedResponse.getResults().get(0).get("zipcode").asInt() < feedResponse.getResults().get(1).get("zipcode").asInt()).isTrue();
+
+        // Using continuation token
+        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(queryRequestOptions, continuation, 2);
+        cosmosPagedIterable = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
+        feedResponses = cosmosPagedIterable.iterableByPage(2);
+        feedResponse = feedResponses.iterator().next();
+        assertThat(feedResponse.getResults().size()).isEqualTo(1); //last item left
+
+        // TODO: partial pk that spans multiple partitions - local test
 
 
         // Negative test - using non-prefix partial partition key returns no results
         query = "SELECT * from c";
-        partitionKey = new PartitionKeyBuilder().add("98053").build(); //pk definition is state/zipcode
+        partitionKey = new PartitionKeyBuilder().add("98053").build(); //pk definition is state/zipcode, so zipcode fails
         queryRequestOptions.setPartitionKey(partitionKey);
         feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
         assertThat(feedResponseIterator.stream().toArray().length).isEqualTo(0);
