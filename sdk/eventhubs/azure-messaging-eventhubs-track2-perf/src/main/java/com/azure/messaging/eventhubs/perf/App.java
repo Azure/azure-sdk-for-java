@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.messaging.eventhubs.perf.core.EventProcessorStorageTest;
 import com.azure.messaging.eventhubs.perf.core.ReceiveEventsBatchTest;
 import com.azure.messaging.eventhubs.perf.core.ReceiveEventsFromPartitionBatchTest;
 import com.azure.perf.test.core.PerfStressProgram;
@@ -21,7 +22,8 @@ public class App {
         final Class<?>[] testClasses = new Class<?>[]{
             SendEventBatchTest.class,
             ReceiveEventsFromPartitionBatchTest.class,
-            ReceiveEventsBatchTest.class
+            ReceiveEventsBatchTest.class,
+            EventProcessorStorageTest.class,
 //            ReceiveEventsTest.class,
 //            SendEventDataTest.class,
 //            SendEventDataBatchTest.class,
@@ -30,7 +32,6 @@ public class App {
 //            ReactorReceiveEventsTest.class,
 //            EventProcessorJedisTest.class
         };
-
         PerfStressProgram.run(testClasses, args);
     }
 }

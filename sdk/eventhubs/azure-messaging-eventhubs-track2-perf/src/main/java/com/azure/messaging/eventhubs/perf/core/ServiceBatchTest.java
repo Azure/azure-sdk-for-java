@@ -120,33 +120,6 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
         }));
     }
 
-
-    Mono<Void> preLoadEvents(EventHubProducerAsyncClient client, int totalMessagesToSend) {
-        AtomicLong totalEvents = new AtomicLong(0);
-        return client.getPartitionIds()
-            .flatMap(partId -> client.getPartitionProperties(partId))
-            .map(partitionProperties -> {
-                totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber() - partitionProperties.getBeginningSequenceNumber());
-                return Mono.empty();
-            }).then(Mono.defer(() -> {
-                if (totalEvents.get() < totalMessagesToSend) {
-                    AtomicLong eventsToAdd = new AtomicLong(totalMessagesToSend - totalEvents.get());
-                    return client.createBatch()
-                        .map(eventDataBatch -> {
-                            long eventsToLoad = eventsToAdd.get();
-                            for (int i = 0; i < eventsToLoad; i++) {
-                                if (!eventDataBatch.tryAdd(createEvent())) {
-                                    break;
-                                }
-                                eventsToAdd.decrementAndGet();
-                            }
-                            return client.send(eventDataBatch);
-                        }).repeat(() -> eventsToAdd.get() > 0).then();
-                }
-                return Mono.empty();
-            }));
-    }
-
     protected EventData createEvent() {
         EventData eventData = new EventData(eventDataBytes);
         return eventData;
