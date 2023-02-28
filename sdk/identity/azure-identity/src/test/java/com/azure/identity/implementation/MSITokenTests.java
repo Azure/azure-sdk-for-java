@@ -5,10 +5,21 @@ package com.azure.identity.implementation;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
+import java.time.Clock;
+import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mockStatic;
 
 public class MSITokenTests {
     private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 3, 28, 0, ZoneOffset.UTC);
@@ -22,6 +33,42 @@ public class MSITokenTests {
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         Assert.assertTrue((token2.getExpiresAt().toEpochSecond() - OffsetDateTime.now().toEpochSecond()) > 3500);
         Assert.assertEquals(expected.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
+    }
+
+    @Test
+    public void canParseRefreshes() {
+        try(MockedStatic<OffsetDateTime> offsetDateTimeMockedStatic = mockStatic(OffsetDateTime.class, CALLS_REAL_METHODS)) {
+
+            offsetDateTimeMockedStatic.when(() -> OffsetDateTime.now((ZoneId) any())).thenReturn(expected);
+            offsetDateTimeMockedStatic.when(() -> OffsetDateTime.now((Clock) any())).thenReturn(expected);
+            offsetDateTimeMockedStatic.when(OffsetDateTime::now).thenReturn(expected.minusHours(2));
+
+            OffsetDateTime now = OffsetDateTime.now();
+            OffsetDateTime expiration = now.plusHours(12);
+            OffsetDateTime expirationMinusOneHour = expiration.minusHours(1);
+            Duration expirationMinusOneHourSeconds = Duration.between(expirationMinusOneHour, expected);
+            OffsetDateTime expirationMinusElevenHours = expiration.minusHours(11);
+            Duration expirationMinusElevenHoursSeconds = Duration.between(expirationMinusElevenHours, expected);
+
+            MSIToken expirationMinusOneHourToken = new MSIToken("fake_token",
+                String.valueOf(expirationMinusOneHour.toEpochSecond()),
+                String.valueOf(expirationMinusOneHourSeconds.getSeconds()));
+
+            MSIToken expirationMinus11HoursToken = new MSIToken("fake_token",
+                String.valueOf(expirationMinusElevenHours.toEpochSecond()),
+                String.valueOf(expirationMinusElevenHoursSeconds.getSeconds()));
+
+            MSIToken hasRefresh = new MSIToken("fake_token",
+                String.valueOf(expirationMinusElevenHours.toEpochSecond()),
+                String.valueOf(expirationMinusElevenHoursSeconds.getSeconds()),
+                String.valueOf(240));
+
+            Assert.assertEquals(240, hasRefresh.getRefreshIn());
+            Assert.assertEquals(Duration.ofHours(1).getSeconds(), expirationMinus11HoursToken.getRefreshIn());
+            Assert.assertEquals(Duration.between(now, expirationMinusOneHour).getSeconds()/2, expirationMinusOneHourToken.getRefreshIn());
+
+        }
+
     }
 
     @Test
