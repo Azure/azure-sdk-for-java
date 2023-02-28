@@ -9,7 +9,7 @@
 - Added the following types for the newly added methods
     - `AbstractSummaryOperationDetail`, `AbstractSummaryOptions`, `AbstractSummaryPagedFlux`, `AbstractSummaryPagedIterable`
     - `ExtractSummaryOperationDetail`, `ExtractSummaryOptions`, `ExtractSummaryPagedFlux`, `ExtractSummaryPagedIterable`
-
+- Rename `DateTimeSubKind` to `DateTimeResolutionKind`.
 ### Breaking Changes
 
 ### Bugs Fixed

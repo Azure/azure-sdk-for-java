@@ -69,6 +69,7 @@ import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_ENGLISH;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_SPANISH;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.textanalytics.TestUtils.DYNAMIC_CLASSIFICATION_CATEGORIES;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
@@ -3062,7 +3063,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         duplicateIdRunner(inputs -> {
-            StepVerifier.create(client.dynamicClassificationBatchWithResponse(inputs, null))
+            StepVerifier.create(client.dynamicClassifyBatchWithResponse(inputs,
+                DYNAMIC_CLASSIFICATION_CATEGORIES, null))
                 .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()));
         });
     }
@@ -3073,7 +3075,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void dynamicClassificationEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         emptyDocumentIdRunner(inputs -> {
-            StepVerifier.create(client.dynamicClassificationBatchWithResponse(inputs, null))
+            StepVerifier.create(client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES,
+                null))
                 .verifyErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -3088,7 +3091,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void dynamicClassificationMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         dynamicClassificationRunner((inputs, options) -> {
-            StepVerifier.create(client.dynamicClassificationBatchWithResponse(inputs, options))
+            StepVerifier.create(client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES,
+                options))
                 .assertNext(response -> validateDynamicClassifyDocumentResultCollectionWithResponse(true,
                     getExpectedDynamicClassifyDocumentResultCollection(), 200, response))
                 .verifyComplete();
@@ -3100,7 +3104,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void dynamicClassificationStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         dynamicClassificationStringInputRunner((inputs, options) ->
-            StepVerifier.create(client.dynamicClassificationBatch(inputs, null, options))
+            StepVerifier.create(client.dynamicClassifyBatch(inputs, null, DYNAMIC_CLASSIFICATION_CATEGORIES,
+                options))
                 .assertNext(response -> validateDynamicClassifyDocumentResultCollection(true,
                     getExpectedDynamicClassifyDocumentResultCollection(), response))
                 .verifyComplete());
@@ -3111,7 +3116,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void dynamicClassificationBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         dynamicClassificationBatchWarningRunner((inputs, options) ->
-            StepVerifier.create(client.dynamicClassificationBatchWithResponse(inputs, options))
+            StepVerifier.create(client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES,
+                options))
                 .assertNext(response -> response.getValue().forEach(classifyDocumentResult ->
                     classifyDocumentResult.getWarnings().forEach(warning -> {
                         assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
@@ -3128,7 +3134,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         tooManyDocumentsRunner(inputs -> {
-            StepVerifier.create(client.dynamicClassificationBatch(inputs, null, null))
+            StepVerifier.create(client.dynamicClassifyBatch(inputs, null, DYNAMIC_CLASSIFICATION_CATEGORIES,
+                null))
                 .verifyErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());

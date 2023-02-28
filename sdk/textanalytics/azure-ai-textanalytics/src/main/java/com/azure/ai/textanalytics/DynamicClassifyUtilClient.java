@@ -10,7 +10,7 @@ import com.azure.ai.textanalytics.implementation.models.ClassificationType;
 import com.azure.ai.textanalytics.implementation.models.DynamicClassificationTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
-import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
+import com.azure.ai.textanalytics.models.DynamicClassifyOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.core.http.rest.Response;
@@ -37,30 +37,31 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * Helper class for managing dynamic classification endpoints.
  */
-class DynamicClassificationUtilClient {
-    private static final ClientLogger LOGGER = new ClientLogger(DynamicClassificationUtilClient.class);
+class DynamicClassifyUtilClient {
+    private static final ClientLogger LOGGER = new ClientLogger(DynamicClassifyUtilClient.class);
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    DynamicClassificationUtilClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    DynamicClassifyUtilClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
         TextAnalyticsServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
     }
 
     Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassifyBatch(
-        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options) {
+        Iterable<TextDocumentInput> documents, Iterable<String> categories,  DynamicClassifyOptions options) {
         try {
             return withContext(context -> getDynamicClassifyDocumentResultCollectionResponse(
-                documents, options, context));
+                documents, categories, options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<DynamicClassifyDocumentResultCollection>> getDynamicClassifyDocumentResultCollectionResponse(
-        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, Iterable<String> categories, DynamicClassifyOptions options,
+        Context context) {
         throwIfTargetServiceVersionFound(this.serviceVersion,
             Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1,
                 TextAnalyticsServiceVersion.V2022_05_01),
@@ -76,7 +77,7 @@ class DynamicClassificationUtilClient {
             new AnalyzeTextDynamicClassificationInput()
                 .setParameters(
                     new DynamicClassificationTaskParameters()
-                        .setCategories(IterableStream.of(options.getCategories()).stream().collect(Collectors.toList()))
+                        .setCategories(IterableStream.of(categories).stream().collect(Collectors.toList()))
                         .setClassificationType(finalClassificationType == null ? null
                             : ClassificationType.fromString(finalClassificationType.toString()))
                         .setModelVersion(options.getModelVersion())
@@ -95,7 +96,8 @@ class DynamicClassificationUtilClient {
     }
 
     Response<DynamicClassifyDocumentResultCollection> getResultCollectionResponseSync(
-        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, Iterable<String> categories, DynamicClassifyOptions options,
+        Context context) {
         throwIfTargetServiceVersionFound(this.serviceVersion,
             Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1,
                 TextAnalyticsServiceVersion.V2022_05_01),
@@ -111,8 +113,7 @@ class DynamicClassificationUtilClient {
                 new AnalyzeTextDynamicClassificationInput()
                     .setParameters(
                         new DynamicClassificationTaskParameters()
-                            .setCategories(
-                                IterableStream.of(options.getCategories()).stream().collect(Collectors.toList()))
+                            .setCategories(IterableStream.of(categories).stream().collect(Collectors.toList()))
                             .setClassificationType(finalClassificationType == null ? null
                                 : ClassificationType.fromString(finalClassificationType.toString()))
                             .setModelVersion(options.getModelVersion())
@@ -125,8 +126,8 @@ class DynamicClassificationUtilClient {
         }
     }
 
-    private DynamicClassificationOptions getNotNullDynamicClassificationOptions(
-        DynamicClassificationOptions options) {
-        return options == null ? new DynamicClassificationOptions() : options;
+    private DynamicClassifyOptions getNotNullDynamicClassificationOptions(
+        DynamicClassifyOptions options) {
+        return options == null ? new DynamicClassifyOptions() : options;
     }
 }

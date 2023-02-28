@@ -27,7 +27,7 @@ import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
+import com.azure.ai.textanalytics.models.DynamicClassifyOptions;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
@@ -1448,32 +1448,29 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Dynamic classification
-    void dynamicClassificationRunner(BiConsumer<List<TextDocumentInput>, DynamicClassificationOptions> testRunner) {
+    void dynamicClassificationRunner(BiConsumer<List<TextDocumentInput>, DynamicClassifyOptions> testRunner) {
         testRunner.accept(
             asList(
                 new TextDocumentInput("0", DYNAMIC_CLASSIFICATION.get(0)),
                 new TextDocumentInput("1", DYNAMIC_CLASSIFICATION.get(1))),
-            new DynamicClassificationOptions()
-                .setCategories("Health", "Politics", "Music", "Sports")
+            new DynamicClassifyOptions()
                 .setClassificationType(ClassificationType.MULTI)
                 .setIncludeStatistics(true));
     }
 
-    void dynamicClassificationStringInputRunner(BiConsumer<List<String>, DynamicClassificationOptions> testRunner) {
+    void dynamicClassificationStringInputRunner(BiConsumer<List<String>, DynamicClassifyOptions> testRunner) {
         testRunner.accept(
             DYNAMIC_CLASSIFICATION,
-            new DynamicClassificationOptions()
-                .setCategories("Health", "Politics", "Music", "Sports")
+            new DynamicClassifyOptions()
                 .setClassificationType(ClassificationType.MULTI)
                 .setIncludeStatistics(true));
     }
 
     void dynamicClassificationBatchWarningRunner(
-        BiConsumer<List<TextDocumentInput>, DynamicClassificationOptions> testRunner) {
+        BiConsumer<List<TextDocumentInput>, DynamicClassifyOptions> testRunner) {
         testRunner.accept(
             getWarningsTextDocumentInputs(),
-            new DynamicClassificationOptions()
-                .setCategories("Health", "Politics", "Music", "Sports")
+            new DynamicClassifyOptions()
                 .setClassificationType(ClassificationType.MULTI)
                 .setIncludeStatistics(true)
         );
