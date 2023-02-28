@@ -14,7 +14,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
