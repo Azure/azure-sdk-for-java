@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2023-03-01)
 
 ### Features Added
 
@@ -18,10 +18,6 @@
 - The `email` property under the recipient object has been changed to `address`.
 - Custom headers in the email message are now key/value pairs.
 - The importance property was removed. Email importance can now be specified through either the `x-priority` or `x-msmail-priority` custom headers.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.0-beta.1 (2022-08-09)
 
