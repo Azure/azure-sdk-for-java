@@ -1033,7 +1033,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
         rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
         rxDocumentServiceRequest.requestContext = this.requestContext;
-        rxDocumentServiceRequest.faultInjectionRequestContext = this.faultInjectionRequestContext;
+        rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
         return rxDocumentServiceRequest;
     }
 

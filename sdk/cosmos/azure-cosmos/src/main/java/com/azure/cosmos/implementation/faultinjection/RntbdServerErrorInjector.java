@@ -46,7 +46,7 @@ public class RntbdServerErrorInjector {
 
         for (FaultInjectionServerErrorRule latencyRule : this.serverLatencyRuleMap.values()) {
             if (latencyRule.isApplicable(request)) {
-                request.faultInjectionRequestContext.applyFaultInjectionRule(request.getActivityId(), latencyRule);
+                request.faultInjectionRequestContext.applyFaultInjectionRule(requestRecord.transportRequestId(), latencyRule);
 
                 this.executorService.schedule(
                     () -> requestRecord.complete(storeResponse),
@@ -64,7 +64,7 @@ public class RntbdServerErrorInjector {
 
         for (FaultInjectionServerErrorRule latencyRule : this.serverLatencyRuleMap.values()) {
             if (latencyRule.isApplicable(request)) {
-                request.faultInjectionRequestContext.applyFaultInjectionRule(request.getActivityId(), latencyRule);
+                request.faultInjectionRequestContext.applyFaultInjectionRule(requestRecord.transportRequestId(), latencyRule);
 
                 this.executorService.schedule(
                     () -> requestRecord.completeExceptionally(cosmosException),
@@ -82,9 +82,9 @@ public class RntbdServerErrorInjector {
 
         for (FaultInjectionServerErrorRule serverResponseErrorRule : this.serverResponseErrorMap.values()) {
             if (serverResponseErrorRule.isApplicable(request)) {
-                request.faultInjectionRequestContext.applyFaultInjectionRule(request.getActivityId(), serverResponseErrorRule);
+                request.faultInjectionRequestContext.applyFaultInjectionRule(requestRecord.transportRequestId(), serverResponseErrorRule);
 
-                CosmosException cause = serverResponseErrorRule.getInjectedServerError(request, serverResponseErrorRule.getId());
+                CosmosException cause = serverResponseErrorRule.getInjectedServerError(request);
                 requestRecord.completeExceptionally(cause);
                 return true;
             }
@@ -105,7 +105,7 @@ public class RntbdServerErrorInjector {
 
         for (FaultInjectionServerErrorRule connectionDelayRule : this.serverConnectionLatencyRuleMap.values()) {
             if (connectionDelayRule.isApplicable(request)) {
-                request.faultInjectionRequestContext.applyFaultInjectionRule(request.getActivityId(), connectionDelayRule);
+                request.faultInjectionRequestContext.applyFaultInjectionRule(requestRecord.transportRequestId(), connectionDelayRule);
 
                 openConnectionWithDelayConsumer.accept(connectionDelayRule.getResult().getDelay());
 

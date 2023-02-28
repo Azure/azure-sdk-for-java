@@ -8,14 +8,13 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FaultInjectionConditionInternal {
     private final String containerResourceId;
 
     private OperationType operationType;
-    private URI serviceEndpoint;
+    private List<URI> regionEndpoints;
     private List<URI> physicalAddresses;
     private List<IFaultInjectionConditionValidator> validators;
 
@@ -36,11 +35,15 @@ public class FaultInjectionConditionInternal {
         }
     }
 
-    public void setServiceEndpoint(URI serviceEndpoint) {
-        this.serviceEndpoint = serviceEndpoint;
-        if (serviceEndpoint != null) {
-            this.validators.add(new ServiceEndpointValidator(serviceEndpoint));
+    public void setRegionEndpoints(List<URI> regionEndpoints) {
+        this.regionEndpoints = regionEndpoints;
+        if (this.regionEndpoints != null) {
+            this.validators.add(new RegionEndpointValidator(this.regionEndpoints));
         }
+    }
+
+    public List<URI> getRegionEndpoints() {
+        return this.regionEndpoints;
     }
 
     public List<URI> getAddresses() {
@@ -63,14 +66,16 @@ public class FaultInjectionConditionInternal {
         boolean isApplicable(RxDocumentServiceRequest request);
     }
 
-    static class ServiceEndpointValidator implements IFaultInjectionConditionValidator {
-        private URI serviceEndpoint;
-        public ServiceEndpointValidator(URI serviceEndpoint) {
-            this.serviceEndpoint = serviceEndpoint;
+    static class RegionEndpointValidator implements IFaultInjectionConditionValidator {
+        private List<URI> regionEndpoints;
+        public RegionEndpointValidator(List<URI> regionEndpoints) {
+            this.regionEndpoints = regionEndpoints;
         }
         @Override
         public boolean isApplicable(RxDocumentServiceRequest request) {
-            return this.serviceEndpoint == request.requestContext.locationEndpointToRoute;
+            return this.regionEndpoints
+                .stream()
+                .anyMatch(regionEndpoint -> regionEndpoint == request.requestContext.locationEndpointToRoute);
         }
     }
 

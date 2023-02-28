@@ -83,6 +83,8 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     long usedHeapMemory();
 
+    URI serviceEndpoint();
+
     void injectConnectionErrors(
         String faultInjectionRuleId,
         FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult);
@@ -113,6 +115,7 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         int evictions();
 
+        RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress);
         RntbdEndpoint get(URI physicalAddress);
 
         IAddressResolver getAddressResolver();

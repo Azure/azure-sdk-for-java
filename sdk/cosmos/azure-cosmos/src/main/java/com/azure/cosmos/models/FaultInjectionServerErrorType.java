@@ -14,7 +14,7 @@ public enum FaultInjectionServerErrorType {
     /** 429 from server */
     TOO_MANY_REQUEST,
     /** 404-1002 from server */
-    NOT_FOUND_READ_SESSION_NOT_AVAILABLE,
+    READ_SESSION_NOT_AVAILABLE,
     /** 408 from server */
     SERVER_TIMEOUT,
     /** Response delay, when it is over request timeout, can simulate transit timeout */

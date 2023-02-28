@@ -4,6 +4,5 @@
 package com.azure.cosmos.models;
 
 public enum FaultInjectionConnectionType {
-    DIRECT,
-    GATEWAY
+    DIRECT
 }

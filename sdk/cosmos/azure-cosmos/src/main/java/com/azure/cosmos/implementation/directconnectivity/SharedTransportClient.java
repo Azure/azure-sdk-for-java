@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -94,8 +95,8 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
-        return this.transportClient.openConnection(addressUri);
+    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
+        return this.transportClient.openConnection(serviceEndpoint, addressUri);
     }
 
     @Override

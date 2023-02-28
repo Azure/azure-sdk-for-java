@@ -81,6 +81,7 @@ public class GatewayAddressCache implements IAddressCache {
 
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
     private final URI addressEndpoint;
+    private final URI serviceEndpoint;
 
     private final AsyncCacheNonBlocking<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
     private final ConcurrentHashMap<PartitionKeyRangeIdentity, Instant> suboptimalServerPartitionTimestamps;
@@ -123,6 +124,7 @@ public class GatewayAddressCache implements IAddressCache {
             assert false;
             throw new IllegalStateException(e);
         }
+        this.serviceEndpoint = serviceEndpoint;
         this.tokenProvider = tokenProvider;
         this.serverPartitionAddressCache = new AsyncCacheNonBlocking<>();
         this.suboptimalServerPartitionTimestamps = new ConcurrentHashMap<>();
@@ -880,7 +882,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (addressesNeedToValidation.size() > 0) {
             this.openConnectionsHandler
-                    .openConnections(addressesNeedToValidation)
+                    .openConnections(this.serviceEndpoint, addressesNeedToValidation)
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
         }
@@ -970,6 +972,7 @@ public class GatewayAddressCache implements IAddressCache {
 
                                     if (this.openConnectionsHandler != null) {
                                         return this.openConnectionsHandler.openConnections(
+                                            this.serviceEndpoint,
                                                 Arrays
                                                     .stream(addressInfo.getRight())
                                                     .map(addressInformation -> addressInformation.getPhysicalUri())

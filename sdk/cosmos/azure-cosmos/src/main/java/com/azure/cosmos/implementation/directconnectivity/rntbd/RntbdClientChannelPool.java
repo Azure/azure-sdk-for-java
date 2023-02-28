@@ -1447,13 +1447,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     channel
                         .pipeline()
                         .firstContext()
-                        .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent(faultInjectionRuleId));
+                        .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent());
                     break;
                 case CONNECTION_RESET:
                     channel
                         .pipeline()
                         .firstContext()
-                        .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent(faultInjectionRuleId));
+                        .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent());
                     break;
                 default:
                     throw new IllegalStateException("ConnectionErrorType " + faultInjectionResult.getErrorTypes() + " is not supported");

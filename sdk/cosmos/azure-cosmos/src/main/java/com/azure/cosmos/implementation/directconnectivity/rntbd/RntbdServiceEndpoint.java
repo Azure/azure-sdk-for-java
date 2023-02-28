@@ -91,6 +91,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final int maxConcurrentRequests;
 
     private final RntbdConnectionStateListener connectionStateListener;
+    private final URI serviceEndpoint;
+    private String lastFaultInjectionRuleId;
+    private Instant lastFaultInjectionTimestamp;
 
     // endregion
 
@@ -103,9 +106,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final RntbdRequestTimer timer,
         final URI physicalAddress,
         final ClientTelemetry clientTelemetry,
-        final RntbdServerErrorInjector rntbdFaultInjector) {
+        final RntbdServerErrorInjector rntbdFaultInjector,
+        final URI serviceEndpoint) {
 
         this.serverKey = RntbdUtils.getServerKey(physicalAddress);
+        this.serviceEndpoint = serviceEndpoint;
 
         final Bootstrap bootstrap = this.getBootStrap(group, config);
 
@@ -316,9 +321,17 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
+    public URI serviceEndpoint() {
+        return this.serviceEndpoint;
+    }
+
+    @Override
     public void injectConnectionErrors(
         String faultInjectionRuleId,
         FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult) {
+
+        this.lastFaultInjectionRuleId = faultInjectionRuleId;
+        this.lastFaultInjectionTimestamp = Instant.now();
 
         this.channelPool.injectConnectionErrors(faultInjectionRuleId, faultInjectionConnectionErrorResult);
     }
@@ -453,7 +466,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .createdTime(this.createdTime)
             .lastRequestNanoTime(this.lastRequestNanoTime())
             .closed(this.closed.get())
-            .inflightRequests(concurrentRequestSnapshot);
+            .inflightRequests(concurrentRequestSnapshot)
+            .lastFaultInjectionId(this.lastFaultInjectionRuleId)
+            .lastFaultInjectionTimestamp(this.lastFaultInjectionTimestamp);
 
         if (this.connectionStateListener != null) {
             stats.connectionStateListenerMetrics(this.connectionStateListener.getMetrics());
@@ -712,7 +727,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         @Override
-        public RntbdEndpoint get(final URI physicalAddress) {
+        public RntbdEndpoint createIfAbsent(final URI serviceEndpoint, final URI physicalAddress) {
             return endpoints.computeIfAbsent(physicalAddress.getAuthority(), authority -> new RntbdServiceEndpoint(
                 this,
                 this.config,
@@ -720,7 +735,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 this.requestTimer,
                 physicalAddress,
                 this.clientTelemetry,
-                this.rntbdFaultInjector));
+                this.rntbdFaultInjector,
+                serviceEndpoint));
+        }
+
+        @Override
+        public RntbdEndpoint get(URI physicalAddress) {
+            return endpoints.get(physicalAddress.getAuthority());
         }
 
         @Override

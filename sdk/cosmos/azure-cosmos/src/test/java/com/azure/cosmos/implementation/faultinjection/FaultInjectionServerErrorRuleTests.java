@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -53,6 +54,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
 public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
@@ -61,14 +63,16 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
     private CosmosAsyncContainer cosmosAsyncContainer;
     private DatabaseAccount databaseAccount;
 
-    @BeforeClass(groups = {"multi-region"},timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region"}, timeOut = TIMEOUT)
     public void beforeClass() {
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true)
+            .consistencyLevel(ConsistencyLevel.SESSION)
             .directMode()
             .buildAsyncClient();
+
         AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(client);
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
         GlobalEndpointManager globalEndpointManager =
@@ -78,7 +82,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
     }
 
-    @DataProvider
+    @DataProvider(name = "operationTypeProvider")
     public static Object[][] operationTypeProvider() {
         return new Object[][]{
             { OperationType.Read },
@@ -89,12 +93,20 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "faultInjectionServerErrorProvider")
+    public static Object[][] faultInjectionServerErrorProvider() {
+        return new Object[][]{
+            // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
+            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, true, 500, 0}, // TODO: validate retry
+            { FaultInjectionServerErrorType.SERVER_RETRY_WITH, true, 449, 0 },
+            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
+            { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002},
+            { FaultInjectionServerErrorType.SERVER_TIMEOUT, true, 408, 0 } // TODO: validate retry
+        };
+    }
+
     @Test(groups = {"multi-region"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_OperationType(OperationType operationType) throws JsonProcessingException {
-        // create a new item to be used by read operations
-        TestItem createdItem = TestItem.createNewItem();
-        cosmosAsyncContainer.createItem(createdItem).block();
-
         String ruleId = "serverErrorRule-OperationType-" + UUID.randomUUID();
         // with matching operationType
         FaultInjectionRule serverErrorRule =
@@ -113,23 +125,29 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 .duration(Duration.ofMinutes(5))
                 .build();
 
-        FaultInjectionBridgeInternal.configFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
-        List<URI> physicalAddresses = serverErrorRule.getAddresses();
-        assertThat(physicalAddresses.size()).isZero();
+        try {
+            TestItem createdItem = TestItem.createNewItem();
+            cosmosAsyncContainer.createItem(createdItem).block();
 
-        CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
-        if (operationType == OperationType.Read) {
-            this.validateFaultInjectionRuleApplied(
-                cosmosDiagnostics,
-                operationType,
-                HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.FAULT_INJECTION_ERROR,
-                ruleId);
-        } else {
-            this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType);
+            FaultInjectionBridgeInternal.configFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
+            List<URI> physicalAddresses = serverErrorRule.getAddresses();
+            assertThat(physicalAddresses.size()).isZero();
+
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
+            if (operationType == OperationType.Read) {
+                this.validateFaultInjectionRuleApplied(
+                    cosmosDiagnostics,
+                    operationType,
+                    HttpConstants.StatusCodes.GONE,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    ruleId);
+            } else {
+                this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType);
+            }
+
+        } finally {
+            serverErrorRule.disable();
         }
-
-        serverErrorRule.disable();
     }
 
     @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
@@ -143,6 +161,42 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         }
 
         CosmosAsyncClient clientWithPreferredRegion = null;
+        // set local region rule
+        String localRegionRuleId = "ServerErrorRule-LocalRegion-" + UUID.randomUUID();
+        FaultInjectionRule serverErrorRuleLocalRegion =
+            new FaultInjectionRuleBuilder(localRegionRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .region(preferredLocations.get(0))
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        // set remote region rule
+        String remoteRegionRuleId = "ServerErrorRule-RemoteRegion-" + UUID.randomUUID();
+        FaultInjectionRule serverErrorRuleRemoteRegion =
+            new FaultInjectionRuleBuilder(remoteRegionRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .region(preferredLocations.get(1))
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
         try {
             clientWithPreferredRegion = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -160,42 +214,6 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             TestItem createdItem = TestItem.createNewItem();
             container.createItem(createdItem).block();
 
-            // set local region rule
-            String localRegionRuleId = "ServerErrorRule-LocalRegion-" + UUID.randomUUID();
-            FaultInjectionRule serverErrorRuleLocalRegion =
-                new FaultInjectionRuleBuilder(localRegionRuleId)
-                    .condition(
-                        new FaultInjectionConditionBuilder()
-                            .region(preferredLocations.get(0))
-                            .build()
-                    )
-                    .result(
-                        FaultInjectionResultBuilders
-                            .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
-                            .times(1)
-                            .build()
-                    )
-                    .duration(Duration.ofMinutes(5))
-                    .build();
-
-            // set remote region rule
-            String remoteRegionRuleId = "ServerErrorRule-RemoteRegion-" + UUID.randomUUID();
-            FaultInjectionRule serverErrorRuleRemoteRegion =
-                new FaultInjectionRuleBuilder(remoteRegionRuleId)
-                    .condition(
-                        new FaultInjectionConditionBuilder()
-                            .region(preferredLocations.get(1))
-                            .build()
-                    )
-                    .result(
-                        FaultInjectionResultBuilders
-                            .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
-                            .times(1)
-                            .build()
-                    )
-                    .duration(Duration.ofMinutes(5))
-                    .build();
-
             FaultInjectionBridgeInternal
                 .configFaultInjectionRules(container, Arrays.asList(serverErrorRuleLocalRegion, serverErrorRuleRemoteRegion))
                 .block();
@@ -206,7 +224,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 cosmosDiagnostics,
                 OperationType.Read,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.FAULT_INJECTION_ERROR,
+                HttpConstants.SubStatusCodes.UNKNOWN,
                 localRegionRuleId
             );
 
@@ -215,8 +233,9 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
             this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Read);
 
-            serverErrorRuleRemoteRegion.disable();
         } finally {
+            serverErrorRuleLocalRegion.disable();
+            serverErrorRuleRemoteRegion.disable();
             safeClose(clientWithPreferredRegion);
         }
     }
@@ -224,7 +243,6 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_Partition() throws JsonProcessingException {
-
         TestItem createdItem = TestItem.createNewItem();
         cosmosAsyncContainer.createItem(createdItem).block();
 
@@ -262,22 +280,42 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             cosmosDiagnostics,
             OperationType.Query,
             HttpConstants.StatusCodes.GONE,
-            HttpConstants.SubStatusCodes.FAULT_INJECTION_ERROR,
+            HttpConstants.SubStatusCodes.UNKNOWN,
             feedRangeRuleId
         );
 
         // Issue a query to the feed range which is not configured fault injection rule and validate no fault injection is applied
         queryRequestOptions.setFeedRange(feedRanges.get(1));
-        cosmosDiagnostics = cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst().getCosmosDiagnostics();
-        this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Query);
 
-        serverErrorRuleByFeedRange.disable();
+        try {
+            cosmosDiagnostics = cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst().getCosmosDiagnostics();
+            this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Query);
+        } finally {
+            serverErrorRuleByFeedRange.disable();
+        }
     }
 
     @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerResponseDelay() throws JsonProcessingException {
         CosmosAsyncClient newClient = null; // creating new client to force creating new connections
-
+        // define another rule which can simulate timeout
+        String timeoutRuleId = "serverErrorRule-transitTimeout-" + UUID.randomUUID();
+        FaultInjectionRule timeoutRule =
+            new FaultInjectionRuleBuilder(timeoutRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY)
+                        .times(1)
+                        .delay(Duration.ofSeconds(6)) // the default time out is 5s
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
         try {
             DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
             directConnectionConfig.setConnectTimeout(Duration.ofSeconds(1));
@@ -298,25 +336,6 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             TestItem createdItem = TestItem.createNewItem();
             container.createItem(createdItem).block();
 
-            // define another rule which can simulate timeout
-            String timeoutRuleId = "serverErrorRule-transitTimeout-" + UUID.randomUUID();
-            FaultInjectionRule timeoutRule =
-                new FaultInjectionRuleBuilder(timeoutRuleId)
-                    .condition(
-                        new FaultInjectionConditionBuilder()
-                            .operationType(FaultInjectionOperationType.READ)
-                            .build()
-                    )
-                    .result(
-                        FaultInjectionResultBuilders
-                            .getResultBuilder(FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY)
-                            .times(1)
-                            .delay(Duration.ofSeconds(6)) // the default time out is 5s
-                            .build()
-                    )
-                    .duration(Duration.ofMinutes(5))
-                    .build();
-
             FaultInjectionBridgeInternal.configFaultInjectionRules(container, Arrays.asList(timeoutRule)).block();
             CosmosItemResponse itemResponse = container.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
             this.validateFaultInjectionRuleApplied(
@@ -327,8 +346,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 timeoutRuleId
             );
 
-            timeoutRule.disable();
         } finally {
+            timeoutRule.disable();
             safeClose(newClient);
         }
     }
@@ -336,6 +355,24 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
     @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerConnectionDelay() throws JsonProcessingException {
         CosmosAsyncClient newClient = null; // creating new client to force creating new connections
+        // simulate high channel acquisition/connectionTimeout
+        String ruleId = "serverErrorRule-serverConnectionDelay-" + UUID.randomUUID();
+        FaultInjectionRule serverConnectionDelayRule =
+            new FaultInjectionRuleBuilder(ruleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.CREATE)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY)
+                        .delay(Duration.ofSeconds(2))
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
 
         try {
             DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
@@ -353,25 +390,6 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     .getDatabase(cosmosAsyncContainer.getDatabase().getId())
                     .getContainer(cosmosAsyncContainer.getId());
 
-            // simulate high channel acquisition/connectionTimeout
-            String ruleId = "serverErrorRule-serverConnectionDelay-" + UUID.randomUUID();
-            FaultInjectionRule serverConnectionDelayRule =
-                new FaultInjectionRuleBuilder(ruleId)
-                    .condition(
-                        new FaultInjectionConditionBuilder()
-                            .operationType(FaultInjectionOperationType.CREATE)
-                            .build()
-                    )
-                    .result(
-                        FaultInjectionResultBuilders
-                            .getResultBuilder(FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY)
-                            .delay(Duration.ofSeconds(2))
-                            .times(1)
-                            .build()
-                    )
-                    .duration(Duration.ofMinutes(5))
-                    .build();
-
             FaultInjectionBridgeInternal.configFaultInjectionRules(container, Arrays.asList(serverConnectionDelayRule)).block();
             CosmosItemResponse itemResponse = container.createItem(TestItem.createNewItem()).block();
 
@@ -383,9 +401,78 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 ruleId
             );
 
-            serverConnectionDelayRule.disable();
         } finally {
+            serverConnectionDelayRule.disable();
             safeClose(newClient);
+        }
+    }
+
+    @Test(groups = {"multi-region"}, dataProvider = "faultInjectionServerErrorProvider", timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_ServerError(
+        FaultInjectionServerErrorType serverErrorType,
+        boolean canRetry,
+        int errorStatusCode,
+        int errorSubStatusCode) throws JsonProcessingException {
+
+        // simulate high channel acquisition/connectionTimeout
+        String ruleId = "serverErrorRule-serverError-" + UUID.randomUUID();
+        FaultInjectionRule serverErrorRule =
+            new FaultInjectionRuleBuilder(ruleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(serverErrorType)
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            TestItem createdItem = TestItem.createNewItem();
+            cosmosAsyncContainer.createItem(createdItem).block();
+
+            FaultInjectionBridgeInternal.configFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
+
+            CosmosDiagnostics cosmosDiagnostics = null;
+            if (canRetry) {
+                try {
+                    cosmosDiagnostics =
+                        cosmosAsyncContainer
+                            .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class)
+                            .block()
+                            .getDiagnostics();
+                } catch (Exception exception) {
+                    fail("Request should succeeded, but failed with " + exception);
+                }
+            } else {
+                try {
+                    cosmosDiagnostics =
+                        cosmosAsyncContainer
+                            .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class)
+                            .block()
+                            .getDiagnostics();
+                     fail("Request should fail, but succeeded");
+
+                } catch (Exception e) {
+                    cosmosDiagnostics = ((CosmosException)e).getDiagnostics();
+                }
+            }
+
+            this.validateFaultInjectionRuleApplied(
+                cosmosDiagnostics,
+                OperationType.Read,
+                errorStatusCode,
+                errorSubStatusCode,
+                ruleId
+            );
+
+        } finally {
+            serverErrorRule.disable();
         }
     }
 

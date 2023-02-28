@@ -4,9 +4,4 @@
 package com.azure.cosmos.implementation.faultinjection.model;
 
 public class RntbdFaultInjectionConnectionCloseEvent {
-    private final String ruleId;
-
-    public RntbdFaultInjectionConnectionCloseEvent(String ruleId) {
-        this.ruleId = ruleId;
-    }
 }

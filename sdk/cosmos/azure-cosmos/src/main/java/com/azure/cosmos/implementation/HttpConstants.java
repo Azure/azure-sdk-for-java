@@ -412,9 +412,6 @@ public class HttpConstants {
 
         // Client generated request rate too large exception
         public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
-
-        // Fault injection error
-        public static final int FAULT_INJECTION_ERROR = 10006;
     }
 
     public static class HeaderValues {

@@ -834,7 +834,7 @@ public final class RntbdTransportClientTest {
         Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
-        Mockito.when(endpointProvider.get(physicalAddress.getURI())).thenReturn(rntbdEndpoint);
+        Mockito.when(endpointProvider.createIfAbsent(physicalAddress.getURI(), physicalAddress.getURI())).thenReturn(rntbdEndpoint);
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
         transportClient
@@ -1104,6 +1104,11 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
+        public URI serviceEndpoint() {
+            return null;
+        }
+
+        @Override
         public void injectConnectionErrors(String ruleId, FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult) {
             throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
         }
@@ -1167,6 +1172,11 @@ public final class RntbdTransportClientTest {
             @Override
             public int evictions() {
                 return 0;
+            }
+
+            @Override
+            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress) {
+                return new FakeEndpoint(config, timer, physicalAddress, expected);
             }
 
             @Override

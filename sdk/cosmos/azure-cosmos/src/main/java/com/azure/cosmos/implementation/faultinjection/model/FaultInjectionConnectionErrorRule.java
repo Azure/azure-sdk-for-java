@@ -20,6 +20,7 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
     private final Instant startTime;
     private final Instant expireTime;
     private final AtomicLong hitCount;
+    private final List<URI> regionEndpoints;
     private final List<URI> addresses;
     private final FaultInjectionConnectionErrorResult result;
 
@@ -30,17 +31,18 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
         boolean enabled,
         Duration delay,
         Duration duration,
+        List<URI> regionEndpoints,
         List<URI> addresses,
         FaultInjectionConnectionErrorResult result) {
 
         checkArgument(StringUtils.isNotEmpty(id), "Argument 'id' cannot be null nor empty");
-        checkNotNull(addresses, "Argument 'addresses' can not be null");
         checkNotNull(result, "Argument 'result' can not be null");
 
         this.id = id;
         this.enabled = enabled;
         this.startTime = delay == null ? Instant.now() : Instant.now().plusMillis(delay.toMillis());
         this.expireTime = duration == null ? Instant.MAX : this.startTime.plusMillis(duration.toMillis());
+        this.regionEndpoints = regionEndpoints;
         this.addresses = addresses;
         this.result = result;
         this.hitCount = new AtomicLong(0);
@@ -49,6 +51,11 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
     @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public long getHitCount() {
+        return this.hitCount.get();
     }
 
     public FaultInjectionConnectionErrorResult getResult() {
@@ -63,6 +70,11 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
     @Override
     public List<URI> getAddresses() {
         return this.addresses;
+    }
+
+    @Override
+    public List<URI> getRegionEndpoints() {
+        return this.regionEndpoints;
     }
 
     @Override

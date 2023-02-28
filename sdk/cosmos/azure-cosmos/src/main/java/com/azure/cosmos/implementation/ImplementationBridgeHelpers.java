@@ -1095,6 +1095,9 @@ public class ImplementationBridgeHelpers {
             List<String> getReplicaStatusList(CosmosException cosmosException);
             CosmosException setRntbdChannelStatistics(CosmosException cosmosException, RntbdChannelStatistics rntbdChannelStatistics);
             RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException);
+
+            void setFaultInjectionRuleId(CosmosException cosmosException, String faultInjectionRuleId);
+            String getFaultInjectionRuleId(CosmosException cosmosException);
         }
     }
 

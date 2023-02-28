@@ -7,6 +7,8 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
@@ -42,46 +44,60 @@ public class FaultInjectionServerErrorResult implements IFaultInjectionResult{
         return this.times == null || request.faultInjectionRequestContext.getFaultInjectionRuleApplyCount(ruleId) < this.times;
     }
 
-    public CosmosException getInjectedServerError(RxDocumentServiceRequest request, String ruleId) {
+    public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
 
         CosmosException cosmosException;
         // TODO: add more error handling
         switch (this.serverErrorType) {
             case SERVER_GONE:
-                GoneException goneException = new GoneException(this.getErrorMessage("SERVER_GONE", ruleId));
+                GoneException goneException = new GoneException(this.getErrorMessage(RMResources.Gone));
                 goneException.setIsBasedOn410ResponseFromService();
                 cosmosException = goneException;
                 break;
+
             case SERVER_RETRY_WITH:
-                cosmosException = new RetryWithException(
-                    this.getErrorMessage("SERVER_449", ruleId),
-                    request.requestContext.storePhysicalAddress);
+                cosmosException =
+                    new RetryWithException(
+                        this.getErrorMessage(RMResources.RetryWith),
+                        request.requestContext.storePhysicalAddress);
                 break;
+
             case TOO_MANY_REQUEST:
-                cosmosException = new RequestRateTooLargeException(
-                    this.getErrorMessage("TOO_MANY_REQUEST", ruleId),
-                    request.requestContext.storePhysicalAddress);
+                cosmosException =
+                    new RequestRateTooLargeException(
+                        this.getErrorMessage(RMResources.TooManyRequests),
+                        request.requestContext.storePhysicalAddress);
+                cosmosException.getResponseHeaders().put(
+                    HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
+                    String.valueOf(500));
                 break;
+
             case SERVER_TIMEOUT:
-                cosmosException = new RequestTimeoutException(
-                    this.getErrorMessage("SERVER_TIMEOUT", ruleId),
-                    request.requestContext.storePhysicalAddress);
+                cosmosException =
+                    new RequestTimeoutException(
+                        this.getErrorMessage(RMResources.RequestTimeout),
+                        request.requestContext.storePhysicalAddress);
                 break;
+
             case INTERNAL_SERVER_ERROR:
-                cosmosException = new InternalServerErrorException(
-                    this.getErrorMessage("INTERNAL_SERVER_ERROR", ruleId));
+                cosmosException =
+                    new InternalServerErrorException(this.getErrorMessage(RMResources.InternalServerError));
                 break;
+
+            case READ_SESSION_NOT_AVAILABLE:
+                cosmosException = new NotFoundException();
+                cosmosException.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
+                break;
+
             default:
                 throw new IllegalArgumentException("Server error type " + this.serverErrorType + " is not supported");
         }
 
-        cosmosException.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS,
-            Integer.toString(HttpConstants.SubStatusCodes.FAULT_INJECTION_ERROR));
-
         return cosmosException;
     }
 
-    private String getErrorMessage(String errorMessage, String ruleId) {
-        return String.format("Fault injection server error [%s], ruleId [%s]", errorMessage, ruleId);
+    private String getErrorMessage(String errorMessage) {
+        return String.format("Fault injection server error [%s]", errorMessage);
     }
 }

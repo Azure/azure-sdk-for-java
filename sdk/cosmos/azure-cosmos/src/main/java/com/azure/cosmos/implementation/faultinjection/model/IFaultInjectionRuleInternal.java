@@ -9,6 +9,9 @@ import java.util.List;
 public interface IFaultInjectionRuleInternal {
     void disable();
     List<URI> getAddresses();
+    List<URI> getRegionEndpoints();
     boolean isValid();
     String getId();
+
+    long getHitCount();
 }

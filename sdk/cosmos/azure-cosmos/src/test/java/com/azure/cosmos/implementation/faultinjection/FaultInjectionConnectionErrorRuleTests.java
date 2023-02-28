@@ -27,6 +27,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.assertj.core.api.Assertions;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -113,5 +114,10 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         provider.list().forEach(rntbdEndpoint -> Assertions.assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(1));
 
         connectionErrorRule.disable();
+    }
+
+    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        safeClose(client);
     }
 }

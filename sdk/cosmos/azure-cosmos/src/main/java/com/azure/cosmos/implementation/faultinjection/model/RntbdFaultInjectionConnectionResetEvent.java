@@ -4,12 +4,4 @@
 package com.azure.cosmos.implementation.faultinjection.model;
 
 public class RntbdFaultInjectionConnectionResetEvent {
-    private String ruleId;
-    public RntbdFaultInjectionConnectionResetEvent(String ruleId) {
-        this.ruleId = ruleId;
-    }
-
-    public String getRuleId() {
-        return this.ruleId;
-    }
 }

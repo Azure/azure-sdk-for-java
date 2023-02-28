@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class RntbdConnectionErrorInjector {
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionErrorInjector.class);
@@ -40,9 +41,43 @@ public class RntbdConnectionErrorInjector {
             .flatMapMany(t -> {
                 //check whether the rule still valid
                 if (this.isEffectiveRule(rule)) {
-                    return Flux.fromIterable(rule.getAddresses())
-                        .flatMap(addressURI -> {
-                            this.endpointProvider.get(addressURI).injectConnectionErrors(rule.getId(), rule.getResult());
+
+                    // Inject connect error to rntbd endpoint with matching physical addresses
+                    if (rule.getAddresses() != null && rule.getAddresses().size() > 0) {
+                        return Flux.fromIterable(rule.getAddresses())
+                            .flatMap(addressURI -> {
+                                RntbdEndpoint rntbdEndpoint = this.endpointProvider.get(addressURI);
+                                if (rntbdEndpoint != null) {
+                                    rntbdEndpoint.injectConnectionErrors(rule.getId(), rule.getResult());
+                                }
+
+                                return Mono.empty();
+                            });
+                    }
+
+                    // There is no specific physical addresses being defined in the rule,
+                    // Inject connect error to rntbd endpoint with matching region endpoint
+                    if (rule.getRegionEndpoints() != null && rule.getRegionEndpoints().size() > 0) {
+                        return Flux.fromIterable(rule.getRegionEndpoints())
+                            .flatMap(regionEndpoint -> {
+                                return Flux.fromIterable(
+                                    this.endpointProvider
+                                        .list()
+                                        .filter(rntbdEndpoint -> regionEndpoint == rntbdEndpoint.serverKey())
+                                        .collect(Collectors.toList())
+                                    )
+                                    .flatMap(rntbdEndpoint -> {
+                                        rntbdEndpoint.injectConnectionErrors(rule.getId(), rule.getResult());
+                                        return Mono.empty();
+                                    });
+                            });
+                    }
+
+                    // If we reach here,then it means there is no specific addresses/region specified on the rule
+                    // Inject connect error all available rntbd endpoints
+                    return Flux.fromIterable(this.endpointProvider.list().collect(Collectors.toList()))
+                        .flatMap(rntbdEndpoint -> {
+                            rntbdEndpoint.injectConnectionErrors(rule.getId(), rule.getResult());
                             return Mono.empty();
                         });
                 }

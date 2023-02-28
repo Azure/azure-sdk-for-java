@@ -13,6 +13,8 @@ import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleI
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
 // by AutoCloseable (see: http://docs.oracle.com/javase/7/docs/api/java/lang/AutoCloseable.html#close()).
@@ -51,7 +53,7 @@ public abstract class TransportClient implements AutoCloseable {
      *
      * @return the {@link OpenConnectionResponse}.
      */
-    public abstract Mono<OpenConnectionResponse> openConnection(final Uri addressUri);
+    public abstract Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, final Uri addressUri);
 
     public abstract void configFaultInjectionRule(IFaultInjectionRuleInternal rule);
 

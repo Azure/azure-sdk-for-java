@@ -63,12 +63,17 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         return false;
     }
 
-    public CosmosException getInjectedServerError(RxDocumentServiceRequest request, String ruleId) {
-        return this.result.getInjectedServerError(request, ruleId);
+    public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
+        return this.result.getInjectedServerError(request);
     }
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public long getHitCount() {
+        return this.hitCount.get() > this.hitLimit ? this.hitLimit : this.hitCount.get();
     }
 
     public FaultInjectionConditionInternal getCondition() {
@@ -93,5 +98,10 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
     @Override
     public List<URI> getAddresses() {
         return this.condition.getAddresses();
+    }
+
+    @Override
+    public List<URI> getRegionEndpoints() {
+        return this.condition.getRegionEndpoints();
     }
 }

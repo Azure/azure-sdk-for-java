@@ -4,15 +4,22 @@
 package com.azure.cosmos.implementation.faultinjection;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxGatewayStoreModel;
 import com.azure.cosmos.implementation.RxStoreModel;
+import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.WebExceptionRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -27,6 +34,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.FaultInjectionCondition;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.azure.cosmos.models.FaultInjectionConnectionType;
+import com.azure.cosmos.models.FaultInjectionEndpoints;
 import com.azure.cosmos.models.FaultInjectionOperationType;
 import com.azure.cosmos.models.FaultInjectionRule;
 import com.azure.cosmos.models.FaultInjectionServerErrorResult;
@@ -60,6 +68,7 @@ public class FaultInjectionRulesProcessor {
     private final GlobalEndpointManager globalEndpointManager;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final AddressSelector addressSelector;
+    private final FaultInjectionRuleProcessorRetryPolicy retryPolicy;
 
     public FaultInjectionRulesProcessor(
         ConnectionMode connectionMode,
@@ -68,7 +77,8 @@ public class FaultInjectionRulesProcessor {
         RxCollectionCache collectionCache,
         GlobalEndpointManager globalEndpointManager,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
-        AddressSelector addressSelector) {
+        AddressSelector addressSelector,
+        ThrottlingRetryOptions retryOptions) {
 
         checkNotNull(connectionMode, "Argument 'connectionMode' can not be null");
         checkNotNull(storeModel, "Argument 'storeModel' can not be null");
@@ -77,6 +87,7 @@ public class FaultInjectionRulesProcessor {
         checkNotNull(globalEndpointManager, "Argument 'globalEndpointManager' can not be null");
         checkNotNull(partitionKeyRangeCache, "Argument 'partitionKeyRangeCache' can not be null");
         checkNotNull(addressSelector, "Argument 'addressSelector' can not be null");
+        checkNotNull(retryOptions, "Argument 'addressSelector' can not be null");
 
         this.connectionMode = connectionMode;
         this.storeModel = storeModel;
@@ -85,6 +96,7 @@ public class FaultInjectionRulesProcessor {
         this.partitionKeyRangeCache = partitionKeyRangeCache;
         this.globalEndpointManager = globalEndpointManager;
         this.addressSelector = addressSelector;
+        this.retryPolicy = new FaultInjectionRuleProcessorRetryPolicy(retryOptions);
     }
 
     /***
@@ -124,9 +136,7 @@ public class FaultInjectionRulesProcessor {
                                     case DIRECT:
                                         this.storeModel.configFaultInjectionRule(effectiveRule);
                                         break;
-                                    case GATEWAY:
-                                        this.gatewayStoreModel.configFaultInjectionRule(effectiveRule);
-                                        break;
+                                    // TODO: add support for gateway mode
                                     default:
                                         return Mono.error(new IllegalStateException("Connection type is not supported"));
                                 }
@@ -141,13 +151,6 @@ public class FaultInjectionRulesProcessor {
         if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.DIRECT
             && this.connectionMode != ConnectionMode.DIRECT) {
             throw new IllegalArgumentException("Direct connection type rule is not supported when client is not in direct mode.");
-        }
-
-        if (rule.getResult() instanceof FaultInjectionConnectionErrorResult
-             && (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.DIRECT
-                    && rule.getCondition().getEndpoints() == null)) {
-
-            throw new IllegalArgumentException("Endpoint is required on Connection error rule with direct connection type");
         }
     }
 
@@ -170,53 +173,45 @@ public class FaultInjectionRulesProcessor {
         FaultInjectionRule rule,
         DocumentCollection documentCollection) {
 
+        FaultInjectionServerErrorType errorType =
+            ((FaultInjectionServerErrorResult) rule.getResult()).getServerErrorType();
+
         return Mono.just(rule)
             .flatMap(originalRule -> {
                 // get effective condition
                 FaultInjectionConditionInternal effectiveCondition = new FaultInjectionConditionInternal(documentCollection.getResourceId());
 
-                if (rule.getCondition().getOperationType() != null) {
+                if (rule.getCondition().getOperationType() != null && canErrorLimitToOperation(errorType)) {
                     effectiveCondition.setOperationType(this.getEffectiveOperationType(rule.getCondition().getOperationType()));
                 }
 
-                if (StringUtils.isNotEmpty(rule.getCondition().getRegion())) {
-                    effectiveCondition.setServiceEndpoint(
-                        this.globalEndpointManager.resolveFaultInjectionServiceEndpoint(
-                            rule.getCondition().getRegion(),
-                            this.isWriteOnlyEndpoint(rule.getCondition())
-                        ));
-                }
+                List<URI> regionEndpoints = this.getRegionEndpoints(rule.getCondition());
+                effectiveCondition.setRegionEndpoints(regionEndpoints);
 
-                if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
-                    return Mono.just(effectiveCondition);
-                }
+                // TODO: add handling for gateway mode
 
                 // Direct connection mode, populate physical addresses
-                return this.resolvePhysicalAddresses(rule.getCondition(), documentCollection)
+                return BackoffRetryUtility.executeRetry(
+                        () -> this.resolvePhysicalAddresses(
+                            regionEndpoints,
+                            rule.getCondition().getEndpoints(),
+                            this.isWriteOnlyEndpoint(rule.getCondition()),
+                            documentCollection),
+                        new WebExceptionRetryPolicy()
+                    )
                     .map(addresses -> {
                         List<URI> effectiveAddresses = addresses;
-                        FaultInjectionServerErrorType errorType =
-                            ((FaultInjectionServerErrorResult) rule.getResult()).getServerErrorType();
-                        switch (errorType) {
-                            // Some server errors makes sense to only apply per partition/replica
-                            // but some makes more sense to apply by server endpoint.
-                            case SERVER_RESPONSE_DELAY:
-                            case SERVER_CONNECTION_DELAY:
-                            case SERVER_GONE:
-                                effectiveAddresses =
-                                    addresses
-                                        .stream()
-                                        .map(address -> RntbdUtils.getServerKey(address))
-                                        .collect(Collectors.toList());
-                                break;
-                            default:
-                                break;
+                        if (!canErrorLimitToOperation(errorType)) {
+                            effectiveAddresses =
+                                addresses
+                                    .stream()
+                                    .map(address -> RntbdUtils.getServerKey(address))
+                                    .collect(Collectors.toList());
                         }
 
                         effectiveCondition.setAddresses(effectiveAddresses);
                         return effectiveCondition;
                     });
-
             })
             .map(effectiveCondition -> {
                 return new FaultInjectionServerErrorRule(
@@ -231,34 +226,42 @@ public class FaultInjectionRulesProcessor {
             });
     }
 
+    private boolean canErrorLimitToOperation(FaultInjectionServerErrorType errorType) {
+        // Some errors makes sense to only apply for certain operationType/requests
+        // but some should apply to all requests being routed to the server
+        return errorType == FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY
+            || errorType == FaultInjectionServerErrorType.SERVER_GONE;
+    }
+
     private Mono<IFaultInjectionRuleInternal> getEffectiveConnectionErrorRule(
         FaultInjectionRule rule,
         DocumentCollection documentCollection) {
 
         return Mono.just(rule)
-            .flatMap(originalRule -> {
-                if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
-                    // using service endpoints as addresses
-                    return Mono.just(this.getServiceEndpoints(rule.getCondition()));
-                }
+            .flatMap(originalRule -> Mono.just(this.getRegionEndpoints(rule.getCondition())))
+            .flatMap(regionEndpoints -> {
+                return this.resolvePhysicalAddresses(
+                        regionEndpoints,
+                        rule.getCondition().getEndpoints(),
+                        this.isWriteOnlyEndpoint(rule.getCondition()),
+                        documentCollection)
+                    .map(physicalAddresses -> {
+                        List<URI> effectiveAddresses =
+                            physicalAddresses
+                                .stream()
+                                .map(address -> RntbdUtils.getServerKey(address))
+                                .collect(Collectors.toList());
 
-                return this.resolvePhysicalAddresses(rule.getCondition(), documentCollection)
-                    .map(addresses -> {
-                        return addresses
-                            .stream()
-                            .map(address -> RntbdUtils.getServerKey(address))
-                            .collect(Collectors.toList());
+                        return new FaultInjectionConnectionErrorRule(
+                            rule.getId(),
+                            rule.isEnabled(),
+                            rule.getStartDelay(),
+                            rule.getDuration(),
+                            regionEndpoints,
+                            effectiveAddresses,
+                            (FaultInjectionConnectionErrorResult) rule.getResult()
+                        );
                     });
-            })
-            .map(effectiveAddresses -> {
-                return new FaultInjectionConnectionErrorRule(
-                    rule.getId(),
-                    rule.isEnabled(),
-                    rule.getStartDelay(),
-                    rule.getDuration(),
-                    effectiveAddresses,
-                    (FaultInjectionConnectionErrorResult) rule.getResult()
-                );
             });
     }
 
@@ -269,7 +272,7 @@ public class FaultInjectionRulesProcessor {
      * @param condition the fault injection condition.
      * @return the region service endpoints.
      */
-    private List<URI> getServiceEndpoints(FaultInjectionCondition condition) {
+    private List<URI> getRegionEndpoints(FaultInjectionCondition condition) {
         boolean isWriteOnlyEndpoints = this.isWriteOnlyEndpoint(condition);
 
         if (StringUtils.isNotEmpty(condition.getRegion())) {
@@ -304,18 +307,18 @@ public class FaultInjectionRulesProcessor {
     }
 
     private Mono<List<URI>> resolvePhysicalAddresses(
-        FaultInjectionCondition condition,
+        List<URI> regionEndpoints,
+        FaultInjectionEndpoints addressEndpoints,
+        boolean isWriteOnly,
         DocumentCollection documentCollection) {
 
-        if (condition.getEndpoints() == null) {
+        if (addressEndpoints == null) {
             return Mono.just(Arrays.asList());
         }
 
-        List<URI> serviceEndpoints = this.getServiceEndpoints(condition);
-
-        return Flux.fromIterable(serviceEndpoints)
+        return Flux.fromIterable(regionEndpoints)
             .flatMap(serviceEndpoint -> {
-                FeedRangeInternal feedRangeInternal = FeedRangeInternal.convert(condition.getEndpoints().getFeedRange());
+                FeedRangeInternal feedRangeInternal = FeedRangeInternal.convert(addressEndpoints.getFeedRange());
                 RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                     null,
                     OperationType.Read,
@@ -342,7 +345,7 @@ public class FaultInjectionRulesProcessor {
                                 faultInjectionAddressRequest.requestContext.locationEndpointToRoute = serviceEndpoint;
                                 faultInjectionAddressRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(pkRangeId));
 
-                                if (this.isWriteOnlyEndpoint(condition)) {
+                                if (isWriteOnly) {
                                     return this.addressSelector
                                         .resolvePrimaryUriAsync(faultInjectionAddressRequest, true)
                                         .map(uri -> uri.getURI())
@@ -352,14 +355,14 @@ public class FaultInjectionRulesProcessor {
                                 return this.addressSelector
                                     .resolveAllUriAsync(
                                         faultInjectionAddressRequest,
-                                        condition.getEndpoints().isIncludePrimary(),
+                                        addressEndpoints.isIncludePrimary(),
                                         true)
                                     .flatMapIterable(addresses -> {
                                         return addresses
                                             .stream()
                                             .map(uri -> uri.getURI())
                                             .sorted() // important: will be used to make sure the same replica addresses will be used across different client instances
-                                            .limit(condition.getEndpoints().getReplicaCount())
+                                            .limit(addressEndpoints.getReplicaCount())
                                             .collect(Collectors.toList());
                                     });
                             });
@@ -371,5 +374,35 @@ public class FaultInjectionRulesProcessor {
     private boolean isWriteOnlyEndpoint(FaultInjectionCondition condition) {
         return condition.getOperationType() != null
             && this.getEffectiveOperationType(condition.getOperationType()).isWriteOperation();
+    }
+
+    static class FaultInjectionRuleProcessorRetryPolicy implements IRetryPolicy {
+        private final ResourceThrottleRetryPolicy resourceThrottleRetryPolicy;
+        private final WebExceptionRetryPolicy webExceptionRetryPolicy;
+        public FaultInjectionRuleProcessorRetryPolicy(ThrottlingRetryOptions retryOptions) {
+            this.resourceThrottleRetryPolicy = new ResourceThrottleRetryPolicy(
+                retryOptions.getMaxRetryAttemptsOnThrottledRequests(),
+                retryOptions.getMaxRetryWaitTime(),
+                false);
+
+            this.webExceptionRetryPolicy = new WebExceptionRetryPolicy();
+        }
+
+        @Override
+        public Mono<ShouldRetryResult> shouldRetry(Exception e) {
+            return this.webExceptionRetryPolicy.shouldRetry(e)
+                .flatMap(shouldRetryResult -> {
+                    if (shouldRetryResult.shouldRetry) {
+                        return Mono.just(shouldRetryResult);
+                    }
+
+                    return this.resourceThrottleRetryPolicy.shouldRetry(e);
+                });
+        }
+
+        @Override
+        public RetryContext getRetryContext() {
+            return null;
+        }
     }
 }

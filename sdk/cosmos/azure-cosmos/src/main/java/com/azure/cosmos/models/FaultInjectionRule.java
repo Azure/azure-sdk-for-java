@@ -73,11 +73,21 @@ public class FaultInjectionRule {
 
     public void disable() {
         this.enabled = false;
-        this.effectiveRule.disable();
+        if (this.effectiveRule != null) {
+            this.effectiveRule.disable();
+        }
+    }
+
+    public long getHitCount() {
+        return this.effectiveRule.getHitCount();
     }
 
     public List<URI> getAddresses() {
         return this.effectiveRule.getAddresses();
+    }
+
+    public List<URI> getRegionEndpoints() {
+        return this.effectiveRule.getRegionEndpoints();
     }
 
     void setEffectiveFaultInjectionRule(IFaultInjectionRuleInternal effectiveRule) {

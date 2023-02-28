@@ -144,6 +144,11 @@ public class CosmosException extends AzureException {
     private final List<String> replicaStatusList = new ArrayList<>();
 
     /**
+     * Fault injection ruleId
+     */
+    private String faultInjectionRuleId;
+
+    /**
      * Creates a new instance of the CosmosException class.
      *
      * @param statusCode the http status code of the response.
@@ -536,6 +541,14 @@ public class CosmosException extends AzureException {
         this.sendingRequestHasStarted = hasSendingRequestStarted;
     }
 
+    void setFaultInjectionRuleId(String faultInjectionRUleId) {
+        this.faultInjectionRuleId = faultInjectionRUleId;
+    }
+
+    String getFaultInjectionRuleId() {
+        return this.faultInjectionRuleId;
+    }
+
     List<String> getReplicaStatusList() {
         return this.replicaStatusList;
     }
@@ -568,6 +581,16 @@ public class CosmosException extends AzureException {
                     @Override
                     public RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException) {
                         return cosmosException.getRntbdChannelStatistics();
+                    }
+
+                    @Override
+                    public void setFaultInjectionRuleId(CosmosException cosmosException, String faultInjectionRuleId) {
+                        cosmosException.setFaultInjectionRuleId(faultInjectionRuleId);
+                    }
+
+                    @Override
+                    public String getFaultInjectionRuleId(CosmosException cosmosException) {
+                        return cosmosException.getFaultInjectionRuleId();
                     }
 
                 });

@@ -78,8 +78,7 @@ public class StoreResponseDiagnostics {
         this.exceptionMessage = null;
         this.exceptionResponseHeaders = null;
         this.replicaStatusList = storeResponse.getReplicaStatusList();
-        this.faultInjectionRuleId =
-            rxDocumentServiceRequest.faultInjectionRequestContext.getFaultInjectionRuleId(rxDocumentServiceRequest.getActivityId());
+        this.faultInjectionRuleId = storeResponse.getFaultInjectionRuleId();
     }
 
     private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -108,7 +107,7 @@ public class StoreResponseDiagnostics {
         this.exceptionResponseHeaders = e.getResponseHeaders() != null ? e.getResponseHeaders().toString() : null;
         this.replicaStatusList = ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getReplicaStatusList(e);
         this.faultInjectionRuleId =
-            rxDocumentServiceRequest.faultInjectionRequestContext.getFaultInjectionRuleId(rxDocumentServiceRequest.getActivityId());
+            ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getFaultInjectionRuleId(e);
     }
 
     public int getStatusCode() {
