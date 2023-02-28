@@ -19,10 +19,6 @@
 - Custom headers in the email message are now key/value pairs.
 - The importance property was removed. Email importance can now be specified through either the `x-priority` or `x-msmail-priority` custom headers.
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.0-beta.1 (2022-08-09)
 
 The initial release of the Azure Communication Services SDK for Email has the following features:
