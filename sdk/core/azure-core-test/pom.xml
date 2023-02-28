@@ -105,7 +105,7 @@
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty-http</artifactId>
-      <version>1.0.27</version>  <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+      <version>1.0.28</version>  <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
