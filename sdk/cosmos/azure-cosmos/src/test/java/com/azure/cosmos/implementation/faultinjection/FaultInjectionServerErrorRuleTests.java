@@ -337,7 +337,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             container.createItem(createdItem).block();
 
             FaultInjectionBridgeInternal.configFaultInjectionRules(container, Arrays.asList(timeoutRule)).block();
-            CosmosItemResponse itemResponse = container.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
+            CosmosItemResponse<TestItem> itemResponse =
+                container.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
             this.validateFaultInjectionRuleApplied(
                 itemResponse.getDiagnostics(),
                 OperationType.Read,
@@ -391,7 +392,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     .getContainer(cosmosAsyncContainer.getId());
 
             FaultInjectionBridgeInternal.configFaultInjectionRules(container, Arrays.asList(serverConnectionDelayRule)).block();
-            CosmosItemResponse itemResponse = container.createItem(TestItem.createNewItem()).block();
+            CosmosItemResponse<TestItem> itemResponse = container.createItem(TestItem.createNewItem()).block();
 
             this.validateFaultInjectionRuleApplied(
                 itemResponse.getDiagnostics(),
