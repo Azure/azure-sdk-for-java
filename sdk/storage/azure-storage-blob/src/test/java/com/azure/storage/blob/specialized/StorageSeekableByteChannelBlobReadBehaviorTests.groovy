@@ -13,16 +13,17 @@ import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.common.implementation.Constants
+import spock.lang.Shared
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.time.Duration
 
 class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
-    BlockBlobClient blockBlobClient
-    PageBlobClient pageBlobClient
-    AppendBlobClient appendBlobClient
-    BlobContainerClient containerClient
+    @Shared BlockBlobClient blockBlobClient
+    @Shared PageBlobClient pageBlobClient
+    @Shared AppendBlobClient appendBlobClient
+    @Shared BlobContainerClient containerClient
 
     def setup() {
         containerClient = getContainerClientBuilder(namer.getRandomName(60)).buildClient()
