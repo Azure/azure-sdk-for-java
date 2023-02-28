@@ -58,7 +58,6 @@ public class OrderByDocumentQueryExecutionContext
     private final static String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
     private final static String True = "true";
     private static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
-    private final String collectionRid;
     private final OrderbyRowComparer<Document> consumeComparer;
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
@@ -75,12 +74,10 @@ public class OrderByDocumentQueryExecutionContext
             String resourceLink,
             String rewrittenQuery,
             OrderbyRowComparer<Document> consumeComparer,
-            String collectionRid,
             UUID correlatedActivityId,
             boolean hasSelectValue) {
         super(diagnosticsClientContext, client, resourceTypeEnum, Document.class, query, cosmosQueryRequestOptions,
             resourceLink, rewrittenQuery, correlatedActivityId, hasSelectValue);
-        this.collectionRid = collectionRid;
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
@@ -104,7 +101,6 @@ public class OrderByDocumentQueryExecutionContext
                 initParams.getResourceLink(),
                 initParams.getQueryInfo().getRewrittenQuery(),
                 new OrderbyRowComparer<>(queryInfo.getOrderBy()),
-                initParams.getCollectionRid(),
                 initParams.getCorrelatedActivityId(),
                 queryInfo.hasSelectValue());
 
