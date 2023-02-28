@@ -134,6 +134,18 @@
       <version>2.3-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.12.23</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.objenesis</groupId>
+      <artifactId>objenesis</artifactId>
+      <version>3.1</version> <!-- {x-version-update;org.objenesis:objenesis;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
