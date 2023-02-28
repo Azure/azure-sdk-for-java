@@ -1,6 +1,6 @@
 # Release History
 
-## 2.7.1 (2023-02-18)
+## 2.7.1 (2023-02-28)
 
 ### Dependency Upgrades
 Upgrade **com.fasterxml.jackson.core:jackson-databind** from 2.13.2.2 to 2.13.4.1 to fix [CVE-2022-42003](https://github.com/advisories/GHSA-jjjh-jjxp-wpff).
