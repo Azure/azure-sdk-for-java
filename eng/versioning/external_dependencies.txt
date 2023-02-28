@@ -380,3 +380,6 @@ storage_com.microsoft.azure:azure-storage;8.4.0
 
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
+
+# sdk\keyvault\azure-security-keyvault-jca\pom.xml
+jca_com.fasterxml.jackson.core:jackson-databind;2.13.4.1

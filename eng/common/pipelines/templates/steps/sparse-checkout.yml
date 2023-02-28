@@ -44,8 +44,8 @@ steps:
               Write-Host "git sparse-checkout init"
               git sparse-checkout init
 
-              Write-Host "git sparse-checkout set '/*' '!/*/' '/eng'"
-              git sparse-checkout set '/*' '!/*/' '/eng'
+              Write-Host "git sparse-checkout set --no-cone '/*' '!/*/' '/eng'"
+              git sparse-checkout set --no-cone '/*' '!/*/' '/eng'
             }
 
             # Prevent wildcard expansion in Invoke-Expression (e.g. for checkout path '/*')
