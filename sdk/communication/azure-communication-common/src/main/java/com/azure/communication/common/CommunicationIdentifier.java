@@ -17,7 +17,7 @@ public abstract class CommunicationIdentifier {
     /**
      * Prefix for a bot.
      */
-    protected static final String BOT = "28:";
+    protected static final String BOT_GLOBAL = "28:";
 
     /**
      * Prefix for a bot with public cloud.
@@ -67,7 +67,7 @@ public abstract class CommunicationIdentifier {
     /**
      * Prefix for an ACS user.
      */
-    protected static final String STRING = "8:acs:";
+    protected static final String ACS_USER = "8:acs:";
 
     /**
      * Prefix for an ACS user with DOD cloud.
@@ -99,11 +99,11 @@ public abstract class CommunicationIdentifier {
         }
 
         if (rawId.startsWith(PHONE_NUMBER)) {
-            return new PhoneNumberIdentifier(rawId.substring("4:".length()));
+            return new PhoneNumberIdentifier(rawId.substring(PHONE_NUMBER.length()));
         }
         final String[] segments = rawId.split(":");
-        if (segments.length < 3) {
-            if (segments.length == 2 && segments[0].equals("28")) {
+        if (segments.length != 3) {
+            if (segments.length == 2 && rawId.startsWith(BOT_GLOBAL)) {
                 return new MicrosoftBotIdentifier(segments[1], true).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
             }
             return new UnknownIdentifier(rawId);
@@ -120,7 +120,7 @@ public abstract class CommunicationIdentifier {
             return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
         } else if (TEAM_USER_GCCH_CLOUD.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
-        } else if (STRING.equals(prefix) || SPOOL_USER.equals(prefix) || ACS_USER_DOD_CLOUD.equals(prefix) || ACS_USER_GCCH_CLOUD.equals(prefix)) {
+        } else if (ACS_USER.equals(prefix) || SPOOL_USER.equals(prefix) || ACS_USER_DOD_CLOUD.equals(prefix) || ACS_USER_GCCH_CLOUD.equals(prefix)) {
             return new CommunicationUserIdentifier(rawId);
         } else if (BOT_GCCH_CLOUD_GLOBAL.equals(prefix)) {
             return new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);

@@ -137,7 +137,7 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
                 } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
                     super.setRawId(BOT_GCCH_CLOUD_GLOBAL + this.botId);
                 } else {
-                    super.setRawId(BOT + this.botId);
+                    super.setRawId(BOT_GLOBAL + this.botId);
                 }
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
                 super.setRawId(BOT_DOD_CLOUD + this.botId);
