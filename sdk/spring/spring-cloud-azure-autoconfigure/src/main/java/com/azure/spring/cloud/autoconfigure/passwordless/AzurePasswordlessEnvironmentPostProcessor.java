@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Add properties to 'spring.cloud.function.ineligible-definitions' to filter ineligible functions that used by passwordless autoconfiguration.
+ * Add properties to 'spring.cloud.function.ineligible-definitions' to filter ineligible functions that used by passwordless autoconfigurations.
  *
  * @since 4.7.0
  */

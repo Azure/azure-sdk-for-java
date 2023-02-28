@@ -78,9 +78,9 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
             if (isPasswordProvided) {
                 LOGGER.debug(
-                        "If you are using Azure hosted services,"
-                                + "it is encouraged to use the passwordless feature. "
-                                + "Please refer to https://aka.ms/passwordless-connections.");
+                    "If you are using Azure hosted services,"
+                    + "it is encouraged to use the passwordless feature. "
+                    + "Please refer to https://aka.ms/passwordless-connections.");
                 return bean;
             }
 
@@ -106,17 +106,17 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         if (DatabaseType.MYSQL == databaseType) {
             Map<String, String> enhancedAttributes = new HashMap<>();
             enhancedAttributes.put(MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION,
-                    AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH);
+                AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH);
             enhancer.enhancePropertyAttributes(
-                    MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES,
-                    enhancedAttributes,
-                    MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_DELIMITER,
-                    MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER
+                MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES,
+                enhancedAttributes,
+                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_DELIMITER,
+                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER
             );
         } else if (DatabaseType.POSTGRESQL == databaseType) {
             Map<String, String> enhancedProperties = new HashMap<>();
             enhancedProperties.put(POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME,
-                    AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH);
+                AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH);
             // Set property assumeMinServerVersion with value "9.0.0" here for the following reasons:
             // 1. We need to set application_name in paramList to build connections with postgresql server, in order to do that, the number of assumeVersion must >= 9.0.0.
             //    https://github.com/pgjdbc/pgjdbc/blob/98c04a0c903e90f2d5d10a09baf1f753747b2556/pgjdbc/src/main/java/org/postgresql/core/v3/ConnectionFactoryImpl.java#L360
@@ -124,7 +124,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             //    https://learn.microsoft.com/azure/postgresql/single-server/concepts-supported-versions
             //    https://learn.microsoft.com/azure/postgresql/flexible-server/concepts-supported-versions
             enhancedProperties.put(POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION,
-                    POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION);
+                POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION);
             enhancer.enhanceProperties(enhancedProperties, true);
         }
     }

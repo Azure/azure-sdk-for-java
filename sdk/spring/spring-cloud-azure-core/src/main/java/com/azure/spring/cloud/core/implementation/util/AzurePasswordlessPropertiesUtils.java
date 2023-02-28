@@ -31,7 +31,7 @@ public final class AzurePasswordlessPropertiesUtils {
      *
      * @param source The source {@link AzureProperties} object.
      * @param target The target object.
-     * @param <T> The type of the target that extends AzureProperties.
+     * @param <T> The type of the target that extends PasswordlessProperties.
      */
     public static <T extends PasswordlessProperties> void copyAzureCommonProperties(AzureProperties source, T target) {
         // call explicitly for these fields could be defined as final
@@ -55,7 +55,7 @@ public final class AzurePasswordlessPropertiesUtils {
      *
      * @param source The source {@link PasswordlessProperties} object.
      * @param target The target object.
-     * @param <T> The type of the target that extends AzureProperties.
+     * @param <T> The type of the target that extends PasswordlessProperties.
      */
     public static <T extends PasswordlessProperties> void copyAzureCommonPropertiesIgnoreNull(PasswordlessProperties source, T target) {
 

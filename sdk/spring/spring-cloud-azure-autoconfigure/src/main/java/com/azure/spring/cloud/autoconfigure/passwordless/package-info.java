@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Spring Message.
+ * Spring Cloud Azure's EnvironmentPostProcessor for passwordless auto-configurations.
  */
 package com.azure.spring.cloud.autoconfigure.passwordless;

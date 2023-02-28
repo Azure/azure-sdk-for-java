@@ -46,8 +46,8 @@ import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentif
     AzureServiceBusResourceManagerAutoConfiguration.class })
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
-@EnableConfigurationProperties({JmsProperties.class})
-@Import({ServiceBusJmsPasswordlessConfiguration.class, ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class})
+@EnableConfigurationProperties({ JmsProperties.class })
+@Import({ ServiceBusJmsPasswordlessConfiguration.class, ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
 
     @Bean

@@ -23,13 +23,15 @@ import java.util.Map;
 @ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)
 public class AzureServiceBusJmsProperties implements InitializingBean, PasswordlessProperties {
 
+    /**
+     * Service Bus JMS properties prefix.
+     */
+    public static final String PREFIX = "spring.jms.servicebus";
+
     private static final String SERVICE_BUS_SCOPE_AZURE = "https://servicebus.azure.net/.default";
     private static final String SERVICE_BUS_SCOPE_AZURE_CHINA = SERVICE_BUS_SCOPE_AZURE;
     private static final String SERVICE_BUS_SCOPE_AZURE_GERMANY = SERVICE_BUS_SCOPE_AZURE;
     private static final String SERVICE_BUS_SCOPE_AZURE_US_GOVERNMENT = SERVICE_BUS_SCOPE_AZURE;
-
-    // Whether to enable supporting azure identity token credentials
-    private boolean passwordlessEnabled = false;
 
     private static final Map<CloudType, String> SERVICEBUS_SCOPE_MAP = new HashMap<CloudType, String>() {
         {
@@ -39,16 +41,20 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
             put(CloudType.AZURE_US_GOVERNMENT, SERVICE_BUS_SCOPE_AZURE_US_GOVERNMENT);
         }
     };
-    /**
-     * Service Bus JMS properties prefix.
-     */
-    public static final String PREFIX = "spring.jms.servicebus";
 
     private AzureProfileConfigurationProperties profile = new AzureProfileConfigurationProperties();
 
+    /**
+     * The scopes required for the access token.
+     */
     private String scopes;
 
     private TokenCredentialConfigurationProperties credential = new TokenCredentialConfigurationProperties();
+
+    /**
+     * Whether to enable supporting azure identity token credentials.
+     */
+    private boolean passwordlessEnabled = false;
 
     /**
      * Whether to enable Servive Bus JMS autoconfiguration.
