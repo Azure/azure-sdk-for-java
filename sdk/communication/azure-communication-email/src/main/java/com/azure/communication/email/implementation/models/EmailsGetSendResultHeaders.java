@@ -9,35 +9,26 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EmailsSendHeaders model. */
+/** The EmailsGetSendResultHeaders model. */
 @Fluent
-public final class EmailsSendHeaders {
+public final class EmailsGetSendResultHeaders {
     /*
      * The retry-after property.
      */
     @JsonProperty(value = "retry-after")
     private Integer retryAfter;
 
-    /*
-     * The Operation-Location property.
-     */
-    @JsonProperty(value = "Operation-Location")
-    private String operationLocation;
-
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
-
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of EmailsSendHeaders class.
+     * Creates an instance of EmailsGetSendResultHeaders class.
      *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public EmailsSendHeaders(HttpHeaders rawHeaders) {
+    public EmailsGetSendResultHeaders(HttpHeaders rawHeaders) {
         String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
         if (retryAfter != null) {
             this.retryAfter = Integer.parseInt(retryAfter);
         }
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
     }
 
     /**
@@ -53,30 +44,10 @@ public final class EmailsSendHeaders {
      * Set the retryAfter property: The retry-after property.
      *
      * @param retryAfter the retryAfter value to set.
-     * @return the EmailsSendHeaders object itself.
+     * @return the EmailsGetSendResultHeaders object itself.
      */
-    public EmailsSendHeaders setRetryAfter(Integer retryAfter) {
+    public EmailsGetSendResultHeaders setRetryAfter(Integer retryAfter) {
         this.retryAfter = retryAfter;
-        return this;
-    }
-
-    /**
-     * Get the operationLocation property: The Operation-Location property.
-     *
-     * @return the operationLocation value.
-     */
-    public String getOperationLocation() {
-        return this.operationLocation;
-    }
-
-    /**
-     * Set the operationLocation property: The Operation-Location property.
-     *
-     * @param operationLocation the operationLocation value to set.
-     * @return the EmailsSendHeaders object itself.
-     */
-    public EmailsSendHeaders setOperationLocation(String operationLocation) {
-        this.operationLocation = operationLocation;
         return this;
     }
 }
