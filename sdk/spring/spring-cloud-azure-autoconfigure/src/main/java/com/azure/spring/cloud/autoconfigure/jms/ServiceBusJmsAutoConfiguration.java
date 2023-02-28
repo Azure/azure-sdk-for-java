@@ -21,7 +21,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.autoconfigure.jms.JndiConnectionFactoryAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,7 +51,6 @@ import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentif
 public class ServiceBusJmsAutoConfiguration {
 
     @Bean
-    @ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)
     AzureServiceBusJmsProperties serviceBusJmsProperties() {
         return new AzureServiceBusJmsProperties();
     }
