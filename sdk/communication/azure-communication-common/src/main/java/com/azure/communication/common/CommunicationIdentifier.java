@@ -47,22 +47,22 @@ public abstract class CommunicationIdentifier {
     /**
      * Prefix for an anonymous Teams user.
      */
-    protected static final String TEAM_USER_ANONYMOUS = "8:teamsvisitor:";
+    protected static final String TEAMS_USER_ANONYMOUS = "8:teamsvisitor:";
 
     /**
      * Prefix for a Teams user with public cloud.
      */
-    protected static final String TEAM_USER_PUBLIC_CLOUD = "8:orgid:";
+    protected static final String TEAMS_USER_PUBLIC_CLOUD = "8:orgid:";
 
     /**
      * Prefix for a Teams user with DOD cloud.
      */
-    protected static final String TEAM_USER_DOD_CLOUD = "8:dod:";
+    protected static final String TEAMS_USER_DOD_CLOUD = "8:dod:";
 
     /**
      * Prefix for a Teams user with GCCH cloud.
      */
-    protected static final String TEAM_USER_GCCH_CLOUD = "8:gcch:";
+    protected static final String TEAMS_USER_GCCH_CLOUD = "8:gcch:";
 
     /**
      * Prefix for an ACS user.
@@ -112,13 +112,13 @@ public abstract class CommunicationIdentifier {
         final String prefix = segments[0] + ":" + segments[1] + ":";
         final String suffix = rawId.substring(prefix.length());
 
-        if (TEAM_USER_ANONYMOUS.equals(prefix)) {
+        if (TEAMS_USER_ANONYMOUS.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, true);
-        } else if (TEAM_USER_PUBLIC_CLOUD.equals(prefix)) {
+        } else if (TEAMS_USER_PUBLIC_CLOUD.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false);
-        } else if (TEAM_USER_DOD_CLOUD.equals(prefix)) {
+        } else if (TEAMS_USER_DOD_CLOUD.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
-        } else if (TEAM_USER_GCCH_CLOUD.equals(prefix)) {
+        } else if (TEAMS_USER_GCCH_CLOUD.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
         } else if (ACS_USER.equals(prefix) || SPOOL_USER.equals(prefix) || ACS_USER_DOD_CLOUD.equals(prefix) || ACS_USER_GCCH_CLOUD.equals(prefix)) {
             return new CommunicationUserIdentifier(rawId);
