@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ShareTokenIntent. */
+/** The request intent for whether the file should be backed up. */
 public final class ShareTokenIntent extends ExpandableStringEnum<ShareTokenIntent> {
     /** Static value backup for ShareTokenIntent. */
     public static final ShareTokenIntent BACKUP = fromString("backup");

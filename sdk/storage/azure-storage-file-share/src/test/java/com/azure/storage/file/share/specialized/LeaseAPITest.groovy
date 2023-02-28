@@ -3,21 +3,25 @@
 
 package com.azure.storage.file.share.specialized
 
-import com.azure.core.http.rest.Response
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.APISpec
 import com.azure.storage.file.share.ShareClient
 import com.azure.storage.file.share.ShareFileClient
+import com.azure.storage.file.share.ShareServiceClientBuilder
 import com.azure.storage.file.share.ShareServiceVersion
 import com.azure.storage.file.share.models.LeaseDurationType
 import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.models.ShareTokenIntent
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions
 import spock.lang.Unroll
 
 import java.time.Duration
+import static com.azure.storage.file.share.FileTestHelper.assertResponseStatusCode
+
 import static com.azure.storage.file.share.FileTestHelper.assertResponseStatusCode
 
 class LeaseAPITest extends APISpec {
@@ -77,6 +81,30 @@ class LeaseAPITest extends APISpec {
         when:
         def releaseResponse = leaseClient.releaseLeaseWithResponse(null, null)
 
+        then:
+        assertResponseStatusCode(releaseResponse, 200)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Acquire and release file lease oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileClient = dirClient.getFileClient(generatePathName())
+        fileClient.create(Constants.KB)
+        when:
+        def leaseClient = new ShareLeaseClientBuilder()
+            .fileClient(fileClient)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .buildClient()
+
+        def acquireResponse = leaseClient.acquireLeaseWithResponse(null, null)
+        then:
+        assertResponseStatusCode(acquireResponse, 201)
+        acquireResponse.getValue() != null
+        when:
+        def releaseResponse = leaseClient.releaseLeaseWithResponse(null, null)
         then:
         assertResponseStatusCode(releaseResponse, 200)
     }
@@ -169,6 +197,28 @@ class LeaseAPITest extends APISpec {
         leaseState == LeaseStateType.BROKEN
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Break file lease oAuth"() {
+        setup:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileClient = dirClient.getFileClient(generatePathName())
+        fileClient.create(Constants.KB)
+
+        def leaseClient = new ShareLeaseClientBuilder()
+            .fileClient(fileClient)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .buildClient()
+        leaseClient.acquireLease()
+
+        when:
+        leaseClient.breakLease()
+        def leaseState = fileClient.getProperties().getLeaseState()
+        then:
+        leaseState == LeaseStateType.BROKEN
+    }
+
     def "Break file lease error"() {
         when:
         createLeaseClient(primaryFileClient).breakLease()
@@ -218,6 +268,28 @@ class LeaseAPITest extends APISpec {
 
         def leaseID = leaseClient.acquireLease()
 
+        when:
+        def newLeaseID = leaseClient.changeLease(leaseID)
+
+        then:
+        newLeaseID == leaseID
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Change file lease oAuth"() {
+        setup:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileClient = dirClient.getFileClient(generatePathName())
+        fileClient.create(Constants.KB)
+
+        def leaseClient = new ShareLeaseClientBuilder()
+            .fileClient(fileClient)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .buildClient()
+
+        def leaseID = leaseClient.acquireLease()
         when:
         def newLeaseID = leaseClient.changeLease(leaseID)
 
