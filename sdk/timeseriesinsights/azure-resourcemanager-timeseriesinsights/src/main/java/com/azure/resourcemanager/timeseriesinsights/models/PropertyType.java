@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PropertyType. */
+/** The type of the property. */
 public final class PropertyType extends ExpandableStringEnum<PropertyType> {
     /** Static value String for PropertyType. */
     public static final PropertyType STRING = fromString("String");
+
+    /**
+     * Creates a new instance of PropertyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PropertyType() {
+    }
 
     /**
      * Creates or finds a PropertyType from its string representation.
@@ -24,7 +33,11 @@ public final class PropertyType extends ExpandableStringEnum<PropertyType> {
         return fromString(name, PropertyType.class);
     }
 
-    /** @return known PropertyType values. */
+    /**
+     * Gets known PropertyType values.
+     *
+     * @return known PropertyType values.
+     */
     public static Collection<PropertyType> values() {
         return values(PropertyType.class);
     }

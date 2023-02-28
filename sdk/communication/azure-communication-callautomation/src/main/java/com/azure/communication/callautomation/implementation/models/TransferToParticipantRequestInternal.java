@@ -17,12 +17,6 @@ public final class TransferToParticipantRequestInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
-     * The caller ID of the transferee when transferring to PSTN.
-     */
-    @JsonProperty(value = "transfereeCallerId")
-    private PhoneNumberIdentifierModel transfereeCallerId;
-
-    /*
      * Used by customer to send custom context to targets
      */
     @JsonProperty(value = "customContext")
@@ -52,26 +46,6 @@ public final class TransferToParticipantRequestInternal {
      */
     public TransferToParticipantRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
-        return this;
-    }
-
-    /**
-     * Get the transfereeCallerId property: The caller ID of the transferee when transferring to PSTN.
-     *
-     * @return the transfereeCallerId value.
-     */
-    public PhoneNumberIdentifierModel getTransfereeCallerId() {
-        return this.transfereeCallerId;
-    }
-
-    /**
-     * Set the transfereeCallerId property: The caller ID of the transferee when transferring to PSTN.
-     *
-     * @param transfereeCallerId the transfereeCallerId value to set.
-     * @return the TransferToParticipantRequestInternal object itself.
-     */
-    public TransferToParticipantRequestInternal setTransfereeCallerId(PhoneNumberIdentifierModel transfereeCallerId) {
-        this.transfereeCallerId = transfereeCallerId;
         return this;
     }
 

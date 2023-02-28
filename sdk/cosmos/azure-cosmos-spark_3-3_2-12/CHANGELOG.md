@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.18.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.17.1 (2023-02-27)
 
 #### Bugs Fixed
-
-#### Other Changes
+- Fixed LSN offset for Spark 2 -> Spark 3 offset conversion UDF function - See [PR 33757](https://github.com/Azure/azure-sdk-for-java/pull/33757)
 
 ### 4.17.0 (2023-02-17)
 
