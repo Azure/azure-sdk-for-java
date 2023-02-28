@@ -27,10 +27,6 @@ public class FaultInjectionServerErrorResultBuilder {
      * @return the builder.
      */
     public FaultInjectionServerErrorResultBuilder times(int times) {
-        if (this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY) {
-            throw new IllegalArgumentException("Argument 'times' is not support for error type " + this.serverErrorType);
-        }
-
         this.times = times;
         return this;
     }

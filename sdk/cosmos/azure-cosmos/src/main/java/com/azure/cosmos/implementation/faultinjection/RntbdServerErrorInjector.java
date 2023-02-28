@@ -46,11 +46,12 @@ public class RntbdServerErrorInjector {
 
         for (FaultInjectionServerErrorRule latencyRule : this.serverLatencyRuleMap.values()) {
             if (latencyRule.isApplicable(request)) {
+                request.faultInjectionRequestContext.applyFaultInjectionRule(request.getActivityId(), latencyRule);
+
                 this.executorService.schedule(
                     () -> requestRecord.complete(storeResponse),
                     latencyRule.getResult().getDelay().toMillis(),
                     TimeUnit.MILLISECONDS);
-                request.faultInjectionRequestContext.applyFaultInjectionRule(latencyRule);
                 return true;
             }
         }
@@ -63,11 +64,12 @@ public class RntbdServerErrorInjector {
 
         for (FaultInjectionServerErrorRule latencyRule : this.serverLatencyRuleMap.values()) {
             if (latencyRule.isApplicable(request)) {
+                request.faultInjectionRequestContext.applyFaultInjectionRule(request.getActivityId(), latencyRule);
+
                 this.executorService.schedule(
                     () -> requestRecord.completeExceptionally(cosmosException),
                     latencyRule.getResult().getDelay().toMillis(),
                     TimeUnit.MILLISECONDS);
-                request.faultInjectionRequestContext.applyFaultInjectionRule(latencyRule);
                 return true;
             }
         }
@@ -80,9 +82,10 @@ public class RntbdServerErrorInjector {
 
         for (FaultInjectionServerErrorRule serverResponseErrorRule : this.serverResponseErrorMap.values()) {
             if (serverResponseErrorRule.isApplicable(request)) {
+                request.faultInjectionRequestContext.applyFaultInjectionRule(request.getActivityId(), serverResponseErrorRule);
+
                 CosmosException cause = serverResponseErrorRule.getInjectedServerError(request, serverResponseErrorRule.getId());
                 requestRecord.completeExceptionally(cause);
-                request.faultInjectionRequestContext.applyFaultInjectionRule(serverResponseErrorRule);
                 return true;
             }
         }
@@ -94,13 +97,17 @@ public class RntbdServerErrorInjector {
         RntbdRequestRecord requestRecord,
         Consumer<Duration> openConnectionWithDelayConsumer) {
 
+        if (requestRecord == null) {
+            return false;
+        }
+
         RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
 
         for (FaultInjectionServerErrorRule connectionDelayRule : this.serverConnectionLatencyRuleMap.values()) {
             if (connectionDelayRule.isApplicable(request)) {
+                request.faultInjectionRequestContext.applyFaultInjectionRule(request.getActivityId(), connectionDelayRule);
 
                 openConnectionWithDelayConsumer.accept(connectionDelayRule.getResult().getDelay());
-                request.faultInjectionRequestContext.applyFaultInjectionRule(connectionDelayRule);
 
                 return true;
             }

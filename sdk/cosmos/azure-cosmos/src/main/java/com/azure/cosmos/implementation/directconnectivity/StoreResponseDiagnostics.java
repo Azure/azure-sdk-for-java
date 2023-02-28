@@ -41,6 +41,7 @@ public class StoreResponseDiagnostics {
     private final String exceptionMessage;
     private final String exceptionResponseHeaders;
     private final List<String> replicaStatusList;
+    private final String faultInjectionRuleId;
 
     public static StoreResponseDiagnostics createStoreResponseDiagnostics(
         StoreResponse storeResponse,
@@ -77,6 +78,8 @@ public class StoreResponseDiagnostics {
         this.exceptionMessage = null;
         this.exceptionResponseHeaders = null;
         this.replicaStatusList = storeResponse.getReplicaStatusList();
+        this.faultInjectionRuleId =
+            rxDocumentServiceRequest.faultInjectionRequestContext.getFaultInjectionRuleId(rxDocumentServiceRequest.getActivityId());
     }
 
     private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -104,6 +107,8 @@ public class StoreResponseDiagnostics {
         this.exceptionMessage = BridgeInternal.getInnerErrorMessage(e);
         this.exceptionResponseHeaders = e.getResponseHeaders() != null ? e.getResponseHeaders().toString() : null;
         this.replicaStatusList = ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getReplicaStatusList(e);
+        this.faultInjectionRuleId =
+            rxDocumentServiceRequest.faultInjectionRequestContext.getFaultInjectionRuleId(rxDocumentServiceRequest.getActivityId());
     }
 
     public int getStatusCode() {
@@ -172,6 +177,10 @@ public class StoreResponseDiagnostics {
 
     public String getExceptionResponseHeaders() {
         return exceptionResponseHeaders;
+    }
+
+    public String getFaultInjectionRuleId() {
+        return this.faultInjectionRuleId;
     }
 
     public List<String> getReplicaStatusList() { return this.replicaStatusList; }

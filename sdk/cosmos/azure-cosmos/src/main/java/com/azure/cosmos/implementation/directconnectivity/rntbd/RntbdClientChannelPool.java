@@ -740,8 +740,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         Consumer<Duration> openConnectionConsumer =
                             (delay) -> this.openNewChannelWithInjectedDelay(anotherPromise, delay);
 
-                        if (this.serverErrorInjector.applyServerConnectionDelayRule(
-                            promise.getRntbdRequestRecord(), openConnectionConsumer)) {
+                        if (this.serverErrorInjector.applyServerConnectionDelayRule(promise.getRntbdRequestRecord(), openConnectionConsumer)) {
                             return;
                         }
                     }
