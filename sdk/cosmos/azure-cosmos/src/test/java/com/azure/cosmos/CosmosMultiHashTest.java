@@ -13,19 +13,20 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyBuilder;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -34,6 +35,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,7 +57,6 @@ public class CosmosMultiHashTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosMultiHashTest() {
-
         client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
         String collectionName = UUID.randomUUID().toString();
@@ -105,6 +106,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             documentId, partitionKey, ObjectNode.class);
         validateIdOfItemResponse(documentId, readResponse);
         assertThat(readResponse.getItem().equals(properties));
+        createdMultiHashContainer.deleteItem(documentId, partitionKey, new CosmosItemRequestOptions());
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -377,19 +379,11 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         CosmosPagedIterable<ObjectNode> cosmosPagedIterable = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
         Iterable<FeedResponse<ObjectNode>> feedResponses = cosmosPagedIterable.iterableByPage(2);
         FeedResponse<ObjectNode> feedResponse = feedResponses.iterator().next();
-        String continuation = feedResponse.getContinuationToken();
         assertThat(feedResponse.getResults().size()).isEqualTo(2);
         assertThat(feedResponse.getResults().get(0).get("zipcode").asInt() < feedResponse.getResults().get(1).get("zipcode").asInt()).isTrue();
 
         // Using continuation token
-        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(queryRequestOptions, continuation, 2);
-        cosmosPagedIterable = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
-        feedResponses = cosmosPagedIterable.iterableByPage(2);
-        feedResponse = feedResponses.iterator().next();
-        assertThat(feedResponse.getResults().size()).isEqualTo(1); //last item left
-
-        // TODO: partial pk that spans multiple partitions - local test
-
+        testPartialPKContinuationToken();
 
         // Negative test - using non-prefix partial partition key returns no results
         query = "SELECT * from c";
@@ -420,7 +414,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.")).isTrue();
         }
 
-        //Delete by partition key - needs to be turned on at subscription level for account being used
+        //Delete by partition key - needs to be turned on at subscription level for account
         //Works with emulator
         deleteResponse = createdMultiHashContainer.deleteAllItemsByPartitionKey(
             new PartitionKeyBuilder()
@@ -441,4 +435,38 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.")).isTrue();
         }
     }
+
+    private void testPartialPKContinuationToken() throws Exception {
+        String requestContinuation = null;
+        List<ObjectNode> receivedDocuments = new ArrayList<>();
+        CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(createdDatabase.getId(), asyncClient);
+        CosmosAsyncContainer cosmosAsyncContainer = new CosmosAsyncContainer(createdMultiHashContainer.getId(), cosmosAsyncDatabase);
+        String query = "SELECT * FROM c ORDER BY c.zipcode ASC";
+        PartitionKey partitionKey =
+            new PartitionKeyBuilder()
+                .add("Redmond")
+                .build();
+        do {
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            options.setPartitionKey(partitionKey);
+
+            options.setMaxDegreeOfParallelism(2);
+            CosmosPagedFlux<ObjectNode> queryObservable = cosmosAsyncContainer.queryItems(query, options, ObjectNode.class);
+
+            TestSubscriber<FeedResponse<ObjectNode>> testSubscriber = new TestSubscriber<>();
+            queryObservable.byPage(requestContinuation, 1).subscribe(testSubscriber);
+            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+            testSubscriber.assertNoErrors();
+            testSubscriber.assertComplete();
+
+            @SuppressWarnings("unchecked")
+            FeedResponse<ObjectNode> firstPage = (FeedResponse<ObjectNode>) testSubscriber.getEvents().get(0).get(0);
+            requestContinuation = firstPage.getContinuationToken();
+            receivedDocuments.addAll(firstPage.getResults());
+            assertThat(firstPage.getResults().size()).isEqualTo(1);
+        } while (requestContinuation != null);
+        assertThat(receivedDocuments.size()).isEqualTo(3);
+    }
+
 }
