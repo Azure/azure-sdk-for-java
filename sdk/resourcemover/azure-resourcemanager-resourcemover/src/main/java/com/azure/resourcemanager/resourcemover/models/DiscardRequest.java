@@ -6,26 +6,21 @@ package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the request body for discard operation. */
 @Fluent
 public final class DiscardRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiscardRequest.class);
-
     /*
-     * Gets or sets a value indicating whether the operation needs to only run
-     * pre-requisite.
+     * Gets or sets a value indicating whether the operation needs to only run pre-requisite.
      */
     @JsonProperty(value = "validateOnly")
     private Boolean validateOnly;
 
     /*
-     * Gets or sets the list of resource Id's, by default it accepts move
-     * resource id's unless the input type is switched via
-     * moveResourceInputType property.
+     * Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is
+     * switched via moveResourceInputType property.
      */
     @JsonProperty(value = "moveResources", required = true)
     private List<String> moveResources;
@@ -35,6 +30,10 @@ public final class DiscardRequest {
      */
     @JsonProperty(value = "moveResourceInputType")
     private MoveResourceInputType moveResourceInputType;
+
+    /** Creates an instance of DiscardRequest class. */
+    public DiscardRequest() {
+    }
 
     /**
      * Get the validateOnly property: Gets or sets a value indicating whether the operation needs to only run
@@ -107,9 +106,11 @@ public final class DiscardRequest {
      */
     public void validate() {
         if (moveResources() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property moveResources in model DiscardRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiscardRequest.class);
 }

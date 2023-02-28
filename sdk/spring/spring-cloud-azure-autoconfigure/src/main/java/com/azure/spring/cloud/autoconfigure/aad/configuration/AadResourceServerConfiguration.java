@@ -109,7 +109,7 @@ public class AadResourceServerConfiguration {
         AadResourceServerWebSecurityConfigurerAdapter {
 
         /**
-         * configure
+         * Configure the default Resource Server for Azure AD.
          *
          * @param http the {@link HttpSecurity} to use
          * @throws Exception Configuration failed

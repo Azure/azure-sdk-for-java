@@ -59,7 +59,14 @@ public interface Project {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the devCenterUri property: The URI of the resource.
+     *
+     * @return the devCenterUri value.
+     */
+    String devCenterUri();
 
     /**
      * Gets the devCenterId property: Resource Id of an associated DevCenter.

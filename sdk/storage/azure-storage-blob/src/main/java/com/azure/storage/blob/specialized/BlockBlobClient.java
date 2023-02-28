@@ -19,22 +19,21 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
-import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
-import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
-import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
-import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
@@ -696,6 +695,14 @@ public final class BlockBlobClient extends BlobClientBase {
         return client.stageBlockWithResponseSync(base64BlockId,
             BinaryData.fromStream(data, length), contentMd5, leaseId, context);
         // return blockWithOptionalTimeout(response, timeout);
+//=======
+//        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
+//            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
+//
+//        Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId,
+//            context);
+//        return blockWithOptionalTimeout(response, timeout);
+//>>>>>>> upstream/azure-storage-sync-stack
     }
 
     /**

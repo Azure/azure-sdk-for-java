@@ -156,11 +156,8 @@ public final class DefaultJsonReader extends JsonReader {
     @Override
     public JsonReader bufferObject() throws IOException {
         JsonToken currentToken = currentToken();
-        if (currentToken == JsonToken.START_OBJECT
-            || (currentToken == JsonToken.FIELD_NAME && nextToken() == JsonToken.START_OBJECT)) {
-            StringBuilder bufferedObject = new StringBuilder();
-            readChildren(bufferedObject);
-            String json = bufferedObject.toString();
+        if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.FIELD_NAME) {
+            String json = readRemainingFieldsAsJsonObject();
             try {
                 return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, nonNumericNumbersSupported);
             } catch (IOException ex) {

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools Start. */
 public final class DiskPoolsStartSamples {
     /*
@@ -17,6 +15,6 @@ public final class DiskPoolsStartSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void startDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().start("myResourceGroup", "myDiskPool", Context.NONE);
+        manager.diskPools().start("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }

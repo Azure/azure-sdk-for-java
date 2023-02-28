@@ -31,11 +31,14 @@ public final class SimGroupInner extends Resource {
     private ManagedServiceIdentity identity;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of SimGroupInner class. */
+    public SimGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: SIM group Properties.
@@ -122,7 +125,8 @@ public final class SimGroupInner extends Resource {
     }
 
     /**
-     * Get the mobileNetwork property: Mobile network that this SIM belongs to.
+     * Get the mobileNetwork property: Mobile network that this SIM group belongs to. The mobile network must be in the
+     * same location as the SIM group.
      *
      * @return the mobileNetwork value.
      */
@@ -131,7 +135,8 @@ public final class SimGroupInner extends Resource {
     }
 
     /**
-     * Set the mobileNetwork property: Mobile network that this SIM belongs to.
+     * Set the mobileNetwork property: Mobile network that this SIM group belongs to. The mobile network must be in the
+     * same location as the SIM group.
      *
      * @param mobileNetwork the mobileNetwork value to set.
      * @return the SimGroupInner object itself.

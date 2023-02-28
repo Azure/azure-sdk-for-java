@@ -37,6 +37,10 @@ public class RuleCondition {
     @JsonProperty(value = "dataSource")
     private RuleDataSource dataSource;
 
+    /** Creates an instance of RuleCondition class. */
+    public RuleCondition() {
+    }
+
     /**
      * Get the dataSource property: the resource from which the rule collects its data. For this type dataSource will
      * always be of type RuleMetricDataSource.

@@ -6,17 +6,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.NCrossValidations;
-import org.junit.jupiter.api.Test;
 
 public final class NCrossValidationsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NCrossValidations model =
             BinaryData.fromString("{\"mode\":\"NCrossValidations\"}").toObject(NCrossValidations.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NCrossValidations model = new NCrossValidations();
         model = BinaryData.fromObject(model).toObject(NCrossValidations.class);
     }

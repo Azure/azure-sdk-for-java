@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LengthUnit. */
+/**
+ * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit is
+ * "inch".
+ */
 public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
     /** Static value pixel for LengthUnit. */
     public static final LengthUnit PIXEL = fromString("pixel");

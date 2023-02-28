@@ -4,6 +4,7 @@
 package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import okhttp3.Headers;
 
@@ -49,6 +50,18 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    public HttpHeaders add(HttpHeaderName name, String value) {
+        if (name == null || value == null) {
+            return this;
+        }
+
+        convertIfNeeded();
+
+        azureCoreHeaders.add(name, value);
+        return this;
+    }
+
+    @Override
     public HttpHeaders set(String name, String value) {
         if (name == null) {
             return this;
@@ -61,7 +74,31 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    public HttpHeaders set(HttpHeaderName name, String value) {
+        if (name == null) {
+            return this;
+        }
+
+        convertIfNeeded();
+
+        azureCoreHeaders.set(name, value);
+        return this;
+    }
+
+    @Override
     public HttpHeaders set(String name, List<String> values) {
+        if (name == null) {
+            return this;
+        }
+
+        convertIfNeeded();
+
+        azureCoreHeaders.set(name, values);
+        return this;
+    }
+
+    @Override
+    public HttpHeaders set(HttpHeaderName name, List<String> values) {
         if (name == null) {
             return this;
         }
@@ -88,7 +125,21 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    public HttpHeader get(HttpHeaderName name) {
+        convertIfNeeded();
+
+        return azureCoreHeaders.get(name);
+    }
+
+    @Override
     public HttpHeader remove(String name) {
+        convertIfNeeded();
+
+        return azureCoreHeaders.remove(name);
+    }
+
+    @Override
+    public HttpHeader remove(HttpHeaderName name) {
         convertIfNeeded();
 
         return azureCoreHeaders.remove(name);
@@ -102,7 +153,21 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    public String getValue(HttpHeaderName name) {
+        convertIfNeeded();
+
+        return azureCoreHeaders.getValue(name);
+    }
+
+    @Override
     public String[] getValues(String name) {
+        convertIfNeeded();
+
+        return azureCoreHeaders.getValues(name);
+    }
+
+    @Override
+    public String[] getValues(HttpHeaderName name) {
         convertIfNeeded();
 
         return azureCoreHeaders.getValues(name);

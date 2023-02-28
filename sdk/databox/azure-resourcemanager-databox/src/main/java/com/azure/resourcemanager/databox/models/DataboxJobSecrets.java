@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,13 +15,15 @@ import java.util.List;
 @JsonTypeName("DataBox")
 @Fluent
 public final class DataboxJobSecrets extends JobSecrets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataboxJobSecrets.class);
-
     /*
      * Contains the list of secret objects for a job.
      */
     @JsonProperty(value = "podSecrets")
     private List<DataBoxSecret> podSecrets;
+
+    /** Creates an instance of DataboxJobSecrets class. */
+    public DataboxJobSecrets() {
+    }
 
     /**
      * Get the podSecrets property: Contains the list of secret objects for a job.

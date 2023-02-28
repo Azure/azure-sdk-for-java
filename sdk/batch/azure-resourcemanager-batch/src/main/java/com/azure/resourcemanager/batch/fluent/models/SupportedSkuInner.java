@@ -30,6 +30,10 @@ public final class SupportedSkuInner {
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
 
+    /** Creates an instance of SupportedSkuInner class. */
+    public SupportedSkuInner() {
+    }
+
     /**
      * Get the name property: The name of the SKU.
      *

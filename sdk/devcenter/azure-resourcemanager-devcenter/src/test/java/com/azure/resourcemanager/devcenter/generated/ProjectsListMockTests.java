@@ -33,7 +33,7 @@ public final class ProjectsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"ncu\",\"devCenterId\":\"oiwiithtywub\",\"description\":\"bihwqknfdnt\"},\"location\":\"chrdgoihxumwcto\",\"tags\":{\"udfdlwgg\":\"jl\"},\"id\":\"tsbwtovvtgse\",\"name\":\"nqfiufxqknpi\",\"type\":\"gnepttwqmsni\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"devCenterUri\":\"z\",\"devCenterId\":\"gamv\",\"description\":\"ho\"},\"location\":\"qzudphq\",\"tags\":{\"nwcvtbvkayhmtnv\":\"dkfw\",\"zcjaesgvvsccy\":\"qiatkzwpcnp\",\"hwyg\":\"jguq\",\"semdwzrmu\":\"lvdnkfx\"},\"id\":\"apfcqdpsq\",\"name\":\"qvpsvuoymg\",\"type\":\"celve\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,11 @@ public final class ProjectsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Project> response = manager.projects().list(151793614, Context.NONE);
+        PagedIterable<Project> response = manager.projects().list(1001527531, Context.NONE);
 
-        Assertions.assertEquals("chrdgoihxumwcto", response.iterator().next().location());
-        Assertions.assertEquals("jl", response.iterator().next().tags().get("udfdlwgg"));
-        Assertions.assertEquals("oiwiithtywub", response.iterator().next().devCenterId());
-        Assertions.assertEquals("bihwqknfdnt", response.iterator().next().description());
+        Assertions.assertEquals("qzudphq", response.iterator().next().location());
+        Assertions.assertEquals("dkfw", response.iterator().next().tags().get("nwcvtbvkayhmtnv"));
+        Assertions.assertEquals("gamv", response.iterator().next().devCenterId());
+        Assertions.assertEquals("ho", response.iterator().next().description());
     }
 }

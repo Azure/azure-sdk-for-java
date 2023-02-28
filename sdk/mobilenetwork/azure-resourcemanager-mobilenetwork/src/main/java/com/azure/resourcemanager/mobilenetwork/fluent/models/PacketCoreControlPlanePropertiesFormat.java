@@ -8,12 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
+import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
-import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Packet core control plane properties. */
 @Fluent
@@ -25,15 +27,22 @@ public final class PacketCoreControlPlanePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Mobile network in which this packet core control plane is deployed.
+     * The installation state of the packet core control plane resource.
      */
-    @JsonProperty(value = "mobileNetwork", required = true)
-    private MobileNetworkResourceId mobileNetwork;
+    @JsonProperty(value = "installation", access = JsonProperty.Access.WRITE_ONLY)
+    private Installation installation;
+
+    /*
+     * Site(s) under which this packet core control plane should be deployed. The sites must be in the same location as
+     * the packet core control plane.
+     */
+    @JsonProperty(value = "sites", required = true)
+    private List<SiteResourceId> sites;
 
     /*
      * The platform where the packet core is deployed.
      */
-    @JsonProperty(value = "platform")
+    @JsonProperty(value = "platform", required = true)
     private PlatformConfiguration platform;
 
     /*
@@ -49,32 +58,47 @@ public final class PacketCoreControlPlanePropertiesFormat {
     private String version;
 
     /*
-     * The control plane interface on the access network. For 5G networks, this
-     * is the N2 interface. For 4G networks, this is the S1-MME interface.
+     * The previous version of the packet core software that was deployed. Used when performing the rollback action.
+     */
+    @JsonProperty(value = "rollbackVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String rollbackVersion;
+
+    /*
+     * The control plane interface on the access network. For 5G networks, this is the N2 interface. For 4G networks,
+     * this is the S1-MME interface.
      */
     @JsonProperty(value = "controlPlaneAccessInterface", required = true)
     private InterfaceProperties controlPlaneAccessInterface;
 
     /*
-     * The SKU defining the throughput and SIM allowances for this packet core
-     * control plane deployment.
+     * The SKU defining the throughput and SIM allowances for this packet core control plane deployment.
      */
     @JsonProperty(value = "sku", required = true)
     private BillingSku sku;
 
     /*
-     * The kubernetes ingress configuration to control access to packet core
-     * diagnostics over local APIs.
+     * The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links for all data networks.
+     * The MTU set on the user plane access link is calculated to be 60 bytes greater than this value to allow for GTP
+     * encapsulation.
      */
-    @JsonProperty(value = "localDiagnosticsAccess")
+    @JsonProperty(value = "ueMtu")
+    private Integer ueMtu;
+
+    /*
+     * The kubernetes ingress configuration to control access to packet core diagnostics over local APIs.
+     */
+    @JsonProperty(value = "localDiagnosticsAccess", required = true)
     private LocalDiagnosticsAccessConfiguration localDiagnosticsAccess;
 
     /*
-     * Settings to allow interoperability with third party components e.g. RANs
-     * and UEs.
+     * Settings to allow interoperability with third party components e.g. RANs and UEs.
      */
     @JsonProperty(value = "interopSettings")
     private Object interopSettings;
+
+    /** Creates an instance of PacketCoreControlPlanePropertiesFormat class. */
+    public PacketCoreControlPlanePropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the packet core control plane resource.
@@ -86,22 +110,33 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Get the mobileNetwork property: Mobile network in which this packet core control plane is deployed.
+     * Get the installation property: The installation state of the packet core control plane resource.
      *
-     * @return the mobileNetwork value.
+     * @return the installation value.
      */
-    public MobileNetworkResourceId mobileNetwork() {
-        return this.mobileNetwork;
+    public Installation installation() {
+        return this.installation;
     }
 
     /**
-     * Set the mobileNetwork property: Mobile network in which this packet core control plane is deployed.
+     * Get the sites property: Site(s) under which this packet core control plane should be deployed. The sites must be
+     * in the same location as the packet core control plane.
      *
-     * @param mobileNetwork the mobileNetwork value to set.
+     * @return the sites value.
+     */
+    public List<SiteResourceId> sites() {
+        return this.sites;
+    }
+
+    /**
+     * Set the sites property: Site(s) under which this packet core control plane should be deployed. The sites must be
+     * in the same location as the packet core control plane.
+     *
+     * @param sites the sites value to set.
      * @return the PacketCoreControlPlanePropertiesFormat object itself.
      */
-    public PacketCoreControlPlanePropertiesFormat withMobileNetwork(MobileNetworkResourceId mobileNetwork) {
-        this.mobileNetwork = mobileNetwork;
+    public PacketCoreControlPlanePropertiesFormat withSites(List<SiteResourceId> sites) {
+        this.sites = sites;
         return this;
     }
 
@@ -166,6 +201,16 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
+     * Get the rollbackVersion property: The previous version of the packet core software that was deployed. Used when
+     * performing the rollback action.
+     *
+     * @return the rollbackVersion value.
+     */
+    public String rollbackVersion() {
+        return this.rollbackVersion;
+    }
+
+    /**
      * Get the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G networks,
      * this is the N2 interface. For 4G networks, this is the S1-MME interface.
      *
@@ -207,6 +252,30 @@ public final class PacketCoreControlPlanePropertiesFormat {
      */
     public PacketCoreControlPlanePropertiesFormat withSku(BillingSku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the ueMtu property: The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links
+     * for all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater than this
+     * value to allow for GTP encapsulation.
+     *
+     * @return the ueMtu value.
+     */
+    public Integer ueMtu() {
+        return this.ueMtu;
+    }
+
+    /**
+     * Set the ueMtu property: The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links
+     * for all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater than this
+     * value to allow for GTP encapsulation.
+     *
+     * @param ueMtu the ueMtu value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withUeMtu(Integer ueMtu) {
+        this.ueMtu = ueMtu;
         return this;
     }
 
@@ -261,15 +330,23 @@ public final class PacketCoreControlPlanePropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (mobileNetwork() == null) {
+        if (installation() != null) {
+            installation().validate();
+        }
+        if (sites() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property mobileNetwork in model PacketCoreControlPlanePropertiesFormat"));
+                        "Missing required property sites in model PacketCoreControlPlanePropertiesFormat"));
         } else {
-            mobileNetwork().validate();
+            sites().forEach(e -> e.validate());
         }
-        if (platform() != null) {
+        if (platform() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property platform in model PacketCoreControlPlanePropertiesFormat"));
+        } else {
             platform().validate();
         }
         if (controlPlaneAccessInterface() == null) {
@@ -287,7 +364,13 @@ public final class PacketCoreControlPlanePropertiesFormat {
                     new IllegalArgumentException(
                         "Missing required property sku in model PacketCoreControlPlanePropertiesFormat"));
         }
-        if (localDiagnosticsAccess() != null) {
+        if (localDiagnosticsAccess() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property localDiagnosticsAccess in model"
+                            + " PacketCoreControlPlanePropertiesFormat"));
+        } else {
             localDiagnosticsAccess().validate();
         }
     }

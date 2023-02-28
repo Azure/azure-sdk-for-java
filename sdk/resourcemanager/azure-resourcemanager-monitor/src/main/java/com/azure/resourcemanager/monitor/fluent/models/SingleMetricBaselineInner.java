@@ -38,6 +38,10 @@ public final class SingleMetricBaselineInner {
     @JsonProperty(value = "properties", required = true)
     private MetricBaselinesProperties innerProperties = new MetricBaselinesProperties();
 
+    /** Creates an instance of SingleMetricBaselineInner class. */
+    public SingleMetricBaselineInner() {
+    }
+
     /**
      * Get the id property: The metric baseline Id.
      *

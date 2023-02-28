@@ -6,20 +6,19 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.UserAssignedIdentity;
-import org.junit.jupiter.api.Test;
 
 public final class UserAssignedIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UserAssignedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"1800db07-b48f-4242-81d2-188dacda3e06\",\"clientId\":\"8f926d0c-acdf-4a14-84c7-9877704a927c\"}")
+                    "{\"principalId\":\"482ca507-d71f-4817-b618-8233dec4afc2\",\"clientId\":\"08c17000-9968-4d5e-b89a-5cd50023b58b\"}")
                 .toObject(UserAssignedIdentity.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UserAssignedIdentity model = new UserAssignedIdentity();
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
     }

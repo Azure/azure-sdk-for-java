@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CopyStatus. */
+/** The Status of the copy. */
 public enum CopyStatus {
     /** Enum value NotStarted. */
     NOT_STARTED("NotStarted"),
@@ -57,6 +57,9 @@ public enum CopyStatus {
      */
     @JsonCreator
     public static CopyStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CopyStatus[] items = CopyStatus.values();
         for (CopyStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -66,6 +69,7 @@ public enum CopyStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

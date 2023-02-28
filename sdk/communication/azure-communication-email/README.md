@@ -88,6 +88,20 @@ EmailClient emailClient = new EmailClientBuilder()
     .buildClient();
 ```
 
+### Azure Active Directory Token Authentication
+A `DefaultAzureCredential` object must be passed to the `EmailClientBuilder` via the `credential()` method. An endpoint must also be set via the `endpoint()` method.
+
+The `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID`, and `AZURE_TENANT_ID` environment variables are needed to create a `DefaultAzureCredential` object.
+
+```java readme-sample-createEmailClientWithAAD
+// You can find your endpoint and access key from your resource in the Azure Portal
+String endpoint = "https://<resource-name>.communication.azure.com/";
+
+EmailClient emailClient = new EmailClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+```
 
 ### Send an Email Message
 
@@ -99,13 +113,13 @@ EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 ArrayList<EmailAddress> addressList = new ArrayList<>();
 addressList.add(emailAddress);
 
-EmailRecipients emailRecipients = new EmailRecipients(addressList);
+EmailRecipients emailRecipients = new EmailRecipients()
+    .setTo(addressList);
 
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");
 
-EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-    .setRecipients(emailRecipients);
+EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
 
 SendEmailResult response = emailClient.send(emailMessage);
 System.out.println("Message Id: " + response.getMessageId());
@@ -129,15 +143,15 @@ ccAddressList.add(emailAddress);
 ArrayList<EmailAddress> bccAddressList = new ArrayList<>();
 bccAddressList.add(emailAddress);
 
-EmailRecipients emailRecipients = new EmailRecipients(toAddressList)
+EmailRecipients emailRecipients = new EmailRecipients()
+    .setTo(toAddressList)
     .setCc(ccAddressList)
     .setBcc(bccAddressList);
 
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");
 
-EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-    .setRecipients(emailRecipients);
+EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
 
 SendEmailResult response = emailClient.send(emailMessage);
 System.out.println("Message Id: " + response.getMessageId());
@@ -164,7 +178,8 @@ EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 ArrayList<EmailAddress> addressList = new ArrayList<>();
 addressList.add(emailAddress);
 
-EmailRecipients emailRecipients = new EmailRecipients(addressList);
+EmailRecipients emailRecipients = new EmailRecipients()
+    .setTo(addressList);
 
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");
@@ -174,8 +189,7 @@ EmailAttachment attachment = new EmailAttachment("attachment.txt", EmailAttachme
 ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
 attachmentList.add(attachment);
 
-EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-    .setRecipients(emailRecipients)
+EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients)
     .setAttachments(attachmentList);
 
 SendEmailResult response = emailClient.send(emailMessage);

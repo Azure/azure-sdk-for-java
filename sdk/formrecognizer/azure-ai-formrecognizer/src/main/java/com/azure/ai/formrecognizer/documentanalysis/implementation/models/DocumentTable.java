@@ -41,6 +41,9 @@ public final class DocumentTable {
     @JsonProperty(value = "spans", required = true)
     private List<DocumentSpan> spans;
 
+    /** Creates an instance of DocumentTable class. */
+    public DocumentTable() {}
+
     /**
      * Get the rowCount property: Number of rows in the table.
      *

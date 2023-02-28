@@ -59,7 +59,7 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstanceTdeCertificatesService {
+    public interface ManagedInstanceTdeCertificatesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
@@ -116,7 +116,6 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-10-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -126,7 +125,7 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -173,7 +172,6 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-10-01-preview";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -181,7 +179,7 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 context);
     }

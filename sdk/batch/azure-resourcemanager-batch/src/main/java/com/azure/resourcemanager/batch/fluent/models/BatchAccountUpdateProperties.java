@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.batch.models.AuthenticationMode;
 import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.EncryptionProperties;
+import com.azure.resourcemanager.batch.models.NetworkProfile;
+import com.azure.resourcemanager.batch.models.PublicNetworkAccessType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -21,20 +23,34 @@ public final class BatchAccountUpdateProperties {
     private AutoStorageBaseProperties autoStorage;
 
     /*
-     * Configures how customer data is encrypted inside the Batch account. By
-     * default, accounts are encrypted using a Microsoft managed key. For
-     * additional control, a customer-managed key can be used instead.
+     * Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a
+     * Microsoft managed key. For additional control, a customer-managed key can be used instead.
      */
     @JsonProperty(value = "encryption")
     private EncryptionProperties encryption;
 
     /*
-     * List of allowed authentication modes for the Batch account that can be
-     * used to authenticate with the data plane. This does not affect
-     * authentication with the control plane.
+     * List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.
+     * This does not affect authentication with the control plane.
      */
     @JsonProperty(value = "allowedAuthenticationModes")
     private List<AuthenticationMode> allowedAuthenticationModes;
+
+    /*
+     * If not specified, the default value is 'enabled'.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccessType publicNetworkAccess;
+
+    /*
+     * The network profile only takes effect when publicNetworkAccess is enabled.
+     */
+    @JsonProperty(value = "networkProfile")
+    private NetworkProfile networkProfile;
+
+    /** Creates an instance of BatchAccountUpdateProperties class. */
+    public BatchAccountUpdateProperties() {
+    }
 
     /**
      * Get the autoStorage property: The properties related to the auto-storage account.
@@ -104,6 +120,46 @@ public final class BatchAccountUpdateProperties {
     }
 
     /**
+     * Get the publicNetworkAccess property: If not specified, the default value is 'enabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccessType publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: If not specified, the default value is 'enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the BatchAccountUpdateProperties object itself.
+     */
+    public BatchAccountUpdateProperties withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @return the networkProfile value.
+     */
+    public NetworkProfile networkProfile() {
+        return this.networkProfile;
+    }
+
+    /**
+     * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the BatchAccountUpdateProperties object itself.
+     */
+    public BatchAccountUpdateProperties withNetworkProfile(NetworkProfile networkProfile) {
+        this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -114,6 +170,9 @@ public final class BatchAccountUpdateProperties {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
         }
     }
 }

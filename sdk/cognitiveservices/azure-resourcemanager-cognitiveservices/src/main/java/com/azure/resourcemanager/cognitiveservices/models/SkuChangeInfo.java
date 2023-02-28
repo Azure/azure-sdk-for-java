@@ -28,6 +28,10 @@ public final class SkuChangeInfo {
     @JsonProperty(value = "lastChangeDate")
     private String lastChangeDate;
 
+    /** Creates an instance of SkuChangeInfo class. */
+    public SkuChangeInfo() {
+    }
+
     /**
      * Get the countOfDowngrades property: Gets the count of downgrades.
      *

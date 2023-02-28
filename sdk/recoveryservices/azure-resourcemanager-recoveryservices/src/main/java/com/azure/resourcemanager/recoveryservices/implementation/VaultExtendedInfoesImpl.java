@@ -27,15 +27,6 @@ public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
         this.serviceManager = serviceManager;
     }
 
-    public VaultExtendedInfoResource get(String resourceGroupName, String vaultName) {
-        VaultExtendedInfoResourceInner inner = this.serviceClient().get(resourceGroupName, vaultName);
-        if (inner != null) {
-            return new VaultExtendedInfoResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VaultExtendedInfoResource> getWithResponse(
         String resourceGroupName, String vaultName, Context context) {
         Response<VaultExtendedInfoResourceInner> inner =
@@ -51,10 +42,8 @@ public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
         }
     }
 
-    public VaultExtendedInfoResource createOrUpdate(
-        String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
-        VaultExtendedInfoResourceInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, vaultName, resourceExtendedInfoDetails);
+    public VaultExtendedInfoResource get(String resourceGroupName, String vaultName) {
+        VaultExtendedInfoResourceInner inner = this.serviceClient().get(resourceGroupName, vaultName);
         if (inner != null) {
             return new VaultExtendedInfoResourceImpl(inner, this.manager());
         } else {
@@ -82,10 +71,10 @@ public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
         }
     }
 
-    public VaultExtendedInfoResource update(
+    public VaultExtendedInfoResource createOrUpdate(
         String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
         VaultExtendedInfoResourceInner inner =
-            this.serviceClient().update(resourceGroupName, vaultName, resourceExtendedInfoDetails);
+            this.serviceClient().createOrUpdate(resourceGroupName, vaultName, resourceExtendedInfoDetails);
         if (inner != null) {
             return new VaultExtendedInfoResourceImpl(inner, this.manager());
         } else {
@@ -106,6 +95,17 @@ public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VaultExtendedInfoResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VaultExtendedInfoResource update(
+        String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
+        VaultExtendedInfoResourceInner inner =
+            this.serviceClient().update(resourceGroupName, vaultName, resourceExtendedInfoDetails);
+        if (inner != null) {
+            return new VaultExtendedInfoResourceImpl(inner, this.manager());
         } else {
             return null;
         }

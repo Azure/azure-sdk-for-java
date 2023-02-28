@@ -3,13 +3,27 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
+import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
+import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
+import com.azure.containers.containerregistry.implementation.UtilsImpl;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+
+import java.util.Objects;
+
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
  * This class provides a client that exposes operations to managing container images and artifacts.
@@ -50,10 +64,22 @@ import com.azure.core.util.Context;
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class)
 public final class ContainerRegistryClient {
-    private final ContainerRegistryAsyncClient asyncClient;
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryClient.class);
+    private final ContainerRegistriesImpl registriesImplClient;
+    private final HttpPipeline httpPipeline;
+    private final String endpoint;
+    private final String apiVersion;
 
-    ContainerRegistryClient(ContainerRegistryAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    ContainerRegistryClient(HttpPipeline httpPipeline, String endpoint, String version) {
+        this.httpPipeline = httpPipeline;
+        this.endpoint = endpoint;
+        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImplBuilder()
+            .url(endpoint)
+            .pipeline(httpPipeline)
+            .apiVersion(version)
+            .buildClient();
+        this.registriesImplClient = registryImplClient.getContainerRegistries();
+        this.apiVersion = version;
     }
 
     /**
@@ -61,7 +87,7 @@ public final class ContainerRegistryClient {
      * @return The registry endpoint including the authority.
      */
     public String getEndpoint() {
-        return asyncClient.getEndpoint();
+        return this.endpoint;
     }
 
     /**
@@ -103,8 +129,33 @@ public final class ContainerRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRepositoryNames(Context context) {
-        return new PagedIterable<String>(asyncClient.listRepositoryNames(context));
+        return new PagedIterable<String>(
+            (pageSize) -> listRepositoryNamesSinglePageSync(pageSize, context),
+            (token, pageSize) -> listRepositoryNamesNextSinglePageSync(token, context));
     }
+
+    private PagedResponse<String> listRepositoryNamesSinglePageSync(Integer pageSize, Context context) {
+        if (pageSize != null && pageSize < 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
+        }
+
+        try {
+            return this.registriesImplClient.getRepositoriesSinglePage(null,
+                pageSize, enableSync(getTracingContext(context)));
+        } catch (AcrErrorsException exception) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
+        }
+    }
+
+    private PagedResponse<String> listRepositoryNamesNextSinglePageSync(String nextLink, Context context) {
+        try {
+            return this.registriesImplClient.getRepositoriesNextSinglePage(nextLink,
+                enableSync(getTracingContext(context)));
+        } catch (AcrErrorsException exception) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
+        }
+    }
+
 
     /**
      * Delete the repository identified by {@code repositoryName}.
@@ -145,7 +196,19 @@ public final class ContainerRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRepositoryWithResponse(String repositoryName, Context context) {
-        return this.asyncClient.deleteRepositoryWithResponse(repositoryName, context).block();
+        Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null");
+
+        if (repositoryName.isEmpty()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' cannot be empty."));
+        }
+
+        try {
+            return UtilsImpl.deleteResponseToSuccess(
+                this.registriesImplClient.deleteRepositoryWithResponse(repositoryName,
+                    enableSync(getTracingContext(context))));
+        } catch (AcrErrorsException exception) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
+        }
     }
 
     /**
@@ -166,7 +229,7 @@ public final class ContainerRegistryClient {
      * @throws IllegalArgumentException if {@code repositoryName} is empty.
      */
     public ContainerRepository getRepository(String repositoryName) {
-        return new ContainerRepository(this.asyncClient.getRepository(repositoryName));
+        return new ContainerRepository(repositoryName, httpPipeline, endpoint, apiVersion);
     }
 
     /**
@@ -181,7 +244,6 @@ public final class ContainerRegistryClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.getArtifact -->
      *
-     *
      * @param repositoryName Name of the repository to reference.
      * @param tagOrDigest Either a tag or digest that uniquely identifies the artifact.
      * @return A new {@link RegistryArtifact} object for the desired repository.
@@ -189,6 +251,6 @@ public final class ContainerRegistryClient {
      * @throws IllegalArgumentException if {@code repositoryName} or {@code tagOrDigest} is empty.
      */
     public RegistryArtifact getArtifact(String repositoryName, String tagOrDigest) {
-        return new RegistryArtifact(this.asyncClient.getArtifact(repositoryName, tagOrDigest));
+        return new RegistryArtifact(repositoryName, tagOrDigest, httpPipeline, endpoint, apiVersion);
     }
 }

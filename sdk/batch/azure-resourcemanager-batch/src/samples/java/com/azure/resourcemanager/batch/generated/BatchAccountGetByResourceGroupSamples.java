@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BatchAccount GetByResourceGroup. */
 public final class BatchAccountGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateBatchAccountGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PrivateBatchAccountGet.json
      */
     /**
      * Sample code: PrivateBatchAccountGet.
@@ -23,7 +23,7 @@ public final class BatchAccountGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/BatchAccountGet.json
      */
     /**
      * Sample code: BatchAccountGet.

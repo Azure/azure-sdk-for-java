@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDisk;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDiskController;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Virtual machine template model. */
-@JsonFlatten
 @Fluent
-public class VirtualMachineTemplateInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineTemplateInner.class);
-
+public final class VirtualMachineTemplateInner {
     /*
      * virtual machine template id (privateCloudId:vsphereId)
      */
@@ -38,94 +32,20 @@ public class VirtualMachineTemplateInner {
     private String name;
 
     /*
+     * The Virtual Machine Template properties
+     */
+    @JsonProperty(value = "properties")
+    private VirtualMachineTemplateProperties innerProperties;
+
+    /*
      * {resourceProviderNamespace}/{resourceType}
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The amount of memory
-     */
-    @JsonProperty(value = "properties.amountOfRam")
-    private Integer amountOfRam;
-
-    /*
-     * The list of Virtual Disk Controllers
-     */
-    @JsonProperty(value = "properties.controllers")
-    private List<VirtualDiskController> controllers;
-
-    /*
-     * The description of Virtual Machine Template
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The list of Virtual Disks
-     */
-    @JsonProperty(value = "properties.disks")
-    private List<VirtualDisk> disks;
-
-    /*
-     * Expose Guest OS or not
-     */
-    @JsonProperty(value = "properties.exposeToGuestVM")
-    private Boolean exposeToGuestVM;
-
-    /*
-     * The Guest OS
-     */
-    @JsonProperty(value = "properties.guestOS", access = JsonProperty.Access.WRITE_ONLY)
-    private String guestOS;
-
-    /*
-     * The Guest OS types
-     */
-    @JsonProperty(value = "properties.guestOSType", access = JsonProperty.Access.WRITE_ONLY)
-    private String guestOSType;
-
-    /*
-     * The list of Virtual NICs
-     */
-    @JsonProperty(value = "properties.nics")
-    private List<VirtualNicInner> nics;
-
-    /*
-     * The number of CPU cores
-     */
-    @JsonProperty(value = "properties.numberOfCores")
-    private Integer numberOfCores;
-
-    /*
-     * path to folder
-     */
-    @JsonProperty(value = "properties.path")
-    private String path;
-
-    /*
-     * The Private Cloud Id
-     */
-    @JsonProperty(value = "properties.privateCloudId")
-    private String privateCloudId;
-
-    /*
-     * The list of VSphere networks
-     */
-    @JsonProperty(value = "properties.vSphereNetworks")
-    private List<String> vSphereNetworks;
-
-    /*
-     * The tags from VSphere
-     */
-    @JsonProperty(value = "properties.vSphereTags")
-    private List<String> vSphereTags;
-
-    /*
-     * The VMware tools version
-     */
-    @JsonProperty(value = "properties.vmwaretools", access = JsonProperty.Access.WRITE_ONLY)
-    private String vmwaretools;
+    /** Creates an instance of VirtualMachineTemplateInner class. */
+    public VirtualMachineTemplateInner() {
+    }
 
     /**
      * Get the id property: virtual machine template id (privateCloudId:vsphereId).
@@ -166,6 +86,15 @@ public class VirtualMachineTemplateInner {
     }
 
     /**
+     * Get the innerProperties property: The Virtual Machine Template properties.
+     *
+     * @return the innerProperties value.
+     */
+    private VirtualMachineTemplateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the type property: {resourceProviderNamespace}/{resourceType}.
      *
      * @return the type value.
@@ -180,7 +109,7 @@ public class VirtualMachineTemplateInner {
      * @return the amountOfRam value.
      */
     public Integer amountOfRam() {
-        return this.amountOfRam;
+        return this.innerProperties() == null ? null : this.innerProperties().amountOfRam();
     }
 
     /**
@@ -190,7 +119,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withAmountOfRam(Integer amountOfRam) {
-        this.amountOfRam = amountOfRam;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withAmountOfRam(amountOfRam);
         return this;
     }
 
@@ -200,7 +132,7 @@ public class VirtualMachineTemplateInner {
      * @return the controllers value.
      */
     public List<VirtualDiskController> controllers() {
-        return this.controllers;
+        return this.innerProperties() == null ? null : this.innerProperties().controllers();
     }
 
     /**
@@ -210,7 +142,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withControllers(List<VirtualDiskController> controllers) {
-        this.controllers = controllers;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withControllers(controllers);
         return this;
     }
 
@@ -220,7 +155,7 @@ public class VirtualMachineTemplateInner {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -230,7 +165,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -240,7 +178,7 @@ public class VirtualMachineTemplateInner {
      * @return the disks value.
      */
     public List<VirtualDisk> disks() {
-        return this.disks;
+        return this.innerProperties() == null ? null : this.innerProperties().disks();
     }
 
     /**
@@ -250,7 +188,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withDisks(List<VirtualDisk> disks) {
-        this.disks = disks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withDisks(disks);
         return this;
     }
 
@@ -260,7 +201,7 @@ public class VirtualMachineTemplateInner {
      * @return the exposeToGuestVM value.
      */
     public Boolean exposeToGuestVM() {
-        return this.exposeToGuestVM;
+        return this.innerProperties() == null ? null : this.innerProperties().exposeToGuestVM();
     }
 
     /**
@@ -270,7 +211,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withExposeToGuestVM(Boolean exposeToGuestVM) {
-        this.exposeToGuestVM = exposeToGuestVM;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withExposeToGuestVM(exposeToGuestVM);
         return this;
     }
 
@@ -280,7 +224,7 @@ public class VirtualMachineTemplateInner {
      * @return the guestOS value.
      */
     public String guestOS() {
-        return this.guestOS;
+        return this.innerProperties() == null ? null : this.innerProperties().guestOS();
     }
 
     /**
@@ -289,7 +233,7 @@ public class VirtualMachineTemplateInner {
      * @return the guestOSType value.
      */
     public String guestOSType() {
-        return this.guestOSType;
+        return this.innerProperties() == null ? null : this.innerProperties().guestOSType();
     }
 
     /**
@@ -298,7 +242,7 @@ public class VirtualMachineTemplateInner {
      * @return the nics value.
      */
     public List<VirtualNicInner> nics() {
-        return this.nics;
+        return this.innerProperties() == null ? null : this.innerProperties().nics();
     }
 
     /**
@@ -308,7 +252,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withNics(List<VirtualNicInner> nics) {
-        this.nics = nics;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withNics(nics);
         return this;
     }
 
@@ -318,7 +265,7 @@ public class VirtualMachineTemplateInner {
      * @return the numberOfCores value.
      */
     public Integer numberOfCores() {
-        return this.numberOfCores;
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfCores();
     }
 
     /**
@@ -328,7 +275,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withNumberOfCores(Integer numberOfCores) {
-        this.numberOfCores = numberOfCores;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withNumberOfCores(numberOfCores);
         return this;
     }
 
@@ -338,7 +288,7 @@ public class VirtualMachineTemplateInner {
      * @return the path value.
      */
     public String path() {
-        return this.path;
+        return this.innerProperties() == null ? null : this.innerProperties().path();
     }
 
     /**
@@ -348,7 +298,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withPath(String path) {
-        this.path = path;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withPath(path);
         return this;
     }
 
@@ -358,7 +311,7 @@ public class VirtualMachineTemplateInner {
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
-        return this.privateCloudId;
+        return this.innerProperties() == null ? null : this.innerProperties().privateCloudId();
     }
 
     /**
@@ -368,7 +321,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withPrivateCloudId(String privateCloudId) {
-        this.privateCloudId = privateCloudId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withPrivateCloudId(privateCloudId);
         return this;
     }
 
@@ -378,7 +334,7 @@ public class VirtualMachineTemplateInner {
      * @return the vSphereNetworks value.
      */
     public List<String> vSphereNetworks() {
-        return this.vSphereNetworks;
+        return this.innerProperties() == null ? null : this.innerProperties().vSphereNetworks();
     }
 
     /**
@@ -388,7 +344,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withVSphereNetworks(List<String> vSphereNetworks) {
-        this.vSphereNetworks = vSphereNetworks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withVSphereNetworks(vSphereNetworks);
         return this;
     }
 
@@ -398,7 +357,7 @@ public class VirtualMachineTemplateInner {
      * @return the vSphereTags value.
      */
     public List<String> vSphereTags() {
-        return this.vSphereTags;
+        return this.innerProperties() == null ? null : this.innerProperties().vSphereTags();
     }
 
     /**
@@ -408,7 +367,10 @@ public class VirtualMachineTemplateInner {
      * @return the VirtualMachineTemplateInner object itself.
      */
     public VirtualMachineTemplateInner withVSphereTags(List<String> vSphereTags) {
-        this.vSphereTags = vSphereTags;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineTemplateProperties();
+        }
+        this.innerProperties().withVSphereTags(vSphereTags);
         return this;
     }
 
@@ -418,7 +380,7 @@ public class VirtualMachineTemplateInner {
      * @return the vmwaretools value.
      */
     public String vmwaretools() {
-        return this.vmwaretools;
+        return this.innerProperties() == null ? null : this.innerProperties().vmwaretools();
     }
 
     /**
@@ -427,14 +389,8 @@ public class VirtualMachineTemplateInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (controllers() != null) {
-            controllers().forEach(e -> e.validate());
-        }
-        if (disks() != null) {
-            disks().forEach(e -> e.validate());
-        }
-        if (nics() != null) {
-            nics().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

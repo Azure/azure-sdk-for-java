@@ -7,7 +7,10 @@ package com.azure.resourcemanager.datamigration.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ServerLevelPermissionsGroup. */
+/**
+ * Permission group for validations. These groups will run a set of permissions for validating user activity. Select the
+ * permission group for the activity that you are performing.
+ */
 public enum ServerLevelPermissionsGroup {
     /** Enum value Default. */
     DEFAULT("Default"),
@@ -36,6 +39,9 @@ public enum ServerLevelPermissionsGroup {
      */
     @JsonCreator
     public static ServerLevelPermissionsGroup fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ServerLevelPermissionsGroup[] items = ServerLevelPermissionsGroup.values();
         for (ServerLevelPermissionsGroup item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +51,7 @@ public enum ServerLevelPermissionsGroup {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

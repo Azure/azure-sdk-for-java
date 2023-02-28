@@ -12,6 +12,7 @@ import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 import com.azure.resourcemanager.devcenter.models.Pool;
 import com.azure.resourcemanager.devcenter.models.PoolUpdate;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import java.util.Collections;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

@@ -18,6 +18,10 @@ public final class MetricBaselinesResponse {
     @JsonProperty(value = "value")
     private List<SingleMetricBaselineInner> value;
 
+    /** Creates an instance of MetricBaselinesResponse class. */
+    public MetricBaselinesResponse() {
+    }
+
     /**
      * Get the value property: The list of metric baselines.
      *

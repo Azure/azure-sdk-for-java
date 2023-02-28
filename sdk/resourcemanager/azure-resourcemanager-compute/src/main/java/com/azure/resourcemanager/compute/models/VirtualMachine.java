@@ -871,7 +871,7 @@ public interface VirtualMachine
             /**
              * Specifies the SSH public key.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
@@ -890,7 +890,7 @@ public interface VirtualMachine
             /**
              * Specifies an SSH public key.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManaged withSsh(String publicKey);
@@ -909,7 +909,7 @@ public interface VirtualMachine
             /**
              * Specifies an SSH public key.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateUnmanaged withSsh(String publicKey);
@@ -1047,7 +1047,7 @@ public interface VirtualMachine
             /**
              * Specifies an SSH public key.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
@@ -1077,7 +1077,7 @@ public interface VirtualMachine
             /**
              * Specifies an SSH public key.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateUnmanaged withSsh(String publicKey);

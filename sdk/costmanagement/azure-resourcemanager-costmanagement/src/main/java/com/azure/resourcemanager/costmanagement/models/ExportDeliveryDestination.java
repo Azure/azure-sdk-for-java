@@ -6,7 +6,6 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,8 +17,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class ExportDeliveryDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportDeliveryDestination.class);
-
     /*
      * The resource id of the storage account where exports will be delivered.
      */
@@ -37,6 +34,10 @@ public final class ExportDeliveryDestination {
      */
     @JsonProperty(value = "rootFolderPath")
     private String rootFolderPath;
+
+    /** Creates an instance of ExportDeliveryDestination class. */
+    public ExportDeliveryDestination() {
+    }
 
     /**
      * Get the resourceId property: The resource id of the storage account where exports will be delivered.
@@ -105,16 +106,18 @@ public final class ExportDeliveryDestination {
      */
     public void validate() {
         if (resourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceId in model ExportDeliveryDestination"));
         }
         if (container() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property container in model ExportDeliveryDestination"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExportDeliveryDestination.class);
 }

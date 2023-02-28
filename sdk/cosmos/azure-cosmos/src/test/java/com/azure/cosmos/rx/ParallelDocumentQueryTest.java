@@ -718,6 +718,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(itemIdentities.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(itemIdentities.stream().map(i -> i.getId()).collect(Collectors.toList()));
+        assertThat(documentFeedResponse.getCosmosDiagnostics()).isNotNull();
     }
 
     //TODO: Fix the test for GW mode

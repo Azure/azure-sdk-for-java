@@ -45,7 +45,7 @@ public interface Catalog {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the syncState property: The synchronization state of the catalog.

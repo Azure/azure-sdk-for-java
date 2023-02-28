@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectorTypes. */
+/** Type of connector. */
 public final class ConnectorTypes extends ExpandableStringEnum<ConnectorTypes> {
     /** Static value None for ConnectorTypes. */
     public static final ConnectorTypes NONE = fromString("None");
@@ -29,6 +29,15 @@ public final class ConnectorTypes extends ExpandableStringEnum<ConnectorTypes> {
     public static final ConnectorTypes OUTBOUND = fromString("Outbound");
 
     /**
+     * Creates a new instance of ConnectorTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectorTypes() {
+    }
+
+    /**
      * Creates or finds a ConnectorTypes from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class ConnectorTypes extends ExpandableStringEnum<ConnectorTypes> {
         return fromString(name, ConnectorTypes.class);
     }
 
-    /** @return known ConnectorTypes values. */
+    /**
+     * Gets known ConnectorTypes values.
+     *
+     * @return known ConnectorTypes values.
+     */
     public static Collection<ConnectorTypes> values() {
         return values(ConnectorTypes.class);
     }

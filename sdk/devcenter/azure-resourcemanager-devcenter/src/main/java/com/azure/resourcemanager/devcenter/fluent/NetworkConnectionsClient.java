@@ -334,14 +334,29 @@ public interface NetworkConnectionsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(String resourceGroupName, String networkConnectionName);
+
+    /**
+     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
+     * health check details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> runHealthChecksWithResponse(String resourceGroupName, String networkConnectionName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(
+        String resourceGroupName, String networkConnectionName, Context context);
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
@@ -355,4 +370,18 @@ public interface NetworkConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void runHealthChecks(String resourceGroupName, String networkConnectionName);
+
+    /**
+     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
+     * health check details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void runHealthChecks(String resourceGroupName, String networkConnectionName, Context context);
 }

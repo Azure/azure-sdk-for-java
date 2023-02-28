@@ -3,12 +3,11 @@
 
 package com.azure.core.implementation.http.rest;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-import java.util.Locale;
-
 public final class HeaderSubstitution extends Substitution {
-    private final String lowerCaseHeaderName;
+    private final HttpHeaderName headerName;
 
     /**
      * Create a new Substitution.
@@ -21,18 +20,18 @@ public final class HeaderSubstitution extends Substitution {
      */
     public HeaderSubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode) {
         super(urlParameterName, methodParameterIndex, shouldEncode);
-        this.lowerCaseHeaderName = (urlParameterName == null) ? null : urlParameterName.toLowerCase(Locale.ROOT);
+        this.headerName = (urlParameterName == null) ? null : HttpHeaderName.fromString(urlParameterName);
     }
 
     /**
-     * Gets the lower cased header name.
+     * Gets the header name.
      * <p>
      * This enables a safe optimization for {@link HttpHeaders} where this substitution can bypass lower casing the
      * header name.
      *
-     * @return The lower cased header name.
+     * @return The header name.
      */
-    public String getLowerCaseHeaderName() {
-        return lowerCaseHeaderName;
+    public HttpHeaderName getHeaderName() {
+        return headerName;
     }
 }

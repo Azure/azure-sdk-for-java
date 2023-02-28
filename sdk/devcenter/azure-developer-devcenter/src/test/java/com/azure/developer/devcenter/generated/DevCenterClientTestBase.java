@@ -32,10 +32,7 @@ class DevCenterClientTestBase extends TestBase {
     protected void beforeTest() {
         DevCenterClientBuilder devCenterClientbuilder =
                 new DevCenterClientBuilder()
-                        .tenantId(Configuration.getGlobalConfiguration().get("TENANTID", "tenantid"))
-                        .devCenter(Configuration.getGlobalConfiguration().get("DEVCENTER", "devcenter"))
-                        .devCenterDnsSuffix(
-                                Configuration.getGlobalConfiguration().get("DEVCENTERDNSSUFFIX", "devcenter.azure.com"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -53,10 +50,7 @@ class DevCenterClientTestBase extends TestBase {
 
         DevBoxesClientBuilder devBoxesClientbuilder =
                 new DevBoxesClientBuilder()
-                        .tenantId(Configuration.getGlobalConfiguration().get("TENANTID", "tenantid"))
-                        .devCenter(Configuration.getGlobalConfiguration().get("DEVCENTER", "devcenter"))
-                        .devCenterDnsSuffix(
-                                Configuration.getGlobalConfiguration().get("DEVCENTERDNSSUFFIX", "devcenter.azure.com"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -74,10 +68,7 @@ class DevCenterClientTestBase extends TestBase {
 
         EnvironmentsClientBuilder environmentsClientbuilder =
                 new EnvironmentsClientBuilder()
-                        .tenantId(Configuration.getGlobalConfiguration().get("TENANTID", "tenantid"))
-                        .devCenter(Configuration.getGlobalConfiguration().get("DEVCENTER", "devcenter"))
-                        .devCenterDnsSuffix(
-                                Configuration.getGlobalConfiguration().get("DEVCENTERDNSSUFFIX", "devcenter.azure.com"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {

@@ -16,6 +16,10 @@ public class NetworkRuleSet {
     @JsonProperty(value = "publicNetworkAccess")
     private KnownPublicNetworkAccessOptions publicNetworkAccess;
 
+    /** Creates an instance of NetworkRuleSet class. */
+    public NetworkRuleSet() {
+    }
+
     /**
      * Get the publicNetworkAccess property: The configuration to set whether network access from public internet to the
      * endpoints are allowed.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The error management. */
 @Fluent
 public final class ConnectorMappingErrorManagement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorMappingErrorManagement.class);
-
     /*
      * The type of error management to use for the mapping.
      */
@@ -25,6 +22,10 @@ public final class ConnectorMappingErrorManagement {
      */
     @JsonProperty(value = "errorLimit")
     private Integer errorLimit;
+
+    /** Creates an instance of ConnectorMappingErrorManagement class. */
+    public ConnectorMappingErrorManagement() {
+    }
 
     /**
      * Get the errorManagementType property: The type of error management to use for the mapping.
@@ -73,10 +74,12 @@ public final class ConnectorMappingErrorManagement {
      */
     public void validate() {
         if (errorManagementType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property errorManagementType in model ConnectorMappingErrorManagement"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectorMappingErrorManagement.class);
 }

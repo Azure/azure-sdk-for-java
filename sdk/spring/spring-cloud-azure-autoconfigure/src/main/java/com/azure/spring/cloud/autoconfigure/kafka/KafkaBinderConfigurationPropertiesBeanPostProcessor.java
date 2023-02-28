@@ -2,72 +2,83 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.kafka;
 
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
-import org.springframework.cloud.stream.binder.kafka.properties.KafkaBinderConfigurationProperties;
-
+import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.buildAzureProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.configureKafkaUserAgent;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.configureOAuthProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.logConfigureOAuthProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.needConfigureSaslOAuth;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertAzurePropertiesToConfigMap;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.cloud.stream.binder.kafka.properties.KafkaBinderConfigurationProperties;
+
 import static org.springframework.cloud.stream.binder.kafka.provisioning.KafkaTopicProvisioner.normalalizeBootPropsWithBinder;
 
 /**
  * {@link BeanPostProcessor} to apply {@link AzureGlobalProperties} and Kafka OAuth properties
  * to {@link KafkaBinderConfigurationProperties}.
  */
-class KafkaBinderConfigurationPropertiesBeanPostProcessor implements BeanPostProcessor {
+class KafkaBinderConfigurationPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostProcessor<KafkaBinderConfigurationProperties> {
 
-    private final AzureGlobalProperties azureGlobalProperties;
+    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
 
     KafkaBinderConfigurationPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
-        this.azureGlobalProperties = azureGlobalProperties;
+        super(azureGlobalProperties);
     }
 
     @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        if (bean instanceof KafkaBinderConfigurationProperties) {
-            KafkaBinderConfigurationProperties binderConfigurationProperties = (KafkaBinderConfigurationProperties) bean;
-            Map<String, Object> mergedConsumerConfiguration = binderConfigurationProperties.mergedConsumerConfiguration();
-            Map<String, String> sourceConsumerProperties = binderConfigurationProperties.getConsumerProperties();
-            if (needConfigureSaslOAuth(mergedConsumerConfiguration)) {
-                configureKafkaBinderProperties(mergedConsumerConfiguration, sourceConsumerProperties);
-                configureKafkaUserAgent();
-            }
-
-            Map<String, Object> mergedProducerConfiguration = binderConfigurationProperties.mergedProducerConfiguration();
-            Map<String, String> sourceProducerProperties = binderConfigurationProperties.getProducerProperties();
-            if (needConfigureSaslOAuth(mergedProducerConfiguration)) {
-                configureKafkaBinderProperties(mergedProducerConfiguration, sourceProducerProperties);
-                configureKafkaUserAgent();
-            }
-            //Should configure admin at last since the highest priority properties for admin is the binder configuration,
-            //which is one of the property sources for consumer and producer binder properties,
-            //thus if we change it then it might influence the final raw properties for consumer and producer.
-            KafkaProperties kafkaProperties = binderConfigurationProperties.getKafkaProperties();
-            Map<String, Object> adminProperties = kafkaProperties.buildAdminProperties();
-            normalalizeBootPropsWithBinder(adminProperties, kafkaProperties, binderConfigurationProperties);
-            if (needConfigureSaslOAuth(adminProperties)) {
-                configureKafkaBinderProperties(adminProperties, binderConfigurationProperties.getConfiguration());
-                configureKafkaUserAgent();
-            }
-        }
-        return bean;
+    protected Map<String, Object> getMergedProducerProperties(KafkaBinderConfigurationProperties properties) {
+        return mergeNonAdminProperties(properties.mergedProducerConfiguration(), properties.getConfiguration());
     }
 
-    private void configureKafkaBinderProperties(Map<String, Object> mergedConfiguration, Map<String, String> sourceProperties) {
-        AzurePasswordlessProperties azurePasswordlessProperties =
-            buildAzureProperties(mergedConfiguration, azureGlobalProperties);
-        convertAzurePropertiesToConfigMap(azurePasswordlessProperties, sourceProperties);
-        configureOAuthProperties(sourceProperties);
-        logConfigureOAuthProperties();
+    @Override
+    protected Map<String, String> getRawProducerProperties(KafkaBinderConfigurationProperties properties) {
+        return properties.getProducerProperties();
+    }
+
+    @Override
+    protected Map<String, Object> getMergedConsumerProperties(KafkaBinderConfigurationProperties properties) {
+        return mergeNonAdminProperties(properties.mergedConsumerConfiguration(), properties.getConfiguration());
+    }
+
+    @Override
+    protected Map<String, String> getRawConsumerProperties(KafkaBinderConfigurationProperties properties) {
+        return properties.getConsumerProperties();
+    }
+
+    @Override
+    protected Map<String, Object> getMergedAdminProperties(KafkaBinderConfigurationProperties properties) {
+        return mergeAdminProperties(properties);
+    }
+
+    @Override
+    protected Map<String, String> getRawAdminProperties(KafkaBinderConfigurationProperties properties) {
+        return properties.getConfiguration();
+    }
+
+    @Override
+    protected boolean needsPostProcess(Object bean) {
+        return bean instanceof KafkaBinderConfigurationProperties;
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return LOGGER;
+    }
+
+    private Map<String, Object> mergeNonAdminProperties(Map<String, Object> mergedPropertiesWithoutDefault, Map<String, String> defaultProperties) {
+        Map<String, Object> merged = new HashMap<>(defaultProperties);
+        merged.putAll(mergedPropertiesWithoutDefault);
+        return merged;
+    }
+
+    private Map<String, Object> mergeAdminProperties(KafkaBinderConfigurationProperties properties) {
+        Map<String, Object> adminProperties = properties.getKafkaProperties().buildAdminProperties();
+        normalalizeBootPropsWithBinder(adminProperties, properties.getKafkaProperties(), properties);
+        AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.getPropertyKeys()
+            .forEach(k -> PROPERTY_MAPPER.from(properties.getConfiguration().get(k)).to(v -> adminProperties.put(k, v)));
+        return adminProperties;
     }
 
 }

@@ -104,22 +104,6 @@ public interface JobCredentialsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a jobs credential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobCredentialInner get(String resourceGroupName, String serverName, String jobAgentName, String credentialName);
-
-    /**
-     * Gets a jobs credential.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param credentialName The name of the credential.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,6 +113,22 @@ public interface JobCredentialsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobCredentialInner> getWithResponse(
         String resourceGroupName, String serverName, String jobAgentName, String credentialName, Context context);
+
+    /**
+     * Gets a jobs credential.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a jobs credential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobCredentialInner get(String resourceGroupName, String serverName, String jobAgentName, String credentialName);
 
     /**
      * Creates or updates a job credential.
@@ -185,28 +185,6 @@ public interface JobCredentialsClient {
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
      * @param parameters The requested job credential state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored credential that can be used by a job to connect to target databases.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobCredentialInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String credentialName,
-        JobCredentialInner parameters);
-
-    /**
-     * Creates or updates a job credential.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param credentialName The name of the credential.
-     * @param parameters The requested job credential state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,6 +199,28 @@ public interface JobCredentialsClient {
         String credentialName,
         JobCredentialInner parameters,
         Context context);
+
+    /**
+     * Creates or updates a job credential.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
+     * @param parameters The requested job credential state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a stored credential that can be used by a job to connect to target databases.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobCredentialInner createOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String credentialName,
+        JobCredentialInner parameters);
 
     /**
      * Deletes a job credential.
@@ -263,21 +263,6 @@ public interface JobCredentialsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String serverName, String jobAgentName, String credentialName);
-
-    /**
-     * Deletes a job credential.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param credentialName The name of the credential.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -287,4 +272,19 @@ public interface JobCredentialsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serverName, String jobAgentName, String credentialName, Context context);
+
+    /**
+     * Deletes a job credential.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serverName, String jobAgentName, String credentialName);
 }

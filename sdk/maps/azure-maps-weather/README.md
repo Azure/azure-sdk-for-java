@@ -87,7 +87,7 @@ client.getQuarterDayForecast(new GeoPosition(-122.138874, 47.632346), null, 1, n
 
 Get Current Conditions
 ```java com.azure.maps.weather.sync.get_current_conditions
-client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), 
+client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268),
     null, null, null, null);
 ```
 

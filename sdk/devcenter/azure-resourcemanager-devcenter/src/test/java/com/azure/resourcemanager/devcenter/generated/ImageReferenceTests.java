@@ -15,22 +15,26 @@ public final class ImageReferenceTests {
         ImageReference model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"t\",\"exactVersion\":\"vfiwjmygtdss\",\"publisher\":\"wtmwerio\",\"offer\":\"pyqs\",\"sku\":\"wab\"}")
+                    "{\"id\":\"gwyzm\",\"exactVersion\":\"xongmtsavjcbpwxq\",\"publisher\":\"rknftguvriuhprwm\",\"offer\":\"vxqtayriwwroyqbe\",\"sku\":\"mcqibycnojv\"}")
                 .toObject(ImageReference.class);
-        Assertions.assertEquals("t", model.id());
-        Assertions.assertEquals("wtmwerio", model.publisher());
-        Assertions.assertEquals("pyqs", model.offer());
-        Assertions.assertEquals("wab", model.sku());
+        Assertions.assertEquals("gwyzm", model.id());
+        Assertions.assertEquals("rknftguvriuhprwm", model.publisher());
+        Assertions.assertEquals("vxqtayriwwroyqbe", model.offer());
+        Assertions.assertEquals("mcqibycnojv", model.sku());
     }
 
     @Test
     public void testSerialize() {
         ImageReference model =
-            new ImageReference().withId("t").withPublisher("wtmwerio").withOffer("pyqs").withSku("wab");
+            new ImageReference()
+                .withId("gwyzm")
+                .withPublisher("rknftguvriuhprwm")
+                .withOffer("vxqtayriwwroyqbe")
+                .withSku("mcqibycnojv");
         model = BinaryData.fromObject(model).toObject(ImageReference.class);
-        Assertions.assertEquals("t", model.id());
-        Assertions.assertEquals("wtmwerio", model.publisher());
-        Assertions.assertEquals("pyqs", model.offer());
-        Assertions.assertEquals("wab", model.sku());
+        Assertions.assertEquals("gwyzm", model.id());
+        Assertions.assertEquals("rknftguvriuhprwm", model.publisher());
+        Assertions.assertEquals("vxqtayriwwroyqbe", model.offer());
+        Assertions.assertEquals("mcqibycnojv", model.sku());
     }
 }

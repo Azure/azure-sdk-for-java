@@ -6,15 +6,12 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The connector mapping properties. */
 @Fluent
 public final class ConnectorMappingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorMappingProperties.class);
-
     /*
      * The folder path for the mapping.
      */
@@ -62,6 +59,10 @@ public final class ConnectorMappingProperties {
      */
     @JsonProperty(value = "completeOperation", required = true)
     private ConnectorMappingCompleteOperation completeOperation;
+
+    /** Creates an instance of ConnectorMappingProperties class. */
+    public ConnectorMappingProperties() {
+    }
 
     /**
      * Get the folderPath property: The folder path for the mapping.
@@ -230,7 +231,7 @@ public final class ConnectorMappingProperties {
      */
     public void validate() {
         if (errorManagement() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property errorManagement in model ConnectorMappingProperties"));
@@ -238,7 +239,7 @@ public final class ConnectorMappingProperties {
             errorManagement().validate();
         }
         if (format() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property format in model ConnectorMappingProperties"));
@@ -246,7 +247,7 @@ public final class ConnectorMappingProperties {
             format().validate();
         }
         if (availability() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property availability in model ConnectorMappingProperties"));
@@ -254,7 +255,7 @@ public final class ConnectorMappingProperties {
             availability().validate();
         }
         if (structure() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property structure in model ConnectorMappingProperties"));
@@ -262,7 +263,7 @@ public final class ConnectorMappingProperties {
             structure().forEach(e -> e.validate());
         }
         if (completeOperation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property completeOperation in model ConnectorMappingProperties"));
@@ -270,4 +271,6 @@ public final class ConnectorMappingProperties {
             completeOperation().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectorMappingProperties.class);
 }

@@ -19,21 +19,6 @@ public interface MediaServicesOperationStatusesClient {
      *
      * @param locationName Location name.
      * @param operationId Operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media service operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MediaServiceOperationStatusInner get(String locationName, String operationId);
-
-    /**
-     * Get operation status.
-     *
-     * <p>Get media service operation status.
-     *
-     * @param locationName Location name.
-     * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,4 +28,19 @@ public interface MediaServicesOperationStatusesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MediaServiceOperationStatusInner> getWithResponse(
         String locationName, String operationId, Context context);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get media service operation status.
+     *
+     * @param locationName Location name.
+     * @param operationId Operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return media service operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MediaServiceOperationStatusInner get(String locationName, String operationId);
 }

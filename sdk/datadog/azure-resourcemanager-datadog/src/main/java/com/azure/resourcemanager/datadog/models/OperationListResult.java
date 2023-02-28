@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datadog.fluent.models.OperationResultInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of GET request to list the Microsoft.Datadog operations. */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
      * List of operations supported by the Microsoft.Datadog provider.
      */
@@ -27,6 +23,10 @@ public final class OperationListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of OperationListResult class. */
+    public OperationListResult() {
+    }
 
     /**
      * Get the value property: List of operations supported by the Microsoft.Datadog provider.

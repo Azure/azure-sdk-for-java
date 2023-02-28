@@ -70,7 +70,42 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientL")
-    private interface LongTermRetentionManagedInstanceBackupsService {
+    public interface LongTermRetentionManagedInstanceBackupsService {
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
+                + "/longTermRetentionManagedInstanceBackups")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByLocation(
+            @HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName,
+            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
+            @QueryParam("databaseState") DatabaseState databaseState,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
+                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}"
+                + "/longTermRetentionManagedInstanceBackups")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByDatabase(
+            @HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
+            @QueryParam("databaseState") DatabaseState databaseState,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
@@ -109,25 +144,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}"
-                + "/longTermRetentionManagedInstanceBackups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("locationName") String locationName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
                 + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -144,13 +160,34 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstanceBackups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
+                + "/{locationName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByLocation(
+        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByResourceGroupLocation(
             @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("locationName") String locationName,
+            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
+            @QueryParam("databaseState") DatabaseState databaseState,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
+                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
+                + "/{databaseName}/longTermRetentionManagedInstanceBackups")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByResourceGroupDatabase(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
             @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
             @QueryParam("databaseState") DatabaseState databaseState,
             @PathParam("subscriptionId") String subscriptionId,
@@ -198,26 +235,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
-                + "/{databaseName}/longTermRetentionManagedInstanceBackups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByResourceGroupDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("locationName") String locationName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
                 + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}"
                 + "/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
@@ -235,19 +252,12 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstanceBackups")
+        @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByResourceGroupLocation(
+        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByLocationNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("locationName") String locationName,
-            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -275,7 +285,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByLocationNext(
+        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByResourceGroupLocationNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -300,16 +310,484 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
+    }
 
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByResourceGroupLocationNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+    /**
+     * Lists the long term retention backups for managed databases in a given location.
+     *
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByLocationSinglePageAsync(
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByLocation(
+                            this.client.getEndpoint(),
+                            locationName,
+                            onlyLatestPerDatabase,
+                            databaseState,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the long term retention backups for managed databases in a given location.
+     *
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByLocationSinglePageAsync(
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByLocation(
+                this.client.getEndpoint(),
+                locationName,
+                onlyLatestPerDatabase,
+                databaseState,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists the long term retention backups for managed databases in a given location.
+     *
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByLocationAsync(
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        return new PagedFlux<>(
+            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
+            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the long term retention backups for managed databases in a given location.
+     *
+     * @param locationName The location of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByLocationAsync(String locationName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final DatabaseState databaseState = null;
+        return new PagedFlux<>(
+            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
+            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the long term retention backups for managed databases in a given location.
+     *
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByLocationAsync(
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+        return new PagedFlux<>(
+            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState, context),
+            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists the long term retention backups for managed databases in a given location.
+     *
+     * @param locationName The location of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByLocation(String locationName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final DatabaseState databaseState = null;
+        return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState));
+    }
+
+    /**
+     * Lists the long term retention backups for managed databases in a given location.
+     *
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByLocation(
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+        return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState, context));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByDatabaseSinglePageAsync(
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByDatabase(
+                            this.client.getEndpoint(),
+                            locationName,
+                            managedInstanceName,
+                            databaseName,
+                            onlyLatestPerDatabase,
+                            databaseState,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByDatabaseSinglePageAsync(
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByDatabase(
+                this.client.getEndpoint(),
+                locationName,
+                managedInstanceName,
+                databaseName,
+                onlyLatestPerDatabase,
+                databaseState,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByDatabaseAsync(
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState) {
+        return new PagedFlux<>(
+            () ->
+                listByDatabaseSinglePageAsync(
+                    locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByDatabaseAsync(
+        String locationName, String managedInstanceName, String databaseName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final DatabaseState databaseState = null;
+        return new PagedFlux<>(
+            () ->
+                listByDatabaseSinglePageAsync(
+                    locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByDatabaseAsync(
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listByDatabaseSinglePageAsync(
+                    locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState, context),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByDatabase(
+        String locationName, String managedInstanceName, String databaseName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final DatabaseState databaseState = null;
+        return new PagedIterable<>(
+            listByDatabaseAsync(locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByDatabase(
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context) {
+        return new PagedIterable<>(
+            listByDatabaseAsync(
+                locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState, context));
     }
 
     /**
@@ -353,7 +831,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -366,7 +843,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                             databaseName,
                             backupName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -414,7 +891,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -425,7 +901,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 databaseName,
                 backupName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -456,24 +932,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database.
      * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceLongTermRetentionBackupInner get(
-        String locationName, String managedInstanceName, String databaseName, String backupName) {
-        return getAsync(locationName, managedInstanceName, databaseName, backupName).block();
-    }
-
-    /**
-     * Gets a long term retention backup for a managed database.
-     *
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -484,6 +942,24 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     public Response<ManagedInstanceLongTermRetentionBackupInner> getWithResponse(
         String locationName, String managedInstanceName, String databaseName, String backupName, Context context) {
         return getWithResponseAsync(locationName, managedInstanceName, databaseName, backupName, context).block();
+    }
+
+    /**
+     * Gets a long term retention backup for a managed database.
+     *
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedInstanceLongTermRetentionBackupInner get(
+        String locationName, String managedInstanceName, String databaseName, String backupName) {
+        return getWithResponse(locationName, managedInstanceName, databaseName, backupName, Context.NONE).getValue();
     }
 
     /**
@@ -526,7 +1002,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -538,7 +1013,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                             databaseName,
                             backupName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -584,7 +1059,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -594,7 +1068,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 databaseName,
                 backupName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -758,280 +1232,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     }
 
     /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByDatabaseSinglePageAsync(
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDatabase(
-                            this.client.getEndpoint(),
-                            locationName,
-                            managedInstanceName,
-                            databaseName,
-                            onlyLatestPerDatabase,
-                            databaseState,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByDatabaseSinglePageAsync(
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByDatabase(
-                this.client.getEndpoint(),
-                locationName,
-                managedInstanceName,
-                databaseName,
-                onlyLatestPerDatabase,
-                databaseState,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByDatabaseAsync(
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState) {
-        return new PagedFlux<>(
-            () ->
-                listByDatabaseSinglePageAsync(
-                    locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByDatabaseAsync(
-        String locationName, String managedInstanceName, String databaseName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final DatabaseState databaseState = null;
-        return new PagedFlux<>(
-            () ->
-                listByDatabaseSinglePageAsync(
-                    locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByDatabaseAsync(
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByDatabaseSinglePageAsync(
-                    locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState, context),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByDatabase(
-        String locationName, String managedInstanceName, String databaseName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final DatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByDatabaseAsync(locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByDatabase(
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context) {
-        return new PagedIterable<>(
-            listByDatabaseAsync(
-                locationName, managedInstanceName, databaseName, onlyLatestPerDatabase, databaseState, context));
-    }
-
-    /**
      * Lists the long term retention backups for a given managed instance.
      *
      * @param locationName The location of the database.
@@ -1066,7 +1266,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1079,7 +1278,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                             onlyLatestPerDatabase,
                             databaseState,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
@@ -1134,7 +1333,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1145,7 +1343,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 onlyLatestPerDatabase,
                 databaseState,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -1279,6 +1477,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     /**
      * Lists the long term retention backups for managed databases in a given location.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
@@ -1289,13 +1489,17 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByLocationSinglePageAsync(
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
+        String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -1306,19 +1510,19 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listByLocation(
+                        .listByResourceGroupLocation(
                             this.client.getEndpoint(),
+                            resourceGroupName,
                             locationName,
                             onlyLatestPerDatabase,
                             databaseState,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
@@ -1336,6 +1540,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     /**
      * Lists the long term retention backups for managed databases in a given location.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
@@ -1347,13 +1553,21 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByLocationSinglePageAsync(
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
+        String resourceGroupName,
+        String locationName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -1364,17 +1578,17 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByLocation(
+            .listByResourceGroupLocation(
                 this.client.getEndpoint(),
+                resourceGroupName,
                 locationName,
                 onlyLatestPerDatabase,
                 databaseState,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -1391,6 +1605,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     /**
      * Lists the long term retention backups for managed databases in a given location.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
@@ -1401,16 +1617,20 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByLocationAsync(
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocationAsync(
+        String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
         return new PagedFlux<>(
-            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+            () ->
+                listByResourceGroupLocationSinglePageAsync(
+                    resourceGroupName, locationName, onlyLatestPerDatabase, databaseState),
+            nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the long term retention backups for managed databases in a given location.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1419,17 +1639,22 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByLocationAsync(String locationName) {
+    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocationAsync(
+        String resourceGroupName, String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
         return new PagedFlux<>(
-            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+            () ->
+                listByResourceGroupLocationSinglePageAsync(
+                    resourceGroupName, locationName, onlyLatestPerDatabase, databaseState),
+            nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the long term retention backups for managed databases in a given location.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
@@ -1441,16 +1666,24 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByLocationAsync(
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+    private PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocationAsync(
+        String resourceGroupName,
+        String locationName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context) {
         return new PagedFlux<>(
-            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState, context),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
+            () ->
+                listByResourceGroupLocationSinglePageAsync(
+                    resourceGroupName, locationName, onlyLatestPerDatabase, databaseState, context),
+            nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the long term retention backups for managed databases in a given location.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1459,15 +1692,19 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByLocation(String locationName) {
+    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocation(
+        String resourceGroupName, String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
-        return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState));
+        return new PagedIterable<>(
+            listByResourceGroupLocationAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState));
     }
 
     /**
      * Lists the long term retention backups for managed databases in a given location.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
@@ -1479,9 +1716,344 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByLocation(
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
-        return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState, context));
+    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocation(
+        String resourceGroupName,
+        String locationName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context) {
+        return new PagedIterable<>(
+            listByResourceGroupLocationAsync(
+                resourceGroupName, locationName, onlyLatestPerDatabase, databaseState, context));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByResourceGroupDatabaseSinglePageAsync(
+        String resourceGroupName,
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroupDatabase(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            locationName,
+                            managedInstanceName,
+                            databaseName,
+                            onlyLatestPerDatabase,
+                            databaseState,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByResourceGroupDatabaseSinglePageAsync(
+        String resourceGroupName,
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByResourceGroupDatabase(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                locationName,
+                managedInstanceName,
+                databaseName,
+                onlyLatestPerDatabase,
+                databaseState,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
+        String resourceGroupName,
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState) {
+        return new PagedFlux<>(
+            () ->
+                listByResourceGroupDatabaseSinglePageAsync(
+                    resourceGroupName,
+                    locationName,
+                    managedInstanceName,
+                    databaseName,
+                    onlyLatestPerDatabase,
+                    databaseState),
+            nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
+        String resourceGroupName, String locationName, String managedInstanceName, String databaseName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final DatabaseState databaseState = null;
+        return new PagedFlux<>(
+            () ->
+                listByResourceGroupDatabaseSinglePageAsync(
+                    resourceGroupName,
+                    locationName,
+                    managedInstanceName,
+                    databaseName,
+                    onlyLatestPerDatabase,
+                    databaseState),
+            nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
+        String resourceGroupName,
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listByResourceGroupDatabaseSinglePageAsync(
+                    resourceGroupName,
+                    locationName,
+                    managedInstanceName,
+                    databaseName,
+                    onlyLatestPerDatabase,
+                    databaseState,
+                    context),
+            nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabase(
+        String resourceGroupName, String locationName, String managedInstanceName, String databaseName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final DatabaseState databaseState = null;
+        return new PagedIterable<>(
+            listByResourceGroupDatabaseAsync(
+                resourceGroupName,
+                locationName,
+                managedInstanceName,
+                databaseName,
+                onlyLatestPerDatabase,
+                databaseState));
+    }
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabase(
+        String resourceGroupName,
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context) {
+        return new PagedIterable<>(
+            listByResourceGroupDatabaseAsync(
+                resourceGroupName,
+                locationName,
+                managedInstanceName,
+                databaseName,
+                onlyLatestPerDatabase,
+                databaseState,
+                context));
     }
 
     /**
@@ -1535,7 +2107,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1549,7 +2120,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                             databaseName,
                             backupName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1608,7 +2179,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1620,7 +2190,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 databaseName,
                 backupName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -1660,31 +2230,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database.
      * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceLongTermRetentionBackupInner getByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        String backupName) {
-        return getByResourceGroupAsync(resourceGroupName, locationName, managedInstanceName, databaseName, backupName)
-            .block();
-    }
-
-    /**
-     * Gets a long term retention backup for a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param backupName The backup name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1702,6 +2247,32 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         return getByResourceGroupWithResponseAsync(
                 resourceGroupName, locationName, managedInstanceName, databaseName, backupName, context)
             .block();
+    }
+
+    /**
+     * Gets a long term retention backup for a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup for a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedInstanceLongTermRetentionBackupInner getByResourceGroup(
+        String resourceGroupName,
+        String locationName,
+        String managedInstanceName,
+        String databaseName,
+        String backupName) {
+        return getByResourceGroupWithResponse(
+                resourceGroupName, locationName, managedInstanceName, databaseName, backupName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1754,7 +2325,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -1767,7 +2337,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                             databaseName,
                             backupName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1824,7 +2394,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         context = this.client.mergeContext(context);
         return service
             .deleteByResourceGroup(
@@ -1835,7 +2404,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 databaseName,
                 backupName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -2063,337 +2632,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     }
 
     /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByResourceGroupDatabaseSinglePageAsync(
-        String resourceGroupName,
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroupDatabase(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            locationName,
-                            managedInstanceName,
-                            databaseName,
-                            onlyLatestPerDatabase,
-                            databaseState,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByResourceGroupDatabaseSinglePageAsync(
-        String resourceGroupName,
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupDatabase(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                locationName,
-                managedInstanceName,
-                databaseName,
-                onlyLatestPerDatabase,
-                databaseState,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
-        String resourceGroupName,
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState) {
-        return new PagedFlux<>(
-            () ->
-                listByResourceGroupDatabaseSinglePageAsync(
-                    resourceGroupName,
-                    locationName,
-                    managedInstanceName,
-                    databaseName,
-                    onlyLatestPerDatabase,
-                    databaseState),
-            nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
-        String resourceGroupName, String locationName, String managedInstanceName, String databaseName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final DatabaseState databaseState = null;
-        return new PagedFlux<>(
-            () ->
-                listByResourceGroupDatabaseSinglePageAsync(
-                    resourceGroupName,
-                    locationName,
-                    managedInstanceName,
-                    databaseName,
-                    onlyLatestPerDatabase,
-                    databaseState),
-            nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
-        String resourceGroupName,
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByResourceGroupDatabaseSinglePageAsync(
-                    resourceGroupName,
-                    locationName,
-                    managedInstanceName,
-                    databaseName,
-                    onlyLatestPerDatabase,
-                    databaseState,
-                    context),
-            nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabase(
-        String resourceGroupName, String locationName, String managedInstanceName, String databaseName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final DatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByResourceGroupDatabaseAsync(
-                resourceGroupName,
-                locationName,
-                managedInstanceName,
-                databaseName,
-                onlyLatestPerDatabase,
-                databaseState));
-    }
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabase(
-        String resourceGroupName,
-        String locationName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context) {
-        return new PagedIterable<>(
-            listByResourceGroupDatabaseAsync(
-                resourceGroupName,
-                locationName,
-                managedInstanceName,
-                databaseName,
-                onlyLatestPerDatabase,
-                databaseState,
-                context));
-    }
-
-    /**
      * Lists the long term retention backups for a given managed instance.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -2438,7 +2676,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2452,7 +2689,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                             onlyLatestPerDatabase,
                             databaseState,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
@@ -2514,7 +2751,6 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2526,7 +2762,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 onlyLatestPerDatabase,
                 databaseState,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -2683,414 +2919,10 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     }
 
     /**
-     * Lists the long term retention backups for managed databases in a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
-        String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroupLocation(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            locationName,
-                            onlyLatestPerDatabase,
-                            databaseState,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
-        String resourceGroupName,
-        String locationName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupLocation(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                locationName,
-                onlyLatestPerDatabase,
-                databaseState,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocationAsync(
-        String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
-        return new PagedFlux<>(
-            () ->
-                listByResourceGroupLocationSinglePageAsync(
-                    resourceGroupName, locationName, onlyLatestPerDatabase, databaseState),
-            nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocationAsync(
-        String resourceGroupName, String locationName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final DatabaseState databaseState = null;
-        return new PagedFlux<>(
-            () ->
-                listByResourceGroupLocationSinglePageAsync(
-                    resourceGroupName, locationName, onlyLatestPerDatabase, databaseState),
-            nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocationAsync(
-        String resourceGroupName,
-        String locationName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByResourceGroupLocationSinglePageAsync(
-                    resourceGroupName, locationName, onlyLatestPerDatabase, databaseState, context),
-            nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocation(
-        String resourceGroupName, String locationName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final DatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByResourceGroupLocationAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState));
-    }
-
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocation(
-        String resourceGroupName,
-        String locationName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context) {
-        return new PagedIterable<>(
-            listByResourceGroupLocationAsync(
-                resourceGroupName, locationName, onlyLatestPerDatabase, databaseState, context));
-    }
-
-    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByDatabaseNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByDatabaseNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByInstanceNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByInstanceNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3127,7 +2959,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3165,7 +2998,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3173,8 +3007,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>
-        listByResourceGroupDatabaseNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByDatabaseNextSinglePageAsync(
+        String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3186,9 +3020,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listByResourceGroupDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3204,7 +3036,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3213,8 +3046,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>
-        listByResourceGroupDatabaseNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByDatabaseNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3227,7 +3060,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3242,7 +3075,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3250,8 +3084,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>
-        listByResourceGroupInstanceNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByInstanceNextSinglePageAsync(
+        String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3263,9 +3097,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listByResourceGroupInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3281,7 +3113,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3290,8 +3123,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>
-        listByResourceGroupInstanceNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>> listByInstanceNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3304,7 +3137,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3319,7 +3152,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3358,7 +3192,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3382,6 +3217,164 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroupLocationNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>
+        listByResourceGroupDatabaseNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service.listByResourceGroupDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>
+        listByResourceGroupDatabaseNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByResourceGroupDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>
+        listByResourceGroupInstanceNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service.listByResourceGroupInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceLongTermRetentionBackupInner>>
+        listByResourceGroupInstanceNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByResourceGroupInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

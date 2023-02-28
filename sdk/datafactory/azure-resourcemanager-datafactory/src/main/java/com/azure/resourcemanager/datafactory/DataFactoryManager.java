@@ -25,6 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.DataFactoryManagementClient;
 import com.azure.resourcemanager.datafactory.implementation.ActivityRunsImpl;
+import com.azure.resourcemanager.datafactory.implementation.CredentialOperationsImpl;
 import com.azure.resourcemanager.datafactory.implementation.DataFactoryManagementClientBuilder;
 import com.azure.resourcemanager.datafactory.implementation.DataFlowDebugSessionsImpl;
 import com.azure.resourcemanager.datafactory.implementation.DataFlowsImpl;
@@ -47,6 +48,7 @@ import com.azure.resourcemanager.datafactory.implementation.PrivateLinkResources
 import com.azure.resourcemanager.datafactory.implementation.TriggerRunsImpl;
 import com.azure.resourcemanager.datafactory.implementation.TriggersImpl;
 import com.azure.resourcemanager.datafactory.models.ActivityRuns;
+import com.azure.resourcemanager.datafactory.models.CredentialOperations;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugSessions;
 import com.azure.resourcemanager.datafactory.models.DataFlows;
 import com.azure.resourcemanager.datafactory.models.Datasets;
@@ -112,6 +114,8 @@ public final class DataFactoryManager {
     private ManagedVirtualNetworks managedVirtualNetworks;
 
     private ManagedPrivateEndpoints managedPrivateEndpoints;
+
+    private CredentialOperations credentialOperations;
 
     private PrivateEndPointConnections privateEndPointConnections;
 
@@ -286,7 +290,7 @@ public final class DataFactoryManager {
                 .append("-")
                 .append("com.azure.resourcemanager.datafactory")
                 .append("/")
-                .append("1.0.0-beta.18");
+                .append("1.0.0-beta.20");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -549,6 +553,18 @@ public final class DataFactoryManager {
                 new ManagedPrivateEndpointsImpl(clientObject.getManagedPrivateEndpoints(), this);
         }
         return managedPrivateEndpoints;
+    }
+
+    /**
+     * Gets the resource collection API of CredentialOperations. It manages ManagedIdentityCredentialResource.
+     *
+     * @return Resource collection API of CredentialOperations.
+     */
+    public CredentialOperations credentialOperations() {
+        if (this.credentialOperations == null) {
+            this.credentialOperations = new CredentialOperationsImpl(clientObject.getCredentialOperations(), this);
+        }
+        return credentialOperations;
     }
 
     /**

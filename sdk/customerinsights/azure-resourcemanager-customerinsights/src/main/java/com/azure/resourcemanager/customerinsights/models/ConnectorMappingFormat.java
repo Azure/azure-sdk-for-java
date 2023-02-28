@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Connector mapping property format. */
 @Fluent
 public final class ConnectorMappingFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorMappingFormat.class);
-
     /*
      * The type mapping format.
      */
     @JsonProperty(value = "formatType", required = true)
-    private String formatType;
+    private String formatType = "TextFormat";
 
     /*
      * The character that signifies a break between columns.

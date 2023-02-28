@@ -73,6 +73,9 @@ public class HttpLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
 
+    /** Creates an instance of HttpLinkedService class. */
+    public HttpLinkedService() {}
+
     /**
      * Get the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
      * Expression with resultType string).

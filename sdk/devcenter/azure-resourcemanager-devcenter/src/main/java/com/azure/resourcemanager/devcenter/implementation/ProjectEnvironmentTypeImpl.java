@@ -13,6 +13,7 @@ import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdate;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import java.util.Collections;
 import java.util.Map;
@@ -56,7 +57,7 @@ public final class ProjectEnvironmentTypeImpl
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

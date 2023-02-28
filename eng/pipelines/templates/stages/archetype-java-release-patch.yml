@@ -76,8 +76,8 @@ stages:
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2019-general
-            vmImage: windows-2019
+            name: azsdk-pool-mms-win-2022-general
+            vmImage: windows-2022
           strategy:
             runOnce:
               deploy:
@@ -107,8 +107,8 @@ stages:
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2019-general
-            vmImage: windows-2019
+            name: azsdk-pool-mms-win-2022-general
+            vmImage: windows-2022
           strategy:
             runOnce:
               deploy:
@@ -126,51 +126,43 @@ stages:
                     displayName: 'Download Artifacts'
                     artifact: ${{parameters.ArtifactName}}-signed
                   - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-                  - ${{ each artifact in parameters.Artifacts }}:
-                    - ${{if ne(artifact.skipPublishPackage, 'true')}}:
-                      - ${{ if eq(parameters.UseEsrpRelease, 'true') }}:
-                        - template: /eng/pipelines/templates/steps/java-publishing.yml
-                          parameters:
-                            ArtifactID: ${{artifact.name}}
-                            GroupID: ${{artifact.groupId}}
-                            ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                            OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
-                            Target: EsrpRelease
-                            BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                            JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-                          parameters:
-                            ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-esrp-$(System.JobAttempt)
-                            ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
-                      - ${{ else }}:
-                        - template: /eng/pipelines/templates/steps/java-publishing.yml
-                          parameters:
-                            ArtifactID: ${{artifact.name}}
-                            GroupID: ${{artifact.groupId}}
-                            ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                            Target: MavenCentral
-                            BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                            JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-                          parameters:
-                            ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-mavencentral-$(System.JobAttempt)
-                            ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                      # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
-                      # this is that the azure-sdk-for-java feed will have the package available immediately
-                      # whereas Maven can take several hours for the package to become available.
-                      - template: /eng/pipelines/templates/steps/java-publishing.yml
-                        parameters:
-                          ArtifactID: ${{artifact.name}}
-                          GroupID: ${{artifact.groupId}}
-                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                          RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-                          Target: JavaDevFeed
-                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-                        parameters:
-                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
-                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                  - ${{ if eq(parameters.UseEsrpRelease, 'true') }}:
+                    - template: /eng/pipelines/templates/steps/java-publishing.yml
+                      parameters:
+                        ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                        OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
+                        Target: EsrpRelease
+                        BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                        JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                    - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                      parameters:
+                        ArtifactName: ${{parameters.ArtifactName}}-esrp-$(System.JobAttempt)
+                        ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
+                  - ${{ else }}:
+                    - template: /eng/pipelines/templates/steps/java-publishing.yml
+                      parameters:
+                        ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                        Target: MavenCentral
+                        BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                        JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                    - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                      parameters:
+                        ArtifactName: ${{parameters.ArtifactName}}-mavencentral-$(System.JobAttempt)
+                        ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                    # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
+                    # this is that the azure-sdk-for-java feed will have the package available immediately
+                    # whereas Maven can take several hours for the package to become available.
+                    - template: /eng/pipelines/templates/steps/java-publishing.yml
+                      parameters:
+                        ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                        RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+                        Target: JavaDevFeed
+                        BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                        JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                    - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                      parameters:
+                        ArtifactName: ${{parameters.ArtifactName}}-javadevfeed-$(System.JobAttempt)
+                        ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
 
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
@@ -180,8 +172,8 @@ stages:
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2019-general
-            vmImage: MMS2019
+            name: azsdk-pool-mms-win-2022-general
+            vmImage: MMS2022
           strategy:
             runOnce:
               deploy:
@@ -292,8 +284,8 @@ stages:
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2019-general
-            vmImage: MMS2019
+            name: azsdk-pool-mms-win-2022-general
+            vmImage: MMS2022
           strategy:
             runOnce:
               deploy:

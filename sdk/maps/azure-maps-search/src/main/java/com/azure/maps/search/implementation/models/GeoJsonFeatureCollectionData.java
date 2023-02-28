@@ -17,6 +17,9 @@ public class GeoJsonFeatureCollectionData {
     @JsonProperty(value = "features", required = true)
     private List<GeoJsonFeature> features;
 
+    /** Creates an instance of GeoJsonFeatureCollectionData class. */
+    public GeoJsonFeatureCollectionData() {}
+
     /**
      * Get the features property: Contains a list of valid `GeoJSON Feature` objects.
      *

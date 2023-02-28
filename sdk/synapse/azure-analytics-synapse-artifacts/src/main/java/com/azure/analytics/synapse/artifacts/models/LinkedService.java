@@ -137,7 +137,8 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
     @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureSynapseArtifacts", value = AzureSynapseArtifactsLinkedService.class)
+    @JsonSubTypes.Type(name = "AzureSynapseArtifacts", value = AzureSynapseArtifactsLinkedService.class),
+    @JsonSubTypes.Type(name = "PowerBIWorkspace", value = PowerBIWorkspaceLinkedService.class)
 })
 @Fluent
 public class LinkedService {
@@ -170,6 +171,9 @@ public class LinkedService {
      * related store or compute resource.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of LinkedService class. */
+    public LinkedService() {}
 
     /**
      * Get the connectVia property: The integration runtime reference.

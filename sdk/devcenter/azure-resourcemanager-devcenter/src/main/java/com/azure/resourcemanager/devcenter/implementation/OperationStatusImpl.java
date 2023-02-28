@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.devcenter.implementation;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.devcenter.fluent.models.OperationStatusInner;
-import com.azure.resourcemanager.devcenter.models.ErrorDetail;
 import com.azure.resourcemanager.devcenter.models.OperationStatus;
 import com.azure.resourcemanager.devcenter.models.OperationStatusResult;
 import java.time.OffsetDateTime;
@@ -56,7 +56,7 @@ public final class OperationStatusImpl implements OperationStatus {
         }
     }
 
-    public ErrorDetail error() {
+    public ManagementError error() {
         return this.innerModel().error();
     }
 

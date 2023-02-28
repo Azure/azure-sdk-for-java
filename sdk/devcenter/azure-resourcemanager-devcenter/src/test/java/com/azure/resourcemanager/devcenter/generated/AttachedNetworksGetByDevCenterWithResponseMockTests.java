@@ -32,7 +32,7 @@ public final class AttachedNetworksGetByDevCenterWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"tac\",\"networkConnectionId\":\"ebjvewzcjzn\",\"networkConnectionLocation\":\"cpmguaadraufact\",\"healthCheckStatus\":\"Passed\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"ajjziuxxpshne\",\"name\":\"kulfg\",\"type\":\"lqubkwdlen\"}";
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"networkConnectionId\":\"kgthrrghxjbd\",\"networkConnectionLocation\":\"xvcxgfrpdsofbshr\",\"healthCheckStatus\":\"Passed\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"wdvzyy\",\"name\":\"ycnunvjsrtk\",\"type\":\"awnopqgikyzirtxd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,9 @@ public final class AttachedNetworksGetByDevCenterWithResponseMockTests {
         AttachedNetworkConnection response =
             manager
                 .attachedNetworks()
-                .getByDevCenterWithResponse("ehwagoh", "uffkmrqemvvh", "xtdr", Context.NONE)
+                .getByDevCenterWithResponse("tw", "sgogczhonnxk", "lgnyhmo", Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ebjvewzcjzn", response.networkConnectionId());
+        Assertions.assertEquals("kgthrrghxjbd", response.networkConnectionId());
     }
 }

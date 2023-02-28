@@ -4,22 +4,32 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.fluent.models.GeoBackupPolicyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a list geo backup policies request. */
-@Fluent
+/** The list of geo backup policies. */
+@Immutable
 public final class GeoBackupPolicyListResult {
     /*
-     * The list of geo backup policies.
+     * Array of results.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<GeoBackupPolicyInner> value;
 
+    /*
+     * Link to retrieve next page of results.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
+    /** Creates an instance of GeoBackupPolicyListResult class. */
+    public GeoBackupPolicyListResult() {
+    }
+
     /**
-     * Get the value property: The list of geo backup policies.
+     * Get the value property: Array of results.
      *
      * @return the value value.
      */
@@ -28,14 +38,12 @@ public final class GeoBackupPolicyListResult {
     }
 
     /**
-     * Set the value property: The list of geo backup policies.
+     * Get the nextLink property: Link to retrieve next page of results.
      *
-     * @param value the value value to set.
-     * @return the GeoBackupPolicyListResult object itself.
+     * @return the nextLink value.
      */
-    public GeoBackupPolicyListResult withValue(List<GeoBackupPolicyInner> value) {
-        this.value = value;
-        return this;
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**

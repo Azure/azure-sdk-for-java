@@ -14,8 +14,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ManagedInstanceKeyInner extends ProxyResource {
     /*
-     * Kind of encryption protector. This is metadata used for the Azure portal
-     * experience.
+     * Kind of encryption protector. This is metadata used for the Azure portal experience.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
@@ -25,6 +24,10 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private ManagedInstanceKeyProperties innerProperties;
+
+    /** Creates an instance of ManagedInstanceKeyInner class. */
+    public ManagedInstanceKeyInner() {
+    }
 
     /**
      * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
@@ -106,6 +109,15 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
      */
     public OffsetDateTime creationDate() {
         return this.innerProperties() == null ? null : this.innerProperties().creationDate();
+    }
+
+    /**
+     * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
+     *
+     * @return the autoRotationEnabled value.
+     */
+    public Boolean autoRotationEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoRotationEnabled();
     }
 
     /**

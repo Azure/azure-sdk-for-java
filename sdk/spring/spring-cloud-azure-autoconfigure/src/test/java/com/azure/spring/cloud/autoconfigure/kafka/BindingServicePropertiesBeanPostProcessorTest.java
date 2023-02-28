@@ -12,7 +12,7 @@ import org.springframework.cloud.stream.config.BinderProperties;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 import org.springframework.util.StringUtils;
 
-import static com.azure.spring.cloud.autoconfigure.kafka.AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS;
+import static com.azure.spring.cloud.autoconfigure.kafka.BindingServicePropertiesBeanPostProcessor.KAFKA_OAUTH2_SPRING_MAIN_SOURCES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -59,13 +59,13 @@ class BindingServicePropertiesBeanPostProcessorTest {
     void testConfigureBinderSources() {
         Map<String, Object> env = new LinkedHashMap<>();
         Map<String, Object> mainPropertiesMap = buildSpringMainPropertiesMap(env, "main", "sources", "test");
-        bpp.configureBinderSources(mainPropertiesMap);
-        assertEquals(AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS + ",test", ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        bpp.configureSpringMainSources(mainPropertiesMap);
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES + ",test", ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
 
         env.clear();
         mainPropertiesMap = buildSpringMainPropertiesMap(env, "main", "profiles", "active");
-        bpp.configureBinderSources(mainPropertiesMap);
-        assertEquals(AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        bpp.configureSpringMainSources(mainPropertiesMap);
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
     }
 
     @Test
@@ -74,7 +74,7 @@ class BindingServicePropertiesBeanPostProcessorTest {
         bpp.postProcessBeforeInitialization(bindingServiceProperties, null);
         Map<String, Object> env = bindingServiceProperties.getBinders().get("kafka")
                 .getEnvironment();
-        assertEquals(AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
 
     }
 
@@ -89,7 +89,7 @@ class BindingServicePropertiesBeanPostProcessorTest {
         bpp.postProcessBeforeInitialization(bindingServiceProperties, null);
         Map<String, Object> env = bindingServiceProperties.getBinders().get("kafka")
                 .getEnvironment();
-        assertEquals(AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
     }
 
     @Test
@@ -104,7 +104,7 @@ class BindingServicePropertiesBeanPostProcessorTest {
         bpp.postProcessBeforeInitialization(bindingServiceProperties, null);
         Map<String, Object> env = bindingServiceProperties.getBinders().get("test")
                 .getEnvironment();
-        assertEquals(AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
     }
 
     private Map<String, Object> buildSpringMainPropertiesMap(Map<String, Object> env, String secondProperty, String thirdProperty, String value) {
@@ -115,7 +115,7 @@ class BindingServicePropertiesBeanPostProcessorTest {
             first.put(secondProperty, second);
             env.put("spring", first);
         }
-        return bpp.readSpringMainPropertiesMap(env);
+        return bpp.getOrCreateSpringMainPropertiesMap(env);
     }
 
 }

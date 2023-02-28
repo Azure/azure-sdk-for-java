@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.InferenceContainerProperties;
 import com.azure.resourcemanager.machinelearning.models.Route;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class InferenceContainerPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         InferenceContainerProperties model =
             BinaryData
                 .fromString(
@@ -26,8 +25,8 @@ public final class InferenceContainerPropertiesTests {
         Assertions.assertEquals(1985792970, model.scoringRoute().port());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         InferenceContainerProperties model =
             new InferenceContainerProperties()
                 .withLivenessRoute(new Route().withPath("xgqddrih").withPort(1351999302))

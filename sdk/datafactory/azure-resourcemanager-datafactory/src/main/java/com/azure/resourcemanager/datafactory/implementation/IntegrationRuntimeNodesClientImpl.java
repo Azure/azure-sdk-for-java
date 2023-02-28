@@ -57,7 +57,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface IntegrationRuntimeNodesService {
+    public interface IntegrationRuntimeNodesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

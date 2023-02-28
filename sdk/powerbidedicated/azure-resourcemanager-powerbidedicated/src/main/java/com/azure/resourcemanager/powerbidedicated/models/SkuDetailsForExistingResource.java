@@ -5,20 +5,46 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object that represents SKU details for existing resources. */
 @Fluent
 public final class SkuDetailsForExistingResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuDetailsForExistingResource.class);
+    /*
+     * The resource type
+     */
+    @JsonProperty(value = "resourceType")
+    private String resourceType;
 
     /*
      * The SKU in SKU details for existing resources.
      */
     @JsonProperty(value = "sku")
     private CapacitySku sku;
+
+    /** Creates an instance of SkuDetailsForExistingResource class. */
+    public SkuDetailsForExistingResource() {
+    }
+
+    /**
+     * Get the resourceType property: The resource type.
+     *
+     * @return the resourceType value.
+     */
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
+     * Set the resourceType property: The resource type.
+     *
+     * @param resourceType the resourceType value to set.
+     * @return the SkuDetailsForExistingResource object itself.
+     */
+    public SkuDetailsForExistingResource withResourceType(String resourceType) {
+        this.resourceType = resourceType;
+        return this;
+    }
 
     /**
      * Get the sku property: The SKU in SKU details for existing resources.

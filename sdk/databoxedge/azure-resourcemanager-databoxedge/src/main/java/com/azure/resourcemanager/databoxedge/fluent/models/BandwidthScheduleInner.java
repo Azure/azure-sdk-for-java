@@ -5,43 +5,33 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.DayOfWeek;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The bandwidth schedule details. */
-@JsonFlatten
 @Fluent
-public class BandwidthScheduleInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BandwidthScheduleInner.class);
-
+public final class BandwidthScheduleInner extends ArmBaseModel {
     /*
-     * The start time of the schedule in UTC.
+     * The properties of the bandwidth schedule.
      */
-    @JsonProperty(value = "properties.start", required = true)
-    private String start;
+    @JsonProperty(value = "properties", required = true)
+    private BandwidthScheduleProperties innerProperties = new BandwidthScheduleProperties();
 
-    /*
-     * The stop time of the schedule in UTC.
-     */
-    @JsonProperty(value = "properties.stop", required = true)
-    private String stop;
+    /** Creates an instance of BandwidthScheduleInner class. */
+    public BandwidthScheduleInner() {
+    }
 
-    /*
-     * The bandwidth rate in Mbps.
+    /**
+     * Get the innerProperties property: The properties of the bandwidth schedule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.rateInMbps", required = true)
-    private int rateInMbps;
-
-    /*
-     * The days of the week when this schedule is applicable.
-     */
-    @JsonProperty(value = "properties.days", required = true)
-    private List<DayOfWeek> days;
+    private BandwidthScheduleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the start property: The start time of the schedule in UTC.
@@ -49,7 +39,7 @@ public class BandwidthScheduleInner extends ArmBaseModel {
      * @return the start value.
      */
     public String start() {
-        return this.start;
+        return this.innerProperties() == null ? null : this.innerProperties().start();
     }
 
     /**
@@ -59,7 +49,10 @@ public class BandwidthScheduleInner extends ArmBaseModel {
      * @return the BandwidthScheduleInner object itself.
      */
     public BandwidthScheduleInner withStart(String start) {
-        this.start = start;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BandwidthScheduleProperties();
+        }
+        this.innerProperties().withStart(start);
         return this;
     }
 
@@ -69,7 +62,7 @@ public class BandwidthScheduleInner extends ArmBaseModel {
      * @return the stop value.
      */
     public String stop() {
-        return this.stop;
+        return this.innerProperties() == null ? null : this.innerProperties().stop();
     }
 
     /**
@@ -79,7 +72,10 @@ public class BandwidthScheduleInner extends ArmBaseModel {
      * @return the BandwidthScheduleInner object itself.
      */
     public BandwidthScheduleInner withStop(String stop) {
-        this.stop = stop;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BandwidthScheduleProperties();
+        }
+        this.innerProperties().withStop(stop);
         return this;
     }
 
@@ -89,7 +85,7 @@ public class BandwidthScheduleInner extends ArmBaseModel {
      * @return the rateInMbps value.
      */
     public int rateInMbps() {
-        return this.rateInMbps;
+        return this.innerProperties() == null ? 0 : this.innerProperties().rateInMbps();
     }
 
     /**
@@ -99,7 +95,10 @@ public class BandwidthScheduleInner extends ArmBaseModel {
      * @return the BandwidthScheduleInner object itself.
      */
     public BandwidthScheduleInner withRateInMbps(int rateInMbps) {
-        this.rateInMbps = rateInMbps;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BandwidthScheduleProperties();
+        }
+        this.innerProperties().withRateInMbps(rateInMbps);
         return this;
     }
 
@@ -109,7 +108,7 @@ public class BandwidthScheduleInner extends ArmBaseModel {
      * @return the days value.
      */
     public List<DayOfWeek> days() {
-        return this.days;
+        return this.innerProperties() == null ? null : this.innerProperties().days();
     }
 
     /**
@@ -119,7 +118,10 @@ public class BandwidthScheduleInner extends ArmBaseModel {
      * @return the BandwidthScheduleInner object itself.
      */
     public BandwidthScheduleInner withDays(List<DayOfWeek> days) {
-        this.days = days;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BandwidthScheduleProperties();
+        }
+        this.innerProperties().withDays(days);
         return this;
     }
 
@@ -131,20 +133,15 @@ public class BandwidthScheduleInner extends ArmBaseModel {
     @Override
     public void validate() {
         super.validate();
-        if (start() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property start in model BandwidthScheduleInner"));
-        }
-        if (stop() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property stop in model BandwidthScheduleInner"));
-        }
-        if (days() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property days in model BandwidthScheduleInner"));
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model BandwidthScheduleInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BandwidthScheduleInner.class);
 }

@@ -4,23 +4,36 @@
 
 package com.azure.communication.email.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Status of an email message that was sent previously. */
-@Fluent
+@Immutable
 public final class SendStatusResult {
     /*
      * System generated id of an email message sent.
      */
-    @JsonProperty(value = "messageId", required = true)
-    private String messageId;
+    private final String messageId;
 
     /*
      * The type indicating the status of a request.
      */
-    @JsonProperty(value = "status", required = true)
-    private SendStatus status;
+    private final SendStatus status;
+
+    /**
+     * Constructor for SendStatusResult
+     * @param messageId the system generated id of an email message sent
+     * @param status the status of a request
+     */
+    @JsonCreator
+    public SendStatusResult(
+        @JsonProperty(value = "messageId", required = true) String messageId,
+        @JsonProperty(value = "status", required = true) SendStatus status
+    ) {
+        this.messageId = messageId;
+        this.status = status;
+    }
 
     /**
      * Get the messageId property: System generated id of an email message sent.
@@ -32,33 +45,11 @@ public final class SendStatusResult {
     }
 
     /**
-     * Set the messageId property: System generated id of an email message sent.
-     *
-     * @param messageId the messageId value to set.
-     * @return the SendStatusResult object itself.
-     */
-    public SendStatusResult setMessageId(String messageId) {
-        this.messageId = messageId;
-        return this;
-    }
-
-    /**
      * Get the status property: The type indicating the status of a request.
      *
      * @return the status value.
      */
     public SendStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: The type indicating the status of a request.
-     *
-     * @param status the status value to set.
-     * @return the SendStatusResult object itself.
-     */
-    public SendStatusResult setStatus(SendStatus status) {
-        this.status = status;
-        return this;
     }
 }

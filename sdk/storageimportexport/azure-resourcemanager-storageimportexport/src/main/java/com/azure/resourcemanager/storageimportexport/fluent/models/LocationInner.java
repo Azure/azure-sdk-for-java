@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.storageimportexport.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Provides information about an Azure data center location. */
-@JsonFlatten
 @Fluent
-public class LocationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationInner.class);
-
+public final class LocationInner {
     /*
      * Specifies the resource identifier of the location.
      */
@@ -24,8 +18,7 @@ public class LocationInner {
     private String id;
 
     /*
-     * Specifies the name of the location. Use List Locations to get all
-     * supported locations.
+     * Specifies the name of the location. Use List Locations to get all supported locations.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -37,80 +30,14 @@ public class LocationInner {
     private String type;
 
     /*
-     * The recipient name to use when shipping the drives to the Azure data
-     * center.
+     * location properties
      */
-    @JsonProperty(value = "properties.recipientName")
-    private String recipientName;
+    @JsonProperty(value = "properties")
+    private LocationProperties innerProperties;
 
-    /*
-     * The first line of the street address to use when shipping the drives to
-     * the Azure data center.
-     */
-    @JsonProperty(value = "properties.streetAddress1")
-    private String streetAddress1;
-
-    /*
-     * The second line of the street address to use when shipping the drives to
-     * the Azure data center.
-     */
-    @JsonProperty(value = "properties.streetAddress2")
-    private String streetAddress2;
-
-    /*
-     * The city name to use when shipping the drives to the Azure data center.
-     */
-    @JsonProperty(value = "properties.city")
-    private String city;
-
-    /*
-     * The state or province to use when shipping the drives to the Azure data
-     * center.
-     */
-    @JsonProperty(value = "properties.stateOrProvince")
-    private String stateOrProvince;
-
-    /*
-     * The postal code to use when shipping the drives to the Azure data
-     * center.
-     */
-    @JsonProperty(value = "properties.postalCode")
-    private String postalCode;
-
-    /*
-     * The country or region to use when shipping the drives to the Azure data
-     * center.
-     */
-    @JsonProperty(value = "properties.countryOrRegion")
-    private String countryOrRegion;
-
-    /*
-     * The phone number for the Azure data center.
-     */
-    @JsonProperty(value = "properties.phone")
-    private String phone;
-
-    /*
-     * Additional shipping information for customer, specific to datacenter to
-     * which customer should send their disks.
-     */
-    @JsonProperty(value = "properties.additionalShippingInformation")
-    private String additionalShippingInformation;
-
-    /*
-     * A list of carriers that are supported at this location.
-     */
-    @JsonProperty(value = "properties.supportedCarriers")
-    private List<String> supportedCarriers;
-
-    /*
-     * A list of location IDs that should be used to ship shipping drives to
-     * for jobs created against the current location. If the current location
-     * is active, it will be part of the list. If it is temporarily closed due
-     * to maintenance, this list may contain other locations.
-     */
-    @JsonProperty(value = "properties.alternateLocations")
-    private List<String> alternateLocations;
+    /** Creates an instance of LocationInner class. */
+    public LocationInner() {
+    }
 
     /**
      * Get the id property: Specifies the resource identifier of the location.
@@ -173,12 +100,21 @@ public class LocationInner {
     }
 
     /**
+     * Get the innerProperties property: location properties.
+     *
+     * @return the innerProperties value.
+     */
+    private LocationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the recipientName property: The recipient name to use when shipping the drives to the Azure data center.
      *
      * @return the recipientName value.
      */
     public String recipientName() {
-        return this.recipientName;
+        return this.innerProperties() == null ? null : this.innerProperties().recipientName();
     }
 
     /**
@@ -188,7 +124,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withRecipientName(String recipientName) {
-        this.recipientName = recipientName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withRecipientName(recipientName);
         return this;
     }
 
@@ -199,7 +138,7 @@ public class LocationInner {
      * @return the streetAddress1 value.
      */
     public String streetAddress1() {
-        return this.streetAddress1;
+        return this.innerProperties() == null ? null : this.innerProperties().streetAddress1();
     }
 
     /**
@@ -210,7 +149,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withStreetAddress1(String streetAddress1) {
-        this.streetAddress1 = streetAddress1;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withStreetAddress1(streetAddress1);
         return this;
     }
 
@@ -221,7 +163,7 @@ public class LocationInner {
      * @return the streetAddress2 value.
      */
     public String streetAddress2() {
-        return this.streetAddress2;
+        return this.innerProperties() == null ? null : this.innerProperties().streetAddress2();
     }
 
     /**
@@ -232,7 +174,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withStreetAddress2(String streetAddress2) {
-        this.streetAddress2 = streetAddress2;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withStreetAddress2(streetAddress2);
         return this;
     }
 
@@ -242,7 +187,7 @@ public class LocationInner {
      * @return the city value.
      */
     public String city() {
-        return this.city;
+        return this.innerProperties() == null ? null : this.innerProperties().city();
     }
 
     /**
@@ -252,7 +197,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withCity(String city) {
-        this.city = city;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withCity(city);
         return this;
     }
 
@@ -262,7 +210,7 @@ public class LocationInner {
      * @return the stateOrProvince value.
      */
     public String stateOrProvince() {
-        return this.stateOrProvince;
+        return this.innerProperties() == null ? null : this.innerProperties().stateOrProvince();
     }
 
     /**
@@ -272,7 +220,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withStateOrProvince(String stateOrProvince) {
-        this.stateOrProvince = stateOrProvince;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withStateOrProvince(stateOrProvince);
         return this;
     }
 
@@ -282,7 +233,7 @@ public class LocationInner {
      * @return the postalCode value.
      */
     public String postalCode() {
-        return this.postalCode;
+        return this.innerProperties() == null ? null : this.innerProperties().postalCode();
     }
 
     /**
@@ -292,7 +243,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withPostalCode(postalCode);
         return this;
     }
 
@@ -302,7 +256,7 @@ public class LocationInner {
      * @return the countryOrRegion value.
      */
     public String countryOrRegion() {
-        return this.countryOrRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().countryOrRegion();
     }
 
     /**
@@ -312,7 +266,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withCountryOrRegion(String countryOrRegion) {
-        this.countryOrRegion = countryOrRegion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withCountryOrRegion(countryOrRegion);
         return this;
     }
 
@@ -322,7 +279,7 @@ public class LocationInner {
      * @return the phone value.
      */
     public String phone() {
-        return this.phone;
+        return this.innerProperties() == null ? null : this.innerProperties().phone();
     }
 
     /**
@@ -332,7 +289,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withPhone(String phone) {
-        this.phone = phone;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withPhone(phone);
         return this;
     }
 
@@ -343,7 +303,7 @@ public class LocationInner {
      * @return the additionalShippingInformation value.
      */
     public String additionalShippingInformation() {
-        return this.additionalShippingInformation;
+        return this.innerProperties() == null ? null : this.innerProperties().additionalShippingInformation();
     }
 
     /**
@@ -354,7 +314,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withAdditionalShippingInformation(String additionalShippingInformation) {
-        this.additionalShippingInformation = additionalShippingInformation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withAdditionalShippingInformation(additionalShippingInformation);
         return this;
     }
 
@@ -364,7 +327,7 @@ public class LocationInner {
      * @return the supportedCarriers value.
      */
     public List<String> supportedCarriers() {
-        return this.supportedCarriers;
+        return this.innerProperties() == null ? null : this.innerProperties().supportedCarriers();
     }
 
     /**
@@ -374,7 +337,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withSupportedCarriers(List<String> supportedCarriers) {
-        this.supportedCarriers = supportedCarriers;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withSupportedCarriers(supportedCarriers);
         return this;
     }
 
@@ -386,7 +352,7 @@ public class LocationInner {
      * @return the alternateLocations value.
      */
     public List<String> alternateLocations() {
-        return this.alternateLocations;
+        return this.innerProperties() == null ? null : this.innerProperties().alternateLocations();
     }
 
     /**
@@ -398,7 +364,10 @@ public class LocationInner {
      * @return the LocationInner object itself.
      */
     public LocationInner withAlternateLocations(List<String> alternateLocations) {
-        this.alternateLocations = alternateLocations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocationProperties();
+        }
+        this.innerProperties().withAlternateLocations(alternateLocations);
         return this;
     }
 
@@ -408,5 +377,8 @@ public class LocationInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

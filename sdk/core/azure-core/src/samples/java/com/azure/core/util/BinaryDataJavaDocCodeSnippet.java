@@ -28,6 +28,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Codesnippets for {@link BinaryData}.
@@ -205,6 +207,19 @@ public class BinaryDataJavaDocCodeSnippet {
         BinaryData binaryData = BinaryData.fromByteBuffer(data);
         System.out.println(binaryData);
         // END: com.azure.core.util.BinaryData.fromByteBuffer#ByteBuffer
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromListByteBuffer(List)}.
+     */
+    public void fromListByteBuffer() {
+        // BEGIN: com.azure.core.util.BinaryData.fromListByteBuffer#List
+        final List<ByteBuffer> data = Stream.of("Some ", "data")
+            .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
+            .collect(Collectors.toList());
+        BinaryData binaryData = BinaryData.fromListByteBuffer(data);
+        System.out.println(binaryData);
+        // END: com.azure.core.util.BinaryData.fromListByteBuffer#List
     }
 
     /**

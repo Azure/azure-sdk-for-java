@@ -11,6 +11,7 @@ import com.azure.resourcemanager.devcenter.models.Catalog;
 import com.azure.resourcemanager.devcenter.models.CatalogSyncState;
 import com.azure.resourcemanager.devcenter.models.CatalogUpdate;
 import com.azure.resourcemanager.devcenter.models.GitCatalog;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

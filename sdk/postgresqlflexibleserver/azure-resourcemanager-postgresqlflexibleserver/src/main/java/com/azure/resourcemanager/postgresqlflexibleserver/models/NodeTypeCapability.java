@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** node type capability. */
 @Immutable
 public final class NodeTypeCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodeTypeCapability.class);
-
     /*
      * note type name
      */
@@ -31,6 +27,10 @@ public final class NodeTypeCapability {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
+
+    /** Creates an instance of NodeTypeCapability class. */
+    public NodeTypeCapability() {
+    }
 
     /**
      * Get the name property: note type name.

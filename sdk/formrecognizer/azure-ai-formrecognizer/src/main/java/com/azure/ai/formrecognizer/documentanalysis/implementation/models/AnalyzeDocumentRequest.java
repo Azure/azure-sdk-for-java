@@ -23,6 +23,9 @@ public final class AnalyzeDocumentRequest {
     @JsonProperty(value = "base64Source")
     private byte[] base64Source;
 
+    /** Creates an instance of AnalyzeDocumentRequest class. */
+    public AnalyzeDocumentRequest() {}
+
     /**
      * Get the urlSource property: Document URL to analyze.
      *

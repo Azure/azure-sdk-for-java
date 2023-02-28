@@ -64,7 +64,7 @@ public final class DataCollectionRuleAssociationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientDataCol")
-    private interface DataCollectionRuleAssociationsService {
+    public interface DataCollectionRuleAssociationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations")
         @ExpectedResponses({200})
@@ -784,21 +784,6 @@ public final class DataCollectionRuleAssociationsClientImpl
      *
      * @param resourceUri The identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataCollectionRuleAssociationProxyOnlyResourceInner get(String resourceUri, String associationName) {
-        return getAsync(resourceUri, associationName).block();
-    }
-
-    /**
-     * Returns the specified association.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -809,6 +794,21 @@ public final class DataCollectionRuleAssociationsClientImpl
     public Response<DataCollectionRuleAssociationProxyOnlyResourceInner> getWithResponse(
         String resourceUri, String associationName, Context context) {
         return getWithResponseAsync(resourceUri, associationName, context).block();
+    }
+
+    /**
+     * Returns the specified association.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param associationName The name of the association. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of generic ARM proxy resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataCollectionRuleAssociationProxyOnlyResourceInner get(String resourceUri, String associationName) {
+        return getWithResponse(resourceUri, associationName, Context.NONE).getValue();
     }
 
     /**
@@ -900,24 +900,6 @@ public final class DataCollectionRuleAssociationsClientImpl
      *
      * @param resourceUri The identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
-     * @param body The payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataCollectionRuleAssociationProxyOnlyResourceInner> createAsync(
-        String resourceUri, String associationName, DataCollectionRuleAssociationProxyOnlyResourceInner body) {
-        return createWithResponseAsync(resourceUri, associationName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates an association.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -929,22 +911,6 @@ public final class DataCollectionRuleAssociationsClientImpl
         final DataCollectionRuleAssociationProxyOnlyResourceInner body = null;
         return createWithResponseAsync(resourceUri, associationName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates an association.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataCollectionRuleAssociationProxyOnlyResourceInner create(String resourceUri, String associationName) {
-        final DataCollectionRuleAssociationProxyOnlyResourceInner body = null;
-        return createAsync(resourceUri, associationName, body).block();
     }
 
     /**
@@ -966,6 +932,22 @@ public final class DataCollectionRuleAssociationsClientImpl
         DataCollectionRuleAssociationProxyOnlyResourceInner body,
         Context context) {
         return createWithResponseAsync(resourceUri, associationName, body, context).block();
+    }
+
+    /**
+     * Creates or updates an association.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param associationName The name of the association. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of generic ARM proxy resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataCollectionRuleAssociationProxyOnlyResourceInner create(String resourceUri, String associationName) {
+        final DataCollectionRuleAssociationProxyOnlyResourceInner body = null;
+        return createWithResponse(resourceUri, associationName, body, Context.NONE).getValue();
     }
 
     /**
@@ -1055,20 +1037,6 @@ public final class DataCollectionRuleAssociationsClientImpl
      *
      * @param resourceUri The identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceUri, String associationName) {
-        deleteAsync(resourceUri, associationName).block();
-    }
-
-    /**
-     * Deletes an association.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1078,6 +1046,20 @@ public final class DataCollectionRuleAssociationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String associationName, Context context) {
         return deleteWithResponseAsync(resourceUri, associationName, context).block();
+    }
+
+    /**
+     * Deletes an association.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param associationName The name of the association. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceUri, String associationName) {
+        deleteWithResponse(resourceUri, associationName, Context.NONE);
     }
 
     /**

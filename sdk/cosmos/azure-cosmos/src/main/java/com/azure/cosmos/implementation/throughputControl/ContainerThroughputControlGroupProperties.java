@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 import java.util.Set;
@@ -16,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ContainerThroughputControlGroupProperties {
@@ -24,11 +26,17 @@ public class ContainerThroughputControlGroupProperties {
     private final AtomicReference<ThroughputControlGroupInternal> defaultGroup;
     private final Set<ThroughputControlGroupInternal> throughputControlGroupSet;
     private final Set<String> supressInitErrorGroupSet;
+    private final AtomicReference<Mono<Integer>> throughputQueryMonoReference;
+    private final String containerNameLink;
 
-    public ContainerThroughputControlGroupProperties() {
+    public ContainerThroughputControlGroupProperties(String containerNameLink) {
+        checkArgument(StringUtils.isNotEmpty(containerNameLink), "Argument 'containerNameLink' should not be empty");
+
+        this.containerNameLink = containerNameLink;
         this.defaultGroup = new AtomicReference<>();
         this.throughputControlGroupSet = ConcurrentHashMap.newKeySet();
         this.supressInitErrorGroupSet = ConcurrentHashMap.newKeySet();
+        this.throughputQueryMonoReference = new AtomicReference<>();
     }
 
     /***
@@ -38,7 +46,7 @@ public class ContainerThroughputControlGroupProperties {
      *
      * @return the total size of distinct throughput control groups enabled on the container.
      */
-    public Pair<Integer, Boolean> enableThroughputControlGroup(ThroughputControlGroupInternal group) {
+    public Pair<Integer, Boolean> enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group should not be null");
 
         if (group.isDefault()) {
@@ -81,12 +89,19 @@ public class ContainerThroughputControlGroupProperties {
             });
 
         this.throughputControlGroupSet.add(group);
+        if (!this.throughputQueryMonoReference.compareAndSet(null, throughputQueryMono)) {
+            logger.debug("ThroughputQueryMono has exists for container {}", containerNameLink);
+        }
 
         return Pair.of(this.throughputControlGroupSet.size(), updatedGroupConfig.get());
     }
 
     public Set<ThroughputControlGroupInternal> getThroughputControlGroupSet() {
         return this.throughputControlGroupSet;
+    }
+
+    public Mono<Integer> getThroughputQueryMono() {
+        return this.throughputQueryMonoReference.get();
     }
 
     public boolean allowRequestToContinueOnInitError(RxDocumentServiceRequest request) {

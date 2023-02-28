@@ -62,7 +62,7 @@
   {
     "topic": "/subscriptions/id/resourcegroups/rg/providers/Microsoft.ServiceBus/namespaces/testns1",
     "subject": "topics/topic1/subscriptions/sub1",
-    "eventType": "Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListener",
+    "eventType": "Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners",
     "eventTime": "2018-02-14T05:12:53.4133526Z",
     "id": "dede87b0-3656-419c-acaf-70c95ddc60f5",
     "data": {

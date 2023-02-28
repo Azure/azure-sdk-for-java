@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeploymentScaleType. */
+/** Deployment scale type. */
 public final class DeploymentScaleType extends ExpandableStringEnum<DeploymentScaleType> {
     /** Static value Standard for DeploymentScaleType. */
     public static final DeploymentScaleType STANDARD = fromString("Standard");

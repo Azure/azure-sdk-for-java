@@ -33,20 +33,8 @@ public class ScenarioOptions {
     @Value("${METRIC_INTERVAL_SEC:60}")
     private int metricIntervalSec;
 
-    @Value("${UPDATE_CHECKPOINT:false}")
-    private boolean updateCheckpoint;
-
-    @Value("${NEED_SEND_EVENT_HUB:false}")
-    private boolean needSendEventHub;
-
     @Value("${SECOND_EVENTHUBS_EVENT_HUB_NAME:#{null}}")
     private String secondEventhubsEventHubName;
-
-    @Value("${RECEIVE_BATCH_SIZE:0}")
-    private int receiveBatchSize;
-
-    @Value("${RECEIVE_BATCH_TIMEOUT:0}")
-    private int receiveBatchTimeout;
 
     public String getTestClass() {
         return testClass;
@@ -76,23 +64,8 @@ public class ScenarioOptions {
         return metricIntervalSec;
     }
 
-    public boolean isUpdateCheckpoint() {
-        return updateCheckpoint;
-    }
-
-    public boolean isNeedSendEventHub() {
-        return needSendEventHub;
-    }
-
     public String getSecondEventhubsEventHubName() {
         return secondEventhubsEventHubName;
     }
 
-    public int getReceiveBatchSize() {
-        return receiveBatchSize;
-    }
-
-    public int getReceiveBatchTimeout() {
-        return receiveBatchTimeout;
-    }
 }

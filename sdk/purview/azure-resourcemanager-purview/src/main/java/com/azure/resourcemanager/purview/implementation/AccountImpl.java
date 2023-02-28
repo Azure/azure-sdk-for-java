@@ -133,6 +133,10 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AccountInner innerModel() {
         return this.innerObject;
     }
@@ -226,16 +230,12 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
         return this;
     }
 
-    public AccessKeys listKeys() {
-        return serviceManager.accounts().listKeys(resourceGroupName, accountName);
-    }
-
     public Response<AccessKeys> listKeysWithResponse(Context context) {
         return serviceManager.accounts().listKeysWithResponse(resourceGroupName, accountName, context);
     }
 
-    public void addRootCollectionAdmin(CollectionAdminUpdate collectionAdminUpdate) {
-        serviceManager.accounts().addRootCollectionAdmin(resourceGroupName, accountName, collectionAdminUpdate);
+    public AccessKeys listKeys() {
+        return serviceManager.accounts().listKeys(resourceGroupName, accountName);
     }
 
     public Response<Void> addRootCollectionAdminWithResponse(
@@ -243,6 +243,10 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
         return serviceManager
             .accounts()
             .addRootCollectionAdminWithResponse(resourceGroupName, accountName, collectionAdminUpdate, context);
+    }
+
+    public void addRootCollectionAdmin(CollectionAdminUpdate collectionAdminUpdate) {
+        serviceManager.accounts().addRootCollectionAdmin(resourceGroupName, accountName, collectionAdminUpdate);
     }
 
     public AccountImpl withRegion(Region location) {
@@ -265,14 +269,14 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
         }
     }
 
-    public AccountImpl withSku(AccountSku sku) {
-        this.innerModel().withSku(sku);
-        return this;
-    }
-
     public AccountImpl withIdentity(Identity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateAccountUpdateParameters.withIdentity(identity);
+            return this;
+        }
     }
 
     public AccountImpl withCloudConnectors(CloudConnectors cloudConnectors) {

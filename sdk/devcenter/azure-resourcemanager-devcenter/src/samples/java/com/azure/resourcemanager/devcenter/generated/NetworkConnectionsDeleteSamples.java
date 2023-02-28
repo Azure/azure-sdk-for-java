@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkConnections Delete. */
 public final class NetworkConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/NetworkConnections_Delete.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/NetworkConnections_Delete.json
      */
     /**
      * Sample code: NetworkConnections_Delete.
@@ -17,6 +17,6 @@ public final class NetworkConnectionsDeleteSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void networkConnectionsDelete(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.networkConnections().delete("rg1", "{networkConnectionName}", Context.NONE);
+        manager.networkConnections().delete("rg1", "eastusnetwork", Context.NONE);
     }
 }

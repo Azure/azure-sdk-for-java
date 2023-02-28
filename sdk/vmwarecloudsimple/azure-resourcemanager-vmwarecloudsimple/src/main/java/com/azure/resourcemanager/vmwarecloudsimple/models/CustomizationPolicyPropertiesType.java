@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomizationPolicyPropertiesType. */
+/** The type of customization (Linux or Windows). */
 public final class CustomizationPolicyPropertiesType extends ExpandableStringEnum<CustomizationPolicyPropertiesType> {
     /** Static value LINUX for CustomizationPolicyPropertiesType. */
     public static final CustomizationPolicyPropertiesType LINUX = fromString("LINUX");
 
     /** Static value WINDOWS for CustomizationPolicyPropertiesType. */
     public static final CustomizationPolicyPropertiesType WINDOWS = fromString("WINDOWS");
+
+    /**
+     * Creates a new instance of CustomizationPolicyPropertiesType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomizationPolicyPropertiesType() {
+    }
 
     /**
      * Creates or finds a CustomizationPolicyPropertiesType from its string representation.
@@ -27,7 +36,11 @@ public final class CustomizationPolicyPropertiesType extends ExpandableStringEnu
         return fromString(name, CustomizationPolicyPropertiesType.class);
     }
 
-    /** @return known CustomizationPolicyPropertiesType values. */
+    /**
+     * Gets known CustomizationPolicyPropertiesType values.
+     *
+     * @return known CustomizationPolicyPropertiesType values.
+     */
     public static Collection<CustomizationPolicyPropertiesType> values() {
         return values(CustomizationPolicyPropertiesType.class);
     }

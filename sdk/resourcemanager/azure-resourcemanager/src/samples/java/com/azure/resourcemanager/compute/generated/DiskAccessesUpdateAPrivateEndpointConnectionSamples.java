@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.compute.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.compute.models.PrivateLinkServiceConnectionState;
@@ -35,6 +34,6 @@ public final class DiskAccessesUpdateAPrivateEndpointConnectionSamples {
                         new PrivateLinkServiceConnectionState()
                             .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
                             .withDescription("Approving myPrivateEndpointConnection")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

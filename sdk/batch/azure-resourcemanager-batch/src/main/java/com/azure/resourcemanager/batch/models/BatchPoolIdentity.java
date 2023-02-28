@@ -29,6 +29,10 @@ public class BatchPoolIdentity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentities> userAssignedIdentities;
 
+    /** Creates an instance of BatchPoolIdentity class. */
+    public BatchPoolIdentity() {
+    }
+
     /**
      * Get the type property: The type of identity used for the Batch Pool.
      *

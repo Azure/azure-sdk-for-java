@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Cloud error. */
 @Fluent
 public final class CloudError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudError.class);
-
     /*
      * Cloud error code.
      */
@@ -44,6 +40,10 @@ public final class CloudError {
      */
     @JsonProperty(value = "additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<AdditionalErrorInfo> additionalInfo;
+
+    /** Creates an instance of CloudError class. */
+    public CloudError() {
+    }
 
     /**
      * Get the code property: Cloud error code.

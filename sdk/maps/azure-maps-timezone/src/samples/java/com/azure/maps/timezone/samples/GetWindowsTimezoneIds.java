@@ -3,8 +3,7 @@
 
 package com.azure.maps.timezone.samples;
 
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.maps.timezone.TimeZoneAsyncClient;
 import com.azure.maps.timezone.TimeZoneClient;
 import com.azure.maps.timezone.TimeZoneClientBuilder;
@@ -12,41 +11,43 @@ import com.azure.maps.timezone.TimeZoneClientBuilder;
 public class GetWindowsTimezoneIds {
     public static void main(String[] args) {
         // Authenticates using subscription key
-        // AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
+        AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
         // builder.credential(keyCredential);
 
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        // DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        TimeZoneClient client = new TimeZoneClientBuilder() 
-            .credential(tokenCredential)
+        TimeZoneClient client = new TimeZoneClientBuilder()
+            .credential(keyCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildClient();
 
         // Get Timezone Enum Windows -
         // https://docs.microsoft.com/en-us/rest/api/maps/timezone/get-timezone-enum-windows
         // his API returns a full list of Windows Time Zone IDs.
+        System.out.println(" Get Timezone Enum Windows Sync Client");
         // BEGIN: com.azure.maps.timezone.sync.get_timezone_enum_windows
         client.getWindowsTimezoneIds();
         // END: com.azure.maps.timezone.sync.get_timezone_enum_windows
 
         // Authenticates using subscription key
-        // AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
+        AzureKeyCredential asyncClientKeyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
         // builder.credential(keyCredential);
 
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
 
         TimeZoneAsyncClient asyncClient = new TimeZoneClientBuilder()
-            .credential(asyncClientTokenCredential)
+            .credential(asyncClientKeyCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildAsyncClient();
 
         // Get Timezone Enum Windows -
         // https://docs.microsoft.com/en-us/rest/api/maps/timezone/get-timezone-enum-windows
         // his API returns a full list of Windows Time Zone IDs.
+        System.out.println(" Get Timezone Enum Windows Async Client");
         // BEGIN: com.azure.maps.timezone.async.get_timezone_enum_windows
         asyncClient.getWindowsTimezoneIds();
         // END: com.azure.maps.timezone.async.get_timezone_enum_windows

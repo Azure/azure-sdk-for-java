@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a date and time. */
@@ -17,8 +18,7 @@ public final class OperatingHoursTime {
     private String date;
 
     /*
-     * Hours are in the 24 hour format in the local time of a POI; possible
-     * values are 0 - 23.
+     * Hours are in the 24 hour format in the local time of a POI; possible values are 0 - 23.
      */
     @JsonProperty(value = "hour", access = JsonProperty.Access.WRITE_ONLY)
     private Integer hour;
@@ -28,6 +28,19 @@ public final class OperatingHoursTime {
      */
     @JsonProperty(value = "minute", access = JsonProperty.Access.WRITE_ONLY)
     private Integer minute;
+
+    /** Creates an instance of OperatingHoursTime class. */
+    @JsonCreator
+    private OperatingHoursTime() {}
+
+    /**
+     * Get the date property: Represents current calendar date in POI time zone, e.g. "2019-02-07".
+     *
+     * @return the date value.
+     */
+    public String getDate() {
+        return this.date;
+    }
 
     /**
      * OperatingHoursTime Constructor
@@ -40,15 +53,6 @@ public final class OperatingHoursTime {
         this.date = date;
         this.hour = hour;
         this.minute = minute;
-    }
-
-    /**
-     * Get the date property: Represents current calendar date in POI time zone, e.g. "2019-02-07".
-     *
-     * @return the date value.
-     */
-    public String getDate() {
-        return this.date;
     }
 
     /**

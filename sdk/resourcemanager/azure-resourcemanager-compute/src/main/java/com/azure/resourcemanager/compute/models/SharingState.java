@@ -27,6 +27,15 @@ public final class SharingState extends ExpandableStringEnum<SharingState> {
     public static final SharingState UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of SharingState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SharingState() {
+    }
+
+    /**
      * Creates or finds a SharingState from its string representation.
      *
      * @param name a name to look for.

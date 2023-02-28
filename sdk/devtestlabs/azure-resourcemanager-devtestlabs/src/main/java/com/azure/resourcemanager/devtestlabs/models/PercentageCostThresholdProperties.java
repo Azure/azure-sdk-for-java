@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a percentage cost threshold. */
 @Fluent
 public final class PercentageCostThresholdProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PercentageCostThresholdProperties.class);
-
     /*
      * The cost threshold value.
      */
     @JsonProperty(value = "thresholdValue")
     private Double thresholdValue;
+
+    /** Creates an instance of PercentageCostThresholdProperties class. */
+    public PercentageCostThresholdProperties() {
+    }
 
     /**
      * Get the thresholdValue property: The cost threshold value.

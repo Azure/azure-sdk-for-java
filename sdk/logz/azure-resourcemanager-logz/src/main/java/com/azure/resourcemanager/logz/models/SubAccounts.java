@@ -19,7 +19,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LogzMonitorResource> list(String resourceGroupName, String monitorName);
 
@@ -32,24 +32,9 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LogzMonitorResource> list(String resourceGroupName, String monitorName, Context context);
-
-    /**
-     * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    LogzMonitorResource create(
-        String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceInner body);
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
@@ -90,12 +75,14 @@ public interface SubAccounts {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sub account under a given monitor resource.
+     * @return a sub account under a given monitor resource along with {@link Response}.
      */
-    LogzMonitorResource get(String resourceGroupName, String monitorName, String subAccountName);
+    Response<LogzMonitorResource> getWithResponse(
+        String resourceGroupName, String monitorName, String subAccountName, Context context);
 
     /**
      * Get a sub account under a given monitor resource.
@@ -103,14 +90,12 @@ public interface SubAccounts {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a sub account under a given monitor resource.
      */
-    Response<LogzMonitorResource> getWithResponse(
-        String resourceGroupName, String monitorName, String subAccountName, Context context);
+    LogzMonitorResource get(String resourceGroupName, String monitorName, String subAccountName);
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
@@ -143,25 +128,12 @@ public interface SubAccounts {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    LogzMonitorResource update(String resourceGroupName, String monitorName, String subAccountName);
-
-    /**
-     * Update a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
      * @param body The parameters for a PATCH request to a monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<LogzMonitorResource> updateWithResponse(
         String resourceGroupName,
@@ -169,6 +141,19 @@ public interface SubAccounts {
         String subAccountName,
         LogzMonitorResourceUpdateParameters body,
         Context context);
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param subAccountName Sub Account resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    LogzMonitorResource update(String resourceGroupName, String monitorName, String subAccountName);
 
     /**
      * List the resources currently being monitored by the Logz sub account resource.
@@ -179,7 +164,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources(
         String resourceGroupName, String monitorName, String subAccountName);
@@ -194,9 +179,24 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources(
+        String resourceGroupName, String monitorName, String subAccountName, Context context);
+
+    /**
+     * Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param subAccountName Sub Account resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of payload to be passed while installing VM agent along with {@link Response}.
+     */
+    Response<VMExtensionPayload> vMHostPayloadWithResponse(
         String resourceGroupName, String monitorName, String subAccountName, Context context);
 
     /**
@@ -213,21 +213,6 @@ public interface SubAccounts {
     VMExtensionPayload vMHostPayload(String resourceGroupName, String monitorName, String subAccountName);
 
     /**
-     * Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
-     */
-    Response<VMExtensionPayload> vMHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, String subAccountName, Context context);
-
-    /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -236,7 +221,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVmHostUpdate(String resourceGroupName, String monitorName, String subAccountName);
 
@@ -251,7 +236,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVmHostUpdate(
         String resourceGroupName, String monitorName, String subAccountName, VMHostUpdateRequest body, Context context);
@@ -265,7 +250,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVMHosts(String resourceGroupName, String monitorName, String subAccountName);
 
@@ -279,7 +264,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVMHosts(
         String resourceGroupName, String monitorName, String subAccountName, Context context);

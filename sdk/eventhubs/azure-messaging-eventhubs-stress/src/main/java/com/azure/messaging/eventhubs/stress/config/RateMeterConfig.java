@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 
+/**
+ * Configuration for RateMeter
+ */
 @Configuration
 public class RateMeterConfig {
     @Autowired

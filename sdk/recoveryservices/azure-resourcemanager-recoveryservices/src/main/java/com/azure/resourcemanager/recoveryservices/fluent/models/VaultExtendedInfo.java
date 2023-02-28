@@ -34,6 +34,10 @@ public final class VaultExtendedInfo {
     @JsonProperty(value = "algorithm")
     private String algorithm;
 
+    /** Creates an instance of VaultExtendedInfo class. */
+    public VaultExtendedInfo() {
+    }
+
     /**
      * Get the integrityKey property: Integrity key.
      *

@@ -53,6 +53,14 @@ public interface Agreement {
     AcceptanceMode acceptanceMode();
 
     /**
+     * Gets the billingProfileInfo property: The list of billing profiles associated with agreement and present only for
+     * specific agreements.
+     *
+     * @return the billingProfileInfo value.
+     */
+    BillingProfileInfo billingProfileInfo();
+
+    /**
      * Gets the effectiveDate property: The date from which the agreement is effective.
      *
      * @return the effectiveDate value.

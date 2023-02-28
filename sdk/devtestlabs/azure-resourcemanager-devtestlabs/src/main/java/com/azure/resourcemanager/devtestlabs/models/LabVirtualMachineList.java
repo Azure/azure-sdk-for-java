@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.fluent.models.LabVirtualMachineInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of a list operation. */
 @Fluent
 public final class LabVirtualMachineList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabVirtualMachineList.class);
-
     /*
      * Results of the list operation.
      */
@@ -27,6 +23,10 @@ public final class LabVirtualMachineList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of LabVirtualMachineList class. */
+    public LabVirtualMachineList() {
+    }
 
     /**
      * Get the value property: Results of the list operation.

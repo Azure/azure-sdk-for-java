@@ -55,7 +55,7 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupEnginesService {
+    public interface BackupEnginesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

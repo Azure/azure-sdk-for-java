@@ -58,6 +58,7 @@
         <module>spring-cloud-azure-trace-sleuth</module>
         <module>spring-cloud-azure-starter-jdbc-mysql</module>
         <module>spring-cloud-azure-starter-jdbc-postgresql</module>
+        <module>spring-cloud-azure-starter-redis</module>
         <module>spring-cloud-azure-integration-tests</module>
       </modules>
     </profile>
@@ -67,9 +68,6 @@
       <modules>
         <module>../../eng/code-quality-reports</module>
         <module>../boms/spring-cloud-azure-dependencies</module>
-        <module>../jdbc/azure-identity-providers-core</module>
-        <module>../jdbc/azure-identity-providers-jdbc-mysql</module>
-        <module>../jdbc/azure-identity-providers-jdbc-postgresql</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>
         <module>spring-messaging-azure-servicebus</module>
@@ -113,6 +111,7 @@
         <module>spring-cloud-azure-trace-sleuth</module>
         <module>spring-cloud-azure-starter-jdbc-mysql</module>
         <module>spring-cloud-azure-starter-jdbc-postgresql</module>
+        <module>spring-cloud-azure-starter-redis</module>
       </modules>
     </profile>
   </profiles>

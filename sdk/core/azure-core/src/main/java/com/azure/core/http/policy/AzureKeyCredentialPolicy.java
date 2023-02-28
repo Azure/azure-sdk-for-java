@@ -4,15 +4,14 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -24,8 +23,7 @@ import java.util.Objects;
 public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
     // AzureKeyCredentialPolicy can be a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredentialPolicy.class);
-    private final String name;
-    private final String nameLowerCase;
+    private final HttpHeaderName name;
     private final AzureKeyCredential credential;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
@@ -36,8 +34,7 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
                     new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
             }
 
-            HttpHeadersHelper.setNoKeyFormatting(context.getHttpRequest().getHeaders(), nameLowerCase, name,
-                credential.getKey());
+            context.getHttpRequest().setHeader(name, credential.getKey());
         }
     };
 
@@ -56,8 +53,7 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty."));
         }
 
-        this.name = name;
-        this.nameLowerCase = name.toLowerCase(Locale.ROOT);
+        this.name = HttpHeaderName.fromString(name);
         this.credential = credential;
     }
 

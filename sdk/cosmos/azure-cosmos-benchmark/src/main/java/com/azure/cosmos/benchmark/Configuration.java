@@ -109,6 +109,9 @@ public class Configuration {
     @Parameter(names = "-encryptionEnabled", description = "Control switch to enable the encryption operation")
     private boolean encryptionEnabled = false;
 
+    @Parameter(names = "-tupleSize", description = "Number of cosmos identity tuples to be queried using readMany")
+    private int tupleSize = 1;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -129,7 +132,9 @@ public class Configuration {
         + "\tCtlWorkload - run a ctl workflow.*\n"
         + "\tReadAllItemsOfLogicalPartition - run a workload that uses readAllItems for a logical partition and prints throughput\n"
         + "\n\t* writes 10k documents initially, which are used in the reads"
-        + "\tLinkedInCtlWorkload - ctl for LinkedIn workload.*\n",
+        + "\tLinkedInCtlWorkload - ctl for LinkedIn workload.*\n"
+        + "\tReadManyLatency - run a workload for readMany for a finite number of cosmos identity tuples that prints both throughput and latency*\n"
+        + "\tReadManyThroughput - run a workload for readMany for a finite no of cosmos identity tuples that prints throughput*\n",
         converter = Operation.OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
@@ -238,7 +243,9 @@ public class Configuration {
         ReadThroughputWithMultipleClients,
         CtlWorkload,
         ReadAllItemsOfLogicalPartition,
-        LinkedInCtlWorkload;
+        LinkedInCtlWorkload,
+        ReadManyLatency,
+        ReadManyThroughput;
 
         static Operation fromString(String code) {
 
@@ -511,6 +518,10 @@ public class Configuration {
         return clientTelemetrySchedulingInSeconds;
     }
 
+    public Integer getTupleSize() {
+        return tupleSize;
+    }
+
     public void tryGetValuesFromSystem() {
         serviceEndpoint = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("SERVICE_END_POINT")),
                                                     serviceEndpoint);
@@ -568,6 +579,10 @@ public class Configuration {
         encryptionEnabled = Boolean.parseBoolean(StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
             "ENCRYPTED_ENABLED")),
             Boolean.toString(encryptionEnabled)));
+
+        tupleSize = Integer.parseInt(
+                StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("COSMOS_IDENTITY_TUPLE_SIZE")),
+                        Integer.toString(tupleSize)));
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {

@@ -41,7 +41,8 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
 
         sdk_folder = get_cadl_sdk_folder(os.path.join(cadl_dir, 'cadl-project.yaml'))
         if not sdk_folder:
-            logging.warning('[Skip] "sdk-folder" option not found in cadl-project.yaml')
+            logging.warning('[Skip] "options.@azure-tools/cadl-java.emitter-output-dir" '
+                            'or "parameters.service-directory-name.default" not found in cadl-project.yaml')
         else:
             sdk_folder_abspath = os.path.join(sdk_root, sdk_folder)
             require_sdk_integration = not os.path.exists(os.path.join(sdk_folder_abspath, 'src'))
@@ -54,20 +55,30 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                 module = match.group(2)
 
             if not module:
-                logging.warning('[Skip] sdk-folder option {} not match format sdk/<service>/<module>'
-                                .format(sdk_folder))
+                logging.warning('[Skip] "emitter-output-dir" not match format '
+                                '{java-sdk-folder}/sdk/{service-directory-name}/<module>')
             else:
                 # cadl
                 succeeded = False
                 pwd = os.getcwd()
                 os.chdir(cadl_dir)
                 try:
-                    subprocess.run('npm install', shell=True, check=True)
+                    # install dependencies
+                    subprocess.run('npm install "@azure-tools/cadl-autorest@0.24.0" "@cadl-lang/eslint-config-cadl@0.5.0" "@cadl-lang/eslint-plugin@0.38.0" "@cadl-lang/library-linter@0.38.0"', shell=True, check=True)
+
+                    # install latest @azure-tools/cadl-java
+                    subprocess.run('npm install "@azure-tools/cadl-java@0.2.2"', shell=True, check=True)
+
+                    # check client.cadl
+                    cadl_source = '.'
+                    if os.path.exists(os.path.join(cadl_dir, 'client.cadl')):
+                        cadl_source = 'client.cadl'
 
                     # generate Java project
-                    subprocess.run('npx cadl compile . --emit @azure-tools/cadl-java --output-path={}'
-                                   .format(sdk_folder_abspath),
-                                   shell=True, check=True)
+                    command = 'npx cadl compile {0} --emit=@azure-tools/cadl-java --arg="java-sdk-folder={1}"'\
+                        .format(cadl_source, sdk_root)
+                    logging.info(command)
+                    subprocess.run(command, shell=True, check=True)
 
                     succeeded = True
                 except subprocess.CalledProcessError:
@@ -111,12 +122,17 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
 
 
 def get_cadl_sdk_folder(project_filename: str) -> Optional[str]:
-    sdk_folder = None
+    sdk_folder: Optional[str] = None
     if os.path.exists(project_filename):
         with open(project_filename, 'r', encoding='utf-8') as f_in:
             project_yaml = yaml.safe_load(f_in)
-            sdk_folder = project_yaml['emitters']['@azure-tools/cadl-java']['sdk-folder']
-
+            if 'parameters' in project_yaml and 'service-directory-name' in project_yaml['parameters'] \
+                    and 'options' in project_yaml and '@azure-tools/cadl-java' in project_yaml['options']:
+                service: str = project_yaml['parameters']['service-directory-name']['default']
+                sdk_folder = project_yaml['options']['@azure-tools/cadl-java']['emitter-output-dir']
+                sdk_folder = sdk_folder.replace(
+                    r'{java-sdk-folder}/sdk/{service-directory-name}/',
+                    'sdk/{0}/'.format(service))
     return sdk_folder
 
 

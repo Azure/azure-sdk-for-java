@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VMGuestPatchClassificationWindows;
 import com.azure.resourcemanager.compute.models.VMGuestPatchRebootSetting;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstallPatchesParameters;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachines InstallPatches. */
 public final class VirtualMachinesInstallPatchesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_InstallPatches.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_InstallPatches.json
      */
     /**
      * Sample code: Install patch state of a virtual machine.
@@ -42,6 +41,6 @@ public final class VirtualMachinesInstallPatchesSamples {
                                         VMGuestPatchClassificationWindows.CRITICAL,
                                         VMGuestPatchClassificationWindows.SECURITY))
                             .withMaxPatchPublishDate(OffsetDateTime.parse("2020-11-19T02:36:43.0539904+00:00"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

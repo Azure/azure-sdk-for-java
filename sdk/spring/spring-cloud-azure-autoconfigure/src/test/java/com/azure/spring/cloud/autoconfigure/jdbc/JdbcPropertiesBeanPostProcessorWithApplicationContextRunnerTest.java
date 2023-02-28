@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
-import com.azure.identity.providers.mysql.AzureIdentityMysqlAuthenticationPlugin;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
+import com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
@@ -42,7 +42,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
     @Test
     void mySqlAuthPluginNotOnClassPath() {
         contextRunner
-            .withClassLoader(new FilteredClassLoader(AzureIdentityMysqlAuthenticationPlugin.class))
+            .withClassLoader(new FilteredClassLoader(AzureMysqlAuthenticationPlugin.class))
             .withPropertyValues(
                 "spring.datasource.azure.passwordless-enabled=true",
                 "spring.datasource.url=" + MYSQL_CONNECTION_STRING

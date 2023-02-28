@@ -21,8 +21,9 @@ public class RedisCommonProperties {
     private RedisConfiguration redisConfiguration;
 
     /*
-     * Redis version. Only major version will be used in PUT/PATCH request with
-     * current valid values: (4, 6)
+     * Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which
+     * refers to the latest stable Redis version that is available. Supported versions: 4.0, 6.0 (latest). Default
+     * value is 'latest'.
      */
     @JsonProperty(value = "redisVersion")
     private String redisVersion;
@@ -59,20 +60,22 @@ public class RedisCommonProperties {
     private Integer shardCount;
 
     /*
-     * Optional: requires clients to use a specified TLS version (or higher) to
-     * connect (e,g, '1.0', '1.1', '1.2')
+     * Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
      */
     @JsonProperty(value = "minimumTlsVersion")
     private TlsVersion minimumTlsVersion;
 
     /*
-     * Whether or not public endpoint access is allowed for this cache.  Value
-     * is optional but if passed in, must be 'Enabled' or 'Disabled'. If
-     * 'Disabled', private endpoints are the exclusive access method. Default
-     * value is 'Enabled'
+     * Whether or not public endpoint access is allowed for this cache.  Value is optional but if passed in, must be
+     * 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method. Default value is
+     * 'Enabled'
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
+
+    /** Creates an instance of RedisCommonProperties class. */
+    public RedisCommonProperties() {
+    }
 
     /**
      * Get the redisConfiguration property: All Redis Settings. Few possible keys:
@@ -99,8 +102,9 @@ public class RedisCommonProperties {
     }
 
     /**
-     * Get the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
-     * valid values: (4, 6).
+     * Get the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
+     * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
+     * versions: 4.0, 6.0 (latest). Default value is 'latest'.
      *
      * @return the redisVersion value.
      */
@@ -109,8 +113,9 @@ public class RedisCommonProperties {
     }
 
     /**
-     * Set the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
-     * valid values: (4, 6).
+     * Set the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
+     * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
+     * versions: 4.0, 6.0 (latest). Default value is 'latest'.
      *
      * @param redisVersion the redisVersion value to set.
      * @return the RedisCommonProperties object itself.

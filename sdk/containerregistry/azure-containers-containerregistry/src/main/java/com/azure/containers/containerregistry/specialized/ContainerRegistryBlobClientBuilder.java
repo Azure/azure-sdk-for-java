@@ -57,7 +57,8 @@ public final class ContainerRegistryBlobClientBuilder implements
     EndpointTrait<ContainerRegistryBlobClientBuilder>,
     HttpTrait<ContainerRegistryBlobClientBuilder>,
     TokenCredentialTrait<ContainerRegistryBlobClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryBlobClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBlobClientBuilder.class);
+
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private ClientOptions clientOptions;
@@ -85,7 +86,7 @@ public final class ContainerRegistryBlobClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
         this.endpoint = endpoint;
@@ -153,7 +154,7 @@ public final class ContainerRegistryBlobClientBuilder implements
     @Override
     public ContainerRegistryBlobClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.httpPipeline = httpPipeline;
         return this;
@@ -189,7 +190,7 @@ public final class ContainerRegistryBlobClientBuilder implements
     @Override
     public ContainerRegistryBlobClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
         this.httpClient = httpClient;
         return this;
@@ -358,7 +359,14 @@ public final class ContainerRegistryBlobClientBuilder implements
      * You can set the values by calling {@link #endpoint(String)} and {@link #audience(ContainerRegistryAudience)} respectively.
      */
     public ContainerRegistryBlobClient buildClient() {
-        return new ContainerRegistryBlobClient(buildAsyncClient());
+        Objects.requireNonNull(endpoint, "'endpoint' can't be null");
+
+        // Service version
+        ContainerRegistryServiceVersion serviceVersion = (version != null)
+            ? version
+            : ContainerRegistryServiceVersion.getLatest();
+
+        return new ContainerRegistryBlobClient(repositoryName, getHttpPipeline(), endpoint, serviceVersion.getVersion());
     }
 
     private HttpPipeline getHttpPipeline() {
@@ -378,7 +386,6 @@ public final class ContainerRegistryBlobClientBuilder implements
             this.perRetryPolicies,
             this.httpClient,
             this.endpoint,
-            this.version,
-            this.logger);
+            this.version);
     }
 }

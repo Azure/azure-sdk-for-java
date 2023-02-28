@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ElasticPoolState. */
+/** The state of the elastic pool. */
 public final class ElasticPoolState extends ExpandableStringEnum<ElasticPoolState> {
     /** Static value Creating for ElasticPoolState. */
     public static final ElasticPoolState CREATING = fromString("Creating");

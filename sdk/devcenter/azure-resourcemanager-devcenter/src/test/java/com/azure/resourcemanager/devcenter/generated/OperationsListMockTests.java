@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"ktp\",\"isDataAction\":true,\"display\":{\"provider\":\"teeammxqiekkkzd\",\"resource\":\"tkgdojbmxva\",\"operation\":\"efdeesve\",\"description\":\"ijpxtx\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}]}";
+            "{\"value\":[{\"name\":\"tg\",\"isDataAction\":true,\"display\":{\"provider\":\"yqxtjjfzql\",\"resource\":\"ycavodggxdbees\",\"operation\":\"eknlra\",\"description\":\"aawiuagydwqfb\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

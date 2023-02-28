@@ -477,7 +477,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
           val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
           patchPartialUpdateItem.fields().asScala.foreach(field => {
-            columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, operationType, s"/${field.getKey}")
+            columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, operationType, s"/${field.getKey}", false)
           })
 
           val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
@@ -568,7 +568,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
 
           // Only trying to operate at 0 index
-          columnConfigsMap += "newItemInPropArray" -> CosmosPatchColumnConfig("newItemInPropArray", operationType, "/propArray/0")
+          columnConfigsMap += "newItemInPropArray" -> CosmosPatchColumnConfig(
+            "newItemInPropArray", operationType, "/propArray/0", false)
 
           val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
           val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partitionKeyPath, partialUpdateSchema)
@@ -647,7 +648,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
       val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
       patchPartialUpdateItem.fields().asScala.foreach(field => {
-        columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Increment, s"/${field.getKey}")
+        columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+          field.getKey, CosmosPatchOperationTypes.Increment, s"/${field.getKey}", false)
       })
 
       val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
@@ -675,7 +677,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
     patchPartialUpdateItem.fields().asScala.foreach(field => {
-      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Increment, s"/${field.getKey}")
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+        field.getKey, CosmosPatchOperationTypes.Increment, s"/${field.getKey}", false)
     })
 
     val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
@@ -722,7 +725,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     newParentNode.put("firstName", "John")
     newParentNode.put("lastName", "Anderson")
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
-    columnConfigsMap += parent2PropertyName -> CosmosPatchColumnConfig(parent2PropertyName, CosmosPatchOperationTypes.Add, s"/family/parent2")
+    columnConfigsMap += parent2PropertyName -> CosmosPatchColumnConfig(
+      parent2PropertyName, CosmosPatchOperationTypes.Add, s"/family/parent2", false)
 
     val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
     bulkWriterForPatch.scheduleWrite(partitionKey, partialUpdateNode)
@@ -735,6 +739,131 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     updatedParent2Object should not be null
     updatedParent2Object.get("firstName") shouldEqual newParentNode.get("firstName")
     updatedParent2Object.get("lastName") shouldEqual newParentNode.get("lastName")
+  }
+
+  "Bulk Writer" can "partial update item with nested object with different mapping path and rawJson" in {
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwrite,
+      5,
+      bulkEnabled = true,
+      bulkMaxPendingOperations = Some(900)
+    )
+
+    val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+
+    // First create one item with nestedObject, as patch can only operate on existing items
+    val itemWithNestedObject: ObjectNode = objectMapper.createObjectNode()
+    itemWithNestedObject.put("id", UUID.randomUUID().toString)
+    val familyObject = itemWithNestedObject.putObject("family")
+    familyObject.put("state", "NY")
+    val parentObject = familyObject.putObject("parent1")
+    parentObject.put("firstName", "Julie")
+    parentObject.put("lastName", "Anderson")
+    parentObject.put("age", 1)
+
+    val id = itemWithNestedObject.get("id").textValue()
+    val partitionKey = new PartitionKey(id)
+
+    bulkWriter.scheduleWrite(partitionKey, itemWithNestedObject)
+    bulkWriter.flushAndClose()
+    // make sure the item exists
+    container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+    // patch item by adding parent2
+    val parent2PropertyName = "parent2"
+    val partialUpdateNode = objectMapper.createObjectNode()
+    partialUpdateNode.put("id", id)
+    val newParentNode = partialUpdateNode.put(
+      parent2PropertyName,
+      "{\"firstName\": \"John\",  \"lastName\": \"Anderson\", \"age\": 3}")
+    val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+    columnConfigsMap += parent2PropertyName -> CosmosPatchColumnConfig(
+      parent2PropertyName, CosmosPatchOperationTypes.Add, s"/family/parent2", true)
+    partialUpdateNode.put("arrayNode", "[{\"id\":\"2\"}, {\"id\":\"3\"}]")
+    columnConfigsMap += "arrayNode" -> CosmosPatchColumnConfig(
+      "arrayNode", CosmosPatchOperationTypes.Add, s"/family/arrayNode", true)
+    partialUpdateNode.put("textNode", "\"test\"")
+    columnConfigsMap += "textNode" -> CosmosPatchColumnConfig(
+      "textNode", CosmosPatchOperationTypes.Add, s"/family/textNode", true)
+    partialUpdateNode.put("numberNode", "12345")
+    columnConfigsMap += "numberNode" -> CosmosPatchColumnConfig(
+      "numberNode", CosmosPatchOperationTypes.Add, s"/family/numberNode", true)
+
+    val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+    bulkWriterForPatch.scheduleWrite(partitionKey, partialUpdateNode)
+    bulkWriterForPatch.flushAndClose()
+
+    // Validate parent2 has been inserted
+    val updatedItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+    val updatedParent2Object = updatedItem.get("family").get(parent2PropertyName)
+    updatedParent2Object should not be null
+    updatedParent2Object.get("firstName").asText shouldEqual "John"
+    updatedParent2Object.get("lastName").asText shouldEqual "Anderson"
+    updatedParent2Object.get("age").asInt() shouldEqual 3
+    updatedItem.get("family").get("arrayNode") should not be null
+    updatedItem.get("family").get("arrayNode").isArray shouldEqual true
+    updatedItem.get("family").get("arrayNode").size shouldEqual 2
+    updatedItem.get("family").get("arrayNode").get(0).get("id").asText shouldEqual "2"
+    updatedItem.get("family").get("textNode").asText shouldEqual "test"
+    updatedItem.get("family").get("numberNode").asInt shouldEqual 12345
+  }
+
+  "Bulk Writer" can "replace entire node" in {
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwrite,
+      5,
+      bulkEnabled = true,
+      bulkMaxPendingOperations = Some(900)
+    )
+
+    val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+
+    // First create one item with nestedObject, as patch can only operate on existing items
+    val itemWithNestedObject: ObjectNode = objectMapper.createObjectNode()
+    itemWithNestedObject.put("id", UUID.randomUUID().toString)
+    val familyObject = itemWithNestedObject.putObject("family")
+    familyObject.put("state", "NY")
+    val parentObject = familyObject.putObject("parent1")
+    parentObject.put("firstName", "Julie")
+    parentObject.put("lastName", "Anderson")
+
+    val id = itemWithNestedObject.get("id").textValue()
+    val partitionKey = new PartitionKey(id)
+
+    bulkWriter.scheduleWrite(partitionKey, itemWithNestedObject)
+    bulkWriter.flushAndClose()
+    // make sure the item exists
+    container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+    // patch item by adding parent2
+    val parent1PropertyName = "parent1"
+    val partialUpdateNode = objectMapper.createObjectNode()
+    partialUpdateNode.put("id", id)
+    val newParentNode = partialUpdateNode.putObject(parent1PropertyName)
+    newParentNode.put("firstName", "John")
+    newParentNode.put("lastName", "Anderson")
+    val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+    columnConfigsMap += parent1PropertyName -> CosmosPatchColumnConfig(
+      parent1PropertyName, CosmosPatchOperationTypes.Replace, s"/family/parent1", false)
+
+    val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+    bulkWriterForPatch.scheduleWrite(partitionKey, partialUpdateNode)
+    bulkWriterForPatch.flushAndClose()
+
+    // Validate parent2 has been inserted
+    val updatedItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+    val updatedParent1Object = updatedItem.get("family").get(parent1PropertyName)
+    updatedParent1Object should not be null
+    updatedParent1Object.get("firstName") shouldEqual newParentNode.get("firstName")
+    updatedParent1Object.get("lastName") shouldEqual newParentNode.get("lastName")
   }
 
   "Bulk Writer" should "skip partial update for cosmos system properties" in {
@@ -781,7 +910,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
     patchPartialUpdateItem.fields().asScala.foreach(field => {
-      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+        field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
     })
 
     val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
@@ -844,7 +974,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
         val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
         patchPartialUpdateItem.fields().asScala.foreach(field => {
-          columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
+          columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+            field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
         })
 
         val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, createdContainer, partitionKeyDefinition)
@@ -899,7 +1030,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
     patchPartialUpdateItem.fields().asScala.foreach(field => {
-      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+        field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
     })
 
     val bulkWriterForPatch =
@@ -939,7 +1071,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
     partialUpdateSchema.fields.foreach(field => {
-      columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, s"/${field.name}")
+      columnConfigsMap += field.name -> CosmosPatchColumnConfig(
+        field.name, CosmosPatchOperationTypes.Set, s"/${field.name}", false)
     })
 
     val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)

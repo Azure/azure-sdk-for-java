@@ -20,6 +20,15 @@ public final class DiagnoseResultLevel extends ExpandableStringEnum<DiagnoseResu
     public static final DiagnoseResultLevel INFORMATION = fromString("Information");
 
     /**
+     * Creates a new instance of DiagnoseResultLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiagnoseResultLevel() {
+    }
+
+    /**
      * Creates or finds a DiagnoseResultLevel from its string representation.
      *
      * @param name a name to look for.

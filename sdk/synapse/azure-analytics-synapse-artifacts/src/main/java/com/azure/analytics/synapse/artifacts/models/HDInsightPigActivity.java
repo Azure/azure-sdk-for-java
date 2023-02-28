@@ -54,6 +54,9 @@ public class HDInsightPigActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.defines")
     private Map<String, Object> defines;
 
+    /** Creates an instance of HDInsightPigActivity class. */
+    public HDInsightPigActivity() {}
+
     /**
      * Get the storageLinkedServices property: Storage linked service references.
      *

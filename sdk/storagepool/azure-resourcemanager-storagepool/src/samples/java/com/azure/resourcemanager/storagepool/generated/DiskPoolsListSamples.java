@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools List. */
 public final class DiskPoolsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class DiskPoolsListSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listDiskPoolsBySubscription(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().list(Context.NONE);
+        manager.diskPools().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -46,6 +46,10 @@ public final class AccountModelInner extends DeploymentModel {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of AccountModelInner class. */
+    public AccountModelInner() {
+    }
+
     /**
      * Get the baseModel property: Base Model Identifier.
      *

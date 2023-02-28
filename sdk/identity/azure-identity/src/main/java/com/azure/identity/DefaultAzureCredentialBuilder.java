@@ -186,9 +186,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
-        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(6);
+        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(7);
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
         output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions.clone()));
+        output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions.clone()));
         output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));

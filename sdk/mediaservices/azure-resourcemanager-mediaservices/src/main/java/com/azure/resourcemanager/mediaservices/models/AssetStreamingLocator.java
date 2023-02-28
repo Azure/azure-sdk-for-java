@@ -60,6 +60,10 @@ public final class AssetStreamingLocator {
     @JsonProperty(value = "defaultContentKeyPolicyName", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultContentKeyPolicyName;
 
+    /** Creates an instance of AssetStreamingLocator class. */
+    public AssetStreamingLocator() {
+    }
+
     /**
      * Get the name property: Streaming Locator name.
      *

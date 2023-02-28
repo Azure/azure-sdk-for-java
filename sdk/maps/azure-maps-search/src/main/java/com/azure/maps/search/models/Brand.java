@@ -16,6 +16,9 @@ public final class Brand {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
+    /** Creates an instance of Brand class. */
+    public Brand() {}
+
     /**
      * Get the name property: Name of the brand.
      *

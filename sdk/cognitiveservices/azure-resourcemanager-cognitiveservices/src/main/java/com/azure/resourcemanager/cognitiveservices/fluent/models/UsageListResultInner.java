@@ -18,6 +18,10 @@ public final class UsageListResultInner {
     @JsonProperty(value = "value")
     private List<Usage> value;
 
+    /** Creates an instance of UsageListResultInner class. */
+    public UsageListResultInner() {
+    }
+
     /**
      * Get the value property: The list of usages for Cognitive Service account.
      *

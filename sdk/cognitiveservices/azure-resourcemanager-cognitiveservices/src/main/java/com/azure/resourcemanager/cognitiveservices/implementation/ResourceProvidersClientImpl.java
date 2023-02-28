@@ -54,7 +54,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "CognitiveServicesMan")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}"
@@ -201,22 +201,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *
      * @param location Resource location.
      * @param parameters Check SKU Availability POST body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check SKU availability result list.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuAvailabilityListResultInner checkSkuAvailability(
-        String location, CheckSkuAvailabilityParameter parameters) {
-        return checkSkuAvailabilityAsync(location, parameters).block();
-    }
-
-    /**
-     * Check available SKUs.
-     *
-     * @param location Resource location.
-     * @param parameters Check SKU Availability POST body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -227,6 +211,22 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(
         String location, CheckSkuAvailabilityParameter parameters, Context context) {
         return checkSkuAvailabilityWithResponseAsync(location, parameters, context).block();
+    }
+
+    /**
+     * Check available SKUs.
+     *
+     * @param location Resource location.
+     * @param parameters Check SKU Availability POST body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return check SKU availability result list.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SkuAvailabilityListResultInner checkSkuAvailability(
+        String location, CheckSkuAvailabilityParameter parameters) {
+        return checkSkuAvailabilityWithResponse(location, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -333,20 +333,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Check whether a domain is available.
      *
      * @param parameters Check Domain Availability parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainAvailabilityInner checkDomainAvailability(CheckDomainAvailabilityParameter parameters) {
-        return checkDomainAvailabilityAsync(parameters).block();
-    }
-
-    /**
-     * Check whether a domain is available.
-     *
-     * @param parameters Check Domain Availability parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -357,5 +343,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(
         CheckDomainAvailabilityParameter parameters, Context context) {
         return checkDomainAvailabilityWithResponseAsync(parameters, context).block();
+    }
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param parameters Check Domain Availability parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain availability.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainAvailabilityInner checkDomainAvailability(CheckDomainAvailabilityParameter parameters) {
+        return checkDomainAvailabilityWithResponse(parameters, Context.NONE).getValue();
     }
 }

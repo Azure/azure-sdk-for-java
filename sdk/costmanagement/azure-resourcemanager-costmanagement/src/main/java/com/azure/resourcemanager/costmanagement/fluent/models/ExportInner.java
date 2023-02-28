@@ -6,19 +6,16 @@ package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.ExportDefinition;
 import com.azure.resourcemanager.costmanagement.models.ExportDeliveryInfo;
 import com.azure.resourcemanager.costmanagement.models.ExportSchedule;
 import com.azure.resourcemanager.costmanagement.models.FormatType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
-/** A export resource. */
+/** An export resource. */
 @Fluent
 public final class ExportInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportInner.class);
-
     /*
      * The properties of the export.
      */
@@ -26,12 +23,15 @@ public final class ExportInner extends ProxyResource {
     private ExportProperties innerProperties;
 
     /*
-     * eTag of the resource. To handle concurrent update scenario, this field
-     * will be used to determine whether the user is updating the latest
-     * version or not.
+     * eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the
+     * user is updating the latest version or not.
      */
     @JsonProperty(value = "eTag")
     private String etag;
+
+    /** Creates an instance of ExportInner class. */
+    public ExportInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the export.
@@ -88,7 +88,7 @@ public final class ExportInner extends ProxyResource {
     }
 
     /**
-     * Get the format property: The format of the export being delivered.
+     * Get the format property: The format of the export being delivered. Currently only 'Csv' is supported.
      *
      * @return the format value.
      */
@@ -97,7 +97,7 @@ public final class ExportInner extends ProxyResource {
     }
 
     /**
-     * Set the format property: The format of the export being delivered.
+     * Set the format property: The format of the export being delivered. Currently only 'Csv' is supported.
      *
      * @param format the format value to set.
      * @return the ExportInner object itself.
@@ -134,7 +134,7 @@ public final class ExportInner extends ProxyResource {
     }
 
     /**
-     * Get the definition property: Has definition for the export.
+     * Get the definition property: Has the definition for the export.
      *
      * @return the definition value.
      */
@@ -143,7 +143,7 @@ public final class ExportInner extends ProxyResource {
     }
 
     /**
-     * Set the definition property: Has definition for the export.
+     * Set the definition property: Has the definition for the export.
      *
      * @param definition the definition value to set.
      * @return the ExportInner object itself.
@@ -154,6 +154,39 @@ public final class ExportInner extends ProxyResource {
         }
         this.innerProperties().withDefinition(definition);
         return this;
+    }
+
+    /**
+     * Get the runHistory property: If requested, has the most recent execution history for the export.
+     *
+     * @return the runHistory value.
+     */
+    public ExportExecutionListResultInner runHistory() {
+        return this.innerProperties() == null ? null : this.innerProperties().runHistory();
+    }
+
+    /**
+     * Set the runHistory property: If requested, has the most recent execution history for the export.
+     *
+     * @param runHistory the runHistory value to set.
+     * @return the ExportInner object itself.
+     */
+    public ExportInner withRunHistory(ExportExecutionListResultInner runHistory) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportProperties();
+        }
+        this.innerProperties().withRunHistory(runHistory);
+        return this;
+    }
+
+    /**
+     * Get the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next
+     * execution time.
+     *
+     * @return the nextRunTimeEstimate value.
+     */
+    public OffsetDateTime nextRunTimeEstimate() {
+        return this.innerProperties() == null ? null : this.innerProperties().nextRunTimeEstimate();
     }
 
     /**

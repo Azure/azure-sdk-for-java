@@ -21,6 +21,15 @@ public final class OnErrorType extends ExpandableStringEnum<OnErrorType> {
     public static final OnErrorType CONTINUE_JOB = fromString("ContinueJob");
 
     /**
+     * Creates a new instance of OnErrorType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OnErrorType() {
+    }
+
+    /**
      * Creates or finds a OnErrorType from its string representation.
      *
      * @param name a name to look for.

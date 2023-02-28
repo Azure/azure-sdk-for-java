@@ -24,6 +24,10 @@ public final class InstancePoolListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of InstancePoolListResult class. */
+    public InstancePoolListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

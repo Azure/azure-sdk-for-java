@@ -52,6 +52,10 @@ public final class Usage {
     @JsonProperty(value = "status")
     private QuotaUsageStatus status;
 
+    /** Creates an instance of Usage class. */
+    public Usage() {
+    }
+
     /**
      * Get the unit property: The unit of the metric.
      *
