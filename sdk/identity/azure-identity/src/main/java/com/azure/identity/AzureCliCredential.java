@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
  *
  * <ol>
  *     <li>Run "az login" in Azure CLI to authenticate as a user.</li>
- *     <li>Run "az login --service-principal --username <client ID> --password <client secret> --tenant <tenant ID>"
+ *     <li>Run "az login --service-principal --username {client ID} --password {client secret} --tenant {tenant ID}"
  *     to authenticate as a service principal.</li>
  * </ol>
  *
