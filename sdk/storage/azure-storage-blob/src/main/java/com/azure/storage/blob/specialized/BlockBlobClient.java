@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -55,7 +54,9 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class BlockBlobClient extends BlobClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlockBlobClient.class);
-
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static Context STATIC_ENABLE_REST_PROXY_CONTEXT =
+        Context.NONE.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     private final BlockBlobAsyncClient client;
 
     /**
@@ -475,7 +476,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        return client.uploadWithResponseSync(options, context);
+        return client.uploadWithResponseSync(options, enableSyncRestProxy(context));
 
         // TODO: Execute this in a thread with a timeout.
 //        try {
@@ -1102,5 +1103,13 @@ public final class BlockBlobClient extends BlobClientBase {
         return client.commitBlockListWithResponseSync(
             options, context);
 //        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    public static Context enableSyncRestProxy(Context context) {
+        if (context == null || context == Context.NONE) {
+            return STATIC_ENABLE_REST_PROXY_CONTEXT;
+        } else {
+            return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+        }
     }
 }

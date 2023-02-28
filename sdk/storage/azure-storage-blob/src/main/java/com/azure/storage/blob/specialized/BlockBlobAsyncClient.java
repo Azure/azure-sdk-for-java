@@ -467,14 +467,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 data = BinaryData.fromFlux(options.getDataFlux()).block();
             }
         }
-        ResponseBase<BlockBlobsUploadHeaders, Void> response = this.azureBlobStorage.getBlockBlobs().uploadWithResponse(containerName, blobName,
-            options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
-            requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
+        ResponseBase<BlockBlobsUploadHeaders, Void> response = this.azureBlobStorage.getBlockBlobs()
+            .uploadWithResponse(containerName, blobName,
+                options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
+                requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+                options.isLegalHold(), null, options.getHeaders(), getCustomerProvidedKey(),
+                encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
 
         BlockBlobsUploadHeaders hd = response.getDeserializedHeaders();
         BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
