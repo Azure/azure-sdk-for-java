@@ -7,25 +7,27 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Defines options to control Cross-Origin Resource Sharing (CORS) for an index. */
 @Fluent
-public final class CorsOptions {
+public final class CorsOptions implements JsonSerializable<CorsOptions> {
     /*
      * The list of origins from which JavaScript code will be granted access to your index. Can contain a list of hosts
      * of the form {protocol}://{fully-qualified-domain-name}[:{port#}], or a single '*' to allow all origins (not
      * recommended).
      */
-    @JsonProperty(value = "allowedOrigins", required = true)
-    private List<String> allowedOrigins;
+    private final List<String> allowedOrigins;
 
     /*
      * The duration for which browsers should cache CORS preflight responses. Defaults to 5 minutes.
      */
-    @JsonProperty(value = "maxAgeInSeconds")
     private Long maxAgeInSeconds;
 
     /**
@@ -33,8 +35,7 @@ public final class CorsOptions {
      *
      * @param allowedOrigins the allowedOrigins value to set.
      */
-    @JsonCreator
-    public CorsOptions(@JsonProperty(value = "allowedOrigins", required = true) List<String> allowedOrigins) {
+    public CorsOptions(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
     }
 
@@ -69,5 +70,58 @@ public final class CorsOptions {
     public CorsOptions setMaxAgeInSeconds(Long maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField(
+                "allowedOrigins", this.allowedOrigins, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("maxAgeInSeconds", this.maxAgeInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CorsOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CorsOptions if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CorsOptions.
+     */
+    public static CorsOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean allowedOriginsFound = false;
+                    List<String> allowedOrigins = null;
+                    Long maxAgeInSeconds = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("allowedOrigins".equals(fieldName)) {
+                            allowedOrigins = reader.readArray(reader1 -> reader1.getString());
+                            allowedOriginsFound = true;
+                        } else if ("maxAgeInSeconds".equals(fieldName)) {
+                            maxAgeInSeconds = reader.getNullable(JsonReader::getLong);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (allowedOriginsFound) {
+                        CorsOptions deserializedValue = new CorsOptions(allowedOrigins);
+                        deserializedValue.maxAgeInSeconds = maxAgeInSeconds;
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!allowedOriginsFound) {
+                        missingProperties.add("allowedOrigins");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

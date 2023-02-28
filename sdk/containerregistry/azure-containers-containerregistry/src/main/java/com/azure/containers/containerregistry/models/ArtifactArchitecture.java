@@ -5,7 +5,6 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The artifact platform's architecture. */
@@ -50,12 +49,19 @@ public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArc
     public static final ArtifactArchitecture WASM = fromString("wasm");
 
     /**
+     * Creates a new instance of ArtifactArchitecture value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArtifactArchitecture() {}
+
+    /**
      * Creates or finds a ArtifactArchitecture from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding ArtifactArchitecture.
      */
-    @JsonCreator
     public static ArtifactArchitecture fromString(String name) {
         return fromString(name, ArtifactArchitecture.class);
     }

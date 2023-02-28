@@ -20,11 +20,11 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Sample demonstrates how to synchronously execute an "Healthcare Entities Analysis" action in a batch of documents.
@@ -101,7 +101,7 @@ public class AnalyzeHealthcareEntitiesActionSample {
                     }
 
                     // FHIR bundle in JSON format
-                    final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
+                    final BinaryData fhirBundle = healthcareEntitiesResult.getFhirBundle();
                     if (fhirBundle != null) {
                         System.out.printf("FHIR bundle: %s%n", fhirBundle);
                     }

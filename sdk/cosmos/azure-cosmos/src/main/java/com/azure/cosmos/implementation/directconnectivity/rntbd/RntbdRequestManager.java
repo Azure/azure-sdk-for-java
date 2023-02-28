@@ -187,7 +187,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     public void channelRead(final ChannelHandlerContext context, final Object message) {
 
         this.traceOperation(context, "channelRead");
-        this.timestamps.resetTransitTimeout(); // we have got a successful read, so reset the transitTimeout count.
+        this.timestamps.channelReadCompleted();
 
         try {
             if (message.getClass() == RntbdResponse.class) {
@@ -231,7 +231,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     @Override
     public void channelReadComplete(final ChannelHandlerContext context) {
         this.traceOperation(context, "channelReadComplete");
-        this.timestamps.channelReadCompleted();
         context.fireChannelReadComplete();
     }
 
@@ -378,6 +377,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             if (event instanceof RntbdContext) {
                 this.contextFuture.complete((RntbdContext) event);
                 this.removeContextNegotiatorAndFlushPendingWrites(context);
+
+                // Important: currently the RntbdContext negotiation response will not be captured during channelRead
+                // need to mark the timestamp here
+                this.timestamps.channelReadCompleted();
                 return;
             }
             if (event instanceof RntbdContextException) {
@@ -578,13 +581,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (message instanceof RntbdRequestRecord) {
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
-
-            this.timestamps.channelWriteAttempted();
             record.setTimestamps(this.timestamps);
 
-            record.setSendingRequestHasStarted();
-
             if (!record.isCancelled()) {
+                record.setSendingRequestHasStarted();
+                this.timestamps.channelWriteAttempted();
+
                 context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
                     record.stage(RntbdRequestRecord.Stage.SENT);
                     if (completed.isSuccess()) {
@@ -668,6 +670,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     void pendWrite(final ByteBuf out, final ChannelPromise promise) {
         this.pendingWrites.add(out, promise);
+    }
+
+    public Timestamps getTimestamps() {
+        return this.timestamps;
     }
 
     Timestamps snapshotTimestamps() {

@@ -1,5 +1,11 @@
 # Release History
 
+## 2.25.0-beta.1 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed bug that `refresh` method on `RegistryTaskRun` class fails, when `RegistryTaskRun` is initialized via `RegistryTaskRuns.listByRegistry`.
+
 ## 2.24.0 (2023-02-17)
 
 ### Other Changes

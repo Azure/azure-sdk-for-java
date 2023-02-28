@@ -30,6 +30,12 @@ public final class RecognizeOptionsInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
+     * Speech language to be recognized, If not set default is en-US
+     */
+    @JsonProperty(value = "speechLanguage")
+    private String speechLanguage;
+
+    /*
      * Defines configurations for DTMF.
      */
     @JsonProperty(value = "dtmfOptions")
@@ -98,6 +104,26 @@ public final class RecognizeOptionsInternal {
      */
     public RecognizeOptionsInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
+        return this;
+    }
+
+    /**
+     * Get the speechLanguage property: Speech language to be recognized, If not set default is en-US.
+     *
+     * @return the speechLanguage value.
+     */
+    public String getSpeechLanguage() {
+        return this.speechLanguage;
+    }
+
+    /**
+     * Set the speechLanguage property: Speech language to be recognized, If not set default is en-US.
+     *
+     * @param speechLanguage the speechLanguage value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setSpeechLanguage(String speechLanguage) {
+        this.speechLanguage = speechLanguage;
         return this;
     }
 

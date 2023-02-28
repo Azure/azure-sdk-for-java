@@ -4,9 +4,23 @@
 
 ### Features Added
 
+- Added `CoreUtils.bytesToHexString` as a common utility for creating hex strings.
+- Added `CoreUtils.extractSizeFromContentRange` as a common utility for extracting the entity size from a properly
+  formatted `Content-Range` header.
+- Added support for `JsonSerializable` and `XmlSerializable` in `JacksonAdapter` serialize and deserialize APIs. ([#33685](https://github.com/Azure/azure-sdk-for-java/pull/33685))
+
 ### Breaking Changes
 
+- Removed `jackson-dataformat-xml` as a dependency. XML serialization is still supported when `jackson-dataformat-xml`
+  is found on the classpath, if it's not a class not found exception/error will be thrown when attempting to use XML
+  serialization. ([#33401](https://github.com/Azure/azure-sdk-for-java/pull/33401))
+
 ### Bugs Fixed
+
+- Fixed a bug where a method not found error would be thrown when attempting to reflectively access Jackson Databind 2.12+
+  APIs. ([#33448](https://github.com/Azure/azure-sdk-for-java/pull/33448))
+- Fixed a bug where HTTP headers and query parameters weren't included in HTTP request and response logging when
+  `INFORMATIONAL` log level was used.
 
 ### Other Changes
 

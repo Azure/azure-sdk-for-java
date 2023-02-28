@@ -22,6 +22,10 @@ public final class DelegatedSubnetUsage {
     @JsonProperty(value = "usage", access = JsonProperty.Access.WRITE_ONLY)
     private Long usage;
 
+    /** Creates an instance of DelegatedSubnetUsage class. */
+    public DelegatedSubnetUsage() {
+    }
+
     /**
      * Get the subnetName property: name of the subnet.
      *
