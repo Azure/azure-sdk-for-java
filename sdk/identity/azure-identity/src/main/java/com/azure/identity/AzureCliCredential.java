@@ -16,8 +16,39 @@ import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * A credential provider that provides token credentials based on Azure CLI
- * command.
+ * The Azure CLI credential authenticates in a development environment and acquires a token with the enabled user
+ * or service principal in Azure CLI. It uses the Azure CLI given a user that is already logged into it, and uses the
+ * Azure CLI to authenticate the application against Azure Active Directory.
+ *
+ * <h2>Configure AzureCliCredential</h2>
+ *
+ * <p> To use this credential, the developer needs to authenticate locally in Azure CLI using one of the commands
+ * below:</p>
+ *
+ * <ol>
+ *     <li>Run "az login" in Azure CLI to authenticate as a user.</li>
+ *     <li>Run "az login --service-principal --username <client ID> --password <client secret> --tenant <tenant ID>"
+ *     to authenticate as a service principal.</li>
+ * </ol>
+ *
+ * <p>You may need to repeat this process after a certain time period, depending on the refresh token validity in your
+ * organization. Generally, the refresh token validity period is a few weeks to a few months. AzureCliCredential will
+ * prompt you to sign in again.</p>
+ *
+ * <p><strong>Sample: Construct IntelliJCredential</strong></p>
+ * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
+ * <pre>
+ * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.azureclicredential.construct -->
+ *
+ * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication.
+ * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for
+ * AAD authentication.</p>
+ *
+ * @see com.azure.identity
+ * @see AzureCliCredentialBuilder
  */
 @Immutable
 public class AzureCliCredential implements TokenCredential {
