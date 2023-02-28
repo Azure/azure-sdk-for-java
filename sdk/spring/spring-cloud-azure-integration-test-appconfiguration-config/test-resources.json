@@ -17,7 +17,11 @@
 		"azConfigEndpointSuffix": {
 			"defaultValue": ".azconfig.io",
 			"type": "string"
-		}
+		},
+		"baseName": {
+      "defaultValue": "[resourceGroup().name]",
+      "type": "String"
+    }
 	},
 	"variables": {
 		"configStoreName": "[substring(toLower(concat('appconfig-', uniqueString(resourceGroup().id))), 0, 22)]",
@@ -37,7 +41,8 @@
 		"keyVaultSecretReference": "[concat('{\"uri\":\"https://',variables('keyVaultName'),'.vault.azure.net/secrets/',variables('secretName'),'\"}')]",
 		"featureFlagNamePrefix": ".appconfig.featureflag~2F",
 		"featureFlagName": "[concat(variables('featureFlagNamePrefix'), 'Alpha')]",
-		"featureFlagContentType": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8"
+		"featureFlagContentType": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+		"azureAppConfigurationDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b"
 	},
 	"resources": [
 		{
@@ -122,7 +127,16 @@
 				"contentType": "[variables('featureFlagContentType')]",
 				"tags": "[variables('tags')]"
 			}
-		}
+		},
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureAppConfigurationDataOwnerRoleId'), parameters('baseName')))]",
+      "properties": {
+        "roleDefinitionId": "[variables('azureAppConfigurationDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    }
 	],
 	"outputs": {
 		"AZURE_TENANT_ID": {
