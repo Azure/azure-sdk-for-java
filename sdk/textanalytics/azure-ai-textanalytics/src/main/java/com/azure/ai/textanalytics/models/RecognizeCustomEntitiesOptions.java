@@ -10,9 +10,31 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class RecognizeCustomEntitiesOptions {
+    private String autoDetectionDefaultLanguage;
     private String displayName;
     private boolean includeStatistics;
     private boolean disableServiceLogs;
+
+    /**
+     * Gets auto detection fallback language code.
+     *
+     * @return Auto detection fallback language code.
+     */
+    public String getAutoDetectionDefaultLanguage() {
+        return autoDetectionDefaultLanguage;
+    }
+
+    /**
+     * Sets auto detection fallback language code.
+     *
+     * @param language Auto detection fallback language code.
+     *
+     * @return The {@link RecognizeCustomEntitiesOptions} object itself.
+     */
+    public RecognizeCustomEntitiesOptions setAutoDetectionDefaultLanguage(String language) {
+        autoDetectionDefaultLanguage = language;
+        return this;
+    }
 
     /**
      * Gets display name of the operation.

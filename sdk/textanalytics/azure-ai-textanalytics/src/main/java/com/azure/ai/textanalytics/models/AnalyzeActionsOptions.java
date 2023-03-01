@@ -10,7 +10,29 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class AnalyzeActionsOptions {
+    private String autoDetectionDefaultLanguage;
     private boolean includeStatistics;
+
+    /**
+     * Gets auto detection fallback language code.
+     *
+     * @return Auto detection fallback language code.
+     */
+    public String getAutoDetectionDefaultLanguage() {
+        return autoDetectionDefaultLanguage;
+    }
+
+    /**
+     * Sets auto detection fallback language code.
+     *
+     * @param language Auto detection fallback language code.
+     *
+     * @return The {@link AnalyzeActionsOptions} object itself.
+     */
+    public AnalyzeActionsOptions setAutoDetectionDefaultLanguage(String language) {
+        autoDetectionDefaultLanguage = language;
+        return this;
+    }
 
     /**
      * Gets the value of {@code includeStatistics}.

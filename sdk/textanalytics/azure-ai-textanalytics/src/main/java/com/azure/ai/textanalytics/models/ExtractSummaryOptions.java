@@ -11,9 +11,31 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class ExtractSummaryOptions extends TextAnalyticsRequestOptions {
+    private String autoDetectionDefaultLanguage;
     private String displayName;
     private Integer maxSentenceCount;
     private SummarySentencesOrder orderBy;
+
+    /**
+     * Gets auto detection fallback language code.
+     *
+     * @return Auto detection fallback language code.
+     */
+    public String getAutoDetectionDefaultLanguage() {
+        return autoDetectionDefaultLanguage;
+    }
+
+    /**
+     * Sets auto detection fallback language code.
+     *
+     * @param language Auto detection fallback language code.
+     *
+     * @return The {@link ExtractSummaryOptions} object itself.
+     */
+    public ExtractSummaryOptions setAutoDetectionDefaultLanguage(String language) {
+        autoDetectionDefaultLanguage = language;
+        return this;
+    }
 
     /**
      * Gets display name of the operation.
