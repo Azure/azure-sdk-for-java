@@ -25,7 +25,7 @@ public final class AzurePasswordlessPropertiesUtils {
     }
 
     /**
-     * Copy common properties from source {@link AzureProperties} object to target {@link T} object.
+     * Copy common properties from source {@link AzureProperties} object to target {@link T extends PasswordlessProperties} object.
      * If a field x.y.z exists in both source and target object, the source value will override the target value.
      *
      * @param source The source {@link AzureProperties} object.
@@ -42,7 +42,7 @@ public final class AzurePasswordlessPropertiesUtils {
     }
 
     /**
-     * Copy common properties from source {@link PasswordlessProperties} object to target {@link T} object. Ignore the source
+     * Copy common properties from source {@link PasswordlessProperties} object to target {@link T extends PasswordlessProperties} object. Ignore the source
      * value if it is null.
      *
      * @param source The source {@link PasswordlessProperties} object.
