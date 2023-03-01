@@ -5,35 +5,32 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AccessPolicyCreateOrUpdateParameters model. */
-@JsonFlatten
 @Fluent
-public class AccessPolicyCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyCreateOrUpdateParameters.class);
-
+public final class AccessPolicyCreateOrUpdateParameters {
     /*
-     * The objectId of the principal in Azure Active Directory.
+     * The properties property.
      */
-    @JsonProperty(value = "properties.principalObjectId")
-    private String principalObjectId;
+    @JsonProperty(value = "properties", required = true)
+    private AccessPolicyResourceProperties innerProperties = new AccessPolicyResourceProperties();
 
-    /*
-     * An description of the access policy.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    /** Creates an instance of AccessPolicyCreateOrUpdateParameters class. */
+    public AccessPolicyCreateOrUpdateParameters() {
+    }
 
-    /*
-     * The list of roles the principal is assigned on the environment.
+    /**
+     * Get the innerProperties property: The properties property.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.roles")
-    private List<AccessPolicyRole> roles;
+    private AccessPolicyResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the principalObjectId property: The objectId of the principal in Azure Active Directory.
@@ -41,7 +38,7 @@ public class AccessPolicyCreateOrUpdateParameters {
      * @return the principalObjectId value.
      */
     public String principalObjectId() {
-        return this.principalObjectId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalObjectId();
     }
 
     /**
@@ -51,7 +48,10 @@ public class AccessPolicyCreateOrUpdateParameters {
      * @return the AccessPolicyCreateOrUpdateParameters object itself.
      */
     public AccessPolicyCreateOrUpdateParameters withPrincipalObjectId(String principalObjectId) {
-        this.principalObjectId = principalObjectId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyResourceProperties();
+        }
+        this.innerProperties().withPrincipalObjectId(principalObjectId);
         return this;
     }
 
@@ -61,7 +61,7 @@ public class AccessPolicyCreateOrUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -71,7 +71,10 @@ public class AccessPolicyCreateOrUpdateParameters {
      * @return the AccessPolicyCreateOrUpdateParameters object itself.
      */
     public AccessPolicyCreateOrUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyResourceProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -81,7 +84,7 @@ public class AccessPolicyCreateOrUpdateParameters {
      * @return the roles value.
      */
     public List<AccessPolicyRole> roles() {
-        return this.roles;
+        return this.innerProperties() == null ? null : this.innerProperties().roles();
     }
 
     /**
@@ -91,7 +94,10 @@ public class AccessPolicyCreateOrUpdateParameters {
      * @return the AccessPolicyCreateOrUpdateParameters object itself.
      */
     public AccessPolicyCreateOrUpdateParameters withRoles(List<AccessPolicyRole> roles) {
-        this.roles = roles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyResourceProperties();
+        }
+        this.innerProperties().withRoles(roles);
         return this;
     }
 
@@ -101,5 +107,15 @@ public class AccessPolicyCreateOrUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model AccessPolicyCreateOrUpdateParameters"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AccessPolicyCreateOrUpdateParameters.class);
 }

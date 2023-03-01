@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-02-24)
+
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package tag package-2022-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.Cluster$Definition` was modified
+
+* `withClusterSize(java.lang.Integer)` was added
+* `withHosts(java.util.List)` was added
+
+#### `models.Cluster` was modified
+
+* `provisioningState()` was added
+* `clusterId()` was added
+* `hosts()` was added
+* `clusterSize()` was added
 
 ## 1.0.0-beta.4 (2022-10-17)
 

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeletePublicIp. */
 public final class WorkloadNetworksDeletePublicIpSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkloadNetworksDeletePublicIpSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeletePublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deletePublicIp("group1", "publicIP1", "cloud1", Context.NONE);
+        manager.workloadNetworks().deletePublicIp("group1", "publicIP1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

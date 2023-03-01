@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Represents the parsing mode for indexing from an Azure blob data source. */
@@ -31,12 +30,19 @@ public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndex
     public static final BlobIndexerParsingMode JSON_LINES = fromString("jsonLines");
 
     /**
+     * Creates a new instance of BlobIndexerParsingMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobIndexerParsingMode() {}
+
+    /**
      * Creates or finds a BlobIndexerParsingMode from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding BlobIndexerParsingMode.
      */
-    @JsonCreator
     public static BlobIndexerParsingMode fromString(String name) {
         return fromString(name, BlobIndexerParsingMode.class);
     }

@@ -1,0 +1,46 @@
+[
+  {
+    "name":"com.azure.monitor.opentelemetry.exporter.AzureMonitorLogRecordExporter",
+    "allDeclaredMethods": true,
+    "allDeclaredFields":true
+  },
+  {
+    "name":"com.azure.monitor.opentelemetry.exporter.AzureMonitorMetricExporter",
+    "allDeclaredMethods": true,
+    "allDeclaredFields":true
+  },
+  {
+    "name":"com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter",
+    "allDeclaredMethods": true,
+    "allDeclaredFields":true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name":"com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase",
+    "allDeclaredMethods": true,
+    "allDeclaredFields":true
+  },
+  {
+    "name":"com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain",
+    "allDeclaredFields":true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name":"com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields":true
+  },
+  {
+    "name":"com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields":true
+  },
+  {
+    "name":"com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem",
+    "allDeclaredMethods": true,
+    "allDeclaredFields":true
+  }
+]

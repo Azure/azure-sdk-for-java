@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FirmwareStatusType. */
+/**
+ * True if there is a firmware update ready to install on this Cache. The firmware will automatically be installed after
+ * firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
+ */
 public final class FirmwareStatusType extends ExpandableStringEnum<FirmwareStatusType> {
     /** Static value available for FirmwareStatusType. */
     public static final FirmwareStatusType AVAILABLE = fromString("available");
 
     /** Static value unavailable for FirmwareStatusType. */
     public static final FirmwareStatusType UNAVAILABLE = fromString("unavailable");
+
+    /**
+     * Creates a new instance of FirmwareStatusType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirmwareStatusType() {
+    }
 
     /**
      * Creates or finds a FirmwareStatusType from its string representation.

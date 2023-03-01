@@ -3824,6 +3824,38 @@
             {
               "name": "labelAdded",
               "parameters": {
+                "label": "Mgmt"
+              }
+            }
+          ]
+        },
+        "eventType": "issue",
+        "eventNames": [
+          "issues",
+          "project_card"
+        ],
+        "taskName": "[Tag Mgmt Owners] Mention Mgmt manually when Mgmt label is added.",
+        "actions": [
+          {
+            "name": "addReply",
+            "parameters": {
+              "comment": "Thanks for the feedback! We are routing this to the appropriate team for follow-up. cc  @weidongxu-microsoft, @XiaofeiCao"
+            }
+          }
+        ]
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "IssuesOnlyResponder",
+      "version": "1.0",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "labelAdded",
+              "parameters": {
                 "label": "Cosmos"
               }
             }

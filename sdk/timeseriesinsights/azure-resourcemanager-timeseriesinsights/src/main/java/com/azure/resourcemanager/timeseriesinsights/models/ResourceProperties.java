@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties that are common to all tracked resources. */
 @Immutable
 public class ResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProperties.class);
-
     /*
      * Provisioning state of the resource.
      */
@@ -26,6 +22,10 @@ public class ResourceProperties {
      */
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
+
+    /** Creates an instance of ResourceProperties class. */
+    public ResourceProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.

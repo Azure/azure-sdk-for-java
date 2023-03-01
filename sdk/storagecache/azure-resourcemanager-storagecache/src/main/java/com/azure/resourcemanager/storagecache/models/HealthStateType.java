@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HealthStateType. */
+/** List of Cache health states. */
 public final class HealthStateType extends ExpandableStringEnum<HealthStateType> {
     /** Static value Unknown for HealthStateType. */
     public static final HealthStateType UNKNOWN = fromString("Unknown");
@@ -45,6 +45,15 @@ public final class HealthStateType extends ExpandableStringEnum<HealthStateType>
 
     /** Static value UpgradeFailed for HealthStateType. */
     public static final HealthStateType UPGRADE_FAILED = fromString("UpgradeFailed");
+
+    /**
+     * Creates a new instance of HealthStateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HealthStateType() {
+    }
 
     /**
      * Creates or finds a HealthStateType from its string representation.

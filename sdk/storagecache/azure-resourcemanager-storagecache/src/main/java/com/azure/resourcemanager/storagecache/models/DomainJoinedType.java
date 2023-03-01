@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DomainJoinedType. */
+/** True if the HPC Cache is joined to the Active Directory domain. */
 public final class DomainJoinedType extends ExpandableStringEnum<DomainJoinedType> {
     /** Static value Yes for DomainJoinedType. */
     public static final DomainJoinedType YES = fromString("Yes");
@@ -18,6 +18,15 @@ public final class DomainJoinedType extends ExpandableStringEnum<DomainJoinedTyp
 
     /** Static value Error for DomainJoinedType. */
     public static final DomainJoinedType ERROR = fromString("Error");
+
+    /**
+     * Creates a new instance of DomainJoinedType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DomainJoinedType() {
+    }
 
     /**
      * Creates or finds a DomainJoinedType from its string representation.
