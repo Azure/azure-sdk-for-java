@@ -97,16 +97,16 @@ class ConfidentialLedgerClientTestBase extends TestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
             if (getTestMode() == TestMode.PLAYBACK) {
-                confidentialLedgerClientBuilder = confidentialLedgerClientBuilder
+                confidentialLedgerClientBuilder
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
             } else if (getTestMode() == TestMode.RECORD) {
-                confidentialLedgerClientBuilder = confidentialLedgerClientBuilder
+                confidentialLedgerClientBuilder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .httpClient(httpClient)
                     .credential(new DefaultAzureCredentialBuilder().build());
             } else if (getTestMode() == TestMode.LIVE) {
-                confidentialLedgerClientBuilder = confidentialLedgerClientBuilder
+                confidentialLedgerClientBuilder
                     .credential(new DefaultAzureCredentialBuilder().build())
                     .httpClient(httpClient);
             }
