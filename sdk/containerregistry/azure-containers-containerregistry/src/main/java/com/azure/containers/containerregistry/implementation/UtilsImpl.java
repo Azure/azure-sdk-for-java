@@ -150,10 +150,6 @@ public final class UtilsImpl {
             audience = ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
         }
 
-        if (tracer == null) {
-            tracer = createTracer(clientOptions);
-        }
-
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
             credential,
             audience,
