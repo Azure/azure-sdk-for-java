@@ -60,7 +60,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
 
             confidentialLedgerCertificateClient = confidentialLedgerCertificateClientBuilder.buildClient();
 
-            String ledgerName = Configuration.getGlobalConfiguration().get("LEDGER_NAME", "emily-java-sdk-tests");
+            String ledgerName = Configuration.getGlobalConfiguration().get("LEDGER_NAME", "java-sdk-live-tests-ledger");
 
             Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerCertificateClient
                 .getLedgerIdentityWithResponse(ledgerName, null);
@@ -93,7 +93,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
 
             confidentialLedgerClientBuilder = new ConfidentialLedgerClientBuilder()
-                .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGER_URI", "https://emily-java-sdk-tests.confidential-ledger.azure.com"))
+                .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGER_URI", "https://java-sdk-live-tests-ledger.confidential-ledger.azure.com"))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
             if (getTestMode() == TestMode.PLAYBACK) {
