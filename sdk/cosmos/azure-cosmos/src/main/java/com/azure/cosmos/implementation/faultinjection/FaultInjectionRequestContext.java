@@ -28,7 +28,8 @@ public class FaultInjectionRequestContext {
                 return 1;
             }
 
-            return ++count;
+            count++;
+            return count;
         });
 
         this.transportRequestIdRuleIdMap.put(transportId, rule.getId());

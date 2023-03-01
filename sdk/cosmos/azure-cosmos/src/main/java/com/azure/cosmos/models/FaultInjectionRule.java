@@ -131,7 +131,7 @@ public class FaultInjectionRule {
      * @return the hit count.
      */
     public long getHitCount() {
-        return this.effectiveRule.getHitCount();
+        return this.effectiveRule == null ? 0 : this.effectiveRule.getHitCount();
     }
 
     /***
@@ -140,7 +140,7 @@ public class FaultInjectionRule {
      * @return the list of physical addresses.
      */
     public List<URI> getAddresses() {
-        return this.effectiveRule.getAddresses();
+        return this.effectiveRule == null ? null : this.effectiveRule.getAddresses();
     }
 
     /***
@@ -149,7 +149,7 @@ public class FaultInjectionRule {
      * @return the list of region endpoints.
      */
     public List<URI> getRegionEndpoints() {
-        return this.effectiveRule.getRegionEndpoints();
+        return this.effectiveRule == null ? null : this.effectiveRule.getRegionEndpoints();
     }
 
     /***

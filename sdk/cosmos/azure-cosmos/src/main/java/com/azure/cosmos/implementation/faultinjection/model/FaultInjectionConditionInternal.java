@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.faultinjection.model;
 
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class FaultInjectionConditionInternal {
     public FaultInjectionConditionInternal(String containerResourceId) {
         this.containerResourceId = containerResourceId;
         this.validators = new ArrayList<>();
-        this.validators.add(new ContainerValidator(containerResourceId));
+        this.validators.add(new ContainerValidator(this.containerResourceId));
     }
 
     public OperationType getOperationType() {
@@ -100,7 +101,7 @@ public class FaultInjectionConditionInternal {
 
         @Override
         public boolean isApplicable(RxDocumentServiceRequest request) {
-            return request.requestContext.resolvedCollectionRid == containerResourceId;
+            return StringUtils.equals(this.containerResourceId, request.requestContext.resolvedCollectionRid);
         }
     }
 
