@@ -12,77 +12,77 @@ public abstract class CommunicationIdentifier {
     /**
      * Prefix for a phone number.
      */
-    protected static final String PHONE_NUMBER = "4:";
+    static final String PHONE_NUMBER = "4:";
 
     /**
      * Prefix for a bot.
      */
-    protected static final String BOT_GLOBAL = "28:";
+    static final String BOT_GLOBAL = "28:";
 
     /**
      * Prefix for a bot with public cloud.
      */
-    protected static final String BOT_PUBLIC_CLOUD = "28:orgid:";
+    static final String BOT_PUBLIC_CLOUD = "28:orgid:";
 
     /**
      * Prefix for a bot with DOD cloud.
      */
-    protected static final String BOT_DOD_CLOUD = "28:dod:";
+    static final String BOT_DOD_CLOUD = "28:dod:";
 
     /**
      * Prefix for a global bot with DOD cloud.
      */
-    protected static final String BOT_DOD_CLOUD_GLOBAL = "28:dod-global:";
+    static final String BOT_DOD_CLOUD_GLOBAL = "28:dod-global:";
 
     /**
      * Prefix for a bot with GCCH cloud.
      */
-    protected static final String BOT_GCCH_CLOUD = "28:gcch:";
+    static final String BOT_GCCH_CLOUD = "28:gcch:";
 
     /**
      * Prefix for a global bot with GCCH cloud.
      */
-    protected static final String BOT_GCCH_CLOUD_GLOBAL = "28:gcch-global:";
+    static final String BOT_GCCH_CLOUD_GLOBAL = "28:gcch-global:";
 
     /**
      * Prefix for an anonymous Teams user.
      */
-    protected static final String TEAMS_USER_ANONYMOUS = "8:teamsvisitor:";
+    static final String TEAMS_USER_ANONYMOUS = "8:teamsvisitor:";
 
     /**
      * Prefix for a Teams user with public cloud.
      */
-    protected static final String TEAMS_USER_PUBLIC_CLOUD = "8:orgid:";
+    static final String TEAMS_USER_PUBLIC_CLOUD = "8:orgid:";
 
     /**
      * Prefix for a Teams user with DOD cloud.
      */
-    protected static final String TEAMS_USER_DOD_CLOUD = "8:dod:";
+    static final String TEAMS_USER_DOD_CLOUD = "8:dod:";
 
     /**
      * Prefix for a Teams user with GCCH cloud.
      */
-    protected static final String TEAMS_USER_GCCH_CLOUD = "8:gcch:";
+    static final String TEAMS_USER_GCCH_CLOUD = "8:gcch:";
 
     /**
      * Prefix for an ACS user.
      */
-    protected static final String ACS_USER = "8:acs:";
+    static final String ACS_USER = "8:acs:";
 
     /**
      * Prefix for an ACS user with DOD cloud.
      */
-    protected static final String ACS_USER_DOD_CLOUD = "8:dod-acs:";
+    static final String ACS_USER_DOD_CLOUD = "8:dod-acs:";
 
     /**
      * Prefix for an ACS user with GCCH cloud.
      */
-    protected static final String ACS_USER_GCCH_CLOUD = "8:gcch-acs:";
+    static final String ACS_USER_GCCH_CLOUD = "8:gcch-acs:";
 
     /**
      * Prefix for a Spool user.
      */
-    protected static final String SPOOL_USER = "8:spool:";
+    static final String SPOOL_USER = "8:spool:";
 
     private String rawId;
 
