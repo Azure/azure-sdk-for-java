@@ -10,6 +10,9 @@ import java.time.Duration;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/***
+ * The fault injection rule builder.
+ */
 public class FaultInjectionRuleBuilder {
 
     private final String id;

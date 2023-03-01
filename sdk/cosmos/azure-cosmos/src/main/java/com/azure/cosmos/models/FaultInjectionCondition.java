@@ -3,6 +3,10 @@
 
 package com.azure.cosmos.models;
 
+/***
+ * Fault injection condition.
+ * A fault injection rule will not be applicable if the condition mismatches.
+ */
 public class FaultInjectionCondition {
     private final FaultInjectionEndpoints endpoints;
     private final FaultInjectionOperationType operationType;

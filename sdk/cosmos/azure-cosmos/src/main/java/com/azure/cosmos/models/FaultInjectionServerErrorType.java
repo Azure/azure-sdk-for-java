@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.models;
 
+/***
+ * Fault injection server error type.
+ */
 public enum FaultInjectionServerErrorType {
 
     /** 410 from server */

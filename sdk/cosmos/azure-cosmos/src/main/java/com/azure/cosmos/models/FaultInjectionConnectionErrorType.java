@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.models;
 
+/***
+ * Fault injection connection error type.
+ */
 public enum FaultInjectionConnectionErrorType {
     /***
      * Simulate connection close exception.

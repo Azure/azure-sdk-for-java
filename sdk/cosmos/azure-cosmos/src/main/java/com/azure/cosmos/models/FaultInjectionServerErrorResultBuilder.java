@@ -7,6 +7,9 @@ import java.time.Duration;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/***
+ * Fault injection server error result builder.
+ */
 public class FaultInjectionServerErrorResultBuilder {
     private final FaultInjectionServerErrorType serverErrorType;
     private int times = Integer.MAX_VALUE;

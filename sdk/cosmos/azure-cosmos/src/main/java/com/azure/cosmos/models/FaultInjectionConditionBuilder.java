@@ -8,6 +8,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * Fault injection condition builder.
+ */
 public class FaultInjectionConditionBuilder {
 
     private FaultInjectionEndpoints endpoints;

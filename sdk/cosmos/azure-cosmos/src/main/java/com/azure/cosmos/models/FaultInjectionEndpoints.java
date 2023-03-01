@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.models;
 
+/***
+ * Fault injection endpoints.
+ */
 public class FaultInjectionEndpoints {
     private final FeedRange feedRange;
     private boolean includePrimary;
@@ -14,14 +17,30 @@ public class FaultInjectionEndpoints {
         this.includePrimary = includePrimary;
     }
 
+    /***
+     * Get the feed range.
+     *
+     * @return the feed range.
+     */
     public FeedRange getFeedRange() {
         return this.feedRange;
     }
 
+    /***
+     * Get the flag which indicates whether primary replica address can be used.
+     *
+     * @return the flag which indicates whether primary replica address can be used.
+     */
     public boolean isIncludePrimary() {
         return includePrimary;
     }
 
+    /***
+     * Get the replica count.
+     * This is used to indicate how many physical addresses can be applied the fault injection rule.
+     *
+     * @return the replica count.
+     */
     public int getReplicaCount() {
         return replicaCount;
     }

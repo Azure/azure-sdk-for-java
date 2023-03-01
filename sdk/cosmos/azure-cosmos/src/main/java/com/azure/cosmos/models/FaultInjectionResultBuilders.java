@@ -3,6 +3,10 @@
 
 package com.azure.cosmos.models;
 
+/***
+ * Fault injection result builders.
+ * Based on the error type, it will return either {@link  FaultInjectionServerErrorResultBuilder} or {@link FaultInjectionConnectionErrorResultBuilder}.
+ */
 public class FaultInjectionResultBuilders {
     /***
      * Get the server error result builder.

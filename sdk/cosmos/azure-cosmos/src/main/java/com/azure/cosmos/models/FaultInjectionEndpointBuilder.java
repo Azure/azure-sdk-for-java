@@ -6,6 +6,9 @@ package com.azure.cosmos.models;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/***
+ * Fault injection endpoint builder.
+ */
 public class FaultInjectionEndpointBuilder {
     private static final int DEFAULT_REPLICA_COUNT = Integer.MAX_VALUE;
     private static final boolean DEFAULT_INCLUDE_PRIMARY = true;

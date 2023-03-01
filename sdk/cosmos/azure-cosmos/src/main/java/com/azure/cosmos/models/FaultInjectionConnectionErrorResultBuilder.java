@@ -8,6 +8,9 @@ import java.time.Duration;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/***
+ * Fault injection connection error result builder.
+ */
 public class FaultInjectionConnectionErrorResultBuilder {
     private static final double DEFAULT_CONNECTION_THRESHOLD = 1.0;
     private final FaultInjectionConnectionErrorType connectionErrorType;

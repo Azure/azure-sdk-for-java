@@ -5,6 +5,9 @@ package com.azure.cosmos.models;
 
 import java.time.Duration;
 
+/***
+ * Fault injection server error result.
+ */
 public class FaultInjectionServerErrorResult implements IFaultInjectionResult{
     private final FaultInjectionServerErrorType serverErrorType;
     private final Integer times;

@@ -12,6 +12,9 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/***
+ * Fault injection rule.
+ */
 public class FaultInjectionRule {
     private final FaultInjectionCondition condition;
     private final IFaultInjectionResult result;

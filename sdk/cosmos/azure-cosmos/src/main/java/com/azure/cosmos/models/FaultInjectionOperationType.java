@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.models;
 
+/***
+ * Fault injection operation type.
+ */
 public enum FaultInjectionOperationType {
     /**
      * READ.
