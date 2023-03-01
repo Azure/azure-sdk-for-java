@@ -40,8 +40,6 @@ class ConfidentialLedgerClientTestBase extends TestBase {
 
     @Override
     protected void beforeTest() {
-
-        try {
             ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientBuilder = new ConfidentialLedgerCertificateClientBuilder()
                 .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -70,8 +68,8 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             try {
                 jsonNode = mapper.readTree(identityResponse.toBytes());
             } catch (IOException ex) {
-                System.out.println("Caught exception " + ex);
-                Assertions.assertTrue(false);
+                System.out.println("Caught IO exception " + ex);
+                Assertions.fail();
             }
 
             String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
@@ -86,8 +84,8 @@ class ConfidentialLedgerClientTestBase extends TestBase {
                 reactorClient = reactor.netty.http.client.HttpClient.create()
                     .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
             } catch (SSLException ex) {
-                System.out.println("Caught exception " + ex);
-                Assertions.assertTrue(false);
+                System.out.println("Caught SSL exception " + ex);
+                Assertions.fail();
             }
 
             HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
@@ -111,12 +109,6 @@ class ConfidentialLedgerClientTestBase extends TestBase {
                     .httpClient(httpClient);
             }
             confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
-
-        } catch (Exception ex) {
-            System.out.println("Error thrown from ConfidentialLedgerClientTestBase:" + ex);
-            Assertions.assertTrue(false);
-        }
-
     }
 
 }
