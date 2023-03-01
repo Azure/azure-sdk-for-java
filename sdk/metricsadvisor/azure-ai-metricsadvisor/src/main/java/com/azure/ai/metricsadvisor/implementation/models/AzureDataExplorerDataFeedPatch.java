@@ -20,7 +20,7 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private SQLSourceParameterPatch dataSourceParameter;
+    private SqlSourceParameter dataSourceParameter;
 
     /** Creates an instance of AzureDataExplorerDataFeedPatch class. */
     public AzureDataExplorerDataFeedPatch() {}
@@ -30,7 +30,7 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
      *
      * @return the dataSourceParameter value.
      */
-    public SQLSourceParameterPatch getDataSourceParameter() {
+    public SqlSourceParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -40,7 +40,7 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureDataExplorerDataFeedPatch object itself.
      */
-    public AzureDataExplorerDataFeedPatch setDataSourceParameter(SQLSourceParameterPatch dataSourceParameter) {
+    public AzureDataExplorerDataFeedPatch setDataSourceParameter(SqlSourceParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

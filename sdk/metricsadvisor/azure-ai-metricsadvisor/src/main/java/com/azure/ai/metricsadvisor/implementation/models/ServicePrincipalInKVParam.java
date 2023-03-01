@@ -25,7 +25,7 @@ public final class ServicePrincipalInKVParam {
     /*
      * The Client Secret to access the Key Vault.
      */
-    @JsonProperty(value = "keyVaultClientSecret")
+    @JsonProperty(value = "keyVaultClientSecret", required = true)
     private String keyVaultClientSecret;
 
     /*

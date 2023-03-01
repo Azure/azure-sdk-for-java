@@ -17,7 +17,7 @@ public final class DataLakeGen2SharedKeyCredential extends DataSourceCredential 
     /*
      * The parameters property.
      */
-    @JsonProperty(value = "parameters", required = true)
+    @JsonProperty(value = "parameters")
     private DataLakeGen2SharedKeyParam parameters;
 
     /** Creates an instance of DataLakeGen2SharedKeyCredential class. */

@@ -13,7 +13,7 @@ public final class DataLakeGen2SharedKeyParam {
     /*
      * The account key to access the Azure Data Lake Storage Gen2.
      */
-    @JsonProperty(value = "accountKey")
+    @JsonProperty(value = "accountKey", required = true)
     private String accountKey;
 
     /** Creates an instance of DataLakeGen2SharedKeyParam class. */

@@ -13,7 +13,7 @@ public final class AzureSQLConnectionStringParam {
     /*
      * The connection string to access the Azure SQL.
      */
-    @JsonProperty(value = "connectionString")
+    @JsonProperty(value = "connectionString", required = true)
     private String connectionString;
 
     /** Creates an instance of AzureSQLConnectionStringParam class. */

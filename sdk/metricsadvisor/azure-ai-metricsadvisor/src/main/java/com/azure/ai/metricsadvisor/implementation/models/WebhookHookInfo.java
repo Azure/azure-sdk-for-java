@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** The WebhookHookInfo model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "hookType")
@@ -18,7 +17,7 @@ public final class WebhookHookInfo extends HookInfo {
     /*
      * The hookParameter property.
      */
-    @JsonProperty(value = "hookParameter", required = true)
+    @JsonProperty(value = "hookParameter")
     private WebhookHookParameter hookParameter;
 
     /** Creates an instance of WebhookHookInfo class. */
@@ -62,13 +61,6 @@ public final class WebhookHookInfo extends HookInfo {
     @Override
     public WebhookHookInfo setExternalLink(String externalLink) {
         super.setExternalLink(externalLink);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public WebhookHookInfo setAdmins(List<String> admins) {
-        super.setAdmins(admins);
         return this;
     }
 }

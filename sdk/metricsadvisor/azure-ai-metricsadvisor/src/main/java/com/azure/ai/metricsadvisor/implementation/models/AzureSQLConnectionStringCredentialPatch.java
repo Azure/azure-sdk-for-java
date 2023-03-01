@@ -18,7 +18,7 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
      * The parameters property.
      */
     @JsonProperty(value = "parameters")
-    private AzureSQLConnectionStringParamPatch parameters;
+    private AzureSQLConnectionStringParam parameters;
 
     /** Creates an instance of AzureSQLConnectionStringCredentialPatch class. */
     public AzureSQLConnectionStringCredentialPatch() {}
@@ -28,7 +28,7 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
      *
      * @return the parameters value.
      */
-    public AzureSQLConnectionStringParamPatch getParameters() {
+    public AzureSQLConnectionStringParam getParameters() {
         return this.parameters;
     }
 
@@ -38,7 +38,7 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
      * @param parameters the parameters value to set.
      * @return the AzureSQLConnectionStringCredentialPatch object itself.
      */
-    public AzureSQLConnectionStringCredentialPatch setParameters(AzureSQLConnectionStringParamPatch parameters) {
+    public AzureSQLConnectionStringCredentialPatch setParameters(AzureSQLConnectionStringParam parameters) {
         this.parameters = parameters;
         return this;
     }

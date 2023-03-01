@@ -18,7 +18,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
      * The parameters property.
      */
     @JsonProperty(value = "parameters")
-    private ServicePrincipalParamPatch parameters;
+    private ServicePrincipalParam parameters;
 
     /** Creates an instance of ServicePrincipalCredentialPatch class. */
     public ServicePrincipalCredentialPatch() {}
@@ -28,7 +28,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
      *
      * @return the parameters value.
      */
-    public ServicePrincipalParamPatch getParameters() {
+    public ServicePrincipalParam getParameters() {
         return this.parameters;
     }
 
@@ -38,7 +38,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
      * @param parameters the parameters value to set.
      * @return the ServicePrincipalCredentialPatch object itself.
      */
-    public ServicePrincipalCredentialPatch setParameters(ServicePrincipalParamPatch parameters) {
+    public ServicePrincipalCredentialPatch setParameters(ServicePrincipalParam parameters) {
         this.parameters = parameters;
         return this;
     }

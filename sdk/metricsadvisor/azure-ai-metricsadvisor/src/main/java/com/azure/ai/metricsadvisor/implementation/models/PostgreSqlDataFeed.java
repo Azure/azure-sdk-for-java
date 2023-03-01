@@ -19,7 +19,7 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter", required = true)
+    @JsonProperty(value = "dataSourceParameter")
     private SqlSourceParameter dataSourceParameter;
 
     /** Creates an instance of PostgreSqlDataFeed class. */

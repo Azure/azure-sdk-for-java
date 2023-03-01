@@ -20,7 +20,7 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private SQLSourceParameterPatch dataSourceParameter;
+    private SqlSourceParameter dataSourceParameter;
 
     /** Creates an instance of SQLServerDataFeedPatch class. */
     public SQLServerDataFeedPatch() {}
@@ -30,7 +30,7 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
      *
      * @return the dataSourceParameter value.
      */
-    public SQLSourceParameterPatch getDataSourceParameter() {
+    public SqlSourceParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -40,7 +40,7 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the SQLServerDataFeedPatch object itself.
      */
-    public SQLServerDataFeedPatch setDataSourceParameter(SQLSourceParameterPatch dataSourceParameter) {
+    public SQLServerDataFeedPatch setDataSourceParameter(SqlSourceParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

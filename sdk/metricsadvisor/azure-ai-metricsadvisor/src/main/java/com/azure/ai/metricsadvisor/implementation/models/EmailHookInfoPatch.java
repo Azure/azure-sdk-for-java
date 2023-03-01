@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** The EmailHookInfoPatch model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "hookType")
@@ -19,7 +18,7 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
      * The hookParameter property.
      */
     @JsonProperty(value = "hookParameter")
-    private EmailHookParameterPatch hookParameter;
+    private EmailHookParameter hookParameter;
 
     /** Creates an instance of EmailHookInfoPatch class. */
     public EmailHookInfoPatch() {}
@@ -29,7 +28,7 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
      *
      * @return the hookParameter value.
      */
-    public EmailHookParameterPatch getHookParameter() {
+    public EmailHookParameter getHookParameter() {
         return this.hookParameter;
     }
 
@@ -39,7 +38,7 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
      * @param hookParameter the hookParameter value to set.
      * @return the EmailHookInfoPatch object itself.
      */
-    public EmailHookInfoPatch setHookParameter(EmailHookParameterPatch hookParameter) {
+    public EmailHookInfoPatch setHookParameter(EmailHookParameter hookParameter) {
         this.hookParameter = hookParameter;
         return this;
     }
@@ -62,13 +61,6 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
     @Override
     public EmailHookInfoPatch setExternalLink(String externalLink) {
         super.setExternalLink(externalLink);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public EmailHookInfoPatch setAdmins(List<String> admins) {
-        super.setAdmins(admins);
         return this;
     }
 }

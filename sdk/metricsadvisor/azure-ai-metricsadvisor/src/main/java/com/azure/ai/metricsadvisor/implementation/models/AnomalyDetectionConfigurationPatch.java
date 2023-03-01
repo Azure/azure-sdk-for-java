@@ -27,7 +27,7 @@ public final class AnomalyDetectionConfigurationPatch {
      * The wholeMetricConfiguration property.
      */
     @JsonProperty(value = "wholeMetricConfiguration")
-    private WholeMetricConfigurationPatch wholeMetricConfiguration;
+    private WholeMetricConfiguration wholeMetricConfiguration;
 
     /*
      * detection configuration for series group
@@ -89,7 +89,7 @@ public final class AnomalyDetectionConfigurationPatch {
      *
      * @return the wholeMetricConfiguration value.
      */
-    public WholeMetricConfigurationPatch getWholeMetricConfiguration() {
+    public WholeMetricConfiguration getWholeMetricConfiguration() {
         return this.wholeMetricConfiguration;
     }
 
@@ -100,7 +100,7 @@ public final class AnomalyDetectionConfigurationPatch {
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
     public AnomalyDetectionConfigurationPatch setWholeMetricConfiguration(
-            WholeMetricConfigurationPatch wholeMetricConfiguration) {
+            WholeMetricConfiguration wholeMetricConfiguration) {
         this.wholeMetricConfiguration = wholeMetricConfiguration;
         return this;
     }

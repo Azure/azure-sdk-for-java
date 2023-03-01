@@ -11,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureEventHubsParameter {
     /*
-     * The connection string of this Azure Event Hubs
+     * Azure Event Hubs connection string
      */
-    @JsonProperty(value = "connectionString")
+    @JsonProperty(value = "connectionString", required = true)
     private String connectionString;
 
     /*
-     * The consumer group to be used in this data feed
+     * Azure Event Hubs consumer group
      */
     @JsonProperty(value = "consumerGroup", required = true)
     private String consumerGroup;
@@ -26,7 +26,7 @@ public final class AzureEventHubsParameter {
     public AzureEventHubsParameter() {}
 
     /**
-     * Get the connectionString property: The connection string of this Azure Event Hubs.
+     * Get the connectionString property: Azure Event Hubs connection string.
      *
      * @return the connectionString value.
      */
@@ -35,7 +35,7 @@ public final class AzureEventHubsParameter {
     }
 
     /**
-     * Set the connectionString property: The connection string of this Azure Event Hubs.
+     * Set the connectionString property: Azure Event Hubs connection string.
      *
      * @param connectionString the connectionString value to set.
      * @return the AzureEventHubsParameter object itself.
@@ -46,7 +46,7 @@ public final class AzureEventHubsParameter {
     }
 
     /**
-     * Get the consumerGroup property: The consumer group to be used in this data feed.
+     * Get the consumerGroup property: Azure Event Hubs consumer group.
      *
      * @return the consumerGroup value.
      */
@@ -55,7 +55,7 @@ public final class AzureEventHubsParameter {
     }
 
     /**
-     * Set the consumerGroup property: The consumer group to be used in this data feed.
+     * Set the consumerGroup property: Azure Event Hubs consumer group.
      *
      * @param consumerGroup the consumerGroup value to set.
      * @return the AzureEventHubsParameter object itself.

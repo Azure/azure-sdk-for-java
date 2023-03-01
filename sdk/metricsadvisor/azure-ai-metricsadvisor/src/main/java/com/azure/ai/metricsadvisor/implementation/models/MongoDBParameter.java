@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MongoDBParameter {
     /*
-     * The connection string of this MongoDB
+     * MongoDB connection string
      */
-    @JsonProperty(value = "connectionString")
+    @JsonProperty(value = "connectionString", required = true)
     private String connectionString;
 
     /*
-     * A database name in this MongoDB
+     * Database name
      */
-    @JsonProperty(value = "database")
+    @JsonProperty(value = "database", required = true)
     private String database;
 
     /*
-     * The script to query this database
+     * Query script
      */
     @JsonProperty(value = "command", required = true)
     private String command;
@@ -32,7 +32,7 @@ public final class MongoDBParameter {
     public MongoDBParameter() {}
 
     /**
-     * Get the connectionString property: The connection string of this MongoDB.
+     * Get the connectionString property: MongoDB connection string.
      *
      * @return the connectionString value.
      */
@@ -41,7 +41,7 @@ public final class MongoDBParameter {
     }
 
     /**
-     * Set the connectionString property: The connection string of this MongoDB.
+     * Set the connectionString property: MongoDB connection string.
      *
      * @param connectionString the connectionString value to set.
      * @return the MongoDBParameter object itself.
@@ -52,7 +52,7 @@ public final class MongoDBParameter {
     }
 
     /**
-     * Get the database property: A database name in this MongoDB.
+     * Get the database property: Database name.
      *
      * @return the database value.
      */
@@ -61,7 +61,7 @@ public final class MongoDBParameter {
     }
 
     /**
-     * Set the database property: A database name in this MongoDB.
+     * Set the database property: Database name.
      *
      * @param database the database value to set.
      * @return the MongoDBParameter object itself.
@@ -72,7 +72,7 @@ public final class MongoDBParameter {
     }
 
     /**
-     * Get the command property: The script to query this database.
+     * Get the command property: Query script.
      *
      * @return the command value.
      */
@@ -81,7 +81,7 @@ public final class MongoDBParameter {
     }
 
     /**
-     * Set the command property: The script to query this database.
+     * Set the command property: Query script.
      *
      * @param command the command value to set.
      * @return the MongoDBParameter object itself.

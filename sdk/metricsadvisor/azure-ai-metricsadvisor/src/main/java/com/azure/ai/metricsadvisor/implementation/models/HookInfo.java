@@ -52,7 +52,7 @@ public class HookInfo {
     /*
      * hook administrators
      */
-    @JsonProperty(value = "admins")
+    @JsonProperty(value = "admins", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> admins;
 
     /** Creates an instance of HookInfo class. */
@@ -134,16 +134,5 @@ public class HookInfo {
      */
     public List<String> getAdmins() {
         return this.admins;
-    }
-
-    /**
-     * Set the admins property: hook administrators.
-     *
-     * @param admins the admins value to set.
-     * @return the HookInfo object itself.
-     */
-    public HookInfo setAdmins(List<String> admins) {
-        this.admins = admins;
-        return this;
     }
 }

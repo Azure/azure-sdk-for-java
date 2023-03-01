@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,13 +14,13 @@ public final class SeverityCondition {
      * min alert severity
      */
     @JsonProperty(value = "minAlertSeverity", required = true)
-    private AnomalySeverity minAlertSeverity;
+    private Severity minAlertSeverity;
 
     /*
      * max alert severity
      */
     @JsonProperty(value = "maxAlertSeverity", required = true)
-    private AnomalySeverity maxAlertSeverity;
+    private Severity maxAlertSeverity;
 
     /** Creates an instance of SeverityCondition class. */
     public SeverityCondition() {}
@@ -31,7 +30,7 @@ public final class SeverityCondition {
      *
      * @return the minAlertSeverity value.
      */
-    public AnomalySeverity getMinAlertSeverity() {
+    public Severity getMinAlertSeverity() {
         return this.minAlertSeverity;
     }
 
@@ -41,7 +40,7 @@ public final class SeverityCondition {
      * @param minAlertSeverity the minAlertSeverity value to set.
      * @return the SeverityCondition object itself.
      */
-    public SeverityCondition setMinAlertSeverity(AnomalySeverity minAlertSeverity) {
+    public SeverityCondition setMinAlertSeverity(Severity minAlertSeverity) {
         this.minAlertSeverity = minAlertSeverity;
         return this;
     }
@@ -51,7 +50,7 @@ public final class SeverityCondition {
      *
      * @return the maxAlertSeverity value.
      */
-    public AnomalySeverity  getMaxAlertSeverity() {
+    public Severity getMaxAlertSeverity() {
         return this.maxAlertSeverity;
     }
 
@@ -61,7 +60,7 @@ public final class SeverityCondition {
      * @param maxAlertSeverity the maxAlertSeverity value to set.
      * @return the SeverityCondition object itself.
      */
-    public SeverityCondition setMaxAlertSeverity(AnomalySeverity maxAlertSeverity) {
+    public SeverityCondition setMaxAlertSeverity(Severity maxAlertSeverity) {
         this.maxAlertSeverity = maxAlertSeverity;
         return this;
     }

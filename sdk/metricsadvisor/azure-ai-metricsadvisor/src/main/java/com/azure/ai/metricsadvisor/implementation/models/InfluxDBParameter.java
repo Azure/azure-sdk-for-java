@@ -11,31 +11,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class InfluxDBParameter {
     /*
-     * The connection string of this InfluxDB
+     * InfluxDB connection string
      */
-    @JsonProperty(value = "connectionString")
+    @JsonProperty(value = "connectionString", required = true)
     private String connectionString;
 
     /*
-     * A database name
+     * Database name
      */
-    @JsonProperty(value = "database")
+    @JsonProperty(value = "database", required = true)
     private String database;
 
     /*
-     * The user name of the account that can access this database
+     * Database access user
      */
-    @JsonProperty(value = "userName")
+    @JsonProperty(value = "userName", required = true)
     private String userName;
 
     /*
-     * The password of the account that can access this database
+     * Database access password
      */
-    @JsonProperty(value = "password")
+    @JsonProperty(value = "password", required = true)
     private String password;
 
     /*
-     * The script to query this database
+     * Query script
      */
     @JsonProperty(value = "query", required = true)
     private String query;
@@ -44,7 +44,7 @@ public final class InfluxDBParameter {
     public InfluxDBParameter() {}
 
     /**
-     * Get the connectionString property: The connection string of this InfluxDB.
+     * Get the connectionString property: InfluxDB connection string.
      *
      * @return the connectionString value.
      */
@@ -53,7 +53,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Set the connectionString property: The connection string of this InfluxDB.
+     * Set the connectionString property: InfluxDB connection string.
      *
      * @param connectionString the connectionString value to set.
      * @return the InfluxDBParameter object itself.
@@ -64,7 +64,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Get the database property: A database name.
+     * Get the database property: Database name.
      *
      * @return the database value.
      */
@@ -73,7 +73,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Set the database property: A database name.
+     * Set the database property: Database name.
      *
      * @param database the database value to set.
      * @return the InfluxDBParameter object itself.
@@ -84,7 +84,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Get the userName property: The user name of the account that can access this database.
+     * Get the userName property: Database access user.
      *
      * @return the userName value.
      */
@@ -93,7 +93,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Set the userName property: The user name of the account that can access this database.
+     * Set the userName property: Database access user.
      *
      * @param userName the userName value to set.
      * @return the InfluxDBParameter object itself.
@@ -104,7 +104,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Get the password property: The password of the account that can access this database.
+     * Get the password property: Database access password.
      *
      * @return the password value.
      */
@@ -113,7 +113,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Set the password property: The password of the account that can access this database.
+     * Set the password property: Database access password.
      *
      * @param password the password value to set.
      * @return the InfluxDBParameter object itself.
@@ -124,7 +124,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Get the query property: The script to query this database.
+     * Get the query property: Query script.
      *
      * @return the query value.
      */
@@ -133,7 +133,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Set the query property: The script to query this database.
+     * Set the query property: Query script.
      *
      * @param query the query value to set.
      * @return the InfluxDBParameter object itself.

@@ -19,7 +19,7 @@ public final class SQLServerDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter", required = true)
+    @JsonProperty(value = "dataSourceParameter")
     private SqlSourceParameter dataSourceParameter;
 
     /** Creates an instance of SQLServerDataFeed class. */

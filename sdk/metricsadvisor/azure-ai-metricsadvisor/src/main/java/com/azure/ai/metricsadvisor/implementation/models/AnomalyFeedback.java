@@ -19,19 +19,19 @@ public final class AnomalyFeedback extends MetricFeedback {
     /*
      * the start timestamp of feedback time range
      */
-    @JsonProperty(value = "startTime", required = true)
+    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * the end timestamp of feedback time range, when equals to startTime means only one timestamp
      */
-    @JsonProperty(value = "endTime", required = true)
+    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value")
     private AnomalyFeedbackValue value;
 
     /*

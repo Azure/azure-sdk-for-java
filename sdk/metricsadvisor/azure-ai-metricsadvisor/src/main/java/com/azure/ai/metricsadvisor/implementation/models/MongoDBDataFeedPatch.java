@@ -20,7 +20,7 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private MongoDBParameterPatch dataSourceParameter;
+    private MongoDBParameter dataSourceParameter;
 
     /** Creates an instance of MongoDBDataFeedPatch class. */
     public MongoDBDataFeedPatch() {}
@@ -30,7 +30,7 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
      *
      * @return the dataSourceParameter value.
      */
-    public MongoDBParameterPatch getDataSourceParameter() {
+    public MongoDBParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -40,7 +40,7 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the MongoDBDataFeedPatch object itself.
      */
-    public MongoDBDataFeedPatch setDataSourceParameter(MongoDBParameterPatch dataSourceParameter) {
+    public MongoDBDataFeedPatch setDataSourceParameter(MongoDBParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

@@ -20,7 +20,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private InfluxDBParameterPatch dataSourceParameter;
+    private InfluxDBParameter dataSourceParameter;
 
     /** Creates an instance of InfluxDBDataFeedPatch class. */
     public InfluxDBDataFeedPatch() {}
@@ -30,7 +30,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
      *
      * @return the dataSourceParameter value.
      */
-    public InfluxDBParameterPatch getDataSourceParameter() {
+    public InfluxDBParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -40,7 +40,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the InfluxDBDataFeedPatch object itself.
      */
-    public InfluxDBDataFeedPatch setDataSourceParameter(InfluxDBParameterPatch dataSourceParameter) {
+    public InfluxDBDataFeedPatch setDataSourceParameter(InfluxDBParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

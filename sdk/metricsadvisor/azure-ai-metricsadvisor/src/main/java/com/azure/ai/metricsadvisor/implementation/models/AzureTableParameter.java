@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureTableParameter {
     /*
-     * The connection string of this Azure Table
+     * Azure Table connection string
      */
-    @JsonProperty(value = "connectionString")
+    @JsonProperty(value = "connectionString", required = true)
     private String connectionString;
 
     /*
-     * A table name in this Azure Table
+     * Table name
      */
     @JsonProperty(value = "table", required = true)
     private String table;
 
     /*
-     * The statement to query this table. Please find syntax and details from Azure Table documents.
+     * Query script
      */
     @JsonProperty(value = "query", required = true)
     private String query;
@@ -32,7 +32,7 @@ public final class AzureTableParameter {
     public AzureTableParameter() {}
 
     /**
-     * Get the connectionString property: The connection string of this Azure Table.
+     * Get the connectionString property: Azure Table connection string.
      *
      * @return the connectionString value.
      */
@@ -41,7 +41,7 @@ public final class AzureTableParameter {
     }
 
     /**
-     * Set the connectionString property: The connection string of this Azure Table.
+     * Set the connectionString property: Azure Table connection string.
      *
      * @param connectionString the connectionString value to set.
      * @return the AzureTableParameter object itself.
@@ -52,7 +52,7 @@ public final class AzureTableParameter {
     }
 
     /**
-     * Get the table property: A table name in this Azure Table.
+     * Get the table property: Table name.
      *
      * @return the table value.
      */
@@ -61,7 +61,7 @@ public final class AzureTableParameter {
     }
 
     /**
-     * Set the table property: A table name in this Azure Table.
+     * Set the table property: Table name.
      *
      * @param table the table value to set.
      * @return the AzureTableParameter object itself.
@@ -72,8 +72,7 @@ public final class AzureTableParameter {
     }
 
     /**
-     * Get the query property: The statement to query this table. Please find syntax and details from Azure Table
-     * documents.
+     * Get the query property: Query script.
      *
      * @return the query value.
      */
@@ -82,8 +81,7 @@ public final class AzureTableParameter {
     }
 
     /**
-     * Set the query property: The statement to query this table. Please find syntax and details from Azure Table
-     * documents.
+     * Set the query property: Query script.
      *
      * @param query the query value to set.
      * @return the AzureTableParameter object itself.

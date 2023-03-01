@@ -18,7 +18,7 @@ public final class PeriodFeedback extends MetricFeedback {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value")
     private PeriodFeedbackValue value;
 
     /** Creates an instance of PeriodFeedback class. */

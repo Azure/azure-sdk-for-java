@@ -20,7 +20,7 @@ public final class AzureCosmosDBDataFeedPatch extends DataFeedDetailPatch {
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private AzureCosmosDBParameterPatch dataSourceParameter;
+    private AzureCosmosDBParameter dataSourceParameter;
 
     /** Creates an instance of AzureCosmosDBDataFeedPatch class. */
     public AzureCosmosDBDataFeedPatch() {}
@@ -30,7 +30,7 @@ public final class AzureCosmosDBDataFeedPatch extends DataFeedDetailPatch {
      *
      * @return the dataSourceParameter value.
      */
-    public AzureCosmosDBParameterPatch getDataSourceParameter() {
+    public AzureCosmosDBParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -40,7 +40,7 @@ public final class AzureCosmosDBDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureCosmosDBDataFeedPatch object itself.
      */
-    public AzureCosmosDBDataFeedPatch setDataSourceParameter(AzureCosmosDBParameterPatch dataSourceParameter) {
+    public AzureCosmosDBDataFeedPatch setDataSourceParameter(AzureCosmosDBParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

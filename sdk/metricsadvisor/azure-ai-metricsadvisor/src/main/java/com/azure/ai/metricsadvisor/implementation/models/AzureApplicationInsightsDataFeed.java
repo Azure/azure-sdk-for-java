@@ -19,7 +19,7 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter", required = true)
+    @JsonProperty(value = "dataSourceParameter")
     private AzureApplicationInsightsParameter dataSourceParameter;
 
     /** Creates an instance of AzureApplicationInsightsDataFeed class. */

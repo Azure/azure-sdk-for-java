@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureBlobParameter {
     /*
-     * The connection string of this Azure Blob
+     * Azure Blob connection string
      */
-    @JsonProperty(value = "connectionString")
+    @JsonProperty(value = "connectionString", required = true)
     private String connectionString;
 
     /*
-     * The container name in this Azure Blob
+     * Container
      */
     @JsonProperty(value = "container", required = true)
     private String container;
 
     /*
-     * The path template in this container
+     * Blob Template
      */
     @JsonProperty(value = "blobTemplate", required = true)
     private String blobTemplate;
@@ -32,7 +32,7 @@ public final class AzureBlobParameter {
     public AzureBlobParameter() {}
 
     /**
-     * Get the connectionString property: The connection string of this Azure Blob.
+     * Get the connectionString property: Azure Blob connection string.
      *
      * @return the connectionString value.
      */
@@ -41,7 +41,7 @@ public final class AzureBlobParameter {
     }
 
     /**
-     * Set the connectionString property: The connection string of this Azure Blob.
+     * Set the connectionString property: Azure Blob connection string.
      *
      * @param connectionString the connectionString value to set.
      * @return the AzureBlobParameter object itself.
@@ -52,7 +52,7 @@ public final class AzureBlobParameter {
     }
 
     /**
-     * Get the container property: The container name in this Azure Blob.
+     * Get the container property: Container.
      *
      * @return the container value.
      */
@@ -61,7 +61,7 @@ public final class AzureBlobParameter {
     }
 
     /**
-     * Set the container property: The container name in this Azure Blob.
+     * Set the container property: Container.
      *
      * @param container the container value to set.
      * @return the AzureBlobParameter object itself.
@@ -72,7 +72,7 @@ public final class AzureBlobParameter {
     }
 
     /**
-     * Get the blobTemplate property: The path template in this container.
+     * Get the blobTemplate property: Blob Template.
      *
      * @return the blobTemplate value.
      */
@@ -81,7 +81,7 @@ public final class AzureBlobParameter {
     }
 
     /**
-     * Set the blobTemplate property: The path template in this container.
+     * Set the blobTemplate property: Blob Template.
      *
      * @param blobTemplate the blobTemplate value to set.
      * @return the AzureBlobParameter object itself.

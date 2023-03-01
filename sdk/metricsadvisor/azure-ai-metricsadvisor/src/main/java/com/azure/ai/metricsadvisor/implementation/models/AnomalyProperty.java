@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.AnomalyStatus;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +15,7 @@ public final class AnomalyProperty {
      * anomaly severity
      */
     @JsonProperty(value = "anomalySeverity", required = true)
-    private AnomalySeverity anomalySeverity;
+    private Severity anomalySeverity;
 
     /*
      * anomaly status
@@ -46,7 +45,7 @@ public final class AnomalyProperty {
      *
      * @return the anomalySeverity value.
      */
-    public AnomalySeverity getAnomalySeverity() {
+    public Severity getAnomalySeverity() {
         return this.anomalySeverity;
     }
 
@@ -56,7 +55,7 @@ public final class AnomalyProperty {
      * @param anomalySeverity the anomalySeverity value to set.
      * @return the AnomalyProperty object itself.
      */
-    public AnomalyProperty setAnomalySeverity(AnomalySeverity anomalySeverity) {
+    public AnomalyProperty setAnomalySeverity(Severity anomalySeverity) {
         this.anomalySeverity = anomalySeverity;
         return this;
     }

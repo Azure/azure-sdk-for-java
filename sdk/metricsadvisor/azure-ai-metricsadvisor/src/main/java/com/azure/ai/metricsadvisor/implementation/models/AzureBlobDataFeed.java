@@ -19,7 +19,7 @@ public final class AzureBlobDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter", required = true)
+    @JsonProperty(value = "dataSourceParameter")
     private AzureBlobParameter dataSourceParameter;
 
     /** Creates an instance of AzureBlobDataFeed class. */

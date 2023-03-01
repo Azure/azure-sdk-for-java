@@ -20,7 +20,7 @@ public final class PostgreSqlDataFeedPatch extends DataFeedDetailPatch {
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private SQLSourceParameterPatch dataSourceParameter;
+    private SqlSourceParameter dataSourceParameter;
 
     /** Creates an instance of PostgreSqlDataFeedPatch class. */
     public PostgreSqlDataFeedPatch() {}
@@ -30,7 +30,7 @@ public final class PostgreSqlDataFeedPatch extends DataFeedDetailPatch {
      *
      * @return the dataSourceParameter value.
      */
-    public SQLSourceParameterPatch getDataSourceParameter() {
+    public SqlSourceParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -40,7 +40,7 @@ public final class PostgreSqlDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the PostgreSqlDataFeedPatch object itself.
      */
-    public PostgreSqlDataFeedPatch setDataSourceParameter(SQLSourceParameterPatch dataSourceParameter) {
+    public PostgreSqlDataFeedPatch setDataSourceParameter(SqlSourceParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

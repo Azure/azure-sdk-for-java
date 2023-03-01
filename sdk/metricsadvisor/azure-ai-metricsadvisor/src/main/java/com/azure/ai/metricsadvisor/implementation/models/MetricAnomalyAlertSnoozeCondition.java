@@ -4,7 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.administration.models.SnoozeScope;
+import com.azure.ai.metricsadvisor.models.SnoozeScope;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

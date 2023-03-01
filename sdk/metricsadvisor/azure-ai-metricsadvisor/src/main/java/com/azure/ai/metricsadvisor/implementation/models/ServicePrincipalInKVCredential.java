@@ -17,7 +17,7 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
     /*
      * The parameters property.
      */
-    @JsonProperty(value = "parameters", required = true)
+    @JsonProperty(value = "parameters")
     private ServicePrincipalInKVParam parameters;
 
     /** Creates an instance of ServicePrincipalInKVCredential class. */

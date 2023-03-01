@@ -19,7 +19,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter", required = true)
+    @JsonProperty(value = "dataSourceParameter")
     private AzureTableParameter dataSourceParameter;
 
     /** Creates an instance of AzureTableDataFeed class. */

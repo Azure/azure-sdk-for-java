@@ -17,7 +17,7 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
     /*
      * The parameters property.
      */
-    @JsonProperty(value = "parameters", required = true)
+    @JsonProperty(value = "parameters")
     private AzureSQLConnectionStringParam parameters;
 
     /** Creates an instance of AzureSQLConnectionStringCredential class. */
