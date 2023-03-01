@@ -743,8 +743,6 @@ public class EventProcessorClientBuilder implements
             partitionOwnershipExpirationInterval = DEFAULT_OWNERSHIP_EXPIRATION_INTERVAL;
         }
 
-
-
         return new EventProcessorClient(eventHubClientBuilder, consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties,
             processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null,

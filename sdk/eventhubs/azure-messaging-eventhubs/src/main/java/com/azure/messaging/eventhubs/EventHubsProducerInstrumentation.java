@@ -38,7 +38,7 @@ class EventHubsProducerInstrumentation {
                         tracer.endSpan(signal.getThrowable(), span, null);
                     }
                 })
-                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpanWithLinks(spanName, batch, Context.NONE)));
+                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startPublishSpanWithLinks(spanName, batch, Context.NONE)));
         } else {
             return publisher
                 .doOnEach(signal -> {
@@ -53,7 +53,7 @@ class EventHubsProducerInstrumentation {
         return tracer;
     }
 
-    private Context startSpanWithLinks(String spanName, EventDataBatch batch, Context context) {
+    private Context startPublishSpanWithLinks(String spanName, EventDataBatch batch, Context context) {
         StartSpanOptions startOptions = tracer.createStartOption(SpanKind.CLIENT, EventHubsTracer.OperationName.PUBLISH);
         if (batch != null) {
             startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, batch.getCount());

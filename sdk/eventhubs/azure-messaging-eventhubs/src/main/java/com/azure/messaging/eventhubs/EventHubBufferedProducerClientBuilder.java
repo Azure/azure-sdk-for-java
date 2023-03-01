@@ -567,7 +567,7 @@ public final class EventHubBufferedProducerClientBuilder implements
             ? EventHubClientBuilder.DEFAULT_RETRY
             : retryOptions;
 
-        return new EventHubBufferedProducerAsyncClient(builder, clientOptions, partitionResolver, options);
+        return new EventHubBufferedProducerAsyncClient(builder, clientOptions, partitionResolver, options, builder.createTracer());
     }
 
     /**

@@ -18,13 +18,14 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 public class EventHubsTracer {
@@ -219,19 +220,18 @@ public class EventHubsTracer {
 
     public Flux<PartitionEvent> reportSyncReceiveSpan(String name, Instant startTime, Flux<PartitionEvent> events, Context parent) {
         if (tracer != null) {
-            List<PartitionEvent> eventsList = new ArrayList<>();
-            return events.doOnEach(signal -> {
-                if (signal.isOnNext()) {
-                    eventsList.add(signal.get());
-                } else if (signal.isOnComplete() || signal.isOnError()) {
-                    StartSpanOptions startSpanOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE)
-                        .setStartTimestamp(startTime);
-                    for (PartitionEvent event : eventsList) {
-                        startSpanOptions.addLink(createLink(event.getData().getProperties(), event.getData().getEnqueuedTime(), Context.NONE));
-                    }
+            final StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE)
+                .setStartTimestamp(startTime);
 
-                    startSpanOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, eventsList.size());
-                    Context span = tracer.start(name, startSpanOptions, parent);
+            return events.doOnEach(signal -> {
+                if (signal.hasValue()) {
+                    EventData data = signal.get().getData();
+                    startOptions.addLink(createLink(data.getProperties(), data.getEnqueuedTime(), Context.NONE));
+                } else if (signal.isOnComplete() || signal.isOnError()) {
+                    int batchSize = startOptions.getLinks() == null ? 0 : startOptions.getLinks().size();
+                    startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, batchSize);
+
+                    Context span = tracer.start(name, startOptions, parent);
                     tracer.end(null, signal.getThrowable(), span);
                 }
             });
@@ -252,8 +252,8 @@ public class EventHubsTracer {
     public StartSpanOptions createStartOption(SpanKind kind, OperationName operationName) {
         StartSpanOptions startOptions =  new StartSpanOptions(kind)
             .setAttribute(MESSAGING_SYSTEM_ATTRIBUTE_NAME, "eventhubs")
-            .setAttribute(Tracer.ENTITY_PATH_KEY, entityName)
-            .setAttribute(Tracer.HOST_NAME_KEY, fullyQualifiedName);
+            .setAttribute(ENTITY_PATH_KEY, entityName)
+            .setAttribute(HOST_NAME_KEY, fullyQualifiedName);
 
         if (operationName != null) {
             startOptions.setAttribute(MESSAGING_OPERATION_ATTRIBUTE_NAME, operationName.toString());
