@@ -5,14 +5,11 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.util.Arrays;
-
 /**
- * The {@link DynamicClassificationOptions} model.
+ * The {@link DynamicClassifyOptions} model.
  */
 @Fluent
-public final class DynamicClassificationOptions extends TextAnalyticsRequestOptions {
-    private Iterable<String> categories;
+public final class DynamicClassifyOptions extends TextAnalyticsRequestOptions {
     private ClassificationType classificationType;
     /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
@@ -20,10 +17,10 @@ public final class DynamicClassificationOptions extends TextAnalyticsRequestOpti
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link DynamicClassificationOptions} object itself.
+     * @return The {@link DynamicClassifyOptions} object itself.
      */
     @Override
-    public DynamicClassificationOptions setModelVersion(String modelVersion) {
+    public DynamicClassifyOptions setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
         return this;
     }
@@ -36,10 +33,10 @@ public final class DynamicClassificationOptions extends TextAnalyticsRequestOpti
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return The {@link DynamicClassificationOptions} object itself.
+     * @return The {@link DynamicClassifyOptions} object itself.
      */
     @Override
-    public DynamicClassificationOptions setIncludeStatistics(boolean includeStatistics) {
+    public DynamicClassifyOptions setIncludeStatistics(boolean includeStatistics) {
         super.setIncludeStatistics(includeStatistics);
         return this;
     }
@@ -52,32 +49,11 @@ public final class DynamicClassificationOptions extends TextAnalyticsRequestOpti
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link DynamicClassificationOptions} object itself.
+     * @return The {@link DynamicClassifyOptions} object itself.
      */
     @Override
-    public DynamicClassificationOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+    public DynamicClassifyOptions setServiceLogsDisabled(boolean disableServiceLogs) {
         super.setServiceLogsDisabled(disableServiceLogs);
-        return this;
-    }
-
-    /**
-     * Gets the value of {@code categories}. A list of categories to which input is classified to.
-     *
-     * @return The value of {@code categories}.
-     */
-    public Iterable<String> getCategories() {
-        return categories;
-    }
-
-    /**
-     * Sets the value of {@code categories}. A list of categories to which input is classified to.
-     *
-     * @param categories A list of categories to which input is classified to.
-     *
-     * @return The DynamicClassificationOptions object itself.
-     */
-    public DynamicClassificationOptions setCategories(String... categories) {
-        this.categories = categories == null ? null : Arrays.asList(categories);
         return this;
     }
 
@@ -96,9 +72,9 @@ public final class DynamicClassificationOptions extends TextAnalyticsRequestOpti
      * classification which may return more than one class for each document.
      *
      * @param classificationType the classificationType value to set.
-     * @return the DynamicClassificationOptions object itself.
+     * @return The {@link DynamicClassifyOptions} object itself.
      */
-    public DynamicClassificationOptions setClassificationType(ClassificationType classificationType) {
+    public DynamicClassifyOptions setClassificationType(ClassificationType classificationType) {
         this.classificationType = classificationType;
         return this;
     }

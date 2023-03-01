@@ -147,6 +147,9 @@ final class TestUtils {
         "The WHO is issuing a warning about Monkey Pox.",
         "Mo Salah plays in Liverpool FC in England.");
 
+    static final List<String> DYNAMIC_CLASSIFICATION_CATEGORIES =
+        Arrays.asList("Health", "Politics", "Music", "Sports");
+
     static final List<String> SUMMARY_INPUTS = asList(
         "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
             + " human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI "

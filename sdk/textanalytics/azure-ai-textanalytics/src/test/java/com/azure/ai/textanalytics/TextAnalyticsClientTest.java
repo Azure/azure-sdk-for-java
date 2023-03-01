@@ -74,6 +74,7 @@ import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_ENGLISH;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_SPANISH;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.textanalytics.TestUtils.DYNAMIC_CLASSIFICATION_CATEGORIES;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
@@ -2991,7 +2992,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
         duplicateIdRunner(inputs -> {
             final HttpResponseException response = assertThrows(HttpResponseException.class,
-                () -> client.dynamicClassificationBatchWithResponse(inputs, null, Context.NONE));
+                () -> client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null,
+                    Context.NONE));
             assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
         });
     }
@@ -3003,7 +3005,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
         emptyDocumentIdRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.dynamicClassificationBatchWithResponse(inputs, null, Context.NONE));
+                () -> client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null,
+                    Context.NONE));
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
             assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
@@ -3017,7 +3020,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         dynamicClassificationRunner((inputs, options) ->
             validateDynamicClassifyDocumentResultCollectionWithResponse(true,
                 getExpectedDynamicClassifyDocumentResultCollection(), 200,
-                client.dynamicClassificationBatchWithResponse(inputs, options, Context.NONE)));
+                client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, options,
+                    Context.NONE)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -3027,7 +3031,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         dynamicClassificationStringInputRunner((inputs, options) ->
             validateDynamicClassifyDocumentResultCollection(true,
                 getExpectedDynamicClassifyDocumentResultCollection(),
-                client.dynamicClassificationBatch(inputs, null, options)));
+                client.dynamicClassifyBatch(inputs, null, DYNAMIC_CLASSIFICATION_CATEGORIES, options)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -3035,7 +3039,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void dynamicClassificationBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
         dynamicClassificationBatchWarningRunner((inputs, options) ->
-            client.dynamicClassificationBatchWithResponse(inputs, options, Context.NONE)
+            client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, options, Context.NONE)
                 .getValue()
                 .forEach(classifyDocumentResult ->
                     classifyDocumentResult.getWarnings().forEach(warning -> {
@@ -3053,7 +3057,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
         tooManyDocumentsRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.dynamicClassificationBatch(inputs, null, null).stream().findFirst().get());
+                () -> client.dynamicClassifyBatch(inputs, null, DYNAMIC_CLASSIFICATION_CATEGORIES, null)
+                    .stream().findFirst().get());
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
             assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
