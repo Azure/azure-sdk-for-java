@@ -39,6 +39,7 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.storage.common/com.azure.storage.common.implementation.credentials=ALL-UNNAMED
+      --add-opens com.azure.storage.common/com.azure.storage.common.test.shared.extensions=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.policy=ALL-UNNAMED
       --add-reads com.azure.core=ALL-UNNAMED
@@ -102,7 +103,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.26</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

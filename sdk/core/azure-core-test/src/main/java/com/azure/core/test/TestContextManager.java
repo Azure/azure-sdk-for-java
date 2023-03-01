@@ -16,6 +16,7 @@ public class TestContextManager {
     private final String testName;
     private final String className;
     private final TestMode testMode;
+    private final boolean enableTestProxy;
     private final boolean doNotRecord;
     private final boolean testRan;
 
@@ -28,9 +29,21 @@ public class TestContextManager {
      * @param testMode The {@link TestMode} the test is running in.
      */
     public TestContextManager(Method testMethod, TestMode testMode) {
+        this(testMethod, testMode, false);
+    }
+
+    /**
+     * Constructs a {@link TestContextManager} based on the test method.
+     *
+     * @param testMethod Test method being ran.
+     * @param testMode The {@link TestMode} the test is running in.
+     * @param enableTestProxy True if the external test proxy is in use.
+     */
+    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy) {
         this.testName = testMethod.getName();
         this.className = testMethod.getDeclaringClass().getSimpleName();
         this.testMode = testMode;
+        this.enableTestProxy = enableTestProxy;
 
         DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
         boolean skipInPlayback;
@@ -81,6 +94,15 @@ public class TestContextManager {
      */
     public TestMode getTestMode() {
         return testMode;
+    }
+
+    /**
+     * Returns if the test proxy is enabled
+     *
+     * @return True if the text proxy is enabled
+     */
+    public boolean isTestProxyEnabled() {
+        return enableTestProxy;
     }
 
     /**

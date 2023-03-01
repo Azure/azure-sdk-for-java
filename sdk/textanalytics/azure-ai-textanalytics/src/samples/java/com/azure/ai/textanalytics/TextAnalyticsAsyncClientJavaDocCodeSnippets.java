@@ -20,7 +20,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
+import com.azure.ai.textanalytics.models.DynamicClassifyOptions;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
@@ -1409,16 +1409,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Dynamic classification
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#dynamicClassificationBatch(Iterable, String, DynamicClassificationOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#dynamicClassifyBatch(Iterable, String, Iterable, DynamicClassifyOptions)}
      */
     public void dynamicClassificationStringInputWithLanguage() {
-        // BEGIN: AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions
+        // BEGIN: AsyncClient.dynamicClassifyBatch#Iterable-String-Iterable-DynamicClassifyOptions
         List<String> documents = new ArrayList<>();
         documents.add("The WHO is issuing a warning about Monkey Pox.");
         documents.add("Mo Salah plays in Liverpool FC in England.");
-        DynamicClassificationOptions options = new DynamicClassificationOptions()
-            .setCategories("Health", "Politics", "Music", "Sport");
-        textAnalyticsAsyncClient.dynamicClassificationBatch(documents,  "en", options)
+        DynamicClassifyOptions options = new DynamicClassifyOptions();
+        textAnalyticsAsyncClient.dynamicClassifyBatch(documents,  "en",
+            Arrays.asList("Health", "Politics", "Music", "Sport"), options)
             .subscribe(
                 resultCollection -> resultCollection.forEach(documentResult -> {
                     System.out.println("Document ID: " + documentResult.getId());
@@ -1429,20 +1429,20 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }),
                 error -> System.err.println("There was an error analyzing dynamic classification of the documents. " + error),
                 () -> System.out.println("End of analyzing dynamic classification."));
-        // END: AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions
+        // END: AsyncClient.dynamicClassifyBatch#Iterable-String-Iterable-DynamicClassifyOptions
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#dynamicClassificationBatchWithResponse(Iterable, DynamicClassificationOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#dynamicClassifyBatchWithResponse(Iterable, Iterable, DynamicClassifyOptions)}
      */
     public void dynamicClassificationMaxOverload() {
-        // BEGIN: AsyncClient.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions
+        // BEGIN: AsyncClient.dynamicClassifyBatchWithResponse#Iterable-Iterable-DynamicClassifyOptions
         List<TextDocumentInput> documents = new ArrayList<>();
         documents.add(new TextDocumentInput("1", "The WHO is issuing a warning about Monkey Pox."));
         documents.add(new TextDocumentInput("2", "Mo Salah plays in Liverpool FC in England."));
-        DynamicClassificationOptions options = new DynamicClassificationOptions()
-            .setCategories("Health", "Politics", "Music", "Sport");
-        textAnalyticsAsyncClient.dynamicClassificationBatchWithResponse(documents, options)
+        DynamicClassifyOptions options = new DynamicClassifyOptions();
+        textAnalyticsAsyncClient.dynamicClassifyBatchWithResponse(documents,
+            Arrays.asList("Health", "Politics", "Music", "Sport"), options)
             .subscribe(
                 response -> {
                     // Response's status code
@@ -1463,7 +1463,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 error -> System.err.println(
                     "There was an error analyzing dynamic classification of the documents. " + error),
                 () -> System.out.println("End of analyzing dynamic classification."));
-        // END: AsyncClient.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions
+        // END: AsyncClient.dynamicClassifyBatchWithResponse#Iterable-Iterable-DynamicClassifyOptions
     }
 
     // Abstractive Summarization
