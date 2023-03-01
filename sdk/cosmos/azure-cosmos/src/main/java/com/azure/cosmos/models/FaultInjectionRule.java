@@ -43,34 +43,78 @@ public class FaultInjectionRule {
         this.result = result;
     }
 
+    /***
+     * Flag to indicate whether the fault injection rule is enabled.
+     * By default, it is enabled.
+     *
+     * @param enabled flag to indicate whether the rule is enabled.
+     */
     public void enabled(boolean enabled) {
         this.enabled = enabled;
     }
 
+    /***
+     * Get the fault injection condition.
+     *
+     * @return the {@link FaultInjectionCondition}.
+     */
     public FaultInjectionCondition getCondition() {
         return condition;
     }
 
+    /***
+     * Get the fault injection result.
+     *
+     * @return the {@link IFaultInjectionResult}.
+     */
     public IFaultInjectionResult getResult() {
         return result;
     }
 
+    /***
+     * Get the effective life span of the fault injection rule.
+     *
+     * @return the duration.
+     */
     public Duration getDuration() {
         return duration;
     }
 
+    /***
+     * Get the start delay of the fault injection rule.
+     *
+     * @return the start delay.
+     */
     public Duration getStartDelay() { return startDelay; }
 
+    /***
+     * Get the hit limit of the fault injection rule.
+     *
+     * @return the hit limit.
+     */
     public Integer getHitLimit() {
         return hitLimit;
     }
 
+    /***
+     * Get the fault injection rule id.
+     *
+     * @return the id.
+     */
     public String getId() {
         return this.id;
     }
 
+    /***
+     * Get flag to indicate whether the rule is enabled.
+     *
+     * @return the flag to indicate whether the rule is enabled.
+     */
     public boolean isEnabled() { return this.enabled; }
 
+    /***
+     * Disable the fault injection rule.
+     */
     public void disable() {
         this.enabled = false;
         if (this.effectiveRule != null) {
@@ -78,18 +122,38 @@ public class FaultInjectionRule {
         }
     }
 
+    /**
+     * Get the count of how many times the rule has applied.
+     *
+     * @return the hit count.
+     */
     public long getHitCount() {
         return this.effectiveRule.getHitCount();
     }
 
+    /***
+     * Get the physical addresses of the fault injection rule.
+     *
+     * @return the list of physical addresses.
+     */
     public List<URI> getAddresses() {
         return this.effectiveRule.getAddresses();
     }
 
+    /***
+     * Get the region endpoints of the fault injection rule.
+     *
+     * @return the list of region endpoints.
+     */
     public List<URI> getRegionEndpoints() {
         return this.effectiveRule.getRegionEndpoints();
     }
 
+    /***
+     * Set the effective fault injection rule.
+     *
+     * @param effectiveRule the effective fault injection rule.
+     */
     void setEffectiveFaultInjectionRule(IFaultInjectionRuleInternal effectiveRule) {
         this.effectiveRule = effectiveRule;
     }

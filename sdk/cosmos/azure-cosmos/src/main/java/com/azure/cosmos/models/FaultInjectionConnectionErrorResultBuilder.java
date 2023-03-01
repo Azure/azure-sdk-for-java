@@ -14,7 +14,7 @@ public class FaultInjectionConnectionErrorResultBuilder {
     private Duration interval;
     private Double threshold = DEFAULT_CONNECTION_THRESHOLD;
 
-    public FaultInjectionConnectionErrorResultBuilder(FaultInjectionConnectionErrorType connectionErrorType) {
+    FaultInjectionConnectionErrorResultBuilder(FaultInjectionConnectionErrorType connectionErrorType) {
         checkNotNull(connectionErrorType, "Argument 'connectionErrorType' can not be null");
         this.connectionErrorType = connectionErrorType;
     }
@@ -43,6 +43,11 @@ public class FaultInjectionConnectionErrorResultBuilder {
         return this;
     }
 
+    /***
+     * Create a new {@link FaultInjectionConnectionErrorResult}.
+     *
+     * @return the {@link FaultInjectionConnectionErrorResult}.
+     */
     public FaultInjectionConnectionErrorResult build() {
         checkNotNull(this.connectionErrorType, "Argument 'connectionErrorType' can not be null");
         checkNotNull(this.interval, "Argument 'interval' can not be null");

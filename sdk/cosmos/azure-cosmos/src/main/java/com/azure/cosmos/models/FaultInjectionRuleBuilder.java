@@ -20,6 +20,11 @@ public class FaultInjectionRuleBuilder {
     private Integer hitLimit;
     private boolean enabled = true;
 
+    /***
+     * The constructor.
+     *
+     * @param id the fault injection rule id.
+     */
     public FaultInjectionRuleBuilder(String id) {
         checkArgument(StringUtils.isNotEmpty(id), "Argument 'id' can not be null or empty");
         this.id = id;
@@ -105,6 +110,11 @@ public class FaultInjectionRuleBuilder {
         return this;
     }
 
+    /***
+     * Create a new fault injection rule.
+     *
+     * @return the {@link FaultInjectionRule}.
+     */
     public FaultInjectionRule build() {
         checkNotNull(this.condition, "Argument 'condition' can not be null");
         checkNotNull(this.result, "Argument 'result' can not be null");

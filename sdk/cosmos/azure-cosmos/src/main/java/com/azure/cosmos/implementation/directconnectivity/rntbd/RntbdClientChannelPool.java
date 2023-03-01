@@ -6,9 +6,9 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorResultInternal;
 import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionCloseEvent;
 import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionResetEvent;
-import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -1413,19 +1413,15 @@ public final class RntbdClientChannelPool implements ChannelPool {
         return null;
     }
 
-    public void injectConnectionErrors(
-        String faultInjectionRuleId,
-        FaultInjectionConnectionErrorResult faultInjectionResult) {
+    public void injectConnectionErrors(FaultInjectionConnectionErrorResultInternal faultInjectionResult) {
         if (this.executor.inEventLoop()) {
-            this.injectConnectionErrorsInternal(faultInjectionRuleId, faultInjectionResult);
+            this.injectConnectionErrorsInternal(faultInjectionResult);
         } else {
-            this.executor.submit(() -> this.injectConnectionErrorsInternal(faultInjectionRuleId, faultInjectionResult)).awaitUninterruptibly(); // block until complete
+            this.executor.submit(() -> this.injectConnectionErrorsInternal(faultInjectionResult)).awaitUninterruptibly(); // block until complete
         }
     }
 
-    private void injectConnectionErrorsInternal(
-        String faultInjectionRuleId,
-        FaultInjectionConnectionErrorResult faultInjectionResult) {
+    private void injectConnectionErrorsInternal(FaultInjectionConnectionErrorResultInternal faultInjectionResult) {
 
         // Calculate how many connections is going to be closed
         int channelsToBeClosed = (int) Math.ceil(this.channels(false) * faultInjectionResult.getThreshold());
@@ -1442,7 +1438,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         for (Channel channel: channelsToBeClosedList) {
-            switch (faultInjectionResult.getErrorTypes()) {
+            switch (faultInjectionResult.getErrorType()) {
                 case CONNECTION_CLOSE:
                     channel
                         .pipeline()
@@ -1456,7 +1452,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent());
                     break;
                 default:
-                    throw new IllegalStateException("ConnectionErrorType " + faultInjectionResult.getErrorTypes() + " is not supported");
+                    throw new IllegalStateException("ConnectionErrorType " + faultInjectionResult.getErrorType() + " is not supported");
             }
         }
     }

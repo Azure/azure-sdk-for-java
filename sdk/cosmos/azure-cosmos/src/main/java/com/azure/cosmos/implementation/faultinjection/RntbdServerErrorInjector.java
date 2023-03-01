@@ -7,8 +7,8 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorResultInternal;
 import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorRule;
-import com.azure.cosmos.models.FaultInjectionServerErrorResult;
 
 import java.time.Duration;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class RntbdServerErrorInjector {
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public void configFaultInjectionRule(FaultInjectionServerErrorRule rule) {
-        FaultInjectionServerErrorResult serverErrorResult = rule.getResult();
+        FaultInjectionServerErrorResultInternal serverErrorResult = rule.getResult();
         switch (serverErrorResult.getServerErrorType()) {
             case SERVER_CONNECTION_DELAY:
                 this.serverConnectionLatencyRuleMap.put(rule.getId(), rule);

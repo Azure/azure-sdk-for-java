@@ -7,10 +7,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.FaultInjectionBridgeInternal;
-import com.azure.cosmos.models.FaultInjectionConditionBuilder;
-import com.azure.cosmos.models.FaultInjectionEndpointBuilder;
-import com.azure.cosmos.models.FaultInjectionResultBuilders;
-import com.azure.cosmos.models.FaultInjectionRuleBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -20,10 +16,13 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.FaultInjectionConditionBuilder;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorType;
-import com.azure.cosmos.models.FaultInjectionEndpoints;
+import com.azure.cosmos.models.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.models.FaultInjectionOperationType;
+import com.azure.cosmos.models.FaultInjectionResultBuilders;
 import com.azure.cosmos.models.FaultInjectionRule;
+import com.azure.cosmos.models.FaultInjectionRuleBuilder;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -43,7 +42,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
     private CosmosAsyncContainer cosmosAsyncContainer;
     private DatabaseAccount databaseAccount;
 
-    @DataProvider(name = "faultInjectionConnectionErrorRuleTests")
+    @DataProvider(name = "connectionErrorTypeProvider")
     public static Object[][] connectionErrorTypeProvider() {
         return new Object[][]{
             { FaultInjectionConnectionErrorType.CONNECTION_CLOSE},

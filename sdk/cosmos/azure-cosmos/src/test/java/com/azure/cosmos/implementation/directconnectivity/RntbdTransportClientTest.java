@@ -55,9 +55,9 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseDecoder;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUUID;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorResultInternal;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
-import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import io.micrometer.core.instrument.Tag;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -823,9 +823,11 @@ public final class RntbdTransportClientTest {
     }
 
     @Test(groups = "unit")
-    public void cancelRequestMono() throws InterruptedException {
+    public void cancelRequestMono() throws InterruptedException, URISyntaxException {
         RxDocumentServiceRequest request =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+        URI locationToRoute = new URI("http://localhost-west:8080");
+        request.requestContext.locationEndpointToRoute = locationToRoute;
         RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, physicalAddress);
         RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
         RntbdRequestRecord rntbdRequestRecord = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
@@ -834,13 +836,13 @@ public final class RntbdTransportClientTest {
         Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
-        Mockito.when(endpointProvider.createIfAbsent(physicalAddress.getURI(), physicalAddress.getURI())).thenReturn(rntbdEndpoint);
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI())).thenReturn(rntbdEndpoint);
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
         transportClient
             .invokeStoreAsync(
                 physicalAddress,
-                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document))
+                request)
             .cancelOn(Schedulers.boundedElastic())
             .subscribe()
             .dispose();
@@ -1109,7 +1111,7 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public void injectConnectionErrors(String ruleId, FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult) {
+        public void injectConnectionErrors(String ruleId, FaultInjectionConnectionErrorResultInternal faultInjectionConnectionErrorResult) {
             throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
         }
 

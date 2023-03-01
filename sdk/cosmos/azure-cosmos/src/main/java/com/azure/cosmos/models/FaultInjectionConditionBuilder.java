@@ -70,6 +70,11 @@ public class FaultInjectionConditionBuilder {
         return this;
     }
 
+    /***
+     * Create new fault injection condition.
+     *
+     * @return the {@link FaultInjectionCondition}.
+     */
     public FaultInjectionCondition build() {
         return new FaultInjectionCondition(
             this.operationType,

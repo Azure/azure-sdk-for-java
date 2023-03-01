@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.faultinjection.model;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.FaultInjectionServerErrorResult;
 
 import java.net.URI;
 import java.time.Duration;
@@ -24,7 +23,7 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
     private final Integer hitLimit;
     private final AtomicLong hitCount;
     private final FaultInjectionConditionInternal condition;
-    private final FaultInjectionServerErrorResult result;
+    private final FaultInjectionServerErrorResultInternal result;
 
     private boolean enabled;
 
@@ -35,7 +34,7 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         Duration duration,
         Integer hitLimit,
         FaultInjectionConditionInternal condition,
-        FaultInjectionServerErrorResult result) {
+        FaultInjectionServerErrorResultInternal result) {
 
         checkArgument(StringUtils.isNotEmpty(id), "Argument 'id' cannot be null nor empty");
         checkNotNull(condition, "Argument 'condition' can not be null");
@@ -80,7 +79,7 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         return condition;
     }
 
-    public FaultInjectionServerErrorResult getResult() {
+    public FaultInjectionServerErrorResultInternal getResult() {
         return result;
     }
 

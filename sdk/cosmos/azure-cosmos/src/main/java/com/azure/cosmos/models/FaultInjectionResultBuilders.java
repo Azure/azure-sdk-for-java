@@ -4,10 +4,22 @@
 package com.azure.cosmos.models;
 
 public class FaultInjectionResultBuilders {
+    /***
+     * Get the server error result builder.
+     *
+     * @param serverErrorType the server error type.
+     * @return the fault injection server error builder.
+     */
     public static FaultInjectionServerErrorResultBuilder getResultBuilder(FaultInjectionServerErrorType serverErrorType) {
         return new FaultInjectionServerErrorResultBuilder(serverErrorType);
     }
 
+    /***
+     * Get the connection error result builder.
+     *
+     * @param connectionErrorType the connection error type.
+     * @return the fault injection connection error builder.
+     */
     public static FaultInjectionConnectionErrorResultBuilder getResultBuilder(FaultInjectionConnectionErrorType connectionErrorType) {
         return new FaultInjectionConnectionErrorResultBuilder(connectionErrorType);
     }

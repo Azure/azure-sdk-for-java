@@ -20,18 +20,38 @@ public class FaultInjectionCondition {
         this.endpoints = endpoints;
     }
 
+    /***
+     * Get the fault injection endpoints.
+     *
+     * @return the {@link FaultInjectionEndpoints}.
+     */
     public FaultInjectionEndpoints getEndpoints() {
         return this.endpoints;
     }
 
+    /***
+     * Get the operation type.
+     *
+     * @return the {@link FaultInjectionOperationType}.
+     */
     public FaultInjectionOperationType getOperationType() {
         return this.operationType;
     }
 
+    /***
+     * Get the connection type.
+     *
+     * @return the {@link FaultInjectionConnectionType}.
+     */
     public FaultInjectionConnectionType getConnectionType() {
         return this.connectionType;
     }
 
+    /***
+     * Get the configured region.
+     *
+     * @return the region.
+     */
     public String getRegion() {
         return this.region;
     }

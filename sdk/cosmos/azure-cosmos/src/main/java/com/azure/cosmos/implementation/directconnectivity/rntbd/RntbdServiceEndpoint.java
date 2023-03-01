@@ -17,8 +17,8 @@ import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorResultInternal;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
-import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -328,12 +328,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     @Override
     public void injectConnectionErrors(
         String faultInjectionRuleId,
-        FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult) {
+        FaultInjectionConnectionErrorResultInternal faultInjectionConnectionErrorResult) {
 
         this.lastFaultInjectionRuleId = faultInjectionRuleId;
         this.lastFaultInjectionTimestamp = Instant.now();
 
-        this.channelPool.injectConnectionErrors(faultInjectionRuleId, faultInjectionConnectionErrorResult);
+        this.channelPool.injectConnectionErrors(faultInjectionConnectionErrorResult);
     }
 
     // endregion

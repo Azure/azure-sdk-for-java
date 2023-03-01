@@ -26,7 +26,9 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUtils;
 import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConditionInternal;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorResultInternal;
 import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorRule;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorResultInternal;
 import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorRule;
 import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -213,6 +215,7 @@ public class FaultInjectionRulesProcessor {
                     });
             })
             .map(effectiveCondition -> {
+                FaultInjectionServerErrorResult result = (FaultInjectionServerErrorResult) rule.getResult();
                 return new FaultInjectionServerErrorRule(
                     rule.getId(),
                     rule.isEnabled(),
@@ -220,7 +223,11 @@ public class FaultInjectionRulesProcessor {
                     rule.getDuration(),
                     rule.getHitLimit(),
                     effectiveCondition,
-                    (FaultInjectionServerErrorResult) rule.getResult()
+                    new FaultInjectionServerErrorResultInternal(
+                        result.getServerErrorType(),
+                        result.getTimes(),
+                        result.getDelay()
+                    )
                 );
             });
     }
@@ -251,6 +258,7 @@ public class FaultInjectionRulesProcessor {
                                 .map(address -> RntbdUtils.getServerKey(address))
                                 .collect(Collectors.toList());
 
+                        FaultInjectionConnectionErrorResult result = (FaultInjectionConnectionErrorResult) rule.getResult();
                         return new FaultInjectionConnectionErrorRule(
                             rule.getId(),
                             rule.isEnabled(),
@@ -258,7 +266,11 @@ public class FaultInjectionRulesProcessor {
                             rule.getDuration(),
                             regionEndpoints,
                             effectiveAddresses,
-                            (FaultInjectionConnectionErrorResult) rule.getResult()
+                            new FaultInjectionConnectionErrorResultInternal(
+                                result.getErrorType(),
+                                result.getInterval(),
+                                result.getThreshold()
+                            )
                         );
                     });
             });
@@ -325,6 +337,8 @@ public class FaultInjectionRulesProcessor {
                     ResourceType.Document,
                     Collections.emptyMap());
 
+                // The feed range can be mapped to multiple physical partitions
+                // Get the feed range list and resolve addresses for each partition
                 return feedRangeInternal
                     .getPartitionKeyRanges(
                         this.partitionKeyRangeCache,

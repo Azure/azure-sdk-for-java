@@ -1,47 +1,39 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation.faultinjection.model;
+
+import com.azure.cosmos.models.FaultInjectionConnectionErrorType;
 
 import java.time.Duration;
 
-public class FaultInjectionConnectionErrorResult implements IFaultInjectionResult{
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
+public class FaultInjectionConnectionErrorResultInternal {
     private final FaultInjectionConnectionErrorType errorType;
     private Duration interval;
     private double threshold;
 
-    FaultInjectionConnectionErrorResult(
+    public FaultInjectionConnectionErrorResultInternal(
         FaultInjectionConnectionErrorType errorType,
         Duration interval,
         double threshold) {
+
+        checkNotNull(errorType, "Argument 'errorType' can not be null");
+
         this.errorType = errorType;
         this.interval = interval;
         this.threshold = threshold;
     }
 
-    /***
-     * Get the fault injection connection error type.
-     *
-     * @return the {@link FaultInjectionConnectionErrorType}.
-     */
     public FaultInjectionConnectionErrorType getErrorType() {
         return errorType;
     }
 
-    /***
-     * Get the fault injection error rule apply interval.
-     *
-     * @return the interval.
-     */
     public Duration getInterval() {
         return interval;
     }
 
-    /***
-     * Get the threshold of connections to be closed when the rule is applied.
-     *
-     * @return the threshold.
-     */
     public double getThreshold() {
         return threshold;
     }

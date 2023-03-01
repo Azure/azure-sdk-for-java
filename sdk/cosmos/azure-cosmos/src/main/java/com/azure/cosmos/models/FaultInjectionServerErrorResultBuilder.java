@@ -46,6 +46,11 @@ public class FaultInjectionServerErrorResultBuilder {
         return this;
     }
 
+    /***
+     * Create a new fault injection server error result.
+     *
+     * @return the {@link FaultInjectionServerErrorResult}.
+     */
     public FaultInjectionServerErrorResult build() {
         if ((this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY
             || this.serverErrorType == FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY) && this.delay == null) {

@@ -4,6 +4,13 @@
 package com.azure.cosmos.models;
 
 public enum FaultInjectionConnectionErrorType {
+    /***
+     * Simulate connection close exception.
+     */
     CONNECTION_CLOSE,
+
+    /***
+     * Simulate connection reset exception.
+     */
     CONNECTION_RESET
 }

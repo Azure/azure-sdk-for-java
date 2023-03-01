@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.faultinjection.model;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 
 import java.net.URI;
 import java.time.Duration;
@@ -22,7 +21,7 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
     private final AtomicLong hitCount;
     private final List<URI> regionEndpoints;
     private final List<URI> addresses;
-    private final FaultInjectionConnectionErrorResult result;
+    private final FaultInjectionConnectionErrorResultInternal result;
 
     private boolean enabled;
 
@@ -33,7 +32,7 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
         Duration duration,
         List<URI> regionEndpoints,
         List<URI> addresses,
-        FaultInjectionConnectionErrorResult result) {
+        FaultInjectionConnectionErrorResultInternal result) {
 
         checkArgument(StringUtils.isNotEmpty(id), "Argument 'id' cannot be null nor empty");
         checkNotNull(result, "Argument 'result' can not be null");
@@ -58,7 +57,7 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
         return this.hitCount.get();
     }
 
-    public FaultInjectionConnectionErrorResult getResult() {
+    public FaultInjectionConnectionErrorResultInternal getResult() {
         return result;
     }
 

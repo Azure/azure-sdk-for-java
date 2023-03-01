@@ -3,5 +3,8 @@
 
 package com.azure.cosmos.models;
 
+/***
+ * Interface of fault injection result.
+ */
 public interface IFaultInjectionResult {
 }

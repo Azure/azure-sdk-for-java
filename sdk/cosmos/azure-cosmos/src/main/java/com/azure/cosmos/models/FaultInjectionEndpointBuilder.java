@@ -14,6 +14,11 @@ public class FaultInjectionEndpointBuilder {
     private int replicaCount;
     private boolean includePrimary;
 
+    /***
+     * Constructor.
+     *
+     * @param feedRange the feed range.
+     */
     public FaultInjectionEndpointBuilder(FeedRange feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' can not be null");
         this.feedRange = feedRange;
@@ -21,17 +26,34 @@ public class FaultInjectionEndpointBuilder {
         this.includePrimary = DEFAULT_INCLUDE_PRIMARY;
     }
 
+    /***
+     * Set the replica count of the fault injection endpoint.
+     *
+     * @param replicaCount the replica count.
+     * @return the builder.
+     */
     public FaultInjectionEndpointBuilder replicaCount(int replicaCount) {
         checkArgument(replicaCount > 0, "Argument 'replicaCount' can not be negative");
         this.replicaCount = replicaCount;
         return this;
     }
 
+    /***
+     * Flag to indicate whether primary replica addresses can be used.
+     *
+     * @param includePrimary flag to indicate whether primary addresses can be used.
+     * @return the builder.
+     */
     public FaultInjectionEndpointBuilder includePrimary(boolean includePrimary) {
         this.includePrimary = includePrimary;
         return this;
     }
 
+    /***
+     * Create the fault injection endpoints.
+     *
+     * @return the {@link FaultInjectionEndpoints}.
+     */
     public FaultInjectionEndpoints build() {
         return new FaultInjectionEndpoints(this.feedRange, this.replicaCount, this.includePrimary);
     }
