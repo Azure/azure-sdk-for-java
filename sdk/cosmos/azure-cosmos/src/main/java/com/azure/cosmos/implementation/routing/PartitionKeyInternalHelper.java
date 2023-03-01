@@ -204,15 +204,12 @@ public class PartitionKeyInternalHelper {
         {
             throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
         }
-
         if(internalPartitionKey.getComponents().size() >= partitionKeyDefinition.getPaths().size())
         {
             throw new IllegalArgumentException(RMResources.TooManyPartitionKeyComponents);
         }
-
         String minEPK = internalPartitionKey.getEffectivePartitionKeyString(internalPartitionKey, partitionKeyDefinition);
         String maxEPK = minEPK + MaximumExclusiveEffectivePartitionKey;
         return new Range<>(minEPK, maxEPK, true, false);
     }
-
 }

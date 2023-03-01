@@ -2208,7 +2208,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     if (collection == null) {
                         throw new IllegalStateException("Collection cannot be null");
                     }
+
                     final PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
+
                     Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
                         .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                             collection.getResourceId(),
