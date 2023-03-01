@@ -34,6 +34,13 @@ public final class PlaySourceInternal {
     @JsonProperty(value = "textSource")
     private TextSourceInternal textSource;
 
+    /*
+     * Defines the ssml(Speech Synthesis Markup Language) source info to be
+     * used for play
+     */
+    @JsonProperty(value = "ssmlSource")
+    private SsmlSourceInternal ssmlSource;
+
     /**
      * Get the sourceType property: Defines the type of the play source.
      *
@@ -111,6 +118,26 @@ public final class PlaySourceInternal {
      */
     public PlaySourceInternal setTextSource(TextSourceInternal textSource) {
         this.textSource = textSource;
+        return this;
+    }
+
+    /**
+     * Get the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
+     *
+     * @return the ssmlSource value.
+     */
+    public SsmlSourceInternal getSsmlSource() {
+        return this.ssmlSource;
+    }
+
+    /**
+     * Set the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
+     *
+     * @param ssmlSource the ssmlSource value to set.
+     * @return the PlaySourceInternal object itself.
+     */
+    public PlaySourceInternal setSsmlSource(SsmlSourceInternal ssmlSource) {
+        this.ssmlSource = ssmlSource;
         return this;
     }
 }
