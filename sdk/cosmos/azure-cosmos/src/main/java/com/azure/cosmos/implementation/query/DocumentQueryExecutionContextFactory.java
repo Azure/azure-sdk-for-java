@@ -251,15 +251,14 @@ public class DocumentQueryExecutionContextFactory {
         List<FeedRangeEpkImpl> feedRanges,
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKey partitionKey) {
-        List<FeedRangeEpkImpl> feedRanges2 = new ArrayList<>();
         PartitionKeyInternal partitionKeyInternal = ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
+        if (partitionKeyInternal.getComponents().size() >= partitionKeyDefinition.getPaths().size()) {
+            return feedRanges;
+        }
+        List<FeedRangeEpkImpl> feedRanges2 = new ArrayList<>();
         for (int i = 0; i < feedRanges.size(); i++) {
-            if (partitionKeyInternal.getComponents().size() >= partitionKeyDefinition.getPaths().size()) {
-                return feedRanges;
-            } else {
-                feedRanges2.add(new FeedRangeEpkImpl(partitionKeyInternal
-                    .getEPKRangeForPrefixPartitionKey(partitionKeyDefinition)));
-            }
+            feedRanges2.add(new FeedRangeEpkImpl(partitionKeyInternal
+                .getEPKRangeForPrefixPartitionKey(partitionKeyDefinition)));
         }
         return feedRanges2;
     }
