@@ -17,9 +17,9 @@ stages:
     parameters:
       ServiceDirectory: appconfiguration
       Artifacts:
-        - name: azure-spring-cloud-test-appconfiguration-config
-          groupId: com.azure.spring
-          safeName: azurespringcloudtestappconfigurationconfig
+      - name: azure-data-appconfiguration
+        groupId: com.azure
+        safeName: azuredataappconfiguration
       TimeoutInMinutes: 90
       SupportedClouds: 'Public'
       EnvVars:

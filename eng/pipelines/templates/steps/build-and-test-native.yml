@@ -43,9 +43,8 @@ steps:
       mavenPomFile: pom.xml
       options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am -Pnative
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
+      javaHomeOption: 'Path'
+      jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
       goals: 'install'
     env:
@@ -58,9 +57,8 @@ steps:
       mavenPomFile: pom.xml
       options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} -Pnative'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
+      javaHomeOption: 'Path'
+      jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
       goals: ${{ parameters.TestGoals }}
     env: ${{ parameters.TestEnvVars }}
@@ -83,9 +81,8 @@ steps:
       mavenPomFile: aggregate-pom.xml
       options: '$(DefaultOptions)'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
+      javaHomeOption: 'Path'
+      jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       goals: jacoco:report-aggregate
 
   - task: Maven@3
@@ -100,9 +97,8 @@ steps:
       # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
       options: '$(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -Pnative'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
+      javaHomeOption: 'Path'
+      jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
@@ -117,9 +113,8 @@ steps:
       ${{ else }}:
         options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }} -Pnative'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
+      javaHomeOption: 'Path'
+      jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
       # The "From Source" runs only care about running tests for libraries within an SDK/area
       # as well as libraries which depend on them and not the other stages in the Maven

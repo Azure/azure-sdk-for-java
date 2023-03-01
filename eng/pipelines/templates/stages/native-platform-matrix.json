@@ -4,7 +4,7 @@
   },
   "matrix": {
     "Agent": {
-      "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" },
+      "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
     },
     "JavaTestVersion": [ "1.11" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "netty" ],

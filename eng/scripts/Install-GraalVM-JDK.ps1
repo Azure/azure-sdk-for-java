@@ -44,3 +44,6 @@ Write-Host "Current JAVA_HOME: $Env:JAVA_HOME"
 Write-Host "GraalVM JDK: $javaHome"
 Write-Host "##vso[task.setvariable variable=JAVA_HOME;]$javaHome"
 Write-Host "Updated JAVA_HOME: $Env:JAVA_HOME"
+
+$graalvmVersionJavaHome = "JAVA_HOME_GRAALVM"
+Write-Host "##vso[task.setvariable variable=$graalvmVersionJavaHome;]$javaHome"
