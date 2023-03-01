@@ -10,8 +10,9 @@ import com.azure.core.util.BinaryData;
  */
 public class DownloadManifestResult {
     static {
-        ConstructorAccessors.setManifestDownloadResultAccessor(DownloadManifestResult::new);
+        ConstructorAccessors.setDownloadManifestResultAccessor(DownloadManifestResult::new);
     }
+
     private final String digest;
     private OciManifest ociManifest;
     private final ManifestMediaType mediaType;

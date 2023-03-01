@@ -11,17 +11,9 @@ import java.util.Objects;
  * Options for configuring the upload manifest operation.
  */
 public final class UploadManifestOptions {
-    private String tag;
+    private final ManifestMediaType mediaType;
     private final BinaryData manifest;
-
-    /**
-     * Instantiate an instance of upload manifest options with the manifest information.
-     * @param manifest The manifest that needs to be uploaded.
-     */
-    public UploadManifestOptions(BinaryData manifest) {
-        Objects.requireNonNull(manifest, "'manifest' can't be null.");
-        this.manifest = manifest;
-    }
+    private String tag;
 
     /**
      * Instantiate an instance of upload manifest options with the ocimanifest information.
@@ -29,8 +21,20 @@ public final class UploadManifestOptions {
      */
     public UploadManifestOptions(OciManifest ociManifest) {
         Objects.requireNonNull(ociManifest, "'ociManifest' can't be null.");
-
         this.manifest = BinaryData.fromObject(ociManifest);
+        this.mediaType = ManifestMediaType.OCI_MANIFEST;
+    }
+
+    /**
+     * Instantiate an instance of upload manifest options with the manifest information.
+     * @param manifest The manifest that needs to be uploaded.
+     * @param manifestMediaType The media type of supplied manifest.
+     */
+    public UploadManifestOptions(BinaryData manifest, ManifestMediaType manifestMediaType) {
+        Objects.requireNonNull(manifest, "'manifest' can't be null.");
+        Objects.requireNonNull(manifestMediaType, "'manifestMediaType' can't be null.");
+        this.manifest = manifest;
+        this.mediaType = manifestMediaType;
     }
 
     /**
@@ -57,5 +61,13 @@ public final class UploadManifestOptions {
      */
     public BinaryData getManifest() {
         return this.manifest;
+    }
+
+    /**
+     * Media type of the corresponding manifest.
+     * @return instance of {@link ManifestMediaType}.
+     */
+    public ManifestMediaType getMediaType() {
+        return mediaType;
     }
 }
