@@ -3,9 +3,8 @@
 
 package com.azure.spring.cloud.core.implementation.util;
 
-import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import com.azure.spring.cloud.core.properties.AzureProperties;
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
+import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -40,13 +39,6 @@ public final class AzurePasswordlessPropertiesUtils {
         BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         BeanUtils.copyProperties(source.getCredential(), target.getCredential());
 
-        if (source instanceof RetryOptionsProvider && target instanceof RetryOptionsProvider) {
-            RetryOptionsProvider.RetryOptions sourceRetry = ((RetryOptionsProvider) source).getRetry();
-            RetryOptionsProvider.RetryOptions targetRetry = ((RetryOptionsProvider) target).getRetry();
-            BeanUtils.copyProperties(sourceRetry, targetRetry);
-            BeanUtils.copyProperties(sourceRetry.getExponential(), targetRetry.getExponential());
-            BeanUtils.copyProperties(sourceRetry.getFixed(), targetRetry.getFixed());
-        }
     }
 
     /**
@@ -63,13 +55,8 @@ public final class AzurePasswordlessPropertiesUtils {
         copyPropertiesIgnoreNull(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
 
-        if (source instanceof RetryOptionsProvider && target instanceof RetryOptionsProvider) {
-            RetryOptionsProvider.RetryOptions sourceRetry = ((RetryOptionsProvider) source).getRetry();
-            RetryOptionsProvider.RetryOptions targetRetry = ((RetryOptionsProvider) target).getRetry();
-            copyPropertiesIgnoreNull(sourceRetry, targetRetry);
-            copyPropertiesIgnoreNull(sourceRetry.getExponential(), targetRetry.getExponential());
-            copyPropertiesIgnoreNull(sourceRetry.getFixed(), targetRetry.getFixed());
-        }
+        target.setScopes(source.getScopes());
+        target.setPasswordlessEnabled(source.isPasswordlessEnabled());
     }
 
     /**
@@ -86,8 +73,6 @@ public final class AzurePasswordlessPropertiesUtils {
                                                                                      T target) {
         copyAzureCommonProperties(defaultProperties, target);
         copyAzureCommonPropertiesIgnoreNull(properties, target);
-        target.setScopes(properties.getScopes());
-        target.setPasswordlessEnabled(properties.isPasswordlessEnabled());
     }
 
     /**
