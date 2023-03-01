@@ -3,6 +3,7 @@
 
 package com.azure.ai.texttranslator;
 
+import com.azure.ai.texttranslator.models.GetLanguagesResult;
 import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.jupiter.api.Test;
 
@@ -13,11 +14,11 @@ public class GetLanguagesTests {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void getLanguagesTest() throws Exception {
-        var client = new TranslatorClientBuilder()
+        TranslatorClient client = new TranslatorClientBuilder()
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        var languages = client.getLanguages();
+        GetLanguagesResult languages = client.getLanguages();
         assertEquals(111, languages.getTranslation().size());
     }
 }

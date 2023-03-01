@@ -5,6 +5,7 @@ package com.azure.ai.texttranslator.authentication;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import java.util.Objects;
@@ -34,7 +35,7 @@ public class GlobalEndpointAuthenticationPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy nextPolicy) {
         return Mono.fromRunnable(() -> {
-            var request = context.getHttpRequest();
+            HttpRequest request = context.getHttpRequest();
             request.setHeader(KEY_HEADER_NAME, this.credentials.getKey().getKey());
             request.setHeader(REGION_HEADER_NAME, this.credentials.getRegion());
 

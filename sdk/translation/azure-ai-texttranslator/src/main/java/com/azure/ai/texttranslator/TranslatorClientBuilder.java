@@ -276,8 +276,8 @@ public final class TranslatorClientBuilder
         String serviceEndpoint;
         if (this.customEndpoint != null) {
             try {
-                var hostUri = new URL(customEndpoint.getEndpoint());
-                var fullUri = new URL(hostUri, "/translator/text/v" + localServiceVersion.getVersion());
+                URL hostUri = new URL(customEndpoint.getEndpoint());
+                URL fullUri = new URL(hostUri, "/translator/text/v" + localServiceVersion.getVersion());
                 serviceEndpoint = fullUri.toString();
             } catch (MalformedURLException ex) {
                 serviceEndpoint = endpoint;
