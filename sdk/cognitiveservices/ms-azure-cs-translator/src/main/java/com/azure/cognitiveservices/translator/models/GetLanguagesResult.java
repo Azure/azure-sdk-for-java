@@ -5,7 +5,6 @@
 package com.azure.cognitiveservices.translator.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -15,38 +14,23 @@ public final class GetLanguagesResult {
     /*
      * Languages that support translate API.
      */
-    @JsonProperty(value = "translation", required = true)
+    @JsonProperty(value = "translation")
     private Map<String, TranslationLanguage> translation;
 
     /*
      * Languages that support transliteration API.
      */
-    @JsonProperty(value = "transliteration", required = true)
+    @JsonProperty(value = "transliteration")
     private Map<String, TransliterationLanguage> transliteration;
 
     /*
      * Languages that support dictionary API.
      */
-    @JsonProperty(value = "dictionary", required = true)
+    @JsonProperty(value = "dictionary")
     private Map<String, SourceDictionaryLanguage> dictionary;
 
-    /**
-     * Creates an instance of GetLanguagesResult class.
-     *
-     * @param translation the translation value to set.
-     * @param transliteration the transliteration value to set.
-     * @param dictionary the dictionary value to set.
-     */
-    @JsonCreator
-    private GetLanguagesResult(
-            @JsonProperty(value = "translation", required = true) Map<String, TranslationLanguage> translation,
-            @JsonProperty(value = "transliteration", required = true)
-                    Map<String, TransliterationLanguage> transliteration,
-            @JsonProperty(value = "dictionary", required = true) Map<String, SourceDictionaryLanguage> dictionary) {
-        this.translation = translation;
-        this.transliteration = transliteration;
-        this.dictionary = dictionary;
-    }
+    /** Creates an instance of GetLanguagesResult class. */
+    private GetLanguagesResult() {}
 
     /**
      * Get the translation property: Languages that support translate API.
