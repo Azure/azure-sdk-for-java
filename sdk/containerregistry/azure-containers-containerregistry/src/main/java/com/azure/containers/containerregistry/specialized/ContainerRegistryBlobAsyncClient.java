@@ -45,7 +45,9 @@ import java.util.function.Function;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOWNLOAD_BLOB_SPAN_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.SUPPORTED_MANIFEST_TYPES;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.UPLOAD_BLOB_SPAN_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
@@ -217,7 +219,7 @@ public final class ContainerRegistryBlobAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadBlobResult> uploadBlob(Flux<ByteBuffer> data) {
-        return withContext(context -> runWithTracing(span -> uploadBlob(data, span), context));
+        return withContext(context -> runWithTracing(UPLOAD_BLOB_SPAN_NAME, span -> uploadBlob(data, span), context));
     }
 
     private Mono<String> upload(Flux<ByteBuffer> data, String location, Context context) {
@@ -247,34 +249,6 @@ public final class ContainerRegistryBlobAsyncClient {
             .flatMap(location -> blobsImpl.completeUploadWithResponseAsync("sha256:" + bytesToHexString(sha256.digest()), location, (BinaryData) null, 0L, context))
             .map(response -> ConstructorAccessors.createUploadBlobResult(response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME)))
             .onErrorMap(UtilsImpl::mapException);
-    }
-
-    /**
-     * Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
-     * as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool buffer
-     * filling up with more data to write). We use flatMapSequential because we need to guarantee we preserve the
-     * ordering of the buffers, but we don't really care if one is split before another.
-     * @param data Data to chunk
-     * @return Chunked data
-     */
-    private static Flux<ByteBuffer> chunkSource(Flux<ByteBuffer> data, MessageDigest sha256) {
-        // TODO (limolkova) unify with storage, taken from it.
-        return data
-            .flatMapSequential(buffer -> {
-                if (buffer.remaining() <= CHUNK_SIZE) {
-                    sha256.update(buffer.asReadOnlyBuffer());
-                    return Flux.just(buffer);
-                }
-                int numSplits = (int) Math.ceil(buffer.remaining() / (double) CHUNK_SIZE);
-                return Flux.range(0, numSplits)
-                    .map(i -> {
-                        ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                        duplicate.position(i * CHUNK_SIZE);
-                        duplicate.limit(Math.min(duplicate.limit(), (i + 1) * CHUNK_SIZE));
-                        sha256.update(duplicate.asReadOnlyBuffer());
-                        return duplicate;
-                    });
-            }, 1, 1);
     }
 
     /**
@@ -330,7 +304,8 @@ public final class ContainerRegistryBlobAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DownloadBlobAsyncResult> downloadStream(String digest) {
-        return withContext(context -> downloadBlobInternal(digest, context));
+        return withContext(context ->
+            runWithTracing(DOWNLOAD_BLOB_SPAN_NAME, span -> downloadBlobInternal(digest, span), context));
     }
 
     private Mono<DownloadBlobAsyncResult> downloadBlobInternal(String digest, Context context) {
@@ -442,9 +417,38 @@ public final class ContainerRegistryBlobAsyncClient {
             .onErrorMap(UtilsImpl::mapException);
     }
 
-    private <T> Mono<T> runWithTracing(Function<Context, Mono<T>> uploadBlob, Context context) {
-        Context span = tracer.start("ContainerRegistryBlobAsyncClient.uploadBlob", context);
-        return uploadBlob.apply(span)
+
+    /**
+     * Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
+     * as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool buffer
+     * filling up with more data to write). We use flatMapSequential because we need to guarantee we preserve the
+     * ordering of the buffers, but we don't really care if one is split before another.
+     * @param data Data to chunk
+     * @return Chunked data
+     */
+    private static Flux<ByteBuffer> chunkSource(Flux<ByteBuffer> data, MessageDigest sha256) {
+        // TODO (limolkova) unify with storage, taken from it.
+        return data
+            .flatMapSequential(buffer -> {
+                if (buffer.remaining() <= CHUNK_SIZE) {
+                    sha256.update(buffer.asReadOnlyBuffer());
+                    return Flux.just(buffer);
+                }
+                int numSplits = (int) Math.ceil(buffer.remaining() / (double) CHUNK_SIZE);
+                return Flux.range(0, numSplits)
+                    .map(i -> {
+                        ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                        duplicate.position(i * CHUNK_SIZE);
+                        duplicate.limit(Math.min(duplicate.limit(), (i + 1) * CHUNK_SIZE));
+                        sha256.update(duplicate.asReadOnlyBuffer());
+                        return duplicate;
+                    });
+            }, 1, 1);
+    }
+
+    private <T> Mono<T> runWithTracing(String spanName, Function<Context, Mono<T>> operation, Context context) {
+        Context span = tracer.start(spanName, context);
+        return operation.apply(span)
             .doOnEach(signal -> {
                 if (signal.isOnComplete() || signal.isOnError()) {
                     tracer.end(null, signal.getThrowable(), span);

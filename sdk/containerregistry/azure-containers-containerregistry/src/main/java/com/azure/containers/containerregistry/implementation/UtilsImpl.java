@@ -85,6 +85,9 @@ public final class UtilsImpl {
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
     private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
+    public static final String UPLOAD_BLOB_SPAN_NAME = "ContainerRegistryBlobAsyncClient.uploadBlob";
+    public static final String DOWNLOAD_BLOB_SPAN_NAME = "ContainerRegistryBlobAsyncClient.downloadBlob";
+
     private UtilsImpl() { }
 
     /**

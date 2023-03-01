@@ -49,7 +49,9 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOWNLOAD_BLOB_SPAN_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.SUPPORTED_MANIFEST_TYPES;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.UPLOAD_BLOB_SPAN_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
@@ -230,7 +232,7 @@ public final class ContainerRegistryBlobClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadBlobResult uploadBlob(ReadableByteChannel stream, Context context) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
-        return runWithTracing((span) -> uploadBlobInternal(stream, span), enableSync(context));
+        return runWithTracing(UPLOAD_BLOB_SPAN_NAME, (span) -> uploadBlobInternal(stream, span), enableSync(context));
     }
 
     private UploadBlobResult uploadBlobInternal(ReadableByteChannel stream, Context context) {
@@ -337,7 +339,7 @@ public final class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadStream(String digest, WritableByteChannel channel) {
-        downloadBlobInternal(digest, channel, Context.NONE);
+        downloadStream(digest, channel, Context.NONE);
     }
 
     /**
@@ -352,7 +354,10 @@ public final class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadStream(String digest, WritableByteChannel channel, Context context) {
-        downloadBlobInternal(digest, channel, context);
+        runWithTracing(DOWNLOAD_BLOB_SPAN_NAME, (span) -> {
+            downloadBlobInternal(digest, channel, span);
+            return null;
+        }, context);
     }
 
     private void downloadBlobInternal(String digest, WritableByteChannel channel, Context context) {
@@ -471,11 +476,11 @@ public final class ContainerRegistryBlobClient {
         }
     }
 
-    private <T> T runWithTracing(Function<Context, T> uploadBlob, Context context) {
-        Context span = tracer.start("ContainerRegistryBlobClient.uploadBlob", context);
+    private <T> T runWithTracing(String spanName, Function<Context, T> operation, Context context) {
+        Context span = tracer.start(spanName, context);
         Exception exception = null;
         try {
-            return uploadBlob.apply(span);
+            return operation.apply(span);
         } catch (RuntimeException ex) {
             exception = ex;
             throw ex;
