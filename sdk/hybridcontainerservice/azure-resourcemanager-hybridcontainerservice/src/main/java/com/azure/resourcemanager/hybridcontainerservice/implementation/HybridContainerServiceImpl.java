@@ -174,18 +174,6 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
         return this.operations;
     }
 
-    /** The VirtualNetworksOperationsClient object to access its operations. */
-    private final VirtualNetworksOperationsClient virtualNetworksOperations;
-
-    /**
-     * Gets the VirtualNetworksOperationsClient object to access its operations.
-     *
-     * @return the VirtualNetworksOperationsClient object.
-     */
-    public VirtualNetworksOperationsClient getVirtualNetworksOperations() {
-        return this.virtualNetworksOperations;
-    }
-
     /** The StorageSpacesOperationsClient object to access its operations. */
     private final StorageSpacesOperationsClient storageSpacesOperations;
 
@@ -196,6 +184,18 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
      */
     public StorageSpacesOperationsClient getStorageSpacesOperations() {
         return this.storageSpacesOperations;
+    }
+
+    /** The VirtualNetworksOperationsClient object to access its operations. */
+    private final VirtualNetworksOperationsClient virtualNetworksOperations;
+
+    /**
+     * Gets the VirtualNetworksOperationsClient object to access its operations.
+     *
+     * @return the VirtualNetworksOperationsClient object.
+     */
+    public VirtualNetworksOperationsClient getVirtualNetworksOperations() {
+        return this.virtualNetworksOperations;
     }
 
     /**
@@ -220,14 +220,14 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-05-01-preview";
+        this.apiVersion = "2022-09-01-preview";
         this.provisionedClustersOperations = new ProvisionedClustersOperationsClientImpl(this);
         this.hybridIdentityMetadatas = new HybridIdentityMetadatasClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);
         this.hybridContainerServices = new HybridContainerServicesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.virtualNetworksOperations = new VirtualNetworksOperationsClientImpl(this);
         this.storageSpacesOperations = new StorageSpacesOperationsClientImpl(this);
+        this.virtualNetworksOperations = new VirtualNetworksOperationsClientImpl(this);
     }
 
     /**
