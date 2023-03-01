@@ -19,9 +19,11 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -39,6 +41,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -51,6 +54,7 @@ import static com.azure.containers.containerregistry.TestUtils.LAYER_DIGEST;
 import static com.azure.containers.containerregistry.TestUtils.MANIFEST;
 import static com.azure.containers.containerregistry.TestUtils.MANIFEST_DIGEST;
 import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
+import static com.azure.containers.containerregistry.TestUtils.importImage;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -74,6 +78,11 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
             .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
             .assertSync()
             .build();
+    }
+
+    @BeforeAll
+    static void beforeAll() {
+        importImage(TestingHelpers.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest"));
     }
 
     @BeforeEach
@@ -230,7 +239,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
         client = getBlobClient("oci-artifact", httpClient);
 
-        long size = 512L * 1024L * 1024L;
+        long size = CHUNK_SIZE * 50;
         TestInputStream input = new TestInputStream(size);
         UploadBlobResult result = client.uploadBlob(Channels.newChannel(input), Context.NONE);
 
@@ -242,17 +251,17 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void canUploadHugeBlobInChunksAsync(HttpClient httpClient) throws IOException {
+    public void canUploadHugeBlobInChunksAsync(HttpClient httpClient) {
         assumeTrue(super.getTestMode() == TestMode.LIVE);
 
         asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
 
-        long size = 512L * 1024L * 1024L;
+        long size = CHUNK_SIZE * 50;
         final TestOutputStream output = new TestOutputStream();
         StepVerifier.setDefaultTimeout(Duration.ofMinutes(30));
         StepVerifier.create(BinaryData.fromFlux(generateAsyncStream(size))
                 .flatMap(data -> asyncClient.uploadBlob(data))
-                .flatMap(uploadResult -> asyncClient.downloadStream(uploadResult.getDigest()))
+                .flatMap(uploadBlobResult -> asyncClient.downloadStream(uploadBlobResult.getDigest()))
                 .flatMap(downloadResult -> downloadResult.writeValueTo(Channels.newChannel(output))))
             .verifyComplete();
 
