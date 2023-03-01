@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added support for Move operation - See [PR 31078](https://github.com/Azure/azure-sdk-for-java/pull/31078)
+* Implemented `getDuration` on `CosmosDiagnostics` for feed responses - See []()
 
 #### Breaking Changes
 

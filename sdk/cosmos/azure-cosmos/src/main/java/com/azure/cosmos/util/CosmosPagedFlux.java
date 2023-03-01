@@ -178,7 +178,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         AtomicReference<Instant> startTime = new AtomicReference<>();
-        AtomicReference<Duration> preQueryDocumentRequestCreationLatency = new AtomicReference<>();
         AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
 
         Flux<FeedResponse<T>> result =
@@ -186,7 +185,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             .doOnSubscribe(ignoredValue -> {
                 startTime.set(Instant.now());
                 feedResponseConsumerLatencyInNanos.set(0);
-                preQueryDocumentRequestCreationLatency.set(Duration.ZERO);
             })
             .doOnEach(signal -> {
 
@@ -278,7 +276,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         break;
                     case ON_NEXT:
                         FeedResponse<T> feedResponse = signal.get();
-
                         boolean diagnosticsCapturedInPagedFluxByTracer = false;
                         if (isTracerEnabled(tracerProvider) &&
                             this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
@@ -312,32 +309,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                 Duration.between(Instant.now(), feedResponseConsumerStart).toNanos());
                         }
 
-
                         CosmosDiagnostics diagnostics = feedResponse != null ?
                             feedResponse.getCosmosDiagnostics() : null;
-
-                        FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers
-                                .CosmosDiagnosticsHelper
-                                .getCosmosDiagnosticsAccessor()
-                                .getFeedResponseDiagnostics(diagnostics);
-
-                        Duration effectiveLatency = Duration.between(startTime.get(), Instant.now()).minus(
-                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
-
-                        // compute latency for operation before the earliest query request
-                        // is prepared
-                        if (feedResponseDiagnostics.isFirstFeedResponse()) {
-                            Instant startTimeInstant = startTime.get();
-                            preQueryDocumentRequestCreationLatency.set(Duration.between(startTimeInstant, feedResponseDiagnostics.getMinRequestStartTime()));
-                        }
-
-                        Instant minRequestTime = feedResponseDiagnostics.getMinRequestStartTime();
-                        Instant feedResponseCreationTime = feedResponseDiagnostics.getFeedResponseCreationTime();
-
-                        feedResponseDiagnostics.recordFeedResponseLatency(
-                                preQueryDocumentRequestCreationLatency.get()
-                                        .plus(Duration.between(minRequestTime, feedResponseCreationTime))
-                        );
 
                         if (clientTelemetryEnabled || clientMetricsEnabled) {
                             if (diagnosticsCapturedInPagedFluxByTracer || this.cosmosDiagnosticsAccessor
@@ -345,6 +318,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                     .compareAndSet(false, true)) {
 
                                 float requestCharge = (float) feedResponse.getRequestCharge();
+                                Duration effectiveLatency = Duration.between(startTime.get(), Instant.now()).minus(
+                                    Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
                                 if (clientTelemetryEnabled) {
                                     fillClientTelemetry(
@@ -384,7 +359,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                 feedResponseConsumerLatencyInNanos.set(0);
                             }
                         }
-                        
                         break;
                     default:
                         break;

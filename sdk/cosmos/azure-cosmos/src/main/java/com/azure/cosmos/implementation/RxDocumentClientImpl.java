@@ -939,16 +939,34 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 .addQueryInfoToFeedResponse(tFeedResponse, finalQueryInfo);
                         }
 
+                        CosmosDiagnostics diagnostics = tFeedResponse.getCosmosDiagnostics();
+
+                        FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers
+                                .CosmosDiagnosticsHelper
+                                .getCosmosDiagnosticsAccessor()
+                                .getFeedResponseDiagnostics(diagnostics);
+
+                        Instant minRequestTime = feedResponseDiagnostics.getMinRequestStartTime();
+                        Instant feedResponseCreationTime = feedResponseDiagnostics.getFeedResponseCreationTime();
+
                         if (isFirstResponse.compareAndSet(true, false)) {
                             ModelBridgeInternal.addQueryPlanDiagnosticsContextToFeedResponse(tFeedResponse,
                                 finalQueryInfo.getQueryPlanDiagnosticsContext());
 
-                            FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers
-                                    .CosmosDiagnosticsHelper
-                                    .getCosmosDiagnosticsAccessor()
-                                    .getFeedResponseDiagnostics(tFeedResponse.getCosmosDiagnostics());
+                            Duration queryPlanFetchLatency = feedResponseDiagnostics
+                                    .getQueryPlanDiagnosticsContext()
+                                    .getDuration();
 
-                            feedResponseDiagnostics.recordIsFirstFeedResponse(true);
+                            queryPlanFetchLatency = queryPlanFetchLatency == null ? Duration.ZERO : queryPlanFetchLatency;
+
+                            feedResponseDiagnostics.recordFeedResponseLatency(
+                                    queryPlanFetchLatency
+                                            .plus(Duration.between(minRequestTime, feedResponseCreationTime))
+                            );
+                        } else {
+                            feedResponseDiagnostics.recordFeedResponseLatency(
+                                    Duration.between(minRequestTime, feedResponseCreationTime)
+                            );
                         }
                     }
                     return tFeedResponse;

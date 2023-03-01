@@ -1076,12 +1076,10 @@ public class CosmosAsyncContainer {
         }
 
         options.setMaxDegreeOfParallelism(-1);
-        AtomicReference<Instant> startTime = new AtomicReference<>(Instant.now());
 
         return CosmosBridgeInternal
                 .getAsyncDocumentClient(this.getDatabase())
                 .readMany(itemIdentityList, BridgeInternal.getLink(this), options, classType)
-                .doOnSubscribe(subscription -> startTime.set(Instant.now()))
                 .doOnSuccess(feedResponse -> {
                             FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers
                                     .CosmosDiagnosticsHelper
@@ -1089,9 +1087,9 @@ public class CosmosAsyncContainer {
                                     .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics());
 
                             Instant feedResponseCreationTime = feedResponseDiagnostics.getFeedResponseCreationTime();
-                            Instant subscriptionStartTime = startTime.get();
+                            Instant minRequestStartTime = feedResponseDiagnostics.getMinRequestStartTime();
 
-                            feedResponseDiagnostics.recordFeedResponseLatency(Duration.between(subscriptionStartTime, feedResponseCreationTime));
+                            feedResponseDiagnostics.recordFeedResponseLatency(Duration.between(minRequestStartTime, feedResponseCreationTime));
                         }
                 );
     }

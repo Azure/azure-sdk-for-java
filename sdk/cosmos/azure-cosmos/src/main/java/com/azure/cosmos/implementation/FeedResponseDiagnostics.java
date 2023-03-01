@@ -36,7 +36,6 @@ public class FeedResponseDiagnostics {
     private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
     private final AtomicReference<Instant> feedResponseCreationTime = new AtomicReference<>(Instant.now());
     private final AtomicReference<Duration> feedResponseLatency = new AtomicReference<>(Duration.ZERO);
-    private final AtomicBoolean isFirstFeedResponse = new AtomicBoolean(false);
     private Instant minRequestTime = Instant.MAX;
     private Instant maxResponseTime = Instant.MIN;
 
@@ -61,7 +60,6 @@ public class FeedResponseDiagnostics {
             );
         }
 
-        this.isFirstFeedResponse.set(toBeCloned.isFirstFeedResponse.get());
         this.maxResponseTime = toBeCloned.maxResponseTime;
         this.minRequestTime = toBeCloned.minRequestTime;
         this.feedResponseCreationTime.set(toBeCloned.feedResponseCreationTime.get());
@@ -171,14 +169,6 @@ public class FeedResponseDiagnostics {
 
     public void recordFeedResponseLatency(Duration feedResponseLatency) {
         this.feedResponseLatency.compareAndSet(Duration.ZERO, feedResponseLatency);
-    }
-
-    public void recordIsFirstFeedResponse(boolean isFirstFeedResponse) {
-        this.isFirstFeedResponse.set(isFirstFeedResponse);
-    }
-
-    public boolean isFirstFeedResponse() {
-        return isFirstFeedResponse.get();
     }
 
     public Instant getMinRequestStartTime() {

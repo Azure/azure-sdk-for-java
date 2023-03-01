@@ -221,9 +221,8 @@ public final class BridgeInternal {
                                                               .getClientSideRequestStatisticsList());
 
             FeedResponseDiagnostics feedResponseDiagnostics = feedResponseWithQueryMetrics.getCosmosDiagnostics().getFeedResponseDiagnostics();
-
-            feedResponseDiagnostics.recordIsFirstFeedResponse(cosmosDiagnostics.getFeedResponseDiagnostics().isFirstFeedResponse());
             feedResponseDiagnostics.recordFeedResponseCreationTime(cosmosDiagnostics.getFeedResponseDiagnostics().getFeedResponseCreationTime());
+            feedResponseDiagnostics.recordFeedResponseLatency(cosmosDiagnostics.getFeedResponseDiagnostics().getFeedResponseLatency());
         }
 
         return feedResponseWithQueryMetrics;
