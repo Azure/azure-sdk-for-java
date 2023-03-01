@@ -11,6 +11,8 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     private final boolean isEnabled;
     private Duration endToEndOperationTimeout = Duration.ofSeconds(2);
     private Duration speculativeProcessingThreshold = null;
+    private boolean isSpeculativeProcessingEnabled;
+
 
     public CosmosEndToEndOperationLatencyPolicyConfigBuilder() {
         this(true);
@@ -21,21 +23,25 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     }
 
     public CosmosEndToEndOperationLatencyPolicyConfig build() {
-        // TODO implement
-        return null;
+        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout, speculativeProcessingThreshold, isSpeculativeProcessingEnabled);
     }
 
     public CosmosEndToEndOperationLatencyPolicyConfigBuilder endToEndOperationTimeout(
         Duration endToEndOperationTimeout) {
 
-        // TODO implement
-        return null;
+        this.endToEndOperationTimeout = endToEndOperationTimeout;
+        return this;
     }
 
     public CosmosEndToEndOperationLatencyPolicyConfigBuilder speculativeProcessing(
         Duration speculativeProcessingThresholdDuration) {
 
-        // TODO implement
-        return null;
+        this.speculativeProcessingThreshold = speculativeProcessingThresholdDuration;
+        return this;
+    }
+
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder enableSpeculativeProcessing(boolean enabled){
+        this.isSpeculativeProcessingEnabled = enabled;
+        return this;
     }
 }
