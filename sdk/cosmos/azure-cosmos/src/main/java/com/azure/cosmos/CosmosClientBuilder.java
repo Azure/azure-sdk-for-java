@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.Cosmos
  * <p>
  * Though consistencyLevel is not mandatory, but we strongly suggest to pay attention to this API when building client.
  * By default, account consistency level is used if none is provided.
- * <p>
+ *  * <p>
  * By default, direct connection mode is used if none specified.
  * <pre>
  *     Building Cosmos Async Client minimal APIs (without any customized configurations)
@@ -127,6 +128,7 @@ public class CosmosClientBuilder implements
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
+    private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -1010,4 +1012,13 @@ public class CosmosClientBuilder implements
     }
 
     static { initialize(); }
+
+    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig){
+        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
+        return this;
+    }
+
+    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+        return this.cosmosEndToEndOperationLatencyPolicyConfig;
+    }
 }

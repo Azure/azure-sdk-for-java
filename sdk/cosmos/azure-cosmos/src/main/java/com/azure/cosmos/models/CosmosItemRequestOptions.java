@@ -32,6 +32,7 @@ public class CosmosItemRequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
+    private Boolean enableEndToEndOperationLatencyPolicy;
 
     /**
      * copy constructor
@@ -50,6 +51,7 @@ public class CosmosItemRequestOptions {
         dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
         thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
         operationContextAndListenerTuple = options.operationContextAndListenerTuple;
+        enableEndToEndOperationLatencyPolicy = options.enableEndToEndOperationLatencyPolicy;
     }
 
 
@@ -400,6 +402,22 @@ public class CosmosItemRequestOptions {
 
     OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return this.operationContextAndListenerTuple;
+    }
+
+    /**
+     * Gets if end to end operation latency is enabled
+     * @return if end to end operation latency is enabled or not
+     */
+    public Boolean getEnableEndToEndOperationLatencyPolicy() {
+        return enableEndToEndOperationLatencyPolicy;
+    }
+
+    /**
+     * Sets the end to end operation latency policy for this operation
+     * @param enableEndToEndOperationLatencyPolicy enable or disable the end to end operation latency policy
+     */
+    public void setEnableEndToEndOperationLatencyPolicy(Boolean enableEndToEndOperationLatencyPolicy) {
+        this.enableEndToEndOperationLatencyPolicy = enableEndToEndOperationLatencyPolicy;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
