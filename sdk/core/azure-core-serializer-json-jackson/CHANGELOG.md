@@ -14,7 +14,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.36.0` to `1.37.0`.
-- Upgraded Jackson to the latest releases `2.1.X`.
+- Upgraded Jackson to the latest releases `2.13.5`.
 
 ## 1.2.25 (2023-02-01)
 

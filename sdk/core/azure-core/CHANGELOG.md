@@ -25,7 +25,7 @@
 ### Dependency Updates
 
 - Upgraded Reactor Core from `3.4.26` to `3.4.27`.
-- Upgraded Jackson to the latest releases `2.1.X`.
+- Upgraded Jackson to the latest releases `2.13.5`.
 
 ## 1.36.0 (2023-02-01)
 
