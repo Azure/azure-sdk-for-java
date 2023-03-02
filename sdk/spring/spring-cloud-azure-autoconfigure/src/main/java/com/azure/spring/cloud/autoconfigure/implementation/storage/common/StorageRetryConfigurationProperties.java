@@ -14,11 +14,11 @@ import java.time.Duration;
 public class StorageRetryConfigurationProperties extends RetryConfigurationProperties implements StorageRetry {
 
     /**
-     * Secondary Storage account to retry requests against.
+     * Secondary Storage account to retry requests against. if the primary region becomes unavailable. For instance, 'https://{storage-account-name}-secondary.file.storage.azure.net'.
      */
     private String secondaryHost;
     /**
-     * Amount of time to wait until a timeout.
+     * Amount of time(Duration) to wait until a timeout.
      */
     private Duration tryTimeout;
 
