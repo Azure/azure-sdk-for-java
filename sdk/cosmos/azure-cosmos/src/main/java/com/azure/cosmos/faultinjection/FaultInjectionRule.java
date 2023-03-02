@@ -5,7 +5,6 @@ package com.azure.cosmos.faultinjection;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
-import com.azure.cosmos.util.Beta;
 
 import java.net.URI;
 import java.time.Duration;
@@ -16,7 +15,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /***
  * Fault injection rule.
  */
-@Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class FaultInjectionRule {
     private final FaultInjectionCondition condition;
     private final IFaultInjectionResult result;
@@ -53,7 +51,6 @@ public final class FaultInjectionRule {
      *
      * @return the {@link FaultInjectionCondition}.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionCondition getCondition() {
         return condition;
     }
@@ -63,7 +60,6 @@ public final class FaultInjectionRule {
      *
      * @return the {@link IFaultInjectionResult}.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public IFaultInjectionResult getResult() {
         return result;
     }
@@ -73,7 +69,6 @@ public final class FaultInjectionRule {
      *
      * @return the duration.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getDuration() {
         return duration;
     }
@@ -83,7 +78,6 @@ public final class FaultInjectionRule {
      *
      * @return the start delay.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getStartDelay() { return startDelay; }
 
     /***
@@ -91,7 +85,6 @@ public final class FaultInjectionRule {
      *
      * @return the hit limit.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getHitLimit() {
         return hitLimit;
     }
@@ -101,7 +94,6 @@ public final class FaultInjectionRule {
      *
      * @return the id.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getId() {
         return this.id;
     }
@@ -111,13 +103,11 @@ public final class FaultInjectionRule {
      *
      * @return the flag to indicate whether the rule is enabled.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isEnabled() { return this.enabled; }
 
     /***
      * Disable the fault injection rule.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void disable() {
         this.enabled = false;
         if (this.effectiveRule != null) {
@@ -130,7 +120,6 @@ public final class FaultInjectionRule {
      *
      * @return the hit count.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public long getHitCount() {
         return this.effectiveRule == null ? 0 : this.effectiveRule.getHitCount();
     }
@@ -140,7 +129,6 @@ public final class FaultInjectionRule {
      *
      * @return the list of physical addresses.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<URI> getAddresses() {
         return this.effectiveRule == null ? null : this.effectiveRule.getAddresses();
     }
@@ -150,7 +138,6 @@ public final class FaultInjectionRule {
      *
      * @return the list of region endpoints.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<URI> getRegionEndpoints() {
         return this.effectiveRule == null ? null : this.effectiveRule.getRegionEndpoints();
     }
@@ -160,7 +147,6 @@ public final class FaultInjectionRule {
      *
      * @param effectiveRule the effective fault injection rule.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     void setEffectiveFaultInjectionRule(IFaultInjectionRuleInternal effectiveRule) {
         this.effectiveRule = effectiveRule;
     }

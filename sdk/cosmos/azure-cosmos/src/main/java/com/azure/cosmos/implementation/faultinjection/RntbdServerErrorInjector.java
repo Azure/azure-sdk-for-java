@@ -12,8 +12,6 @@ import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServer
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 
 public class RntbdServerErrorInjector {
@@ -21,8 +19,6 @@ public class RntbdServerErrorInjector {
     private final Map<String, FaultInjectionServerErrorRule> serverLatencyRuleMap = new ConcurrentHashMap<>();
     private final Map<String, FaultInjectionServerErrorRule> serverConnectionLatencyRuleMap = new ConcurrentHashMap<>();
     private final Map<String, FaultInjectionServerErrorRule> serverResponseErrorMap = new ConcurrentHashMap<>();
-
-    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public void configFaultInjectionRule(FaultInjectionServerErrorRule rule) {
         FaultInjectionServerErrorResultInternal serverErrorResult = rule.getResult();

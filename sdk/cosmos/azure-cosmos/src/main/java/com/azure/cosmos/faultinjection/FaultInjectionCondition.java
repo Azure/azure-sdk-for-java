@@ -3,13 +3,10 @@
 
 package com.azure.cosmos.faultinjection;
 
-import com.azure.cosmos.util.Beta;
-
 /***
  * Fault injection condition.
  * A fault injection rule will not be applicable if the condition mismatches.
  */
-@Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class FaultInjectionCondition {
     private final FaultInjectionEndpoints endpoints;
     private final FaultInjectionOperationType operationType;
@@ -32,7 +29,6 @@ public final class FaultInjectionCondition {
      *
      * @return the {@link FaultInjectionEndpoints}.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionEndpoints getEndpoints() {
         return this.endpoints;
     }
@@ -42,7 +38,6 @@ public final class FaultInjectionCondition {
      *
      * @return the {@link FaultInjectionOperationType}.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionOperationType getOperationType() {
         return this.operationType;
     }
@@ -52,7 +47,6 @@ public final class FaultInjectionCondition {
      *
      * @return the {@link FaultInjectionConnectionType}.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionConnectionType getConnectionType() {
         return this.connectionType;
     }
@@ -62,7 +56,6 @@ public final class FaultInjectionCondition {
      *
      * @return the region.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getRegion() {
         return this.region;
     }

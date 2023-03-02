@@ -3,14 +3,11 @@
 
 package com.azure.cosmos.faultinjection;
 
-import com.azure.cosmos.util.Beta;
-
 import java.time.Duration;
 
 /***
  * Fault injection connection error result.
  */
-@Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class FaultInjectionConnectionErrorResult implements IFaultInjectionResult {
     private final FaultInjectionConnectionErrorType errorType;
     private Duration interval;
@@ -30,7 +27,6 @@ public final class FaultInjectionConnectionErrorResult implements IFaultInjectio
      *
      * @return the {@link FaultInjectionConnectionErrorType}.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionConnectionErrorType getErrorType() {
         return errorType;
     }
@@ -40,7 +36,6 @@ public final class FaultInjectionConnectionErrorResult implements IFaultInjectio
      *
      * @return the interval.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getInterval() {
         return interval;
     }
@@ -50,7 +45,6 @@ public final class FaultInjectionConnectionErrorResult implements IFaultInjectio
      *
      * @return the threshold.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getThreshold() {
         return threshold;
     }

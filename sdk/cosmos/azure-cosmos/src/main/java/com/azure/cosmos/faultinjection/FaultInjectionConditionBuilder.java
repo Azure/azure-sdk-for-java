@@ -4,7 +4,6 @@
 package com.azure.cosmos.faultinjection;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.util.Beta;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -12,7 +11,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Fault injection condition builder.
  */
-@Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class FaultInjectionConditionBuilder {
 
     private FaultInjectionEndpoints endpoints;
@@ -28,7 +26,6 @@ public final class FaultInjectionConditionBuilder {
      * @param region the region of the rule.
      * @return the builder.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionConditionBuilder region(String region) {
         checkArgument(StringUtils.isNotEmpty(region), "Argument 'region' can not be null nor empty");
         this.region = region;
@@ -44,7 +41,6 @@ public final class FaultInjectionConditionBuilder {
      * @param operationType the operation type.
      * @return the builder.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionConditionBuilder operationType(FaultInjectionOperationType operationType) {
         checkNotNull(operationType, "Argument 'operationType' can not be null");
         this.operationType = operationType;
@@ -59,7 +55,6 @@ public final class FaultInjectionConditionBuilder {
      * @param connectionType the connection type.
      * @return the builder.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionConditionBuilder connectionType(FaultInjectionConnectionType connectionType) {
         checkNotNull(connectionType, "Argument 'connectionType' can not be null");
         this.connectionType = connectionType;
@@ -72,7 +67,6 @@ public final class FaultInjectionConditionBuilder {
      * @param endpoints the physical endpoints.
      * @return the builder.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionConditionBuilder endpoints(FaultInjectionEndpoints endpoints) {
         checkNotNull(endpoints, "Argument 'endpoints' can not be null");
         this.endpoints = endpoints;
@@ -84,7 +78,6 @@ public final class FaultInjectionConditionBuilder {
      *
      * @return the {@link FaultInjectionCondition}.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionCondition build() {
         return new FaultInjectionCondition(
             this.operationType,

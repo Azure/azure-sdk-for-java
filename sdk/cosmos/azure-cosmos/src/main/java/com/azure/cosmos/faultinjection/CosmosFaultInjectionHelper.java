@@ -14,9 +14,21 @@ import java.util.List;
 import static com.azure.cosmos.implementation.Warning.FAULT_INJECTION_TEST_USE_ONLY_WARNING;
 
 
+/***
+ * Helper class to configure fault injection rules on container.
+ * Please only use this for testing, no use in prod environment.
+ */
 @Warning(value = FAULT_INJECTION_TEST_USE_ONLY_WARNING)
 @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosFaultInjectionHelper {
+
+    /***
+     * Configure fault injection rules.
+     *
+     * @param cosmosAsyncContainer the {@link CosmosAsyncContainer}.
+     * @param rules the list of {@link FaultInjectionRule} to be configured.
+     * @return the mono.
+     */
     @Warning(value = FAULT_INJECTION_TEST_USE_ONLY_WARNING)
     @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static Mono<Void> configureFaultInjectionRules(CosmosAsyncContainer cosmosAsyncContainer, List<FaultInjectionRule> rules) {

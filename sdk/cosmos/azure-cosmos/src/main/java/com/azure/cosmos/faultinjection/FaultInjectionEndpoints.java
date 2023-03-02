@@ -4,12 +4,10 @@
 package com.azure.cosmos.faultinjection;
 
 import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.util.Beta;
 
 /***
  * Fault injection endpoints.
  */
-@Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class FaultInjectionEndpoints {
     private final FeedRange feedRange;
     private boolean includePrimary;
@@ -26,7 +24,6 @@ public final class FaultInjectionEndpoints {
      *
      * @return the feed range.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FeedRange getFeedRange() {
         return this.feedRange;
     }
@@ -36,7 +33,6 @@ public final class FaultInjectionEndpoints {
      *
      * @return the flag which indicates whether primary replica address can be used.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isIncludePrimary() {
         return includePrimary;
     }
@@ -47,7 +43,6 @@ public final class FaultInjectionEndpoints {
      *
      * @return the replica count.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getReplicaCount() {
         return replicaCount;
     }

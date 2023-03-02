@@ -442,7 +442,7 @@ public class CosmosException extends AzureException {
             return mapper.writeValueAsString(exceptionMessageNode);
         } catch (JsonProcessingException ex) {
             return String.format(
-                "%s {%s=, error=%s, resourceAddress=%s, statusCode=%s, message=%s, causeInfo=%s, responseHeaders=%s, requestHeaders=%s, faultInjectionRuleId=[%s] }",
+                "%s {%s=%s, error=%s, resourceAddress=%s, statusCode=%s, message=%s, causeInfo=%s, responseHeaders=%s, requestHeaders=%s, faultInjectionRuleId=[%s] }",
                 getClass().getSimpleName(),
                 USER_AGENT_KEY,
                 USER_AGENT,

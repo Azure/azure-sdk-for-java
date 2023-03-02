@@ -3,14 +3,11 @@
 
 package com.azure.cosmos.faultinjection;
 
-import com.azure.cosmos.util.Beta;
-
 import java.time.Duration;
 
 /***
  * Fault injection server error result.
  */
-@Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class FaultInjectionServerErrorResult implements IFaultInjectionResult {
     private final FaultInjectionServerErrorType serverErrorType;
     private final Integer times;
@@ -27,7 +24,6 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
      *
      * @return the {@link FaultInjectionServerErrorType}.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionServerErrorType getServerErrorType() {
         return serverErrorType;
     }
@@ -37,7 +33,6 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
      *
      * @return the times.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getTimes() {
         return times;
     }
@@ -48,7 +43,6 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
      *
      * @return the injected delay.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getDelay() {
         return delay;
     }

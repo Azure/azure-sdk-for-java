@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.faultinjection;
 
-import com.azure.cosmos.util.Beta;
-
 import java.time.Duration;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -13,7 +11,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /***
  * Fault injection connection error result builder.
  */
-@Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class FaultInjectionConnectionErrorResultBuilder {
     private static final double DEFAULT_CONNECTION_THRESHOLD = 1.0;
     private final FaultInjectionConnectionErrorType connectionErrorType;
@@ -31,7 +28,6 @@ public final class FaultInjectionConnectionErrorResultBuilder {
      * @param interval the interval of triggering the connection error.
      * @return the builder.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionConnectionErrorResultBuilder interval(Duration interval) {
         checkNotNull(interval, "Argument 'interval' can not be null");
         this.interval = interval;
@@ -44,7 +40,6 @@ public final class FaultInjectionConnectionErrorResultBuilder {
      * @param threshold the percentage of established connection will be impacted when the connection error is injected.
      * @return the builder.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionConnectionErrorResultBuilder threshold(double threshold) {
         checkArgument(threshold > 0 && threshold <= 1, "Argument 'threshold' should be between [0, 1)");
         this.threshold = threshold;
@@ -56,7 +51,6 @@ public final class FaultInjectionConnectionErrorResultBuilder {
      *
      * @return the {@link FaultInjectionConnectionErrorResult}.
      */
-    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionConnectionErrorResult build() {
         checkNotNull(this.connectionErrorType, "Argument 'connectionErrorType' can not be null");
         checkNotNull(this.interval, "Argument 'interval' can not be null");
