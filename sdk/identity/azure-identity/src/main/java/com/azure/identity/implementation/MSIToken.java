@@ -54,21 +54,6 @@ public final class MSIToken extends AccessToken {
      * @param token     the token string.
      * @param expiresOn the expiration time.
      * @param expiresIn the number of seconds until expiration.
-     */
-    @JsonCreator
-    public MSIToken(
-        @JsonProperty(value = "access_token") String token,
-        @JsonProperty(value = "expires_on") String expiresOn,
-        @JsonProperty(value = "expires_in") String expiresIn) {
-        this(token, expiresOn, expiresIn, null);
-    }
-
-    /**
-     * Creates an access token instance.
-     *
-     * @param token     the token string.
-     * @param expiresOn the expiration time.
-     * @param expiresIn the number of seconds until expiration.
      * @param refreshIn seconds until refresh.
      */
     @JsonCreator
@@ -76,7 +61,7 @@ public final class MSIToken extends AccessToken {
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn,
         @JsonProperty(value = "expires_in") String expiresIn,
-        @JsonProperty(value = "refresh_in") String refreshIn) {
+        @JsonProperty(value = "refrsh_in") String refreshIn) {
         super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)));
         this.accessToken = token;
         this.expiresOn = expiresOn;
@@ -137,9 +122,9 @@ public final class MSIToken extends AccessToken {
 
         Duration duration = Duration.between(OffsetDateTime.now(), EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)));
         if (duration.toHours() >= 2) {
-            return duration.toSeconds() / 2;
+            return duration.getSeconds() / 2;
         } else {
-            return duration.toSeconds();
+            return duration.getSeconds();
         }
     }
 }

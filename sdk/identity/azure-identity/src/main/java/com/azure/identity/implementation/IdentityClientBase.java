@@ -338,7 +338,7 @@ public abstract class IdentityClientBase {
                 result.setTenantId(trc.getTenantId());
                 result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
                 if (accessToken.getClass().isInstance(MSIToken.class)) {
-                    MSIToken msiToken = (MSIToken)accessToken;
+                    MSIToken msiToken = (MSIToken) accessToken;
                     result.setRefreshInSeconds(msiToken.getRefreshIn());
 
                 }

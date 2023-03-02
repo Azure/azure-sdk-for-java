@@ -6,7 +6,6 @@ package com.azure.identity.implementation;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -16,8 +15,6 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mockStatic;
 
@@ -26,9 +23,9 @@ public class MSITokenTests {
 
     @Test
     public void canParseLong() {
-        MSIToken token = new MSIToken("fake_token", "1578668608", null);
-        MSIToken token2 = new MSIToken("fake_token", null, "3599");
-        MSIToken token3 = new MSIToken("fake_token", "1578668608", "3599");
+        MSIToken token = new MSIToken("fake_token", "1578668608", null, null);
+        MSIToken token2 = new MSIToken("fake_token", null, "3599", null);
+        MSIToken token3 = new MSIToken("fake_token", "1578668608", "3599", null);
 
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         Assert.assertTrue((token2.getExpiresAt().toEpochSecond() - OffsetDateTime.now().toEpochSecond()) > 3500);
@@ -37,7 +34,7 @@ public class MSITokenTests {
 
     @Test
     public void canParseRefreshes() {
-        try(MockedStatic<OffsetDateTime> offsetDateTimeMockedStatic = mockStatic(OffsetDateTime.class, CALLS_REAL_METHODS)) {
+        try (MockedStatic<OffsetDateTime> offsetDateTimeMockedStatic = mockStatic(OffsetDateTime.class, CALLS_REAL_METHODS)) {
 
             offsetDateTimeMockedStatic.when(() -> OffsetDateTime.now((ZoneId) any())).thenReturn(expected);
             offsetDateTimeMockedStatic.when(() -> OffsetDateTime.now((Clock) any())).thenReturn(expected);
@@ -52,11 +49,11 @@ public class MSITokenTests {
 
             MSIToken expirationMinusOneHourToken = new MSIToken("fake_token",
                 String.valueOf(expirationMinusOneHour.toEpochSecond()),
-                String.valueOf(expirationMinusOneHourSeconds.getSeconds()));
+                String.valueOf(expirationMinusOneHourSeconds.getSeconds()), null);
 
             MSIToken expirationMinus11HoursToken = new MSIToken("fake_token",
                 String.valueOf(expirationMinusElevenHours.toEpochSecond()),
-                String.valueOf(expirationMinusElevenHoursSeconds.getSeconds()));
+                String.valueOf(expirationMinusElevenHoursSeconds.getSeconds()), null);
 
             MSIToken hasRefresh = new MSIToken("fake_token",
                 String.valueOf(expirationMinusElevenHours.toEpochSecond()),
@@ -65,7 +62,7 @@ public class MSITokenTests {
 
             Assert.assertEquals(240, hasRefresh.getRefreshIn());
             Assert.assertEquals(Duration.ofHours(1).getSeconds(), expirationMinus11HoursToken.getRefreshIn());
-            Assert.assertEquals(Duration.between(now, expirationMinusOneHour).getSeconds()/2, expirationMinusOneHourToken.getRefreshIn());
+            Assert.assertEquals(Duration.between(now, expirationMinusOneHour).getSeconds() / 2, expirationMinusOneHourToken.getRefreshIn());
 
         }
 
@@ -73,11 +70,11 @@ public class MSITokenTests {
 
     @Test
     public void canParseDateTime24Hr() {
-        MSIToken token = new MSIToken("fake_token", "01/10/2020 15:03:28 +00:00", null);
-        MSIToken token2 = new MSIToken("fake_token", null, "01/10/2020 15:03:28 +00:00");
+        MSIToken token = new MSIToken("fake_token", "01/10/2020 15:03:28 +00:00", null, null);
+        MSIToken token2 = new MSIToken("fake_token", null, "01/10/2020 15:03:28 +00:00", null);
         MSIToken token3 = new MSIToken("fake_token", "01/10/2020 15:03:28 +00:00",
-            "86500");
-        MSIToken token4 = new MSIToken("fake_token", null, "43219");
+            "86500", null);
+        MSIToken token4 = new MSIToken("fake_token", null, "43219", null);
 
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token2.getExpiresAt().toEpochSecond());
@@ -87,22 +84,22 @@ public class MSITokenTests {
 
     @Test
     public void canParseDateTime12Hr() {
-        MSIToken token = new MSIToken("fake_token", "1/10/2020 3:03:28 PM +00:00", null);
-        MSIToken token2 = new MSIToken("fake_token", null, "1/10/2020 3:03:28 PM +00:00");
+        MSIToken token = new MSIToken("fake_token", "1/10/2020 3:03:28 PM +00:00", null, null);
+        MSIToken token2 = new MSIToken("fake_token", null, "1/10/2020 3:03:28 PM +00:00", null);
         MSIToken token3 = new MSIToken("fake_token", "1/10/2020 3:03:28 PM +00:00",
-            "86500");
-        MSIToken token4 = new MSIToken("fake_token", null, "86500");
+            "86500", null);
+        MSIToken token4 = new MSIToken("fake_token", null, "86500", null);
 
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token2.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
         Assert.assertTrue(ChronoUnit.HOURS.between(OffsetDateTime.now(), token4.getExpiresAt()) == 24L);
 
-        token = new MSIToken("fake_token", "12/20/2019 4:58:20 AM +00:00", null);
-        token2 = new MSIToken("fake_token", null, "12/20/2019 4:58:20 AM +00:00");
+        token = new MSIToken("fake_token", "12/20/2019 4:58:20 AM +00:00", null, null);
+        token2 = new MSIToken("fake_token", null, "12/20/2019 4:58:20 AM +00:00", null);
         token3 = new MSIToken("fake_token", "12/20/2019 4:58:20 AM +00:00",
-            "105500");
-        token4 = new MSIToken("fake_token", null, "105500");
+            "105500", null);
+        token4 = new MSIToken("fake_token", null, "105500", null);
         expected = OffsetDateTime.of(2019, 12, 20, 4, 58, 20, 0, ZoneOffset.UTC);
 
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
@@ -110,11 +107,11 @@ public class MSITokenTests {
         Assert.assertEquals(expected.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
         Assert.assertTrue(ChronoUnit.HOURS.between(OffsetDateTime.now(), token4.getExpiresAt()) == 29L);
 
-        token = new MSIToken("fake_token", "1/1/2020 0:00:00 PM +00:00", null);
-        token2 = new MSIToken("fake_token", null, "1/1/2020 0:00:00 PM +00:00");
+        token = new MSIToken("fake_token", "1/1/2020 0:00:00 PM +00:00", null, null);
+        token2 = new MSIToken("fake_token", null, "1/1/2020 0:00:00 PM +00:00", null);
         token3 = new MSIToken("fake_token", "1/1/2020 0:00:00 PM +00:00",
-            "220800");
-        token4 = new MSIToken("fake_token", null, "220800");
+            "220800", null);
+        token4 = new MSIToken("fake_token", null, "220800", null);
 
         expected = OffsetDateTime.of(2020, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC);
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
