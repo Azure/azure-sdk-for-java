@@ -17,6 +17,15 @@ public final class AzureFirewallSkuName extends ExpandableStringEnum<AzureFirewa
     public static final AzureFirewallSkuName AZFW_HUB = fromString("AZFW_Hub");
 
     /**
+     * Creates a new instance of AzureFirewallSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFirewallSkuName() {
+    }
+
+    /**
      * Creates or finds a AzureFirewallSkuName from its string representation.
      *
      * @param name a name to look for.

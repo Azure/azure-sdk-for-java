@@ -18,6 +18,15 @@ public final class ApplicationGatewayCookieBasedAffinity
     public static final ApplicationGatewayCookieBasedAffinity DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of ApplicationGatewayCookieBasedAffinity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayCookieBasedAffinity() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayCookieBasedAffinity from its string representation.
      *
      * @param name a name to look for.

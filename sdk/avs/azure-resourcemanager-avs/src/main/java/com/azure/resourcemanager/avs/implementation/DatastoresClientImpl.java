@@ -63,7 +63,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientDatastores")
-    private interface DatastoresService {
+    public interface DatastoresService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
@@ -737,7 +737,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
         String clusterName,
         String datastoreName,
         DatastoreInner datastore) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, clusterName, datastoreName, datastore)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, clusterName, datastoreName, datastore)
             .getSyncPoller();
     }
 
@@ -763,7 +764,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
         String datastoreName,
         DatastoreInner datastore,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, privateCloudName, clusterName, datastoreName, datastore, context)
             .getSyncPoller();
     }
@@ -1048,7 +1050,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String clusterName, String datastoreName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, datastoreName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, datastoreName).getSyncPoller();
     }
 
     /**
@@ -1067,7 +1069,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, datastoreName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, datastoreName, context)
             .getSyncPoller();
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayNatRuleInner;
@@ -28,7 +27,7 @@ import java.util.Arrays;
 /** Samples for VirtualNetworkGateways CreateOrUpdate. */
 public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGatewayUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGatewayUpdate.json
      */
     /**
      * Sample code: UpdateVirtualNetworkGateway.
@@ -113,6 +112,6 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
                     .withEnableBgpRouteTranslationForNat(false)
                     .withAllowVirtualWanTraffic(false)
                     .withAllowRemoteVnetTraffic(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -6,11 +6,15 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
+import com.azure.containers.containerregistry.implementation.models.ArtifactManifestPropertiesInternal;
+import com.azure.containers.containerregistry.implementation.models.ArtifactTagPropertiesInternal;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
+import com.azure.containers.containerregistry.models.DownloadManifestResult;
+import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -39,6 +43,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -46,10 +51,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -58,7 +64,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
@@ -70,12 +75,10 @@ public final class UtilsImpl {
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
-    private static final HttpHeaderName CONTINUATION_LINK_HEADER_NAME = HttpHeaderName.fromString("Link");
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
-    public static final String OCI_MANIFEST_MEDIA_TYPE = "application/vnd.oci.image.manifest.v1+json";
-
+    public static final ManifestMediaType SUPPORTED_MANIFEST_TYPES = ManifestMediaType.fromString(ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST);
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
     private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
@@ -153,8 +156,7 @@ public final class UtilsImpl {
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .tracer(tracer)
-                .build(),
-            JacksonAdapter.createDefaultSerializerAdapter());
+                .build());
 
         ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
 
@@ -162,13 +164,11 @@ public final class UtilsImpl {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(loggingPolicy);
 
-        HttpPipeline httpPipeline =
-            new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .tracer(tracer)
-                .build();
-        return httpPipeline;
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .tracer(tracer)
+            .build();
     }
 
     @SuppressWarnings("unchecked")
@@ -189,16 +189,9 @@ public final class UtilsImpl {
      * @return SHA-256 digest for the given buffer.
      */
     public static String computeDigest(ByteBuffer buffer) {
-        ByteBuffer readOnlyBuffer = buffer.asReadOnlyBuffer();
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(readOnlyBuffer);
-            byte[] digest = md.digest();
-            return "sha256:" + byteArrayToHex(digest);
-
-        } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+        MessageDigest md = createSha256();
+        md.update(buffer.asReadOnlyBuffer());
+        return "sha256:" + byteArrayToHex(md.digest());
     }
 
     public static MessageDigest createSha256() {
@@ -212,14 +205,31 @@ public final class UtilsImpl {
 
     public static void validateDigest(MessageDigest messageDigest, String requestedDigest) {
         String sha256 = byteArrayToHex(messageDigest.digest());
-        if (requestedDigest.length() != 71
-            || !requestedDigest.startsWith("sha256:")
-            || !requestedDigest.endsWith(sha256)) {
+        if (isDigest(requestedDigest) && !requestedDigest.endsWith(sha256)) {
             throw LOGGER.atError()
                 .addKeyValue("requestedDigest", requestedDigest)
                 .addKeyValue("actualDigest", () -> "sha256:" + sha256)
                 .log(new ServiceResponseException("The digest in the response does not match the expected digest."));
         }
+    }
+
+    public static Response<DownloadManifestResult> toDownloadManifestResponse(String tagOrDigest, Response<BinaryData> rawResponse) {
+        String digest = rawResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
+        String responseSha256 = computeDigest(rawResponse.getValue().toByteBuffer());
+
+        if (!Objects.equals(responseSha256, digest)
+            || (isDigest(tagOrDigest) && !Objects.equals(responseSha256, tagOrDigest))) {
+            throw LOGGER.logExceptionAsError(new ServiceResponseException("The digest in the response does not match the expected digest."));
+        }
+
+        String contentType = rawResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+        ManifestMediaType responseMediaType = contentType != null ? ManifestMediaType.fromString(contentType) : null;
+
+        return new SimpleResponse<>(
+            rawResponse.getRequest(),
+            rawResponse.getStatusCode(),
+            rawResponse.getHeaders(),
+            ConstructorAccessors.createDownloadManifestResult(digest, responseMediaType, rawResponse.getValue()));
     }
 
     private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
@@ -351,7 +361,7 @@ public final class UtilsImpl {
     }
 
     private static String getContinuationLink(HttpHeaders headers) {
-        String continuationLinkHeader = headers.getValue(CONTINUATION_LINK_HEADER_NAME);
+        String continuationLinkHeader = headers.getValue(HttpHeaderName.LINK);
         if (!CoreUtils.isNullOrEmpty(continuationLinkHeader) && continuationLinkHeader.charAt(0) == '<') {
             int endIndex = continuationLinkHeader.indexOf(">;");
             if (endIndex < 2) {
@@ -370,45 +380,51 @@ public final class UtilsImpl {
             return null;
         }
 
-        return baseArtifacts.stream().map(value -> {
-            ArtifactManifestProperties manifestProperties = new ArtifactManifestProperties()
-                .setDeleteEnabled(value.isDeleteEnabled())
-                .setListEnabled(value.isListEnabled())
-                .setWriteEnabled(value.isWriteEnabled())
-                .setReadEnabled(value.isReadEnabled());
+        List<ArtifactManifestProperties> artifactManifestProperties = new ArrayList<>(baseArtifacts.size());
+        for (ManifestAttributesBase base : baseArtifacts) {
+            ArtifactManifestPropertiesInternal internal = new ArtifactManifestPropertiesInternal()
+                .setRegistryLoginServer(registryLoginServer)
+                .setRepositoryName(repositoryName)
+                .setDigest(base.getDigest())
+                .setSizeInBytes(base.getSizeInBytes())
+                .setCreatedOn(base.getCreatedOn())
+                .setLastUpdatedOn(base.getLastUpdatedOn())
+                .setArchitecture(base.getArchitecture())
+                .setOperatingSystem(base.getOperatingSystem())
+                .setRelatedArtifacts(base.getRelatedArtifacts())
+                .setTags(base.getTags())
+                .setDeleteEnabled(base.isDeleteEnabled())
+                .setWriteEnabled(base.isWriteEnabled())
+                .setListEnabled(base.isListEnabled())
+                .setReadEnabled(base.isReadEnabled());
 
-            ArtifactManifestPropertiesHelper.setRepositoryName(manifestProperties, repositoryName);
-            ArtifactManifestPropertiesHelper.setRegistryLoginServer(manifestProperties, registryLoginServer);
-            ArtifactManifestPropertiesHelper.setDigest(manifestProperties, value.getDigest());
-            ArtifactManifestPropertiesHelper.setRelatedArtifacts(manifestProperties, value.getRelatedArtifacts());
-            ArtifactManifestPropertiesHelper.setCpuArchitecture(manifestProperties, value.getArchitecture());
-            ArtifactManifestPropertiesHelper.setOperatingSystem(manifestProperties, value.getOperatingSystem());
-            ArtifactManifestPropertiesHelper.setCreatedOn(manifestProperties, value.getCreatedOn());
-            ArtifactManifestPropertiesHelper.setlastUpdatedOn(manifestProperties, value.getLastUpdatedOn());
-            ArtifactManifestPropertiesHelper.setSizeInBytes(manifestProperties, value.getSize());
-            ArtifactManifestPropertiesHelper.setTags(manifestProperties, value.getTags());
-            return manifestProperties;
-        }).collect(Collectors.toList());
+            artifactManifestProperties.add(ArtifactManifestPropertiesHelper.create(internal));
+        }
+
+        return artifactManifestProperties;
     }
 
     public static List<ArtifactTagProperties> getTagProperties(List<TagAttributesBase> baseValues,
                                                                String repositoryName) {
         Objects.requireNonNull(baseValues);
 
-        return baseValues.stream().map(value -> {
-            ArtifactTagProperties tagProperties = new ArtifactTagProperties()
-                .setDeleteEnabled(value.isDeleteEnabled())
-                .setReadEnabled(value.isReadEnabled())
-                .setListEnabled(value.isListEnabled())
-                .setWriteEnabled(value.isWriteEnabled());
+        List<ArtifactTagProperties> artifactTagProperties = new ArrayList<>(baseValues.size());
+        for (TagAttributesBase base : baseValues) {
+            ArtifactTagPropertiesInternal internal = new ArtifactTagPropertiesInternal()
+                .setRepositoryName(repositoryName)
+                .setName(base.getName())
+                .setDigest(base.getDigest())
+                .setCreatedOn(base.getCreatedOn())
+                .setLastUpdatedOn(base.getLastUpdatedOn())
+                .setDeleteEnabled(base.isDeleteEnabled())
+                .setWriteEnabled(base.isWriteEnabled())
+                .setListEnabled(base.isListEnabled())
+                .setReadEnabled(base.isReadEnabled());
 
-            ArtifactTagPropertiesHelper.setCreatedOn(tagProperties, value.getCreatedOn());
-            ArtifactTagPropertiesHelper.setlastUpdatedOn(tagProperties, value.getLastUpdatedOn());
-            ArtifactTagPropertiesHelper.setRepositoryName(tagProperties, repositoryName);
-            ArtifactTagPropertiesHelper.setName(tagProperties, value.getName());
-            ArtifactTagPropertiesHelper.setDigest(tagProperties, value.getDigest());
-            return tagProperties;
-        }).collect(Collectors.toList());
+            artifactTagProperties.add(ArtifactTagPropertiesHelper.create(internal));
+        }
+
+        return artifactTagProperties;
     }
 
     public static void validateResponseHeaderDigest(String requestedDigest, HttpHeaders headers) {
@@ -422,7 +438,7 @@ public final class UtilsImpl {
     }
 
     public static Context enableSync(Context context) {
-        if (context == Context.NONE) {
+        if (context == null || context == Context.NONE) {
             return CONTEXT_WITH_SYNC;
         }
 
@@ -448,5 +464,25 @@ public final class UtilsImpl {
         }
 
         throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid content-range header in response -" + contentRangeHeader));
+    }
+
+    /**
+     * Checks if string represents tag or digest.
+     *
+     * @param tagOrDigest string to check
+     * @return true if digest, false otherwise.
+     */
+    public static boolean isDigest(String tagOrDigest) {
+        return tagOrDigest.length() == 71 && tagOrDigest.startsWith("sha256:");
+    }
+
+    public static String formatFullyQualifiedReference(String endpoint, String repositoryName, String tagOrDigest) {
+        try {
+            URL endpointUrl = new URL(endpoint);
+            return endpointUrl.getHost() + "/" + repositoryName + (isDigest(tagOrDigest) ? "@" : ":") + tagOrDigest;
+        } catch (MalformedURLException ex) {
+            // This will not happen.
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+        }
     }
 }

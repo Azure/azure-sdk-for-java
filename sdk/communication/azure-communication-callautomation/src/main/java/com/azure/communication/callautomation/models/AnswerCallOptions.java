@@ -5,9 +5,6 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.time.Instant;
-import java.util.UUID;
-
 /**
  * The options for creating a call.
  */
@@ -22,11 +19,6 @@ public class AnswerCallOptions {
      * The call back URI.
      */
     private final String callbackUrl;
-
-    /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
 
     /**
      * Media Streaming Configuration.
@@ -47,7 +39,6 @@ public class AnswerCallOptions {
     public AnswerCallOptions(String incomingCallContext, String callbackUrl) {
         this.incomingCallContext = incomingCallContext;
         this.callbackUrl = callbackUrl;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -85,26 +76,6 @@ public class AnswerCallOptions {
      */
     public MediaStreamingOptions getMediaStreamingConfiguration() {
         return mediaStreamingOptions;
-    }
-
-    /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
-
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
-        return this;
     }
 
     /**

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.CheckPrivateLinkServiceVisibilityRequest;
 
 /** Samples for PrivateLinkServices CheckPrivateLinkServiceVisibility. */
 public final class PrivateLinkServicesCheckPrivateLinkServiceVisibilitySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/CheckPrivateLinkServiceVisibility.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/CheckPrivateLinkServiceVisibility.json
      */
     /**
      * Sample code: Check private link service visibility.
@@ -27,6 +26,6 @@ public final class PrivateLinkServicesCheckPrivateLinkServiceVisibilitySamples {
                 "westus",
                 new CheckPrivateLinkServiceVisibilityRequest()
                     .withPrivateLinkServiceAlias("mypls.00000000-0000-0000-0000-000000000000.azure.privatelinkservice"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.PacketCaptureInner;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for PacketCaptures Create. */
 public final class PacketCapturesCreateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkWatcherPacketCaptureCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherPacketCaptureCreate.json
      */
     /**
      * Sample code: Create packet capture.
@@ -50,6 +49,6 @@ public final class PacketCapturesCreateSamples {
                                     .withProtocol(PcProtocol.TCP)
                                     .withLocalIpAddress("10.0.0.4")
                                     .withLocalPort("80"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

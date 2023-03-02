@@ -20,6 +20,15 @@ public final class VpnGatewayGeneration extends ExpandableStringEnum<VpnGatewayG
     public static final VpnGatewayGeneration GENERATION2 = fromString("Generation2");
 
     /**
+     * Creates a new instance of VpnGatewayGeneration value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VpnGatewayGeneration() {
+    }
+
+    /**
      * Creates or finds a VpnGatewayGeneration from its string representation.
      *
      * @param name a name to look for.

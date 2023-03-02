@@ -33,13 +33,13 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>2.7.8</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>2.7.9</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.13.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
 
     <dependency>
@@ -86,7 +86,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:applicationinsights-core:[3.4.1]</include> <!-- {x-include-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[2.7.8]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.7.9]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.codehaus.janino:janino:[3.1.9]</include> <!-- {x-include-update;org.codehaus.janino:janino;external_dependency} -->
               </includes>
             </bannedDependencies>

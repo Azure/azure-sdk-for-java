@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RouteFilters List. */
 public final class RouteFiltersListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/RouteFilterList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/RouteFilterList.json
      */
     /**
      * Sample code: RouteFilterList.
@@ -17,6 +15,6 @@ public final class RouteFiltersListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeFilterList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRouteFilters().list(Context.NONE);
+        azure.networks().manager().serviceClient().getRouteFilters().list(com.azure.core.util.Context.NONE);
     }
 }

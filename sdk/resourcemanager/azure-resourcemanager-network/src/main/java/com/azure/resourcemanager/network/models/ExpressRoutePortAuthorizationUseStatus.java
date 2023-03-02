@@ -18,6 +18,15 @@ public final class ExpressRoutePortAuthorizationUseStatus
     public static final ExpressRoutePortAuthorizationUseStatus IN_USE = fromString("InUse");
 
     /**
+     * Creates a new instance of ExpressRoutePortAuthorizationUseStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRoutePortAuthorizationUseStatus() {
+    }
+
+    /**
      * Creates or finds a ExpressRoutePortAuthorizationUseStatus from its string representation.
      *
      * @param name a name to look for.

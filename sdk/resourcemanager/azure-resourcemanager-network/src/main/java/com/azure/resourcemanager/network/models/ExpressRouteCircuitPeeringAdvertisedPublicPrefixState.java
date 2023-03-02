@@ -26,6 +26,15 @@ public final class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState
         fromString("ValidationNeeded");
 
     /**
+     * Creates a new instance of ExpressRouteCircuitPeeringAdvertisedPublicPrefixState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteCircuitPeeringAdvertisedPublicPrefixState() {
+    }
+
+    /**
      * Creates or finds a ExpressRouteCircuitPeeringAdvertisedPublicPrefixState from its string representation.
      *
      * @param name a name to look for.

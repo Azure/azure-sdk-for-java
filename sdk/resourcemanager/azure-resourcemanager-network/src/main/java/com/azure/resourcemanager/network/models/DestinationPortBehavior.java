@@ -17,6 +17,15 @@ public final class DestinationPortBehavior extends ExpandableStringEnum<Destinat
     public static final DestinationPortBehavior LISTEN_IF_AVAILABLE = fromString("ListenIfAvailable");
 
     /**
+     * Creates a new instance of DestinationPortBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DestinationPortBehavior() {
+    }
+
+    /**
      * Creates or finds a DestinationPortBehavior from its string representation.
      *
      * @param name a name to look for.

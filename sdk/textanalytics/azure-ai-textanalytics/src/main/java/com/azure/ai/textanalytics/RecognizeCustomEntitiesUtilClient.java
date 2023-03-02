@@ -55,7 +55,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
@@ -75,7 +74,6 @@ import static com.azure.ai.textanalytics.implementation.models.State.NOT_STARTED
 import static com.azure.ai.textanalytics.implementation.models.State.RUNNING;
 import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 class RecognizeCustomEntitiesUtilClient {
     private static final ClientLogger LOGGER = new ClientLogger(RecognizeCustomEntitiesUtilClient.class);
@@ -99,8 +97,7 @@ class RecognizeCustomEntitiesUtilClient {
                     TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullRecognizeCustomEntitiesOptions(options);
-            final Context finalContext = getNotNullContext(context)
-                .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+            final Context finalContext = getNotNullContext(context);
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
@@ -153,8 +150,7 @@ class RecognizeCustomEntitiesUtilClient {
                     TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullRecognizeCustomEntitiesOptions(options);
-            final Context finalContext = enableSyncRestProxy(getNotNullContext(context))
-                .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+            final Context finalContext = enableSyncRestProxy(getNotNullContext(context));
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();

@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-common</artifactId>
-  <version>12.20.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+  <version>12.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
 
   <name>Microsoft Azure common module for Storage</name>
   <description>This module contains common code based for all Microsoft Azure Storage client libraries.</description>
@@ -39,6 +39,7 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.storage.common/com.azure.storage.common.implementation.credentials=ALL-UNNAMED
+      --add-opens com.azure.storage.common/com.azure.storage.common.test.shared.extensions=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.policy=ALL-UNNAMED
       --add-reads com.azure.core=ALL-UNNAMED
@@ -102,7 +103,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.26</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
