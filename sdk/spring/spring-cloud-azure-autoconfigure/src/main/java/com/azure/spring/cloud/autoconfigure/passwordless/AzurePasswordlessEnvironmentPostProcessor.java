@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.passwordless;
 
-import com.azure.cosmos.implementation.guava25.collect.Lists;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -11,6 +10,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -29,7 +29,7 @@ public class AzurePasswordlessEnvironmentPostProcessor implements EnvironmentPos
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         Properties properties = new Properties();
-        List<String> passwordlessCredentialSupplier = Lists.newArrayList();
+        List<String> passwordlessCredentialSupplier = new ArrayList<>();
         passwordlessCredentialSupplier.add("azureRedisCredentialSupplier");
         passwordlessCredentialSupplier.add("azureServiceBusJmsCredentialSupplier");
         properties.setProperty("spring.cloud.function.ineligible-definitions", String.join(",", passwordlessCredentialSupplier));
