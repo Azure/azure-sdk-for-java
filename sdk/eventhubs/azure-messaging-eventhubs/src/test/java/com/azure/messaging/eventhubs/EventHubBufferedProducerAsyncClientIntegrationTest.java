@@ -13,6 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.Closeable;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -48,6 +49,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
     private EventHubBufferedProducerAsyncClient producer;
     private EventHubClient hubClient;
     private String[] partitionIds;
+    private List<AutoCloseable> toClose = new ArrayList<>();
     private final Map<String, PartitionProperties> partitionPropertiesMap = new HashMap<>();
 
     public EventHubBufferedProducerAsyncClientIntegrationTest() {
@@ -56,8 +58,11 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
     @Override
     protected void beforeTest() {
+        toClose = new ArrayList<>();
         this.hubClient = new EventHubClientBuilder().connectionString(getConnectionString())
             .buildClient();
+
+        toClose.add(hubClient);
 
         List<String> allIds = new ArrayList<>();
         final EventHubProperties properties = hubClient.getProperties();
@@ -76,12 +81,11 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
     @Override
     protected void afterTest() {
-        if (hubClient != null) {
-            hubClient.close();
-        }
-
-        if (producer != null) {
-            producer.close();
+        try {
+            dispose(toClose.toArray(new Closeable[0]));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning("Error occurred when closing clients.", e);
         }
     }
 
@@ -112,6 +116,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
             .maxEventBufferLengthPerPartition(queueSize)
             .maxWaitTime(maxWaitTime)
             .buildAsyncClient();
+        toClose.add(producer);
 
         // Creating 2x number of events, we expect that each partition will get at least one of these events.
         final int numberOfEvents = partitionPropertiesMap.size() * 2;

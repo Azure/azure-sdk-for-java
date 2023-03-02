@@ -17,7 +17,9 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import java.io.Closeable;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,13 +36,14 @@ class ProxyIntegrationTest extends IntegrationTestBase {
 
     private EventHubProducerClient sender;
     private SendOptions sendOptions;
-
+    private List<AutoCloseable> toClose = new ArrayList<>();
     ProxyIntegrationTest() {
         super(new ClientLogger(ProxyIntegrationTest.class));
     }
 
     @Override
     protected void beforeTest() {
+        toClose = new ArrayList<>();
         final ProxyOptions proxyOptions = getProxyConfiguration();
 
         Assumptions.assumeTrue(proxyOptions != null, "Cannot run proxy integration tests without setting proxy configuration.");
@@ -51,13 +54,19 @@ class ProxyIntegrationTest extends IntegrationTestBase {
             .proxyOptions(proxyOptions)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .buildProducerClient();
+        toClose.add(sender);
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
     }
 
     @Override
     protected void afterTest() {
-        dispose(sender);
+        try {
+            dispose(toClose.toArray(new Closeable[0]));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning("Error occurred when closing clients.", e);
+        }
     }
 
     /**
@@ -78,11 +87,12 @@ class ProxyIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(getConnectionString()).buildAsyncProducerClient();
+        toClose.add(producer);
         final EventHubConsumerClient receiver = new EventHubClientBuilder()
                 .connectionString(getConnectionString())
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
                 .buildConsumerClient();
-
+        toClose.add(receiver);
         producer.send(TestUtils.getEvents(numberOfEvents, messageId), sendOptions).block();
 
         // Act

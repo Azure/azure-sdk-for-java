@@ -71,7 +71,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private EventHubConsumerAsyncClient consumer;
     private EventHubConsumerClient consumerSync;
     private EventProcessorClient processor;
-    private List<AutoCloseable> toClose;
+    private List<AutoCloseable> toClose = new ArrayList<>();
     private Instant testStartTime;
     private EventData data;
 
@@ -132,12 +132,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     private void closeClients() {
-        if (processor != null) {
-            processor.stop();
-        }
         try {
             dispose(toClose.toArray(new Closeable[0]));
         } catch (Exception e) {
+            e.printStackTrace();
             logger.warning("Error occurred when closing clients.", e);
         }
     }
@@ -436,6 +434,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
 
+        toClose.add(() -> processor.stop());
         processor.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -486,6 +485,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
 
+        toClose.add(() -> processor.stop());
         processor.start();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -534,7 +534,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             }, 2)
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
-
+        toClose.add(() -> processor.stop());
         processor.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -580,6 +580,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
 
+        toClose.add(() -> processor.stop());
         processor.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -667,13 +668,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(status, actual.toSpanData().getStatus().getStatusCode());
         assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
 
-        assertEquals(messages.stream().filter(m -> m.getProperties().containsKey("traceparent")).count(), actual.toSpanData().getLinks().size());
+        List<EventData> receivedMessagesWithTraceContext = messages.stream().filter(m -> m.getProperties().containsKey("traceparent")).collect(toList());
+        assertEquals(receivedMessagesWithTraceContext.size(), actual.toSpanData().getLinks().size());
         if (messages.size() > 1) {
             assertEquals(messages.size(), actual.getAttribute(AttributeKey.longKey("messaging.batch.message_count")));
         }
 
         List<LinkData> links =  actual.toSpanData().getLinks();
-        for (EventData data : messages) {
+        for (EventData data : receivedMessagesWithTraceContext) {
             String messageTraceparent = (String) data.getProperties().get("traceparent");
             List<LinkData> link = links.stream().filter(l -> {
                 String linkedContext = "00-" + l.getSpanContext().getTraceId() + "-" + l.getSpanContext().getSpanId() + "-01";
@@ -744,10 +746,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             spans.add(readableSpan);
             Consumer<ReadableSpan> filter = notifier.get();
             if (filter != null) {
-                LOGGER.atInfo()
-                    .addKeyValue("traceId", span.getTraceId())
-                    .addKeyValue("spanId", span.getSpanId())
-                    .log("condition met");
                 filter.accept(readableSpan);
             }
 
@@ -763,6 +761,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         public void notifyIfCondition(CountDownLatch countDownLatch, Predicate<ReadableSpan> filter) {
             notifier.set((span) -> {
                 if (filter.test(span)) {
+                    LOGGER.atInfo()
+                        .addKeyValue("traceId", span.getSpanContext().getTraceId())
+                        .addKeyValue("spanId", span.getSpanContext().getSpanId())
+                        .log("condition met");
                     countDownLatch.countDown();
                 }
             });

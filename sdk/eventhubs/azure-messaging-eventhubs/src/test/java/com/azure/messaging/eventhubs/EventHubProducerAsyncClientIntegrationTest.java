@@ -16,6 +16,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.Closeable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,7 +29,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Tag(TestUtils.INTEGRATION)
 class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "2";
-
+    private List<AutoCloseable> toClose = new ArrayList<>();
     private EventHubProducerAsyncClient producer;
 
     EventHubProducerAsyncClientIntegrationTest() {
@@ -36,16 +38,21 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
+        toClose = new ArrayList<>();
         producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
             .buildAsyncProducerClient();
+        toClose.add(producer);
     }
 
     @Override
     protected void afterTest() {
-        if (producer != null) {
-            producer.close();
+        try {
+            dispose(toClose.toArray(new Closeable[0]));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning("Error occurred when closing clients.", e);
         }
     }
 
@@ -215,21 +222,17 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
             .connectionString(getConnectionString(true))
             .buildAsyncProducerClient();
 
-        try {
-            StepVerifier.create(eventHubAsyncClient.getEventHubProperties())
-                .assertNext(properties -> {
-                    Assertions.assertEquals(getEventHubName(), properties.getName());
-                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
-                })
-                .expectComplete()
-                .verify(TIMEOUT);
+        toClose.add(eventHubAsyncClient);
+        StepVerifier.create(eventHubAsyncClient.getEventHubProperties())
+            .assertNext(properties -> {
+                Assertions.assertEquals(getEventHubName(), properties.getName());
+                Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
 
-            StepVerifier.create(eventHubAsyncClient.send(event, options))
-                .expectComplete()
-                .verify(TIMEOUT);
-        } finally {
-            dispose(eventHubAsyncClient);
-        }
-
+        StepVerifier.create(eventHubAsyncClient.send(event, options))
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }

@@ -13,8 +13,10 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.Disposable;
 import reactor.test.StepVerifier;
 
+import java.io.Closeable;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
     private EventHubProducerAsyncClient producer;
     private EventHubClientBuilder builder;
-
+    private List<AutoCloseable> toClose = new ArrayList<>();
     @Mock
     private ErrorContextProvider contextProvider;
 
@@ -45,17 +47,23 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
-
+        toClose = new ArrayList<>();
         builder = createBuilder()
             .shareConnection()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .prefetchCount(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
         producer = builder.buildAsyncProducerClient();
+        toClose.add(producer);
     }
 
     @Override
     protected void afterTest() {
-        dispose(producer);
+        try {
+            dispose(toClose.toArray(new Closeable[0]));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning("Error occurred when closing clients.", e);
+        }
     }
 
     /**
@@ -127,48 +135,43 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         }
 
         final CountDownLatch countDownLatch = new CountDownLatch(batch.getCount());
-        final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
         final Instant now = Instant.now();
-        try {
-            // Creating consumers on all the partitions and subscribing to the receive event.
-            final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
-            Assertions.assertNotNull(partitionIds);
+        // Creating consumers on all the partitions and subscribing to the receive event.
+        final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
+        Assertions.assertNotNull(partitionIds);
 
-            for (String id : partitionIds) {
-                final EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient();
+        for (String id : partitionIds) {
+            final EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient();
 
-                consumers.add(consumer);
-                consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now)).subscribe(partitionEvent -> {
-                    EventData event = partitionEvent.getData();
-                    if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
-                        return;
-                    }
+            toClose.add(consumer);
+            Disposable subscription = consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now)).subscribe(partitionEvent -> {
+                EventData event = partitionEvent.getData();
+                if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
+                    return;
+                }
 
-                    if (isMatchingEvent(event, messageValue)) {
-                        logger.info("Event[{}] matched. Countdown: {}", event.getSequenceNumber(), countDownLatch.getCount());
-                        countDownLatch.countDown();
-                    } else {
-                        logger.warning("Event[{}] matched partition key, but not GUID. Expected: {}. Actual: {}",
-                            event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_ID));
-                    }
-                }, error -> {
-                        Assertions.fail("An error should not have occurred:" + error.toString());
-                    }, () -> {
-                        logger.info("Disposing of consumer now that the receive is complete.");
-                        dispose(consumer);
-                    });
-            }
-
-            // Act
-            producer.send(batch.getEvents(), sendOptions).block();
-
-            // Assert
-            // Wait for all the events we sent to be received.
-            countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
-        } finally {
-            logger.info("Disposing of subscriptions.");
-            dispose(consumers.toArray(new EventHubConsumerAsyncClient[0]));
+                if (isMatchingEvent(event, messageValue)) {
+                    logger.info("Event[{}] matched. Countdown: {}", event.getSequenceNumber(), countDownLatch.getCount());
+                    countDownLatch.countDown();
+                } else {
+                    logger.warning("Event[{}] matched partition key, but not GUID. Expected: {}. Actual: {}",
+                        event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_ID));
+                }
+            }, error -> {
+                    Assertions.fail("An error should not have occurred:" + error.toString());
+                }, () -> {
+                    logger.info("Disposing of consumer now that the receive is complete.");
+                    dispose(consumer);
+                });
+            toClose.add(() -> subscription.dispose());
         }
+
+        // Act
+        producer.send(batch.getEvents(), sendOptions).block();
+
+        // Assert
+        // Wait for all the events we sent to be received.
+        countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
 
         Assertions.assertEquals(0, countDownLatch.getCount());
     }
