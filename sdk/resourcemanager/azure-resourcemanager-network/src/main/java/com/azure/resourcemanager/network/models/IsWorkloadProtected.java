@@ -17,6 +17,15 @@ public final class IsWorkloadProtected extends ExpandableStringEnum<IsWorkloadPr
     public static final IsWorkloadProtected TRUE = fromString("True");
 
     /**
+     * Creates a new instance of IsWorkloadProtected value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IsWorkloadProtected() {
+    }
+
+    /**
      * Creates or finds a IsWorkloadProtected from its string representation.
      *
      * @param name a name to look for.

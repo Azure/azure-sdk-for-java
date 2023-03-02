@@ -17,6 +17,15 @@ public final class VirtualWanSecurityProviderType extends ExpandableStringEnum<V
     public static final VirtualWanSecurityProviderType NATIVE = fromString("Native");
 
     /**
+     * Creates a new instance of VirtualWanSecurityProviderType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualWanSecurityProviderType() {
+    }
+
+    /**
      * Creates or finds a VirtualWanSecurityProviderType from its string representation.
      *
      * @param name a name to look for.

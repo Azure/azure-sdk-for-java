@@ -17,6 +17,15 @@ public final class WebApplicationFirewallEnabledState extends ExpandableStringEn
     public static final WebApplicationFirewallEnabledState ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of WebApplicationFirewallEnabledState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebApplicationFirewallEnabledState() {
+    }
+
+    /**
      * Creates or finds a WebApplicationFirewallEnabledState from its string representation.
      *
      * @param name a name to look for.

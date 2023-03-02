@@ -26,6 +26,15 @@ public final class RouteMapMatchCondition extends ExpandableStringEnum<RouteMapM
     public static final RouteMapMatchCondition NOT_EQUALS = fromString("NotEquals");
 
     /**
+     * Creates a new instance of RouteMapMatchCondition value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RouteMapMatchCondition() {
+    }
+
+    /**
      * Creates or finds a RouteMapMatchCondition from its string representation.
      *
      * @param name a name to look for.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DdosCustomPolicies Delete. */
 public final class DdosCustomPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DdosCustomPolicyDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/DdosCustomPolicyDelete.json
      */
     /**
      * Sample code: Delete DDoS custom policy.
@@ -22,6 +20,6 @@ public final class DdosCustomPoliciesDeleteSamples {
             .manager()
             .serviceClient()
             .getDdosCustomPolicies()
-            .delete("rg1", "test-ddos-custom-policy", Context.NONE);
+            .delete("rg1", "test-ddos-custom-policy", com.azure.core.util.Context.NONE);
     }
 }
