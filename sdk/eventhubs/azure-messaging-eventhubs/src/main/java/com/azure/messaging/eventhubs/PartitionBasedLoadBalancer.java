@@ -9,6 +9,8 @@ import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -43,7 +45,7 @@ import static java.util.stream.Collectors.toList;
  * owner of that partition is considered inactive and the partition is available for other EventProcessors to own.
  * </p>
  */
-final class PartitionBasedLoadBalancer {
+final class PartitionBasedLoadBalancer implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(PartitionBasedLoadBalancer.class);
 
     private final String eventHubName;
@@ -60,6 +62,7 @@ final class PartitionBasedLoadBalancer {
     private final LoadBalancingStrategy loadBalancingStrategy;
     private final AtomicBoolean morePartitionsToClaim = new AtomicBoolean();
     private final AtomicReference<List<String>> partitionsCache = new AtomicReference<>(new ArrayList<>());
+    private final Disposable.Composite subscriptions;
 
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
@@ -92,6 +95,7 @@ final class PartitionBasedLoadBalancer {
         this.partitionAgnosticContext = new PartitionContext(fullyQualifiedNamespace, eventHubName,
             consumerGroupName, "NONE");
         this.loadBalancingStrategy = loadBalancingStrategy;
+        this.subscriptions = Disposables.composite();
     }
 
     /**
@@ -144,7 +148,7 @@ final class PartitionBasedLoadBalancer {
             closeClient();
         }
 
-        Mono.zip(partitionOwnershipMono, partitionsMono)
+        subscriptions.add(Mono.zip(partitionOwnershipMono, partitionsMono)
             .flatMap(this::loadBalance)
             .then()
             .repeat(() -> LoadBalancingStrategy.GREEDY == loadBalancingStrategy && morePartitionsToClaim.get())
@@ -156,7 +160,7 @@ final class PartitionBasedLoadBalancer {
                     isLoadBalancerRunning.set(false);
                     morePartitionsToClaim.set(false);
                 },
-                () -> LOGGER.info("Load balancing completed successfully"));
+                () -> LOGGER.info("Load balancing completed successfully")));
 
     }
 
@@ -305,7 +309,7 @@ final class PartitionBasedLoadBalancer {
     private void renewOwnership(Map<String, PartitionOwnership> partitionOwnershipMap) {
         morePartitionsToClaim.set(false);
         // renew ownership of already owned partitions
-        checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
+        subscriptions.add(checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
             .stream()
             .filter(
                 partitionId -> partitionOwnershipMap.containsKey(partitionId) && partitionOwnershipMap.get(partitionId)
@@ -317,7 +321,7 @@ final class PartitionBasedLoadBalancer {
                     LOGGER.error("Error renewing partition ownership", ex);
                     isLoadBalancerRunning.set(false);
                 },
-                () -> isLoadBalancerRunning.set(false));
+                () -> isLoadBalancerRunning.set(false)));
     }
 
     private static String format(Map<String, List<PartitionOwnership>> ownerPartitionMap) {
@@ -448,7 +452,7 @@ final class PartitionBasedLoadBalancer {
             .collect(Collectors.toList()));
 
         morePartitionsToClaim.set(true);
-        checkpointStore
+        subscriptions.add(checkpointStore
             .claimOwnership(partitionsToClaim)
             .doOnNext(partitionOwnership -> LOGGER.atInfo()
                     .addKeyValue(PARTITION_ID_KEY, partitionOwnership.getPartitionId())
@@ -480,7 +484,7 @@ final class PartitionBasedLoadBalancer {
                     if (loadBalancingStrategy == LoadBalancingStrategy.BALANCED) {
                         isLoadBalancerRunning.set(false);
                     }
-                });
+                }));
     }
 
     private PartitionOwnership createPartitionOwnershipRequest(
@@ -495,5 +499,10 @@ final class PartitionBasedLoadBalancer {
             .setEventHubName(this.eventHubName)
             .setETag(previousPartitionOwnership == null ? null : previousPartitionOwnership.getETag());
         return partitionOwnershipRequest;
+    }
+
+    @Override
+    public void close() {
+        subscriptions.dispose();
     }
 }

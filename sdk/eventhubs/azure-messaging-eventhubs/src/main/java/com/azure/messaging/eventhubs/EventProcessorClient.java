@@ -179,6 +179,7 @@ public class EventProcessorClient {
         }
         runner.get().cancel(true);
         scheduler.get().shutdown();
+        partitionBasedLoadBalancer.close();
         stopProcessing();
     }
 
@@ -194,7 +195,6 @@ public class EventProcessorClient {
 
     private void stopProcessing() {
         partitionPumpManager.stopAllPartitionPumps();
-
         // finally, remove ownerid from checkpointstore as the processor is shutting down
         checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
             .filter(ownership -> identifier.equals(ownership.getOwnerId()))

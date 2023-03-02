@@ -21,6 +21,7 @@ import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.common.InstrumentationScopeInfo;
 import io.opentelemetry.sdk.trace.ReadWriteSpan;
 import io.opentelemetry.sdk.trace.ReadableSpan;
@@ -749,6 +750,12 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         @Override
         public boolean isEndRequired() {
             return true;
+        }
+
+        @Override
+        public CompletableResultCode shutdown() {
+            notifier.set(null);
+            return CompletableResultCode.ofSuccess();
         }
     }
 }
