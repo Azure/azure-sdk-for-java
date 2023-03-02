@@ -71,7 +71,6 @@ More information at [Azure Container Registry portal][container_registry_create_
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildClient();
 ```
@@ -80,7 +79,6 @@ ContainerRegistryClient client = new ContainerRegistryClientBuilder()
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildAsyncClient();
 ```
@@ -113,14 +111,12 @@ For more information please read [Anonymous Pull Access](https://docs.microsoft.
 ```java readme-sample-createAnonymousAccessClient
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildClient();
 ```
 
 ```java readme-sample-createAnonymousAsyncAccessClient
 ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildAsyncClient();
 ```
 
@@ -138,6 +134,8 @@ For more information please see [Container Registry Concepts](https://docs.micro
 - [List tags with anonymous access](#list-tags-with-anonymous-access)
 - [Set artifact properties](#set-artifact-properties)
 - [Delete images](#delete-images)
+- [Upload images](#upload-images)
+- [Download images](#download-images)
 - [Delete repository with anonymous access throws](#delete-a-repository-with-anonymous-access-throws)
 
 ### List repository names
@@ -148,7 +146,6 @@ Iterate through the collection of repositories in the registry.
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildClient();
 
@@ -160,7 +157,6 @@ client.listRepositoryNames().forEach(repository -> System.out.println(repository
 ```java readme-sample-listTagProperties
 ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildClient();
 
 RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
@@ -180,7 +176,6 @@ TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(defaultCredential)
     .buildClient();
 
@@ -200,7 +195,6 @@ TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(defaultCredential)
     .buildClient();
 
@@ -228,6 +222,67 @@ for (String repositoryName : client.listRepositoryNames()) {
 }
 ```
 
+### Upload Images
+
+```java readme-sample-uploadImage
+ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+    .endpoint(ENDPOINT)
+    .repository(REPOSITORY)
+    .credential(credential)
+    .buildClient();
+
+BinaryData configContent = BinaryData.fromObject(new ManifestConfig().setProperty("sync client"));
+
+UploadBlobResult configUploadResult = blobClient.uploadBlob(configContent);
+System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength());
+
+OciBlobDescriptor configDescriptor = new OciBlobDescriptor()
+    .setMediaType("application/vnd.unknown.config.v1+json")
+    .setDigest(configUploadResult.getDigest())
+    .setSize(configContent.getLength());
+
+BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
+UploadBlobResult layerUploadResult = blobClient.uploadBlob(layerContent);
+System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength());
+
+OciManifest manifest = new OciManifest()
+    .setConfig(configDescriptor)
+    .setSchemaVersion(2)
+    .setLayers(Collections.singletonList(
+        new OciBlobDescriptor()
+            .setDigest(layerUploadResult.getDigest())
+            .setSize(layerContent.getLength())
+            .setMediaType("application/octet-stream")));
+
+UploadManifestResult manifestResult = blobClient.uploadManifest(new UploadManifestOptions(manifest).setTag("latest"));
+System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest());
+```
+
+### Download Images
+
+```java readme-sample-downloadImage
+ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+    .endpoint(ENDPOINT)
+    .repository(REPOSITORY)
+    .credential(credential)
+    .buildClient();
+
+DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
+
+OciManifest manifest = manifestResult.asOciManifest();
+System.out.printf("Got manifest:\n%s\n\n", PRETTY_PRINT.writeValueAsString(manifest));
+
+String configFileName = manifest.getConfig().getDigest() + ".json";
+blobClient.downloadStream(manifest.getConfig().getDigest(), createWriteChannel(configFileName));
+System.out.printf("Got config: %s\n", configFileName);
+
+for (OciBlobDescriptor layer : manifest.getLayers()) {
+    blobClient.downloadStream(layer.getDigest(), createWriteChannel(layer.getDigest()));
+    System.out.printf("Got layer: %s\n", layer.getDigest());
+}
+```
+
+
 ### Delete a repository with anonymous access throws
 ```java readme-sample-anonymousClientThrows
 final String endpoint = getEndpoint();
@@ -235,7 +290,6 @@ final String repositoryName = getRepositoryName();
 
 ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildClient();
 
 try {
