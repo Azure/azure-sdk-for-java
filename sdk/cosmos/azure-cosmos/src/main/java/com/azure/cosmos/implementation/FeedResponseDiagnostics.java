@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -36,8 +35,8 @@ public class FeedResponseDiagnostics {
     private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
     private final AtomicReference<Instant> feedResponseCreationTime = new AtomicReference<>(Instant.now());
     private final AtomicReference<Duration> feedResponseLatency = new AtomicReference<>(Duration.ZERO);
-    private Instant minRequestTime = Instant.MAX;
-    private Instant maxResponseTime = Instant.MIN;
+    private Instant minRequestStartTime = Instant.MAX;
+    private Instant maxRequestEndTime = Instant.MIN;
 
     public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         this.queryMetricsMap = queryMetricsMap;
@@ -60,8 +59,8 @@ public class FeedResponseDiagnostics {
             );
         }
 
-        this.maxResponseTime = toBeCloned.maxResponseTime;
-        this.minRequestTime = toBeCloned.minRequestTime;
+        this.maxRequestEndTime = toBeCloned.maxRequestEndTime;
+        this.minRequestStartTime = toBeCloned.minRequestStartTime;
         this.feedResponseCreationTime.set(toBeCloned.feedResponseCreationTime.get());
         this.feedResponseLatency.set(toBeCloned.feedResponseLatency.get());
     }
@@ -108,7 +107,6 @@ public class FeedResponseDiagnostics {
             stringBuilder.append(FEED_RESPONSE_LATENCY + SPACE + QueryMetricsTextWriter.DURATION_HEADER)
                     .append(EQUALS)
                     .append(this.feedResponseLatency.get().toMillis())
-                    .append(System.lineSeparator())
                     .append(System.lineSeparator());
         }
 
@@ -148,16 +146,16 @@ public class FeedResponseDiagnostics {
 
     public void addClientSideRequestStatistics(List<ClientSideRequestStatistics> requestStatistics) {
         clientSideRequestStatisticsList.addAll(requestStatistics);
-        this.recordMinRequestTimeAndMaxResponseTime();
+        this.recordMinRequestTimeAndMaxResponseTime(requestStatistics);
     }
 
     public Instant getFeedResponseCreationTime() {
         return feedResponseCreationTime.get();
     }
 
-    private void recordMinRequestTimeAndMaxResponseTime() {
-        Instant minStartInstant = Instant.MAX;
-        Instant maxEndInstant = Instant.MIN;
+    private void recordMinRequestTimeAndMaxResponseTime(List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+        Instant minStartInstant = this.minRequestStartTime;
+        Instant maxEndInstant = this.maxRequestEndTime;
 
         for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatisticsList) {
 
@@ -168,8 +166,8 @@ public class FeedResponseDiagnostics {
             maxEndInstant = requestEndTimeUTC.isAfter(maxEndInstant) ? requestEndTimeUTC : maxEndInstant;
         }
 
-        this.minRequestTime = minStartInstant;
-        this.maxResponseTime = maxEndInstant;
+        this.minRequestStartTime = minStartInstant;
+        this.maxRequestEndTime = maxEndInstant;
     }
 
     public void recordFeedResponseLatency(Duration feedResponseLatency) {
@@ -177,7 +175,7 @@ public class FeedResponseDiagnostics {
     }
 
     public Instant getMinRequestStartTime() {
-        return minRequestTime;
+        return minRequestStartTime;
     }
 
     public Duration getFeedResponseLatency() {
