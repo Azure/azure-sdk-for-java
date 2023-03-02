@@ -29,6 +29,15 @@ public final class CoverageLevel extends ExpandableStringEnum<CoverageLevel> {
     public static final CoverageLevel FULL = fromString("Full");
 
     /**
+     * Creates a new instance of CoverageLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CoverageLevel() {
+    }
+
+    /**
      * Creates or finds a CoverageLevel from its string representation.
      *
      * @param name a name to look for.

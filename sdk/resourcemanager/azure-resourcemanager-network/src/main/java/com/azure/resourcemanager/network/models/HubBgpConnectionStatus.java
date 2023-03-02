@@ -23,6 +23,15 @@ public final class HubBgpConnectionStatus extends ExpandableStringEnum<HubBgpCon
     public static final HubBgpConnectionStatus NOT_CONNECTED = fromString("NotConnected");
 
     /**
+     * Creates a new instance of HubBgpConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HubBgpConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a HubBgpConnectionStatus from its string representation.
      *
      * @param name a name to look for.

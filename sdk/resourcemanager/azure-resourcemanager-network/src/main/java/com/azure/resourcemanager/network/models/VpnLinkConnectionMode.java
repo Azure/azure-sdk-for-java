@@ -20,6 +20,15 @@ public final class VpnLinkConnectionMode extends ExpandableStringEnum<VpnLinkCon
     public static final VpnLinkConnectionMode INITIATOR_ONLY = fromString("InitiatorOnly");
 
     /**
+     * Creates a new instance of VpnLinkConnectionMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VpnLinkConnectionMode() {
+    }
+
+    /**
      * Creates or finds a VpnLinkConnectionMode from its string representation.
      *
      * @param name a name to look for.
