@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -53,6 +54,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private int queryPlanAddressRefreshCount;
     private RxDocumentServiceRequest request;
     private RxCollectionCache rxCollectionCache;
+    private final FaultInjectionRequestContext faultInjectionRequestContext;
 
     public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
                              GlobalEndpointManager globalEndpointManager,
@@ -73,6 +75,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             BridgeInternal.getRetryContext(this.getCosmosDiagnostics()),
             false);
         this.rxCollectionCache = rxCollectionCache;
+        this.faultInjectionRequestContext = new FaultInjectionRequestContext();
     }
 
     @Override
@@ -359,6 +362,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             // set location-based routing directive based on request retry context
             request.requestContext.routeToLocation(this.retryContext.retryCount, this.retryContext.retryRequestOnPreferredLocations);
         }
+
+        // Important: this is to make the fault injection context will not be lost between each retries
+        this.request.faultInjectionRequestContext = this.faultInjectionRequestContext;
 
         // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
         // This enables marking the endpoint unavailability on endpoint failover/unreachability

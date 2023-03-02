@@ -99,11 +99,11 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
     public static Object[][] faultInjectionServerErrorProvider() {
         return new Object[][]{
             // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
-            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, true, 500, 0}, // TODO: validate retry
+            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0}, // TODO: validate retry
             { FaultInjectionServerErrorType.SERVER_RETRY_WITH, true, 449, 0 },
             { FaultInjectionServerErrorType.SERVER_TOO_MANY_REQUEST, true, 429, 0 },
             { FaultInjectionServerErrorType.SERVER_READ_SESSION_NOT_AVAILABLE, true, 404, 1002},
-            { FaultInjectionServerErrorType.SERVER_TIMEOUT, true, 408, 0 } // TODO: validate retry
+            { FaultInjectionServerErrorType.SERVER_TIMEOUT, false, 408, 0 } // TODO: validate retry
         };
     }
 
@@ -158,9 +158,10 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 operationType,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.UNKNOWN,
-                serverGoneRuleId);
+                serverGoneRuleId,
+                true);
 
-            // Test for Server error TOO_MANY_REQUES, the rules will be applied by operation type
+            // Test for Server error TOO_MANY_REQUESTS, the rules will be applied by operation type
             serverGoneErrorRule.disable();
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverTooManyRequestsErrorRule)).block();
             cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
@@ -170,13 +171,15 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     operationType,
                     HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
                     HttpConstants.SubStatusCodes.UNKNOWN,
-                    tooManyRequestsRuleId);
+                    tooManyRequestsRuleId,
+                    true);
             } else {
                 this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType);
             }
 
         } finally {
             serverGoneErrorRule.disable();
+            serverTooManyRequestsErrorRule.disable();
         }
     }
 
@@ -255,7 +258,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 OperationType.Read,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.UNKNOWN,
-                localRegionRuleId
+                localRegionRuleId,
+                true
             );
 
             // now disable the local region ruleId, validate no fault injection rule is applied
@@ -311,7 +315,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             OperationType.Query,
             HttpConstants.StatusCodes.GONE,
             HttpConstants.SubStatusCodes.UNKNOWN,
-            feedRangeRuleId
+            feedRangeRuleId,
+            true
         );
 
         // Issue a query to the feed range which is not configured fault injection rule and validate no fault injection is applied
@@ -370,13 +375,13 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             CosmosItemResponse<TestItem> itemResponse =
                 container.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
 
-            System.out.println(itemResponse.getDiagnostics().toString());
             this.validateFaultInjectionRuleApplied(
                 itemResponse.getDiagnostics(),
                 OperationType.Read,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.UNKNOWN,
-                timeoutRuleId
+                timeoutRuleId,
+                true
             );
 
         } finally {
@@ -431,7 +436,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 OperationType.Create,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.UNKNOWN,
-                ruleId
+                ruleId,
+                true
             );
 
         } finally {
@@ -448,7 +454,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         int errorSubStatusCode) throws JsonProcessingException {
 
         // simulate high channel acquisition/connectionTimeout
-        String ruleId = "serverErrorRule-serverError-" + UUID.randomUUID();
+        String ruleId = "serverErrorRule-" + serverErrorType + "-" + UUID.randomUUID();
         FaultInjectionRule serverErrorRule =
             new FaultInjectionRuleBuilder(ruleId)
                 .condition(
@@ -501,7 +507,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 OperationType.Read,
                 errorStatusCode,
                 errorSubStatusCode,
-                ruleId
+                ruleId,
+                canRetry
             );
 
         } finally {
@@ -578,7 +585,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         OperationType operationType,
         int statusCode,
         int subStatusCode,
-        String ruleId) throws JsonProcessingException {
+        String ruleId,
+        boolean canRetryOnFaultInjectedError) throws JsonProcessingException {
 
         List<ObjectNode> diagnosticsNode = new ArrayList<>();
         if (operationType == OperationType.Query) {
@@ -594,9 +602,13 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
         for (ObjectNode diagnosticNode : diagnosticsNode) {
             JsonNode responseStatisticsList = diagnosticNode.get("responseStatisticsList");
-            Assertions.assertThat(responseStatisticsList.isArray()).isTrue();
+            assertThat(responseStatisticsList.isArray()).isTrue();
 
-            Assertions.assertThat(responseStatisticsList.size()).isEqualTo(2);
+            if (canRetryOnFaultInjectedError) {
+                assertThat(responseStatisticsList.size()).isEqualTo(2);
+            } else {
+                assertThat(responseStatisticsList.size()).isOne();
+            }
             JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
             Assertions.assertThat(storeResult).isNotNull();
             assertThat(storeResult.get("statusCode").asInt()).isEqualTo(statusCode);

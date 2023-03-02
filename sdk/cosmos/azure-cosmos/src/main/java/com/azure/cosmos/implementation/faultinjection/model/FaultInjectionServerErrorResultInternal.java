@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.faultinjection.model;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -13,10 +14,12 @@ import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.faultinjection.FaultInjectionServerErrorType;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -55,6 +58,10 @@ public class FaultInjectionServerErrorResultInternal {
     public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
 
         CosmosException cosmosException;
+        long lsn = Long.valueOf(request.getHeaders().getOrDefault(HttpConstants.HttpHeaders.LSN, "0"));
+        String partitionKeyRangeId = request.getHeaders().getOrDefault(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, null);
+        Map<String, String> responseHeaders = this.getInjectedErrorResponseHeaders(request, lsn, partitionKeyRangeId);
+
         switch (this.serverErrorType) {
             case SERVER_GONE:
                 GoneException goneException = new GoneException(this.getErrorMessage(RMResources.Gone));
@@ -63,38 +70,29 @@ public class FaultInjectionServerErrorResultInternal {
                 break;
 
             case SERVER_RETRY_WITH:
-                cosmosException =
-                    new RetryWithException(
-                        this.getErrorMessage(RMResources.RetryWith),
-                        request.requestContext.storePhysicalAddress);
+                cosmosException = new RetryWithException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
             case SERVER_TOO_MANY_REQUEST:
-                cosmosException =
-                    new RequestRateTooLargeException(
-                        this.getErrorMessage(RMResources.TooManyRequests),
-                        request.requestContext.storePhysicalAddress);
-                cosmosException.getResponseHeaders().put(
+                responseHeaders.put(
                     HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
                     String.valueOf(500));
+                cosmosException = new RequestRateTooLargeException(null, lsn, partitionKeyRangeId, responseHeaders);
+
                 break;
 
             case SERVER_TIMEOUT:
-                cosmosException =
-                    new RequestTimeoutException(
-                        this.getErrorMessage(RMResources.RequestTimeout),
-                        request.requestContext.storePhysicalAddress);
+                cosmosException = new RequestTimeoutException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
             case INTERNAL_SERVER_ERROR:
-                cosmosException =
-                    new InternalServerErrorException(this.getErrorMessage(RMResources.InternalServerError));
+                cosmosException = new InternalServerErrorException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
             case SERVER_READ_SESSION_NOT_AVAILABLE:
-                cosmosException = new NotFoundException();
-                cosmosException.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS,
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
+                cosmosException = new NotFoundException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
             default:
@@ -102,6 +100,28 @@ public class FaultInjectionServerErrorResultInternal {
         }
 
         return cosmosException;
+    }
+
+    private Map<String, String> getInjectedErrorResponseHeaders(
+        RxDocumentServiceRequest request,
+        long lsn,
+        String partitionKeyRangeId) {
+        Map<String, String> responseHeaders = new HashMap<>() {};
+        String activityId = request.getActivityId().toString();
+        String sessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+
+        responseHeaders.put(WFConstants.BackendHeaders.LOCAL_LSN, String.valueOf(lsn));
+        if (StringUtils.isNotEmpty(partitionKeyRangeId)) {
+            responseHeaders.put(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
+        }
+        if (StringUtils.isNotEmpty(activityId)) {
+            responseHeaders.put(HttpConstants.HttpHeaders.ACTIVITY_ID, activityId);
+        }
+        if (StringUtils.isNotEmpty(sessionToken)) {
+            responseHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+        }
+
+        return responseHeaders;
     }
 
     private String getErrorMessage(String errorMessage) {
