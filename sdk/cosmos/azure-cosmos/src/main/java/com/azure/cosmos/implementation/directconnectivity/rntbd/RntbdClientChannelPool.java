@@ -708,7 +708,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     // Fulfill this request with a new channel, assuming we can connect one
                     // If our connection attempt fails, notifyChannelConnect will call us again
 
-                    logger.info("ATTEMPT_TO_CREATE_NEW_CHANNEL");
                     final Promise<Channel> anotherPromise = this.newChannelPromiseForToBeEstablishedChannel(promise);
 
                     RntbdChannelAcquisitionTimeline.startNewEvent(
@@ -1074,9 +1073,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
             (Timeout timeout) -> {
                 if (idleEndpointTimeoutInNanos == 0) {
                     // log is too noisy when debug is enabled
-//                    if (logger.isDebugEnabled()) {
-//                        logger.debug("Idle endpoint check is disabled");
-//                    }
+                    if (logger.isTraceEnabled()) {
+                        logger.trace("Idle endpoint check is disabled");
+                    }
                 } else {
                     final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
 
@@ -1180,14 +1179,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         return channel;
                     });
                 } else {
-                    logger.debug("notifyChannelConnect promise.trySuccess(channel)=false");
+                    logger.info("notifyChannelConnect promise.trySuccess(channel)=false");
 
                     // Promise was completed in the meantime (like cancelled), just close the channel
                     this.closeChannel(channel);
                 }
 
             } else {
-                logger.info("notifyChannelConnect future was not successful");
+                logger.debug("notifyChannelConnect future was not successful");
 
                 promise.tryFailure(future.cause());
             }
@@ -1642,9 +1641,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
         @Override
         public final void run() {
             // log is too noisy when debug is enabled
-//            if (logger.isDebugEnabled()) {
-//                logger.debug("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
-//            }
+            if (logger.isTraceEnabled()) {
+                logger.debug("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
+            }
             long currentNanoTime = System.nanoTime();
 
             while (true) {
