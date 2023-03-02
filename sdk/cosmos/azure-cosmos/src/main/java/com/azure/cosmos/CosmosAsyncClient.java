@@ -33,7 +33,7 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FaultInjectionRule;
+import com.azure.cosmos.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -597,13 +597,13 @@ public final class CosmosAsyncClient implements Closeable {
         this.asyncDocumentClient.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
-    Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
+    Mono<Void> configureFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
         checkNotNull(rules, "Argument 'rules' can not be null");
         checkArgument(
             StringUtils.isNotEmpty(containerNameLink),
             "Argument 'containerNameLink' can not be null nor empty");
 
-        return this.asyncDocumentClient.configFaultInjectionRules(rules, containerNameLink);
+        return this.asyncDocumentClient.configureFaultInjectionRules(rules, containerNameLink);
     }
 
     /**

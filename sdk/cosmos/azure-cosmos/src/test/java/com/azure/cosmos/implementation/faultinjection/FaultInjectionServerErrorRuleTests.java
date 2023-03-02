@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.FaultInjectionBridgeInternal;
+import com.azure.cosmos.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -23,14 +23,15 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FaultInjectionConditionBuilder;
-import com.azure.cosmos.models.FaultInjectionEndpointBuilder;
-import com.azure.cosmos.models.FaultInjectionOperationType;
-import com.azure.cosmos.models.FaultInjectionResultBuilders;
-import com.azure.cosmos.models.FaultInjectionRule;
-import com.azure.cosmos.models.FaultInjectionRuleBuilder;
-import com.azure.cosmos.models.FaultInjectionServerErrorType;
+import com.azure.cosmos.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.faultinjection.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -90,6 +91,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             { OperationType.Create },
             { OperationType.Delete },
             { OperationType.Query },
+            { OperationType.Patch }
         };
     }
 
@@ -99,18 +101,18 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
             { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, true, 500, 0}, // TODO: validate retry
             { FaultInjectionServerErrorType.SERVER_RETRY_WITH, true, 449, 0 },
-            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
-            { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002},
+            { FaultInjectionServerErrorType.SERVER_TOO_MANY_REQUEST, true, 429, 0 },
+            { FaultInjectionServerErrorType.SERVER_READ_SESSION_NOT_AVAILABLE, true, 404, 1002},
             { FaultInjectionServerErrorType.SERVER_TIMEOUT, true, 408, 0 } // TODO: validate retry
         };
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_OperationType(OperationType operationType) throws JsonProcessingException {
-        String ruleId = "serverErrorRule-OperationType-" + UUID.randomUUID();
-        // with matching operationType
-        FaultInjectionRule serverErrorRule =
-            new FaultInjectionRuleBuilder(ruleId)
+        // Test for SERVER_GONE, the operation type will be ignored after getting the addresses
+        String serverGoneRuleId = "serverErrorRule-serverGone-" + UUID.randomUUID();
+        FaultInjectionRule serverGoneErrorRule =
+            new FaultInjectionRuleBuilder(serverGoneRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .operationType(FaultInjectionOperationType.READ)
@@ -125,28 +127,56 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 .duration(Duration.ofMinutes(5))
                 .build();
 
+        String tooManyRequestsRuleId = "serverErrorRule-tooManyRequests-" + UUID.randomUUID();
+        FaultInjectionRule serverTooManyRequestsErrorRule =
+            new FaultInjectionRuleBuilder(tooManyRequestsRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_TOO_MANY_REQUEST)
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
         try {
             TestItem createdItem = TestItem.createNewItem();
             cosmosAsyncContainer.createItem(createdItem).block();
 
-            FaultInjectionBridgeInternal.configFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
-            List<URI> physicalAddresses = serverErrorRule.getAddresses();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverGoneErrorRule)).block();
+            List<URI> physicalAddresses = serverGoneErrorRule.getAddresses();
             assertThat(physicalAddresses.size()).isZero();
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
+            this.validateFaultInjectionRuleApplied(
+                cosmosDiagnostics,
+                operationType,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                serverGoneRuleId);
+
+            // Test for Server error TOO_MANY_REQUES, the rules will be applied by operation type
+            serverGoneErrorRule.disable();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverTooManyRequestsErrorRule)).block();
+            cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
             if (operationType == OperationType.Read) {
                 this.validateFaultInjectionRuleApplied(
                     cosmosDiagnostics,
                     operationType,
-                    HttpConstants.StatusCodes.GONE,
+                    HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
                     HttpConstants.SubStatusCodes.UNKNOWN,
-                    ruleId);
+                    tooManyRequestsRuleId);
             } else {
                 this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType);
             }
 
         } finally {
-            serverErrorRule.disable();
+            serverGoneErrorRule.disable();
         }
     }
 
@@ -214,8 +244,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             TestItem createdItem = TestItem.createNewItem();
             container.createItem(createdItem).block();
 
-            FaultInjectionBridgeInternal
-                .configFaultInjectionRules(container, Arrays.asList(serverErrorRuleLocalRegion, serverErrorRuleRemoteRegion))
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(container, Arrays.asList(serverErrorRuleLocalRegion, serverErrorRuleRemoteRegion))
                 .block();
 
             // Validate fault injection applied in the local region
@@ -267,7 +297,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 .duration(Duration.ofMinutes(5))
                 .build();
 
-        FaultInjectionBridgeInternal.configFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRuleByFeedRange)).block();
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRuleByFeedRange)).block();
 
         // Issue a query to the feed range which configured fault injection rule and validate fault injection rule is applied
         String query = "select * from c";
@@ -336,9 +366,11 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             TestItem createdItem = TestItem.createNewItem();
             container.createItem(createdItem).block();
 
-            FaultInjectionBridgeInternal.configFaultInjectionRules(container, Arrays.asList(timeoutRule)).block();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(timeoutRule)).block();
             CosmosItemResponse<TestItem> itemResponse =
                 container.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
+
+            System.out.println(itemResponse.getDiagnostics().toString());
             this.validateFaultInjectionRuleApplied(
                 itemResponse.getDiagnostics(),
                 OperationType.Read,
@@ -391,7 +423,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     .getDatabase(cosmosAsyncContainer.getDatabase().getId())
                     .getContainer(cosmosAsyncContainer.getId());
 
-            FaultInjectionBridgeInternal.configFaultInjectionRules(container, Arrays.asList(serverConnectionDelayRule)).block();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverConnectionDelayRule)).block();
             CosmosItemResponse<TestItem> itemResponse = container.createItem(TestItem.createNewItem()).block();
 
             this.validateFaultInjectionRuleApplied(
@@ -437,7 +469,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             TestItem createdItem = TestItem.createNewItem();
             cosmosAsyncContainer.createItem(createdItem).block();
 
-            FaultInjectionBridgeInternal.configFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
 
             CosmosDiagnostics cosmosDiagnostics = null;
             if (canRetry) {
@@ -499,7 +531,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             if (operationType == OperationType.Read
                 || operationType == OperationType.Delete
                 || operationType == OperationType.Replace
-                || operationType == OperationType.Create) {
+                || operationType == OperationType.Create
+                || operationType == OperationType.Patch) {
 
                 if (operationType == OperationType.Read) {
                     return cosmosAsyncContainer.readItem(
@@ -521,6 +554,16 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
                 if (operationType == OperationType.Create) {
                     return cosmosAsyncContainer.createItem(TestItem.createNewItem()).block().getDiagnostics();
+                }
+
+                if (operationType == OperationType.Patch) {
+                    CosmosPatchOperations patchOperations =
+                        CosmosPatchOperations
+                            .create()
+                            .add("newPath", "newPath");
+                    return cosmosAsyncContainer
+                        .patchItem(createdItem.getId(), new PartitionKey(createdItem.getMypk()), patchOperations, TestItem.class)
+                        .block().getDiagnostics();
                 }
             }
 

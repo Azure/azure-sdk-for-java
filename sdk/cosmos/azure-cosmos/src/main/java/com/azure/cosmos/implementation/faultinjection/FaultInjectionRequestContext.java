@@ -8,10 +8,23 @@ import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleI
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/***
+ * Only used in fault injection.
+ * It has two purposes:
+ * 1. Keep track how many times a certain fault injection rule has applied on the operation.
+ * 2. Track for each network request, which fault injection rule has applied.
+ */
 public class FaultInjectionRequestContext {
     private final Map<String, Integer> hitCountByRuleMap;
     private final Map<Long, String> transportRequestIdRuleIdMap;
 
+    /***
+     * This usually is called during retries.
+     * The hit count cap will need to be copied over so that the total times defined in {@link com.azure.cosmos.faultinjection.FaultInjectionServerErrorResult} be honored.
+     * The transportRequestIdRuleIdMap can be re-initialized as all the required diagnostics has been recorded.
+     *
+     * @param cloneContext the previous fault injection context.
+     */
     public FaultInjectionRequestContext(FaultInjectionRequestContext cloneContext) {
         this.hitCountByRuleMap = cloneContext.hitCountByRuleMap;
         this.transportRequestIdRuleIdMap = new ConcurrentHashMap<>();

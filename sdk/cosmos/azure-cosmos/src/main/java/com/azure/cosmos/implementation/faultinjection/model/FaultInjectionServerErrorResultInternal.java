@@ -14,7 +14,7 @@ import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.models.FaultInjectionServerErrorType;
+import com.azure.cosmos.faultinjection.FaultInjectionServerErrorType;
 
 import java.time.Duration;
 
@@ -69,7 +69,7 @@ public class FaultInjectionServerErrorResultInternal {
                         request.requestContext.storePhysicalAddress);
                 break;
 
-            case TOO_MANY_REQUEST:
+            case SERVER_TOO_MANY_REQUEST:
                 cosmosException =
                     new RequestRateTooLargeException(
                         this.getErrorMessage(RMResources.TooManyRequests),
@@ -91,7 +91,7 @@ public class FaultInjectionServerErrorResultInternal {
                     new InternalServerErrorException(this.getErrorMessage(RMResources.InternalServerError));
                 break;
 
-            case READ_SESSION_NOT_AVAILABLE:
+            case SERVER_READ_SESSION_NOT_AVAILABLE:
                 cosmosException = new NotFoundException();
                 cosmosException.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));

@@ -20,7 +20,7 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FaultInjectionRule;
+import com.azure.cosmos.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -1664,5 +1664,5 @@ public interface AsyncDocumentClient {
      * @param containerNameLink the container name link.
      * @return the mono.
      */
-    Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> faultInjectionRules, String containerNameLink);
+    Mono<Void> configureFaultInjectionRules(List<FaultInjectionRule> faultInjectionRules, String containerNameLink);
 }

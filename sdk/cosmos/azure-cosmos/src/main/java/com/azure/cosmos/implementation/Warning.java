@@ -16,6 +16,7 @@ public @interface Warning {
 
     //  Common warnings
     String INTERNAL_USE_ONLY_WARNING = "Internal use only, not meant for public usage as this API may change in future";
+    String FAULT_INJECTION_TEST_USE_ONLY_WARNING = "Don't use in production - this is to allow failure injection in test environments only.";
 
     /**
      * Text of warning message

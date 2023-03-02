@@ -48,7 +48,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FaultInjectionRule;
+import com.azure.cosmos.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -1893,11 +1893,11 @@ public class CosmosAsyncContainer {
      * @param rules the rules to be configured.
      * @return the mono.
      */
-    Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> rules) {
+    Mono<Void> configureFaultInjectionRules(List<FaultInjectionRule> rules) {
         checkNotNull(rules, "Argument 'rules' can not be null");
         return this.database
             .getClient()
-            .configFaultInjectionRules(rules, Utils.trimBeginningAndEndingSlashes(this.link));
+            .configureFaultInjectionRules(rules, Utils.trimBeginningAndEndingSlashes(this.link));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1921,6 +1921,11 @@ public class CosmosAsyncContainer {
                     GlobalThroughputControlConfig globalControlConfig,
                     Mono<Integer> throughputQueryMono) {
                     cosmosAsyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, throughputQueryMono);
+                }
+
+                @Override
+                public Mono<Void> configureFaultInjectionRules(CosmosAsyncContainer cosmosAsyncContainer, List<FaultInjectionRule> faultInjectionRules) {
+                    return cosmosAsyncContainer.configureFaultInjectionRules(faultInjectionRules);
                 }
             });
     }

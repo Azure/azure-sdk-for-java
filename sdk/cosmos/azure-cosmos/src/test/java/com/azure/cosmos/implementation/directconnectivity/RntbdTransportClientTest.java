@@ -985,7 +985,8 @@ public final class RntbdTransportClientTest {
                     30,
                     null,
                     Duration.ofMillis(100).toNanos(),
-                null);
+                    null,
+                    config.tcpNetworkRequestTimeoutInNanos());
             this.physicalAddress = physicalAddress;
             this.requestTimer = timer;
 

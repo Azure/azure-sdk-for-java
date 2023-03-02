@@ -33,14 +33,14 @@ import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServer
 import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.models.FaultInjectionCondition;
-import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
-import com.azure.cosmos.models.FaultInjectionConnectionType;
-import com.azure.cosmos.models.FaultInjectionEndpoints;
-import com.azure.cosmos.models.FaultInjectionOperationType;
-import com.azure.cosmos.models.FaultInjectionRule;
-import com.azure.cosmos.models.FaultInjectionServerErrorResult;
-import com.azure.cosmos.models.FaultInjectionServerErrorType;
+import com.azure.cosmos.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.faultinjection.FaultInjectionConnectionErrorResult;
+import com.azure.cosmos.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.faultinjection.FaultInjectionEndpoints;
+import com.azure.cosmos.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.faultinjection.FaultInjectionServerErrorResult;
+import com.azure.cosmos.faultinjection.FaultInjectionServerErrorType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -235,8 +235,8 @@ public class FaultInjectionRulesProcessor {
     private boolean canErrorLimitToOperation(FaultInjectionServerErrorType errorType) {
         // Some errors makes sense to only apply for certain operationType/requests
         // but some should apply to all requests being routed to the server
-        return errorType == FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY
-            || errorType == FaultInjectionServerErrorType.SERVER_GONE;
+        return errorType != FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY
+            && errorType != FaultInjectionServerErrorType.SERVER_GONE;
     }
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveConnectionErrorRule(

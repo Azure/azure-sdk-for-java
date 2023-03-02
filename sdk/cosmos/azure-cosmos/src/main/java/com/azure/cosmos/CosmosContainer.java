@@ -21,7 +21,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FaultInjectionRule;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -810,16 +809,6 @@ public class CosmosContainer {
      */
     public void openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
         blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions));
-    }
-
-
-    /***
-     * Configure the fault injection rules.
-     *
-     * @param faultInjectionRules the rules.
-     */
-    void configFaultInjectionRules(List<FaultInjectionRule> faultInjectionRules) {
-        blockVoidResponse(this.asyncContainer.configFaultInjectionRules(faultInjectionRules));
     }
 
     private void blockVoidResponse(Mono<Void> voidMono) {

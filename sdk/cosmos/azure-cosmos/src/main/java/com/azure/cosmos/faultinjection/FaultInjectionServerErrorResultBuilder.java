@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.faultinjection;
+
+import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 
@@ -10,7 +12,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /***
  * Fault injection server error result builder.
  */
-public class FaultInjectionServerErrorResultBuilder {
+@Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public final class FaultInjectionServerErrorResultBuilder {
     private final FaultInjectionServerErrorType serverErrorType;
     private int times = Integer.MAX_VALUE;
     private Duration delay;
@@ -26,6 +29,7 @@ public class FaultInjectionServerErrorResultBuilder {
      * @param times the max times the same fault injection rule can be applied per operation.
      * @return the builder.
      */
+    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionServerErrorResultBuilder times(int times) {
         this.times = times;
         return this;
@@ -40,6 +44,7 @@ public class FaultInjectionServerErrorResultBuilder {
      * @param delay the delay.
      * @return the builder.
      */
+    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionServerErrorResultBuilder delay(Duration delay) {
         checkNotNull(delay, "Argument 'delay' can not be null");
         if (this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY
@@ -54,6 +59,7 @@ public class FaultInjectionServerErrorResultBuilder {
      *
      * @return the {@link FaultInjectionServerErrorResult}.
      */
+    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionServerErrorResult build() {
         if ((this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY
             || this.serverErrorType == FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY) && this.delay == null) {

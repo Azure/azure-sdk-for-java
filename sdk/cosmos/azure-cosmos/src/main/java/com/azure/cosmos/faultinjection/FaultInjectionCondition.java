@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.faultinjection;
+
+import com.azure.cosmos.util.Beta;
 
 /***
  * Fault injection condition.
  * A fault injection rule will not be applicable if the condition mismatches.
  */
-public class FaultInjectionCondition {
+@Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public final class FaultInjectionCondition {
     private final FaultInjectionEndpoints endpoints;
     private final FaultInjectionOperationType operationType;
     private final FaultInjectionConnectionType connectionType;
@@ -29,6 +32,7 @@ public class FaultInjectionCondition {
      *
      * @return the {@link FaultInjectionEndpoints}.
      */
+    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionEndpoints getEndpoints() {
         return this.endpoints;
     }
@@ -38,6 +42,7 @@ public class FaultInjectionCondition {
      *
      * @return the {@link FaultInjectionOperationType}.
      */
+    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionOperationType getOperationType() {
         return this.operationType;
     }
@@ -47,6 +52,7 @@ public class FaultInjectionCondition {
      *
      * @return the {@link FaultInjectionConnectionType}.
      */
+    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FaultInjectionConnectionType getConnectionType() {
         return this.connectionType;
     }
@@ -56,7 +62,18 @@ public class FaultInjectionCondition {
      *
      * @return the region.
      */
+    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getRegion() {
         return this.region;
+    }
+
+    @Override
+    public String toString() {
+        return "FaultInjectionCondition{" +
+            "endpoints=" + endpoints +
+            ", operationType=" + operationType +
+            ", connectionType=" + connectionType +
+            ", region='" + region + '\'' +
+            '}';
     }
 }

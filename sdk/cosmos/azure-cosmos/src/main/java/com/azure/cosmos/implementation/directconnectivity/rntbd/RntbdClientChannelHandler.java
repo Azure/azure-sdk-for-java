@@ -112,7 +112,8 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             this.config.maxRequestsPerChannel(),
             this.connectionStateListener,
             this.config.idleConnectionTimerResolutionInNanos(),
-            this.serverErrorInjector);
+            this.serverErrorInjector,
+            this.config.tcpNetworkRequestTimeoutInNanos());
 
         final ChannelPipeline pipeline = channel.pipeline();
 

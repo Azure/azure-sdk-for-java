@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.faultinjection;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.FaultInjectionBridgeInternal;
+import com.azure.cosmos.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -16,13 +16,13 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
-import com.azure.cosmos.models.FaultInjectionConditionBuilder;
-import com.azure.cosmos.models.FaultInjectionConnectionErrorType;
-import com.azure.cosmos.models.FaultInjectionEndpointBuilder;
-import com.azure.cosmos.models.FaultInjectionOperationType;
-import com.azure.cosmos.models.FaultInjectionResultBuilders;
-import com.azure.cosmos.models.FaultInjectionRule;
-import com.azure.cosmos.models.FaultInjectionRuleBuilder;
+import com.azure.cosmos.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.faultinjection.FaultInjectionConnectionErrorType;
+import com.azure.cosmos.faultinjection.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -104,7 +104,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
                 .duration(Duration.ofSeconds(2))
                 .build();
 
-        FaultInjectionBridgeInternal.configFaultInjectionRules(singlePartitionContainer, Arrays.asList(connectionErrorRule)).block();
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(singlePartitionContainer, Arrays.asList(connectionErrorRule)).block();
         Thread.sleep(Duration.ofSeconds(2).toMillis());
         // validate the connection is closed
         provider.list().forEach(rntbdEndpoint -> Assertions.assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(0));

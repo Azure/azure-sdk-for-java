@@ -17,6 +17,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -44,8 +45,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FaultInjectionCondition;
-import com.azure.cosmos.models.FaultInjectionRule;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -715,6 +714,8 @@ public class ImplementationBridgeHelpers {
                 ThroughputControlGroupConfig groupConfig,
                 GlobalThroughputControlConfig globalControlConfig,
                 Mono<Integer> throughputQueryMono);
+
+            Mono<Void> configureFaultInjectionRules(CosmosAsyncContainer cosmosAsyncContainer, List<FaultInjectionRule> faultInjectionRules);
         }
     }
 

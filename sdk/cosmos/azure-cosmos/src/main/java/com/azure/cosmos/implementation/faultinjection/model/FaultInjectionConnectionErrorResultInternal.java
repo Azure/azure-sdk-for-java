@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.faultinjection.model;
 
-import com.azure.cosmos.models.FaultInjectionConnectionErrorType;
+import com.azure.cosmos.faultinjection.FaultInjectionConnectionErrorType;
 
 import java.time.Duration;
 

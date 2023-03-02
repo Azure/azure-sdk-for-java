@@ -431,17 +431,29 @@ public class CosmosException extends AzureException {
                 exceptionMessageNode.put("requestHeaders", filterRequestHeaders.toString());
             }
 
+            if (StringUtils.isNotEmpty(this.faultInjectionRuleId)) {
+                exceptionMessageNode.put("faultInjectionRuleId", this.faultInjectionRuleId);
+            }
+
             if(this.cosmosDiagnostics != null) {
                 cosmosDiagnostics.fillCosmosDiagnostics(exceptionMessageNode, null);
             }
 
             return mapper.writeValueAsString(exceptionMessageNode);
         } catch (JsonProcessingException ex) {
-            return getClass().getSimpleName() + "{" + USER_AGENT_KEY +"=" + USER_AGENT + ", error=" + cosmosError + ", " +
-                "resourceAddress='"
-                + resourceAddress + ", statusCode=" + statusCode + ", message=" + getMessage()
-                + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
-                + filterSensitiveData(requestHeaders) + '}';
+            return String.format(
+                "%s {%s=, error=%s, resourceAddress=%s, statusCode=%s, message=%s, causeInfo=%s, responseHeaders=%s, requestHeaders=%s, faultInjectionRuleId=[%s] }",
+                getClass().getSimpleName(),
+                USER_AGENT_KEY,
+                USER_AGENT,
+                cosmosError,
+                resourceAddress,
+                statusCode,
+                getMessage(),
+                causeInfo(),
+                responseHeaders,
+                filterSensitiveData(requestHeaders),
+                this.faultInjectionRuleId);
         }
     }
 

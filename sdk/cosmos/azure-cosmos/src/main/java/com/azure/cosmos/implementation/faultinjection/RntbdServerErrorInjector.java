@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.faultinjection;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorResultInternal;
 import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorRule;
@@ -15,7 +14,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class RntbdServerErrorInjector {
@@ -41,35 +39,17 @@ public class RntbdServerErrorInjector {
         }
     }
 
-    public boolean applyServerResponseLatencyRule(RntbdRequestRecord requestRecord, StoreResponse storeResponse) {
+    public boolean applyServerResponseLatencyRule(
+        RntbdRequestRecord requestRecord,
+        Consumer<Duration> writeRequestWithDelayConsumer) {
+
         RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
 
         for (FaultInjectionServerErrorRule latencyRule : this.serverLatencyRuleMap.values()) {
             if (latencyRule.isApplicable(request)) {
                 request.faultInjectionRequestContext.applyFaultInjectionRule(requestRecord.transportRequestId(), latencyRule);
 
-                this.executorService.schedule(
-                    () -> requestRecord.complete(storeResponse),
-                    latencyRule.getResult().getDelay().toMillis(),
-                    TimeUnit.MILLISECONDS);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean applyServerResponseLatencyRule(RntbdRequestRecord requestRecord, CosmosException cosmosException) {
-        RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
-
-        for (FaultInjectionServerErrorRule latencyRule : this.serverLatencyRuleMap.values()) {
-            if (latencyRule.isApplicable(request)) {
-                request.faultInjectionRequestContext.applyFaultInjectionRule(requestRecord.transportRequestId(), latencyRule);
-
-                this.executorService.schedule(
-                    () -> requestRecord.completeExceptionally(cosmosException),
-                    latencyRule.getResult().getDelay().toMillis(),
-                    TimeUnit.MILLISECONDS);
+                writeRequestWithDelayConsumer.accept(latencyRule.getResult().getDelay());
                 return true;
             }
         }
