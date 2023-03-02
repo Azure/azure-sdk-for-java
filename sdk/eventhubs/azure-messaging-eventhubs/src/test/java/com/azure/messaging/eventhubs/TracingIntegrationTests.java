@@ -274,7 +274,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         EventHubBufferedProducerAsyncClient bufferedProducer = toClose(new EventHubBufferedProducerClientBuilder()
             .connectionString(getConnectionString())
             .onSendBatchFailed(failed -> fail("Exception occurred while sending messages." + failed.getThrowable()))
-            .maxEventBufferLengthPerPartition(5)
+            .maxEventBufferLengthPerPartition(2)
             .maxWaitTime(Duration.ofSeconds(5))
             .onSendBatchSucceeded(b -> { })
             .buildAsyncClient());
@@ -287,22 +287,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         StepVerifier.create(
                 bufferedProducer
                     .getPartitionIds()
-                    .elementAt(1) // randomize partitions a bit
-                    .flatMap(partitionId -> {
-                        if (partitionIdRef.compareAndSet(null, partitionId)) {
-                            SendOptions sendOpts = new SendOptions().setPartitionId(partitionId);
-                            logger.atInfo()
-                                .addKeyValue("partitionId", partitionId)
-                                .log("got partitionIds");
-
-                            return bufferedProducer
-                                .enqueueEvent(event1, sendOpts)
-                                .then(bufferedProducer.enqueueEvent(event2, sendOpts))
-                                .doFinally(st -> logger.info("enqueued 2 events."));
-                        }
-
-                        return Mono.empty();
+                    .take(1)
+                    .flatMap(p ->  {
+                        partitionIdRef.compareAndSet(null, p);
+                        SendOptions sendOpts = new SendOptions().setPartitionId(p);
+                        return bufferedProducer.enqueueEvent(event1, sendOpts)
+                            .then(bufferedProducer.enqueueEvent(event2, sendOpts));
                     })
+                    .doFinally(st -> logger.info("enqueued 2 events."))
                     .then(bufferedProducer.flush()))
             .verifyComplete();
 
