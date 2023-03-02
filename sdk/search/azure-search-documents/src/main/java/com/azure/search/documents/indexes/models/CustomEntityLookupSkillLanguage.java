@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The language codes supported for input text by CustomEntityLookupSkill. */
@@ -40,12 +39,19 @@ public final class CustomEntityLookupSkillLanguage extends ExpandableStringEnum<
     public static final CustomEntityLookupSkillLanguage PT = fromString("pt");
 
     /**
+     * Creates a new instance of CustomEntityLookupSkillLanguage value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomEntityLookupSkillLanguage() {}
+
+    /**
      * Creates or finds a CustomEntityLookupSkillLanguage from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding CustomEntityLookupSkillLanguage.
      */
-    @JsonCreator
     public static CustomEntityLookupSkillLanguage fromString(String name) {
         return fromString(name, CustomEntityLookupSkillLanguage.class);
     }

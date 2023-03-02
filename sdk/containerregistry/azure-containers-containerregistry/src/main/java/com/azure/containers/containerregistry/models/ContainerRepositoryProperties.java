@@ -5,72 +5,65 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /** Properties of this repository. */
-@JsonFlatten
 @Fluent
-public class ContainerRepositoryProperties {
+public class ContainerRepositoryProperties implements JsonSerializable<ContainerRepositoryProperties> {
     /*
      * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */
-    @JsonProperty(value = "registry", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String registryLoginServer;
 
     /*
      * Image name
      */
-    @JsonProperty(value = "imageName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Image created time
      */
-    @JsonProperty(value = "createdTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Image last update time
      */
-    @JsonProperty(value = "lastUpdateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * Number of the manifests
      */
-    @JsonProperty(value = "manifestCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int manifestCount;
 
     /*
      * Number of the tags
      */
-    @JsonProperty(value = "tagCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int tagCount;
 
     /*
      * Delete enabled
      */
-    @JsonProperty(value = "changeableAttributes.deleteEnabled")
     private Boolean deleteEnabled;
 
     /*
      * Write enabled
      */
-    @JsonProperty(value = "changeableAttributes.writeEnabled")
     private Boolean writeEnabled;
 
     /*
      * List enabled
      */
-    @JsonProperty(value = "changeableAttributes.listEnabled")
     private Boolean listEnabled;
 
     /*
      * Read enabled
      */
-    @JsonProperty(value = "changeableAttributes.readEnabled")
     private Boolean readEnabled;
 
     /** Creates an instance of ContainerRepositoryProperties class. */
@@ -209,5 +202,105 @@ public class ContainerRepositoryProperties {
     public ContainerRepositoryProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("registry", this.registryLoginServer);
+        jsonWriter.writeStringField("imageName", this.name);
+        jsonWriter.writeStringField("createdTime", Objects.toString(this.createdOn, null));
+        jsonWriter.writeStringField("lastUpdateTime", Objects.toString(this.lastUpdatedOn, null));
+        jsonWriter.writeIntField("manifestCount", this.manifestCount);
+        jsonWriter.writeIntField("tagCount", this.tagCount);
+        if (deleteEnabled != null || writeEnabled != null || listEnabled != null || readEnabled != null) {
+            jsonWriter.writeStartObject("changeableAttributes");
+            jsonWriter.writeBooleanField("deleteEnabled", this.deleteEnabled);
+            jsonWriter.writeBooleanField("writeEnabled", this.writeEnabled);
+            jsonWriter.writeBooleanField("listEnabled", this.listEnabled);
+            jsonWriter.writeBooleanField("readEnabled", this.readEnabled);
+            jsonWriter.writeEndObject();
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerRepositoryProperties from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRepositoryProperties if the JsonReader was pointing to an instance of it, or null
+     *     if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerRepositoryProperties.
+     */
+    public static ContainerRepositoryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    String registryLoginServer = null;
+                    String name = null;
+                    OffsetDateTime createdOn = null;
+                    OffsetDateTime lastUpdatedOn = null;
+                    int manifestCount = 0;
+                    int tagCount = 0;
+                    Boolean deleteEnabled = null;
+                    Boolean writeEnabled = null;
+                    Boolean listEnabled = null;
+                    Boolean readEnabled = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("registry".equals(fieldName)) {
+                            registryLoginServer = reader.getString();
+                        } else if ("imageName".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("createdTime".equals(fieldName)) {
+                            createdOn =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("lastUpdateTime".equals(fieldName)) {
+                            lastUpdatedOn =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("manifestCount".equals(fieldName)) {
+                            manifestCount = reader.getInt();
+                        } else if ("tagCount".equals(fieldName)) {
+                            tagCount = reader.getInt();
+                        } else if ("changeableAttributes".equals(fieldName)
+                                && reader.currentToken() == JsonToken.START_OBJECT) {
+                            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                                fieldName = reader.getFieldName();
+                                reader.nextToken();
+
+                                if ("deleteEnabled".equals(fieldName)) {
+                                    deleteEnabled = reader.getNullable(JsonReader::getBoolean);
+                                } else if ("writeEnabled".equals(fieldName)) {
+                                    writeEnabled = reader.getNullable(JsonReader::getBoolean);
+                                } else if ("listEnabled".equals(fieldName)) {
+                                    listEnabled = reader.getNullable(JsonReader::getBoolean);
+                                } else if ("readEnabled".equals(fieldName)) {
+                                    readEnabled = reader.getNullable(JsonReader::getBoolean);
+                                } else {
+                                    reader.skipChildren();
+                                }
+                            }
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    ContainerRepositoryProperties deserializedValue = new ContainerRepositoryProperties();
+                    deserializedValue.registryLoginServer = registryLoginServer;
+                    deserializedValue.name = name;
+                    deserializedValue.createdOn = createdOn;
+                    deserializedValue.lastUpdatedOn = lastUpdatedOn;
+                    deserializedValue.manifestCount = manifestCount;
+                    deserializedValue.tagCount = tagCount;
+                    deserializedValue.deleteEnabled = deleteEnabled;
+                    deserializedValue.writeEnabled = writeEnabled;
+                    deserializedValue.listEnabled = listEnabled;
+                    deserializedValue.readEnabled = readEnabled;
+
+                    return deserializedValue;
+                });
     }
 }

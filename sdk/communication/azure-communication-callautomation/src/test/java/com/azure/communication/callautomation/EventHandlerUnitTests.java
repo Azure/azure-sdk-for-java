@@ -10,7 +10,7 @@ import com.azure.communication.callautomation.models.events.PlayFailed;
 import com.azure.communication.callautomation.models.events.ReasonCode;
 import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
-import com.azure.communication.callautomation.models.CollectChoiceResult;
+import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
@@ -184,7 +184,7 @@ public class EventHandlerUnitTests {
         RecognizeCompleted recognizeCompletedEvent = (RecognizeCompleted) event;
         assertNotNull(recognizeCompletedEvent);
         Optional<RecognizeResult> choiceResult = recognizeCompletedEvent.getRecognizeResult();
-        assertInstanceOf(CollectChoiceResult.class, choiceResult.get());
+        assertInstanceOf(ChoiceResult.class, choiceResult.get());
         assertEquals("serverCallId", recognizeCompletedEvent.getServerCallId());
         assertEquals(200, recognizeCompletedEvent.getResultInformation().getCode());
         assertEquals(Recognize.SPEECH_OPTION_MATCHED, recognizeCompletedEvent.getReasonCode());

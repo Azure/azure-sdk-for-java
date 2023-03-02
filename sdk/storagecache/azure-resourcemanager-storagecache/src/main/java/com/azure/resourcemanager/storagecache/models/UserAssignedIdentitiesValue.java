@@ -22,6 +22,10 @@ public final class UserAssignedIdentitiesValue {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
+    /** Creates an instance of UserAssignedIdentitiesValue class. */
+    public UserAssignedIdentitiesValue() {
+    }
+
     /**
      * Get the principalId property: The principal ID of the user-assigned identity.
      *

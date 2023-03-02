@@ -98,6 +98,7 @@ import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
@@ -107,9 +108,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -147,6 +146,9 @@ final class TestUtils {
     static final List<String> DYNAMIC_CLASSIFICATION = asList(
         "The WHO is issuing a warning about Monkey Pox.",
         "Mo Salah plays in Liverpool FC in England.");
+
+    static final List<String> DYNAMIC_CLASSIFICATION_CATEGORIES =
+        Arrays.asList("Health", "Politics", "Music", "Sports");
 
     static final List<String> SUMMARY_INPUTS = asList(
         "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
@@ -623,11 +625,11 @@ final class TestUtils {
         SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion2,
             new IterableStream<>(asList(assessmentSentiment3)));
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
-            "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
+            "The hotel was dark and unclean. ", TextSentiment.NEGATIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
-        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 31);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 32);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
@@ -696,11 +698,11 @@ final class TestUtils {
             new IterableStream<>(asList(assessmentSentiment1, assessmentSentiment2)));
 
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
-            "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
+            "The restaurant had amazing gnocchi. ", TextSentiment.POSITIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
-        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 35);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 36);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
@@ -820,9 +822,8 @@ final class TestUtils {
     static AnalyzeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResultWithFhir1(String documentId) {
         AnalyzeHealthcareEntitiesResult recognizeHealthcareEntitiesResult1 =
             getRecognizeHealthcareEntitiesResult1(documentId);
-        Map<String, Object> fhir1 = new HashMap<>();
-        fhir1.put("dummyString", "dummyObject");
-        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult1, fhir1);
+        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult1,
+            BinaryData.fromString("{\n  \"string\": \"Hello World\"\n}"));
         return recognizeHealthcareEntitiesResult1;
     }
 
@@ -920,9 +921,8 @@ final class TestUtils {
 
     static AnalyzeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResultWithFhir2() {
         AnalyzeHealthcareEntitiesResult recognizeHealthcareEntitiesResult2 = getRecognizeHealthcareEntitiesResult2();
-        Map<String, Object> fhir2 = new HashMap<>();
-        fhir2.put("dummyString2", "dummyObject2");
-        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult2, fhir2);
+        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult2,
+            BinaryData.fromString("{\n  \"string\": \"Hello World\"\n}"));
         return recognizeHealthcareEntitiesResult2;
     }
 
@@ -1367,16 +1367,15 @@ final class TestUtils {
             getExpectedSummarySentence(
                 "At Microsoft, we have been on a quest to advance AI beyond existing"
                     + " techniques, by taking a more holistic, human-centric approach to learning and understanding.",
-                1.0, 0, 160),
+                0.69, 0, 160),
             getExpectedSummarySentence(
-                "In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human"
-                    + " cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).",
-                0.958, 324, 192),
+                "We believe XYZ-code will enable us to fulfill our long-term vision: cross-domain transfer "
+                    + "learning, spanning modalities and languages.",
+                1, 721, 134),
             getExpectedSummarySentence(
-                "At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure"
-                    + " 1—a joint representation to create more powerful AI that can speak, hear, see, and understand"
-                    + " humans better.",
-                0.929, 517, 203)
+                "The goal is to have pretrained models that can jointly learn representations to support a broad"
+                    + " range of downstream AI tasks, much in the way humans do today.",
+                0.81, 856, 158)
         ));
 
         ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentences);

@@ -5,22 +5,24 @@
 package com.azure.containers.containerregistry.implementation;
 
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsNextResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetRepositoriesNextResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetRepositoriesResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetTagsNextResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetTagsResponse;
+import com.azure.containers.containerregistry.implementation.models.AcrManifests;
+import com.azure.containers.containerregistry.implementation.models.ArtifactManifestPropertiesInternal;
+import com.azure.containers.containerregistry.implementation.models.ArtifactTagPropertiesInternal;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestHeaders;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsHeaders;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsNextHeaders;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetRepositoriesHeaders;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetRepositoriesNextHeaders;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetTagsHeaders;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetTagsNextHeaders;
 import com.azure.containers.containerregistry.implementation.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
-import com.azure.containers.containerregistry.implementation.models.ManifestWrapper;
 import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
+import com.azure.containers.containerregistry.implementation.models.Repositories;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
+import com.azure.containers.containerregistry.implementation.models.TagList;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
-import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -42,13 +44,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /** An instance of this class provides access to all the operations defined in ContainerRegistries. */
 public final class ContainerRegistriesImpl {
@@ -92,29 +96,27 @@ public final class ContainerRegistriesImpl {
         @Get("/v2/{name}/manifests/{reference}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<ManifestWrapper>> getManifest(
+        Mono<Response<BinaryData>> getManifest(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
-                @HeaderParam("accept") String accept,
-                @HeaderParam("Accept") String acceptParam,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/v2/{name}/manifests/{reference}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Response<ManifestWrapper> getManifestSync(
+        Response<BinaryData> getManifestSync(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
-                @HeaderParam("accept") String accept,
-                @HeaderParam("Accept") String acceptParam,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/v2/{name}/manifests/{reference}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<ContainerRegistriesCreateManifestResponse> createManifest(
+        Mono<ResponseBase<ContainerRegistriesCreateManifestHeaders, Void>> createManifest(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
@@ -127,7 +129,7 @@ public final class ContainerRegistriesImpl {
         @Put("/v2/{name}/manifests/{reference}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<ContainerRegistriesCreateManifestResponse> createManifest(
+        Mono<ResponseBase<ContainerRegistriesCreateManifestHeaders, Void>> createManifest(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
@@ -140,7 +142,7 @@ public final class ContainerRegistriesImpl {
         @Put("/v2/{name}/manifests/{reference}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        ContainerRegistriesCreateManifestResponse createManifestSync(
+        ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> createManifestSync(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
@@ -173,7 +175,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/_catalog")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<ContainerRegistriesGetRepositoriesResponse> getRepositories(
+        Mono<ResponseBase<ContainerRegistriesGetRepositoriesHeaders, Repositories>> getRepositories(
                 @HostParam("url") String url,
                 @QueryParam("last") String last,
                 @QueryParam("n") Integer n,
@@ -184,7 +186,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/_catalog")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        ContainerRegistriesGetRepositoriesResponse getRepositoriesSync(
+        ResponseBase<ContainerRegistriesGetRepositoriesHeaders, Repositories> getRepositoriesSync(
                 @HostParam("url") String url,
                 @QueryParam("last") String last,
                 @QueryParam("n") Integer n,
@@ -257,7 +259,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_tags")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<ContainerRegistriesGetTagsResponse> getTags(
+        Mono<ResponseBase<ContainerRegistriesGetTagsHeaders, TagList>> getTags(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @QueryParam("last") String last,
@@ -271,7 +273,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_tags")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        ContainerRegistriesGetTagsResponse getTagsSync(
+        ResponseBase<ContainerRegistriesGetTagsHeaders, TagList> getTagsSync(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @QueryParam("last") String last,
@@ -285,7 +287,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_tags/{reference}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<ArtifactTagProperties>> getTagProperties(
+        Mono<Response<ArtifactTagPropertiesInternal>> getTagProperties(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
@@ -296,7 +298,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_tags/{reference}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Response<ArtifactTagProperties> getTagPropertiesSync(
+        Response<ArtifactTagPropertiesInternal> getTagPropertiesSync(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
@@ -307,7 +309,7 @@ public final class ContainerRegistriesImpl {
         @Patch("/acr/v1/{name}/_tags/{reference}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<ArtifactTagProperties>> updateTagAttributes(
+        Mono<Response<ArtifactTagPropertiesInternal>> updateTagAttributes(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
@@ -319,7 +321,7 @@ public final class ContainerRegistriesImpl {
         @Patch("/acr/v1/{name}/_tags/{reference}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Response<ArtifactTagProperties> updateTagAttributesSync(
+        Response<ArtifactTagPropertiesInternal> updateTagAttributesSync(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
@@ -353,7 +355,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_manifests")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<ContainerRegistriesGetManifestsResponse> getManifests(
+        Mono<ResponseBase<ContainerRegistriesGetManifestsHeaders, AcrManifests>> getManifests(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @QueryParam("last") String last,
@@ -366,7 +368,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_manifests")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        ContainerRegistriesGetManifestsResponse getManifestsSync(
+        ResponseBase<ContainerRegistriesGetManifestsHeaders, AcrManifests> getManifestsSync(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @QueryParam("last") String last,
@@ -379,7 +381,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_manifests/{digest}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<ArtifactManifestProperties>> getManifestProperties(
+        Mono<Response<ArtifactManifestPropertiesInternal>> getManifestProperties(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("digest") String digest,
@@ -390,7 +392,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_manifests/{digest}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Response<ArtifactManifestProperties> getManifestPropertiesSync(
+        Response<ArtifactManifestPropertiesInternal> getManifestPropertiesSync(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("digest") String digest,
@@ -401,7 +403,7 @@ public final class ContainerRegistriesImpl {
         @Patch("/acr/v1/{name}/_manifests/{digest}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<ArtifactManifestProperties>> updateManifestProperties(
+        Mono<Response<ArtifactManifestPropertiesInternal>> updateManifestProperties(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("digest") String digest,
@@ -413,7 +415,7 @@ public final class ContainerRegistriesImpl {
         @Patch("/acr/v1/{name}/_manifests/{digest}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Response<ArtifactManifestProperties> updateManifestPropertiesSync(
+        Response<ArtifactManifestPropertiesInternal> updateManifestPropertiesSync(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("digest") String digest,
@@ -425,7 +427,7 @@ public final class ContainerRegistriesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<ContainerRegistriesGetRepositoriesNextResponse> getRepositoriesNext(
+        Mono<ResponseBase<ContainerRegistriesGetRepositoriesNextHeaders, Repositories>> getRepositoriesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
                 @HeaderParam("Accept") String accept,
@@ -434,7 +436,7 @@ public final class ContainerRegistriesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        ContainerRegistriesGetRepositoriesNextResponse getRepositoriesNextSync(
+        ResponseBase<ContainerRegistriesGetRepositoriesNextHeaders, Repositories> getRepositoriesNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
                 @HeaderParam("Accept") String accept,
@@ -443,7 +445,7 @@ public final class ContainerRegistriesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<ContainerRegistriesGetTagsNextResponse> getTagsNext(
+        Mono<ResponseBase<ContainerRegistriesGetTagsNextHeaders, TagList>> getTagsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
                 @HeaderParam("Accept") String accept,
@@ -452,7 +454,7 @@ public final class ContainerRegistriesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        ContainerRegistriesGetTagsNextResponse getTagsNextSync(
+        ResponseBase<ContainerRegistriesGetTagsNextHeaders, TagList> getTagsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
                 @HeaderParam("Accept") String accept,
@@ -461,7 +463,7 @@ public final class ContainerRegistriesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<ContainerRegistriesGetManifestsNextResponse> getManifestsNext(
+        Mono<ResponseBase<ContainerRegistriesGetManifestsNextHeaders, AcrManifests>> getManifestsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
                 @HeaderParam("Accept") String accept,
@@ -470,7 +472,7 @@ public final class ContainerRegistriesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        ContainerRegistriesGetManifestsNextResponse getManifestsNextSync(
+        ResponseBase<ContainerRegistriesGetManifestsNextHeaders, AcrManifests> getManifestsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
                 @HeaderParam("Accept") String accept,
@@ -571,10 +573,9 @@ public final class ContainerRegistriesImpl {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManifestWrapper>> getManifestWithResponseAsync(String name, String reference, String accept) {
-        final String acceptParam = "application/json";
+    public Mono<Response<BinaryData>> getManifestWithResponseAsync(String name, String reference, String accept) {
         return FluxUtil.withContext(
-                context -> service.getManifest(this.client.getUrl(), name, reference, accept, acceptParam, context));
+                context -> service.getManifest(this.client.getUrl(), name, reference, accept, context));
     }
 
     /**
@@ -592,10 +593,9 @@ public final class ContainerRegistriesImpl {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManifestWrapper>> getManifestWithResponseAsync(
+    public Mono<Response<BinaryData>> getManifestWithResponseAsync(
             String name, String reference, String accept, Context context) {
-        final String acceptParam = "application/json";
-        return service.getManifest(this.client.getUrl(), name, reference, accept, acceptParam, context);
+        return service.getManifest(this.client.getUrl(), name, reference, accept, context);
     }
 
     /**
@@ -612,7 +612,7 @@ public final class ContainerRegistriesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManifestWrapper> getManifestAsync(String name, String reference, String accept) {
+    public Mono<BinaryData> getManifestAsync(String name, String reference, String accept) {
         return getManifestWithResponseAsync(name, reference, accept).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -631,7 +631,7 @@ public final class ContainerRegistriesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManifestWrapper> getManifestAsync(String name, String reference, String accept, Context context) {
+    public Mono<BinaryData> getManifestAsync(String name, String reference, String accept, Context context) {
         return getManifestWithResponseAsync(name, reference, accept, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -651,11 +651,8 @@ public final class ContainerRegistriesImpl {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManifestWrapper> getManifestWithResponse(
-            String name, String reference, String accept, Context context) {
-        // TODO: Bug in autorest that we do not allow picking up acceptParam from the parameters.
-        final String acceptParam = accept;
-        return service.getManifestSync(this.client.getUrl(), name, reference, accept, acceptParam, context);
+    public Response<BinaryData> getManifestWithResponse(String name, String reference, String accept, Context context) {
+        return service.getManifestSync(this.client.getUrl(), name, reference, accept, context);
     }
 
     /**
@@ -671,7 +668,7 @@ public final class ContainerRegistriesImpl {
      * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManifestWrapper getManifest(String name, String reference, String accept) {
+    public BinaryData getManifest(String name, String reference, String accept) {
         return getManifestWithResponse(name, reference, accept, Context.NONE).getValue();
     }
 
@@ -686,10 +683,10 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerRegistriesCreateManifestResponse> createManifestWithResponseAsync(
+    public Mono<ResponseBase<ContainerRegistriesCreateManifestHeaders, Void>> createManifestWithResponseAsync(
             String name, String reference, Flux<ByteBuffer> payload, long contentLength, String contentType) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -717,10 +714,10 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerRegistriesCreateManifestResponse> createManifestWithResponseAsync(
+    public Mono<ResponseBase<ContainerRegistriesCreateManifestHeaders, Void>> createManifestWithResponseAsync(
             String name,
             String reference,
             Flux<ByteBuffer> payload,
@@ -789,10 +786,10 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerRegistriesCreateManifestResponse> createManifestWithResponseAsync(
+    public Mono<ResponseBase<ContainerRegistriesCreateManifestHeaders, Void>> createManifestWithResponseAsync(
             String name, String reference, BinaryData payload, long contentLength, String contentType) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -820,10 +817,10 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerRegistriesCreateManifestResponse> createManifestWithResponseAsync(
+    public Mono<ResponseBase<ContainerRegistriesCreateManifestHeaders, Void>> createManifestWithResponseAsync(
             String name,
             String reference,
             BinaryData payload,
@@ -893,10 +890,10 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerRegistriesCreateManifestResponse createManifestWithResponse(
+    public ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> createManifestWithResponse(
             String name,
             String reference,
             BinaryData payload,
@@ -1083,7 +1080,7 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> getRepositoriesSinglePage(String last, Integer n, Context context) {
         final String accept = "application/json";
-        ContainerRegistriesGetRepositoriesResponse res =
+        ResponseBase<ContainerRegistriesGetRepositoriesHeaders, Repositories> res =
                 service.getRepositoriesSync(
                         this.client.getUrl(), last, n, this.client.getApiVersion(), accept, context);
         return new PagedResponseBase<>(
@@ -1487,7 +1484,7 @@ public final class ContainerRegistriesImpl {
     public PagedResponse<TagAttributesBase> getTagsSinglePage(
             String name, String last, Integer n, String orderBy, String digest, Context context) {
         final String accept = "application/json";
-        ContainerRegistriesGetTagsResponse res =
+        ResponseBase<ContainerRegistriesGetTagsHeaders, TagList> res =
                 service.getTagsSync(
                         this.client.getUrl(),
                         name,
@@ -1541,7 +1538,8 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes by tag along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactTagProperties>> getTagPropertiesWithResponseAsync(String name, String reference) {
+    public Mono<Response<ArtifactTagPropertiesInternal>> getTagPropertiesWithResponseAsync(
+            String name, String reference) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1561,7 +1559,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes by tag along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactTagProperties>> getTagPropertiesWithResponseAsync(
+    public Mono<Response<ArtifactTagPropertiesInternal>> getTagPropertiesWithResponseAsync(
             String name, String reference, Context context) {
         final String accept = "application/json";
         return service.getTagProperties(
@@ -1579,7 +1577,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes by tag on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactTagProperties> getTagPropertiesAsync(String name, String reference) {
+    public Mono<ArtifactTagPropertiesInternal> getTagPropertiesAsync(String name, String reference) {
         return getTagPropertiesWithResponseAsync(name, reference).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1595,7 +1593,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes by tag on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactTagProperties> getTagPropertiesAsync(String name, String reference, Context context) {
+    public Mono<ArtifactTagPropertiesInternal> getTagPropertiesAsync(String name, String reference, Context context) {
         return getTagPropertiesWithResponseAsync(name, reference, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1612,7 +1610,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes by tag along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactTagProperties> getTagPropertiesWithResponse(
+    public Response<ArtifactTagPropertiesInternal> getTagPropertiesWithResponse(
             String name, String reference, Context context) {
         final String accept = "application/json";
         return service.getTagPropertiesSync(
@@ -1630,7 +1628,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes by tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactTagProperties getTagProperties(String name, String reference) {
+    public ArtifactTagPropertiesInternal getTagProperties(String name, String reference) {
         return getTagPropertiesWithResponse(name, reference, Context.NONE).getValue();
     }
 
@@ -1646,7 +1644,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactTagProperties>> updateTagAttributesWithResponseAsync(
+    public Mono<Response<ArtifactTagPropertiesInternal>> updateTagAttributesWithResponseAsync(
             String name, String reference, TagWriteableProperties value) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1674,7 +1672,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactTagProperties>> updateTagAttributesWithResponseAsync(
+    public Mono<Response<ArtifactTagPropertiesInternal>> updateTagAttributesWithResponseAsync(
             String name, String reference, TagWriteableProperties value, Context context) {
         final String accept = "application/json";
         return service.updateTagAttributes(
@@ -1693,7 +1691,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactTagProperties> updateTagAttributesAsync(
+    public Mono<ArtifactTagPropertiesInternal> updateTagAttributesAsync(
             String name, String reference, TagWriteableProperties value) {
         return updateTagAttributesWithResponseAsync(name, reference, value)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1712,7 +1710,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactTagProperties> updateTagAttributesAsync(
+    public Mono<ArtifactTagPropertiesInternal> updateTagAttributesAsync(
             String name, String reference, TagWriteableProperties value, Context context) {
         return updateTagAttributesWithResponseAsync(name, reference, value, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1731,7 +1729,7 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactTagProperties> updateTagAttributesWithResponse(
+    public Response<ArtifactTagPropertiesInternal> updateTagAttributesWithResponse(
             String name, String reference, TagWriteableProperties value, Context context) {
         final String accept = "application/json";
         return service.updateTagAttributesSync(
@@ -1750,7 +1748,8 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactTagProperties updateTagAttributes(String name, String reference, TagWriteableProperties value) {
+    public ArtifactTagPropertiesInternal updateTagAttributes(
+            String name, String reference, TagWriteableProperties value) {
         return updateTagAttributesWithResponse(name, reference, value, Context.NONE).getValue();
     }
 
@@ -1924,7 +1923,7 @@ public final class ContainerRegistriesImpl {
     public PagedResponse<ManifestAttributesBase> getManifestsSinglePage(
             String name, String last, Integer n, String orderBy, Context context) {
         final String accept = "application/json";
-        ContainerRegistriesGetManifestsResponse res =
+        ResponseBase<ContainerRegistriesGetManifestsHeaders, AcrManifests> res =
                 service.getManifestsSync(
                         this.client.getUrl(), name, last, n, orderBy, this.client.getApiVersion(), accept, context);
         return new PagedResponseBase<>(
@@ -1969,7 +1968,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponseAsync(
+    public Mono<Response<ArtifactManifestPropertiesInternal>> getManifestPropertiesWithResponseAsync(
             String name, String digest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1990,7 +1989,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponseAsync(
+    public Mono<Response<ArtifactManifestPropertiesInternal>> getManifestPropertiesWithResponseAsync(
             String name, String digest, Context context) {
         final String accept = "application/json";
         return service.getManifestProperties(
@@ -2008,7 +2007,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactManifestProperties> getManifestPropertiesAsync(String name, String digest) {
+    public Mono<ArtifactManifestPropertiesInternal> getManifestPropertiesAsync(String name, String digest) {
         return getManifestPropertiesWithResponseAsync(name, digest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2024,7 +2023,8 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactManifestProperties> getManifestPropertiesAsync(String name, String digest, Context context) {
+    public Mono<ArtifactManifestPropertiesInternal> getManifestPropertiesAsync(
+            String name, String digest, Context context) {
         return getManifestPropertiesWithResponseAsync(name, digest, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2041,7 +2041,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactManifestProperties> getManifestPropertiesWithResponse(
+    public Response<ArtifactManifestPropertiesInternal> getManifestPropertiesWithResponse(
             String name, String digest, Context context) {
         final String accept = "application/json";
         return service.getManifestPropertiesSync(
@@ -2059,7 +2059,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactManifestProperties getManifestProperties(String name, String digest) {
+    public ArtifactManifestPropertiesInternal getManifestProperties(String name, String digest) {
         return getManifestPropertiesWithResponse(name, digest, Context.NONE).getValue();
     }
 
@@ -2075,7 +2075,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponseAsync(
+    public Mono<Response<ArtifactManifestPropertiesInternal>> updateManifestPropertiesWithResponseAsync(
             String name, String digest, ManifestWriteableProperties value) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2103,7 +2103,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponseAsync(
+    public Mono<Response<ArtifactManifestPropertiesInternal>> updateManifestPropertiesWithResponseAsync(
             String name, String digest, ManifestWriteableProperties value, Context context) {
         final String accept = "application/json";
         return service.updateManifestProperties(
@@ -2122,7 +2122,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactManifestProperties> updateManifestPropertiesAsync(
+    public Mono<ArtifactManifestPropertiesInternal> updateManifestPropertiesAsync(
             String name, String digest, ManifestWriteableProperties value) {
         return updateManifestPropertiesWithResponseAsync(name, digest, value)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -2141,7 +2141,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactManifestProperties> updateManifestPropertiesAsync(
+    public Mono<ArtifactManifestPropertiesInternal> updateManifestPropertiesAsync(
             String name, String digest, ManifestWriteableProperties value, Context context) {
         return updateManifestPropertiesWithResponseAsync(name, digest, value, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -2160,7 +2160,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(
+    public Response<ArtifactManifestPropertiesInternal> updateManifestPropertiesWithResponse(
             String name, String digest, ManifestWriteableProperties value, Context context) {
         final String accept = "application/json";
         return service.updateManifestPropertiesSync(
@@ -2179,7 +2179,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactManifestProperties updateManifestProperties(
+    public ArtifactManifestPropertiesInternal updateManifestProperties(
             String name, String digest, ManifestWriteableProperties value) {
         return updateManifestPropertiesWithResponse(name, digest, value, Context.NONE).getValue();
     }
@@ -2224,7 +2224,7 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> getRepositoriesNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        ContainerRegistriesGetRepositoriesNextResponse res =
+        ResponseBase<ContainerRegistriesGetRepositoriesNextHeaders, Repositories> res =
                 service.getRepositoriesNextSync(nextLink, this.client.getUrl(), accept, context);
         return new PagedResponseBase<>(
                 res.getRequest(),
@@ -2275,7 +2275,7 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<TagAttributesBase> getTagsNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        ContainerRegistriesGetTagsNextResponse res =
+        ResponseBase<ContainerRegistriesGetTagsNextHeaders, TagList> res =
                 service.getTagsNextSync(nextLink, this.client.getUrl(), accept, context);
         return new PagedResponseBase<>(
                 res.getRequest(),
@@ -2327,7 +2327,7 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ManifestAttributesBase> getManifestsNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        ContainerRegistriesGetManifestsNextResponse res =
+        ResponseBase<ContainerRegistriesGetManifestsNextHeaders, AcrManifests> res =
                 service.getManifestsNextSync(nextLink, this.client.getUrl(), accept, context);
         return new PagedResponseBase<>(
                 res.getRequest(),

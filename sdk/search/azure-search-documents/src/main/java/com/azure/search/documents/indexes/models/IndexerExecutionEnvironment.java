@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Specifies the environment in which the indexer should execute. */
@@ -19,12 +18,19 @@ public final class IndexerExecutionEnvironment extends ExpandableStringEnum<Inde
     public static final IndexerExecutionEnvironment PRIVATE = fromString("private");
 
     /**
+     * Creates a new instance of IndexerExecutionEnvironment value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IndexerExecutionEnvironment() {}
+
+    /**
      * Creates or finds a IndexerExecutionEnvironment from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding IndexerExecutionEnvironment.
      */
-    @JsonCreator
     public static IndexerExecutionEnvironment fromString(String name) {
         return fromString(name, IndexerExecutionEnvironment.class);
     }

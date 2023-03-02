@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentSubnet;
 import java.util.Arrays;
@@ -21,7 +20,10 @@ public final class WorkloadNetworksUpdateSegmentsSamples {
      */
     public static void workloadNetworksUpdateSegments(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkSegment resource =
-            manager.workloadNetworks().getSegmentWithResponse("group1", "cloud1", "segment1", Context.NONE).getValue();
+            manager
+                .workloadNetworks()
+                .getSegmentWithResponse("group1", "cloud1", "segment1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withConnectedGateway("/infra/tier-1s/gateway")

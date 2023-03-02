@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug when buffering JSON where text fields weren't maintaining proper encoding. ([#33406](https://github.com/Azure/azure-sdk-for-java/pull/33406))
+
 ### Other Changes
 
 ## 1.0.0-beta.2 (2023-02-01)

@@ -4,6 +4,11 @@
 
 ### Features Added
 
+- Added replica of `JacksonAdapter` from `azure-core`. The `JacksonAdapter` in this library doesn't expose the internal
+  `ObjectMapper`s used to prevent global mutations or support for running privileged actions to override 
+  `SecurityManager` policies as `SecurityManager` is deprecated for removal. This `JacksonAdapter` will serve as the
+  long term replacement to the `JacksonAdapter` in `azure-core`. ([#33401](https://github.com/Azure/azure-sdk-for-java/pull/33401))
+
 ### Breaking Changes
 
 ### Bugs Fixed
