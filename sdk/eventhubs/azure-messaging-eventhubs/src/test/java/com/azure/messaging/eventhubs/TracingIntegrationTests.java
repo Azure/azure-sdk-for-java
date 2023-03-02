@@ -287,8 +287,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void sendBuffered() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(2);
-        spanProcessor.notifyIfCondition(latch, span -> span.getName().equals("EventHubs.consume"));
+        CountDownLatch latch = new CountDownLatch(3);
+        spanProcessor.notifyIfCondition(latch, span -> span.getName().equals("EventHubs.consume") || span.getName().equals("EventHubs.send"));
 
         EventHubBufferedProducerAsyncClient bufferedProducer = new EventHubBufferedProducerClientBuilder()
             .connectionString(getConnectionString())
@@ -331,6 +331,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .receiveFromPartition(partitionIdRef.get(), EventPosition.fromEnqueuedTime(start))
                 .doOnNext(e -> logger.atInfo()
                     .addKeyValue("event", e.getData().getBodyAsString())
+                    .addKeyValue("traceparent", e.getData().getProperties().get("traceparent"))
                     .log("received event"))
                 .take(2))
             .expectNextCount(2)
