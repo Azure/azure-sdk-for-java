@@ -6,7 +6,7 @@ package com.azure.communication.common;
 import com.azure.core.util.CoreUtils;
 
 /**
- * Communication identifier for Microsoft Teams User
+ * Communication identifier for Microsoft Bot
  */
 public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
     private final String botId;
