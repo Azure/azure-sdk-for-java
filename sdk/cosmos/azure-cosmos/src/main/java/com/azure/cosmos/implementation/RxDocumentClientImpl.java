@@ -946,7 +946,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 .getCosmosDiagnosticsAccessor()
                                 .getFeedResponseDiagnostics(diagnostics);
 
-                        Instant minRequestTime = feedResponseDiagnostics.getMinRequestStartTime();
+                        Instant minRequestStartTime = feedResponseDiagnostics.getMinRequestStartTime();
                         Instant feedResponseCreationTime = feedResponseDiagnostics.getFeedResponseCreationTime();
 
                         if (isFirstResponse.compareAndSet(true, false)) {
@@ -961,11 +961,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                             feedResponseDiagnostics.recordFeedResponseLatency(
                                     queryPlanFetchLatency
-                                            .plus(Duration.between(minRequestTime, feedResponseCreationTime))
+                                            .plus(Duration.between(minRequestStartTime, feedResponseCreationTime))
                             );
                         } else {
                             feedResponseDiagnostics.recordFeedResponseLatency(
-                                    Duration.between(minRequestTime, feedResponseCreationTime)
+                                    Duration.between(minRequestStartTime, feedResponseCreationTime)
                             );
                         }
                     }
