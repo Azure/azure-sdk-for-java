@@ -78,7 +78,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private static Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
 
-    private String testName;
+    protected String testName;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;

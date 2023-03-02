@@ -95,7 +95,6 @@
       <scope>test</scope>
     </dependency>
 
-
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
