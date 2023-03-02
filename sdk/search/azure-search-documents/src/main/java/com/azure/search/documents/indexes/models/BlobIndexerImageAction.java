@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -26,12 +25,19 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
             fromString("generateNormalizedImagePerPage");
 
     /**
+     * Creates a new instance of BlobIndexerImageAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobIndexerImageAction() {}
+
+    /**
      * Creates or finds a BlobIndexerImageAction from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding BlobIndexerImageAction.
      */
-    @JsonCreator
     public static BlobIndexerImageAction fromString(String name) {
         return fromString(name, BlobIndexerImageAction.class);
     }

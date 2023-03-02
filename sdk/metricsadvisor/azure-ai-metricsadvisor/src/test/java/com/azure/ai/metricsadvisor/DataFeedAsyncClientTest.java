@@ -14,10 +14,12 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -301,11 +303,11 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     /**
      * Verifies that an exception is thrown for null data feed Id parameter.
      */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void getDataFeedNullId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    @Test
+    @DoNotRecord
+    public void getDataFeedNullId() {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getNonRecordAdminClient().buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getDataFeed(null))
@@ -317,11 +319,11 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     /**
      * Verifies that an exception is thrown for invalid data feed Id.
      */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void getDataFeedInvalidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    @Test
+    @DoNotRecord
+    public void getDataFeedInvalidId() {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getNonRecordAdminClient().buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getDataFeed(INCORRECT_UUID))
@@ -716,11 +718,11 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     /**
      * Verifies that an exception is thrown for incorrect format data feed Id.
      */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void deleteIncorrectDataFeedId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    @Test
+    @DoNotRecord
+    public void deleteIncorrectDataFeedId() {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getNonRecordAdminClient().buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.deleteDataFeed(INCORRECT_UUID))

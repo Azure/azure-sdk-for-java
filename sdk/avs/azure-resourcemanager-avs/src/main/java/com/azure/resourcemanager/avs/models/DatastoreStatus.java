@@ -32,6 +32,15 @@ public final class DatastoreStatus extends ExpandableStringEnum<DatastoreStatus>
     public static final DatastoreStatus DEAD_OR_ERROR = fromString("DeadOrError");
 
     /**
+     * Creates a new instance of DatastoreStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatastoreStatus() {
+    }
+
+    /**
      * Creates or finds a DatastoreStatus from its string representation.
      *
      * @param name a name to look for.

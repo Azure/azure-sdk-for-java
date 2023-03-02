@@ -27,7 +27,11 @@ public final class RecordingChannelInternal extends ExpandableStringEnum<Recordi
         return fromString(name, RecordingChannelInternal.class);
     }
 
-    /** @return known RecordingChannelInternal values. */
+    /**
+     * Gets known RecordingChannelInternal values.
+     *
+     * @return known RecordingChannelInternal values.
+     */
     public static Collection<RecordingChannelInternal> values() {
         return values(RecordingChannelInternal.class);
     }

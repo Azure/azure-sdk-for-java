@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeleteDnsZone. */
 public final class WorkloadNetworksDeleteDnsZoneSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkloadNetworksDeleteDnsZoneSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deleteDnsZone("group1", "dnsZone1", "cloud1", Context.NONE);
+        manager.workloadNetworks().deleteDnsZone("group1", "dnsZone1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

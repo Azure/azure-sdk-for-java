@@ -17,6 +17,15 @@ public final class PortMirroringStatusEnum extends ExpandableStringEnum<PortMirr
     public static final PortMirroringStatusEnum FAILURE = fromString("FAILURE");
 
     /**
+     * Creates a new instance of PortMirroringStatusEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PortMirroringStatusEnum() {
+    }
+
+    /**
      * Creates or finds a PortMirroringStatusEnum from its string representation.
      *
      * @param name a name to look for.

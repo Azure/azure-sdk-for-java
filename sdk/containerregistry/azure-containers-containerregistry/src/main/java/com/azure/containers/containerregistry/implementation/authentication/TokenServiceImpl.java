@@ -10,8 +10,6 @@ import com.azure.containers.containerregistry.implementation.models.PostContentS
 import com.azure.containers.containerregistry.implementation.models.TokenGrantType;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -31,18 +29,13 @@ public class TokenServiceImpl {
      * @param url               the service endpoint.
      * @param apiVersion        the api-version of the service being targeted.
      * @param pipeline          the pipeline to use to make the call.
-     * @param serializerAdapter the serializer adapter for the rest client.
      */
-    public TokenServiceImpl(String url, ContainerRegistryServiceVersion apiVersion, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
-        if (serializerAdapter == null) {
-            serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-
+    public TokenServiceImpl(String url, ContainerRegistryServiceVersion apiVersion, HttpPipeline pipeline) {
         if (apiVersion == null) {
             apiVersion = ContainerRegistryServiceVersion.getLatest();
         }
 
-        this.authenticationsImpl = new AuthenticationsImpl(url, apiVersion.getVersion(), pipeline, serializerAdapter);
+        this.authenticationsImpl = new AuthenticationsImpl(url, apiVersion.getVersion(), pipeline);
     }
 
     /**

@@ -17,6 +17,15 @@ public final class AffinityType extends ExpandableStringEnum<AffinityType> {
     public static final AffinityType ANTI_AFFINITY = fromString("AntiAffinity");
 
     /**
+     * Creates a new instance of AffinityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AffinityType() {
+    }
+
+    /**
      * Creates or finds a AffinityType from its string representation.
      *
      * @param name a name to look for.

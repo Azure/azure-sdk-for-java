@@ -45,6 +45,10 @@ public final class ApiOperationInner {
     @JsonProperty(value = "properties")
     private ApiOperationProperties innerProperties;
 
+    /** Creates an instance of ApiOperationInner class. */
+    public ApiOperationInner() {
+    }
+
     /**
      * Get the display property: The object that represents the operation.
      *

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for HcxEnterpriseSites List. */
 public final class HcxEnterpriseSitesListSamples {
     /*
@@ -17,6 +15,6 @@ public final class HcxEnterpriseSitesListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void hcxEnterpriseSitesList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.hcxEnterpriseSites().list("group1", "cloud1", Context.NONE);
+        manager.hcxEnterpriseSites().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

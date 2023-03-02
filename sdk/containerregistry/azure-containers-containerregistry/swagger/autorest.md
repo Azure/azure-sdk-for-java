@@ -2,48 +2,78 @@
 
 > see https://aka.ms/autorest
 
+This is the template AutoRest configuration file for client SDKs.
+---
 ## Getting Started
 
-To build the client SDK for ContainerRegistry simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/install/readme.md) and in this folder, run:
+To build the SDK, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
 
 ### Setup
+
+Fork and clone [autorest.java](https://github.com/Azure/autorest.java) and run the following:
+
 ```ps
 You need to have the following installed on your machine:
 
-Node.JS v10.x - v13.x
+Node.JS LTS
 Java 8+
 Maven 3.x
-You need to have autorest-beta installed through NPM:
+You need to have autorest installed through NPM:
 
 npm i -g autorest
 ```
 
 ### Generation
 
-There is one swagger for Container Registry APIs.
+Generating client SDKs from Swagger involves using the `autorest` command installed to the command line above while
+also referencing the Java AutoRest packages, either the local installation performed above or using a released version.
+
+#### Local Installation
+
+Using a local installation of Java AutoRest allows for the most up-to-date code to be used and allows for debugging of
+code generation, see the [autorest.java usage](https://github.com/Azure/autorest.java#usage) for more details.
 
 ```ps
 cd <swagger-folder>
-autorest --java --use:@autorest/java@4.1.7 --use:@autorest/modelerfour@4.23.7
+autorest --use=<directory where autorest.java was cloned>
+```
+
+#### Released Version
+
+Using a released build of Java AutoRest ensures that a well-tested and durable implementation is used, as rebuilding
+the local installation of Java AutoRest won't affect code generation as it would above.
+
+```ps
+cd <swagger-folder>
+autorest --java --use:@autorest/java@4.1.*
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
+use: '@autorest/java@4.1.13'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
 output-folder: ./..
 generate-client-as-impl: true
 namespace: com.azure.containers.containerregistry
 generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
-#add-context-parameter: true
 sync-methods: none
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: ArtifactTagOrder,ArtifactManifestOrder,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestPlatform,RepositoryProperties,ContainerRepositoryProperties,OciManifest,OciBlobDescriptor,OciAnnotations
+custom-types: ArtifactArchitecture,ArtifactManifestOrder,ArtifactManifestPlatform,ArtifactOperatingSystem,ArtifactTagOrder,ContainerRepositoryProperties,OciAnnotations,OciBlobDescriptor,OciManifest,RepositoryProperties
 custom-types-subpackage: models
 enable-sync-stack: true
+generic-response-type: true
+disable-client-builder: true
+stream-style-serialization: true
 ```
 
 ### Set modelAsString flag for the enum values of ArtifactTagOrderBy
@@ -90,13 +120,46 @@ directive:
     $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
 ```
 
-### Set readonly flag to properties of ManifestAttributesBase
+### Remove readonly for ManifestAttributes
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ManifestAttributes
+  transform: >
+    $["x-ms-client-name"] = "ArtifactManifestPropertiesInternal";
+    delete $.properties.registry.readOnly;
+    delete $.properties.imageName.readOnly;
+    delete $.properties.manifest.readOnly;
+```
+
+### Set readonly flag to properties of ManifestAttributesBase and rename size to sizeInBytes
 ```yaml
 directive:
 - from: swagger-document
   where: $.definitions.ManifestAttributesBase
   transform: >
-      delete  $["properties"]["configMediaType"];
+    delete $.properties.configMediaType;
+    $.properties.imageSize["x-ms-client-name"] = "sizeInBytes";
+    delete $.properties.digest.readOnly;
+    delete $.properties.imageSize.readOnly;
+    delete $.properties.createdTime.readOnly;
+    delete $.properties.lastUpdateTime.readOnly;
+    delete $.properties.architecture.readOnly;
+    delete $.properties.os.readOnly;
+    delete $.properties.references.readOnly;
+    delete $.properties.tags.readOnly;
+```
+
+### Remove readonly for TagAttributes
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.TagAttributes
+    transform: >
+      $["x-ms-client-name"] = "ArtifactTagPropertiesInternal";
+      delete $.properties.registry.readOnly;
+      delete $.properties.imageName.readOnly;
+      delete $.properties.tag.readOnly;
 ```
 
 ### Set readonly flag to properties of TagAttributesBase
@@ -105,7 +168,11 @@ directive:
 - from: swagger-document
   where: $.definitions.TagAttributesBase
   transform: >
-      delete  $["properties"]["signed"];
+    delete $.properties.signed;
+    delete $.properties.name.readOnly;
+    delete $.properties.digest.readOnly;
+    delete $.properties.createdTime.readOnly;
+    delete $.properties.lastUpdateTime.readOnly;
 ```
 
 ### Update the field names for TagChangeableAttributes
@@ -132,6 +199,15 @@ directive:
             "description": "The manifest's Content-Type."
         });
         delete $.responses["201"].schema;
+```
+
+# Rename accept parameter
+```yaml
+directive:
+    from: swagger-document
+    where: $.paths["/v2/{name}/manifests/{reference}"].get
+    transform: >
+        $.parameters[2].name = "Accept";
 ```
 
 # Change NextLink client name to nextLink
@@ -170,6 +246,18 @@ directive:
       }
 ```
 
+# Replace ManifestWrapper with stream response to calculate MD5
+```yaml
+directive:
+  from: swagger-document
+  where: $.paths["/v2/{name}/manifests/{reference}"].get.responses["200"]
+  transform: >
+      $.schema = {
+          "type": "string",
+          "format": "binary"
+        }
+```
+
 # Make ArtifactBlobDescriptor a public type
 ```yaml
 directive:
@@ -189,5 +277,3 @@ directive:
     $["x-ms-client-name"] = "OciAnnotations";
     delete $["x-accessibility"]
 ```
-
-

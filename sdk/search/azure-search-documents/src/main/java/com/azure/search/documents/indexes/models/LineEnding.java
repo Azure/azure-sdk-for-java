@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -28,12 +27,19 @@ public final class LineEnding extends ExpandableStringEnum<LineEnding> {
     public static final LineEnding CARRIAGE_RETURN_LINE_FEED = fromString("carriageReturnLineFeed");
 
     /**
+     * Creates a new instance of LineEnding value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LineEnding() {}
+
+    /**
      * Creates or finds a LineEnding from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding LineEnding.
      */
-    @JsonCreator
     public static LineEnding fromString(String name) {
         return fromString(name, LineEnding.class);
     }

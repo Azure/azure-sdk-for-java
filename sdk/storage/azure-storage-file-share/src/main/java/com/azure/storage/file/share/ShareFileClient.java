@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
@@ -37,12 +38,14 @@ import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
+import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
@@ -154,6 +157,34 @@ public class ShareFileClient {
      */
     public final StorageFileOutputStream getFileOutputStream(long offset) {
         return new StorageFileOutputStream(shareFileAsyncClient, offset);
+    }
+
+    /**
+     * Creates and opens a {@link SeekableByteChannel} to write data to the file.
+     * @param options Options for opening the channel.
+     * @return The opened channel.
+     */
+    public SeekableByteChannel getFileSeekableByteChannelWrite(ShareFileSeekableByteChannelWriteOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        if (options.getChannelMode() == ShareFileSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
+            Objects.requireNonNull(options.getFileSize(), "'options.getFileSize()' cannot return null.");
+            create(options.getFileSize());
+        }
+
+        return new StorageSeekableByteChannel((int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE, null /*readBehavior*/,
+            new StorageSeekableByteChannelShareFileWriteBehavior(this, options.getRequestConditions(),
+                options.getFileLastWrittenMode()));
+    }
+
+    /**
+     * Creates and opens a {@link SeekableByteChannel} to read data from the file.
+     * @param conditions requestConditions for reading from Storage.
+     * @return The opened channel.
+     */
+    public SeekableByteChannel getFileSeekableByteChannelRead(ShareRequestConditions conditions) {
+        return new StorageSeekableByteChannel((int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE,
+            new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/);
     }
 
     /**
