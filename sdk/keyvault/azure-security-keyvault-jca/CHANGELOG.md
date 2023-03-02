@@ -1,14 +1,13 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.7.1 (2023-03-01)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `httpclient` from `4.5.13` to version `4.5.14`.
+- Upgraded `jackson-databind` from `2.13.2.2` to version `2.13.5`.
 
 ## 2.7.0 (2022-05-24)
 
