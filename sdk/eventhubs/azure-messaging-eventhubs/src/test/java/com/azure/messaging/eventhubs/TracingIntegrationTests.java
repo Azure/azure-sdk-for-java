@@ -78,6 +78,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     protected void beforeTest() {
         toClose = new ArrayList<>();
         GlobalOpenTelemetry.resetForTest();
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+
         spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName());
         OpenTelemetrySdk.builder()
             .setTracerProvider(
@@ -152,8 +154,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime))
             .take(1)
             .subscribe(pe -> {
-                receivedMessage.compareAndSet(null, pe.getData());
-                receivedSpan.compareAndSet(null, Span.current());
+                if (receivedMessage.compareAndSet(null, pe.getData())) {
+                    receivedSpan.compareAndSet(null, Span.current());
+                }
             });
 
         StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
@@ -183,8 +186,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .receive()
             .take(1)
             .subscribe(pe -> {
-                receivedMessage.compareAndSet(null, pe.getData());
-                receivedSpan.compareAndSet(null, Span.current());
+                if (receivedMessage.compareAndSet(null, pe.getData())) {
+                    receivedSpan.compareAndSet(null, Span.current());
+                }
             });
 
 
@@ -225,8 +229,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         consumer.receive()
             .take(1)
             .subscribe(pe -> {
-                receivedMessage.compareAndSet(null, pe.getData());
-                receivedSpan.compareAndSet(null, Span.current());
+                if (receivedMessage.compareAndSet(null, pe.getData())) {
+                    receivedSpan.compareAndSet(null, Span.current());
+                }
             });
 
         StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
@@ -402,8 +407,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())
             .processEvent(ec -> {
-                currentInProcess.compareAndSet(null, Span.current());
-                receivedMessage.compareAndSet(null, ec.getEventData());
+                if (currentInProcess.compareAndSet(null, Span.current())) {
+                    receivedMessage.compareAndSet(null, ec.getEventData());
+                }
                 ec.updateCheckpoint();
             })
             .processError(e -> fail("unexpected error", e.getThrowable()))
@@ -494,8 +500,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())
             .processEventBatch(eb -> {
-                currentInProcess.compareAndSet(null, Span.current());
-                received.compareAndSet(null, eb.getEvents());
+                if (currentInProcess.compareAndSet(null, Span.current())) {
+                    received.compareAndSet(null, eb.getEvents());
+                }
                 eb.updateCheckpoint();
             }, 2)
             .processError(e -> fail("unexpected error", e.getThrowable()))
@@ -536,8 +543,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())
             .processEventBatch(eb -> {
-                currentInProcess.compareAndSet(null, Span.current());
-                received.compareAndSet(null, eb.getEvents());
+                if (currentInProcess.compareAndSet(null, Span.current())) {
+                    received.compareAndSet(null, eb.getEvents());
+                }
                 eb.updateCheckpoint();
                 throw new RuntimeException("foo");
             }, 1)
