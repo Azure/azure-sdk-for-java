@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -154,7 +155,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || span.getName().equals("EventHubs.send"));
-        consumer
+        Disposable subscription = consumer
             .receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime))
             .take(1)
             .subscribe(pe -> {
@@ -162,6 +163,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     receivedSpan.compareAndSet(null, Span.current());
                 }
             });
+
+        toClose.add(new DisposableClosable(subscription));
 
         StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
 
@@ -186,7 +189,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || span.getName().equals("EventHubs.send"));
-        consumer
+        Disposable subscription = consumer
             .receive()
             .take(1)
             .subscribe(pe -> {
@@ -194,7 +197,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     receivedSpan.compareAndSet(null, Span.current());
                 }
             });
-
+        toClose.add(new DisposableClosable(subscription));
 
         StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
 
@@ -230,14 +233,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch latch = new CountDownLatch(2);
         customSpanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || span.getName().equals("EventHubs.send"));
 
-        consumer.receive()
+        Disposable subscription = consumer.receive()
             .take(1)
             .subscribe(pe -> {
                 if (receivedMessage.compareAndSet(null, pe.getData())) {
                     receivedSpan.compareAndSet(null, Span.current());
                 }
             });
-
+        toClose.add(new DisposableClosable(subscription));
         StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -768,6 +771,17 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         @Override
         public boolean isEndRequired() {
             return true;
+        }
+    }
+
+    private static class DisposableClosable implements AutoCloseable {
+        private final Disposable disposable;
+        public DisposableClosable(Disposable disposable) {
+            this.disposable = disposable;
+        }
+        @Override
+        public void close() {
+            disposable.dispose();
         }
     }
 }
