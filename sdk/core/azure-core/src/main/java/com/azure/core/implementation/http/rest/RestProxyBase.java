@@ -208,7 +208,7 @@ public abstract class RestProxyBase {
         if (httpDecodedResponse != null) {
             //noinspection ConstantConditions
             int statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
-            tracer.end(statusCode >= 400 ? "error" : null, null, span);
+            tracer.end(statusCode >= 400 ? "" : null, null, span);
         }
     }
 
