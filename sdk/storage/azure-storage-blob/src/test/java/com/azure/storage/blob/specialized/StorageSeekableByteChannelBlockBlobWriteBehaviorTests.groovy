@@ -1,6 +1,5 @@
 package com.azure.storage.blob.specialized
 
-import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRequestConditions
