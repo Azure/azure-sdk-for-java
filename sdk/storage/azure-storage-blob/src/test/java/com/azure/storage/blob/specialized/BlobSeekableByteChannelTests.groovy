@@ -23,7 +23,8 @@ class BlobSeekableByteChannelTests extends APISpec {
         bc.upload(BinaryData.fromBytes(data))
 
         when: "Channel initialized"
-        def channel = bc.openSeekableByteChannelRead(null, null)
+        def channel = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
+            .setBlockSize(streamBufferSize), null)
 
         then: "Channel initialized to position zero"
         channel.position() == 0
@@ -40,13 +41,14 @@ class BlobSeekableByteChannelTests extends APISpec {
         downloadedData.toByteArray() == data
 
         where:
-        streamBufferSize | copyBufferSize | dataLength
-        50               | 40             | Constants.KB
-        2 * Constants.KB | 40             | Constants.KB // initial fetch larger than resource size
+        streamBufferSize  | copyBufferSize | dataLength
+        50                | 40             | Constants.KB
+        Constants.KB + 50 | 40             | Constants.KB // initial fetch larger than resource size
     }
 
     def "Client creates appropriate channel readmode"() {
         when: "make channel in read mode"
+        bc.upload(BinaryData.fromBytes(getRandomByteArray(1024)))
         def channel = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
             .setRequestConditions(conditions).setBlockSize(blockSize).setConsistentReadControl(control)
             .setInitialPosition(position), null) as StorageSeekableByteChannel
@@ -61,7 +63,7 @@ class BlobSeekableByteChannelTests extends APISpec {
             assert readBehavior.requestConditions == conditions
         }
         if (control == null || control == ConsistentReadControl.ETAG) {
-            assert conditions != null
+            assert readBehavior.requestConditions != null
             assert readBehavior.requestConditions.getIfMatch() != null
         } else if (control == ConsistentReadControl.VERSION_ID) {
             assert readBehavior.client != bc
@@ -72,7 +74,8 @@ class BlobSeekableByteChannelTests extends APISpec {
         }
 
         and: "channel has appropriate values"
-        channel.chunkSize == blockSize
+        channel.chunkSize == (blockSize == null ? 4 * Constants.MB : blockSize)
+        channel.position() == (position == null ? 0 : position)
 
         where:
         conditions                  | blockSize | control                          | position

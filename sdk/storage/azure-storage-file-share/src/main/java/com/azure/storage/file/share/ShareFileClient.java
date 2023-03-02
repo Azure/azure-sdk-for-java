@@ -174,7 +174,7 @@ public class ShareFileClient {
 
         return new StorageSeekableByteChannel((int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE, null /*readBehavior*/,
             new StorageSeekableByteChannelShareFileWriteBehavior(this, options.getRequestConditions(),
-                options.getFileLastWrittenMode()));
+                options.getFileLastWrittenMode()), 0L);
     }
 
     /**
@@ -184,7 +184,7 @@ public class ShareFileClient {
      */
     public SeekableByteChannel getFileSeekableByteChannelRead(ShareRequestConditions conditions) {
         return new StorageSeekableByteChannel((int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE,
-            new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/);
+            new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/, 0L);
     }
 
     /**

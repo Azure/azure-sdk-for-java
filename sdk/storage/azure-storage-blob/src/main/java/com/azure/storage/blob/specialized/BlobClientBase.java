@@ -406,8 +406,6 @@ public class BlobClientBase {
         options = options == null ? new BlobSeekableByteChannelReadOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
-        BlobRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new BlobRequestConditions() : options.getRequestConditions();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
         long initialPosition = options.getInitialPosition() == null ? 0 : options.getInitialPosition();
 
@@ -416,17 +414,22 @@ public class BlobClientBase {
         try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(initialRange)) {
             BlobDownloadResponse response = this.downloadStreamWithResponse(dstStream,
                 new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
-                requestConditions, false, null, context);
+                options.getRequestConditions(), false, null, context);
             properties = ModelHelper.buildBlobPropertiesResponse(response).getValue();
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
+        initialRange.limit(initialRange.position());
+        initialRange.rewind();
+
         BlobClientBase behaviorClient = this;
+        BlobRequestConditions requestConditions = options.getRequestConditions();
         switch (consistentReadControl) {
             case NONE:
                 break;
             case ETAG:
+                requestConditions = requestConditions != null ? requestConditions : new BlobRequestConditions();
                 // If etag locking but no explicitly specified etag, use the etag from prefetch
                 if (requestConditions.getIfMatch() == null) {
                     requestConditions.setIfMatch(properties.getETag());
@@ -451,7 +454,7 @@ public class BlobClientBase {
         StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
             behaviorClient, initialRange, initialPosition, properties.getBlobSize(), requestConditions);
 
-        return new StorageSeekableByteChannel(chunkSize, behavior, null);
+        return new StorageSeekableByteChannel(chunkSize, behavior, null, initialPosition);
     }
 
     /**

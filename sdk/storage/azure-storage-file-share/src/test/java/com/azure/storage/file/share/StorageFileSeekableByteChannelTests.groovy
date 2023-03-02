@@ -40,7 +40,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
 
         when: "Channel initialized"
         def channel = new StorageSeekableByteChannel(streamBufferSize, null,
-            new StorageSeekableByteChannelShareFileWriteBehavior(primaryFileClient, null, null))
+            new StorageSeekableByteChannelShareFileWriteBehavior(primaryFileClient, null, null), 0L)
         primaryFileClient.create(data.length)
 
         then: "Channel initialized to position zero"
@@ -72,7 +72,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
 
         when: "Channel initialized"
         def channel = new StorageSeekableByteChannel(streamBufferSize,
-            new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null), null)
+            new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null), null, 0L)
 
         then: "Channel initialized to position zero"
         channel.position() == 0
