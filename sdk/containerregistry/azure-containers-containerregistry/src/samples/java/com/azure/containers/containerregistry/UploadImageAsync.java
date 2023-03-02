@@ -3,9 +3,13 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
+import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciBlobDescriptor;
 import com.azure.containers.containerregistry.models.OciManifest;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
+import com.azure.containers.containerregistry.models.UploadManifestResult;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.util.BinaryData;
@@ -60,6 +64,32 @@ public class UploadImageAsync {
         // END: readme-sample-uploadImageAsync
 
         System.out.println("Done");
+    }
+
+    private void uploadCustomManifestMediaType() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(ENDPOINT)
+            .repository(REPOSITORY)
+            .credential(credential)
+            .buildAsyncClient();
+
+        ManifestMediaType manifestListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+        DockerV2ManifestList manifestList = new DockerV2ManifestList()
+            .setSchemaVersion(2)
+            .setMediaType(manifestListType.toString())
+            .setManifests(Collections.singletonList(new DockerV2ManifestList.DockerV2ManifestListAttributes()
+                .setDigest("sha256:f54a58bc1aac5ea1a25d796ae155dc228b3f0e11d046ae276b39c4bf2f13d8c4")
+                .setMediaType(ManifestMediaType.DOCKER_MANIFEST.toString())
+                .setPlatform(new DockerV2ManifestList.Platform()
+                    .setArchitecture(ArtifactArchitecture.AMD64.toString())
+                    .setOs(ArtifactOperatingSystem.LINUX.toString())))
+            );
+
+        UploadManifestResult result = blobClient.uploadManifest(new UploadManifestOptions(BinaryData.fromObject(manifestList), manifestListType))
+            .block();
+
+        System.out.println("Manifest uploaded, digest - " + result.getDigest());
     }
 
     private static class ManifestConfig {

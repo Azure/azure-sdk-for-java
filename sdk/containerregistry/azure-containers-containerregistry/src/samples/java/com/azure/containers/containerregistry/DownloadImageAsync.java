@@ -3,9 +3,14 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
+import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.io.IOUtils;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -21,6 +26,7 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Collections;
 
 public class DownloadImageAsync {
     private static final String ENDPOINT = "https://registryName.azurecr.io";
@@ -62,6 +68,32 @@ public class DownloadImageAsync {
         // END: readme-sample-downloadImageAsync
 
         System.out.println("Done");
+    }
+
+    private void downloadCustomManifestMediaType() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(ENDPOINT)
+            .repository(REPOSITORY)
+            .credential(credential)
+            .buildAsyncClient();
+
+        ManifestMediaType manifestListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+        ManifestMediaType ociIndexType = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
+
+        ManifestMediaType supportedMediaTypes = ManifestMediaType.fromString(manifestListType.toString() + ", " + ociIndexType.toString());
+        blobClient.downloadManifestWithResponse("latest", supportedMediaTypes)
+            .doOnNext(downloadResult -> {
+                if (manifestListType.equals(downloadResult.getValue().getMediaType())) {
+                    DockerV2ManifestList list = downloadResult.getValue().getContent().toObject(DockerV2ManifestList.class);
+                    System.out.println("Got docker manifest list");
+                } else if (ociIndexType.equals(downloadResult.getValue().getMediaType())) {
+                    // ... get OCI Index
+                } else {
+                    throw new IllegalArgumentException("Got unexpected content type: " + downloadResult.getValue().getMediaType());
+                }
+            })
+            .block();
     }
 
     private static String prettyPrint(OciManifest manifest) {
