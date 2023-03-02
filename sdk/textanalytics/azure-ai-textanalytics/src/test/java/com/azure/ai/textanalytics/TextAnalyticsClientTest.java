@@ -3031,7 +3031,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         dynamicClassificationStringInputRunner((inputs, options) ->
             validateDynamicClassifyDocumentResultCollection(true,
                 getExpectedDynamicClassifyDocumentResultCollection(),
-                client.dynamicClassifyBatch(inputs, null, DYNAMIC_CLASSIFICATION_CATEGORIES, options)));
+                client.dynamicClassifyBatch(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null, options)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -3057,7 +3057,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
         tooManyDocumentsRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.dynamicClassifyBatch(inputs, null, DYNAMIC_CLASSIFICATION_CATEGORIES, null)
+                () -> client.dynamicClassifyBatch(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null, null)
                     .stream().findFirst().get());
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
