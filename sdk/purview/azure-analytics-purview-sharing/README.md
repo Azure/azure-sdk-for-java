@@ -1,6 +1,6 @@
 # Azure Purview Sharing client library for Java
 
-**Please rely heavily on the [service's documentation][product_documentation] and our [data-plane client docs][protocol_method] to use this library**
+**Please rely heavily on the [service's documentation][product_documentation] to use this library**
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][docs] | [Product Documentation][share_product_documentation] | [Samples][samples_code]
 
