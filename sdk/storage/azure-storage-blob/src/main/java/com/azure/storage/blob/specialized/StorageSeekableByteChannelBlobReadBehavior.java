@@ -1,9 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageSeekableByteChannel;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 
@@ -43,6 +48,14 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
         this.requestConditions = requestConditions;
     }
 
+    BlobClientBase getClient() {
+        return this.client;
+    }
+
+    BlobRequestConditions getRequestConditions() {
+        return this.requestConditions;
+    }
+
     @Override
     public int read(ByteBuffer dst, long sourceOffset) {
         if (dst.remaining() <= 0) {
@@ -65,6 +78,17 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
             resourceLength = getResourceLengthFromContentRange(
                 response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
+        } catch (BlobStorageException e) {
+            if (e.getErrorCode() == BlobErrorCode.INVALID_RANGE) {
+                String contentRange = e.getResponse().getHeaderValue("Content-Range");
+                if (contentRange != null) {
+                    resourceLength = getResourceLengthFromContentRange(contentRange);
+                }
+                // if requested offset is past updated end of file, then signal end of file. Otherwise, only signal
+                // that zero bytes were read
+                return sourceOffset < resourceLength ? 0 : -1;
+            }
+            throw LOGGER.logExceptionAsError(e);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }

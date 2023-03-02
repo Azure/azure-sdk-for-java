@@ -127,6 +127,13 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         return writeBehavior;
     }
 
+    /**
+     * @return Transfer chunk size used by this channel.
+     */
+    public int getChunkSize() {
+        return buffer.capacity();
+    }
+
     @Override
     public int read(ByteBuffer dst) throws IOException {
         assertOpen();

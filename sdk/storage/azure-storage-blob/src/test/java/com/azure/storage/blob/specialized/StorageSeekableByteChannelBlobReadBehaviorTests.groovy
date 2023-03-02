@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.specialized
 
 import com.azure.core.http.HttpHeaders
@@ -20,20 +23,18 @@ import java.nio.ByteBuffer
 import java.time.Duration
 
 class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
-    @Shared BlockBlobClient blockBlobClient
-    @Shared PageBlobClient pageBlobClient
-    @Shared AppendBlobClient appendBlobClient
-    @Shared BlobContainerClient containerClient
+    BlockBlobClient blockBlobClient
+    PageBlobClient pageBlobClient
+    AppendBlobClient appendBlobClient
 
     def setup() {
-        containerClient = getContainerClientBuilder(namer.getRandomName(60)).buildClient()
-        blockBlobClient = containerClient.getBlobClient(namer.getRandomName(60)).getBlockBlobClient()
-        pageBlobClient = containerClient.getBlobClient(namer.getRandomName(60)).getPageBlobClient()
-        appendBlobClient = containerClient.getBlobClient(namer.getRandomName(60)).getAppendBlobClient()
+        blockBlobClient = cc.getBlobClient(namer.getRandomName(60)).getBlockBlobClient()
+        pageBlobClient = cc.getBlobClient(namer.getRandomName(60)).getPageBlobClient()
+        appendBlobClient = cc.getBlobClient(namer.getRandomName(60)).getAppendBlobClient()
     }
 
     def cleanup() {
-        containerClient.deleteIfExists()
+        cc.deleteIfExists()
     }
 
     BlobDownloadResponse createMockDownloadResponse(String contentRange) {
@@ -47,18 +48,18 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
     def "Read calls to client correctly"() {
         given:
         BlobClientBase client = Mock()
-        def behavior = new StorageSeekableByteChannelBlobReadBehavior(client, null, -1, Constants.MB, null)
+        def behavior = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, Constants.MB,
+            conditions)
 
         when: "ReadBehavior.read() called"
-        def buffer = ByteBuffer.allocate(bufferSize)
-        behavior.read(buffer, offset)
+        behavior.read(ByteBuffer.allocate(bufferSize), offset)
 
         then: "Expected ShareFileClient download parameters given"
-        // if this test throws null pointer exceptions, then the condition isn't matching and so the stubbed response is
-        // not being appropriately returned to the write behavior
         1 * client.downloadStreamWithResponse(_,
             { BlobRange range -> range.getOffset() == offset && range.getCount() as Integer == bufferSize}, null,
-            conditions, false, null, null) >> { createMockDownloadResponse("bytes $offset-${offset + buffer.limit() - 1}/$Constants.MB") }
+            conditions, false, null, null) >> { createMockDownloadResponse("bytes $offset-${offset + bufferSize - 1}/$Constants.MB") }
+        // ensure call that fails above condition still returns a value to avoid null pointer
+        0 * client.downloadStreamWithResponse(_, _, _, _, _, _, _) >> { createMockDownloadResponse("bytes $offset-${offset + bufferSize - 1}/$Constants.MB") }
 
         where:
         offset | bufferSize   | conditions
@@ -97,9 +98,10 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
                 OutputStream os, BlobRange range, DownloadRetryOptions retryoptions, BlobRequestConditions conditions,
                 boolean md5, Duration d, Context c ->
                     os.write(getRandomData(range.getCount() as int).array())
-                    return createMockDownloadResponse("bytes $offset-${offset + buffer.limit() - 1}/$Constants.MB}")
+                    return createMockDownloadResponse("bytes $offset-${offset + bufferSize - 1}/$Constants.MB")
             }
-        0 * client.downloadStreamWithResponse(_, _, _, _, _, _, _)
+        // ensure call that fails above condition still returns a value to avoid null pointer
+        0 * client.downloadStreamWithResponse(_, _, _, _, _, _, _) >> { createMockDownloadResponse("bytes $offset-${offset + bufferSize - 1}/$Constants.MB") }
         read2 == bufferSize
         buffer.position() == read2
 
@@ -112,17 +114,32 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
     }
 
     @Unroll
-    def "Read graceful past end of blob - block blob"() {
-        given: "Initialized blob and behavior to target it"
+    def "Read graceful past end of blob"() {
+        given: "Selected client type initialized"
         def data = getRandomByteArray(fileSize)
-        containerClient.create()
-        blockBlobClient.upload(BinaryData.fromBytes(data))
-        pageBlobClient.create(fileSize)
-        pageBlobClient.uploadPages(new PageRange().setStart(0).setEnd(fileSize), new ByteArrayInputStream(data))
-        appendBlobClient.create()
-        appendBlobClient.appendBlock(new ByteArrayInputStream(data), fileSize)
+        BlobClientBase client
+        switch (type) {
+            case "block":
+                blockBlobClient.upload(BinaryData.fromBytes(data))
+                client = blockBlobClient
+                break;
+            case "page":
+                pageBlobClient.create(fileSize)
+                pageBlobClient.uploadPages(new PageRange().setStart(0).setEnd(fileSize-1), new ByteArrayInputStream(data))
+                client = pageBlobClient
+                break;
+            case "append":
+                appendBlobClient.create()
+                appendBlobClient.appendBlock(new ByteArrayInputStream(data), fileSize)
+                client = appendBlobClient
+                break;
+            default:
+                throw new RuntimeException("Bad test input")
+        }
 
-        def behavior = new StorageSeekableByteChannelBlobReadBehavior(client as BlobClientBase, null, -1, fileSize, null)
+        and: "behavior to target it"
+        def behavior = new StorageSeekableByteChannelBlobReadBehavior(client as BlobClientBase, ByteBuffer.allocate(0),
+            -1, fileSize, null)
 
         when: "ReadBehavior.read() called"
         def buffer = ByteBuffer.allocate(readSize)
@@ -147,21 +164,21 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
         }
 
         where:
-        client           | fileSize     | offset            | readSize         | expectedRead
-        blockBlobClient  | Constants.KB | 0                 | 2 * Constants.KB | Constants.KB       // read larger than file
-        blockBlobClient  | Constants.KB | 600               | Constants.KB     | Constants.KB - 600 // overlap on end of file
-        blockBlobClient  | Constants.KB | Constants.KB      | Constants.KB     | -1                 // starts at end of file
-        blockBlobClient  | Constants.KB | Constants.KB + 20 | Constants.KB     | -1                 // completely past file
+        type     | fileSize     | offset            | readSize         | expectedRead
+        "block"  | Constants.KB | 0                 | 2 * Constants.KB | Constants.KB       // read larger than file
+        "block"  | Constants.KB | 600               | Constants.KB     | Constants.KB - 600 // overlap on end of file
+        "block"  | Constants.KB | Constants.KB      | Constants.KB     | -1                 // starts at end of file
+        "block"  | Constants.KB | Constants.KB + 20 | Constants.KB     | -1                 // completely past file
 
-        pageBlobClient   | Constants.KB | 0                 | 2 * Constants.KB | Constants.KB
-        pageBlobClient   | Constants.KB | 600               | Constants.KB     | Constants.KB - 600
-        pageBlobClient   | Constants.KB | Constants.KB      | Constants.KB     | -1
-        pageBlobClient   | Constants.KB | Constants.KB + 20 | Constants.KB     | -1
+        "page"   | Constants.KB | 0                 | 2 * Constants.KB | Constants.KB
+        "page"   | Constants.KB | 512               | Constants.KB     | Constants.KB - 512
+        "page"   | Constants.KB | Constants.KB      | Constants.KB     | -1
+        "page"   | Constants.KB | Constants.KB + 512 | Constants.KB    | -1
 
-        appendBlobClient | Constants.KB | 0                 | 2 * Constants.KB | Constants.KB
-        appendBlobClient | Constants.KB | 600               | Constants.KB     | Constants.KB - 600
-        appendBlobClient | Constants.KB | Constants.KB      | Constants.KB     | -1
-        appendBlobClient | Constants.KB | Constants.KB + 20 | Constants.KB     | -1
+        "append" | Constants.KB | 0                 | 2 * Constants.KB | Constants.KB
+        "append" | Constants.KB | 600               | Constants.KB     | Constants.KB - 600
+        "append" | Constants.KB | Constants.KB      | Constants.KB     | -1
+        "append" | Constants.KB | Constants.KB + 20 | Constants.KB     | -1
     }
 
     def "Read detects blob growth"() {
@@ -170,13 +187,12 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
         def data = getRandomByteArray(2 * halfLength)
 
         and: "Blob at half size"
-        containerClient.create()
         def blockId1 = "blockId1".bytes.encodeBase64().toString()
         blockBlobClient.stageBlock(blockId1, BinaryData.fromBytes(data[0..halfLength-1] as byte[]))
         blockBlobClient.commitBlockList([blockId1])
 
         and: "behavior to read blob"
-        def behavior = new StorageSeekableByteChannelBlobReadBehavior(blockBlobClient, null, -1, halfLength, null)
+        def behavior = new StorageSeekableByteChannelBlobReadBehavior(blockBlobClient, ByteBuffer.allocate(0), -1, halfLength, null)
         def buffer = ByteBuffer.allocate(halfLength)
 
         when: "entire blob initially read"
@@ -204,8 +220,8 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
 
         when: "blob augmented to full size"
         def blockId2 = "blockId2".bytes.encodeBase64().toString()
-        blockBlobClient.stageBlock(blockId1, BinaryData.fromBytes(data[halfLength..-1] as byte[]))
-        blockBlobClient.commitBlockList([blockId1, blockId2])
+        blockBlobClient.stageBlock(blockId2, BinaryData.fromBytes(data[halfLength..-1] as byte[]))
+        blockBlobClient.commitBlockList([blockId1, blockId2], true)
 
         and: "behavior reads at previous EOF"
         buffer.clear()
