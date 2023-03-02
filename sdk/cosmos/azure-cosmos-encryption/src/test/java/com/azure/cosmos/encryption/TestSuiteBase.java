@@ -240,7 +240,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             SHARED_ENCRYPTION_DATABASE.createClientEncryptionKey("key2",
                 CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata2).block();
 
-            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths(2), 2);
+            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths(1), 1);
             String containerId = UUID.randomUUID().toString();
             CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
             properties.setClientEncryptionPolicy(clientEncryptionPolicy);
