@@ -2225,7 +2225,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         }
                         itemIdentityList
                             .forEach(itemIdentity -> {
-
+                                //Check no partial partition keys are being used
+                                if (pkDefinition.getKind().equals(PartitionKind.MULTI_HASH) &&
+                                    ModelBridgeInternal.getPartitionKeyInternal(itemIdentity.getPartitionKey())
+                                    .getComponents().size() != pkDefinition.getPaths().size()) {
+                                    throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
+                                }
                                 String effectivePartitionKeyString =  PartitionKeyInternalHelper
                                     .getEffectivePartitionKeyString(
                                         BridgeInternal.getPartitionKeyInternal(
