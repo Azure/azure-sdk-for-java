@@ -164,7 +164,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 }
             });
 
-        toClose.add(new DisposableClosable(subscription));
+        toClose.add(() -> subscription.dispose());
 
         StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
 
@@ -197,7 +197,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     receivedSpan.compareAndSet(null, Span.current());
                 }
             });
-        toClose.add(new DisposableClosable(subscription));
+        toClose.add(() -> subscription.dispose());
 
         StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
 
@@ -240,7 +240,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     receivedSpan.compareAndSet(null, Span.current());
                 }
             });
-        toClose.add(new DisposableClosable(subscription));
+        toClose.add(() -> subscription.dispose());
         StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -771,17 +771,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         @Override
         public boolean isEndRequired() {
             return true;
-        }
-    }
-
-    private static class DisposableClosable implements AutoCloseable {
-        private final Disposable disposable;
-        public DisposableClosable(Disposable disposable) {
-            this.disposable = disposable;
-        }
-        @Override
-        public void close() {
-            disposable.dispose();
         }
     }
 }
