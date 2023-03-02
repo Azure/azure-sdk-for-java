@@ -16,10 +16,8 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
 import reactor.test.StepVerifier;
 
-import java.io.Closeable;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -36,7 +34,6 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
     private EventHubProducerAsyncClient producer;
     private EventHubClientBuilder builder;
-    private List<AutoCloseable> toClose = new ArrayList<>();
     @Mock
     private ErrorContextProvider contextProvider;
 
@@ -47,23 +44,12 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
-        toClose = new ArrayList<>();
+
         builder = createBuilder()
             .shareConnection()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .prefetchCount(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
-        producer = builder.buildAsyncProducerClient();
-        toClose.add(producer);
-    }
-
-    @Override
-    protected void afterTest() {
-        try {
-            dispose(toClose.toArray(new Closeable[0]));
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.warning("Error occurred when closing clients.", e);
-        }
+        producer = toClose(builder.buildAsyncProducerClient());
     }
 
     /**
@@ -141,10 +127,9 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         Assertions.assertNotNull(partitionIds);
 
         for (String id : partitionIds) {
-            final EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient();
+            final EventHubConsumerAsyncClient consumer = toClose(builder.buildAsyncConsumerClient());
 
-            toClose.add(consumer);
-            Disposable subscription = consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now)).subscribe(partitionEvent -> {
+            Disposable subscription = toClose(consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now)).subscribe(partitionEvent -> {
                 EventData event = partitionEvent.getData();
                 if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
                     return;
@@ -162,8 +147,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                 }, () -> {
                     logger.info("Disposing of consumer now that the receive is complete.");
                     dispose(consumer);
-                });
-            toClose.add(() -> subscription.dispose());
+                }));
         }
 
         // Act

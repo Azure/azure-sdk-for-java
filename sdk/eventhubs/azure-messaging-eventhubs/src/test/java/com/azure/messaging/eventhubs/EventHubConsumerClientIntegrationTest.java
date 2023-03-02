@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.io.Closeable;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -33,38 +31,23 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     private IntegrationTestEventData testData = null;
     private EventHubConsumerClient consumer;
     private EventPosition startingPosition;
-    private List<AutoCloseable> toClose = new ArrayList<>();
-
     public EventHubConsumerClientIntegrationTest() {
         super(new ClientLogger(EventHubConsumerClientIntegrationTest.class));
     }
 
     @Override
     protected void beforeTest() {
-        toClose = new ArrayList<>();
-        consumer = new EventHubClientBuilder()
+        consumer = toClose(new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumerClient();
-
-        toClose.add(consumer);
+            .buildConsumerClient());
 
         final Map<String, IntegrationTestEventData> integrationTestData = getTestData();
         this.testData = integrationTestData.get(PARTITION_ID);
         Assertions.assertNotNull(testData, "'testData' should have been populated.");
 
         startingPosition = EventPosition.fromEnqueuedTime(testData.getPartitionProperties().getLastEnqueuedTime());
-    }
-
-    @Override
-    protected void afterTest() {
-        try {
-            dispose(toClose.toArray(new Closeable[0]));
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.warning("Error occurred when closing clients.", e);
-        }
     }
 
     /**
@@ -168,10 +151,8 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final long offset = Long.parseLong(integrationTestEventData.getPartitionProperties().getLastEnqueuedOffset());
         final EventPosition startingPosition = EventPosition.fromOffset(offset);
         final EventHubClientBuilder builder = createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME);
-        final EventHubConsumerClient consumer = builder.buildConsumerClient();
-        toClose.add(consumer);
-        final EventHubConsumerClient consumer2 = builder.buildConsumerClient();
-        toClose.add(consumer2);
+        final EventHubConsumerClient consumer = toClose(builder.buildConsumerClient());
+        final EventHubConsumerClient consumer2 = toClose(builder.buildConsumerClient());
         final Duration firstReceive = Duration.ofSeconds(30);
         final Duration secondReceiveDuration = firstReceive.plus(firstReceive);
 
@@ -196,10 +177,10 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
      */
     @Test
     public void getEventHubProperties() {
-        final EventHubConsumerClient consumer = createBuilder()
+        final EventHubConsumerClient consumer = toClose(createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumerClient();
-        toClose.add(consumer);
+            .buildConsumerClient());
+
         // Act & Assert
         final EventHubProperties properties = consumer.getEventHubProperties();
         Assertions.assertNotNull(properties);
@@ -212,10 +193,9 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
      */
     @Test
     public void getPartitionIds() {
-        final EventHubConsumerClient consumer = createBuilder()
+        final EventHubConsumerClient consumer = toClose(createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumerClient();
-        toClose.add(consumer);
+            .buildConsumerClient());
         // Act & Assert
         final IterableStream<String> partitionIds = consumer.getPartitionIds();
         final List<String> collect = partitionIds.stream().collect(Collectors.toList());
@@ -228,10 +208,9 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
      */
     @Test
     public void getPartitionProperties() {
-        final EventHubConsumerClient consumer = createBuilder()
+        final EventHubConsumerClient consumer = toClose(createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumerClient();
-        toClose.add(consumer);
+            .buildConsumerClient());
         // Act & Assert
         for (String partitionId : EXPECTED_PARTITION_IDS) {
             final PartitionProperties properties = consumer.getPartitionProperties(partitionId);

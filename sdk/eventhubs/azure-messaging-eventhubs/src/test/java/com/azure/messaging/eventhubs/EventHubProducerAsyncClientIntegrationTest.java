@@ -16,8 +16,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.Closeable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,7 +27,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Tag(TestUtils.INTEGRATION)
 class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "2";
-    private List<AutoCloseable> toClose = new ArrayList<>();
     private EventHubProducerAsyncClient producer;
 
     EventHubProducerAsyncClientIntegrationTest() {
@@ -38,22 +35,10 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        toClose = new ArrayList<>();
-        producer = new EventHubClientBuilder()
+        producer = toClose(new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
-            .buildAsyncProducerClient();
-        toClose.add(producer);
-    }
-
-    @Override
-    protected void afterTest() {
-        try {
-            dispose(toClose.toArray(new Closeable[0]));
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.warning("Error occurred when closing clients.", e);
-        }
+            .buildAsyncProducerClient());
     }
 
     /**
@@ -215,14 +200,13 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     void sendWithSasConnectionString() {
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        EventHubProducerAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
+        EventHubProducerAsyncClient eventHubAsyncClient = toClose(new EventHubClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retry(RETRY_OPTIONS)
             .transportType(AmqpTransportType.AMQP)
             .connectionString(getConnectionString(true))
-            .buildAsyncProducerClient();
+            .buildAsyncProducerClient());
 
-        toClose.add(eventHubAsyncClient);
         StepVerifier.create(eventHubAsyncClient.getEventHubProperties())
             .assertNext(properties -> {
                 Assertions.assertEquals(getEventHubName(), properties.getName());

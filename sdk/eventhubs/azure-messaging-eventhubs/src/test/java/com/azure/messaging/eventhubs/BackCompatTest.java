@@ -54,16 +54,11 @@ public class BackCompatTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        consumer = createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient();
+        consumer = toClose(createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .buildAsyncConsumerClient());
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
-        producer = createBuilder().buildAsyncProducerClient();
-    }
-
-    @Override
-    protected void afterTest() {
-        dispose(consumer, producer);
+        producer = toClose(createBuilder().buildAsyncProducerClient());
     }
 
     /**

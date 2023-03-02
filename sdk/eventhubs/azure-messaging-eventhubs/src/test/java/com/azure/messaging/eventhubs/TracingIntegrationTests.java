@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
-import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -71,7 +70,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private EventHubConsumerAsyncClient consumer;
     private EventHubConsumerClient consumerSync;
     private EventProcessorClient processor;
-    private List<AutoCloseable> toClose = new ArrayList<>();
     private Instant testStartTime;
     private EventData data;
 
@@ -81,11 +79,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        toClose = new ArrayList<>();
         GlobalOpenTelemetry.resetForTest();
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
 
-        spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName(), testName);
+        spanProcessor = toClose(new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName(), testName));
         OpenTelemetrySdk.builder()
             .setTracerProvider(
                 SdkTracerProvider.builder()
@@ -100,50 +97,36 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     private void createClients(OpenTelemetrySdk otel) {
-        closeClients();
+        dispose();
         ClientOptions options = new ClientOptions();
         if (otel != null) {
             options.setTracingOptions(new OpenTelemetryTracingOptions().setProvider(otel.getTracerProvider()));
         }
 
-        producer = new EventHubClientBuilder()
+        producer = toClose(new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .eventHubName(getEventHubName())
             .clientOptions(options)
-            .buildAsyncProducerClient();
+            .buildAsyncProducerClient());
 
-        consumer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .eventHubName(getEventHubName())
-            .clientOptions(options)
-            .consumerGroup("$Default")
-            .buildAsyncConsumerClient();
-
-        consumerSync = new EventHubClientBuilder()
+        consumer = toClose(new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .eventHubName(getEventHubName())
             .clientOptions(options)
             .consumerGroup("$Default")
-            .buildConsumerClient();
+            .buildAsyncConsumerClient());
 
-        toClose.add(producer);
-        toClose.add(consumer);
-        toClose.add(consumerSync);
-    }
-
-    private void closeClients() {
-        try {
-            dispose(toClose.toArray(new Closeable[0]));
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.warning("Error occurred when closing clients.", e);
-        }
+        consumerSync = toClose(new EventHubClientBuilder()
+            .connectionString(getConnectionString())
+            .eventHubName(getEventHubName())
+            .clientOptions(options)
+            .consumerGroup("$Default")
+            .buildConsumerClient());
     }
 
     @Override
     protected void afterTest() {
         GlobalOpenTelemetry.resetForTest();
-        closeClients();
     }
 
     @Test
@@ -153,16 +136,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || span.getName().equals("EventHubs.send"));
-        Disposable subscription = consumer
+        toClose(consumer
             .receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime))
             .take(1)
             .subscribe(pe -> {
                 if (receivedMessage.compareAndSet(null, pe.getData())) {
                     receivedSpan.compareAndSet(null, Span.current());
                 }
-            });
-
-        toClose.add(() -> subscription.dispose());
+            }));
 
         StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
 
@@ -187,15 +168,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || span.getName().equals("EventHubs.send"));
-        Disposable subscription = consumer
+        toClose(consumer
             .receive()
             .take(1)
             .subscribe(pe -> {
                 if (receivedMessage.compareAndSet(null, pe.getData())) {
                     receivedSpan.compareAndSet(null, Span.current());
                 }
-            });
-        toClose.add(() -> subscription.dispose());
+            }));
 
         StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
 
@@ -218,27 +198,26 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<EventData> receivedMessage = new AtomicReference<>();
         AtomicReference<Span> receivedSpan = new AtomicReference<>();
 
-        TestSpanProcessor customSpanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName(), "sendAndReceiveCustomProvider");
+        TestSpanProcessor customSpanProcessor = toClose(new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName(), "sendAndReceiveCustomProvider"));
         OpenTelemetrySdk otel = OpenTelemetrySdk.builder()
             .setTracerProvider(SdkTracerProvider.builder()
                     .addSpanProcessor(customSpanProcessor)
                     .build())
             .build();
 
-        closeClients();
         createClients(otel);
 
         CountDownLatch latch = new CountDownLatch(2);
         customSpanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || span.getName().equals("EventHubs.send"));
 
-        Disposable subscription = consumer.receive()
+        toClose(consumer.receive()
             .take(1)
             .subscribe(pe -> {
                 if (receivedMessage.compareAndSet(null, pe.getData())) {
                     receivedSpan.compareAndSet(null, Span.current());
                 }
-            });
-        toClose.add(() -> subscription.dispose());
+            }));
+
         StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -291,15 +270,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch latch = new CountDownLatch(3);
         spanProcessor.notifyIfCondition(latch, span -> span.getName().equals("EventHubs.consume") || span.getName().equals("EventHubs.send"));
 
-        EventHubBufferedProducerAsyncClient bufferedProducer = new EventHubBufferedProducerClientBuilder()
+        EventHubBufferedProducerAsyncClient bufferedProducer = toClose(new EventHubBufferedProducerClientBuilder()
             .connectionString(getConnectionString())
             .onSendBatchFailed(failed -> fail("Exception occurred while sending messages." + failed.getThrowable()))
             .maxEventBufferLengthPerPartition(5)
             .maxWaitTime(Duration.ofSeconds(5))
             .onSendBatchSucceeded(b -> { })
-            .buildAsyncClient();
-
-        toClose.add(bufferedProducer);
+            .buildAsyncClient());
 
         Instant start = Instant.now();
         EventData event1 = new EventData("1");
@@ -434,7 +411,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
 
-        toClose.add(() -> processor.stop());
+        toClose((Closeable) () -> processor.stop());
         processor.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -456,13 +433,12 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void sendNotInstrumentedAndProcess() throws InterruptedException {
-        EventHubProducerAsyncClient notInstrumentedProducer = new EventHubClientBuilder()
+        EventHubProducerAsyncClient notInstrumentedProducer = toClose(new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .eventHubName(getEventHubName())
             .clientOptions(new ClientOptions().setTracingOptions(new TracingOptions().setEnabled(false)))
-            .buildAsyncProducerClient();
+            .buildAsyncProducerClient());
 
-        toClose.add(notInstrumentedProducer);
         EventData message1 = new EventData(CONTENTS_BYTES);
         EventData message2 = new EventData(CONTENTS_BYTES);
         List<EventData> received = new ArrayList<>();
@@ -485,7 +461,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
 
-        toClose.add(() -> processor.stop());
+        toClose((Closeable) () -> processor.stop());
         processor.start();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -534,7 +510,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             }, 2)
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
-        toClose.add(() -> processor.stop());
+        toClose((Closeable) () -> processor.stop());
         processor.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -580,7 +556,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
 
-        toClose.add(() -> processor.stop());
+        toClose((Closeable) () -> processor.stop());
         processor.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
         processor.stop();

@@ -14,10 +14,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-import java.io.Closeable;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +38,6 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
     private static EventData[] receivedEvents;
     private static IntegrationTestEventData testData;
     private static int numberOfEvents;
-    private List<AutoCloseable> toClose = new ArrayList<>();
-
     private EventHubConsumerAsyncClient consumer;
     private EventHubConsumerAsyncClient enqueuedTimeConsumer;
 
@@ -51,7 +47,6 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        toClose = new ArrayList<>();
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final Map<String, IntegrationTestEventData> integrationTestData = getTestData();
             for (Map.Entry<String, IntegrationTestEventData> entry : integrationTestData.entrySet()) {
@@ -62,10 +57,9 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
             }
 
             logger.info("Receiving the events we sent.");
-            final EventHubConsumerClient consumer = createBuilder()
+            final EventHubConsumerClient consumer = toClose(createBuilder()
                 .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-                .buildConsumerClient();
-            toClose.add(consumer);
+                .buildConsumerClient());
             numberOfEvents = testData.getEvents().size() - 1;
 
             final EventPosition startingPosition = EventPosition.fromSequenceNumber(
@@ -90,24 +84,13 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
 
         Assertions.assertNotNull(testData, "testData should not be null. Or we have set this up incorrectly.");
 
-        consumer = createBuilder()
+        consumer = toClose(createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient();
-        toClose.add(consumer);
-        enqueuedTimeConsumer = createBuilder()
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient();
-        toClose.add(enqueuedTimeConsumer);
-    }
+            .buildAsyncConsumerClient());
 
-    @Override
-    protected void afterTest() {
-        try {
-            dispose(toClose.toArray(new Closeable[0]));
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.warning("Error occurred when closing clients.", e);
-        }
+        enqueuedTimeConsumer = toClose(createBuilder()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .buildAsyncConsumerClient());
     }
 
     /**
@@ -176,8 +159,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(testData.getPartitionId());
-        final EventHubProducerClient producer = createBuilder().buildProducerClient();
-        toClose.add(producer);
+        final EventHubProducerClient producer = toClose(createBuilder().buildProducerClient());
         final List<EventData> events = TestUtils.getEvents(15, messageId);
 
         try {

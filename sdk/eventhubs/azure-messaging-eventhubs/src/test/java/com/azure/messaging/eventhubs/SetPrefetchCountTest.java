@@ -81,9 +81,9 @@ class SetPrefetchCountTest extends IntegrationTestBase {
         final long sequenceNumber = testData.getPartitionProperties().getLastEnqueuedSequenceNumber();
         final EventPosition position = EventPosition.fromSequenceNumber(sequenceNumber);
 
-        consumer = createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+        consumer = toClose(createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .prefetchCount(2000)
-            .buildAsyncConsumerClient();
+            .buildAsyncConsumerClient());
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
@@ -103,10 +103,10 @@ class SetPrefetchCountTest extends IntegrationTestBase {
         final long sequenceNumber = testData.getPartitionProperties().getLastEnqueuedSequenceNumber();
         final EventPosition position = EventPosition.fromSequenceNumber(sequenceNumber);
 
-        consumer = createBuilder()
+        consumer = toClose(createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .prefetchCount(11)
-            .buildAsyncConsumerClient();
+            .buildAsyncConsumerClient());
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
