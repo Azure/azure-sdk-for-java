@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworks GetByResourceGroup. */
 public final class VirtualNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGetWithSubnetDelegation.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGetWithSubnetDelegation.json
      */
     /**
      * Sample code: Get virtual network with a delegated subnet.
@@ -22,11 +20,11 @@ public final class VirtualNetworksGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworks()
-            .getByResourceGroupWithResponse("rg1", "test-vnet", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "test-vnet", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGetWithServiceAssociationLink.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGetWithServiceAssociationLink.json
      */
     /**
      * Sample code: Get virtual network with service association links.
@@ -40,11 +38,11 @@ public final class VirtualNetworksGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworks()
-            .getByResourceGroupWithResponse("rg1", "test-vnet", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "test-vnet", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGet.json
      */
     /**
      * Sample code: Get virtual network.
@@ -57,6 +55,6 @@ public final class VirtualNetworksGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworks()
-            .getByResourceGroupWithResponse("rg1", "test-vnet", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "test-vnet", null, com.azure.core.util.Context.NONE);
     }
 }

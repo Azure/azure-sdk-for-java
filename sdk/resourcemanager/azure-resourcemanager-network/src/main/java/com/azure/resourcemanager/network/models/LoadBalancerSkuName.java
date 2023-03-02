@@ -20,6 +20,15 @@ public final class LoadBalancerSkuName extends ExpandableStringEnum<LoadBalancer
     public static final LoadBalancerSkuName GATEWAY = fromString("Gateway");
 
     /**
+     * Creates a new instance of LoadBalancerSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancerSkuName() {
+    }
+
+    /**
      * Creates or finds a LoadBalancerSkuName from its string representation.
      *
      * @param name a name to look for.

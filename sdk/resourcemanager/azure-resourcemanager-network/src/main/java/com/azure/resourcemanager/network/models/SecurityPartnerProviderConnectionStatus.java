@@ -24,6 +24,15 @@ public final class SecurityPartnerProviderConnectionStatus
     public static final SecurityPartnerProviderConnectionStatus NOT_CONNECTED = fromString("NotConnected");
 
     /**
+     * Creates a new instance of SecurityPartnerProviderConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityPartnerProviderConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a SecurityPartnerProviderConnectionStatus from its string representation.
      *
      * @param name a name to look for.

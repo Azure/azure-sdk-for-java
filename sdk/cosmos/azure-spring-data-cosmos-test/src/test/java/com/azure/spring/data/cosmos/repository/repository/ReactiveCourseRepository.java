@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.repository.repository;
 import com.azure.spring.data.cosmos.domain.Course;
 import com.azure.spring.data.cosmos.repository.Query;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.data.repository.query.Param;
 import reactor.core.publisher.Flux;
@@ -49,6 +50,9 @@ public interface ReactiveCourseRepository extends ReactiveCosmosRepository<Cours
      * @return Course list
      */
     Flux<Course> findByNameOrDepartmentAllIgnoreCase(String name, String department);
+
+    @Query(value = "select c as jsonNode from c where c.name = @name")
+    Flux<JsonNode> annotatedFindByName(@Param("name") String city);
 
     /**
      * Find a single Course list by name

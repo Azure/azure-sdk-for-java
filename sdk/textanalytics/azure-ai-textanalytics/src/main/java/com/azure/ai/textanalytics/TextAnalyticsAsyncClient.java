@@ -1716,14 +1716,14 @@ public final class TextAnalyticsAsyncClient {
      * {@link DynamicClassifyOptions} options. Subscribes to the call asynchronously and prints out the
      * dynamic classification details when a response is received.</p>
      *
-     * <!-- src_embed AsyncClient.dynamicClassifyBatch#Iterable-String-Iterable-DynamicClassifyOptions -->
+     * <!-- src_embed AsyncClient.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions -->
      * <pre>
      * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * documents.add&#40;&quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;;
      * documents.add&#40;&quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;;
      * DynamicClassifyOptions options = new DynamicClassifyOptions&#40;&#41;;
-     * textAnalyticsAsyncClient.dynamicClassifyBatch&#40;documents,  &quot;en&quot;,
-     *     Arrays.asList&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;, options&#41;
+     * textAnalyticsAsyncClient.dynamicClassifyBatch&#40;documents,
+     *     Arrays.asList&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;, &quot;en&quot;, options&#41;
      *     .subscribe&#40;
      *         resultCollection -&gt; resultCollection.forEach&#40;documentResult -&gt; &#123;
      *             System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
@@ -1735,15 +1735,15 @@ public final class TextAnalyticsAsyncClient {
      *         error -&gt; System.err.println&#40;&quot;There was an error analyzing dynamic classification of the documents. &quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;End of analyzing dynamic classification.&quot;&#41;&#41;;
      * </pre>
-     * <!-- end AsyncClient.dynamicClassifyBatch#Iterable-String-Iterable-DynamicClassifyOptions -->
+     * <!-- end AsyncClient.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions -->
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
-     * English as default.
      * @param categories A list of categories to which input is classified to. This parameter can not be empty and at
      * least has two categories assigned.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
      * @param options The additional configurable {@link DynamicClassifyOptions options} that may be passed when
      * analyzing dynamic classification.
      *
@@ -1759,7 +1759,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DynamicClassifyDocumentResultCollection> dynamicClassifyBatch(
-        Iterable<String> documents, String language, Iterable<String> categories, DynamicClassifyOptions options) {
+        Iterable<String> documents, Iterable<String> categories, String language, DynamicClassifyOptions options) {
         try {
             return dynamicClassifyBatchWithResponse(
                 mapByIndex(documents, (index, value) -> {
