@@ -84,8 +84,8 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
                 break;
             default:
                 // Unreachable block to satisfy compiler
-                throw new UnsupportedOperationException(
-                    "Commit not supported with the configured BlockBlobSeekableByteChannelWriteMode.");
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                    "Commit not supported with the configured BlockBlobSeekableByteChannelWriteMode."));
         }
 
         client.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(commitList)
