@@ -297,6 +297,17 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         CosmosItemResponse<ObjectNode> readResponse = createdMultiHashContainer.readItem(doc6.get("id").asText(), partitionKey, ObjectNode.class);
         assertThat(readResponse.getItem().get("version")).isEqualTo(version);
 
+        //Negative test - upsert item with incomplete partition key
+        ObjectNode badDoc = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
+        badDoc.set("id", new TextNode(UUID.randomUUID().toString()));
+        badDoc.set("city", new TextNode("Stonybrook"));
+        try {
+            createdMultiHashContainer.upsertItem(wrongDoc);
+        } catch (CosmosException e) {
+            assertThat(e.getStatusCode()).isEqualTo(400);
+            assertThat(e.getMessage().contains("PartitionKey extracted from document doesn't match the one specified in the header.")).isTrue();
+        }
+
         //Document Replace
         ObjectNode doc5 = docs.get(5);
         doc5.set("version", version);
@@ -334,24 +345,24 @@ public class CosmosMultiHashTest extends TestSuiteBase {
 
         //Delete by partition key - needs to be turned on at subscription level for account
         //Works with emulator
-//        deleteResponse = createdMultiHashContainer.deleteAllItemsByPartitionKey(
-//            new PartitionKeyBuilder()
-//                .add(doc5.get("city").asText())
-//                .add(doc5.get("zipcode").asText())
-//                .build(), new CosmosItemRequestOptions());
-//        assertThat(deleteResponse.getStatusCode()).isEqualTo(200);
-//
-//        //Negative test - partial partition key
-//        //Can't be done since partial partitions can exist over multiple physical partitions and BE does not support
-//        //these distributed transaction semantics
-//        try {
-//            createdMultiHashContainer.deleteAllItemsByPartitionKey(new PartitionKeyBuilder()
-//                .add(doc6.get("city").asText())
-//                .build(), new CosmosItemRequestOptions());
-//        } catch (CosmosException e) {
-//            assertThat(e.getStatusCode()).isEqualTo(400);
-//            assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.")).isTrue();
-//        }
+        deleteResponse = createdMultiHashContainer.deleteAllItemsByPartitionKey(
+            new PartitionKeyBuilder()
+                .add(doc5.get("city").asText())
+                .add(doc5.get("zipcode").asText())
+                .build(), new CosmosItemRequestOptions());
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(200);
+
+        //Negative test - partial partition key
+        //Can't be done since partial partitions can exist over multiple physical partitions and BE does not support
+        //these distributed transaction semantics
+        try {
+            createdMultiHashContainer.deleteAllItemsByPartitionKey(new PartitionKeyBuilder()
+                .add(doc6.get("city").asText())
+                .build(), new CosmosItemRequestOptions());
+        } catch (CosmosException e) {
+            assertThat(e.getStatusCode()).isEqualTo(400);
+            assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.")).isTrue();
+        }
         deleteAllItems();
     }
 
