@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkServices ListPrivateEndpointConnections. */
 public final class PrivateLinkServicesListPrivateEndpointConnectionsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateLinkServiceListPrivateEndpointConnection.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/PrivateLinkServiceListPrivateEndpointConnection.json
      */
     /**
      * Sample code: List private link service in resource group.
@@ -22,6 +20,6 @@ public final class PrivateLinkServicesListPrivateEndpointConnectionsSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkServices()
-            .listPrivateEndpointConnections("rg1", "testPls", Context.NONE);
+            .listPrivateEndpointConnections("rg1", "testPls", com.azure.core.util.Context.NONE);
     }
 }

@@ -18,6 +18,15 @@ public final class ApplicationGatewayWafRuleStateTypes
     public static final ApplicationGatewayWafRuleStateTypes DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of ApplicationGatewayWafRuleStateTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayWafRuleStateTypes() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayWafRuleStateTypes from its string representation.
      *
      * @param name a name to look for.

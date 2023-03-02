@@ -362,7 +362,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         options.setResponseContinuationTokenLimitInKb(this.responseContinuationTokenLimitInKb);
         return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
+            .getContainer(finalContainerName)
             .queryItems(sqlQuerySpec, options, JsonNode.class)
             .byPage()
             .publishOn(Schedulers.parallel())
@@ -762,7 +762,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
         String finalContainerName = getContainerNameOverride(containerName);
 
-        final List<JsonNode> results = findItemsAsFlux(query, containerName, domainType).collectList().block();
+        final List<JsonNode> results = findItemsAsFlux(query, finalContainerName, domainType).collectList().block();
         assert results != null;
         return results.stream()
             .map(item -> deleteItem(item, finalContainerName, domainType))
@@ -1074,7 +1074,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                       @NonNull String containerName,
                                       @NonNull Class<T> domainType) {
         String finalContainerName = getContainerNameOverride(containerName);
-        return findItemsAsFlux(query, containerName, domainType)
+        return findItemsAsFlux(query, finalContainerName, domainType)
             .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, finalContainerName, jsonNode))
             .toIterable();
     }

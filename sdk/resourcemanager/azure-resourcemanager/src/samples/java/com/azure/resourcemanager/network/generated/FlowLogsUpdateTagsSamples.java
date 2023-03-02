@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for FlowLogs UpdateTags. */
 public final class FlowLogsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkWatcherFlowLogUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherFlowLogUpdateTags.json
      */
     /**
      * Sample code: Update flow log tags.
@@ -26,7 +25,11 @@ public final class FlowLogsUpdateTagsSamples {
             .serviceClient()
             .getFlowLogs()
             .updateTagsWithResponse(
-                "rg1", "nw", "fl", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), Context.NONE);
+                "rg1",
+                "nw",
+                "fl",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

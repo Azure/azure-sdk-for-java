@@ -210,7 +210,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -265,7 +265,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -373,7 +373,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -439,7 +439,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -526,7 +526,9 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, String connectionName, BgpConnectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -549,7 +551,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         String connectionName,
         BgpConnectionInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -675,7 +678,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -730,7 +733,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -804,7 +807,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String connectionName) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).getSyncPoller();
     }
 
     /**
@@ -822,7 +825,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String connectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context).getSyncPoller();
     }
 
     /**
@@ -926,7 +929,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -985,7 +988,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1110,7 +1113,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1165,7 +1168,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1244,7 +1247,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutes(
         String resourceGroupName, String hubName, String connectionName) {
-        return beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName).getSyncPoller();
+        return this.beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName).getSyncPoller();
     }
 
     /**
@@ -1262,7 +1265,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutes(
         String resourceGroupName, String hubName, String connectionName, Context context) {
-        return beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName, context).getSyncPoller();
+        return this.beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName, context).getSyncPoller();
     }
 
     /**
@@ -1374,7 +1377,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1429,7 +1432,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1508,7 +1511,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutes(
         String resourceGroupName, String hubName, String connectionName) {
-        return beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName).getSyncPoller();
+        return this.beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName).getSyncPoller();
     }
 
     /**
@@ -1526,7 +1529,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutes(
         String resourceGroupName, String hubName, String connectionName, Context context) {
-        return beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName, context).getSyncPoller();
+        return this.beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName, context).getSyncPoller();
     }
 
     /**

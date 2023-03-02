@@ -190,6 +190,7 @@
       <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
+      <Class name="com.azure.core.test.utils.TestProxyDownloader"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -2565,4 +2566,17 @@
       <Field name="searchClient"/>
     </Or>
   </Match>
+  <!-- Derived type changes this field as a marker. -->
+  <Match>
+    <Class name="com.azure.core.test.TestBase"/>
+    <Field name="enableTestProxy"/>
+    <Bug pattern="MS_SHOULD_BE_FINAL"/>
+  </Match>
+  <!-- Exception is ignored in a loop waiting for an http endpoint -->
+  <Match>
+    <Class name="com.azure.core.test.utils.TestProxyManager"/>
+    <Method name="startProxy"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
 </FindBugsFilter>

@@ -20,6 +20,15 @@ public final class ConnectionMonitorSourceStatus extends ExpandableStringEnum<Co
     public static final ConnectionMonitorSourceStatus INACTIVE = fromString("Inactive");
 
     /**
+     * Creates a new instance of ConnectionMonitorSourceStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionMonitorSourceStatus() {
+    }
+
+    /**
      * Creates or finds a ConnectionMonitorSourceStatus from its string representation.
      *
      * @param name a name to look for.

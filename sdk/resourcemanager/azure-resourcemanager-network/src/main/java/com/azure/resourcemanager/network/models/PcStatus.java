@@ -26,6 +26,15 @@ public final class PcStatus extends ExpandableStringEnum<PcStatus> {
     public static final PcStatus UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of PcStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PcStatus() {
+    }
+
+    /**
      * Creates or finds a PcStatus from its string representation.
      *
      * @param name a name to look for.
