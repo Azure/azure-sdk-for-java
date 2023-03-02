@@ -1705,7 +1705,7 @@ public final class TextAnalyticsClient {
      * <p>Dynamic classification of each document in a list of {@link String document} with provided
      * {@link DynamicClassifyOptions} options.
      *
-     * <!-- src_embed Client.dynamicClassifyBatch#Iterable-String-Iterable-DynamicClassifyOptions -->
+     * <!-- src_embed Client.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions -->
      * <pre>
      * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * documents.add&#40;&quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;;
@@ -1714,7 +1714,7 @@ public final class TextAnalyticsClient {
      *
      * &#47;&#47; Analyzing dynamic classification
      * DynamicClassifyDocumentResultCollection resultCollection = textAnalyticsClient.dynamicClassifyBatch&#40;
-     *     documents, &quot;en&quot;, Arrays.asList&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;, options&#41;;
+     *     documents, Arrays.asList&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;, &quot;en&quot;, options&#41;;
      *
      * &#47;&#47; Result of dynamic classification
      * resultCollection.forEach&#40;documentResult -&gt; &#123;
@@ -1725,15 +1725,15 @@ public final class TextAnalyticsClient {
      *     &#125;
      * &#125;&#41;;
      * </pre>
-     * <!-- end Client.dynamicClassifyBatch#Iterable-String-Iterable-DynamicClassifyOptions -->
+     * <!-- end Client.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions -->
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
-     * English as default.
      * @param categories A list of categories to which input is classified to. This parameter can not be empty and at
      * least has two categories assigned.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
      * @param options The additional configurable {@link DynamicClassifyOptions options} that may be passed when
      * analyzing dynamic classification.
      *
@@ -1749,7 +1749,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DynamicClassifyDocumentResultCollection dynamicClassifyBatch(Iterable<String> documents,
-        String language, Iterable<String> categories, DynamicClassifyOptions options) {
+        Iterable<String> categories, String language, DynamicClassifyOptions options) {
         return dynamicClassifyBatchWithResponse(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);

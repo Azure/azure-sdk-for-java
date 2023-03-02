@@ -3104,7 +3104,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void dynamicClassificationStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         dynamicClassificationStringInputRunner((inputs, options) ->
-            StepVerifier.create(client.dynamicClassifyBatch(inputs, null, DYNAMIC_CLASSIFICATION_CATEGORIES,
+            StepVerifier.create(client.dynamicClassifyBatch(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null,
                 options))
                 .assertNext(response -> validateDynamicClassifyDocumentResultCollection(true,
                     getExpectedDynamicClassifyDocumentResultCollection(), response))
@@ -3134,7 +3134,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         tooManyDocumentsRunner(inputs -> {
-            StepVerifier.create(client.dynamicClassifyBatch(inputs, null, DYNAMIC_CLASSIFICATION_CATEGORIES,
+            StepVerifier.create(client.dynamicClassifyBatch(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null,
                 null))
                 .verifyErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
