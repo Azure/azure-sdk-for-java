@@ -20,7 +20,7 @@ import java.util.concurrent.Exchanger;
 public class ServiceBusJmsPasswordlessIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusJmsPasswordlessIT.class);
     private static final String DATA = "service bus jms passwordless test";
-    private static final String QUEUE_NAME = "que001";
+    private static final String QUEUE_NAME = "passwordless_que001";
     private final Exchanger<String> EXCHANGER = new Exchanger<>();
 
     @Autowired
