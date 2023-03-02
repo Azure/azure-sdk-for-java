@@ -2298,47 +2298,57 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             collection,
                             Collections.unmodifiableMap(rangeQueryMap));
 
-                        AtomicReference<Instant> startTime = new AtomicReference<>();
-
                         // merge results from point reads and queries
                         return Flux.merge(pointReads, queries)
-                                .collectList()
-                                // aggregating the result to construct a FeedResponse and aggregate RUs.
-                                .map(feedList -> {
-                                    List<T> finalList = new ArrayList<>();
-                                    HashMap<String, String> headers = new HashMap<>();
-                                    ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
-                                    List<ClientSideRequestStatistics> aggregateRequestStatistics = new ArrayList<>();
-                                    double requestCharge = 0;
-                                    for (FeedResponse<Document> page : feedList) {
-                                        ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
-                                                ModelBridgeInternal.queryMetrics(page);
-                                        if (pageQueryMetrics != null) {
-                                            pageQueryMetrics.forEach(
-                                                    aggregatedQueryMetrics::putIfAbsent);
-                                        }
-
-                                        requestCharge += page.getRequestCharge();
-                                        // TODO: this does double serialization: FIXME
-                                        finalList.addAll(page.getResults().stream().map(document ->
-                                                ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
-                                        aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
+                            .collectList()
+                            // aggregating the result to construct a FeedResponse and aggregate RUs.
+                            .map(feedList -> {
+                                List<T> finalList = new ArrayList<>();
+                                HashMap<String, String> headers = new HashMap<>();
+                                ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
+                                List<ClientSideRequestStatistics> aggregateRequestStatistics = new ArrayList<>();
+                                double requestCharge = 0;
+                                for (FeedResponse<Document> page : feedList) {
+                                    ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
+                                        ModelBridgeInternal.queryMetrics(page);
+                                    if (pageQueryMetrics != null) {
+                                        pageQueryMetrics.forEach(
+                                            aggregatedQueryMetrics::putIfAbsent);
                                     }
-                                    CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
-                                    BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
-                                    headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
-                                            .toString(requestCharge));
-                                    FeedResponse<T> frp = BridgeInternal
-                                            .createFeedResponseWithQueryMetrics(
-                                                    finalList,
-                                                    headers,
-                                                    aggregatedQueryMetrics,
-                                                    null,
-                                                    false,
-                                                    false,
-                                                    aggregatedDiagnostics);
-                                    return frp;
-                                });
+
+                                    requestCharge += page.getRequestCharge();
+                                    // TODO: this does double serialization: FIXME
+                                    finalList.addAll(page.getResults().stream().map(document ->
+                                        ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
+                                }
+                                CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                                BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
+                                headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
+                                    .toString(requestCharge));
+                                FeedResponse<T> frp = BridgeInternal
+                                    .createFeedResponseWithQueryMetrics(
+                                        finalList,
+                                        headers,
+                                        aggregatedQueryMetrics,
+                                        null,
+                                        false,
+                                        false,
+                                        aggregatedDiagnostics);
+                                return frp;
+                            })
+                                .doOnSuccess(feedResponse -> {
+                                            FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers
+                                                    .CosmosDiagnosticsHelper
+                                                    .getCosmosDiagnosticsAccessor()
+                                                    .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics());
+
+                                            Instant feedResponseCreationTime = feedResponseDiagnostics.getFeedResponseCreationTime();
+                                            Instant minRequestStartTime = feedResponseDiagnostics.getMinRequestStartTime();
+
+                                            feedResponseDiagnostics.recordFeedResponseLatency(Duration.between(minRequestStartTime, feedResponseCreationTime));
+                                        }
+                                );
                     });
                 }
             );

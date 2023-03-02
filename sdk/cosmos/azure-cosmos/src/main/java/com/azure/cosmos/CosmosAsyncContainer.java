@@ -1079,19 +1079,7 @@ public class CosmosAsyncContainer {
 
         return CosmosBridgeInternal
                 .getAsyncDocumentClient(this.getDatabase())
-                .readMany(itemIdentityList, BridgeInternal.getLink(this), options, classType)
-                .doOnSuccess(feedResponse -> {
-                            FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers
-                                    .CosmosDiagnosticsHelper
-                                    .getCosmosDiagnosticsAccessor()
-                                    .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics());
-
-                            Instant feedResponseCreationTime = feedResponseDiagnostics.getFeedResponseCreationTime();
-                            Instant minRequestStartTime = feedResponseDiagnostics.getMinRequestStartTime();
-
-                            feedResponseDiagnostics.recordFeedResponseLatency(Duration.between(minRequestStartTime, feedResponseCreationTime));
-                        }
-                );
+                .readMany(itemIdentityList, BridgeInternal.getLink(this), options, classType);
     }
 
     /**

@@ -146,14 +146,14 @@ public class FeedResponseDiagnostics {
 
     public void addClientSideRequestStatistics(List<ClientSideRequestStatistics> requestStatistics) {
         clientSideRequestStatisticsList.addAll(requestStatistics);
-        this.recordMinRequestTimeAndMaxResponseTime(requestStatistics);
+        this.recordMinRequestStartTimeAndMaxRequestEndTime(requestStatistics);
     }
 
     public Instant getFeedResponseCreationTime() {
         return feedResponseCreationTime.get();
     }
 
-    private void recordMinRequestTimeAndMaxResponseTime(List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+    private void recordMinRequestStartTimeAndMaxRequestEndTime(List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         Instant minStartInstant = this.minRequestStartTime;
         Instant maxEndInstant = this.maxRequestEndTime;
 
@@ -183,8 +183,6 @@ public class FeedResponseDiagnostics {
     }
 
     public void recordFeedResponseCreationTime(Instant feedResponseCreationTime) {
-        if (this.feedResponseCreationTime.get().isBefore(feedResponseCreationTime)) {
-            this.feedResponseCreationTime.set(feedResponseCreationTime);
-        }
+        this.feedResponseCreationTime.set(feedResponseCreationTime);
     }
 }
