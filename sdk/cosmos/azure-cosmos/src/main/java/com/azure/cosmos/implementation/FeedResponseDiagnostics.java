@@ -105,6 +105,11 @@ public class FeedResponseDiagnostics {
                     }
                 }
             }
+            stringBuilder.append(FEED_RESPONSE_LATENCY + SPACE + QueryMetricsTextWriter.DURATION_HEADER)
+                    .append(EQUALS)
+                    .append(this.feedResponseLatency.get().toMillis())
+                    .append(System.lineSeparator())
+                    .append(System.lineSeparator());
         }
 
 
