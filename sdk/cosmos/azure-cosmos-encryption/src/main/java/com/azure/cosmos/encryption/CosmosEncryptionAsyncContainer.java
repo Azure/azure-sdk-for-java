@@ -56,7 +56,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -224,7 +227,7 @@ public final class CosmosEncryptionAsyncContainer {
     }
 
     private Mono<PartitionKey> checkAndGetEncryptedPartitionKey(PartitionKey partitionKey, EncryptionSettings encryptionSettings) {
-        if (encryptionSettings.getPartitionKeyPaths().isEmpty() || partitionKey == null) {
+        if (encryptionSettings.getPartitionKeyPaths().isEmpty()) {
             return Mono.just(partitionKey);
         }
 
@@ -1115,49 +1118,66 @@ public final class CosmosEncryptionAsyncContainer {
      * transactional batch succeeded.
      */
     public Mono<CosmosBatchResponse> executeCosmosBatch(CosmosBatch cosmosBatch, CosmosBatchRequestOptions requestOptions) {
-        if (requestOptions == null) {
-            requestOptions = new CosmosBatchRequestOptions();
-        }
+        final CosmosBatchRequestOptions cosmosBatchRequestOptions = Optional.ofNullable(requestOptions)
+            .orElse(new CosmosBatchRequestOptions());
 
         List<Mono<ItemBatchOperation<?>>> monoList = new ArrayList<>();
         for (ItemBatchOperation<?> itemBatchOperation : cosmosBatchAccessor.getOperationsInternal(cosmosBatch)) {
             Mono<ItemBatchOperation<?>> itemBatchOperationMono = null;
             if (itemBatchOperation.getItem() != null) {
-                ObjectNode objectNode =
-                    EncryptionUtils.getSimpleObjectMapper().valueToTree(itemBatchOperation.getItem());
-                itemBatchOperationMono =
-                    encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> {
-                        return new ItemBatchOperation<>(
+                itemBatchOperationMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+                    .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+                    .flatMap(encryptionSettings -> {
+                        try {
+                            Field id = itemBatchOperation.getItem().getClass().getDeclaredField(Constants.PROPERTY_NAME_ID);
+                            id.setAccessible(true);
+                            return Mono.zip(
+                                checkAndGetEncryptedId((String) id.get(itemBatchOperation.getItem()), encryptionSettings),
+                                checkAndGetEncryptedPartitionKey(itemBatchOperation.getPartitionKeyValue(), encryptionSettings));
+                        } catch (IllegalAccessException | NoSuchFieldException e) {
+                            return Mono.error(e);
+                        }
+                    })
+                    .flatMap(encryptedIdPartitionKeyTuple -> {
+                        ObjectNode objectNode =
+                            EncryptionUtils.getSimpleObjectMapper().valueToTree(itemBatchOperation.getItem());
+                        return encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> new ItemBatchOperation<>(
                             itemBatchOperation.getOperationType(),
-                            itemBatchOperation.getId(),
-                            itemBatchOperation.getPartitionKeyValue(),
+                            encryptedIdPartitionKeyTuple.getT1(),
+                            encryptedIdPartitionKeyTuple.getT2(),
                             itemBatchOperation.getRequestOptions(),
                             encryptedItem
-                        );
+                        ));
                     });
+
             } else {
-                itemBatchOperationMono =
-                    Mono.just(
+                itemBatchOperationMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+                    .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+                    .flatMap(encryptionSettings -> {
+                        return Mono.zip(
+                            checkAndGetEncryptedId(itemBatchOperation.getId(), encryptionSettings),
+                            checkAndGetEncryptedPartitionKey(itemBatchOperation.getPartitionKeyValue(), encryptionSettings));
+                    })
+                    .flatMap(encryptedIdPartitionKeyTuple -> Mono.just(
                         new ItemBatchOperation<>(
                             itemBatchOperation.getOperationType(),
-                            itemBatchOperation.getId(),
-                            itemBatchOperation.getPartitionKeyValue(),
+                            encryptedIdPartitionKeyTuple.getT1(),
+                            encryptedIdPartitionKeyTuple.getT2(),
                             itemBatchOperation.getRequestOptions(),
                             null
-                        )
-                    );
+                        )));
             }
             monoList.add(itemBatchOperationMono);
+
         }
         Mono<List<ItemBatchOperation<?>>> encryptedOperationListMono =
             Flux.mergeSequential(monoList).collectList();
-        CosmosBatchRequestOptions finalRequestOptions = requestOptions;
 
         CosmosBatch encryptedCosmosBatch = CosmosBatch.createCosmosBatch(cosmosBatch.getPartitionKeyValue());
 
         return encryptedOperationListMono.flatMap(itemBatchOperations -> {
             cosmosBatchAccessor.getOperationsInternal(encryptedCosmosBatch).addAll(itemBatchOperations);
-            return executeCosmosBatchHelper(encryptedCosmosBatch, finalRequestOptions, false);
+            return executeCosmosBatchHelper(encryptedCosmosBatch, cosmosBatchRequestOptions, false);
         });
     }
 
@@ -1256,37 +1276,53 @@ public final class CosmosEncryptionAsyncContainer {
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Flux<CosmosItemOperation> operations,
         CosmosBulkExecutionOptions bulkOptions) {
-        if (bulkOptions == null) {
-            bulkOptions = new CosmosBulkExecutionOptions();
-        }
+        final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = Optional.ofNullable(bulkOptions)
+            .orElse(new CosmosBulkExecutionOptions());
 
-        final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = bulkOptions;
         Flux<CosmosItemOperation> operationFlux = operations.flatMap(cosmosItemOperation -> {
-            Mono<CosmosItemOperation> cosmosItemOperationMono;
+            Mono<CosmosItemOperation> cosmosItemOperationMono = null;
             if (cosmosItemOperation.getItem() != null) {
-                ObjectNode objectNode =
-                    EncryptionUtils.getSimpleObjectMapper().valueToTree(cosmosItemOperation.getItem());
-                assert cosmosItemOperation instanceof ItemBulkOperation;
-                cosmosItemOperationMono =
-                    this.encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> new ItemBulkOperation<>(
-                        cosmosItemOperation.getOperationType(),
-                        cosmosItemOperation.getId(),
-                        cosmosItemOperation.getPartitionKeyValue(),
-                        ((ItemBulkOperation<JsonNode, TContext>) cosmosItemOperation).getRequestOptions(),
-                        encryptedItem,
-                        cosmosItemOperation.getContext()
-                    ));
+                cosmosItemOperationMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+                    .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+                    .flatMap( encryptionSettings -> {
+                        try {
+                            Field id = cosmosItemOperation.getItem().getClass().getDeclaredField(Constants.PROPERTY_NAME_ID);
+                            id.setAccessible(true);
+                            return Mono.zip(
+                                checkAndGetEncryptedId((String) id.get(cosmosItemOperation.getItem()), encryptionSettings),
+                                checkAndGetEncryptedPartitionKey(cosmosItemOperation.getPartitionKeyValue(), encryptionSettings));
+                        } catch (IllegalAccessException | NoSuchFieldException e) {
+                            return Mono.error(e);
+                        }
+                    })
+                    .flatMap(encryptedIdPartitionKeyTuple -> {
+                        ObjectNode objectNode =
+                            EncryptionUtils.getSimpleObjectMapper().valueToTree(cosmosItemOperation.getItem());
+                        assert cosmosItemOperation instanceof ItemBulkOperation;
+                        return this.encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> new ItemBulkOperation<>(
+                            cosmosItemOperation.getOperationType(),
+                            encryptedIdPartitionKeyTuple.getT1(),
+                            encryptedIdPartitionKeyTuple.getT2(),
+                            ((ItemBulkOperation<JsonNode, TContext>) cosmosItemOperation).getRequestOptions(),
+                            encryptedItem,
+                            cosmosItemOperation.getContext()
+                        ));
+                    });
             } else {
-                cosmosItemOperationMono = Mono.just(
-                    new ItemBulkOperation<>(
-                        cosmosItemOperation.getOperationType(),
-                        cosmosItemOperation.getId(),
-                        cosmosItemOperation.getPartitionKeyValue(),
-                        ((ItemBulkOperation<JsonNode, TContext>) cosmosItemOperation).getRequestOptions(),
-                        null,
-                        cosmosItemOperation.getContext()
-                    )
-                );
+                cosmosItemOperationMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+                    .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+                    .flatMap( encryptionSettings -> Mono.zip(
+                        checkAndGetEncryptedId(cosmosItemOperation.getId() , encryptionSettings),
+                        checkAndGetEncryptedPartitionKey(cosmosItemOperation.getPartitionKeyValue(), encryptionSettings)))
+                    .flatMap(encryptedIdPartitionKeyTuple -> Mono.just(
+                        new ItemBulkOperation<>(
+                            cosmosItemOperation.getOperationType(),
+                            encryptedIdPartitionKeyTuple.getT1(),
+                            encryptedIdPartitionKeyTuple.getT2(),
+                            ((ItemBulkOperation<JsonNode, TContext>) cosmosItemOperation).getRequestOptions(),
+                            null,
+                            cosmosItemOperation.getContext()
+                        )));
             }
             return cosmosItemOperationMono;
         });

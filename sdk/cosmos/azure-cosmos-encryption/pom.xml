@@ -48,6 +48,7 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos.encryption/com.azure.cosmos.encryption.keyprovider=ALL-UNNAMED
       --add-opens com.azure.cosmos.encryption/com.azure.cosmos.encryption.util=ALL-UNNAMED
       --add-opens com.azure.cosmos.encryption/com.azure.cosmos.encryption.models=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 

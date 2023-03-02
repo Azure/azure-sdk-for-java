@@ -240,7 +240,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             SHARED_ENCRYPTION_DATABASE.createClientEncryptionKey("key2",
                 CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata2).block();
 
-            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths(), 2);
+            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths(2), 2);
             String containerId = UUID.randomUUID().toString();
             CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
             properties.setClientEncryptionPolicy(clientEncryptionPolicy);
@@ -1213,7 +1213,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         }
     }
 
-        protected static List<ClientEncryptionIncludedPath> getPaths() {
+        protected static List<ClientEncryptionIncludedPath> getPaths(int policyFormatVersion) {
             ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
             includedPath1.setClientEncryptionKeyId("key1");
             includedPath1.setPath("/sensitiveString");
@@ -1318,8 +1318,10 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             paths.add(includedPath11);
             paths.add(includedPath12);
             paths.add(includedPath13);
-            paths.add(includedPath14);
-            paths.add(includedPath15);
+            if (policyFormatVersion == 2) {
+                paths.add(includedPath14);
+                paths.add(includedPath15);
+            }
 
             return paths;
         }

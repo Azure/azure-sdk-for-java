@@ -70,7 +70,7 @@ public class DotNetCompatibleTest extends TestSuiteBase {
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase.getId());
 
         ClientEncryptionPolicy clientEncryptionPolicy =
-            new ClientEncryptionPolicy(getPaths(), 2);
+            new ClientEncryptionPolicy(getPaths(2), 2);
         String containerId = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/mypk");
         containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
