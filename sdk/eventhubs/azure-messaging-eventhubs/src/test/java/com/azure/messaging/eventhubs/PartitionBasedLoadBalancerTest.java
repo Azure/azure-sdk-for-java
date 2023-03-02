@@ -103,12 +103,12 @@ public class PartitionBasedLoadBalancerTest {
 
     private AutoCloseable mockCloseable;
 
-    private List<AutoCloseable> toClose = new ArrayList<>();
+    private List<AutoCloseable> toClose;
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
         System.out.println("Running " + testInfo.getDisplayName());
-
+        toClose = new ArrayList<>();
         mockCloseable = MockitoAnnotations.openMocks(this);
 
         final Date enqueuedTime = Date.from(Instant.now());
