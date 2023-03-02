@@ -27,7 +27,7 @@ public class FeedResponseDiagnostics {
     private final static String EQUALS = "=";
     private final static String QUERY_PLAN = "QueryPlan";
     private final static String SPACE = " ";
-    private final static String FEED_RESPONSE_LATENCY = "FeedResponseLatency";
+    private final static String FEED_RESPONSE_LATENCY = "Feed response latency";
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedResponseDiagnostics.class);
     private Map<String, QueryMetrics> queryMetricsMap;
@@ -36,7 +36,6 @@ public class FeedResponseDiagnostics {
     private final AtomicReference<Instant> feedResponseCreationTime = new AtomicReference<>(Instant.now());
     private final AtomicReference<Duration> feedResponseLatency = new AtomicReference<>(Duration.ZERO);
     private Instant minRequestStartTime = Instant.MAX;
-    private Instant maxRequestEndTime = Instant.MIN;
 
     public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         this.queryMetricsMap = queryMetricsMap;
@@ -59,8 +58,7 @@ public class FeedResponseDiagnostics {
             );
         }
 
-        this.maxRequestEndTime = toBeCloned.maxRequestEndTime;
-        this.minRequestStartTime = toBeCloned.minRequestStartTime;
+        this.minRequestStartTime = this.computeMinRequestStartTime(this.clientSideRequestStatisticsList);
         this.feedResponseCreationTime.set(toBeCloned.feedResponseCreationTime.get());
         this.feedResponseLatency.set(toBeCloned.feedResponseLatency.get());
     }
@@ -104,12 +102,12 @@ public class FeedResponseDiagnostics {
                     }
                 }
             }
-            stringBuilder.append(FEED_RESPONSE_LATENCY + SPACE + QueryMetricsTextWriter.DURATION_HEADER)
-                    .append(EQUALS)
-                    .append(this.feedResponseLatency.get().toMillis())
-                    .append(System.lineSeparator());
         }
 
+        stringBuilder.append(FEED_RESPONSE_LATENCY + SPACE + QueryMetricsTextWriter.DURATION_HEADER)
+                .append(EQUALS)
+                .append(this.feedResponseLatency.get().toMillis())
+                .append(System.lineSeparator());
 
         if (queryMetricsMap != null && !queryMetricsMap.isEmpty()) {
             queryMetricsMap.forEach((key, value) -> stringBuilder.append(key)
@@ -146,28 +144,23 @@ public class FeedResponseDiagnostics {
 
     public void addClientSideRequestStatistics(List<ClientSideRequestStatistics> requestStatistics) {
         clientSideRequestStatisticsList.addAll(requestStatistics);
-        this.recordMinRequestStartTimeAndMaxRequestEndTime(requestStatistics);
+        // calculate and assign the min across all ClientSideRequestStatistics instances
+        minRequestStartTime = this.computeMinRequestStartTime(requestStatistics);
     }
 
     public Instant getFeedResponseCreationTime() {
         return feedResponseCreationTime.get();
     }
 
-    private void recordMinRequestStartTimeAndMaxRequestEndTime(List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+    private Instant computeMinRequestStartTime(List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         Instant minStartInstant = this.minRequestStartTime;
-        Instant maxEndInstant = this.maxRequestEndTime;
 
         for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatisticsList) {
-
             Instant requestStartTimeUTC = requestStatistics.getRequestStartTimeUTC();
-            Instant requestEndTimeUTC = requestStartTimeUTC.plus(requestStatistics.getDuration());
-
             minStartInstant = requestStartTimeUTC.isBefore(minStartInstant) ? requestStartTimeUTC : minStartInstant;
-            maxEndInstant = requestEndTimeUTC.isAfter(maxEndInstant) ? requestEndTimeUTC : maxEndInstant;
         }
 
-        this.minRequestStartTime = minStartInstant;
-        this.maxRequestEndTime = maxEndInstant;
+        return minStartInstant;
     }
 
     public void recordFeedResponseLatency(Duration feedResponseLatency) {
