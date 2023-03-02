@@ -1080,11 +1080,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
 
                     if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
-                        logger.info(
-                                "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
-                                endpoint,
-                                Duration.ofNanos(elapsedTimeInNanos),
-                                Duration.ofNanos(idleEndpointTimeoutInNanos));
+                        if(logger.isDebugEnabled()) {
+                            logger.debug(
+                                    "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
+                                    endpoint,
+                                    Duration.ofNanos(elapsedTimeInNanos),
+                                    Duration.ofNanos(idleEndpointTimeoutInNanos));
+                        }
                         endpoint.close();
                         return;
                     }
@@ -1164,7 +1166,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                 if (promise.trySuccess(channel)) {
   
-                    logger.info("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
+                    if(logger.isDebugEnabled()) {
+                        logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
+                    }
 
                     totalAcquiredChannels.incrementAndGet();
 
@@ -1179,14 +1183,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         return channel;
                     });
                 } else {
-                    logger.info("notifyChannelConnect promise.trySuccess(channel)=false");
+                    logger.info("notifyChannelConnect local {}, remote {} promise.trySuccess(channel)=false", channel.localAddress(), channel.remoteAddress());
 
                     // Promise was completed in the meantime (like cancelled), just close the channel
                     this.closeChannel(channel);
                 }
 
             } else {
-                logger.debug("notifyChannelConnect future was not successful");
+                logger.info("notifyChannelConnect future was not successful");
 
                 promise.tryFailure(future.cause());
             }
@@ -1642,7 +1646,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         public final void run() {
             // log is too noisy when debug is enabled
             if (logger.isTraceEnabled()) {
-                logger.debug("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
+                logger.trace("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
             }
             long currentNanoTime = System.nanoTime();
 
