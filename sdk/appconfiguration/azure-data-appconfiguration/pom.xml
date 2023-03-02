@@ -41,6 +41,7 @@
       --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <graalvm.enable>true</graalvm.enable>
+    <nativeImage.buildArgs>--initialize-at-build-time=com.azure.data.appconfiguration.TestHelper</nativeImage.buildArgs>
   </properties>
 
   <dependencies>
