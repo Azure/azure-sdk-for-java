@@ -4,8 +4,10 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.apache.qpid.jms.JmsConnectionExtensions;
@@ -51,8 +53,9 @@ import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentif
 public class ServiceBusJmsAutoConfiguration {
 
     @Bean
-    AzureServiceBusJmsProperties serviceBusJmsProperties() {
-        return new AzureServiceBusJmsProperties();
+    AzureServiceBusJmsProperties serviceBusJmsProperties(AzureGlobalProperties azureGlobalProperties) {
+        AzureServiceBusJmsProperties properties = new AzureServiceBusJmsProperties();
+        return mergeAzureProperties(azureGlobalProperties, properties);
     }
 
     @Bean
@@ -84,5 +87,11 @@ public class ServiceBusJmsAutoConfiguration {
     static AzureServiceBusJmsPropertiesBeanPostProcessor azureServiceBusJmsPropertiesBeanPostProcessor(
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
         return new AzureServiceBusJmsPropertiesBeanPostProcessor(connectionStringProviders);
+    }
+
+    private AzureServiceBusJmsProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties, AzureServiceBusJmsProperties azurePasswordlessProperties) {
+        AzureServiceBusJmsProperties mergedProperties = new AzureServiceBusJmsProperties();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
+        return mergedProperties;
     }
 }

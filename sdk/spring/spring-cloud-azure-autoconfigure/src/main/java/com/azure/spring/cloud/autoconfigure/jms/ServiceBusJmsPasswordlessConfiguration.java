@@ -3,9 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,8 +22,8 @@ class ServiceBusJmsPasswordlessConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    AzureServiceBusJmsCredentialSupplier azureServiceBusJmsCredentialSupplier(AzureGlobalProperties azureGlobalProperties, AzureServiceBusJmsProperties azureServiceBusJmsProperties) {
-        return new AzureServiceBusJmsCredentialSupplier(mergeAzureProperties(azureGlobalProperties, azureServiceBusJmsProperties).toPasswordlessProperties());
+    AzureServiceBusJmsCredentialSupplier azureServiceBusJmsCredentialSupplier(AzureServiceBusJmsProperties azureServiceBusJmsProperties) {
+        return new AzureServiceBusJmsCredentialSupplier(azureServiceBusJmsProperties.toPasswordlessProperties());
     }
 
     @Bean
@@ -38,9 +36,5 @@ class ServiceBusJmsPasswordlessConfiguration {
         };
     }
 
-    private AzureServiceBusJmsProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties, AzureServiceBusJmsProperties azurePasswordlessProperties) {
-        AzureServiceBusJmsProperties mergedProperties = new AzureServiceBusJmsProperties();
-        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
-        return mergedProperties;
-    }
+
 }
