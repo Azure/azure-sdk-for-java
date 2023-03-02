@@ -597,6 +597,19 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     }
 
     @Test
+    void getSubscriptionExistsFalse() {
+        final ServiceBusAdministrationClient client = getClient();
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-2"
+            : getEntityName(getTopicBaseName(), 2);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription-99"
+            : getEntityName(getSubscriptionBaseName(), 99);
+
+        assertFalse(client.getSubscriptionExists(topicName, subscriptionName));
+    }
+
+    @Test
     void getSubscriptionRuntimeProperties() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = interceptorManager.isPlaybackMode()
