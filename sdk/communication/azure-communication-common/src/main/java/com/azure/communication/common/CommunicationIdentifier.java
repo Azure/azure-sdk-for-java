@@ -123,7 +123,7 @@ public abstract class CommunicationIdentifier {
         } else if (ACS_USER.equals(prefix) || SPOOL_USER.equals(prefix) || ACS_USER_DOD_CLOUD.equals(prefix) || ACS_USER_GCCH_CLOUD.equals(prefix)) {
             return new CommunicationUserIdentifier(rawId);
         } else if (BOT_GCCH_CLOUD_GLOBAL.equals(prefix)) {
-            return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.GCCH,true);
+            return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.GCCH, true);
         } else if (BOT_PUBLIC_CLOUD.equals(prefix)) {
             return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.PUBLIC, false);
         } else if (BOT_DOD_CLOUD_GLOBAL.equals(prefix)) {
