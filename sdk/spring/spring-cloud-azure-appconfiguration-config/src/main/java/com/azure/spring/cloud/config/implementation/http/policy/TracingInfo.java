@@ -74,6 +74,8 @@ public class TracingInfo {
             hostType = HostType.AZURE_WEB_APP;
         } else if (System.getenv(RequestTracingConstants.KUBERNETES_ENVIRONMENT_VARIABLE.toString()) != null) {
             hostType = HostType.KUBERNETES;
+        } else if (System.getenv(RequestTracingConstants.CONTAINER_APP_ENVIRONMENT_VARIABLE.toString()) != null) {
+            hostType = HostType.CONTAINER_APP;
         }
 
         return hostType.toString();
