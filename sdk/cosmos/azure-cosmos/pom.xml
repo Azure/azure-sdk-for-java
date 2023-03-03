@@ -92,7 +92,6 @@ Licensed under the MIT License.
 
     <!-- Prevents Checkstyle validating test source files. -->
     <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
-    <revapi.skip>true</revapi.skip>
     <cosmos.test.e2e.skip>false</cosmos.test.e2e.skip>
     <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>
   </properties>
