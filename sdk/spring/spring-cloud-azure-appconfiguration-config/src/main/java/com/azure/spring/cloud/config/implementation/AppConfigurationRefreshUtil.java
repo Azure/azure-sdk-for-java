@@ -226,6 +226,8 @@ class AppConfigurationRefreshUtil {
 
             if (!eventData.getDoRefresh() && watchedKeySize != state.getWatchKeys().size()) {
                 String eventDataInfo = ".appconfig.featureflag/*";
+                    if (currentKey instanceof FeatureFlagConfigurationSetting
+                        && FEATURE_FLAG_CONTENT_TYPE.equals(currentKey.getContentType())) {
 
                 // Only one refresh Event needs to be call to update all of the
                 // stores, not one for each.
@@ -239,13 +241,13 @@ class AppConfigurationRefreshUtil {
             StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
         }
     }
-
     private static int checkFeatureFlags(List<ConfigurationSetting> currentKeys, State state,
         AppConfigurationReplicaClient client, RefreshEventData eventData) {
         int watchedKeySize = 0;
         for (ConfigurationSetting currentKey : currentKeys) {
             if (currentKey instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(currentKey.getContentType())) {
+            }
 
                 watchedKeySize += 1;
                 for (ConfigurationSetting watchFlag : state.getWatchKeys()) {
