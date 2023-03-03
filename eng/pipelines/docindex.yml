@@ -7,7 +7,7 @@ jobs:
   - job: UpdateDocsMsBuildConfig
     pool:
       vmImage: ubuntu-20.04
-    timeoutInMinutes: 180
+    timeoutInMinutes: 300
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs
       DailyDocRepoLocation: $(Pipeline.Workspace)/daily
