@@ -1060,7 +1060,7 @@ public final class ClientTelemetryMetrics {
         private final MeterRegistry registry;
 
         private RntbdMetricsV2(MeterRegistry registry, RntbdTransportClient client, RntbdEndpoint endpoint) {
-            this.tags = Tags.of(endpoint.clientMetricTag(), endpoint.tag());
+            this.tags = Tags.of(endpoint.clientMetricTag());
             this.client = client;
             this.registry = registry;
             if (this.client.getMetricCategories().contains(MetricCategory.DirectRequests)) {

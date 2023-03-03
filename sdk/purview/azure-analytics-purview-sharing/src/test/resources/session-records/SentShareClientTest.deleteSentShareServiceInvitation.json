@@ -1,0 +1,124 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://account.purview.azure.com/share/sentShares/45b01fac-f557-477a-9711-ab344b726bdf?api-version=2023-02-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-sharing/1.0.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "30ca7779-3d71-4b2f-b395-abfb7b627b99",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Operation-Id" : "https://account.purview.azure.com/share/operationResults/00000000-0000-0000-0000-000000000000?api-version=2023-02-15-preview",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Kestrel",
+      "retry-after" : "0",
+      "Content-Length" : "691",
+      "StatusCode" : "201",
+      "Operation-Location" : "https://account.purview.azure.com/share/operationResults/00000000-0000-0000-0000-000000000000?api-version=2023-02-15-preview",
+      "Body" : "{\"properties\":{\"displayName\":\"sentshare3717814b7b9\",\"description\":\"A sample share\",\"artifact\":{\"properties\":{\"paths\":[{\"containerName\":\"test-files\",\"senderPath\":\"graph.png\",\"receiverPath\":\"graph.png\"}],\"location\":\"japaneast\"},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"referenceName\":\"/subscriptions/8af54e97-8629-48cd-A92e-24753982bf92/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/providerstorage\",\"type\":\"ArmResourceReference\"}},\"state\":\"Succeeded\",\"createdAt\":\"2023-02-23T22:00:57.3184413Z\",\"dependsOn\":[],\"senderName\":\"my-share-app\",\"senderTenantName\":\"Contoso\"},\"shareKind\":\"InPlace\",\"id\":\"45b01fac-f557-477a-9711-ab344b726bdf\",\"type\":\"SentShare\"}",
+      "Date" : "Thu, 23 Feb 2023 22:00:57 GMT",
+      "x-ms-correlation-request-id" : "7c912298-8ef5-4f23-a2f4-8337d67ed13e",
+      "Location" : "/sentShares/45b01fac-f557-477a-9711-ab344b726bdf/45b01fac-f557-477a-9711-ab344b726bdf",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://account.purview.azure.com/share/operationResults/00000000-0000-0000-0000-000000000000?api-version=2023-02-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-sharing/1.0.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "233128ed-e1f9-448f-b0d0-0e67b38219bf"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Kestrel",
+      "retry-after" : "0",
+      "Content-Length" : "119",
+      "StatusCode" : "200",
+      "Body" : "{\"startTime\":\"2023-02-23T22:00:58.7050341Z\",\"endTime\":\"2023-02-23T22:00:58.7050341Z\",\"status\":\"Succeeded\",\"error\":null}",
+      "Date" : "Thu, 23 Feb 2023 22:00:58 GMT",
+      "x-ms-correlation-request-id" : "618be330-b3e5-49f8-89e6-75fbe8e4be76",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://account.purview.azure.com/share/sentShares/45b01fac-f557-477a-9711-ab344b726bdf?api-version=2023-02-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-sharing/1.0.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d7b5a4a9-70f9-426a-a263-075301508706"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Kestrel",
+      "retry-after" : "0",
+      "Content-Length" : "691",
+      "StatusCode" : "200",
+      "Body" : "{\"properties\":{\"displayName\":\"sentshare3717814b7b9\",\"description\":\"A sample share\",\"artifact\":{\"properties\":{\"paths\":[{\"containerName\":\"test-files\",\"senderPath\":\"graph.png\",\"receiverPath\":\"graph.png\"}],\"location\":\"japaneast\"},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"referenceName\":\"/subscriptions/8af54e97-8629-48cd-A92e-24753982bf92/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/providerstorage\",\"type\":\"ArmResourceReference\"}},\"state\":\"Succeeded\",\"createdAt\":\"2023-02-23T22:00:57.3184413Z\",\"dependsOn\":[],\"senderName\":\"my-share-app\",\"senderTenantName\":\"Contoso\"},\"shareKind\":\"InPlace\",\"id\":\"45b01fac-f557-477a-9711-ab344b726bdf\",\"type\":\"SentShare\"}",
+      "Date" : "Thu, 23 Feb 2023 22:00:58 GMT",
+      "x-ms-correlation-request-id" : "2e14e666-489e-48f5-a3e7-c0d9f4288a22",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://account.purview.azure.com/share/sentShares/45b01fac-f557-477a-9711-ab344b726bdf/sentShareInvitations/b239b06c-9915-47e9-ba20-51452943bc6a?api-version=2023-02-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-sharing/1.0.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8f4fd484-1fe0-48fe-9010-9a825ec780ca",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Kestrel",
+      "retry-after" : "0",
+      "Content-Length" : "402",
+      "StatusCode" : "201",
+      "Body" : "{\"properties\":{\"targetActiveDirectoryId\":\"4653a7b2-02ff-4155-8e55-2d0c7f3178a1\",\"targetObjectId\":\"68700464-B46c-4ec0-88ff-6061da36da69\",\"shareStatus\":\"Detached\",\"sentAt\":\"2023-02-23T22:00:59.170801Z\",\"senderName\":\"my-share-app\",\"senderTenantName\":\"Contoso\",\"state\":\"Succeeded\"},\"invitationKind\":\"Service\",\"id\":\"b239b06c-9915-47e9-ba20-51452943bc6a\",\"type\":\"sentShares/sentShareInvitations\"}",
+      "Date" : "Thu, 23 Feb 2023 22:00:59 GMT",
+      "x-ms-correlation-request-id" : "8ea8bbea-8655-4bc6-b2db-fb18bc786898",
+      "Location" : "/sentShares/45b01fac-f557-477a-9711-ab344b726bdf/sentShareInvitations/b239b06c-9915-47e9-ba20-51452943bc6a/b239b06c-9915-47e9-ba20-51452943bc6a",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://account.purview.azure.com/share/sentShares/45b01fac-f557-477a-9711-ab344b726bdf/sentShareInvitations/b239b06c-9915-47e9-ba20-51452943bc6a?api-version=2023-02-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-sharing/1.0.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "57e4c280-6b2d-4f70-b091-338c03d36903"
+    },
+    "Response" : {
+      "Operation-Id" : "https://account.purview.azure.com/share/operationResults/00000000-0000-0000-0000-000000000000?api-version=2023-02-15-preview",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Kestrel",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "Operation-Location" : "https://account.purview.azure.com/share/operationResults/00000000-0000-0000-0000-000000000000?api-version=2023-02-15-preview",
+      "Date" : "Thu, 23 Feb 2023 22:00:59 GMT",
+      "x-ms-correlation-request-id" : "a590d1fd-8593-420e-9092-21c0454c02e8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://account.purview.azure.com/share/operationResults/00000000-0000-0000-0000-000000000000?api-version=2023-02-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-sharing/1.0.0-beta.1 (17.0.4.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6b3629d6-eb8a-44ac-a558-115df52c2240"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Kestrel",
+      "retry-after" : "0",
+      "Content-Length" : "119",
+      "StatusCode" : "200",
+      "Body" : "{\"startTime\":\"2023-02-23T22:01:01.2570786Z\",\"endTime\":\"2023-02-23T22:01:01.2570786Z\",\"status\":\"Succeeded\",\"error\":null}",
+      "Date" : "Thu, 23 Feb 2023 22:01:00 GMT",
+      "x-ms-correlation-request-id" : "2ac5892f-b4f7-410d-a083-559eaf28542c",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "45b01fac-f557-477a-9711-ab344b726bdf", "b239b06c-9915-47e9-ba20-51452943bc6a", "sentshare3717814b7b9" ]
+}
