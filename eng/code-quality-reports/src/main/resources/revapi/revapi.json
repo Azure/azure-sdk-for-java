@@ -174,8 +174,8 @@
         },
         {
           "ignore": true,
-          "code": "java\\.annotation\\.removed",
-          "new": "(class|enum|enumConstant) com\\\\.azure\\\\.cosmos\\\\.models\\\\..*\",",
+          "code": "java.annotation.removed",
+          "new": "field com.azure.cosmos.models.PartitionKind.MULTI_HASH",
           "justification": "removing beta tags on PartitionKind MultiHash for hierarchical partitioning GA"
         },
         {
