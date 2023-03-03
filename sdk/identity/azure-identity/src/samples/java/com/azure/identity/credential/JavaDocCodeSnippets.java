@@ -129,7 +129,6 @@ public final class JavaDocCodeSnippets {
     public void interactiveBrowserCredentialsCodeSnippets() {
         // BEGIN: com.azure.identity.credential.interactivebrowsercredential.construct
         TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
-            .clientId(clientId)
             .redirectUrl("http://localhost:8765")
             .build();
         // END: com.azure.identity.credential.interactivebrowsercredential.construct
