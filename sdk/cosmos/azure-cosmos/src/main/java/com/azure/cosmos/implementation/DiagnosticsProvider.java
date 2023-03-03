@@ -28,11 +28,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 import reactor.core.publisher.Signal;
+import reactor.core.publisher.SignalType;
 import reactor.util.context.ContextView;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public final class DiagnosticsProvider {
@@ -68,6 +71,7 @@ public final class DiagnosticsProvider {
     public final static String LEGACY_DB_URL = "db.url";
     public static final String LEGACY_DB_STATEMENT = "db.statement";
     public final static String LEGACY_DB_INSTANCE = "db.instance";
+    private final static Duration FEED_RESPONSE_CONSUMER_LATENCY_THRESHOLD = Duration.ofMillis(5);
 
     private static final String REACTOR_TRACING_CONTEXT_KEY = "tracing-context";
     private static final String COSMOS_DIAGNOSTICS_CONTEXT_KEY = "azure-cosmos-context";
@@ -116,6 +120,10 @@ public final class DiagnosticsProvider {
         return this.tracer != null;
     }
 
+    public boolean isRealTracer() {
+        return this.tracer != null && this.tracer != NoOpTracer.INSTANCE;
+    }
+
     /**
      * Gets {@link Context} from Reactor {@link ContextView}.
      *
@@ -127,6 +135,16 @@ public final class DiagnosticsProvider {
 
         if (context instanceof Context) {
             return (Context) context;
+        }
+
+        return null;
+    }
+
+    private static CosmosDiagnosticsContext getCosmosDiagnosticsContextFromTraceContextOrNull(Context traceContext) {
+        Object cosmosCtx = traceContext.getData(COSMOS_DIAGNOSTICS_CONTEXT_KEY).orElse(null);
+
+        if (cosmosCtx instanceof CosmosDiagnosticsContext) {
+            return (CosmosDiagnosticsContext) cosmosCtx;
         }
 
         return null;
@@ -236,18 +254,111 @@ public final class DiagnosticsProvider {
         }
     }
 
+    /**
+     * Given a context containing the current tracing span the span is marked completed with status info from
+     * {@link Signal}.  For each tracer plugged into the SDK the current tracing span is marked as completed.
+     *
+     * @param signal  The signal indicates the status and contains the metadata we need to end the tracing span.
+     */
+    public <T> void recordPage(
+        Signal<T> signal,
+         CosmosDiagnostics diagnostics
+    ) {
+
+        Objects.requireNonNull(signal, "'signal' cannot be null.");
+        checkArgument(
+            signal.getType() == SignalType.ON_NEXT,
+            "recordPage should only be used on ON_NEXT");
+
+        Context context = getContextFromReactorOrNull(signal.getContextView());
+        if (context == null) {
+            return;
+        }
+
+        CosmosDiagnosticsContext cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrThrow(context);
+
+        ctxAccessor
+            .addDiagnostics(cosmosCtx, diagnostics);
+    }
+
+    public <T> void recordFeedResponseConsumerLatency(
+        Signal<T> signal,
+        Duration feedResponseConsumerLatency
+    ) {
+        Objects.requireNonNull(signal, "'signal' cannot be null.");
+        Objects.requireNonNull(feedResponseConsumerLatency, "'feedResponseConsumerLatency' cannot be null.");
+        checkArgument(
+            signal.getType() == SignalType.ON_COMPLETE || signal.getType() == SignalType.ON_ERROR,
+            "recordFeedResponseConsumerLatency should only be used for terminal signal");
+
+        if (feedResponseConsumerLatency.compareTo(FEED_RESPONSE_CONSUMER_LATENCY_THRESHOLD) <= 0 &&
+            !LOGGER.isDebugEnabled()) {
+
+            return;
+        }
+
+        CosmosDiagnosticsContext cosmosCtx = null;
+        Context context = getContextFromReactorOrNull(signal.getContextView());
+        if (context != null) {
+            cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrNull(context);
+        }
+
+        if (feedResponseConsumerLatency.compareTo(FEED_RESPONSE_CONSUMER_LATENCY_THRESHOLD) <= 0 &&
+            LOGGER.isDebugEnabled()) {
+
+            LOGGER.debug(
+                "Total duration spent in FeedResponseConsumer is {} but does not exceed threshold of {}, Diagnostics: {}",
+                feedResponseConsumerLatency,
+                FEED_RESPONSE_CONSUMER_LATENCY_THRESHOLD,
+                cosmosCtx);
+
+            return;
+        }
+
+        if (context != null && this.isRealTracer()) {
+            Map<String, Object> attributes = new HashMap<>();
+            if (cosmosCtx != null) {
+                attributes.put("Diagnostics", cosmosCtx.toString());
+            }
+
+            this.tracer.addEvent("SlowFeedResponseConsumer", attributes, OffsetDateTime.now(), context);
+            return;
+        }
+
+        LOGGER.warn(
+            "Total duration spent in FeedResponseConsumer is {} and exceeds threshold of {}, Diagnostics: {}",
+            feedResponseConsumerLatency,
+            FEED_RESPONSE_CONSUMER_LATENCY_THRESHOLD,
+            cosmosCtx);
+    }
+
+    private void handleDiagnostics(Context context, CosmosDiagnosticsContext cosmosCtx) {
+        // @TODO - investigate whether we should push the handling of diagnostics out of the hot path
+        // currently diagnostics are handled by the same thread on the hot path - which is intentional
+        // because any async queueing/throttling/sampling can best be done by diagnostic handlers
+        // but there is some risk given that diagnostic handlers are custom code of course
+        if (this.diagnosticHandlers != null && this.diagnosticHandlers.size() > 0) {
+            for (CosmosDiagnosticsHandler handler: this.diagnosticHandlers) {
+                handler.handleDiagnostics(context, cosmosCtx);
+            }
+        }
+    }
+
     public <T extends CosmosResponse<?>> Mono<T> traceEnabledCosmosResponsePublisher(
         Mono<T> resultPublisher,
         Context context,
         String spanName,
         String databaseId,
         String containerId,
-        String accountName,
         CosmosAsyncClient client,
         ConsistencyLevel consistencyLevel,
         OperationType operationType,
         ResourceType resourceType,
         CosmosDiagnosticsThresholds thresholds) {
+
+        checkNotNull(client, "Argument 'client' must not be null.");
+
+        String accountName = clientAccessor.getAccountTagValue(client);
 
         return publisherWithDiagnostics(
             resultPublisher,
@@ -261,10 +372,10 @@ public final class DiagnosticsProvider {
             operationType,
             resourceType,
             null,
-            CosmosResponse::getStatusCode,
+            (r) -> r.getStatusCode(),
             (r) -> null,
-            CosmosResponse::getRequestCharge,
-            CosmosResponse::getDiagnostics,
+            (r) -> r.getRequestCharge(),
+            (r) -> r.getDiagnostics(),
             thresholds);
     }
 
@@ -274,12 +385,15 @@ public final class DiagnosticsProvider {
         String spanName,
         String databaseId,
         String containerId,
-        String accountName,
         CosmosAsyncClient client,
         ConsistencyLevel consistencyLevel,
         OperationType operationType,
         ResourceType resourceType,
         CosmosDiagnosticsThresholds thresholds) {
+
+        checkNotNull(client, "Argument 'client' must not be null.");
+
+        String accountName = clientAccessor.getAccountTagValue(client);
 
         return publisherWithDiagnostics(
             resultPublisher,
@@ -306,12 +420,15 @@ public final class DiagnosticsProvider {
        String spanName,
        String containerId,
        String databaseId,
-       String accountName,
        CosmosAsyncClient client,
        ConsistencyLevel consistencyLevel,
        OperationType operationType,
        ResourceType resourceType,
        CosmosDiagnosticsThresholds thresholds) {
+
+        checkNotNull(client, "Argument 'client' must not be null.");
+
+        String accountName = clientAccessor.getAccountTagValue(client);
 
         return publisherWithDiagnostics(
             resultPublisher,
@@ -476,15 +593,7 @@ public final class DiagnosticsProvider {
             diagnostics,
             throwableForDiagnostics);
 
-        // @TODO - investigate whether we should push the handling of diagnostics out of the hot path
-        // currently diagnostics are handled by the same thread on the hot path - which is intentional
-        // because any async queueing/throttling/sampling can best be done by diagnostic handlers
-        // but there is some risk given that diagnostic handlers are custom code of course
-        if (this.diagnosticHandlers != null && this.diagnosticHandlers.size() > 0) {
-            for (CosmosDiagnosticsHandler handler: this.diagnosticHandlers) {
-                handler.handleDiagnostics(context, cosmosCtx);
-            }
-        }
+        this.handleDiagnostics(context, cosmosCtx);
 
         if (this.cosmosTracer != null) {
             this.cosmosTracer.endSpan(cosmosCtx, context);
@@ -881,7 +990,7 @@ public final class DiagnosticsProvider {
             tracer.setAttribute("db.cosmosdb.retry_count",cosmosCtx.getRetryCount() , context);
 
             Set<String> regionsContacted = cosmosCtx.getContactedRegionNames();
-            if (regionsContacted != null && !regionsContacted.isEmpty()) {
+            if (!regionsContacted.isEmpty()) {
                 tracer.setAttribute(
                     "db.cosmosdb.regions_contacted",
                     String.join(", ", regionsContacted),

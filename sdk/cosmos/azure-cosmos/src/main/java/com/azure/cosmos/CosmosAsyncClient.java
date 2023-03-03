@@ -745,7 +745,6 @@ public final class CosmosAsyncClient implements Closeable {
             spanName,
             database.getId(),
             null,
-            this.accountTagValue,
             this,
             null,
             OperationType.Create,
@@ -767,7 +766,6 @@ public final class CosmosAsyncClient implements Closeable {
                 spanName,
                 database.getId(),
                 null,
-                this.accountTagValue,
                 this,
                 null,
                 OperationType.Create,
@@ -812,6 +810,10 @@ public final class CosmosAsyncClient implements Closeable {
         return clientLevelThresholds != null ? clientLevelThresholds : new CosmosDiagnosticsThresholds();
     }
 
+    String getAccountTagValue() {
+        return this.accountTagValue;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -826,7 +828,7 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public String getAccountTagValue(CosmosAsyncClient client) {
-                    return client.accountTagValue;
+                    return client.getAccountTagValue();
                 }
 
                 @Override
@@ -874,6 +876,14 @@ public final class CosmosAsyncClient implements Closeable {
                     ConsistencyLevel desiredConsistencyLevelOfOperation) {
 
                     return client.getEffectiveConsistencyLevel(operationType, desiredConsistencyLevelOfOperation);
+                }
+
+                @Override
+                public CosmosDiagnosticsThresholds getEffectiveDiagnosticsThresholds(
+                    CosmosAsyncClient client,
+                    CosmosDiagnosticsThresholds operationLevelThresholds) {
+
+                    return client.getEffectiveDiagnosticsThresholds(operationLevelThresholds);
                 }
             }
         );

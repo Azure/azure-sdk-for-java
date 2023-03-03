@@ -182,7 +182,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
             .clientTelemetryConfig(
                 new CosmosClientTelemetryConfig()
                     .diagnosticLogs()
-                    .legacyOpenTelemetryTracing(true)
+                    .useLegacyOpenTelemetryTracing()
             );
         CosmosContainer container = this.getContainer(builder);
         executeTestCase(builder, container);

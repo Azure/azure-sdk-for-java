@@ -384,7 +384,7 @@ public final class CosmosClientTelemetryConfig {
      */
     @Deprecated
     public CosmosClientTelemetryConfig useLegacyOpenTelemetryTracing() {
-        this.useLegacyOpenTelemetryTracing = useLegacyOpenTelemetryTracing;
+        this.useLegacyOpenTelemetryTracing = true;
         return this;
     }
 

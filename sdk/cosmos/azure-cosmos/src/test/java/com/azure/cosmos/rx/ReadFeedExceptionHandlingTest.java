@@ -5,6 +5,8 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.DiagnosticsProvider;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -37,7 +39,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         dbs.add(new CosmosDatabaseProperties("db1"));
         dbs.add(new CosmosDatabaseProperties("db2"));
 
-        ArrayList<FeedResponse<CosmosDatabaseProperties>> frps = new ArrayList<FeedResponse<CosmosDatabaseProperties>>();
+        ArrayList<FeedResponse<CosmosDatabaseProperties>> frps = new ArrayList<>();
         frps.add(BridgeInternal.createFeedResponse(dbs, null));
         frps.add(BridgeInternal.createFeedResponse(dbs, null));
 
@@ -47,14 +49,19 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
         final CosmosAsyncClientWrapper mockedClientWrapper = Mockito.spy(new CosmosAsyncClientWrapper(client));
         Mockito.when(mockedClientWrapper.readAllDatabases()).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(new TracerProvider(null, false, false), "testSpan", "testEndpoint,", "testDb", null);
+            pagedFluxOptions.setTracerInformation(
+                new DiagnosticsProvider(null, new CosmosClientTelemetryConfig()),
+                "testSpan",
+                "testEndpoint,",
+                "testDb",
+                null);
             return response;
         }));
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();
         mockedClientWrapper.readAllDatabases().byPage().subscribe(subscriber);
         assertThat(subscriber.valueCount()).isEqualTo(2);
-        assertThat(subscriber.assertNotComplete());
-        assertThat(subscriber.assertTerminated());
+        subscriber.assertNotComplete();
+        subscriber.assertTerminated();
         assertThat(subscriber.errorCount()).isEqualTo(1);
     }
 
@@ -69,7 +76,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
     }
 
     static class CosmosAsyncClientWrapper {
-        private CosmosAsyncClient cosmosAsyncClient;
+        private final CosmosAsyncClient cosmosAsyncClient;
 
         CosmosAsyncClientWrapper(CosmosAsyncClient cosmosAsyncClient) {
             this.cosmosAsyncClient = cosmosAsyncClient;
