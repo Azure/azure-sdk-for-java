@@ -211,7 +211,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         List<AppConfigurationPropertySource> sources) {
         List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
         if (configStore.getFeatureFlags().getEnabled()) {
-            // TODO This logic is wrong for multiple stores
+            // TODO (mametcal): This logic is wrong for multiple stores
             for (AppConfigurationPropertySource propertySource : sources) {
                 if (propertySource instanceof AppConfigurationFeatureManagementPropertySource) {
                     watchKeysFeatures.addAll(((AppConfigurationFeatureManagementPropertySource) propertySource).getFeatureFlagSettings());
