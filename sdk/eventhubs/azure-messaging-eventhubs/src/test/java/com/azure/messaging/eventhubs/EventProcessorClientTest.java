@@ -202,7 +202,7 @@ public class EventProcessorClientTest {
     public void testProcessSpans() throws Exception {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-
+        when(tracer1.isEnabled()).thenReturn(true);
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubClientBuilder.createTracer()).thenReturn(tracer1);
@@ -274,7 +274,7 @@ public class EventProcessorClientTest {
     public void testProcessBatchSpans() throws Exception {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-
+        when(tracer1.isEnabled()).thenReturn(true);
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubClientBuilder.createTracer()).thenReturn(tracer1);
@@ -355,6 +355,7 @@ public class EventProcessorClientTest {
     public void testProcessSpansWithoutDiagnosticId() throws Exception {
         //Arrange
         final Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubClientBuilder.createTracer()).thenReturn(tracer);

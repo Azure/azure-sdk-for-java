@@ -54,11 +54,11 @@ public class EventHubsTracer {
     }
 
     public boolean isEnabled() {
-        return tracer != null && tracer.isEnabled();
+        return tracer != null;// && tracer.isEnabled();
     }
 
     public Context startSpan(String spanName, StartSpanOptions startOptions, Context context) {
-        return isEnabled() ? context : tracer.start(spanName, startOptions, context);
+        return isEnabled() ? tracer.start(spanName, startOptions, context) : context;
     }
 
     public <T> Mono<T> traceMono(Mono<T> publisher, String spanName) {

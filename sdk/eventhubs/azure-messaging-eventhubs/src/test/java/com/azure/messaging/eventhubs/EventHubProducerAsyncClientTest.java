@@ -347,6 +347,7 @@ class EventHubProducerAsyncClientTest {
 
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
+        when(tracer1.isEnabled()).thenReturn(true);
         final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
@@ -407,6 +408,7 @@ class EventHubProducerAsyncClientTest {
 
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
+        when(tracer1.isEnabled()).thenReturn(true);
         final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
@@ -458,6 +460,7 @@ class EventHubProducerAsyncClientTest {
     void startSpanForGetProperties() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
+        when(tracer1.isEnabled()).thenReturn(true);
         final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
@@ -512,6 +515,7 @@ class EventHubProducerAsyncClientTest {
     void sendMessageRetrySpanTest() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
+        when(tracer1.isEnabled()).thenReturn(true);
         final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
@@ -644,6 +648,7 @@ class EventHubProducerAsyncClientTest {
     void startMessageSpansOnCreateBatch() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
+        when(tracer1.isEnabled()).thenReturn(true);
         final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
@@ -1039,6 +1044,7 @@ class EventHubProducerAsyncClientTest {
 
         TestMeter meter = new TestMeter();
         Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
         EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer, meter, HOSTNAME, EVENT_HUB_NAME);
         EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
