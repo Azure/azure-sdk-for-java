@@ -17,27 +17,27 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * high RU consumption or high payload sizes.
  */
 public final class CosmosDiagnosticsThresholds {
-    private final static CosmosDiagnosticsThresholds DEFAULT = new CosmosDiagnosticsThresholds();
+    private final static CosmosDiagnosticsThresholds DEFAULT;
 
     /**
      * The default request charge (RU) threshold to determine whether to include request diagnostics or not
      */
-    public final static float DEFAULT_REQUEST_CHARGE_THRESHOLD = 1000;
+    public final static float DEFAULT_REQUEST_CHARGE_THRESHOLD;
 
     /**
      * The default latency threshold to determine whether to include request diagnostics or not for point operations
      */
-    public final static Duration DEFAULT_POINT_OPERATION_LATENCY_THRESHOLD = Duration.ofSeconds(1);
+    public final static Duration DEFAULT_POINT_OPERATION_LATENCY_THRESHOLD;
 
     /**
      * The default latency threshold to determine whether to include request diagnostics or not for non-point operations
      */
-    public final static Duration DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD = Duration.ofSeconds(3);
+    public final static Duration DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD;
 
     /**
      * The default payload size (in bytes) threshold to determine whether to include request diagnostics or not
      */
-    public final static int DEFAULT_PAYLOAD_SIZE_THRESHOLD_IN_BYTES = Integer.MAX_VALUE;
+    public final static int DEFAULT_PAYLOAD_SIZE_THRESHOLD_IN_BYTES;
 
     private Duration pointOperationLatencyThreshold;
     private Duration nonPointOperationLatencyThreshold;
@@ -130,7 +130,7 @@ public final class CosmosDiagnosticsThresholds {
      * 429/3200 - throttling due to provisioned RU exceeded) are considered failures. Those exception can happen
      * very frequently are are usually expected under certain circumstances by applications - so the noise-level for
      * emitting diagnostics would be too high.
-     * Any custom rule applied via {@link CosmosDiagnosticsThresholds#configureStatusCodeHandling(int, int, boolean)}
+     * Any custom rule applied via this method
      * or {@link CosmosDiagnosticsThresholds#configureStatusCodeHandling(int, Integer, boolean)} will override previous
      * rules - so, the last applicable rule will override any previous one.
      * @param minStatusCode min status code for a status code range
@@ -156,7 +156,7 @@ public final class CosmosDiagnosticsThresholds {
      * very frequently are are usually expected under certain circumstances by applications - so the noise-level for
      * emitting diagnostics would be too high.
      * Any custom rule applied via {@link CosmosDiagnosticsThresholds#configureStatusCodeHandling(int, int, boolean)}
-     * or {@link CosmosDiagnosticsThresholds#configureStatusCodeHandling(int, Integer, boolean)} will override previous
+     * or this method will override previous
      * rules - so, the last applicable rule will override any previous one.
      * @param statusCode the status code
      * @param subStatusCode the sub status code - null means all sub status codes, a specific value means this rule
@@ -291,5 +291,13 @@ public final class CosmosDiagnosticsThresholds {
         );
     }
 
-    static { initialize(); }
+    static {
+
+        DEFAULT = new CosmosDiagnosticsThresholds();
+        DEFAULT_REQUEST_CHARGE_THRESHOLD = 1000;
+        DEFAULT_POINT_OPERATION_LATENCY_THRESHOLD = Duration.ofSeconds(1);
+        DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD = Duration.ofSeconds(3);
+        DEFAULT_PAYLOAD_SIZE_THRESHOLD_IN_BYTES = Integer.MAX_VALUE;
+
+        initialize(); }
 }

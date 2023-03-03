@@ -17,10 +17,8 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.models.FeedResponse;
-import org.HdrHistogram.ConcurrentDoubleHistogram;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 
@@ -259,53 +257,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             }});
 
         return result;
-    }
-
-    private void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,
-                                    int statusCode,
-                                    String containerId,
-                                    String databaseId,
-                                    OperationType operationType,
-                                    ResourceType resourceType,
-                                    ConsistencyLevel consistencyLevel,
-                                    float requestCharge,
-                                    Duration latency) {
-        ClientTelemetry telemetry = BridgeInternal.getContextClient(cosmosAsyncClient).getClientTelemetry();
-        ReportPayload reportPayloadLatency = createReportPayload(cosmosAsyncClient,
-            statusCode, containerId, databaseId
-            , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_LATENCY_NAME,
-            ClientTelemetry.REQUEST_LATENCY_UNIT);
-        ConcurrentDoubleHistogram latencyHistogram = telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency);
-        if (latencyHistogram != null) {
-            ClientTelemetry.recordValue(latencyHistogram, latency.toMillis());
-        } else {
-            if (statusCode == HttpConstants.StatusCodes.OK) {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MILLI_SEC,
-                    ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
-            } else {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MILLI_SEC,
-                    ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
-            }
-
-            latencyHistogram.setAutoResize(true);
-            ClientTelemetry.recordValue(latencyHistogram, latency.toMillis());
-            telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
-        }
-
-        ReportPayload reportPayloadRequestCharge = createReportPayload(cosmosAsyncClient,
-            statusCode, containerId, databaseId
-            , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_CHARGE_NAME,
-            ClientTelemetry.REQUEST_CHARGE_UNIT);
-        ConcurrentDoubleHistogram requestChargeHistogram = telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge);
-        if (requestChargeHistogram != null) {
-            ClientTelemetry.recordValue(requestChargeHistogram, requestCharge);
-        } else {
-            requestChargeHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_CHARGE_MAX, ClientTelemetry.REQUEST_CHARGE_PRECISION);
-            requestChargeHistogram.setAutoResize(true);
-            ClientTelemetry.recordValue(requestChargeHistogram, requestCharge);
-            telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadRequestCharge,
-                requestChargeHistogram);
-        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

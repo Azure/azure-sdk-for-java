@@ -898,20 +898,6 @@ public final class DiagnosticsProvider {
             return spanOptions;
         }
 
-        private static String getEffectiveErrorMessage(CosmosDiagnosticsContext cosmosCtx) {
-            Throwable error = cosmosCtx.getFinalError();
-            if (error == null || !cosmosCtx.isFailure()) {
-                return null;
-            }
-
-            if (error instanceof CosmosException) {
-                CosmosException cosmosException = (CosmosException) error;
-                return cosmosException.getMessageWithoutDiagnostics();
-            }
-
-            return error.getMessage();
-        }
-
         @Override
         public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context) {
 
