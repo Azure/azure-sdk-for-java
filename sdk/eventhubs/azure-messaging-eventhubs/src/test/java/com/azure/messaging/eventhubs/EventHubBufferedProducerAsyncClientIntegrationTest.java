@@ -8,6 +8,8 @@ import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -41,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Isolated
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventHubBufferedProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
         .withLocale(Locale.US)

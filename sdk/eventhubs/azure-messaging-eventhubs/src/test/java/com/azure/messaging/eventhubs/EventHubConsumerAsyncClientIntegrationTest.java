@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -48,6 +50,7 @@ import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFET
  * @see EventPositionIntegrationTest
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID_HEADER = "SENT_PARTITION_ID";
     private static final String MESSAGE_TRACKING_ID = UUID.randomUUID().toString();
@@ -131,7 +134,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         final int expectedNumber = 5;
         final EventHubProducerAsyncClient producer = toClose(builder.buildAsyncProducerClient());
         final SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
-        final Disposable producerEvents = toClose(getEvents(isActive)
+        toClose(getEvents(isActive)
             .flatMap(event -> producer.send(event, sendOptions))
             .subscribe(sent -> logger.info("Event sent."), error -> logger.error("Error sending event", error)));
 

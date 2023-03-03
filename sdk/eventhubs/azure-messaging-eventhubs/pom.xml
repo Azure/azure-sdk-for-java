@@ -22,6 +22,7 @@
 
   <properties>
     <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-reads com.azure.messaging.eventhubs=com.azure.core.tracing.opentelemetry
     </javaModulesSurefireArgLine>
   </properties>

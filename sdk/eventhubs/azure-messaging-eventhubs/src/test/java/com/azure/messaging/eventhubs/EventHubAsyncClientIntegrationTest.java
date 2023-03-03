@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import reactor.test.StepVerifier;
@@ -31,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests scenarios on {@link EventHubAsyncClient}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final int NUMBER_OF_EVENTS = 5;
     private static final String PARTITION_ID = "1";

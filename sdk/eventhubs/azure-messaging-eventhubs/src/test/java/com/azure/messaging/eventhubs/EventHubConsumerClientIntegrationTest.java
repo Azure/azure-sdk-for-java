@@ -10,6 +10,8 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.time.Duration;
 import java.util.List;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for synchronous {@link EventHubConsumerClient}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
 

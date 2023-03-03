@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -25,6 +27,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests for asynchronous {@link EventHubProducerAsyncClient}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "2";
     private EventHubProducerAsyncClient producer;

@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -31,6 +33,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests that {@link EventHubConsumerAsyncClient} can be created with various {@link EventPosition EventPositions}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 class EventPositionIntegrationTest extends IntegrationTestBase {
     // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
     // our own.

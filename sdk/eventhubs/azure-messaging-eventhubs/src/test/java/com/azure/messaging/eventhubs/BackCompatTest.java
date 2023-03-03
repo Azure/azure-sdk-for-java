@@ -17,6 +17,8 @@ import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
@@ -39,6 +41,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Integration test that verifies backwards compatibility with a previous version of the SDK.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class BackCompatTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "2";
     private static final String PAYLOAD = "test-message";

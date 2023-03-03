@@ -11,6 +11,8 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
@@ -28,6 +30,7 @@ import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 

@@ -9,6 +9,8 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -23,6 +25,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
  * Verifies we can use various prefetch options with {@link EventHubConsumerAsyncClient}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 class SetPrefetchCountTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "3";
     // Default number of events to fetch when creating the consumer.
