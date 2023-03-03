@@ -39,6 +39,7 @@ public class EventHubsTracer {
     public static final String MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME = "messaging.batch.message_count";
     private static final String MESSAGING_SYSTEM_ATTRIBUTE_NAME = "messaging.system";
     private static final String MESSAGING_OPERATION_ATTRIBUTE_NAME = "messaging.operation";
+    private static final TracingLink DUMMY_LINK = new TracingLink(Context.NONE);
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubsTracer.class);
 
@@ -54,7 +55,7 @@ public class EventHubsTracer {
     }
 
     public boolean isEnabled() {
-        return tracer != null;// && tracer.isEnabled();
+        return tracer != null && tracer.isEnabled();
     }
 
     public Context startSpan(String spanName, StartSpanOptions startOptions, Context context) {
@@ -146,10 +147,14 @@ public class EventHubsTracer {
     }
 
     private static boolean canModifyApplicationProperties(Map<String, Object> applicationProperties) {
-        return !applicationProperties.getClass().getSimpleName().equals("UnmodifiableMap");
+        return applicationProperties != null && !applicationProperties.getClass().getSimpleName().equals("UnmodifiableMap");
     }
 
     public TracingLink createLink(Map<String, Object> applicationProperties, Instant enqueuedTime, Context eventContext) {
+        if (!tracer.isEnabled() || applicationProperties == null) {
+            return DUMMY_LINK;
+        }
+
         Context link = Context.NONE;
         Optional<Object> linkContext = eventContext.getData(SPAN_CONTEXT_KEY);
         if (linkContext.isPresent()) {
@@ -171,17 +176,21 @@ public class EventHubsTracer {
     }
 
     public Context extractContext(Map<String, Object> applicationProperties) {
-        return tracer.extractContext(key ->  {
-            if (TRACEPARENT_KEY.equals(key)) {
-                return getTraceparent(applicationProperties);
-            } else {
-                Object value = applicationProperties.get(key);
-                if (value != null) {
-                    return value.toString();
+        if (tracer.isEnabled() && applicationProperties != null) {
+            return tracer.extractContext(key -> {
+                if (TRACEPARENT_KEY.equals(key)) {
+                    return getTraceparent(applicationProperties);
+                } else {
+                    Object value = applicationProperties.get(key);
+                    if (value != null) {
+                        return value.toString();
+                    }
                 }
-            }
-            return null;
-        });
+                return null;
+            });
+        }
+
+        return Context.NONE;
     }
 
     public AutoCloseable makeSpanCurrent(Context context) {
@@ -189,7 +198,7 @@ public class EventHubsTracer {
     }
 
     public Context startProcessSpan(String name, EventData event, Context parent) {
-        if (isEnabled()) {
+        if (isEnabled() && event != null) {
             StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS)
                 .setRemoteParent(extractContext(event.getProperties()));
 
@@ -219,14 +228,16 @@ public class EventHubsTracer {
     }
 
     public Flux<PartitionEvent> reportSyncReceiveSpan(String name, Instant startTime, Flux<PartitionEvent> events, Context parent) {
-        if (isEnabled()) {
+        if (isEnabled() && events != null) {
             final StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE)
                 .setStartTimestamp(startTime);
 
             return events.doOnEach(signal -> {
                 if (signal.hasValue()) {
                     EventData data = signal.get().getData();
-                    startOptions.addLink(createLink(data.getProperties(), data.getEnqueuedTime(), Context.NONE));
+                    if (data != null) {
+                        startOptions.addLink(createLink(data.getProperties(), data.getEnqueuedTime(), Context.NONE));
+                    }
                 } else if (signal.isOnComplete() || signal.isOnError()) {
                     int batchSize = startOptions.getLinks() == null ? 0 : startOptions.getLinks().size();
                     startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, batchSize);

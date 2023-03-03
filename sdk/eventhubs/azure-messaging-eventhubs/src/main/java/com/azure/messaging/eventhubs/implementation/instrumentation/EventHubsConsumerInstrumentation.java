@@ -43,8 +43,11 @@ public class EventHubsConsumerInstrumentation {
         Context child = parent;
         if (tracer.isEnabled() && !isSync) {
             StartSpanOptions options = tracer.createStartOption(SpanKind.CONSUMER, EventHubsTracer.OperationName.PROCESS)
-                .setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond())
-                .setRemoteParent(tracer.extractContext(message.getApplicationProperties().getValue()));
+                .setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
+
+            if (message.getApplicationProperties() != null) {
+                options.setRemoteParent(tracer.extractContext(message.getApplicationProperties().getValue()));
+            }
 
             child = tracer.startSpan(spanName, options, parent);
         }
