@@ -187,7 +187,7 @@ public class ShareFileClient {
      */
     public SeekableByteChannel getFileSeekableByteChannelRead(ShareFileSeekableByteChannelReadOptions options) {
         ShareRequestConditions conditions = options != null ? options.getRequestConditions() : null;
-        Long configuredChunkSize = options != null ? options.getChunkSize() : null
+        Long configuredChunkSize = options != null ? options.getChunkSize() : null;
         int chunkSize = configuredChunkSize != null
             ? configuredChunkSize.intValue()
             : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
