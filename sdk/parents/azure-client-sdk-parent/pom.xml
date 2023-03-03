@@ -1540,7 +1540,7 @@
             <artifactId>native-maven-plugin</artifactId>
             <version>0.9.19</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
             <configuration>
-              <skip>${graalvm.enable}</skip>
+              <skip>${graalvm.disable}</skip>
               <buildArgs>--no-fallback ${nativeImage.buildArgs} -H:IncludeResources=.*</buildArgs>
             </configuration>
             <extensions>true</extensions>
@@ -1551,7 +1551,6 @@
                   <goal>compile-no-fork</goal>
                 </goals>
                 <phase>package</phase>
-                <inherited>false</inherited>
               </execution>
               <execution>
                 <id>test-native</id>
