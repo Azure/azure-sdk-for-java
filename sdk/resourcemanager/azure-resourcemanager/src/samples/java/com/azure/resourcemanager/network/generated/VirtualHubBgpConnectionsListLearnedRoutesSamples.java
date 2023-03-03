@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualHubBgpConnections ListLearnedRoutes. */
 public final class VirtualHubBgpConnectionsListLearnedRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualRouterPeerListLearnedRoute.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualRouterPeerListLearnedRoute.json
      */
     /**
      * Sample code: VirtualRouterPeerListLearnedRoutes.
@@ -22,6 +20,6 @@ public final class VirtualHubBgpConnectionsListLearnedRoutesSamples {
             .manager()
             .serviceClient()
             .getVirtualHubBgpConnections()
-            .listLearnedRoutes("rg1", "virtualRouter1", "peer1", Context.NONE);
+            .listLearnedRoutes("rg1", "virtualRouter1", "peer1", com.azure.core.util.Context.NONE);
     }
 }

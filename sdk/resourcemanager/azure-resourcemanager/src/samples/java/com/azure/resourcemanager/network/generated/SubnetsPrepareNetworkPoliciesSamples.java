@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
 
 /** Samples for Subnets PrepareNetworkPolicies. */
 public final class SubnetsPrepareNetworkPoliciesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/SubnetPrepareNetworkPolicies.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/SubnetPrepareNetworkPolicies.json
      */
     /**
      * Sample code: Prepare Network Policies.
@@ -28,6 +27,6 @@ public final class SubnetsPrepareNetworkPoliciesSamples {
                 "test-vnet",
                 "subnet1",
                 new PrepareNetworkPoliciesRequest().withServiceName("Microsoft.Sql/managedInstances"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

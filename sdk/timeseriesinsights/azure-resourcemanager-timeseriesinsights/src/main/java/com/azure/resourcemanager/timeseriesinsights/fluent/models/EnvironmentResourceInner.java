@@ -10,7 +10,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.timeseriesinsights.models.Gen1EnvironmentResource;
 import com.azure.resourcemanager.timeseriesinsights.models.Gen2EnvironmentResource;
 import com.azure.resourcemanager.timeseriesinsights.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -33,15 +32,16 @@ import java.util.Map;
 })
 @Fluent
 public class EnvironmentResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentResourceInner.class);
-
     /*
-     * The sku determines the type of environment, either Gen1 (S1 or S2) or
-     * Gen2 (L1). For Gen1 environments the sku determines the capacity of the
-     * environment, the ingress rate, and the billing rate.
+     * The sku determines the type of environment, either Gen1 (S1 or S2) or Gen2 (L1). For Gen1 environments the sku
+     * determines the capacity of the environment, the ingress rate, and the billing rate.
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
+
+    /** Creates an instance of EnvironmentResourceInner class. */
+    public EnvironmentResourceInner() {
+    }
 
     /**
      * Get the sku property: The sku determines the type of environment, either Gen1 (S1 or S2) or Gen2 (L1). For Gen1
@@ -86,11 +86,13 @@ public class EnvironmentResourceInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model EnvironmentResourceInner"));
         } else {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EnvironmentResourceInner.class);
 }

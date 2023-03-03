@@ -101,7 +101,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.26</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -132,6 +132,18 @@
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
       <version>2.3-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.12.23</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.objenesis</groupId>
+      <artifactId>objenesis</artifactId>
+      <version>3.1</version> <!-- {x-version-update;org.objenesis:objenesis;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetworkInterfaces List. */
 public final class NetworkInterfacesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkInterfaceListAll.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkInterfaceListAll.json
      */
     /**
      * Sample code: List all network interfaces.
@@ -17,6 +15,6 @@ public final class NetworkInterfacesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllNetworkInterfaces(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkInterfaces().list(Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkInterfaces().list(com.azure.core.util.Context.NONE);
     }
 }

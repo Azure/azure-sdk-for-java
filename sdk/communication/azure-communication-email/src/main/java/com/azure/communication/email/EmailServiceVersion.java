@@ -8,8 +8,8 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of AzureCommunicationServicesClient. */
 public enum EmailServiceVersion implements ServiceVersion {
-    /** Enum value 2021-10-01-preview. */
-    V2021_10_01_PREVIEW("2021-10-01-preview");
+    /** Enum value 2023-01-15-preview. */
+    V2023_01_15_PREVIEW("2023-01-15-preview");
 
     private final String version;
 
@@ -28,6 +28,6 @@ public enum EmailServiceVersion implements ServiceVersion {
      * @return The latest {@link EmailServiceVersion}.
      */
     public static EmailServiceVersion getLatest() {
-        return V2021_10_01_PREVIEW;
+        return V2023_01_15_PREVIEW;
     }
 }

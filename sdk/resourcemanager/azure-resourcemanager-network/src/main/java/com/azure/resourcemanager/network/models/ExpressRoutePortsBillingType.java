@@ -17,6 +17,15 @@ public final class ExpressRoutePortsBillingType extends ExpandableStringEnum<Exp
     public static final ExpressRoutePortsBillingType UNLIMITED_DATA = fromString("UnlimitedData");
 
     /**
+     * Creates a new instance of ExpressRoutePortsBillingType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRoutePortsBillingType() {
+    }
+
+    /**
      * Creates or finds a ExpressRoutePortsBillingType from its string representation.
      *
      * @param name a name to look for.

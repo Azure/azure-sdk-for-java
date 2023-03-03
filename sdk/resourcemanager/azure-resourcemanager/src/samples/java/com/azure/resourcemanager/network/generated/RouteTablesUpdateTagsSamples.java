@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for RouteTables UpdateTags. */
 public final class RouteTablesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/RouteTableUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/RouteTableUpdateTags.json
      */
     /**
      * Sample code: Update route table tags.
@@ -26,7 +25,10 @@ public final class RouteTablesUpdateTagsSamples {
             .serviceClient()
             .getRouteTables()
             .updateTagsWithResponse(
-                "rg1", "testrt", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), Context.NONE);
+                "rg1",
+                "testrt",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

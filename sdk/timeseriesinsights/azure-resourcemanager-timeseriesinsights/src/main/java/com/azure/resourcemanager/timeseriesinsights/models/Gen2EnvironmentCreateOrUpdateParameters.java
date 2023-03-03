@@ -5,9 +5,8 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.Gen2EnvironmentCreationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,103 +16,25 @@ import java.util.Map;
 /** Parameters supplied to the Create or Update Environment operation for a Gen2 environment. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("Gen2")
-@JsonFlatten
 @Fluent
-public class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Gen2EnvironmentCreateOrUpdateParameters.class);
-
+public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCreateOrUpdateParameters {
     /*
-     * The list of event properties which will be used to define the
-     * environment's time series id.
+     * Properties used to create a Gen2 environment.
      */
-    @JsonProperty(value = "properties.timeSeriesIdProperties", required = true)
-    private List<TimeSeriesIdProperty> timeSeriesIdProperties;
+    @JsonProperty(value = "properties", required = true)
+    private Gen2EnvironmentCreationProperties innerProperties = new Gen2EnvironmentCreationProperties();
 
-    /*
-     * The storage configuration provides the connection details that allows
-     * the Time Series Insights service to connect to the customer storage
-     * account that is used to store the environment's data.
-     */
-    @JsonProperty(value = "properties.storageConfiguration", required = true)
-    private Gen2StorageConfigurationInput storageConfiguration;
-
-    /*
-     * The warm store configuration provides the details to create a warm store
-     * cache that will retain a copy of the environment's data available for
-     * faster query.
-     */
-    @JsonProperty(value = "properties.warmStoreConfiguration")
-    private WarmStoreConfigurationProperties warmStoreConfiguration;
-
-    /**
-     * Get the timeSeriesIdProperties property: The list of event properties which will be used to define the
-     * environment's time series id.
-     *
-     * @return the timeSeriesIdProperties value.
-     */
-    public List<TimeSeriesIdProperty> timeSeriesIdProperties() {
-        return this.timeSeriesIdProperties;
+    /** Creates an instance of Gen2EnvironmentCreateOrUpdateParameters class. */
+    public Gen2EnvironmentCreateOrUpdateParameters() {
     }
 
     /**
-     * Set the timeSeriesIdProperties property: The list of event properties which will be used to define the
-     * environment's time series id.
+     * Get the innerProperties property: Properties used to create a Gen2 environment.
      *
-     * @param timeSeriesIdProperties the timeSeriesIdProperties value to set.
-     * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
+     * @return the innerProperties value.
      */
-    public Gen2EnvironmentCreateOrUpdateParameters withTimeSeriesIdProperties(
-        List<TimeSeriesIdProperty> timeSeriesIdProperties) {
-        this.timeSeriesIdProperties = timeSeriesIdProperties;
-        return this;
-    }
-
-    /**
-     * Get the storageConfiguration property: The storage configuration provides the connection details that allows the
-     * Time Series Insights service to connect to the customer storage account that is used to store the environment's
-     * data.
-     *
-     * @return the storageConfiguration value.
-     */
-    public Gen2StorageConfigurationInput storageConfiguration() {
-        return this.storageConfiguration;
-    }
-
-    /**
-     * Set the storageConfiguration property: The storage configuration provides the connection details that allows the
-     * Time Series Insights service to connect to the customer storage account that is used to store the environment's
-     * data.
-     *
-     * @param storageConfiguration the storageConfiguration value to set.
-     * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
-     */
-    public Gen2EnvironmentCreateOrUpdateParameters withStorageConfiguration(
-        Gen2StorageConfigurationInput storageConfiguration) {
-        this.storageConfiguration = storageConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the warmStoreConfiguration property: The warm store configuration provides the details to create a warm store
-     * cache that will retain a copy of the environment's data available for faster query.
-     *
-     * @return the warmStoreConfiguration value.
-     */
-    public WarmStoreConfigurationProperties warmStoreConfiguration() {
-        return this.warmStoreConfiguration;
-    }
-
-    /**
-     * Set the warmStoreConfiguration property: The warm store configuration provides the details to create a warm store
-     * cache that will retain a copy of the environment's data available for faster query.
-     *
-     * @param warmStoreConfiguration the warmStoreConfiguration value to set.
-     * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
-     */
-    public Gen2EnvironmentCreateOrUpdateParameters withWarmStoreConfiguration(
-        WarmStoreConfigurationProperties warmStoreConfiguration) {
-        this.warmStoreConfiguration = warmStoreConfiguration;
-        return this;
+    private Gen2EnvironmentCreationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -138,6 +59,86 @@ public class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCreateOr
     }
 
     /**
+     * Get the timeSeriesIdProperties property: The list of event properties which will be used to define the
+     * environment's time series id.
+     *
+     * @return the timeSeriesIdProperties value.
+     */
+    public List<TimeSeriesIdProperty> timeSeriesIdProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeSeriesIdProperties();
+    }
+
+    /**
+     * Set the timeSeriesIdProperties property: The list of event properties which will be used to define the
+     * environment's time series id.
+     *
+     * @param timeSeriesIdProperties the timeSeriesIdProperties value to set.
+     * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
+     */
+    public Gen2EnvironmentCreateOrUpdateParameters withTimeSeriesIdProperties(
+        List<TimeSeriesIdProperty> timeSeriesIdProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Gen2EnvironmentCreationProperties();
+        }
+        this.innerProperties().withTimeSeriesIdProperties(timeSeriesIdProperties);
+        return this;
+    }
+
+    /**
+     * Get the storageConfiguration property: The storage configuration provides the connection details that allows the
+     * Time Series Insights service to connect to the customer storage account that is used to store the environment's
+     * data.
+     *
+     * @return the storageConfiguration value.
+     */
+    public Gen2StorageConfigurationInput storageConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageConfiguration();
+    }
+
+    /**
+     * Set the storageConfiguration property: The storage configuration provides the connection details that allows the
+     * Time Series Insights service to connect to the customer storage account that is used to store the environment's
+     * data.
+     *
+     * @param storageConfiguration the storageConfiguration value to set.
+     * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
+     */
+    public Gen2EnvironmentCreateOrUpdateParameters withStorageConfiguration(
+        Gen2StorageConfigurationInput storageConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Gen2EnvironmentCreationProperties();
+        }
+        this.innerProperties().withStorageConfiguration(storageConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the warmStoreConfiguration property: The warm store configuration provides the details to create a warm store
+     * cache that will retain a copy of the environment's data available for faster query.
+     *
+     * @return the warmStoreConfiguration value.
+     */
+    public WarmStoreConfigurationProperties warmStoreConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().warmStoreConfiguration();
+    }
+
+    /**
+     * Set the warmStoreConfiguration property: The warm store configuration provides the details to create a warm store
+     * cache that will retain a copy of the environment's data available for faster query.
+     *
+     * @param warmStoreConfiguration the warmStoreConfiguration value to set.
+     * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
+     */
+    public Gen2EnvironmentCreateOrUpdateParameters withWarmStoreConfiguration(
+        WarmStoreConfigurationProperties warmStoreConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Gen2EnvironmentCreationProperties();
+        }
+        this.innerProperties().withWarmStoreConfiguration(warmStoreConfiguration);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -145,26 +146,15 @@ public class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCreateOr
     @Override
     public void validate() {
         super.validate();
-        if (timeSeriesIdProperties() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property timeSeriesIdProperties in model"
-                            + " Gen2EnvironmentCreateOrUpdateParameters"));
+                        "Missing required property innerProperties in model Gen2EnvironmentCreateOrUpdateParameters"));
         } else {
-            timeSeriesIdProperties().forEach(e -> e.validate());
-        }
-        if (storageConfiguration() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageConfiguration in model"
-                            + " Gen2EnvironmentCreateOrUpdateParameters"));
-        } else {
-            storageConfiguration().validate();
-        }
-        if (warmStoreConfiguration() != null) {
-            warmStoreConfiguration().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Gen2EnvironmentCreateOrUpdateParameters.class);
 }

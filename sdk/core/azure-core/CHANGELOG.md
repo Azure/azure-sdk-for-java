@@ -1,6 +1,6 @@
 # Release History
 
-## 1.37.0-beta.1 (Unreleased)
+## 1.37.0 (2023-03-02)
 
 ### Features Added
 
@@ -22,7 +22,10 @@
 - Fixed a bug where HTTP headers and query parameters weren't included in HTTP request and response logging when
   `INFORMATIONAL` log level was used.
 
-### Other Changes
+### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.26` to `3.4.27`.
+- Upgraded Jackson to the latest releases `2.13.5`.
 
 ## 1.36.0 (2023-02-01)
 

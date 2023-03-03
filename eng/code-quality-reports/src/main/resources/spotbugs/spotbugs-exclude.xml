@@ -190,6 +190,7 @@
       <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
+      <Class name="com.azure.core.test.utils.TestProxyDownloader"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -2345,6 +2346,22 @@
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
+  <!-- The DispositionWork doesn't need to be serializable -->
+  <Match>
+    <Class
+        name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+  <Match>
+    <Class
+        name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
+    <Or>
+      <Field name="desiredState"/>
+      <Field name="mono"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
   <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
   <Match>
     <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
@@ -2549,4 +2566,17 @@
       <Field name="searchClient"/>
     </Or>
   </Match>
+  <!-- Derived type changes this field as a marker. -->
+  <Match>
+    <Class name="com.azure.core.test.TestBase"/>
+    <Field name="enableTestProxy"/>
+    <Bug pattern="MS_SHOULD_BE_FINAL"/>
+  </Match>
+  <!-- Exception is ignored in a loop waiting for an http endpoint -->
+  <Match>
+    <Class name="com.azure.core.test.utils.TestProxyManager"/>
+    <Method name="startProxy"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
 </FindBugsFilter>
