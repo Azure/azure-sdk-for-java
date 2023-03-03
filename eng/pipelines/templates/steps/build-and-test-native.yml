@@ -41,7 +41,7 @@ steps:
     displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am -Pnative
+      options: $(DefaultOptions) $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am -Pnative
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'Path'
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
@@ -95,7 +95,7 @@ steps:
       # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
       # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
       # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
-      options: '$(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -Pnative'
+      options: '$(DefaultOptions) $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -Pnative'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'Path'
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
