@@ -9,26 +9,29 @@ package com.azure.cosmos.faultinjection;
 public enum FaultInjectionServerErrorType {
 
     /** 410 from server */
-    SERVER_GONE,
+    GONE,
 
     /** 449 from server */
-    SERVER_RETRY_WITH,
+    RETRY_WITH,
 
     /** 500 from server */
     INTERNAL_SERVER_ERROR,
 
     /** 429 from server */
-    SERVER_TOO_MANY_REQUEST,
+    TOO_MANY_REQUEST,
 
     /** 404-1002 from server */
-    SERVER_READ_SESSION_NOT_AVAILABLE,
+    READ_SESSION_NOT_AVAILABLE,
 
     /** 408 from server */
-    SERVER_TIMEOUT,
+    TIMEOUT,
+
+    /** 410-1008 from server */
+    PARTITION_IS_MIGRATING,
 
     /** Response delay, when it is over request timeout, can simulate transit timeout */
-    SERVER_RESPONSE_DELAY,
+    RESPONSE_DELAY,
 
     /** simulate high channel acquisition, when it is over connection timeout, can simulate connectionTimeoutException */
-    SERVER_CONNECTION_DELAY
+    CONNECTION_DELAY
 }

@@ -106,11 +106,12 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
             // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
-            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0},
-            { FaultInjectionServerErrorType.SERVER_RETRY_WITH, true, 449, 0 },
-            { FaultInjectionServerErrorType.SERVER_TOO_MANY_REQUEST, true, 429, 0 },
-            { FaultInjectionServerErrorType.SERVER_READ_SESSION_NOT_AVAILABLE, true, 404, 1002},
-            { FaultInjectionServerErrorType.SERVER_TIMEOUT, false, 408, 0 }
+            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
+            { FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
+            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
+            { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
+            { FaultInjectionServerErrorType.TIMEOUT, false, 408, 0 },
+            { FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 }
         };
     }
 
@@ -122,12 +123,12 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(serverGoneRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ)
+                        .operationType(FaultInjectionOperationType.READ_DATA)
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
                         .times(1)
                         .build()
                 )
@@ -139,12 +140,12 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(tooManyRequestsRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ)
+                        .operationType(FaultInjectionOperationType.READ_DATA)
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_TOO_MANY_REQUEST)
+                        .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
                         .times(1)
                         .build()
                 )
@@ -208,12 +209,12 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(writeRegionServerGoneRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.CREATE)
+                        .operationType(FaultInjectionOperationType.CREATE_DATA)
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
                         .times(1)
                         .build()
                 )
@@ -226,7 +227,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(primaryReplicaServerGoneRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.CREATE)
+                        .operationType(FaultInjectionOperationType.CREATE_DATA)
                         .endpoints(
                             new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(createdItem.getId())))
                                 .replicaCount(3)
@@ -235,7 +236,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
                         .times(1)
                         .build()
                 )
@@ -311,7 +312,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
                         .times(1)
                         .build()
                 )
@@ -329,7 +330,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
                         .times(1)
                         .build()
                 )
@@ -406,7 +407,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
                         .times(1)
                         .build()
                 )
@@ -456,12 +457,12 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(timeoutRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ)
+                        .operationType(FaultInjectionOperationType.READ_DATA)
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY)
+                        .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
                         .times(1)
                         .delay(Duration.ofSeconds(6)) // the default time out is 5s
                         .build()
@@ -517,12 +518,12 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(ruleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.CREATE)
+                        .operationType(FaultInjectionOperationType.CREATE_DATA)
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY)
+                        .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
                         .delay(Duration.ofSeconds(2))
                         .times(1)
                         .build()
@@ -578,7 +579,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(ruleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ)
+                        .operationType(FaultInjectionOperationType.READ_DATA)
                         .build()
                 )
                 .result(
@@ -651,7 +652,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
                         .times(1)
                         .build()
                 )

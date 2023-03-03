@@ -42,8 +42,8 @@ public final class FaultInjectionServerErrorResultBuilder {
      */
     public FaultInjectionServerErrorResultBuilder delay(Duration delay) {
         checkNotNull(delay, "Argument 'delay' can not be null");
-        if (this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY
-            || this.serverErrorType == FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY) {
+        if (this.serverErrorType == FaultInjectionServerErrorType.RESPONSE_DELAY
+            || this.serverErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) {
             this.delay = delay;
         }
         return this;
@@ -55,8 +55,8 @@ public final class FaultInjectionServerErrorResultBuilder {
      * @return the {@link FaultInjectionServerErrorResult}.
      */
     public FaultInjectionServerErrorResult build() {
-        if ((this.serverErrorType == FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY
-            || this.serverErrorType == FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY) && this.delay == null) {
+        if ((this.serverErrorType == FaultInjectionServerErrorType.RESPONSE_DELAY
+            || this.serverErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) && this.delay == null) {
             throw new IllegalArgumentException("Argument 'delay' is required for server error type " + this.serverErrorType);
         }
 

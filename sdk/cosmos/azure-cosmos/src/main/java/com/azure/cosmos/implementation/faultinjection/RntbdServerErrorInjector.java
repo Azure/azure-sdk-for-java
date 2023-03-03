@@ -23,10 +23,10 @@ public class RntbdServerErrorInjector {
     public void configFaultInjectionRule(FaultInjectionServerErrorRule rule) {
         FaultInjectionServerErrorResultInternal serverErrorResult = rule.getResult();
         switch (serverErrorResult.getServerErrorType()) {
-            case SERVER_CONNECTION_DELAY:
+            case CONNECTION_DELAY:
                 this.serverConnectionLatencyRuleMap.put(rule.getId(), rule);
                 break;
-            case SERVER_RESPONSE_DELAY:
+            case RESPONSE_DELAY:
                 this.serverLatencyRuleMap.put(rule.getId(), rule);
                 break;
             default:

@@ -8,33 +8,33 @@ package com.azure.cosmos.faultinjection;
  */
 public enum FaultInjectionOperationType {
     /**
-     * READ.
+     * Read items.
      */
-    READ,
+    READ_DATA,
     /**
-     * QUERY
+     * Query items.
      */
-    QUERY,
+    QUERY_DATA,
     /**
-     * CREATE
+     * Create item.
      */
-    CREATE,
+    CREATE_DATA,
     /**
-     * UPSERT
+     * Upsert item.
      */
-    UPSERT,
+    UPSERT_DATA,
     /**
-     * REPLACE
+     * Replace item.
      */
-    REPLACE,
+    REPLACE_DATA,
     /**
-     * DELETE
+     * Delete item.
      */
-    DELETE,
+    DELETE_DATA,
     /**
-     * PATCH
+     * Patch item.
      */
-    PATCH
+    PATCH_DATA
 
     // Add support for metadata request type
 }

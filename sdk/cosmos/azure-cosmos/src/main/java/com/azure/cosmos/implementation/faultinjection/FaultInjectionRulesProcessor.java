@@ -235,8 +235,8 @@ public class FaultInjectionRulesProcessor {
     private boolean canErrorLimitToOperation(FaultInjectionServerErrorType errorType) {
         // Some errors makes sense to only apply for certain operationType/requests
         // but some should apply to all requests being routed to the server
-        return errorType != FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY
-            && errorType != FaultInjectionServerErrorType.SERVER_GONE;
+        return errorType != FaultInjectionServerErrorType.CONNECTION_DELAY
+            && errorType != FaultInjectionServerErrorType.GONE;
     }
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveConnectionErrorRule(
@@ -302,17 +302,17 @@ public class FaultInjectionRulesProcessor {
         }
 
         switch (faultInjectionOperationType) {
-            case READ:
+            case READ_DATA:
                 return OperationType.Read;
-            case CREATE:
+            case CREATE_DATA:
                 return OperationType.Create;
-            case QUERY:
+            case QUERY_DATA:
                 return OperationType.Query;
-            case UPSERT:
+            case UPSERT_DATA:
                 return OperationType.Upsert;
-            case REPLACE:
+            case REPLACE_DATA:
                 return OperationType.Replace;
-            case DELETE:
+            case DELETE_DATA:
                 return OperationType.Delete;
             default:
                 throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");

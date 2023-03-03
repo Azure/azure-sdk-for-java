@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
@@ -20,6 +21,7 @@ import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -63,17 +65,17 @@ public class FaultInjectionServerErrorResultInternal {
         Map<String, String> responseHeaders = this.getInjectedErrorResponseHeaders(request, lsn, partitionKeyRangeId);
 
         switch (this.serverErrorType) {
-            case SERVER_GONE:
+            case GONE:
                 GoneException goneException = new GoneException(this.getErrorMessage(RMResources.Gone));
                 goneException.setIsBasedOn410ResponseFromService();
                 cosmosException = goneException;
                 break;
 
-            case SERVER_RETRY_WITH:
+            case RETRY_WITH:
                 cosmosException = new RetryWithException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
-            case SERVER_TOO_MANY_REQUEST:
+            case TOO_MANY_REQUEST:
                 responseHeaders.put(
                     HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
                     String.valueOf(500));
@@ -81,7 +83,7 @@ public class FaultInjectionServerErrorResultInternal {
 
                 break;
 
-            case SERVER_TIMEOUT:
+            case TIMEOUT:
                 cosmosException = new RequestTimeoutException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
@@ -89,10 +91,16 @@ public class FaultInjectionServerErrorResultInternal {
                 cosmosException = new InternalServerErrorException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
-            case SERVER_READ_SESSION_NOT_AVAILABLE:
+            case READ_SESSION_NOT_AVAILABLE:
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
                 cosmosException = new NotFoundException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
+            case PARTITION_IS_MIGRATING:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION));
+                cosmosException = new PartitionIsMigratingException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
             default:
@@ -106,7 +114,7 @@ public class FaultInjectionServerErrorResultInternal {
         RxDocumentServiceRequest request,
         long lsn,
         String partitionKeyRangeId) {
-        Map<String, String> responseHeaders = new HashMap<>() {};
+        Map<String, String> responseHeaders = new ConcurrentHashMap<>();
         String activityId = request.getActivityId().toString();
         String sessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 

@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added fault injection support - See [PR 33329](https://github.com/Azure/azure-sdk-for-java/pull/33329).
 
 ### 4.41.0 (2023-02-17)
 
