@@ -212,14 +212,6 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeFileSystemAsyncClient.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient -->
-     * <pre>
-     * DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = client.getRootDirectoryAsyncClient&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient -->
-     *
      * @return A new {@link DataLakeDirectoryAsyncClient} object which references the root directory
      * in this file system.
      */

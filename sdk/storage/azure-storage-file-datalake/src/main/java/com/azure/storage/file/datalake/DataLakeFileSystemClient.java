@@ -142,14 +142,6 @@ public class DataLakeFileSystemClient {
      * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
      * DataLakeFileSystemClient.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient -->
-     * <pre>
-     * DataLakeDirectoryClient dataLakeDirectoryClient = client.getRootDirectoryClient&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient -->
-     *
      * @return A new {@link DataLakeDirectoryClient} object which references the root directory in this file system.
      */
     DataLakeDirectoryClient getRootDirectoryClient() {
