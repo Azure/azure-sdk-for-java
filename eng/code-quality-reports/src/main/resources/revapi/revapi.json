@@ -103,12 +103,6 @@
           "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
         },
         {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "new": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*",
-          "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
-        },
-        {
           "code" : "java.method.visibilityReduced",
           "old" : "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter()",
           "new" : "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
