@@ -5,6 +5,9 @@ package com.azure.storage.file.share.options;
 
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
+/**
+ * Options for obtaining a {@link java.nio.channels.SeekableByteChannel} backed by an Azure Storage Share File.
+ */
 public class ShareFileSeekableByteChannelReadOptions {
     private ShareRequestConditions requestConditions;
     private Long chunkSize;

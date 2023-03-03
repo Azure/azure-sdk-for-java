@@ -123,7 +123,8 @@ class StorageFileSeekableByteChannelTests extends APISpec {
 
     def "Client creates appropriate channel readmode"() {
         when: "make channel in read mode"
-        def channel = primaryFileClient.getFileSeekableByteChannelRead(conditions) as StorageSeekableByteChannel
+        def channel = primaryFileClient.getFileSeekableByteChannelRead(new ShareFileSeekableByteChannelReadOptions()
+            .setRequestConditions(conditions)) as StorageSeekableByteChannel
 
         then: "channel WriteBehavior is null"
         channel.getWriteBehavior() == null
