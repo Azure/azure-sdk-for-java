@@ -24,7 +24,7 @@ public abstract class TestProxyTestBase extends TestBase {
     @BeforeAll
     public static void setup() {
         testMode = initializeTestMode();
-        if (isTestProxyEnabled() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
+        if (isTestProxyEnabled()) {
             testProxyManager = new TestProxyManager(TestUtils.getRecordFolder());
             testProxyManager.startProxy();
         }
