@@ -64,7 +64,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
     /**
      * The Service Bus namespace.
      */
-    private String nameSpace;
+    private String namespace;
 
     /**
      * Connection string to connect to a Service Bus namespace.
@@ -200,16 +200,16 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
      * Get the Service Bus namespace.
      * @return the Service Bus namespace.
      */
-    public String getNameSpace() {
-        return nameSpace;
+    public String getNamespace() {
+        return namespace;
     }
 
     /**
      * Set the Service Bus namespace.
-     * @param nameSpace the Service Bus namespace.
+     * @param namespace the Service Bus namespace.
      */
-    public void setNameSpace(String nameSpace) {
-        this.nameSpace = nameSpace;
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
     }
 
     /**
@@ -295,7 +295,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
     @Override
     public void afterPropertiesSet() throws Exception {
         if (isPasswordlessEnabled()) {
-            if (!StringUtils.hasText(nameSpace)) {
+            if (!StringUtils.hasText(namespace)) {
                 throw new IllegalArgumentException("Passwordless connections enabled, 'spring.jms.servicebus.namespace' should be provided.");
             }
         } else {

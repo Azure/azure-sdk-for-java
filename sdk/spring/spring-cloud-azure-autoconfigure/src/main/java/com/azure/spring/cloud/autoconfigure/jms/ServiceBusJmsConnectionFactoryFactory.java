@@ -59,7 +59,7 @@ public class ServiceBusJmsConnectionFactoryFactory {
             T factory;
             if (properties.isPasswordlessEnabled()) {
                 String remoteUrl = String.format(AMQP_URI_FORMAT,
-                    properties.getNameSpace() + "." + properties.getProfile().getEnvironment().getServiceBusDomainName(),
+                    properties.getNamespace() + "." + properties.getProfile().getEnvironment().getServiceBusDomainName(),
                     properties.getIdleTimeout().toMillis());
                 factory = factoryClass.getConstructor(String.class).newInstance(remoteUrl);
             } else {

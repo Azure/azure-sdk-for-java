@@ -134,10 +134,10 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties.toPasswordlessProperties()));
         TokenCredential tokenCredential = tokenCredentialProvider.get();
 
-        LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
         AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME);
         applicationContext.registerBean(PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
 
+        LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
         AuthProperty.AUTHORITY_HOST.setProperty(result, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 

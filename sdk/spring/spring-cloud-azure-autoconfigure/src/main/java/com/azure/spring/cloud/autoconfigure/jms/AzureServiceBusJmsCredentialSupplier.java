@@ -9,7 +9,7 @@ import java.util.Properties;
 import java.util.function.Supplier;
 
 /**
- * AzureServiceBusJmsCredentialSupplier that provide a String as the password to connect Azure ServiceBus.
+ * AzureServiceBusJmsCredentialSupplier that provides a String as the password to connect Azure ServiceBus.
  *
  * @since 4.7.0
  */
