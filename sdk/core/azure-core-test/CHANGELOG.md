@@ -1,14 +1,15 @@
 # Release History
 
-## 1.15.0-beta.1 (Unreleased)
+## 1.15.0 (2023-03-02)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Enabled test proxy recording for test records using test proxy integration. 
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to `1.37.0`.
 
 ## 1.14.1 (2023-02-01)
 

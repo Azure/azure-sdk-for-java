@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PublicIpAddresses ListCloudServicePublicIpAddresses. */
 public final class PublicIpAddressesListCloudServicePublicIpAddressesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/CloudServicePublicIpListAll.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/CloudServicePublicIpListAll.json
      */
     /**
      * Sample code: ListVMSSPublicIP.
@@ -22,6 +20,6 @@ public final class PublicIpAddressesListCloudServicePublicIpAddressesSamples {
             .manager()
             .serviceClient()
             .getPublicIpAddresses()
-            .listCloudServicePublicIpAddresses("cs-tester", "cs1", Context.NONE);
+            .listCloudServicePublicIpAddresses("cs-tester", "cs1", com.azure.core.util.Context.NONE);
     }
 }

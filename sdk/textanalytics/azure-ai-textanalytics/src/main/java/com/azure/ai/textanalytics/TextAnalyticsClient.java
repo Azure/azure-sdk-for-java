@@ -19,7 +19,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
+import com.azure.ai.textanalytics.models.DynamicClassifyOptions;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
 import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
@@ -1703,19 +1703,18 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Dynamic classification of each document in a list of {@link String document} with provided
-     * {@link DynamicClassificationOptions} options.
+     * {@link DynamicClassifyOptions} options.
      *
-     * <!-- src_embed Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
+     * <!-- src_embed Client.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions -->
      * <pre>
      * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * documents.add&#40;&quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;;
      * documents.add&#40;&quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;;
-     * DynamicClassificationOptions options = new DynamicClassificationOptions&#40;&#41;
-     *     .setCategories&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;;
+     * DynamicClassifyOptions options = new DynamicClassifyOptions&#40;&#41;;
      *
      * &#47;&#47; Analyzing dynamic classification
-     * DynamicClassifyDocumentResultCollection resultCollection =
-     *     textAnalyticsClient.dynamicClassificationBatch&#40;documents, &quot;en&quot;, options&#41;;
+     * DynamicClassifyDocumentResultCollection resultCollection = textAnalyticsClient.dynamicClassifyBatch&#40;
+     *     documents, Arrays.asList&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;, &quot;en&quot;, options&#41;;
      *
      * &#47;&#47; Result of dynamic classification
      * resultCollection.forEach&#40;documentResult -&gt; &#123;
@@ -1726,35 +1725,37 @@ public final class TextAnalyticsClient {
      *     &#125;
      * &#125;&#41;;
      * </pre>
-     * <!-- end Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
+     * <!-- end Client.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions -->
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param categories A list of categories to which input is classified to. This parameter can not be empty and at
+     * least has two categories assigned.
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
-     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
+     * @param options The additional configurable {@link DynamicClassifyOptions options} that may be passed when
      * analyzing dynamic classification.
      *
      * @return A {@link DynamicClassifyDocumentResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
-     * @throws UnsupportedOperationException if {@code dynamicClassificationBatch} is called with
+     * @throws UnsupportedOperationException if {@code dynamicClassifyBatch} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
      * 2022-10-01-preview and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicClassifyDocumentResultCollection dynamicClassificationBatch(Iterable<String> documents,
-        String language, DynamicClassificationOptions options) {
-        return dynamicClassificationBatchWithResponse(
+    public DynamicClassifyDocumentResultCollection dynamicClassifyBatch(Iterable<String> documents,
+        Iterable<String> categories, String language, DynamicClassifyOptions options) {
+        return dynamicClassifyBatchWithResponse(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
                 textDocumentInput.setLanguage(language);
                 return textDocumentInput;
-            }), options, Context.NONE).getValue();
+            }), categories, options, Context.NONE).getValue();
     }
 
     /**
@@ -1764,9 +1765,9 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Dynamic classification of each document in a list of {@link TextDocumentInput document} with provided
-     * {@link DynamicClassificationOptions} options.
+     * {@link DynamicClassifyOptions} options.
      *
-     * <!-- Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context -->
+     * <!-- Client.dynamicClassifyBatchWithResponse#Iterable-Iterable-DynamicClassifyOptions-Context -->
      * <pre>
      * List&lt;TextDocumentInput&gt; textDocumentInputs = Arrays.asList&#40;
      *     new TextDocumentInput&#40;&quot;1&quot;, &quot;The hotel was dark and unclean. The restaurant had amazing gnocchi.&quot;&#41;
@@ -1810,12 +1811,14 @@ public final class TextAnalyticsClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context -->
+     * <!-- end Client.dynamicClassifyBatchWithResponse#Iterable-Iterable-DynamicClassifyOptions-Context -->
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
+     * @param categories A list of categories to which input is classified to. This parameter can not be empty and at
+     * least has two categories assigned.
+     * @param options The additional configurable {@link DynamicClassifyOptions options} that may be passed when
      * analyzing dynamic classification.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -1830,10 +1833,11 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(
-        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
-        return client.dynamicClassificationUtilClient.getResultCollectionResponseSync(
-            documents, options, context);
+    public Response<DynamicClassifyDocumentResultCollection> dynamicClassifyBatchWithResponse(
+        Iterable<TextDocumentInput> documents, Iterable<String> categories, DynamicClassifyOptions options,
+        Context context) {
+        return client.dynamicClassifyUtilClient.getResultCollectionResponseSync(
+            documents, categories, options, context);
     }
 
     /**

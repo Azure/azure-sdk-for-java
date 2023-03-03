@@ -29,6 +29,15 @@ public final class SecurityRuleProtocol extends ExpandableStringEnum<SecurityRul
     public static final SecurityRuleProtocol AH = fromString("Ah");
 
     /**
+     * Creates a new instance of SecurityRuleProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityRuleProtocol() {
+    }
+
+    /**
      * Creates or finds a SecurityRuleProtocol from its string representation.
      *
      * @param name a name to look for.

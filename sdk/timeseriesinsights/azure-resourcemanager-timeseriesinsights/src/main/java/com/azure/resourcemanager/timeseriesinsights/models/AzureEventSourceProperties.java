@@ -6,19 +6,20 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of an event source that reads events from an event broker in Azure. */
 @Fluent
 public class AzureEventSourceProperties extends EventSourceCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureEventSourceProperties.class);
-
     /*
      * The resource id of the event source in Azure Resource Manager.
      */
     @JsonProperty(value = "eventSourceResourceId", required = true)
     private String eventSourceResourceId;
+
+    /** Creates an instance of AzureEventSourceProperties class. */
+    public AzureEventSourceProperties() {
+    }
 
     /**
      * Get the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
@@ -47,6 +48,27 @@ public class AzureEventSourceProperties extends EventSourceCommonProperties {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventSourceProperties withLocalTimestamp(LocalTimestamp localTimestamp) {
+        super.withLocalTimestamp(localTimestamp);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventSourceProperties withType(IngressStartAtType type) {
+        super.withType(type);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventSourceProperties withTime(String time) {
+        super.withTime(time);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -56,10 +78,12 @@ public class AzureEventSourceProperties extends EventSourceCommonProperties {
     public void validate() {
         super.validate();
         if (eventSourceResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventSourceResourceId in model AzureEventSourceProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureEventSourceProperties.class);
 }

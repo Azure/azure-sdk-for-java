@@ -29,6 +29,15 @@ public final class IpsecIntegrity extends ExpandableStringEnum<IpsecIntegrity> {
     public static final IpsecIntegrity GCMAES256 = fromString("GCMAES256");
 
     /**
+     * Creates a new instance of IpsecIntegrity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IpsecIntegrity() {
+    }
+
+    /**
      * Creates or finds a IpsecIntegrity from its string representation.
      *
      * @param name a name to look for.

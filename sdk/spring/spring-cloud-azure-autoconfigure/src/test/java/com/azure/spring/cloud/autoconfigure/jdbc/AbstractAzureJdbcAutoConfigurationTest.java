@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 abstract class AbstractAzureJdbcAutoConfigurationTest {
 
     public static final String PUBLIC_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
-
+    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
     abstract void pluginNotOnClassPath();
     abstract void wrongJdbcUrl();
     abstract void enhanceUrlWithDefaultCredential();
