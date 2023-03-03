@@ -3,21 +3,14 @@
 
 package com.azure.cosmos.util;
 
-import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.models.FeedResponse;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
@@ -88,21 +81,21 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     @Override
     public Flux<FeedResponse<T>> byPage() {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
-        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(String continuationToken) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
-        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(int preferredPageSize) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
-        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions));
     }
 
     @Override
@@ -110,7 +103,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
-        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions));
     }
 
     /**
@@ -120,7 +113,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
      * @param coreSubscriber The subscriber for this {@link CosmosPagedFlux}
      */
     @Override
-    public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
+    public void subscribe(@SuppressWarnings("NullableProblems") CoreSubscriber<? super T> coreSubscriber) {
         Flux<FeedResponse<T>> pagedResponse = this.byPage();
         pagedResponse.flatMap(tFeedResponse -> {
             IterableStream<T> elements = tFeedResponse.getElements();
@@ -145,7 +138,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         return cosmosPagedFluxOptions;
     }
 
-    private <T> Flux<T> wrapWithTracingIfEnabled(CosmosPagedFluxOptions pagedFluxOptions, Flux<T> publisher, Context context) {
+    private <TOutput> Flux<TOutput> wrapWithTracingIfEnabled(CosmosPagedFluxOptions pagedFluxOptions, Flux<TOutput> publisher) {
         DiagnosticsProvider tracerProvider = pagedFluxOptions.getTracerProvider();
         if (tracerProvider == null ||
             !tracerProvider.isEnabled()) {
@@ -156,36 +149,16 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         return tracerProvider.runUnderSpanInContext(publisher);
     }
 
-    private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
+    private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions) {
         AtomicReference<Instant> startTime = new AtomicReference<>();
         AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
 
-        Flux<FeedResponse<T>> result =
-            wrapWithTracingIfEnabled(pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions), context)
+        return  wrapWithTracingIfEnabled(pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions))
             .doOnSubscribe(ignoredValue -> {
                 startTime.set(Instant.now());
                 feedResponseConsumerLatencyInNanos.set(0);
             })
             .doOnEach(signal -> {
-
-                CosmosAsyncClient client = pagedFluxOptions.getCosmosAsyncClient();
-
-                boolean clientTelemetryEnabled = false;
-                boolean clientMetricsEnabled = false;
-                ConsistencyLevel consistencyLevel = ConsistencyLevel.EVENTUAL;
-
-                if (client != null) {
-                    ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
-                        ImplementationBridgeHelpers
-                        .CosmosAsyncClientHelper
-                        .getCosmosAsyncClientAccessor();
-                    clientTelemetryEnabled = clientAccessor.isSendClientTelemetryToServiceEnabled(client);
-                    clientMetricsEnabled = clientAccessor.isClientTelemetryMetricsEnabled(client);
-                    consistencyLevel =
-                        BridgeInternal
-                            .getContextClient(pagedFluxOptions.getCosmosAsyncClient())
-                            .getConsistencyLevel();
-                }
 
                 DiagnosticsProvider tracerProvider = pagedFluxOptions.getTracerProvider();
                 switch (signal.getType()) {
@@ -228,7 +201,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         FeedResponse<T> feedResponse = signal.get();
                         CosmosDiagnostics diagnostics = feedResponse != null ?
                             feedResponse.getCosmosDiagnostics() : null;
-                        boolean diagnosticsCapturedInPagedFluxByTracer = false;
 
                         if (diagnostics != null &&
                             cosmosDiagnosticsAccessor
@@ -255,8 +227,10 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                     default:
                         break;
             }});
+    }
 
-        return result;
+    private boolean isTracerEnabled(DiagnosticsProvider tracerProvider) {
+        return tracerProvider != null && tracerProvider.isRealTracer();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -268,30 +242,4 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     }
 
     static { initialize(); }
-
-    private ReportPayload createReportPayload(CosmosAsyncClient cosmosAsyncClient,
-                                              int statusCode,
-                                              String containerId,
-                                              String databaseId,
-                                              OperationType operationType,
-                                              ResourceType resourceType,
-                                              ConsistencyLevel consistencyLevel,
-                                              String metricsName,
-                                              String unitName) {
-        ReportPayload reportPayload = new ReportPayload(metricsName, unitName);
-        reportPayload.setConsistency(consistencyLevel == null ?
-            BridgeInternal.getContextClient(cosmosAsyncClient).getConsistencyLevel() :
-            consistencyLevel);
-
-        reportPayload.setDatabaseName(databaseId);
-        reportPayload.setContainerName(containerId);
-        reportPayload.setOperation(operationType);
-        reportPayload.setResource(resourceType);
-        reportPayload.setStatusCode(statusCode);
-        return reportPayload;
-    }
-
-    private boolean isTracerEnabled(DiagnosticsProvider tracerProvider) {
-        return tracerProvider != null && tracerProvider.isRealTracer();
-    }
 }
