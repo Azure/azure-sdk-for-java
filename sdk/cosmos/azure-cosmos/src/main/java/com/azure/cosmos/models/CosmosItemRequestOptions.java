@@ -62,8 +62,6 @@ public class CosmosItemRequestOptions {
      */
     public CosmosItemRequestOptions() {
         super();
-
-        this.thresholds = new CosmosDiagnosticsThresholds();
     }
 
     /**

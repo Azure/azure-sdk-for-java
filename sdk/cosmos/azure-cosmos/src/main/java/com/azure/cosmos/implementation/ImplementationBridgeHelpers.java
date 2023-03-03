@@ -1279,6 +1279,7 @@ public class ImplementationBridgeHelpers {
             boolean isDiagnosticsLogsEnabled(CosmosClientTelemetryConfig config);
             CosmosDiagnosticsLoggerConfig getDiagnosticsLoggerConfig(CosmosClientTelemetryConfig config);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosClientTelemetryConfig config);
+            boolean isLegacyTracingEnabled(CosmosClientTelemetryConfig config);
         }
     }
 

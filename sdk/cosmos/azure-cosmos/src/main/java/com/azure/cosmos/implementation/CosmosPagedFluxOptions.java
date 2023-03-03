@@ -17,7 +17,7 @@ public class CosmosPagedFluxOptions {
 
     private String requestContinuation;
     private Integer maxItemCount;
-    private TracerProvider tracerProvider;
+    private DiagnosticsProvider tracerProvider;
     private String tracerSpanName;
     private String databaseId;
     private String containerId;
@@ -108,7 +108,7 @@ public class CosmosPagedFluxOptions {
      * Gets the tracer provider
      * @return tracerProvider
      */
-    public TracerProvider getTracerProvider() {
+    public DiagnosticsProvider getTracerProvider() {
         return this.tracerProvider;
     }
 
@@ -166,7 +166,7 @@ public class CosmosPagedFluxOptions {
 
 
     public void setTracerInformation(
-        TracerProvider tracerProvider,
+        DiagnosticsProvider tracerProvider,
         String tracerSpanName,
         String serviceEndpoint,
         String databaseId,
@@ -187,7 +187,7 @@ public class CosmosPagedFluxOptions {
                                                  CosmosAsyncClient cosmosAsyncClient,
                                                  String operationId
     ) {
-        this.tracerProvider = BridgeInternal.getTracerProvider(cosmosAsyncClient);
+        this.tracerProvider  =  BridgeInternal.getTracerProvider(cosmosAsyncClient);
         this.serviceEndpoint = BridgeInternal.getServiceEndpoint(cosmosAsyncClient);
         this.tracerSpanName = tracerSpanName;
         this.databaseId = databaseId;

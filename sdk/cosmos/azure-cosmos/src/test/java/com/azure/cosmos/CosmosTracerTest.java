@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -513,7 +512,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         }
 
         assertThat(startAttributes.get(TracerProvider.DB_TYPE)).isEqualTo(TracerProvider.DB_TYPE_VALUE);
-        assertThat(startAttributes.get(TracerProvider.DB_URL)).isEqualTo(TestConfigurations.HOST);
+        assertThat(startAttributes.get(LEGACY_)).isEqualTo(TestConfigurations.HOST);
         assertThat(startAttributes.get(TracerProvider.DB_STATEMENT)).isEqualTo(methodName);
         assertThat(startAttributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo(TracerProvider.RESOURCE_PROVIDER_NAME);
 

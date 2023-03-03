@@ -17,6 +17,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * high RU consumption or high payload sizes.
  */
 public final class CosmosDiagnosticsThresholds {
+    private final static CosmosDiagnosticsThresholds DEFAULT = new CosmosDiagnosticsThresholds();
+
     /**
      * The default request charge (RU) threshold to determine whether to include request diagnostics or not
      */
@@ -236,24 +238,40 @@ public final class CosmosDiagnosticsThresholds {
 
                 @Override
                 public Duration getPointReadLatencyThreshold(CosmosDiagnosticsThresholds thresholds) {
+                    if (thresholds == null) {
+                        return DEFAULT.getPointOperationLatencyThreshold();
+                    }
+
                     checkNotNull(thresholds,"Argument 'thresholds' must not be null.");
                     return thresholds.getPointOperationLatencyThreshold();
                 }
 
                 @Override
                 public Duration getNonPointReadLatencyThreshold(CosmosDiagnosticsThresholds thresholds) {
+                    if (thresholds == null) {
+                        return DEFAULT.getNonPointOperationLatencyThreshold();
+                    }
+
                     checkNotNull(thresholds,"Argument 'thresholds' must not be null.");
                     return thresholds.getNonPointOperationLatencyThreshold();
                 }
 
                 @Override
                 public float getRequestChargeThreshold(CosmosDiagnosticsThresholds thresholds) {
+                    if (thresholds == null) {
+                        return DEFAULT.getRequestChargeThreshold();
+                    }
+
                     checkNotNull(thresholds,"Argument 'thresholds' must not be null.");
                     return thresholds.getRequestChargeThreshold();
                 }
 
                 @Override
                 public int getPayloadSizeThreshold(CosmosDiagnosticsThresholds thresholds) {
+                    if (thresholds == null) {
+                        return DEFAULT.getPayloadSizeThreshold();
+                    }
+
                     checkNotNull(thresholds,"Argument 'thresholds' must not be null.");
                     return thresholds.getPayloadSizeThreshold();
                 }
@@ -261,6 +279,10 @@ public final class CosmosDiagnosticsThresholds {
                 @Override
                 public boolean isFailureCondition(
                     CosmosDiagnosticsThresholds thresholds, int statusCode, int subStatusCode) {
+
+                    if (thresholds == null) {
+                        return DEFAULT.isFailureCondition(statusCode, subStatusCode);
+                    }
 
                     checkNotNull(thresholds,"Argument 'thresholds' must not be null.");
                     return thresholds.isFailureCondition(statusCode, subStatusCode);

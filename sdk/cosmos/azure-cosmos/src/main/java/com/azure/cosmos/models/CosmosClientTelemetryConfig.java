@@ -376,11 +376,14 @@ public final class CosmosClientTelemetryConfig {
     }
 
     /**
-     * Decides whether to use old OpenTelemetry traces or the new publicly documented events consistent with .Net SDK
-     * @param useLegacyOpenTelemetryTracing flag indicating whether to use old or new OpenTelemetry traces
+     * Enables  old OpenTelemetry traces instead of the publicly documented events consistent with .Net SDK for
+     * backwards compatibility reasons
      * @return current CosmosClientTelemetryConfig
+     * @deprecated The old trace events are only kept for backwards compatibility reasons temporarily. Please consider
+     * switching to the publicly documented tracing following the OpenTelemetry semantic profile for Cosmos DB soon.
      */
-    public CosmosClientTelemetryConfig legacyOpenTelemetryTracing(boolean useLegacyOpenTelemetryTracing) {
+    @Deprecated
+    public CosmosClientTelemetryConfig useLegacyOpenTelemetryTracing() {
         this.useLegacyOpenTelemetryTracing = useLegacyOpenTelemetryTracing;
         return this;
     }
@@ -556,6 +559,11 @@ public final class CosmosClientTelemetryConfig {
                 @Override
                 public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosClientTelemetryConfig config) {
                     return config.diagnosticsThresholds;
+                }
+
+                @Override
+                public boolean isLegacyTracingEnabled(CosmosClientTelemetryConfig config) {
+                    return config.useLegacyOpenTelemetryTracing;
                 }
             });
     }

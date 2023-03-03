@@ -15,8 +15,10 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -58,10 +60,14 @@ public final class DiagnosticsProvider {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
+    public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final int ERROR_CODE = 0;
     public static final String RESOURCE_PROVIDER_NAME = "Microsoft.DocumentDB";
     public final static String DB_TYPE_VALUE = "Cosmos";
     public final static String DB_TYPE = "db.type";
+    public final static String LEGACY_DB_URL = "db.url";
+    public static final String LEGACY_DB_STATEMENT = "db.statement";
+    public final static String LEGACY_DB_INSTANCE = "db.instance";
 
     private static final String REACTOR_TRACING_CONTEXT_KEY = "tracing-context";
     private static final String COSMOS_DIAGNOSTICS_CONTEXT_KEY = "azure-cosmos-context";
@@ -93,7 +99,11 @@ public final class DiagnosticsProvider {
         }
 
         if (this.tracer != null) {
-            this.cosmosTracer = new LegacyCosmosTracer(this.tracer);
+            if (clientTelemetryConfigAccessor.isLegacyTracingEnabled(clientTelemetryConfig)) {
+                this.cosmosTracer = new LegacyCosmosTracer(this.tracer);
+            } else {
+                this.cosmosTracer = new OpenTelemetryCosmosTracer(this.tracer);
+            }
         } else {
             this.cosmosTracer = null;
         }
@@ -224,6 +234,70 @@ public final class DiagnosticsProvider {
                 // ON_SUBSCRIBE isn't the right state to end span
                 break;
         }
+    }
+
+    public <T extends CosmosResponse<?>> Mono<T> traceEnabledCosmosResponsePublisher(
+        Mono<T> resultPublisher,
+        Context context,
+        String spanName,
+        String databaseId,
+        String containerId,
+        String accountName,
+        CosmosAsyncClient client,
+        ConsistencyLevel consistencyLevel,
+        OperationType operationType,
+        ResourceType resourceType,
+        CosmosDiagnosticsThresholds thresholds) {
+
+        return publisherWithDiagnostics(
+            resultPublisher,
+            context,
+            spanName,
+            containerId,
+            databaseId,
+            accountName,
+            client,
+            consistencyLevel,
+            operationType,
+            resourceType,
+            null,
+            CosmosResponse::getStatusCode,
+            (r) -> null,
+            CosmosResponse::getRequestCharge,
+            CosmosResponse::getDiagnostics,
+            thresholds);
+    }
+
+    public <T extends CosmosBatchResponse> Mono<T> traceEnabledBatchResponsePublisher(
+        Mono<T> resultPublisher,
+        Context context,
+        String spanName,
+        String databaseId,
+        String containerId,
+        String accountName,
+        CosmosAsyncClient client,
+        ConsistencyLevel consistencyLevel,
+        OperationType operationType,
+        ResourceType resourceType,
+        CosmosDiagnosticsThresholds thresholds) {
+
+        return publisherWithDiagnostics(
+            resultPublisher,
+            context,
+            spanName,
+            containerId,
+            databaseId,
+            accountName,
+            client,
+            consistencyLevel,
+            operationType,
+            resourceType,
+            null,
+            CosmosBatchResponse::getStatusCode,
+            (r) -> null,
+            CosmosBatchResponse::getRequestCharge,
+            CosmosBatchResponse::getDiagnostics,
+            thresholds);
     }
 
     public <T> Mono<CosmosItemResponse<T>> traceEnabledCosmosItemResponsePublisher(
@@ -503,10 +577,10 @@ public final class DiagnosticsProvider {
             StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT)
                 .setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME)
                 .setAttribute(DB_TYPE, DB_TYPE_VALUE)
-                .setAttribute(TracerProvider.DB_URL, endpoint)
-                .setAttribute(TracerProvider.DB_STATEMENT, methodName);
+                .setAttribute(LEGACY_DB_URL, endpoint)
+                .setAttribute(LEGACY_DB_STATEMENT, methodName);
             if (databaseId != null) {
-                spanOptions.setAttribute(TracerProvider.DB_INSTANCE, databaseId);
+                spanOptions.setAttribute(LEGACY_DB_INSTANCE, databaseId);
             }
 
             return spanOptions;
@@ -695,24 +769,42 @@ public final class DiagnosticsProvider {
         }
 
         private StartSpanOptions startSpanOptions(String spanName, CosmosDiagnosticsContext cosmosCtx) {
-            StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT)
-                .setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME)
-                .setAttribute("db.system","cosmosdb")
-                .setAttribute("db.operation",spanName)
-                .setAttribute("net.peer.name",cosmosCtx.getAccountName());
+            StartSpanOptions spanOptions;
 
-            String databaseId = cosmosCtx.getDatabaseName();
-            if (databaseId != null) {
-                spanOptions.setAttribute("db.name", databaseId);
+            if (tracer instanceof NoOpTracer) {
+                spanOptions = new StartSpanOptions(SpanKind.CLIENT);
+            } else {
+                spanOptions = new StartSpanOptions(SpanKind.CLIENT)
+                    .setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME)
+                    .setAttribute("db.system", "cosmosdb")
+                    .setAttribute("db.operation", spanName)
+                    .setAttribute("net.peer.name", cosmosCtx.getAccountName());
+
+                String databaseId = cosmosCtx.getDatabaseName();
+                if (databaseId != null) {
+                    spanOptions.setAttribute("db.name", databaseId);
+                }
             }
 
             return spanOptions;
         }
 
+        private static String getEffectiveErrorMessage(CosmosDiagnosticsContext cosmosCtx) {
+            Throwable error = cosmosCtx.getFinalError();
+            if (error == null || !cosmosCtx.isFailure()) {
+                return null;
+            }
+
+            if (error instanceof CosmosException) {
+                CosmosException cosmosException = (CosmosException) error;
+                return cosmosException.getMessageWithoutDiagnostics();
+            }
+
+            return error.getMessage();
+        }
+
         @Override
         public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context) {
-
-            String errorMessage = null;
 
             if (cosmosCtx == null) {
                 return;
@@ -720,25 +812,38 @@ public final class DiagnosticsProvider {
 
             if (!cosmosCtx.hasCompleted()) {
                 tracer.end("CosmosCtx not completed yet.", null, context);
+                return;
             }
 
-            if (cosmosCtx.isFailure() || cosmosCtx.isThresholdViolated()) {
-                tracer.end(errorMessage, finalError, context);
-
-                Map<String, Object> attributes = new HashMap<>();
-            }
-
-
+            String errorMessage = null;
             Throwable finalError = cosmosCtx.getFinalError();
             if (finalError != null && cosmosCtx.isFailure()) {
 
                 if (finalError instanceof CosmosException) {
-                    CosmosException cosmosException = (CosmosException)finalError;
+                    CosmosException cosmosException = (CosmosException) finalError;
                     errorMessage = cosmosException.getMessageWithoutDiagnostics();
                 } else {
                     errorMessage = finalError.getMessage();
                 }
+            }
 
+            if (tracer instanceof NoOpTracer) {
+                tracer.end(errorMessage, finalError, context);
+                return;
+            }
+
+            if (cosmosCtx.isFailure() || cosmosCtx.isThresholdViolated()) {
+                Map<String, Object> attributes = new HashMap<>();
+                attributes.put("Diagnostics", cosmosCtx.toString());
+
+                if (cosmosCtx.isFailure()) {
+                    tracer.addEvent("Failure", attributes, OffsetDateTime.now(), context);
+                } else {
+                    tracer.addEvent("ThresholdViolation", attributes, OffsetDateTime.now(), context);
+                }
+            }
+
+            if (finalError != null && cosmosCtx.isFailure()) {
                 tracer.setAttribute("exception.type", finalError.getClass().getCanonicalName(), context);
                 tracer.setAttribute("exception.message", errorMessage, context);
 
