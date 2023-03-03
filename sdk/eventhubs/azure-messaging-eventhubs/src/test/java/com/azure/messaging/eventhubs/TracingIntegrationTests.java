@@ -297,15 +297,17 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     .then(bufferedProducer.flush()))
             .verifyComplete();
 
-        StepVerifier.create(consumer
+        StepVerifier
+            .create(consumer
                 .receiveFromPartition(partitionIdRef.get(), EventPosition.fromEnqueuedTime(start))
                 .doOnNext(e -> logger.atInfo()
                     .addKeyValue("event", e.getData().getBodyAsString())
                     .addKeyValue("traceparent", e.getData().getProperties().get("traceparent"))
                     .log("received event"))
-                .take(2))
-            .expectNextCount(2)
-            .verifyComplete();
+                .take(2)
+                .then())
+            .expectComplete()
+            .verify(Duration.ofSeconds(60));
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
