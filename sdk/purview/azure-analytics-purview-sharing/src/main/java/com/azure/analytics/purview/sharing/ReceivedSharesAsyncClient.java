@@ -100,7 +100,8 @@ public final class ReceivedSharesAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceReceivedShare(
             String receivedShareId, BinaryData receivedShare, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateOrReplaceAsync(receivedShareId, receivedShare, requestOptions);
+        return this.serviceClient.beginCreateOrReplaceReceivedShareAsync(
+                receivedShareId, receivedShare, requestOptions);
     }
 
     /**

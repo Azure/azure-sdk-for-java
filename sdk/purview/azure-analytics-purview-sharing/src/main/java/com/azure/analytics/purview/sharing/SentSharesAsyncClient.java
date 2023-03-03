@@ -139,7 +139,7 @@ public final class SentSharesAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceSentShare(
             String sentShareId, BinaryData sentShare, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateOrReplaceAsync(sentShareId, sentShare, requestOptions);
+        return this.serviceClient.beginCreateOrReplaceSentShareAsync(sentShareId, sentShare, requestOptions);
     }
 
     /**

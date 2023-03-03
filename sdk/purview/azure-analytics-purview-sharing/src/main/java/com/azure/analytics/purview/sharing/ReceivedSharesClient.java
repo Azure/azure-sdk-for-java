@@ -97,7 +97,9 @@ public final class ReceivedSharesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceReceivedShare(
             String receivedShareId, BinaryData receivedShare, RequestOptions requestOptions) {
-        return this.client.beginCreateOrReplaceReceivedShare(receivedShareId, receivedShare, requestOptions).getSyncPoller();
+        return this.client
+                .beginCreateOrReplaceReceivedShare(receivedShareId, receivedShare, requestOptions)
+                .getSyncPoller();
     }
 
     /**

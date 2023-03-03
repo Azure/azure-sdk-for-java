@@ -121,7 +121,7 @@ public final class SentSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrReplace(
+        Mono<Response<BinaryData>> createOrReplaceSentShare(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("sentShareId") String sentShareId,
                 @QueryParam("api-version") String apiVersion,
@@ -533,12 +533,12 @@ public final class SentSharesImpl {
      * @return a sent share data transfer object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createOrReplaceWithResponseAsync(
+    private Mono<Response<BinaryData>> createOrReplaceSentShareWithResponseAsync(
             String sentShareId, BinaryData sentShare, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createOrReplace(
+                        service.createOrReplaceSentShare(
                                 this.client.getEndpoint(),
                                 sentShareId,
                                 this.client.getServiceVersion().getVersion(),
@@ -581,11 +581,11 @@ public final class SentSharesImpl {
      * @return the {@link PollerFlux} for polling of a sent share data transfer object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceAsync(
+    public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceSentShareAsync(
             String sentShareId, BinaryData sentShare, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.createOrReplaceWithResponseAsync(sentShareId, sentShare, requestOptions),
+                () -> this.createOrReplaceSentShareWithResponseAsync(sentShareId, sentShare, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
@@ -630,9 +630,9 @@ public final class SentSharesImpl {
      * @return the {@link SyncPoller} for polling of a sent share data transfer object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateOrReplace(
+    public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceSentShare(
             String sentShareId, BinaryData sentShare, RequestOptions requestOptions) {
-        return this.beginCreateOrReplaceAsync(sentShareId, sentShare, requestOptions).getSyncPoller();
+        return this.beginCreateOrReplaceSentShareAsync(sentShareId, sentShare, requestOptions).getSyncPoller();
     }
 
     /**

@@ -101,7 +101,7 @@ public final class ReceivedSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrReplace(
+        Mono<Response<BinaryData>> createOrReplaceReceivedShare(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("receivedShareId") String receivedShareId,
                 @QueryParam("api-version") String apiVersion,
@@ -345,12 +345,12 @@ public final class ReceivedSharesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createOrReplaceWithResponseAsync(
+    private Mono<Response<BinaryData>> createOrReplaceReceivedShareWithResponseAsync(
             String receivedShareId, BinaryData receivedShare, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createOrReplace(
+                        service.createOrReplaceReceivedShare(
                                 this.client.getEndpoint(),
                                 receivedShareId,
                                 this.client.getServiceVersion().getVersion(),
@@ -393,11 +393,13 @@ public final class ReceivedSharesImpl {
      * @return the {@link PollerFlux} for polling of a received share data transfer object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceAsync(
+    public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceReceivedShareAsync(
             String receivedShareId, BinaryData receivedShare, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.createOrReplaceWithResponseAsync(receivedShareId, receivedShare, requestOptions),
+                () ->
+                        this.createOrReplaceReceivedShareWithResponseAsync(
+                                receivedShareId, receivedShare, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
@@ -442,9 +444,10 @@ public final class ReceivedSharesImpl {
      * @return the {@link SyncPoller} for polling of a received share data transfer object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateOrReplace(
+    public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceReceivedShare(
             String receivedShareId, BinaryData receivedShare, RequestOptions requestOptions) {
-        return this.beginCreateOrReplaceAsync(receivedShareId, receivedShare, requestOptions).getSyncPoller();
+        return this.beginCreateOrReplaceReceivedShareAsync(receivedShareId, receivedShare, requestOptions)
+                .getSyncPoller();
     }
 
     /**
