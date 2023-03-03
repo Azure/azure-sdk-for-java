@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.PatchObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for NetworkManagers Patch. */
 public final class NetworkManagersPatchSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerPatch.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerPatch.json
      */
     /**
      * Sample code: NetworkManagesPatch.
@@ -29,7 +28,7 @@ public final class NetworkManagersPatchSamples {
                 "rg1",
                 "testNetworkManager",
                 new PatchObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

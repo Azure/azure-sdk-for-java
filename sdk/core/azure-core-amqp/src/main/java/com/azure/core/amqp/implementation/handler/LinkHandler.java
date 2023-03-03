@@ -85,6 +85,10 @@ abstract class LinkHandler extends Handler {
     }
 
     public AmqpErrorContext getErrorContext(Link link) {
+        return getErrorContext(getHostname(), entityPath, link);
+    }
+
+    static AmqpErrorContext getErrorContext(String hostName, String entityPath, Link link) {
         final String referenceId;
         if (link.getRemoteProperties() != null && link.getRemoteProperties().containsKey(TRACKING_ID_PROPERTY)) {
             referenceId = link.getRemoteProperties().get(TRACKING_ID_PROPERTY).toString();
@@ -92,7 +96,7 @@ abstract class LinkHandler extends Handler {
             referenceId = link.getName();
         }
 
-        return new LinkErrorContext(getHostname(), entityPath, referenceId, link.getCredit());
+        return new LinkErrorContext(hostName, entityPath, referenceId, link.getCredit());
     }
 
     private void handleRemoteLinkClosed(final String eventName, final Event event) {

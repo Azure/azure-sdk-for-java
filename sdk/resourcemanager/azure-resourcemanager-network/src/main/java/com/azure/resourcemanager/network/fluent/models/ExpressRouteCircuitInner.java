@@ -442,6 +442,15 @@ public final class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
+     * Get the authorizationStatus property: The authorization status of the Circuit.
+     *
+     * @return the authorizationStatus value.
+     */
+    public String authorizationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().authorizationStatus();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

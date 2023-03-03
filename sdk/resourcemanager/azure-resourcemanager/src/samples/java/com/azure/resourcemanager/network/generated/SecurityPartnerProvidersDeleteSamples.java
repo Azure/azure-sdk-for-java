@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityPartnerProviders Delete. */
 public final class SecurityPartnerProvidersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/SecurityPartnerProviderDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/SecurityPartnerProviderDelete.json
      */
     /**
      * Sample code: Delete Security Partner Provider.
@@ -22,6 +20,6 @@ public final class SecurityPartnerProvidersDeleteSamples {
             .manager()
             .serviceClient()
             .getSecurityPartnerProviders()
-            .delete("rg1", "securityPartnerProvider", Context.NONE);
+            .delete("rg1", "securityPartnerProvider", com.azure.core.util.Context.NONE);
     }
 }

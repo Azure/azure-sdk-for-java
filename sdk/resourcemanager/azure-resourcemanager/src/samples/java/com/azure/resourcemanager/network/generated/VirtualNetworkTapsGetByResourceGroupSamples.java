@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkTaps GetByResourceGroup. */
 public final class VirtualNetworkTapsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkTapGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkTapGet.json
      */
     /**
      * Sample code: Get Virtual Network Tap.
@@ -22,6 +20,6 @@ public final class VirtualNetworkTapsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkTaps()
-            .getByResourceGroupWithResponse("rg1", "testvtap", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "testvtap", com.azure.core.util.Context.NONE);
     }
 }

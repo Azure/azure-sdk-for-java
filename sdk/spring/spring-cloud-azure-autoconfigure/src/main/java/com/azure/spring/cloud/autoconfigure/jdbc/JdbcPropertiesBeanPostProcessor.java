@@ -3,15 +3,17 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringEnhancer;
-import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
-import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzureJdbcPasswordlessProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -35,7 +37,6 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
-import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreTargetNonNull;
 import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME;
 
 
@@ -55,7 +56,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DataSourceProperties) {
             DataSourceProperties dataSourceProperties = (DataSourceProperties) bean;
-            AzurePasswordlessProperties properties = buildAzureProperties();
+            AzureJdbcPasswordlessProperties properties = buildAzureProperties();
 
             if (!properties.isPasswordlessEnabled()) {
                 LOGGER.debug("Feature passwordless authentication is not enabled, skip enhancing jdbc url.");
@@ -128,17 +129,15 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         }
     }
 
-    private Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzurePasswordlessProperties properties) {
+    private Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzureJdbcPasswordlessProperties properties) {
         Map<String, String> result = new HashMap<>();
-        AzureTokenCredentialResolver resolver = applicationContext.getBean(AzureTokenCredentialResolver.class);
-        TokenCredential tokenCredential = resolver.resolve(properties);
+        TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties.toPasswordlessProperties()));
+        TokenCredential tokenCredential = tokenCredentialProvider.get();
 
-        if (tokenCredential != null) {
-            LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
-            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME);
-            applicationContext.registerBean(PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
-        }
+        AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME);
+        applicationContext.registerBean(PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
 
+        LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
         AuthProperty.AUTHORITY_HOST.setProperty(result, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
@@ -157,12 +156,14 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         this.applicationContext = (GenericApplicationContext) applicationContext;
     }
 
-    private AzurePasswordlessProperties buildAzureProperties() {
+    private AzureJdbcPasswordlessProperties buildAzureProperties() {
         AzureGlobalProperties azureGlobalProperties = applicationContext.getBean(AzureGlobalProperties.class);
-        AzurePasswordlessProperties azurePasswordlessProperties = Binder.get(environment)
-                .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzurePasswordlessProperties.class);
-        copyPropertiesIgnoreTargetNonNull(azureGlobalProperties.getProfile(), azurePasswordlessProperties.getProfile());
-        copyPropertiesIgnoreTargetNonNull(azureGlobalProperties.getCredential(), azurePasswordlessProperties.getCredential());
-        return azurePasswordlessProperties;
+        AzureJdbcPasswordlessProperties azurePasswordlessProperties = Binder.get(environment)
+                .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzureJdbcPasswordlessProperties.class);
+
+        AzureJdbcPasswordlessProperties mergedProperties = new AzureJdbcPasswordlessProperties();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
+        return mergedProperties;
+
     }
 }

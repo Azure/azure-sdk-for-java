@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApplicationGateways ListAvailableSslOptions. */
 public final class ApplicationGatewaysListAvailableSslOptionsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ApplicationGatewayAvailableSslOptionsGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayAvailableSslOptionsGet.json
      */
     /**
      * Sample code: Get Available Ssl Options.
@@ -22,6 +20,6 @@ public final class ApplicationGatewaysListAvailableSslOptionsSamples {
             .manager()
             .serviceClient()
             .getApplicationGateways()
-            .listAvailableSslOptionsWithResponse(Context.NONE);
+            .listAvailableSslOptionsWithResponse(com.azure.core.util.Context.NONE);
     }
 }

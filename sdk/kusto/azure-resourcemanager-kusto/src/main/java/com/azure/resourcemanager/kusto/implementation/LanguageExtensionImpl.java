@@ -6,6 +6,7 @@ package com.azure.resourcemanager.kusto.implementation;
 
 import com.azure.resourcemanager.kusto.fluent.models.LanguageExtensionInner;
 import com.azure.resourcemanager.kusto.models.LanguageExtension;
+import com.azure.resourcemanager.kusto.models.LanguageExtensionImageName;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionName;
 
 public final class LanguageExtensionImpl implements LanguageExtension {
@@ -21,6 +22,10 @@ public final class LanguageExtensionImpl implements LanguageExtension {
 
     public LanguageExtensionName languageExtensionName() {
         return this.innerModel().languageExtensionName();
+    }
+
+    public LanguageExtensionImageName languageExtensionImageName() {
+        return this.innerModel().languageExtensionImageName();
     }
 
     public LanguageExtensionInner innerModel() {

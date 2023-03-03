@@ -20,6 +20,15 @@ public final class VerbosityLevel extends ExpandableStringEnum<VerbosityLevel> {
     public static final VerbosityLevel FULL = fromString("Full");
 
     /**
+     * Creates a new instance of VerbosityLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VerbosityLevel() {
+    }
+
+    /**
      * Creates or finds a VerbosityLevel from its string representation.
      *
      * @param name a name to look for.

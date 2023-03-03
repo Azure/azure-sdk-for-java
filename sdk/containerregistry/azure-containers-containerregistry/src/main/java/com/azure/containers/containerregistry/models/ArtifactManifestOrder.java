@@ -5,7 +5,6 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Sort options for ordering manifests in a collection. */
@@ -20,12 +19,19 @@ public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactMa
     public static final ArtifactManifestOrder LAST_UPDATED_ON_ASCENDING = fromString("timeasc");
 
     /**
+     * Creates a new instance of ArtifactManifestOrder value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArtifactManifestOrder() {}
+
+    /**
      * Creates or finds a ArtifactManifestOrder from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding ArtifactManifestOrder.
      */
-    @JsonCreator
     public static ArtifactManifestOrder fromString(String name) {
         return fromString(name, ArtifactManifestOrder.class);
     }

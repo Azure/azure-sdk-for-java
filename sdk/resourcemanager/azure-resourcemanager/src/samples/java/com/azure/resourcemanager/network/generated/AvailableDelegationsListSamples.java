@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AvailableDelegations List. */
 public final class AvailableDelegationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/AvailableDelegationsSubscriptionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AvailableDelegationsSubscriptionGet.json
      */
     /**
      * Sample code: Get available delegations.
@@ -17,6 +15,11 @@ public final class AvailableDelegationsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAvailableDelegations(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAvailableDelegations().list("westcentralus", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getAvailableDelegations()
+            .list("westcentralus", com.azure.core.util.Context.NONE);
     }
 }

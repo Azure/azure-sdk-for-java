@@ -12,26 +12,24 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.search.documents.implementation.models.IndexDocumentsResult;
-import com.azure.search.documents.implementation.models.IndexingResult;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
+import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.IndexingResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +49,7 @@ import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -58,18 +57,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link SearchIndexingBufferedSender}.
  */
 public class SearchIndexingBufferedSenderTests extends SearchTestBase {
-    private static final JacksonAdapter JACKSON_ADAPTER;
     private static final TypeReference<Map<String, Object>> HOTEL_DOCUMENT_TYPE;
     private static final Function<Map<String, Object>, String> HOTEL_ID_KEY_RETRIEVER;
     private String indexToDelete;
     private SearchClientBuilder clientBuilder;
 
     static {
-        JacksonAdapter adapter = new JacksonAdapter();
-        adapter.serializer().setAnnotationIntrospector(new IgnoreJacksonWriteOnlyAccess());
-
-        JACKSON_ADAPTER = adapter;
-        HOTEL_DOCUMENT_TYPE = new TypeReference<Map<String, Object>>() { };
+        HOTEL_DOCUMENT_TYPE = new TypeReference<Map<String, Object>>() {
+        };
         HOTEL_ID_KEY_RETRIEVER = document -> String.valueOf(document.get("HotelId"));
     }
 
@@ -506,25 +501,6 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
          */
         assertEquals(0, batchingClient.getActions().size());
     }
-
-//    @Test
-//    public void resizeFactorDeterminesSubsequentRequestCount() {
-//        AtomicInteger callCount = new AtomicInteger();
-//        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
-//            .httpClient(request -> {
-//                int count = callCount.getAndIncrement();
-//                if (count == 0) {
-//                    return Mono.just(new MockHttpResponse(request, 413));
-//                }
-//            })
-//            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
-//                .);
-//
-//        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
-//
-//        assertDoesNotThrow((Executable) batchingClient::flush);
-//
-//    }
 
     /**
      * Tests that flushing a batch doesn't include duplicate keys.
@@ -1015,27 +991,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 statusCode));
         }
 
-        try {
-            return JACKSON_ADAPTER.serialize(new IndexDocumentsResult(results), SerializerEncoding.JSON)
-                .getBytes(StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    /*
-     * Helper class to ignore write only properties that need to be spoofed.
-     */
-    private static class IgnoreJacksonWriteOnlyAccess extends JacksonAnnotationIntrospector {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public JsonProperty.Access findPropertyAccess(Annotated m) {
-            JsonProperty.Access access = super.findPropertyAccess(m);
-            if (access == JsonProperty.Access.WRITE_ONLY) {
-                return JsonProperty.Access.AUTO;
-            }
-            return access;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            writer.writeJson(new IndexDocumentsResult(results)).flush();
+            return outputStream.toByteArray();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
     }
 
@@ -1043,21 +1004,21 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         int expectedBatchSize) {
         return FluxUtil.collectBytesInByteBufferStream(request.getBody())
             .flatMap(bodyBytes -> {
-                try {
-                    // Request documents are in a sub-node called value.
-                    JsonNode jsonNode = JACKSON_ADAPTER.serializer().readTree(bodyBytes).get("value");
+                // Request documents are in a sub-node called value.
+                try (JsonReader reader = JsonProviders.createReader(bodyBytes)) {
+                    IndexBatch indexBatch = IndexBatch.fromJson(reader);
 
                     // Given the initial size was 10 and it was split we should expect 5 elements.
-                    assertTrue(jsonNode.isArray());
-                    assertEquals(expectedBatchSize, jsonNode.size());
+                    assertNotNull(indexBatch);
+                    assertEquals(expectedBatchSize, indexBatch.getActions().size());
 
                     int[] statusCodes = new int[expectedBatchSize];
                     Arrays.fill(statusCodes, 200);
 
                     return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
                         createMockResponseData(keyIdOffset, statusCodes)));
-                } catch (IOException e) {
-                    return Mono.error(e);
+                } catch (IOException ex) {
+                    return Mono.error(ex);
                 }
             });
     }

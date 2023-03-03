@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRoutePortAuthorizations List. */
 public final class ExpressRoutePortAuthorizationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRoutePortAuthorizationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRoutePortAuthorizationList.json
      */
     /**
      * Sample code: List ExpressRoutePort Authorization.
@@ -22,6 +20,6 @@ public final class ExpressRoutePortAuthorizationsListSamples {
             .manager()
             .serviceClient()
             .getExpressRoutePortAuthorizations()
-            .list("rg1", "expressRoutePortName", Context.NONE);
+            .list("rg1", "expressRoutePortName", com.azure.core.util.Context.NONE);
     }
 }

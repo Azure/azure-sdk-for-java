@@ -7,21 +7,23 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** The SearchIndexerCache model. */
 @Fluent
-public final class SearchIndexerCache {
+public final class SearchIndexerCache implements JsonSerializable<SearchIndexerCache> {
     /*
      * The connection string to the storage account where the cache data will be persisted.
      */
-    @JsonProperty(value = "storageConnectionString")
     private String storageConnectionString;
 
     /*
      * Specifies whether incremental reprocessing is enabled.
      */
-    @JsonProperty(value = "enableReprocessing")
     private Boolean enableReprocessing;
 
     /** Creates an instance of SearchIndexerCache class. */
@@ -67,5 +69,46 @@ public final class SearchIndexerCache {
     public SearchIndexerCache setEnableReprocessing(Boolean enableReprocessing) {
         this.enableReprocessing = enableReprocessing;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageConnectionString", this.storageConnectionString);
+        jsonWriter.writeBooleanField("enableReprocessing", this.enableReprocessing);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchIndexerCache from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerCache if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchIndexerCache.
+     */
+    public static SearchIndexerCache fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    String storageConnectionString = null;
+                    Boolean enableReprocessing = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("storageConnectionString".equals(fieldName)) {
+                            storageConnectionString = reader.getString();
+                        } else if ("enableReprocessing".equals(fieldName)) {
+                            enableReprocessing = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SearchIndexerCache deserializedValue = new SearchIndexerCache();
+                    deserializedValue.storageConnectionString = storageConnectionString;
+                    deserializedValue.enableReprocessing = enableReprocessing;
+
+                    return deserializedValue;
+                });
     }
 }

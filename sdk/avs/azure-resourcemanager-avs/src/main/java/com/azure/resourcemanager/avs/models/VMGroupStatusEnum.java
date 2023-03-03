@@ -17,6 +17,15 @@ public final class VMGroupStatusEnum extends ExpandableStringEnum<VMGroupStatusE
     public static final VMGroupStatusEnum FAILURE = fromString("FAILURE");
 
     /**
+     * Creates a new instance of VMGroupStatusEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMGroupStatusEnum() {
+    }
+
+    /**
      * Creates or finds a VMGroupStatusEnum from its string representation.
      *
      * @param name a name to look for.

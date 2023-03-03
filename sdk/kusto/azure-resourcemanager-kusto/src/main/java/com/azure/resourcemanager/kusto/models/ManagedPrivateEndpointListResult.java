@@ -18,6 +18,10 @@ public final class ManagedPrivateEndpointListResult {
     @JsonProperty(value = "value")
     private List<ManagedPrivateEndpointInner> value;
 
+    /** Creates an instance of ManagedPrivateEndpointListResult class. */
+    public ManagedPrivateEndpointListResult() {
+    }
+
     /**
      * Get the value property: The list of managed private endpoints.
      *

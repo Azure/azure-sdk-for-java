@@ -24,6 +24,10 @@ public final class ResourceSkusResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuInner> value;
 
+    /** Creates an instance of ResourceSkusResult class. */
+    public ResourceSkusResult() {
+    }
+
     /**
      * Get the nextLink property: The URI to fetch the next page of Cache SKUs.
      *

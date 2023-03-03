@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The language codes supported for input text by EntityRecognitionSkill. */
@@ -82,12 +81,19 @@ public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<E
     public static final EntityRecognitionSkillLanguage TR = fromString("tr");
 
     /**
+     * Creates a new instance of EntityRecognitionSkillLanguage value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityRecognitionSkillLanguage() {}
+
+    /**
      * Creates or finds a EntityRecognitionSkillLanguage from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding EntityRecognitionSkillLanguage.
      */
-    @JsonCreator
     public static EntityRecognitionSkillLanguage fromString(String name) {
         return fromString(name, EntityRecognitionSkillLanguage.class);
     }

@@ -104,7 +104,7 @@ public final class AzureContainerRegistryImpl {
      * @param url Registry login URL.
      * @param apiVersion Api Version.
      */
-    AzureContainerRegistryImpl(String url, String apiVersion) {
+    public AzureContainerRegistryImpl(String url, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -121,7 +121,7 @@ public final class AzureContainerRegistryImpl {
      * @param url Registry login URL.
      * @param apiVersion Api Version.
      */
-    AzureContainerRegistryImpl(HttpPipeline httpPipeline, String url, String apiVersion) {
+    public AzureContainerRegistryImpl(HttpPipeline httpPipeline, String url, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, apiVersion);
     }
 
@@ -133,7 +133,7 @@ public final class AzureContainerRegistryImpl {
      * @param url Registry login URL.
      * @param apiVersion Api Version.
      */
-    AzureContainerRegistryImpl(
+    public AzureContainerRegistryImpl(
             HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

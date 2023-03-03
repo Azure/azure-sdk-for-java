@@ -17,6 +17,15 @@ public final class ConnectionMonitorType extends ExpandableStringEnum<Connection
     public static final ConnectionMonitorType SINGLE_SOURCE_DESTINATION = fromString("SingleSourceDestination");
 
     /**
+     * Creates a new instance of ConnectionMonitorType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionMonitorType() {
+    }
+
+    /**
      * Creates or finds a ConnectionMonitorType from its string representation.
      *
      * @param name a name to look for.
