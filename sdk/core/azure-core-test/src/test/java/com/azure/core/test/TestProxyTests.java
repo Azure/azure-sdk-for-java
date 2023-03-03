@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -48,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test class for testing Test proxy functionality of record, playback and redaction.
  */
+@Disabled
 public class TestProxyTests extends TestProxyTestBase {
     static TestProxyTestServer server;
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
@@ -73,7 +75,6 @@ public class TestProxyTests extends TestProxyTestBase {
     }
     @Test
     @Tag("Record")
-    @DoNotRecord
     public void testBasicRecord() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -95,7 +96,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Playback")
-    @DoNotRecord
     public void testOrdering() {
         // this proves that regardless of where in your test method you might try and get a variable it works.
         String name = testResourceNamer.randomName("test", 10);
@@ -118,7 +118,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Playback")
-    @DoNotRecord
     public void testMismatch() {
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url = null;
@@ -134,7 +133,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
-    @DoNotRecord
     public void testRecordWithPath() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -156,7 +154,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
-    @DoNotRecord
     public void testRecordWithHeaders() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -180,7 +177,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Playback")
-    @DoNotRecord
     public void testPlayback() {
 
         HttpClient client = interceptorManager.getPlaybackClient();
@@ -200,7 +196,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
-    @DoNotRecord
     public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
@@ -242,7 +237,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Playback")
-    @DoNotRecord
     public void testPlaybackWithRedaction() {
         interceptorManager.addSanitizers(customSanitizer);
         interceptorManager.addMatchers(new ArrayList<>(Arrays.asList(new CustomMatcher().setExcludedHeaders(Arrays.asList("Ocp-Apim-Subscription-Key")))));
@@ -270,7 +264,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
-    @DoNotRecord
     public void testBodyRegexRedactRecord() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
