@@ -9,30 +9,26 @@ import com.azure.resourcemanager.kusto.models.AzureSku;
 import com.azure.resourcemanager.kusto.models.AzureSkuName;
 import com.azure.resourcemanager.kusto.models.AzureSkuTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureSkuTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureSku model =
             BinaryData
-                .fromString("{\"name\":\"Dev(No SLA)_Standard_E2a_v4\",\"capacity\":794644018,\"tier\":\"Standard\"}")
+                .fromString("{\"name\":\"Standard_E4d_v5\",\"capacity\":743792160,\"tier\":\"Basic\"}")
                 .toObject(AzureSku.class);
-        Assertions.assertEquals(AzureSkuName.DEV_NO_SLA_STANDARD_E2A_V4, model.name());
-        Assertions.assertEquals(794644018, model.capacity());
-        Assertions.assertEquals(AzureSkuTier.STANDARD, model.tier());
+        Assertions.assertEquals(AzureSkuName.STANDARD_E4D_V5, model.name());
+        Assertions.assertEquals(743792160, model.capacity());
+        Assertions.assertEquals(AzureSkuTier.BASIC, model.tier());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureSku model =
-            new AzureSku()
-                .withName(AzureSkuName.DEV_NO_SLA_STANDARD_E2A_V4)
-                .withCapacity(794644018)
-                .withTier(AzureSkuTier.STANDARD);
+            new AzureSku().withName(AzureSkuName.STANDARD_E4D_V5).withCapacity(743792160).withTier(AzureSkuTier.BASIC);
         model = BinaryData.fromObject(model).toObject(AzureSku.class);
-        Assertions.assertEquals(AzureSkuName.DEV_NO_SLA_STANDARD_E2A_V4, model.name());
-        Assertions.assertEquals(794644018, model.capacity());
-        Assertions.assertEquals(AzureSkuTier.STANDARD, model.tier());
+        Assertions.assertEquals(AzureSkuName.STANDARD_E4D_V5, model.name());
+        Assertions.assertEquals(743792160, model.capacity());
+        Assertions.assertEquals(AzureSkuTier.BASIC, model.tier());
     }
 }

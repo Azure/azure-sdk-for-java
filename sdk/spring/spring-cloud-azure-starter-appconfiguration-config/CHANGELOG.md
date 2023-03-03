@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.1 (Unreleased)
+## 4.0.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.0.0-beta.1 (2023-02-16)
+
+### Features Added
+* Global Configuration support
+* Geo-Replication support
+* Feature Flags now support multiple selects
+
+### Breaking Changes
+* Libraries have been renamed from azure-spring-cloud-appconfiguration-config to spring-cloud-azure-appconfiguration-config
+* Switched to the SDK style for RevApi
+* Removed AppConfigurationCredentialProvider, KeyVaultCredentialProvider
+* Renamed ConfigurationClientBuilderSetup to ConfigurationClientCustomizer
+* Renamed SecretClientBuilderSetup to SecretClientCustomizer
+* Feature Flags can now be loaded from multiple stores, duplicate key names result in last wins.
 
 ## 2.10.0 (2022-11-24)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.13, 2.7.0-2.7.5. (Note: 2.5.x (x>14), 2.6.y (y>13) and 2.7.z (z>5) should be supported, but they aren't tested with this release.)

@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -83,14 +84,14 @@ public class CosmosException extends AzureException {
     private CosmosError cosmosError;
 
     /**
-     * RNTBD channel task queue size
+     * RNTBD endpoint statistics
      */
-    private int rntbdChannelTaskQueueSize;
+    private RntbdEndpointStatistics rntbdEndpointStatistics;
 
     /**
      * RNTBD endpoint statistics
      */
-    private RntbdEndpointStatistics rntbdEndpointStatistics;
+    private RntbdChannelStatistics rntbdChannelStatistics;
 
     /**
      * LSN
@@ -121,11 +122,6 @@ public class CosmosException extends AzureException {
      * Request payload length
      */
     private int requestPayloadLength;
-
-    /**
-     * RNTBD pending request queue size
-     */
-    private int rntbdPendingRequestQueueSize;
 
     /**
      * RNTBD request length
@@ -500,6 +496,14 @@ public class CosmosException extends AzureException {
         return this.rntbdEndpointStatistics;
     }
 
+    RntbdChannelStatistics getRntbdChannelStatistics() {
+        return this.rntbdChannelStatistics;
+    }
+
+    void setRntbdChannelStatistics(RntbdChannelStatistics rntbdChannelStatistics) {
+        this.rntbdChannelStatistics = rntbdChannelStatistics;
+    }
+
     void setRntbdRequestLength(int rntbdRequestLength) {
         this.rntbdRequestLength = rntbdRequestLength;
     }
@@ -532,22 +536,6 @@ public class CosmosException extends AzureException {
         this.sendingRequestHasStarted = hasSendingRequestStarted;
     }
 
-    int getRntbdChannelTaskQueueSize() {
-        return this.rntbdChannelTaskQueueSize;
-    }
-
-    void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
-        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
-    }
-
-    int getRntbdPendingRequestQueueSize() {
-        return this.rntbdChannelTaskQueueSize;
-    }
-
-    void setRntbdPendingRequestQueueSize(int rntbdPendingRequestQueueSize) {
-        this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
-    }
-
     List<String> getReplicaStatusList() {
         return this.replicaStatusList;
     }
@@ -566,6 +554,20 @@ public class CosmosException extends AzureException {
                     @Override
                     public List<String> getReplicaStatusList(CosmosException cosmosException) {
                         return cosmosException.getReplicaStatusList();
+                    }
+
+                    @Override
+                    public CosmosException setRntbdChannelStatistics(
+                        CosmosException cosmosException,
+                        RntbdChannelStatistics rntbdChannelStatistics) {
+
+                        cosmosException.setRntbdChannelStatistics(rntbdChannelStatistics);
+                        return cosmosException;
+                    }
+
+                    @Override
+                    public RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException) {
+                        return cosmosException.getRntbdChannelStatistics();
                     }
 
                 });

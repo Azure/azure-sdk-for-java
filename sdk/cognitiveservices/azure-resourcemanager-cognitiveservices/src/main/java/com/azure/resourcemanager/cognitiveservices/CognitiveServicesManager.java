@@ -239,7 +239,7 @@ public final class CognitiveServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.cognitiveservices")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -406,7 +406,7 @@ public final class CognitiveServicesManager {
     }
 
     /**
-     * Gets the resource collection API of CommitmentPlans. It manages CommitmentPlan.
+     * Gets the resource collection API of CommitmentPlans. It manages CommitmentPlan, CommitmentPlanAccountAssociation.
      *
      * @return Resource collection API of CommitmentPlans.
      */

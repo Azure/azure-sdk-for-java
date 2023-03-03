@@ -16,7 +16,7 @@ public final class ContentKeyPolicyInnerTests {
         ContentKeyPolicyInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"policyId\":\"a03c9f87-2640-484f-81ef-8ce2203fedc6\",\"created\":\"2021-09-03T17:59:20Z\",\"lastModified\":\"2021-10-17T19:30:49Z\",\"description\":\"rts\",\"options\":[{\"policyOptionId\":\"7e61b4ae-0bfe-4285-bb2f-60708c91ce6a\",\"name\":\"kdeemaofmxagkvtm\"},{\"policyOptionId\":\"bce1a8a0-328f-40af-9828-b16c343e7c4c\",\"name\":\"qkrhahvljua\"},{\"policyOptionId\":\"45b86ced-7ae1-4b9c-a3cb-a6eeb3e5ace3\",\"name\":\"uhcdhm\"}]},\"id\":\"alaexqpvfadmwsrc\",\"name\":\"gvxp\",\"type\":\"gomz\"}")
+                    "{\"properties\":{\"policyId\":\"4da702f2-8c84-4f1a-a467-dfc67a48c0d7\",\"created\":\"2021-09-03T17:59:20Z\",\"lastModified\":\"2021-10-17T19:30:49Z\",\"description\":\"rts\",\"options\":[{\"policyOptionId\":\"5a7c4e55-9bc6-4d6f-9b4f-ccda1de8fd47\",\"name\":\"kdeemaofmxagkvtm\"},{\"policyOptionId\":\"d33a70ba-68d8-4f15-b495-65a6363e35ec\",\"name\":\"qkrhahvljua\"},{\"policyOptionId\":\"d933a30b-c3ef-4541-aba4-45be3c661f9f\",\"name\":\"uhcdhm\"}]},\"id\":\"alaexqpvfadmwsrc\",\"name\":\"gvxp\",\"type\":\"gomz\"}")
                 .toObject(ContentKeyPolicyInner.class);
         Assertions.assertEquals("rts", model.description());
         Assertions.assertEquals("kdeemaofmxagkvtm", model.options().get(0).name());

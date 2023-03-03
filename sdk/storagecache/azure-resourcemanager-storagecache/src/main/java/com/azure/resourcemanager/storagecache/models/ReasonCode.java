@@ -8,13 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReasonCode. */
+/**
+ * The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". "QuotaId" is set
+ * when the SKU has requiredQuotas parameter as the subscription does not belong to that quota.
+ * "NotAvailableForSubscription" is related to capacity at the datacenter.
+ */
 public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
     /** Static value QuotaId for ReasonCode. */
     public static final ReasonCode QUOTA_ID = fromString("QuotaId");
 
     /** Static value NotAvailableForSubscription for ReasonCode. */
     public static final ReasonCode NOT_AVAILABLE_FOR_SUBSCRIPTION = fromString("NotAvailableForSubscription");
+
+    /**
+     * Creates a new instance of ReasonCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReasonCode() {
+    }
 
     /**
      * Creates or finds a ReasonCode from its string representation.

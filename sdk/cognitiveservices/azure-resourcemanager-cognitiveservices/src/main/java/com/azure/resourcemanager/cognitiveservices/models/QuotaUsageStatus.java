@@ -23,6 +23,15 @@ public final class QuotaUsageStatus extends ExpandableStringEnum<QuotaUsageStatu
     public static final QuotaUsageStatus UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of QuotaUsageStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QuotaUsageStatus() {
+    }
+
+    /**
      * Creates or finds a QuotaUsageStatus from its string representation.
      *
      * @param name a name to look for.

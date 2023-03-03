@@ -8,7 +8,6 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -19,13 +18,18 @@ import java.time.OffsetDateTime;
 import java.util.concurrent.CountDownLatch;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ContainerRegistryTokenServiceTest {
 
     private TokenCredential tokenCredential;
     private HttpPipeline httpPipeline;
-    private SerializerAdapter serializerAdapter;
     private TokenServiceImpl tokenServiceImpl;
     private AccessTokenCacheImpl refreshTokenCache;
     private ContainerRegistryTokenRequestContext requestContext;
@@ -39,7 +43,6 @@ public class ContainerRegistryTokenServiceTest {
     @BeforeEach
     public void setup() {
         this.httpPipeline = mock(HttpPipeline.class);
-        this.serializerAdapter = mock(SerializerAdapter.class);
 
         TokenServiceImpl impl = mock(TokenServiceImpl.class);
         AccessToken refreshToken = new AccessToken(REFRESHTOKEN, OffsetDateTime.now().plusMinutes(30));
@@ -74,8 +77,7 @@ public class ContainerRegistryTokenServiceTest {
             null,
             "myString",
             null,
-            this.httpPipeline,
-            this.serializerAdapter
+            this.httpPipeline
         );
 
         service.setTokenService(this.tokenServiceImpl);

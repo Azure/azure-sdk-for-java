@@ -6,6 +6,8 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
+import com.azure.containers.containerregistry.implementation.models.ArtifactManifestPropertiesInternal;
+import com.azure.containers.containerregistry.implementation.models.ArtifactTagPropertiesInternal;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
@@ -46,10 +48,15 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -58,7 +65,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
@@ -70,7 +76,6 @@ public final class UtilsImpl {
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
-    private static final HttpHeaderName CONTINUATION_LINK_HEADER_NAME = HttpHeaderName.fromString("Link");
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
@@ -153,8 +158,7 @@ public final class UtilsImpl {
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .tracer(tracer)
-                .build(),
-            JacksonAdapter.createDefaultSerializerAdapter());
+                .build());
 
         ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
 
@@ -162,13 +166,11 @@ public final class UtilsImpl {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(loggingPolicy);
 
-        HttpPipeline httpPipeline =
-            new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .tracer(tracer)
-                .build();
-        return httpPipeline;
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .tracer(tracer)
+            .build();
     }
 
     @SuppressWarnings("unchecked")
@@ -351,7 +353,7 @@ public final class UtilsImpl {
     }
 
     private static String getContinuationLink(HttpHeaders headers) {
-        String continuationLinkHeader = headers.getValue(CONTINUATION_LINK_HEADER_NAME);
+        String continuationLinkHeader = headers.getValue(HttpHeaderName.LINK);
         if (!CoreUtils.isNullOrEmpty(continuationLinkHeader) && continuationLinkHeader.charAt(0) == '<') {
             int endIndex = continuationLinkHeader.indexOf(">;");
             if (endIndex < 2) {
@@ -370,45 +372,51 @@ public final class UtilsImpl {
             return null;
         }
 
-        return baseArtifacts.stream().map(value -> {
-            ArtifactManifestProperties manifestProperties = new ArtifactManifestProperties()
-                .setDeleteEnabled(value.isDeleteEnabled())
-                .setListEnabled(value.isListEnabled())
-                .setWriteEnabled(value.isWriteEnabled())
-                .setReadEnabled(value.isReadEnabled());
+        List<ArtifactManifestProperties> artifactManifestProperties = new ArrayList<>(baseArtifacts.size());
+        for (ManifestAttributesBase base : baseArtifacts) {
+            ArtifactManifestPropertiesInternal internal = new ArtifactManifestPropertiesInternal()
+                .setRegistryLoginServer(registryLoginServer)
+                .setRepositoryName(repositoryName)
+                .setDigest(base.getDigest())
+                .setSizeInBytes(base.getSizeInBytes())
+                .setCreatedOn(base.getCreatedOn())
+                .setLastUpdatedOn(base.getLastUpdatedOn())
+                .setArchitecture(base.getArchitecture())
+                .setOperatingSystem(base.getOperatingSystem())
+                .setRelatedArtifacts(base.getRelatedArtifacts())
+                .setTags(base.getTags())
+                .setDeleteEnabled(base.isDeleteEnabled())
+                .setWriteEnabled(base.isWriteEnabled())
+                .setListEnabled(base.isListEnabled())
+                .setReadEnabled(base.isReadEnabled());
 
-            ArtifactManifestPropertiesHelper.setRepositoryName(manifestProperties, repositoryName);
-            ArtifactManifestPropertiesHelper.setRegistryLoginServer(manifestProperties, registryLoginServer);
-            ArtifactManifestPropertiesHelper.setDigest(manifestProperties, value.getDigest());
-            ArtifactManifestPropertiesHelper.setRelatedArtifacts(manifestProperties, value.getRelatedArtifacts());
-            ArtifactManifestPropertiesHelper.setCpuArchitecture(manifestProperties, value.getArchitecture());
-            ArtifactManifestPropertiesHelper.setOperatingSystem(manifestProperties, value.getOperatingSystem());
-            ArtifactManifestPropertiesHelper.setCreatedOn(manifestProperties, value.getCreatedOn());
-            ArtifactManifestPropertiesHelper.setlastUpdatedOn(manifestProperties, value.getLastUpdatedOn());
-            ArtifactManifestPropertiesHelper.setSizeInBytes(manifestProperties, value.getSize());
-            ArtifactManifestPropertiesHelper.setTags(manifestProperties, value.getTags());
-            return manifestProperties;
-        }).collect(Collectors.toList());
+            artifactManifestProperties.add(ArtifactManifestPropertiesHelper.create(internal));
+        }
+
+        return artifactManifestProperties;
     }
 
     public static List<ArtifactTagProperties> getTagProperties(List<TagAttributesBase> baseValues,
                                                                String repositoryName) {
         Objects.requireNonNull(baseValues);
 
-        return baseValues.stream().map(value -> {
-            ArtifactTagProperties tagProperties = new ArtifactTagProperties()
-                .setDeleteEnabled(value.isDeleteEnabled())
-                .setReadEnabled(value.isReadEnabled())
-                .setListEnabled(value.isListEnabled())
-                .setWriteEnabled(value.isWriteEnabled());
+        List<ArtifactTagProperties> artifactTagProperties = new ArrayList<>(baseValues.size());
+        for (TagAttributesBase base : baseValues) {
+            ArtifactTagPropertiesInternal internal = new ArtifactTagPropertiesInternal()
+                .setRepositoryName(repositoryName)
+                .setName(base.getName())
+                .setDigest(base.getDigest())
+                .setCreatedOn(base.getCreatedOn())
+                .setLastUpdatedOn(base.getLastUpdatedOn())
+                .setDeleteEnabled(base.isDeleteEnabled())
+                .setWriteEnabled(base.isWriteEnabled())
+                .setListEnabled(base.isListEnabled())
+                .setReadEnabled(base.isReadEnabled());
 
-            ArtifactTagPropertiesHelper.setCreatedOn(tagProperties, value.getCreatedOn());
-            ArtifactTagPropertiesHelper.setlastUpdatedOn(tagProperties, value.getLastUpdatedOn());
-            ArtifactTagPropertiesHelper.setRepositoryName(tagProperties, repositoryName);
-            ArtifactTagPropertiesHelper.setName(tagProperties, value.getName());
-            ArtifactTagPropertiesHelper.setDigest(tagProperties, value.getDigest());
-            return tagProperties;
-        }).collect(Collectors.toList());
+            artifactTagProperties.add(ArtifactTagPropertiesHelper.create(internal));
+        }
+
+        return artifactTagProperties;
     }
 
     public static void validateResponseHeaderDigest(String requestedDigest, HttpHeaders headers) {
@@ -422,7 +430,7 @@ public final class UtilsImpl {
     }
 
     public static Context enableSync(Context context) {
-        if (context == Context.NONE) {
+        if (context == null || context == Context.NONE) {
             return CONTEXT_WITH_SYNC;
         }
 
@@ -448,5 +456,17 @@ public final class UtilsImpl {
         }
 
         throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid content-range header in response -" + contentRangeHeader));
+    }
+
+    public static String convertToJson(JsonSerializable<?> jsonSerializable) {
+        StringBuilder builder = new StringBuilder();
+        try (Writer writer = new StringBuilderWriter(builder);
+             JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
+            jsonSerializable.toJson(jsonWriter);
+            jsonWriter.flush();
+            return builder.toString();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 }
